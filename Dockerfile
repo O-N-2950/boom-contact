@@ -6,14 +6,14 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy source
+# Copy all source
 COPY . .
 
-# Build client only (server runs via tsx)
-RUN npm run build
+# Build client (Vite)
+RUN npx vite build --config vite.config.mjs
 
-# Expose port
+# Expose
 EXPOSE 3000
 
-# Start server directly with tsx (no TypeScript compilation needed)
+# Start with tsx (handles TypeScript + ESM natively)
 CMD ["npx", "tsx", "server/src/index.ts"]
