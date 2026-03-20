@@ -1,4 +1,5 @@
-import { nanoid } from 'nanoid';
+import { randomBytes } from 'crypto';
+const nanoid = (size = 12) => randomBytes(size).toString('base64url').slice(0, size);
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
 
 // ─────────────────────────────────────────────────────────────

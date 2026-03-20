@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig({
-  root: 'client',
   plugins: [react(), tailwindcss()],
+  root: 'client',
   resolve: {
     alias: { '@': path.resolve(__dirname, 'client/src') }
   },
@@ -16,5 +16,8 @@ export default defineConfig({
       '/socket.io': { target: 'http://localhost:3000', ws: true }
     }
   },
-  build: { outDir: '../dist/client', emptyOutDir: true }
+  build: {
+    outDir: path.resolve(__dirname, 'dist/client'),
+    emptyOutDir: true
+  }
 });
