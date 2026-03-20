@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  --boom: #FF3500;
+  --boom2: #FFB300;
+  --black: #06060C;
+  --dark: #0E0E18;
+  --card: #111120;
+  --text: #F0EDE8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* Safe areas for notched phones */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-top    { padding-top: env(safe-area-inset-top); }
