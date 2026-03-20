@@ -1,8 +1,8 @@
 [build]
-builder = "nixpacks"
-buildCommand = "npm install && npm run build"
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "npm start"
-healthcheckPath = "/trpc/session.get"
+startCommand = "npx tsx server/src/index.ts"
+healthcheckPath = "/trpc/session.get?input=%7B%22json%22%3A%7B%22sessionId%22%3A%22test%22%7D%7D"
 restartPolicyType = "on_failure"
