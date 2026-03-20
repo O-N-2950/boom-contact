@@ -4,5 +4,7 @@ dockerfilePath = "Dockerfile"
 
 [deploy]
 startCommand = "npx tsx server/src/index.ts"
-healthcheckPath = "/trpc/session.get?input=%7B%22json%22%3A%7B%22sessionId%22%3A%22test%22%7D%7D"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
 restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

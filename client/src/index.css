@@ -1,5 +1,6 @@
-/* boom.contact — styles */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --boom: #FF3500;
@@ -9,6 +10,8 @@
   --card: #111120;
   --text: #F0EDE8;
 }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   background: var(--black);

@@ -1,135 +1,175 @@
 import { randomBytes } from 'crypto';
-const nanoid = (size = 12) => randomBytes(size).toString('base64url').slice(0, size);
+import { eq } from 'drizzle-orm';
+import { db, schema } from '../db';
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
 
-// ─────────────────────────────────────────────────────────────
-// In-memory store (replace with PostgreSQL in production)
-// ─────────────────────────────────────────────────────────────
-const sessions = new Map<string, ConstatSession>();
-const SESSION_TTL_MS = 2 * 60 * 60 * 1000; // 2 hours
+const SESSION_TTL_HOURS = 2;
+
+function makeId(size = 12): string {
+  return randomBytes(size).toString('base64url').slice(0, size);
+}
+
+function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession {
+  return {
+    id:           row.id,
+    status:       row.status as ConstatSession['status'],
+    createdAt:    row.createdAt,
+    expiresAt:    row.expiresAt,
+    accident:     (row.accident as any) ?? {},
+    participantA: (row.participantA as any) ?? { role: 'A', vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: 'fr' },
+    participantB: (row.participantB as any) ?? undefined,
+    pdfUrl:       row.pdfUrl ?? undefined,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────
-// Create a new session (called by driver A)
+// CREATE — Driver A starts a constat
 // ─────────────────────────────────────────────────────────────
-export function createSession(): ConstatSession {
-  const id = nanoid(12); // e.g. "V1StGXR8_Z5j"
+export async function createSession(): Promise<ConstatSession> {
+  const id = makeId(12);
   const now = new Date();
-  const session: ConstatSession = {
+  const expiresAt = new Date(now.getTime() + SESSION_TTL_HOURS * 60 * 60 * 1000);
+
+  const [row] = await db.insert(schema.sessions).values({
     id,
     status: 'waiting',
     createdAt: now,
-    expiresAt: new Date(now.getTime() + SESSION_TTL_MS),
+    expiresAt,
     accident: {},
-    participantA: { role: 'A', vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: 'fr' },
-  };
-  sessions.set(id, session);
+    participantA: {
+      role: 'A', vehicle: {}, driver: {},
+      insurance: {}, damagedZones: [], circumstances: [], language: 'fr',
+    },
+    participantB: null,
+  }).returning();
 
-  // Auto-expire
-  setTimeout(() => {
-    const s = sessions.get(id);
-    if (s && s.status !== 'completed') {
-      sessions.set(id, { ...s, status: 'expired' });
-      setTimeout(() => sessions.delete(id), 30_000);
-    }
-  }, SESSION_TTL_MS);
-
-  return session;
+  return rowToSession(row);
 }
 
 // ─────────────────────────────────────────────────────────────
-// Get session
+// GET
 // ─────────────────────────────────────────────────────────────
-export function getSession(id: string): ConstatSession | null {
-  return sessions.get(id) ?? null;
+export async function getSession(id: string): Promise<ConstatSession | null> {
+  const [row] = await db
+    .select()
+    .from(schema.sessions)
+    .where(eq(schema.sessions.id, id))
+    .limit(1);
+
+  if (!row) return null;
+
+  // Auto-expire check
+  if (new Date() > row.expiresAt && row.status !== 'completed') {
+    await db.update(schema.sessions)
+      .set({ status: 'expired' })
+      .where(eq(schema.sessions.id, id));
+    return { ...rowToSession(row), status: 'expired' };
+  }
+
+  return rowToSession(row);
 }
 
 // ─────────────────────────────────────────────────────────────
-// Join session (called by driver B via QR scan)
+// JOIN — Driver B scans QR
 // ─────────────────────────────────────────────────────────────
-export function joinSession(id: string, lang: string = 'fr'): ConstatSession | null {
-  const session = sessions.get(id);
+export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSession | null> {
+  const session = await getSession(id);
   if (!session) return null;
   if (session.status === 'expired' || session.status === 'completed') return null;
 
-  const updated: ConstatSession = {
-    ...session,
-    status: 'active',
-    participantB: {
-      role: 'B',
-      vehicle: {}, driver: {}, insurance: {},
-      damagedZones: [], circumstances: [], language: lang,
-    },
-  };
-  sessions.set(id, updated);
-  return updated;
+  const [row] = await db.update(schema.sessions)
+    .set({
+      status: 'active',
+      participantB: {
+        role: 'B', vehicle: {}, driver: {},
+        insurance: {}, damagedZones: [], circumstances: [], language: lang,
+      },
+    })
+    .where(eq(schema.sessions.id, id))
+    .returning();
+
+  return rowToSession(row);
 }
 
 // ─────────────────────────────────────────────────────────────
-// Update participant data (A or B)
+// UPDATE PARTICIPANT
 // ─────────────────────────────────────────────────────────────
-export function updateParticipant(
+export async function updateParticipant(
   id: string,
   role: 'A' | 'B',
-  data: Partial<ParticipantData>
-): ConstatSession | null {
-  const session = sessions.get(id);
+  data: Partial<ParticipantData>,
+): Promise<ConstatSession | null> {
+  const session = await getSession(id);
   if (!session) return null;
 
   const key = role === 'A' ? 'participantA' : 'participantB';
-  const updated = {
-    ...session,
-    [key]: { ...(session[key] ?? {}), ...data },
-  };
-  sessions.set(id, updated);
-  return updated;
+  const current = role === 'A' ? session.participantA : (session.participantB ?? {});
+  const merged = { ...current, ...data };
+
+  const [row] = await db.update(schema.sessions)
+    .set({ [key]: merged })
+    .where(eq(schema.sessions.id, id))
+    .returning();
+
+  return rowToSession(row);
 }
 
 // ─────────────────────────────────────────────────────────────
-// Update accident data
+// UPDATE ACCIDENT
 // ─────────────────────────────────────────────────────────────
-export function updateAccident(
+export async function updateAccident(
   id: string,
-  data: Partial<AccidentData>
-): ConstatSession | null {
-  const session = sessions.get(id);
+  data: Partial<AccidentData>,
+): Promise<ConstatSession | null> {
+  const session = await getSession(id);
   if (!session) return null;
 
-  const updated = { ...session, accident: { ...session.accident, ...data } };
-  sessions.set(id, updated);
-  return updated;
+  const [row] = await db.update(schema.sessions)
+    .set({ accident: { ...session.accident, ...data } })
+    .where(eq(schema.sessions.id, id))
+    .returning();
+
+  return rowToSession(row);
 }
 
 // ─────────────────────────────────────────────────────────────
-// Mark participant as signed
+// SIGN
 // ─────────────────────────────────────────────────────────────
-export function signSession(
+export async function signSession(
   id: string,
   role: 'A' | 'B',
-  signatureBase64: string
-): { session: ConstatSession; bothSigned: boolean } | null {
-  const session = sessions.get(id);
+  signatureBase64: string,
+): Promise<{ session: ConstatSession; bothSigned: boolean } | null> {
+  const session = await getSession(id);
   if (!session) return null;
 
   const key = role === 'A' ? 'participantA' : 'participantB';
-  const updated = {
-    ...session,
-    [key]: {
-      ...(session[key] ?? {}),
-      signature: signatureBase64,
-      signedAt: new Date(),
-    },
-  };
+  const current = role === 'A' ? session.participantA : (session.participantB ?? {});
+  const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
-  const bothSigned = !!(updated.participantA?.signature && updated.participantB?.signature);
-  if (bothSigned) updated.status = 'completed';
-  else updated.status = 'signing';
+  const otherKey = role === 'A' ? session.participantB : session.participantA;
+  const bothSigned = !!(otherKey as any)?.signature;
+  const newStatus = bothSigned ? 'completed' : 'signing';
 
-  sessions.set(id, updated);
-  return { session: updated, bothSigned };
+  const [row] = await db.update(schema.sessions)
+    .set({ [key]: updated, status: newStatus })
+    .where(eq(schema.sessions.id, id))
+    .returning();
+
+  return { session: rowToSession(row), bothSigned };
 }
 
 // ─────────────────────────────────────────────────────────────
-// Generate QR URL
+// SAVE PDF URL
+// ─────────────────────────────────────────────────────────────
+export async function savePdfUrl(id: string, url: string): Promise<void> {
+  await db.update(schema.sessions)
+    .set({ pdfUrl: url })
+    .where(eq(schema.sessions.id, id));
+}
+
+// ─────────────────────────────────────────────────────────────
+// QR URL helper
 // ─────────────────────────────────────────────────────────────
 export function getQRUrl(sessionId: string, baseUrl: string): string {
   return `${baseUrl}?session=${sessionId}`;
