@@ -13,7 +13,9 @@ const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const CLIENT_URL = process.env.CLIENT_URL
+  || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
+  || 'https://boom-contact-production.up.railway.app';
 
 export const appRouter = router({
 
@@ -22,8 +24,8 @@ export const appRouter = router({
 
     // Driver A creates session → gets QR code URL
     create: publicProcedure
-      .mutation(() => {
-        const session = createSession();
+      .mutation(async () => {
+        const session = await createSession();
         const qrUrl = getQRUrl(session.id, CLIENT_URL);
         return { sessionId: session.id, qrUrl, status: session.status };
       }),
@@ -31,8 +33,8 @@ export const appRouter = router({
     // Get session state
     get: publicProcedure
       .input(z.object({ sessionId: z.string() }))
-      .query(({ input }) => {
-        const session = getSession(input.sessionId);
+      .query(async ({ input }) => {
+        const session = await getSession(input.sessionId);
         if (!session) throw new Error('Session not found or expired');
         return session;
       }),
@@ -40,8 +42,8 @@ export const appRouter = router({
     // Driver B joins via QR scan
     join: publicProcedure
       .input(z.object({ sessionId: z.string(), language: z.string().default('fr') }))
-      .mutation(({ input }) => {
-        const session = joinSession(input.sessionId, input.language);
+      .mutation(async ({ input }) => {
+        const session = await joinSession(input.sessionId, input.language);
         if (!session) throw new Error('Session not found, expired or already completed');
 
         // Notify driver A via WebSocket
@@ -63,8 +65,8 @@ export const appRouter = router({
           language:     z.string().optional(),
         }),
       }))
-      .mutation(({ input }) => {
-        const session = updateParticipant(input.sessionId, input.role, input.data as any);
+      .mutation(async ({ input }) => {
+        const session = await updateParticipant(input.sessionId, input.role, input.data as any);
         if (!session) throw new Error('Session not found');
 
         // Sync to other party via WebSocket
@@ -92,8 +94,8 @@ export const appRouter = router({
           sketchImage:      z.string().optional(),
         }),
       }))
-      .mutation(({ input }) => {
-        const session = updateAccident(input.sessionId, input.data as any);
+      .mutation(async ({ input }) => {
+        const session = await updateAccident(input.sessionId, input.data as any);
         if (!session) throw new Error('Session not found');
 
         io.to(`session:${input.sessionId}`).emit('accident-updated', input.data);
@@ -107,8 +109,8 @@ export const appRouter = router({
         role:            z.enum(['A', 'B']),
         signatureBase64: z.string().min(100),
       }))
-      .mutation(({ input }) => {
-        const result = signSession(input.sessionId, input.role, input.signatureBase64);
+      .mutation(async ({ input }) => {
+        const result = await signSession(input.sessionId, input.role, input.signatureBase64);
         if (!result) throw new Error('Session not found');
 
         const { session, bothSigned } = result;
@@ -152,7 +154,7 @@ export const appRouter = router({
     generate: publicProcedure
       .input(z.object({ sessionId: z.string() }))
       .mutation(async ({ input }) => {
-        const session = getSession(input.sessionId);
+        const session = await getSession(input.sessionId);
         if (!session) throw new Error('Session not found');
         if (session.status !== 'completed') throw new Error('Both parties must sign before generating PDF');
 

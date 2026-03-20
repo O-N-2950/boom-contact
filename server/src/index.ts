@@ -15,18 +15,18 @@ const app = express();
 const httpServer = createServer(app);
 
 // Socket.io — exported for use in router
+const ALLOWED_ORIGINS = [
+  process.env.CLIENT_URL,
+  'https://boom-contact-production.up.railway.app',
+  'http://localhost:5173',
+].filter(Boolean) as string[];
+
 export const io = new SocketServer(httpServer, {
-  cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
-    credentials: true,
-  },
+  cors: { origin: ALLOWED_ORIGINS, credentials: true },
 });
 
 // Middleware
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true,
-}));
+app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 app.use(express.json({ limit: '10mb' })); // base64 images
 app.use(cookieParser());
 
