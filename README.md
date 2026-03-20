@@ -5,6 +5,30 @@
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app)
 
+
+## 🚀 Deploy on Railway
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/O-N-2950/boom-contact)
+
+### Variables d'environnement à configurer sur Railway
+
+| Variable | Description | Exemple |
+|----------|-------------|---------|
+| `DATABASE_URL` | PostgreSQL (auto si ajouté via Railway) | `postgresql://...` |
+| `ANTHROPIC_API_KEY` | Claude Vision API pour l'OCR | `sk-ant-...` |
+| `JWT_SECRET` | Clé secrète sessions | `random-string-256bit` |
+| `CLIENT_URL` | URL du frontend | `https://boom.contact` |
+| `RESEND_API_KEY` | Envoi emails PDF | `re_...` |
+
+### Étapes de déploiement
+1. Aller sur [railway.app](https://railway.app)
+2. **New Project** → **Deploy from GitHub repo**
+3. Sélectionner `O-N-2950/boom-contact`
+4. **Add PostgreSQL** → Railway génère `DATABASE_URL` automatiquement
+5. Ajouter les variables ci-dessus
+6. **Deploy** → Générer un domaine public
+7. Pointer `boom.contact` vers le domaine Railway
+
 ---
 
 ## ✨ Concept

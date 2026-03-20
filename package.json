@@ -2,15 +2,17 @@
   "name": "boom-contact",
   "version": "0.1.0",
   "private": true,
-  "description": "💥 boom.contact — Constat amiable numérique mondial",
+  "description": "\ud83d\udca5 boom.contact \u2014 Constat amiable num\u00e9rique mondial",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "cd client && vite",
     "dev:server": "cd server && tsx watch src/index.ts",
-    "build": "cd client && vite build && cd ../server && tsc",
+    "build": "npm run build:client && npm run build:server",
     "start": "node server/dist/index.js",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "build:client": "cd client && npx vite build --outDir ../dist/client",
+    "build:server": "npx tsc -p tsconfig.server.json"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -51,5 +53,8 @@
     "tsx": "^4.7.0",
     "typescript": "^5.5.3",
     "vite": "^5.3.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

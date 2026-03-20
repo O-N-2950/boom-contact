@@ -47,3 +47,26 @@ Site futur : https://boom.contact
 - [ ] Phase 6 : Car diagram + sketch canvas
 - [ ] Phase 7 : Double signature + PDF generator
 - [ ] Phase 8 : Deploy Railway + boom.contact
+
+## Marchés émergents prioritaires
+
+### 🇨🇳 Chine — 350M+ véhicules (1er mondial)
+- **Mandarin simplifié** (`zh`) — 920M locuteurs
+- **Traditionnel** (`zh-tw`) — Taïwan, Hong Kong, Macao
+- **Cantonais** (`yue`) — 85M locuteurs, Guangdong + HK
+- Note : l'app peut fonctionner sur WeChat Mini Program à terme
+
+### 🇮🇳 Inde — 300M+ véhicules (3ème mondial, croissance +8%/an)
+- **Hindi** (`hi`) — 600M locuteurs
+- **Bengali** (`bn`) — 230M (Bengale Occidental + Bangladesh)
+- **Telugu** (`te`) — 95M (Andhra Pradesh, Telangana)
+- **Punjabi** (`pa`) — 125M (Punjab, Haryana — fort taux motorisation)
+- **Marathi** (`mr`) — 83M (Maharashtra, Mumbai — hub automobile)
+- **Gujarati** (`gu`) — 55M (Gujarat — industrie auto Tata, Maruti)
+- **Tamil** (`ta`) — 80M (Tamil Nadu — Chennai = "Detroit indien")
+- **Kannada** (`kn`) — 45M (Karnataka — Bangalore)
+
+### 🌍 Afrique subsaharienne — marché en forte croissance
+- **Swahili** (`sw`) — 200M locuteurs (Kenya, Tanzanie, Ouganda)
+- **Hausa** (`ha`) — 100M (Nigeria, Niger, Ghana)
+- **Yoruba** (`yo`) — 45M (Nigeria — Lagos 25M hab.)
