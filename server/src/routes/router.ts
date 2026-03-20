@@ -1,12 +1,14 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import type { Context } from '../middleware/context';
+import { scanDocument, scanDocumentPair } from '../services/ocr.service';
 
 const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
 export const appRouter = router({
+
   // ── SESSION ──────────────────────────────────────────────
   session: router({
     create: publicProcedure
@@ -18,33 +20,42 @@ export const appRouter = router({
     get: publicProcedure
       .input(z.object({ sessionId: z.string() }))
       .query(async ({ input }) => {
-        // TODO: fetch session from DB
         return { id: input.sessionId, status: 'waiting' };
-      }),
-
-    updateData: publicProcedure
-      .input(z.object({
-        sessionId: z.string(),
-        role: z.enum(['A', 'B']),
-        data: z.record(z.unknown()),
-      }))
-      .mutation(async ({ input }) => {
-        // TODO: update session data in DB
-        return { ok: true };
       }),
   }),
 
   // ── OCR ──────────────────────────────────────────────────
   ocr: router({
+
+    // Scan a single document
     scan: publicProcedure
       .input(z.object({
-        imageBase64: z.string(),
-        documentType: z.enum(['vehicle_registration', 'green_card', 'id', 'auto']).default('auto'),
-        country: z.string().default('auto'),
+        imageBase64: z.string().min(100),
+        mediaType: z.enum(['image/jpeg', 'image/png', 'image/webp']).default('image/jpeg'),
+        documentType: z.enum(['vehicle_registration', 'green_card', 'drivers_license', 'auto']).default('auto'),
+        country: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        // TODO: call Claude Vision API
-        return { type: 'unknown', confidence: 0, rawText: '' };
+        const hint = input.documentType !== 'auto' || input.country
+          ? { documentType: input.documentType, country: input.country }
+          : undefined;
+
+        const result = await scanDocument(input.imageBase64, input.mediaType, hint);
+        return result;
+      }),
+
+    // Scan both documents at once (registration + green card)
+    scanPair: publicProcedure
+      .input(z.object({
+        registrationBase64: z.string().min(100),
+        greenCardBase64: z.string().min(100),
+      }))
+      .mutation(async ({ input }) => {
+        const result = await scanDocumentPair(
+          input.registrationBase64,
+          input.greenCardBase64,
+        );
+        return result;
       }),
   }),
 
