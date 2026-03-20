@@ -195,6 +195,6 @@ boom-contact/
 | Car Diagram SVG | ✅ Codé | 18 zones cliquables |
 | Signature Pad | ✅ Codé | Canvas tactile dual |
 | PDF Generator | ✅ Codé | pdf-lib, 8 sections CEA |
-| Railway Build | ❌ En échec | Problème cache Docker node_modules |
-| Landing page | ✅ Codée | HTML standalone |
+| Railway Build | 🔄 Fix appliqué | Dockerfile cache-bust + npm ci propre |
+| Landing page | ✅ Extraordinaire | Animée, phone mockup, counters, features grid |
 | i18n 50 langues | ✅ Codé | RTL support |

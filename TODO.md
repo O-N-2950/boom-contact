@@ -9,7 +9,7 @@
 Railway utilise un cache Docker qui contient l'ancienne version de `node_modules` avec `@tailwindcss/vite` (ESM-only, incompatible CJS).
 
 ### Solution à appliquer
-- [ ] **Option A (recommandée)** : Modifier le Dockerfile pour forcer `--no-cache` ou changer le hash du layer :
+- [x] **Option A (appliquée)** : Modifier le Dockerfile pour forcer `--no-cache` ou changer le hash du layer :
   ```dockerfile
   # Ajouter une ligne qui change à chaque fois pour invalider le cache
   RUN echo "cache-bust-$(date +%Y%m%d)" > /dev/null
