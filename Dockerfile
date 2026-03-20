@@ -2,18 +2,16 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install deps
 COPY package*.json ./
 RUN npm install
 
-# Copy all source
 COPY . .
 
-# Build client (Vite)
-RUN npx vite build --config vite.config.mjs
+# Force remove old vite.config.ts if cached, use only vite.config.js
+RUN rm -f vite.config.ts client/vite.config.ts
 
-# Expose
+RUN npm run build
+
 EXPOSE 3000
 
-# Start with tsx (handles TypeScript + ESM natively)
 CMD ["npx", "tsx", "server/src/index.ts"]
