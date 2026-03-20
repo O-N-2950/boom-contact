@@ -162,7 +162,7 @@ boom-contact/
 |----------|--------|
 | `PROJECT_ID` | `e0085774-c08f-48d0-8183-b6fe11c816cd` |
 | `ENV_ID` | `e0247449-5574-4959-974e-c4b636da7419` |
-| `SERVICE_ID` | `578be30c-9536-445e-9886-cf61a6cdaa10` (boom-contact) |
+| `SERVICE_ID` | `4c024cbf-fb0a-4652-85bc-8c7cdedf62e2` (boom-contact) |
 | `DB_SERVICE_ID` | `369454e6-e548-46a2-b453-f53d01356851` (PostgreSQL) |
 | `RAILWAY_TOKEN` | `40b74970-6fd5-440c-a538-89234616ab26` |
 | `DATABASE_URL` | postgresql://boom:boom_secret_2026@postgres.railway.internal:5432/boom_contact |
@@ -195,6 +195,6 @@ boom-contact/
 | Car Diagram SVG | ✅ Codé | 18 zones cliquables |
 | Signature Pad | ✅ Codé | Canvas tactile dual |
 | PDF Generator | ✅ Codé | pdf-lib, 8 sections CEA |
-| Railway Build | 🔄 Fix appliqué | Dockerfile cache-bust + npm ci propre |
+| Railway Build | ✅ SUCCESS | Nouveau service propre, build 90s |
 | Landing page | ✅ Extraordinaire | Animée, phone mockup, counters, features grid |
 | i18n 50 langues | ✅ Codé | RTL support |
