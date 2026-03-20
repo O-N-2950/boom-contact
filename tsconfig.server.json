@@ -5,11 +5,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
-    "rootDir": ".",
     "strict": false,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "rootDir": "."
   },
   "include": ["server/src", "shared"]
 }

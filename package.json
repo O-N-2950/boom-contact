@@ -5,8 +5,6 @@
   "description": "\ud83d\udca5 boom.contact \u2014 Constat amiable num\u00e9rique mondial",
   "scripts": {
     "dev": "concurrently \"tsx watch server/src/index.ts\" \"vite\"",
-    "dev:client": "vite",
-    "dev:server": "tsx watch server/src/index.ts",
     "build": "vite build",
     "start": "tsx server/src/index.ts",
     "db:push": "drizzle-kit push",
@@ -55,5 +53,6 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "_railwayCacheBust": "1774038440"
 }
