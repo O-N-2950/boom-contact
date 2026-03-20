@@ -6,6 +6,7 @@ import {
   createSession, getSession, joinSession,
   updateParticipant, updateAccident, signSession, getQRUrl
 } from '../services/session.service';
+import { generateConstatPDF } from '../services/pdf.service';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -151,8 +152,14 @@ export const appRouter = router({
     generate: publicProcedure
       .input(z.object({ sessionId: z.string() }))
       .mutation(async ({ input }) => {
-        // TODO Phase 5 — pdf.service.ts
-        return { pdfBase64: '', filename: `constat-${input.sessionId}.pdf` };
+        const session = getSession(input.sessionId);
+        if (!session) throw new Error('Session not found');
+        if (session.status !== 'completed') throw new Error('Both parties must sign before generating PDF');
+
+        const pdfBytes = await generateConstatPDF(session);
+        const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+        const filename = `constat-${session.id}-${new Date().toISOString().split('T')[0]}.pdf`;
+        return { pdfBase64, filename };
       }),
   }),
 });
