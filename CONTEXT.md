@@ -153,7 +153,7 @@ Métadonnées Stripe : `application: 'boom.contact'` sur chaque transaction.
 | TXT | . | v=spf1 include:spf.infomaniak.ch include:spf.resend.com ~all | ✅ |
 | TXT | send | v=spf1 include:amazonses.com ~all | ✅ |
 | TXT | _dmarc | v=DMARC1; p=quarantine; rua=mailto:dmarc@boom.contact | ✅ |
-| TXT | resend._domainkey | p=MIGfMA0GCSq... | ❌ À FAIRE MANUELLEMENT sur Infomaniak Manager |
+| TXT | resend._domainkey | p=MIGfMA0GCSq... | ✅ |
 
 **Action requise** : Infomaniak Manager → boom.contact → DNS → Ajouter TXT `resend._domainkey`
 Valeur : `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/9W6A0Ku3MNuKTPAgNqno/gfoWs5pojTRG4XpLhpsxJIUK1lEmGv75tYHgLzUC7aBd9tfKMGRV/WMpk3AJJA6xGyKtPmhixW2A96Vv9ZQ6cCzLsQqS0rCVvYbonlaARDlru4i8UqqWjslN+IbYzO1yrnEYYglIm34ZA8FJJ9TVQIDAQAB`

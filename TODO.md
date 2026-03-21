@@ -239,7 +239,7 @@ Les agents utilisent l'app sur scène d'accident pour établir le PV numérique 
 - [x] Stripe live configuré
 - [x] 2 services propres (boom-contact + PostgreSQL)
 - [x] DNS A + CNAME www configurés
-- [ ] DKIM Resend ajouté (Infomaniak manuel — 2 min)
+- [x] DKIM Resend ajouté (Infomaniak manuel — fait ✅)
 - [ ] Test flow complet mobile iOS + Android
 - [ ] Test PDF téléchargement + email reçu
 - [ ] Test Stripe paiement réel
