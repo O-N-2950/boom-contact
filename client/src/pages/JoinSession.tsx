@@ -1,5 +1,6 @@
 import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
+import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -8,9 +9,9 @@ import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
-import type { OCRResult, ParticipantData, ScenePhoto } from '../../../shared/types';
+import type { OCRResult, ParticipantData, ScenePhoto, AccidentData } from '../../../shared/types';
 
-type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'sketch' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_b';
 
@@ -45,6 +46,7 @@ export function JoinSession() {
   );
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
+  const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
   const [otherSigned, setOtherSigned] = useState(false);
 
   const setStep = (s: FlowStep) => {
@@ -56,7 +58,7 @@ export function JoinSession() {
   useEffect(() => {
     if (step === 'done' || step === 'landing') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, joined, participantData, damagedZones, photos, ts: Date.now(),
+      step, sessionId, joined, participantData, damagedZones, photos, sketchImage, ts: Date.now(),
     }));
   }, [step, joined, participantData, damagedZones, photos]);
 
@@ -65,6 +67,7 @@ export function JoinSession() {
     { id: 'location', icon: '📍', label: 'Lieu' },
     { id: 'photos',   icon: '📸', label: 'Photos' },
     { id: 'form',     icon: '📋', label: 'Infos' },
+    { id: 'sketch',   icon: '✏️', label: 'Croquis' },
     { id: 'diagram',  icon: '🚗', label: 'Choc' },
     { id: 'sign',     icon: '✍️', label: 'Sign' },
   ];
@@ -112,11 +115,24 @@ export function JoinSession() {
     setStep('form');
   };
 
-  const handleFormSave = async (data: Partial<ParticipantData>) => {
+  const updateAccidentMutationB = trpc.session.updateAccident.useMutation({
+    onError: (err) => console.error('updateAccident B failed:', err.message),
+  });
+
+  const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
       updateMutation.mutate({ sessionId, role: 'B', data });
+      if (accident && Object.keys(accident).length > 0) {
+        updateAccidentMutationB.mutate({ sessionId, data: accident });
+      }
     }
+    setStep('sketch');
+  };
+
+  const handleSketchDoneB = (base64: string) => {
+    setSketchImage(base64);
+    // B ne réécrit pas le croquis si A l'a déjà fait — on laisse A référent
     setStep('diagram');
   };
 
@@ -258,7 +274,16 @@ export function JoinSession() {
         )}
 
         {step === 'form' && (
-          <ConstatForm role="B" prefilled={participantData} onSave={handleFormSave} />
+          <ConstatForm role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} />
+        )}
+
+        {step === 'sketch' && (
+          <AccidentSketch
+            vehicleTypeB={participantData.vehicle?.vehicleType}
+            sketchImage={sketchImage}
+            onChange={setSketchImage}
+            onContinue={() => handleSketchDoneB(sketchImage)}
+          />
         )}
 
         {step === 'diagram' && (

@@ -5,7 +5,8 @@ import type { ParticipantData, AccidentData } from '../../../../shared/types';
 interface Props {
   role: 'A' | 'B';
   prefilled?: Partial<ParticipantData>;
-  onSave: (data: Partial<ParticipantData>) => void;
+  accidentData?: Partial<AccidentData>;
+  onSave: (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => void;
 }
 
 // Circonstances boom.contact — reformulées (17 situations standard)
@@ -29,9 +30,9 @@ const ACCIDENT_CIRCUMSTANCES = [
   { id: 'c17', label: 'Autre situation — préciser dans les observations' },
 ];
 
-type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances';
+type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances' | 'complement';
 
-export function ConstatForm({ role, prefilled, onSave }: Props) {
+export function ConstatForm({ role, prefilled, accidentData, onSave }: Props) {
   const [section, setSection] = useState<Section>('vehicle');
   const [data, setData] = useState<Partial<ParticipantData>>({
     role,
@@ -43,11 +44,22 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
     language: prefilled?.language ?? 'fr',
   });
 
+  // Champs accident complémentaires (partagés — section 13-14)
+  const [accDate, setAccDate]           = useState(accidentData?.date ?? '');
+  const [accTime, setAccTime]           = useState(accidentData?.time ?? '');
+  const [witnesses, setWitnesses]       = useState(accidentData?.witnesses ?? '');
+  const [thirdParty, setThirdParty]     = useState<boolean | null>(
+    accidentData?.thirdPartyDamage !== undefined ? accidentData.thirdPartyDamage : null
+  );
+  const [observations, setObservations] = useState('');
+  const [visibleDamage, setVisibleDamage] = useState('');
+
   const sections: { id: Section; icon: string; label: string }[] = [
     { id: 'vehicle',      icon: '🚗', label: 'Véhicule' },
     { id: 'driver',       icon: '👤', label: 'Conducteur' },
     { id: 'insurance',    icon: '🟢', label: 'Assurance' },
     { id: 'circumstances',icon: '📋', label: 'Circonstances' },
+    { id: 'complement',   icon: '📝', label: 'Complément' },
   ];
 
   const update = (section: keyof ParticipantData, field: string, value: string) => {
@@ -146,7 +158,6 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
           </div>
           <Field sec section="driver" field="country"       label="Pays"            placeholder="CH, FR, DE..." />
           <Field sec section="driver" field="phone"         label="Téléphone"       placeholder="+41 79 123 45 67" type="tel" required />
-          <Field section="driver" field="email"  label="Email (pour recevoir le PDF)" placeholder="vous@exemple.com" type="email" />
           <Field sec section="driver" field="email"         label="Email"           placeholder="nom@email.com" type="email" />
           <Field sec section="driver" field="licenseNumber" label="N° permis de conduire" required />
         </>}
@@ -187,11 +198,90 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
             {data.circumstances?.length ?? 0} case{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''} cochée{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''}
           </div>
         </>}
+        {section === 'complement' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.6 }}>
+              Informations complémentaires du constat — sections 11, 13 et 14.
+            </p>
+
+            {/* Date/heure éditable */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Date et heure de l'accident</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
+                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+                <input type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
+                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+              </div>
+            </div>
+
+            {/* Dégâts apparents section 11 */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts apparents (section 11)</div>
+              <textarea value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
+                placeholder="Décrivez les dommages visibles sur votre véhicule..."
+                rows={3}
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+            </div>
+
+            {/* Dégâts matériels à des tiers */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts matériels à des tiers (autres que A et B)</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {[{ val: false, label: '✅ Non', color: 'rgba(34,197,94,0.6)' }, { val: true, label: '⚠️ Oui', color: 'rgba(255,179,0,0.6)' }].map(opt => (
+                  <button key={String(opt.val)} onClick={() => setThirdParty(opt.val)}
+                    style={{ flex: 1, padding: '12px', borderRadius: 8, border: `1.5px solid ${thirdParty === opt.val ? opt.color : 'rgba(240,237,232,0.08)'}`, background: thirdParty === opt.val ? `${opt.color}22` : 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Témoins */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Témoins</div>
+              <textarea value={witnesses} onChange={e => setWitnesses(e.target.value)}
+                placeholder="Nom, prénom, téléphone de chaque témoin..."
+                rows={3}
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+            </div>
+
+            {/* Observations libres section 14 */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</div>
+              <textarea value={observations} onChange={e => setObservations(e.target.value)}
+                placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
+                rows={4}
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+            </div>
+
+            {/* Preneur d'assurance différent du conducteur */}
+            <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 12 }}>Preneur d'assurance (si différent du conducteur)</div>
+              {(['insuranceHolder', 'insuranceHolderAddress'] as const).map(field => (
+                <div key={field} style={{ marginBottom: 10 }}>
+                  <input
+                    placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
+                    value={(data.insurance as any)?.[field] ?? ''}
+                    onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
+                    style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Save button */}
       <div style={{ padding: '14px 20px', borderTop: '1px solid rgba(240,237,232,0.06)', flexShrink: 0 }}>
-        <button onClick={() => onSave(data)} style={{
+        <button onClick={() => onSave(data, {
+          date: accDate || undefined,
+          time: accTime || undefined,
+          witnesses: witnesses || undefined,
+          thirdPartyDamage: thirdParty !== null ? thirdParty : undefined,
+          description: observations || undefined,
+        })} style={{
           width: '100%', padding: '16px', borderRadius: 10, border: 'none',
           background: 'var(--boom)', color: '#fff', cursor: 'pointer',
           fontSize: 15, fontWeight: 700,

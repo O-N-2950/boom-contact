@@ -1,5 +1,6 @@
 import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
+import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -11,7 +12,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'sketch' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -42,6 +43,7 @@ export function ConstatFlow() {
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(saved?.participantData || { role: 'A' });
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
+  const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
   const [otherSigned, setOtherSigned] = useState(false);
 
   // Persist state to localStorage on every change
@@ -55,7 +57,7 @@ export function ConstatFlow() {
   useEffect(() => {
     if (step === 'done') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, qrUrl, participantData, damagedZones, photos, ts: Date.now(),
+      step, sessionId, qrUrl, participantData, damagedZones, photos, sketchImage, ts: Date.now(),
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos]);
 
@@ -65,6 +67,7 @@ export function ConstatFlow() {
     { id: 'photos',   icon: '📸', label: 'Photos' },
     { id: 'qr',       icon: '📱', label: 'QR' },
     { id: 'form',     icon: '📋', label: 'Infos' },
+    { id: 'sketch',   icon: '✏️', label: 'Croquis' },
     { id: 'diagram',  icon: '🚗', label: 'Choc' },
     { id: 'sign',     icon: '✍️', label: 'Sign' },
   ];
@@ -118,10 +121,22 @@ export function ConstatFlow() {
     setStep('qr');
   };
 
-  const handleFormSave = async (data: Partial<ParticipantData>) => {
+  const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
       updateMutation.mutate({ sessionId, role: 'A', data });
+      if (accident && Object.keys(accident).length > 0) {
+        updateAccidentMutation.mutate({ sessionId, data: accident });
+        setAccidentData(prev => ({ ...prev, ...accident }));
+      }
+    }
+    setStep('sketch');
+  };
+
+  const handleSketchDone = (base64: string) => {
+    setSketchImage(base64);
+    if (sessionId && base64) {
+      updateAccidentMutation.mutate({ sessionId, data: { sketchImage: base64 } });
     }
     setStep('diagram');
   };
@@ -213,7 +228,17 @@ export function ConstatFlow() {
         )}
 
         {step === 'form' && (
-          <ConstatForm role="A" prefilled={participantData} onSave={handleFormSave} />
+          <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} />
+        )}
+
+        {step === 'sketch' && (
+          <AccidentSketch
+            vehicleTypeA={participantData.vehicle?.vehicleType}
+            vehicleTypeB={undefined}
+            sketchImage={sketchImage}
+            onChange={setSketchImage}
+            onContinue={() => handleSketchDone(sketchImage)}
+          />
         )}
 
         {step === 'diagram' && (
