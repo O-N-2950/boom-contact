@@ -3,6 +3,7 @@ import { db } from './index.js';
 
 export async function runMigrations() {
   try {
+    // ── Block 1 : core tables ─────────────────────────────────────────────
     await db.execute(`
       CREATE TABLE IF NOT EXISTS sessions (
         id           VARCHAR(20) PRIMARY KEY,
@@ -73,7 +74,8 @@ export async function runMigrations() {
       );
     `);
 
-      -- Module Police B2B — Session 6
+    // ── Block 2 : Module Police B2B — Session 6 ──────────────────────────
+    await db.execute(`
       CREATE TABLE IF NOT EXISTS police_stations (
         id          VARCHAR(20) PRIMARY KEY,
         name        TEXT NOT NULL,
@@ -101,6 +103,7 @@ export async function runMigrations() {
       );
       CREATE INDEX IF NOT EXISTS idx_police_users_email   ON police_users(email);
       CREATE INDEX IF NOT EXISTS idx_police_users_station ON police_users(station_id);
+    `);
 
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
