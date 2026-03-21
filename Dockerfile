@@ -16,6 +16,7 @@ COPY . .
 # Vite choisit .ts avant .js — on supprime l'ancien .ts qui a @tailwindcss/vite
 RUN rm -f vite.config.ts
 
+# cache-bust: 2026-03-21-fix-trpc-imports
 RUN npm run build
 
 EXPOSE 3000
