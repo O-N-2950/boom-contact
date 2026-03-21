@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { ConstatForm } from '../components/constat/ConstatForm';
 import { CarDiagram } from '../components/constat/CarDiagram';
@@ -9,16 +10,52 @@ import type { OCRResult, ParticipantData } from '../../../shared/types';
 
 type FlowStep = 'landing' | 'ocr' | 'form' | 'diagram' | 'sign' | 'done';
 
+const STORAGE_KEY = 'boom_flow_b';
+
+function loadState(sessionId: string) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    // Only restore if same session and less than 2h old
+    if (data.sessionId !== sessionId) { localStorage.removeItem(STORAGE_KEY); return null; }
+    if (data.ts && Date.now() - data.ts > 2 * 60 * 60 * 1000) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 export function JoinSession() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session') || '';
-  const [step, setStep] = useState<FlowStep>('landing');
-  const [joined, setJoined] = useState(false);
+  const saved = loadState(sessionId);
+
+  const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'landing');
+  const [joined, setJoined] = useState(saved?.joined || false);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>({ role: 'B', language: navigator.language?.split('-')[0] || 'fr' });
-  const [damagedZones, setDamagedZones] = useState<string[]>([]);
+  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(
+    saved?.participantData || { role: 'B', language: navigator.language?.split('-')[0] || 'fr' }
+  );
+  const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [otherSigned, setOtherSigned] = useState(false);
+
+  const setStep = (s: FlowStep) => {
+    setStepRaw(s);
+    if (s === 'done') localStorage.removeItem(STORAGE_KEY);
+  };
+
+  // Persist state
+  useEffect(() => {
+    if (step === 'done' || step === 'landing') return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      step, sessionId, joined, participantData, damagedZones, ts: Date.now(),
+    }));
+  }, [step, joined, participantData, damagedZones]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
     { id: 'ocr',     icon: '📄', label: 'Scan' },
@@ -28,6 +65,27 @@ export function JoinSession() {
   ];
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
 
+  const joinMutation = trpc.session.join.useMutation({
+    onSuccess: () => {
+      setJoined(true);
+      setJoining(false);
+      setTimeout(() => setStep('ocr'), 600);
+    },
+    onError: (err) => {
+      setError(err.message || 'Session introuvable ou expirée.');
+      setJoining(false);
+    },
+  });
+
+  const join = () => {
+    if (!sessionId || joining) return;
+    setJoining(true);
+    setError(null);
+    joinMutation.mutate({
+      sessionId,
+      language: navigator.language?.split('-')[0] || 'fr',
+    });
+  };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
     setParticipantData(prev => ({

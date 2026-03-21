@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { QRSession } from '../components/constat/QRSession';
 import { ConstatForm } from '../components/constat/ConstatForm';
@@ -10,13 +11,48 @@ import type { OCRResult, ParticipantData } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
 
+const STORAGE_KEY = 'boom_flow_a';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    // Expire sessions older than 2h
+    if (data.ts && Date.now() - data.ts > 2 * 60 * 60 * 1000) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 export function ConstatFlow() {
-  const [step, setStep] = useState<FlowStep>('ocr');
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [qrUrl, setQrUrl] = useState<string>('');
-  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>({ role: 'A' });
-  const [damagedZones, setDamagedZones] = useState<string[]>([]);
+  const saved = loadState();
+
+  const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'ocr');
+  const [sessionId, setSessionId] = useState<string | null>(saved?.sessionId || null);
+  const [qrUrl, setQrUrl] = useState<string>(saved?.qrUrl || '');
+  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(saved?.participantData || { role: 'A' });
+  const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [otherSigned, setOtherSigned] = useState(false);
+
+  // Persist state to localStorage on every change
+  const setStep = (s: FlowStep) => {
+    setStepRaw(s);
+    if (s === 'done') {
+      localStorage.removeItem(STORAGE_KEY); // clean up when done
+    }
+  };
+
+  useEffect(() => {
+    if (step === 'done') return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      step, sessionId, qrUrl, participantData, damagedZones, ts: Date.now(),
+    }));
+  }, [step, sessionId, qrUrl, participantData, damagedZones]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
     { id: 'ocr',     icon: '📄', label: 'Scan' },
@@ -42,7 +78,6 @@ export function ConstatFlow() {
   const createSession = () => createSessionMutation.mutate();
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
-    // Pre-fill participant data from OCR
     setParticipantData(prev => ({
       ...prev,
       vehicle:   result.registration.vehicle   ?? {},
@@ -102,6 +137,16 @@ export function ConstatFlow() {
             CONDUCTEUR A — NOUVEAU CONSTAT
           </div>
         </div>
+        {/* Reset button in case session is stuck */}
+        {step !== 'ocr' && step !== 'done' && (
+          <button
+            onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
+            style={{ marginLeft: 'auto', fontSize: 10, opacity: 0.3, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+            title="Recommencer"
+          >
+            ↺
+          </button>
+        )}
       </div>
 
       {/* Step indicator */}

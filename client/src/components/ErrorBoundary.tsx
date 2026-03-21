@@ -11,17 +11,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: { componentStack: string }) {
-    // Log to server if available
-    fetch('/trpc/log.clientError', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: error.message,
-        stack: error.stack?.slice(0, 500),
-        component: info.componentStack?.slice(0, 300),
-        url: window.location.href,
-      }),
-    }).catch(() => {});
+    // Log to console (server-side logging endpoint not yet implemented)
+    console.error('[ErrorBoundary]', error.message, info.componentStack?.slice(0, 300));
   }
 
   render() {
