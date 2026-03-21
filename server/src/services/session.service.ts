@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 import { randomBytes } from 'crypto';
 import { eq } from 'drizzle-orm';
 import { db, schema } from '../db';
@@ -43,6 +44,7 @@ export async function createSession(): Promise<ConstatSession> {
     participantB: null,
   }).returning();
 
+  logger.session('created', id);
   return rowToSession(row);
 }
 
@@ -88,6 +90,7 @@ export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSessi
     .where(eq(schema.sessions.id, id))
     .returning();
 
+  logger.session('joined', id, lang);
   return rowToSession(row);
 }
 
@@ -156,6 +159,7 @@ export async function signSession(
     .where(eq(schema.sessions.id, id))
     .returning();
 
+  logger.session(bothSigned ? 'completed' : `signed-${role}`, id, role);
   return { session: rowToSession(row), bothSigned };
 }
 

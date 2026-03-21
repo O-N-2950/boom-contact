@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 import { db } from './index.js';
 
 export async function runMigrations() {
@@ -62,12 +63,12 @@ export async function runMigrations() {
         created_at  TIMESTAMP NOT NULL DEFAULT NOW()
       );
     `);
-    console.log('✅ DB migrations applied');
+    logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
       console.log('✅ DB migrations applied (tables already exist)');
     } else {
-      console.error('DB migration error:', err);
+      logger.error('DB migration error', { error: err?.message || String(err) });
       throw err;
     }
   }

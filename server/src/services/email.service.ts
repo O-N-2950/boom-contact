@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 /**
  * Email service — boom.contact
  *
@@ -190,7 +191,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
   const RESEND_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_KEY) {
-    console.warn('⚠️  RESEND_API_KEY not set — email not sent');
+    logger.warn('RESEND_API_KEY not set — email not sent');
     return { ok: false, error: 'Email service not configured (RESEND_API_KEY missing)' };
   }
 
@@ -214,16 +215,16 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
     });
 
     if (error) {
-      console.error('Resend error:', error);
+      logger.error('Resend send failed', { error: error.message });
       return { ok: false, error: error.message };
     }
 
-    console.log(`📧 PDF sent to ${params.driverEmail} (${data?.id})`);
+    logger.email('sent', params.driverEmail, t.subject);
     return { ok: true, messageId: data?.id };
 
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown email error';
-    console.error('Email service error:', msg);
+    logger.error('Email service error', { error: msg });
     return { ok: false, error: msg };
   }
 }

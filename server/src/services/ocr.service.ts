@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 import Anthropic from '@anthropic-ai/sdk';
 import type { OCRResult, VehicleData, DriverData, InsuranceData } from '../../../shared/types';
 

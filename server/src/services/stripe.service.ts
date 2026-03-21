@@ -1,3 +1,4 @@
+import { logger } from '../logger.js';
 import Stripe from 'stripe';
 import { db, schema } from '../db/index.js';
 import { eq } from 'drizzle-orm';
@@ -128,6 +129,7 @@ export async function createCheckoutSession(
 
   await upsertUser(userEmail);
 
+  logger.payment('checkout-created', userEmail, packageId, priceAmount);
   return { url: session.url!, sessionId: session.id };
 }
 
@@ -181,7 +183,7 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
       ref: session.id,
     });
 
-    console.log(`✅ Crédits accordés: ${creditsInt} à ${userEmail}`);
+    logger.payment('credits-granted', userEmail, packageId, creditsInt);
   }
 }
 
