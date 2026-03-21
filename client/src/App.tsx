@@ -1,6 +1,7 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LandingPage } from './pages/LandingPage';
 import { ConstatFlow } from './pages/ConstatFlow';
 import { JoinSession } from './pages/JoinSession';
@@ -9,6 +10,7 @@ import { PricingPage } from './pages/PricingPage';
 import { CGUModal } from './components/CGUModal';
 import { PoliceLogin } from './pages/PoliceLogin';
 import { PoliceDashboard } from './pages/PoliceDashboard';
+import { applyDir } from './i18n';
 
 type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'police_login' | 'police_dashboard';
 
@@ -24,11 +26,12 @@ function getInitialView(): AppView {
     const token = localStorage.getItem('boom_police_token');
     return token ? 'police_dashboard' : 'police_login';
   }
-  if (params.get('payment') === 'success') return 'landing'; // post-Stripe redirect
+  if (params.get('payment') === 'success') return 'landing';
   return 'landing';
 }
 
 export default function App() {
+  const { i18n } = useTranslation();
   const [view, setView] = useState<AppView>(getInitialView);
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
   const [showCGU, setShowCGU] = useState(false);
@@ -38,18 +41,22 @@ export default function App() {
   });
   const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | null>(null);
 
+  // Apply RTL direction whenever language changes
+  useEffect(() => {
+    applyDir(i18n.language);
+  }, [i18n.language]);
+
   // Check post-payment success
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('payment') === 'success') {
-      // Clear URL params
       window.history.replaceState({}, '', '/');
     }
   }, []);
 
   const hasAcceptedCGU = () => !!localStorage.getItem(CGU_KEY);
 
-  const handleCGUAccept = (email: string, consentMarketing: boolean) => {
+  const handleCGUAccept = (email: string, _consentMarketing: boolean) => {
     localStorage.setItem(EMAIL_KEY, email);
     localStorage.setItem(CGU_KEY, 'true');
     setUserEmail(email);
