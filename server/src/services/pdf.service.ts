@@ -76,7 +76,7 @@ function labelValue(
 ) {
   drawRect(page, x, y - 18, w, 22, C.white, C.border, 0.5);
   drawText(page, label, x + 4, y - 13, labelFont, 6, C.mid);
-  drawText(page, value || '—', x + 4, y - 22, valueFont, 9, C.black);
+  drawText(page, value || '-', x + 4, y - 22, valueFont, 9, C.black);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -141,7 +141,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
   drawText(page, 'LIEU DE L\'ACCIDENT', margin + 4, y - 8, normal, 6, C.mid);
   const locationStr = [acc.location?.address, acc.location?.city, acc.location?.country].filter(Boolean).join(', ');
-  drawText(page, locationStr || '—', margin + 6, y - 18, bold, 9, C.black);
+  drawText(page, locationStr || '-', margin + 6, y - 18, bold, 9, C.black);
   y -= 28;
 
   // ── VEHICLES HEADER ────────────────────────────────────────
@@ -149,13 +149,13 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // Column A header
   page.drawRectangle({ x: margin, y: y - 22, width: colW, height: 22, color: C.black });
   drawText(page, 'VÉHICULE A', margin + 6, y - 8, bold, 8, C.white);
-  drawText(page, `Conducteur : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '—',
+  drawText(page, `Conducteur : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '-',
     margin + 6, y - 17, normal, 7, C.light);
 
   // Column B header
   page.drawRectangle({ x: margin + colW + 8, y: y - 22, width: colW, height: 22, color: C.dark });
   drawText(page, 'VÉHICULE B', margin + colW + 14, y - 8, bold, 8, C.white);
-  drawText(page, `Conducteur : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '—',
+  drawText(page, `Conducteur : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '-',
     margin + colW + 14, y - 17, normal, 7, C.light);
   y -= 28;
 
@@ -265,8 +265,8 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   drawText(page, '5. ZONES ENDOMMAGEES', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
-  const zonesA = (A?.damagedZones ?? []).join(', ') || '—';
-  const zonesB = (B?.damagedZones ?? []).join(', ') || '—';
+  const zonesA = (A?.damagedZones ?? []).join(', ') || '-';
+  const zonesB = (B?.damagedZones ?? []).join(', ') || '-';
   drawRect(page, margin, y - 22, colW, 26, C.white, C.border);
   drawText(page, 'VÉHICULE A', margin + 4, y - 8, normal, 6, C.mid);
   drawText(page, zonesA, margin + 4, y - 18, bold, 8, C.black);
@@ -285,7 +285,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
     };
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
     drawText(page, '6. DECLARATION DE RESPONSABILITE', margin + 4, y - 8, bold, 7, C.boom);
-    drawText(page, faultMap[acc.faultDeclaration] ?? '—', margin + 4, y - 18, bold, 9, C.black);
+    drawText(page, faultMap[acc.faultDeclaration] ?? '-', margin + 4, y - 18, bold, 9, C.black);
     y -= 30;
   }
 
@@ -342,8 +342,8 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   }
 
   // Signed/date fields
-  const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '—';
-  const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '—';
+  const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '-';
+  const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '-';
   drawText(page, `Signé le : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
   drawText(page, `Signé le : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
 
@@ -351,8 +351,8 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── FOOTER ─────────────────────────────────────────────────
   drawLine(page, margin, 48, width - margin, 48, C.border);
-  drawText(page, 'boom.contact — Constat amiable numérique mondial · boom-contact-production.up.railway.app', margin, 38, normal, 7, C.mid);
-  drawText(page, `Session ID: ${session.id} · Généré le ${new Date().toLocaleString('fr-CH')} · PEP\'s Swiss SA — Groupe NEUKOMM`,
+  drawText(page, 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app', margin, 38, normal, 7, C.mid);
+  drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - Groupe NEUKOMM`,
     margin, 28, mono, 6.5, C.mid);
   drawText(page, 'Standard CEA (Comité Européen des Assurances) · Valable dans tous les pays membres',
     margin, 18, normal, 6.5, C.mid);
