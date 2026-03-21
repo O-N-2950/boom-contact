@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import App from './App';
 import { trpc } from './trpc';
+import './i18n'; // ← i18next init (must be before App)
 import './index.css';
 
 function Root() {
