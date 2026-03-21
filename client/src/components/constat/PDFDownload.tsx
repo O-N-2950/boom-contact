@@ -3,21 +3,22 @@ import { useState } from 'react';
 interface Props {
   sessionId: string;
   role: 'A' | 'B';
+  driverEmail?: string;   // Extrait du formulaire ou OCR
   insurerName?: string;   // Extrait de la carte verte OCR
   driverName?: string;
 }
 
-export function PDFDownload({ sessionId, role, insurerName, driverName }: Props) {
+export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName }: Props) {
   const [loading, setLoading] = useState(false);
   const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Email flow
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(driverEmail || '');
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(!!driverEmail);
 
   const generatePDF = async (): Promise<string | null> => {
     if (pdfBase64) return pdfBase64;

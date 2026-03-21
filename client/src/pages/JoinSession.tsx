@@ -4,6 +4,7 @@ import { ConstatForm } from '../components/constat/ConstatForm';
 import { CarDiagram } from '../components/constat/CarDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
+import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData } from '../../../shared/types';
 
 type FlowStep = 'landing' | 'ocr' | 'form' | 'diagram' | 'sign' | 'done';
@@ -213,21 +214,13 @@ export function JoinSession() {
         )}
 
         {step === 'done' && (
-          <div style={{ padding: 32, textAlign: 'center' }}>
-            <div style={{ fontSize: 72, marginBottom: 20 }}>📄</div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, color: '#22c55e', marginBottom: 10 }}>
-              Constat finalisé !
-            </h2>
-            <p style={{ fontSize: 14, opacity: 0.55, lineHeight: 1.7, marginBottom: 28 }}>
-              Le PDF a été généré et envoyé. Vous pouvez le transmettre directement à votre assureur.
-            </p>
-            <button style={{ padding: '16px 36px', borderRadius: 10, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 10, margin: '0 auto 12px' }}>
-              📩 Envoyer à mon assureur
-            </button>
-            <button style={{ padding: '14px 28px', borderRadius: 10, border: '1.5px solid rgba(240,237,232,0.15)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 13, display: 'block', margin: '0 auto' }}>
-              ⬇️ Télécharger le PDF
-            </button>
-          </div>
+          <PDFDownload
+            sessionId={sessionId}
+            role="B"
+            driverEmail={participantData.driver?.email}
+            insurerName={participantData.insurance?.company}
+            driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
+          />
         )}
       </div>
     </div>

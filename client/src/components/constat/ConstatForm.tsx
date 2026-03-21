@@ -138,6 +138,7 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
           </div>
           <Field sec section="driver" field="country"       label="Pays"            placeholder="CH, FR, DE..." />
           <Field sec section="driver" field="phone"         label="Téléphone"       placeholder="+41 79 123 45 67" type="tel" required />
+          <Field section="driver" field="email"  label="Email (pour recevoir le PDF)" placeholder="vous@exemple.com" type="email" />
           <Field sec section="driver" field="email"         label="Email"           placeholder="nom@email.com" type="email" />
           <Field sec section="driver" field="licenseNumber" label="N° permis de conduire" required />
         </>}
