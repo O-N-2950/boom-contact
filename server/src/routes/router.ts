@@ -94,6 +94,13 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
+          photos:           z.array(z.object({
+            id:       z.string(),
+            category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
+            base64:   z.string(),
+            caption:  z.string().optional(),
+            takenAt:  z.string(),
+          })).optional(),
         }),
       }))
       .mutation(async ({ input }) => {

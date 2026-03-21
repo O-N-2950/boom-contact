@@ -1,4 +1,5 @@
 import { LocationStep } from '../components/constat/LocationStep';
+import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -8,9 +9,9 @@ import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
-import type { OCRResult, ParticipantData } from '../../../shared/types';
+import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'location' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -40,6 +41,7 @@ export function ConstatFlow() {
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(saved?.vehicleType || null);
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(saved?.participantData || { role: 'A' });
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
+  const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [otherSigned, setOtherSigned] = useState(false);
 
   // Persist state to localStorage on every change
@@ -53,16 +55,18 @@ export function ConstatFlow() {
   useEffect(() => {
     if (step === 'done') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, qrUrl, participantData, damagedZones, ts: Date.now(),
+      step, sessionId, qrUrl, participantData, damagedZones, photos, ts: Date.now(),
     }));
-  }, [step, sessionId, qrUrl, participantData, damagedZones]);
+  }, [step, sessionId, qrUrl, participantData, damagedZones, photos]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
-    { id: 'ocr',     icon: '📄', label: 'Scan' },
-    { id: 'qr',      icon: '📱', label: 'QR' },
-    { id: 'form',    icon: '📋', label: 'Infos' },
-    { id: 'diagram', icon: '🚗', label: 'Choc' },
-    { id: 'sign',    icon: '✍️', label: 'Sign' },
+    { id: 'ocr',      icon: '📄', label: 'Scan' },
+    { id: 'location', icon: '📍', label: 'Lieu' },
+    { id: 'photos',   icon: '📸', label: 'Photos' },
+    { id: 'qr',       icon: '📱', label: 'QR' },
+    { id: 'form',     icon: '📋', label: 'Infos' },
+    { id: 'diagram',  icon: '🚗', label: 'Choc' },
+    { id: 'sign',     icon: '✍️', label: 'Sign' },
   ];
 
   // Create session when entering QR step
@@ -87,22 +91,29 @@ export function ConstatFlow() {
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard.insurance    ?? {},
     }));
-    setStep('qr');
+    setStep('location');
   };
+
+  const updateAccidentMutation = trpc.session.updateAccident.useMutation({
+    onError: (err) => console.error('updateAccident failed:', err.message),
+  });
 
   const handleLocationComplete = (data: Partial<AccidentData> & { vehicleType: VehicleType }) => {
     const { vehicleType: vt, ...accident } = data;
     setVehicleType(vt);
     setAccidentData(accident);
-    // Save vehicle type in participant data
     setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
-    // Update session with accident data
     if (sessionId) {
-      fetch('/trpc/session.updateAccident', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, accident }),
-      }).catch(console.error);
+      updateAccidentMutation.mutate({ sessionId, data: accident });
+    }
+    setStep('photos');
+  };
+
+  const handlePhotosContinue = () => {
+    const updatedAccident = { ...accidentData, photos };
+    setAccidentData(updatedAccident);
+    if (sessionId && photos.length > 0) {
+      updateAccidentMutation.mutate({ sessionId, data: { photos } });
     }
     setStep('qr');
   };
@@ -178,6 +189,18 @@ export function ConstatFlow() {
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {step === 'ocr' && (
           <OCRScanner role="A" onComplete={handleOCRComplete} />
+        )}
+
+        {step === 'location' && (
+          <LocationStep onComplete={handleLocationComplete} />
+        )}
+
+        {step === 'photos' && (
+          <PhotoCapture
+            photos={photos}
+            onChange={setPhotos}
+            onContinue={handlePhotosContinue}
+          />
         )}
 
         {step === 'qr' && sessionId && (

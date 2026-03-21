@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trpc } from '../trpc';
 
 interface Props {
   userEmail: string;
@@ -48,28 +49,26 @@ export function PricingPage({ userEmail, onBack }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleBuy = async (packageId: string) => {
+  const checkoutMutation = trpc.payment.createCheckout.useMutation({
+    onSuccess: (data) => {
+      if (data.url) window.location.href = data.url;
+      else { setError('URL Stripe manquante'); setLoading(null); }
+    },
+    onError: (err) => {
+      setError(err.message || 'Erreur de paiement');
+      setLoading(null);
+    },
+  });
+
+  const handleBuy = (packageId: string) => {
     setLoading(packageId);
     setError(null);
-    try {
-      const resp = await fetch('/trpc/payment.createCheckout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          packageId,
-          userEmail,
-          currency,
-          locale: navigator.language?.split('-')[0] || 'fr',
-        }),
-      });
-      const data = await resp.json();
-      const url = data?.result?.data?.url;
-      if (!url) throw new Error(data?.error?.message || 'Erreur Stripe');
-      window.location.href = url;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur de paiement');
-      setLoading(null);
-    }
+    checkoutMutation.mutate({
+      packageId,
+      userEmail,
+      currency,
+      locale: navigator.language?.split('-')[0] || 'fr',
+    });
   };
 
   const price = (pkg: typeof PACKAGES[0]) =>

@@ -204,7 +204,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
     const html = buildEmailHTML(params);
 
     const { data, error } = await resend.emails.send({
-      from: 'boom.contact <constat@boom.contact>',
+      from: 'boom.contact <contact@boom.contact>',
       to: params.driverEmail,
       subject: t.subject,
       html,

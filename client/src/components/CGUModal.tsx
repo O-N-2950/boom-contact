@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trpc } from '../trpc';
 
 interface Props {
   onAccept: (email: string, consentMarketing: boolean) => void;
@@ -10,33 +11,31 @@ export function CGUModal({ onAccept, onClose }: Props) {
   const [consentCGU, setConsentCGU] = useState(false);
   const [consentMarketing, setConsentMarketing] = useState(false);
   const [tab, setTab] = useState<'cgu' | 'privacy'>('cgu');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const canProceed = email.includes('@') && consentCGU;
 
-  const handleSubmit = async () => {
-    if (!canProceed) return;
-    setLoading(true);
-    setError(null);
-    try {
-      await fetch('/trpc/user.saveConsent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          consentCGU: true,
-          consentMarketing,
-          language: navigator.language?.split('-')[0] || 'fr',
-        }),
-      });
+  const saveConsentMutation = trpc.user.saveConsent.useMutation({
+    onSuccess: () => {
       onAccept(email, consentMarketing);
-    } catch (err) {
-      setError('Erreur réseau. Réessayez.');
-    } finally {
-      setLoading(false);
-    }
+    },
+    onError: (err) => {
+      setError(err.message || 'Erreur réseau. Réessayez.');
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!canProceed) return;
+    setError(null);
+    saveConsentMutation.mutate({
+      email,
+      consentCGU: true,
+      consentMarketing,
+      language: navigator.language?.split('-')[0] || 'fr',
+    });
   };
+
+  const loading = saveConsentMutation.isPending;
 
   return (
     <div style={{

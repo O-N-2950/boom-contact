@@ -50,9 +50,25 @@
 
 ---
 
-## 🔴 PRIORITÉ 1 — Session 4 à faire en premier
+## ✅ FAIT — Session 4 (Photos & Qualité)
 
-### Photos de scène — MANQUANT CRITIQUE
+- [x] Composant `PhotoCapture` — 5 catégories, compression 1024px, légendes, preview, suppression, max 5 photos
+- [x] `PhotoCapture` intégré dans `ConstatFlow` (step photos après location)
+- [x] `PhotoCapture` intégré dans `JoinSession` (step photos après location)
+- [x] `LocationStep` correctement câblé dans `ConstatFlow` (était manquant dans le JSX)
+- [x] `photos` persistées en localStorage + envoyées en DB via `updateAccident`
+- [x] `updateAccident` tRPC — schéma étendu avec le champ `photos[]`
+- [x] `PricingPage.tsx` — migré de `fetch()` brut vers mutation tRPC `payment.createCheckout`
+- [x] `CGUModal.tsx` — migré de `fetch()` brut vers mutation tRPC `user.saveConsent`
+- [x] Email sender corrigé : `contact@boom.contact` (était `constat@boom.contact`)
+- [x] Module Police documenté dans TODO + CONTEXT (roadmap B2B stratégique)
+
+---
+
+## 🔴 PRIORITÉ 1 — Session 5 à faire en premier
+
+### Photos de scène — ✅ FAIT Session 4
+### DKIM Resend — 1 action manuelle Olivier (inchangé)
 - [ ] Composant `PhotoCapture` — à créer
   - Catégories : Lieu du sinistre · Dommages véhicule A · Dommages véhicule B · Blessures · Autre
   - Max 5 photos au total, compression 1024px avant stockage
@@ -131,6 +147,40 @@
 ---
 
 ## 🟢 PRIORITÉ 5 — Features avancées
+
+### Module Police / Institutions ★ STRATÉGIQUE B2B
+
+boom.contact comme **outil métier officiel** pour les corps de police.
+Les agents utilisent l'app sur scène d'accident pour établir le PV numérique officiel.
+
+#### Différences vs flow conducteur
+- Authentification institutionnelle (login sécurisé par poste/canton/département)
+- Multi-véhicules natif (N plaques, N conducteurs, N assurances)
+- Champs supplémentaires : infractions constatées, état des conducteurs (alcoolémie, etc.), croquis précis avec mesures
+- Signatures de tous les conducteurs impliqués sur l'écran de l'agent
+- Export PDF "PV officiel" distinct du constat CEA
+- Dashboard poste : liste des rapports, filtres, export, archivage
+
+#### Architecture technique
+- Table `police_stations` (id, pays, région, zone GPS, email, langue)
+- Table `police_users` (id, station_id, login, JWT rôle "police")
+- Router `/police` protégé
+- Flow séparé : `PoliceFlow.tsx` (scan N véhicules → infos → croquis → signatures → PV)
+- PDF template "PV officiel" distinct du template CEA
+
+#### Marché cible
+- Cantons suisses (26 cantons, ~350 postes)
+- Départements français (101 départements)
+- Länder allemands, provinces belges, etc.
+- Modèle : CHF/€ 200–500/mois par poste = MRR massif récurrent
+
+- [ ] Maquette flow Police
+- [ ] Table `police_stations` + `police_users` (migrations)
+- [ ] Authentification institutionnelle JWT "police"
+- [ ] `PoliceFlow.tsx` — flow agent sur scène
+- [ ] Template PDF "PV officiel"
+- [ ] Dashboard poste `/police/dashboard`
+- [ ] Démo canton pilote (Jura / Vaud ?)
 
 ### PWA Offline-first ★ CRITIQUE
 - [ ] Service Worker : cache assets + formulaire

@@ -1,4 +1,5 @@
 import { LocationStep } from '../components/constat/LocationStep';
+import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -7,9 +8,9 @@ import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
-import type { OCRResult, ParticipantData } from '../../../shared/types';
+import type { OCRResult, ParticipantData, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'landing' | 'ocr' | 'location' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_b';
 
@@ -43,6 +44,7 @@ export function JoinSession() {
     saved?.participantData || { role: 'B', language: navigator.language?.split('-')[0] || 'fr' }
   );
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
+  const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [otherSigned, setOtherSigned] = useState(false);
 
   const setStep = (s: FlowStep) => {
@@ -54,15 +56,17 @@ export function JoinSession() {
   useEffect(() => {
     if (step === 'done' || step === 'landing') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, joined, participantData, damagedZones, ts: Date.now(),
+      step, sessionId, joined, participantData, damagedZones, photos, ts: Date.now(),
     }));
-  }, [step, joined, participantData, damagedZones]);
+  }, [step, joined, participantData, damagedZones, photos]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
-    { id: 'ocr',     icon: '📄', label: 'Scan' },
-    { id: 'form',    icon: '📋', label: 'Infos' },
-    { id: 'diagram', icon: '🚗', label: 'Choc' },
-    { id: 'sign',    icon: '✍️', label: 'Sign' },
+    { id: 'ocr',      icon: '📄', label: 'Scan' },
+    { id: 'location', icon: '📍', label: 'Lieu' },
+    { id: 'photos',   icon: '📸', label: 'Photos' },
+    { id: 'form',     icon: '📋', label: 'Infos' },
+    { id: 'diagram',  icon: '🚗', label: 'Choc' },
+    { id: 'sign',     icon: '✍️', label: 'Sign' },
   ];
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
 
@@ -95,12 +99,16 @@ export function JoinSession() {
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard.insurance    ?? {},
     }));
-    setStep('form');
+    setStep('location');
   };
 
   const handleLocationComplete = (data: any) => {
-    const { vehicleType: vt, ...accident } = data;
+    const { vehicleType: vt } = data;
     setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
+    setStep('photos');
+  };
+
+  const handlePhotosContinue = () => {
     setStep('form');
   };
 
@@ -234,6 +242,15 @@ export function JoinSession() {
         {step === 'location' && (
           <LocationStep onComplete={handleLocationComplete} />
         )}
+
+        {step === 'photos' && (
+          <PhotoCapture
+            photos={photos}
+            onChange={setPhotos}
+            onContinue={handlePhotosContinue}
+          />
+        )}
+
         {step === 'ocr' && (
           <OCRScanner role="B" onComplete={handleOCRComplete} />
         )}

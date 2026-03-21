@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 21 Mars 2026 — Session 3
+> Dernière mise à jour : 21 Mars 2026 — Session 4
 
 ---
 
@@ -166,6 +166,8 @@ Valeur : `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/9W6A0Ku3MNuKTPAgNqno/gfoWs5p
 - ✅ **"Document numérique certifié · valable dans 150+ pays"**
 - ✅ Les 17 circonstances sont reformulées dans nos propres termes
 - ✅ PEP's Swiss SA / Groupe NEUKOMM comme émetteur
+- ✅ **Double marché** : B2C conducteurs + B2B institutions (Police, Gendarmerie, Kantonspolizei)
+- ✅ Module Police = outil métier officiel sur scène d'accident (PV numérique, multi-véhicules, signatures)
 
 ---
 
