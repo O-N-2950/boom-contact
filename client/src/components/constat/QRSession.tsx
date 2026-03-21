@@ -36,7 +36,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
   const startPolling = () => {
     pollRef.current = setInterval(async () => {
       try {
-        const resp = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ json: { sessionId } }))}`);
+        const resp = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`);
         const data = await resp.json();
         const status = data?.result?.data?.json?.status;
         if (status === 'active' || status === 'signing' || status === 'completed') {
