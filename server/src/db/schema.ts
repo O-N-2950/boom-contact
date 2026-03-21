@@ -9,6 +9,10 @@ export const sessions = pgTable('sessions', {
   accident:     jsonb('accident').notNull().default({}),
   participantA: jsonb('participant_a').notNull().default({}),
   participantB: jsonb('participant_b'),
+  participantC: jsonb('participant_c'),    // multi-véhicules
+  participantD: jsonb('participant_d'),    // multi-véhicules
+  participantE: jsonb('participant_e'),    // multi-véhicules
+  vehicleCount: integer('vehicle_count').notNull().default(2), // défaut 2 véhicules
   pdfUrl:       text('pdf_url'),
   // Lien vers l'utilisateur qui a initié le constat (si compte créé)
   ownerEmail:   text('owner_email'),

@@ -141,8 +141,12 @@ export interface ScenePhoto {
 }
 
 // ── Participant ───────────────────────────────────────────────
+// Rôle conducteur — A = initiateur, B-E = rejoignants
+// Multi-véhicules : chaque conducteur supplémentaire reçoit B, C, D, E...
+export type ParticipantRole = 'A' | 'B' | 'C' | 'D' | 'E';
+
 export interface ParticipantData {
-  role: 'A' | 'B';
+  role: ParticipantRole;
   vehicle: Partial<VehicleData>;
   driver: Partial<DriverData>;
   insurance: Partial<InsuranceData>;
@@ -170,7 +174,7 @@ export interface AccidentData {
   photos?: ScenePhoto[];           // Photos de la scène (max 10)
   sketchImage?: string;            // Croquis base64 PNG
   description?: string;
-  faultDeclaration?: 'A' | 'B' | 'shared' | 'unknown';
+  faultDeclaration?: ParticipantRole | 'shared' | 'unknown';
   witnesses?: string;
   policeReport?: boolean;
   policeRef?: string;
@@ -189,5 +193,10 @@ export interface ConstatSession {
   accident: Partial<AccidentData>;
   participantA: Partial<ParticipantData>;
   participantB?: Partial<ParticipantData>;
+  // Multi-véhicules : participants C, D, E stockés ici
+  participantC?: Partial<ParticipantData>;
+  participantD?: Partial<ParticipantData>;
+  participantE?: Partial<ParticipantData>;
+  vehicleCount?: number;   // Nombre de véhicules déclarés par A (défaut: 2)
   pdfUrl?: string;
 }

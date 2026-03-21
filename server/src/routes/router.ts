@@ -57,7 +57,7 @@ export const appRouter = router({
     updateParticipant: publicProcedure
       .input(z.object({
         sessionId: z.string(),
-        role: z.enum(['A', 'B']),
+        role: z.enum(['A', 'B', 'C', 'D', 'E']),
         data: z.object({
           vehicle:      z.record(z.string(), z.any()).optional(),
           driver:       z.record(z.string(), z.any()).optional(),

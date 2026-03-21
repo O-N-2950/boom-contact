@@ -24,6 +24,15 @@ export async function runMigrations() {
       EXCEPTION WHEN duplicate_column THEN NULL;
       END $$;
 
+      -- Multi-véhicules — Session 5
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_c JSONB;
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_d JSONB;
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_e JSONB;
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS vehicle_count INTEGER NOT NULL DEFAULT 2;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+
       CREATE TABLE IF NOT EXISTS users (
         id                    VARCHAR(20) PRIMARY KEY,
         email                 TEXT NOT NULL UNIQUE,

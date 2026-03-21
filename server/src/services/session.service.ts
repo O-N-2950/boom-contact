@@ -19,6 +19,10 @@ function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession 
     accident:     (row.accident as any) ?? {},
     participantA: (row.participantA as any) ?? { role: 'A', vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: 'fr' },
     participantB: (row.participantB as any) ?? undefined,
+    participantC: (row as any).participantC ?? undefined,
+    participantD: (row as any).participantD ?? undefined,
+    participantE: (row as any).participantE ?? undefined,
+    vehicleCount: (row as any).vehicleCount ?? 2,
     pdfUrl:       row.pdfUrl ?? undefined,
   };
 }
