@@ -64,3 +64,34 @@ export const creditTxns = pgTable('credit_txns', {
   ref:         text('ref'),                     // sessionId ou paymentId
   createdAt:   timestamp('created_at').notNull().defaultNow(),
 });
+
+// ── Police stations — postes de police B2B ───────────────────
+export const policeStations = pgTable('police_stations', {
+  id:          varchar('id', { length: 20 }).primaryKey(),
+  name:        text('name').notNull(),                         // "Gendarmerie Delémont"
+  canton:      varchar('canton', { length: 10 }),              // "JU", "VD", "GE"...
+  country:     varchar('country', { length: 5 }).notNull().default('CH'),
+  city:        text('city'),
+  email:       text('email'),
+  phone:       text('phone'),
+  active:      boolean('active').notNull().default(true),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+});
+
+// ── Police users — agents authentifiés ───────────────────────
+export const policeUsers = pgTable('police_users', {
+  id:          varchar('id', { length: 20 }).primaryKey(),
+  stationId:   varchar('station_id', { length: 20 }).notNull().references(() => policeStations.id),
+  email:       text('email').notNull().unique(),
+  firstName:   text('first_name').notNull(),
+  lastName:    text('last_name').notNull(),
+  badgeNumber: text('badge_number'),
+  passwordHash: text('password_hash').notNull(),
+  role:        varchar('role', { length: 20 }).notNull().default('agent'), // 'agent' | 'supervisor'
+  active:      boolean('active').notNull().default(true),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+  lastLoginAt: timestamp('last_login_at'),
+}, (t) => ({
+  emailIdx: index('police_users_email_idx').on(t.email),
+  stationIdx: index('police_users_station_idx').on(t.stationId),
+}));

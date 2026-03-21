@@ -37,6 +37,7 @@ export function OCRScanner({ role, onComplete }: Props) {
   const [error, setError]       = useState<string | null>(null);
   const [compressing, setCompressing] = useState(false);
   const [skipGreenCard, setSkipGreenCard] = useState(false);
+  const [manualInsurance, setManualInsurance] = useState({ company: '', policyNumber: '' });
   const cameraRef  = useRef<HTMLInputElement>(null);
   const galleryRef = useRef<HTMLInputElement>(null);
   const currentStep = useRef<Step>('idle');
@@ -219,8 +220,28 @@ export function OCRScanner({ role, onComplete }: Props) {
         )}
 
         {skipGreenCard && (
-          <div style={{ marginBottom: 16, padding:'10px 14px', borderRadius: 8, background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', fontSize: 12, opacity: 0.7 }}>
-            💡 Pensez à renseigner votre compagnie d'assurance et numéro de police dans le formulaire suivant.
+          <div style={{ marginBottom: 16, padding: 14, borderRadius: 10, background:'rgba(255,165,0,0.07)', border:'1px solid rgba(255,165,0,0.25)' }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color:'#f59e0b', marginBottom: 10 }}>🛡️ Saisissez vos données d'assurance</div>
+            <div style={{ marginBottom: 8 }}>
+              <label style={{ fontSize: 11, opacity: 0.5, letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 4 }}>Compagnie d'assurance *</label>
+              <input
+                type="text"
+                placeholder="Zurich, AXA, Helvetia, Mobilière..."
+                value={manualInsurance.company}
+                onChange={e => setManualInsurance(p => ({ ...p, company: e.target.value }))}
+                style={{ width:'100%', padding:'10px 12px', borderRadius: 8, border:'1px solid rgba(255,255,255,0.15)', background:'rgba(255,255,255,0.05)', color:'var(--text)', fontSize: 14, boxSizing:'border-box' }}
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, opacity: 0.5, letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 4 }}>N° de contrat / police *</label>
+              <input
+                type="text"
+                placeholder="CH-2026-12345"
+                value={manualInsurance.policyNumber}
+                onChange={e => setManualInsurance(p => ({ ...p, policyNumber: e.target.value }))}
+                style={{ width:'100%', padding:'10px 12px', borderRadius: 8, border:'1px solid rgba(255,255,255,0.15)', background:'rgba(255,255,255,0.05)', color:'var(--text)', fontSize: 14, boxSizing:'border-box' }}
+              />
+            </div>
           </div>
         )}
 
@@ -246,7 +267,13 @@ export function OCRScanner({ role, onComplete }: Props) {
           <button onClick={() => { setStep('idle'); setRegImage(null); setGcImage(null); setSkipGreenCard(false); }} style={{ flex: 1, padding:'14px', borderRadius: 10, border:'1.5px solid rgba(240,237,232,0.15)', background:'transparent', color:'var(--text)', cursor:'pointer', fontSize: 14 }}>
             🔄 Rescanner
           </button>
-          <button onClick={() => { setStep('done'); onComplete(result); }} style={{ flex: 2, padding:'14px', borderRadius: 10, border:'none', background:'var(--boom)', color:'#fff', cursor:'pointer', fontSize: 14, fontWeight: 700 }}>
+          <button onClick={() => {
+            const finalResult = skipGreenCard && (manualInsurance.company || manualInsurance.policyNumber)
+              ? { ...result, greenCard: { ...result.greenCard, insurance: { company: manualInsurance.company, policyNumber: manualInsurance.policyNumber } } as OCRResult }
+              : result;
+            setStep('done');
+            onComplete(finalResult);
+          }} style={{ flex: 2, padding:'14px', borderRadius: 10, border:'none', background:'var(--boom)', color:'#fff', cursor:'pointer', fontSize: 14, fontWeight: 700 }}>
             Confirmer →
           </button>
         </div>

@@ -9,6 +9,7 @@ import {
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
+import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard } from '../services/police.service.js';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -274,6 +275,48 @@ export const appRouter = router({
         );
         return { ok: true };
       }),
+  }),
+
+
+  // ── POLICE B2B — authentification institutionnelle ───────────
+  police: router({
+
+    // Login agent — retourne JWT 8h
+    login: publicProcedure
+      .input(z.object({
+        email:    z.string().email(),
+        password: z.string().min(6),
+      }))
+      .mutation(async ({ input }) => {
+        const result = await loginPoliceUser(input.email, input.password);
+        return result;
+      }),
+
+    // Dashboard — sessions actives (token requis)
+    dashboard: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        const data = await getPoliceDashboard(payload.stationId);
+        return { ...data, agent: { stationId: payload.stationId, canton: payload.canton } };
+      }),
+
+    // Rejoindre une session via QR (lecture seule + annotation)
+    joinSession: publicProcedure
+      .input(z.object({
+        token:     z.string(),
+        sessionId: z.string(),
+      }))
+      .query(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        const session = await getSession(input.sessionId);
+        if (!session) throw new Error('Session introuvable ou expirée');
+        return {
+          session,
+          policeAgent: { stationId: payload.stationId, canton: payload.canton }
+        };
+      }),
+
   }),
 
 });

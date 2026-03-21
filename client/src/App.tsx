@@ -7,8 +7,10 @@ import { JoinSession } from './pages/JoinSession';
 import { AgentDashboard } from './pages/AgentDashboard';
 import { PricingPage } from './pages/PricingPage';
 import { CGUModal } from './components/CGUModal';
+import { PoliceLogin } from './pages/PoliceLogin';
+import { PoliceDashboard } from './pages/PoliceDashboard';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'police_login' | 'police_dashboard';
 
 const EMAIL_KEY = 'boom_user_email';
 const CGU_KEY   = 'boom_cgu_accepted';
@@ -18,6 +20,10 @@ function getInitialView(): AppView {
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
+  if (params.get('police') === 'true' || window.location.pathname.startsWith('/police')) {
+    const token = localStorage.getItem('boom_police_token');
+    return token ? 'police_dashboard' : 'police_login';
+  }
   if (params.get('payment') === 'success') return 'landing'; // post-Stripe redirect
   return 'landing';
 }
@@ -26,6 +32,10 @@ export default function App() {
   const [view, setView] = useState<AppView>(getInitialView);
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
   const [showCGU, setShowCGU] = useState(false);
+  const [policeToken, setPoliceToken] = useState<string>(() => localStorage.getItem('boom_police_token') || '');
+  const [policeUser, setPoliceUser]   = useState<unknown>(() => {
+    try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; }
+  });
   const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | null>(null);
 
   // Check post-payment success
@@ -79,6 +89,20 @@ export default function App() {
         <PricingPage
           userEmail={userEmail}
           onBack={() => setView('landing')}
+        />
+      )}
+
+      {view === 'police_login' && (
+        <PoliceLogin onLogin={(token, user) => { setPoliceToken(token); setPoliceUser(user); setView('police_dashboard'); }} />
+      )}
+      {view === 'police_dashboard' && policeUser && (
+        <PoliceDashboard
+          token={policeToken}
+          user={policeUser as any}
+          onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); setView('landing'); }}
+          onViewSession={(sessionId) => {
+            window.open(`/?session=${sessionId}&role=police&token=${policeToken}`, '_blank');
+          }}
         />
       )}
 

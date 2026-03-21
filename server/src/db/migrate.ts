@@ -72,6 +72,36 @@ export async function runMigrations() {
         created_at  TIMESTAMP NOT NULL DEFAULT NOW()
       );
     `);
+
+      -- Module Police B2B — Session 6
+      CREATE TABLE IF NOT EXISTS police_stations (
+        id          VARCHAR(20) PRIMARY KEY,
+        name        TEXT NOT NULL,
+        canton      VARCHAR(10),
+        country     VARCHAR(5) NOT NULL DEFAULT 'CH',
+        city        TEXT,
+        email       TEXT,
+        phone       TEXT,
+        active      BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS police_users (
+        id            VARCHAR(30) PRIMARY KEY,
+        station_id    VARCHAR(20) NOT NULL REFERENCES police_stations(id),
+        email         TEXT NOT NULL UNIQUE,
+        first_name    TEXT NOT NULL,
+        last_name     TEXT NOT NULL,
+        badge_number  TEXT,
+        password_hash TEXT NOT NULL,
+        role          VARCHAR(20) NOT NULL DEFAULT 'agent',
+        active        BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at    TIMESTAMP NOT NULL DEFAULT NOW(),
+        last_login_at TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_police_users_email   ON police_users(email);
+      CREATE INDEX IF NOT EXISTS idx_police_users_station ON police_users(station_id);
+
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
