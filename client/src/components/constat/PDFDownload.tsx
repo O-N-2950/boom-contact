@@ -17,10 +17,10 @@ export function PDFDownload({ sessionId, role }: Props) {
       const resp = await fetch('/trpc/pdf.generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId } }),
+        body: JSON.stringify({ sessionId }),
       });
       const data = await resp.json();
-      const { pdfBase64, filename } = data?.result?.data?.json ?? {};
+      const { pdfBase64, filename } = data?.result?.data ?? {};
       if (!pdfBase64) throw new Error('PDF non disponible');
 
       // Decode and download

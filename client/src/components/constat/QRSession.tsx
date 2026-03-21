@@ -38,7 +38,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
       try {
         const resp = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`);
         const data = await resp.json();
-        const status = data?.result?.data?.json?.status;
+        const status = data?.result?.data?.status;
         if (status === 'active' || status === 'signing' || status === 'completed') {
           setPartnerJoined(true);
           if (pollRef.current) clearInterval(pollRef.current);
@@ -201,7 +201,7 @@ export function JoinSessionView({ sessionId, language = 'fr', onJoined }: JoinPr
       const resp = await fetch('/trpc/session.join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, language } }),
+        body: JSON.stringify({ sessionId, language }),
       });
       const data = await resp.json();
       if (data.error) throw new Error(data.error.message);

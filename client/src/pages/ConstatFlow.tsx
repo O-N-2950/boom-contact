@@ -35,15 +35,15 @@ export function ConstatFlow() {
       const resp = await fetch('/trpc/session.create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: {} }),
+        body: JSON.stringify({}),
       });
       const data = await resp.json();
-      const session = data?.result?.data?.json;
+      const session = data?.result?.data;
       if (session) {
         setSessionId(session.sessionId);
         setQrUrl(session.qrUrl);
       }
-    } catch { /* handle error */ }
+    } catch (err) { console.error(err); }
   };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
@@ -63,7 +63,7 @@ export function ConstatFlow() {
       await fetch('/trpc/session.updateParticipant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'A', data } }),
+        body: JSON.stringify({ sessionId, role: 'A', data }),
       });
     }
     setStep('diagram');
@@ -74,7 +74,7 @@ export function ConstatFlow() {
       await fetch('/trpc/session.updateParticipant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'A', data: { damagedZones } } }),
+        body: JSON.stringify({ sessionId, role: 'A', data: { damagedZones } }),
       });
     }
     setStep('sign');
@@ -85,10 +85,10 @@ export function ConstatFlow() {
       const resp = await fetch('/trpc/session.sign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'A', signatureBase64 } }),
+        body: JSON.stringify({ sessionId, role: 'A', signatureBase64 }),
       });
       const data = await resp.json();
-      if (data?.result?.data?.json?.bothSigned) {
+      if (data?.result?.data?.bothSigned) {
         setOtherSigned(true);
         setTimeout(() => setStep('done'), 1500);
       }

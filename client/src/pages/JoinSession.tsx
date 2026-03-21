@@ -34,7 +34,7 @@ export function JoinSession() {
       const resp = await fetch('/trpc/session.join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, language: participantData.language } }),
+        body: JSON.stringify({ sessionId, language: participantData.language }),
       });
       const data = await resp.json();
       if (data.error) throw new Error(data.error.message || 'Erreur de connexion');
@@ -63,7 +63,7 @@ export function JoinSession() {
       await fetch('/trpc/session.updateParticipant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'B', data } }),
+        body: JSON.stringify({ sessionId, role: 'B', data }),
       });
     }
     setStep('diagram');
@@ -74,7 +74,7 @@ export function JoinSession() {
       await fetch('/trpc/session.updateParticipant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'B', data: { damagedZones } } }),
+        body: JSON.stringify({ sessionId, role: 'B', data: { damagedZones } }),
       });
     }
     setStep('sign');
@@ -85,10 +85,10 @@ export function JoinSession() {
       const resp = await fetch('/trpc/session.sign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { sessionId, role: 'B', signatureBase64 } }),
+        body: JSON.stringify({ sessionId, role: 'B', signatureBase64 }),
       });
       const data = await resp.json();
-      if (data?.result?.data?.json?.bothSigned) {
+      if (data?.result?.data?.bothSigned) {
         setOtherSigned(true);
         setTimeout(() => setStep('done'), 1500);
       } else {

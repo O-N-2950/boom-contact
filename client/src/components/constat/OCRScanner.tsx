@@ -55,10 +55,10 @@ export function OCRScanner({ role, onComplete }: Props) {
       const resp = await fetch('/trpc/ocr.scanPair', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: { registrationBase64: reg, greenCardBase64: gc } }),
+        body: JSON.stringify({ registrationBase64: reg, greenCardBase64: gc }),
       });
       const data = await resp.json();
-      const scanResult = data.result?.data?.json;
+      const scanResult = data.result?.data;
       if (!scanResult) throw new Error('Réponse invalide du serveur');
       setResult(scanResult);
       setStep('review');
