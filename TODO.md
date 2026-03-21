@@ -151,22 +151,51 @@
 ### Module Police / Institutions ★ STRATÉGIQUE B2B
 
 boom.contact comme **outil métier officiel** pour les corps de police.
-Les agents utilisent l'app sur scène d'accident pour établir le PV numérique officiel.
+Les agents rejoignent une session existante via QR ou créent leur propre rapport sur scène.
 
-#### Différences vs flow conducteur
-- Authentification institutionnelle (login sécurisé par poste/canton/département)
-- Multi-véhicules natif (N plaques, N conducteurs, N assurances)
-- Champs supplémentaires : infractions constatées, état des conducteurs (alcoolémie, etc.), croquis précis avec mesures
-- Signatures de tous les conducteurs impliqués sur l'écran de l'agent
-- Export PDF "PV officiel" distinct du constat CEA
-- Dashboard poste : liste des rapports, filtres, export, archivage
+#### Principe fondamental — NO auto-notification
+⚠️ La police N'EST JAMAIS notifiée automatiquement — la majorité des accidents se règlent
+sans police et les conducteurs ne veulent pas de sanctions inutiles.
+La police est impliquée UNIQUEMENT si l'utilisateur le demande explicitement.
+
+#### Déclenchements possibles (tous volontaires)
+- Bouton "Appeler la police" dans LocationStep ou écran Done → génère lien/QR partageable
+- Case "Accident grave / blessés graves" cochée → option apparaît pour alerter secours
+- Police arrive d'elle-même → scanne le QR du conducteur → rejoint la session existante
+- Police pré-envoie un lien au conducteur avant d'arriver → conducteur commence à remplir
+
+#### QR code persistant — durée de vie étendue
+- Session active pendant 24h minimum (actuellement 2h — trop court)
+- QR code toujours affichable depuis l'écran "Done" même après signature
+- Si police arrive 1-2h après → scanne, accède à tout, enrichit le dossier
+- Statut session : `waiting` → `active` → `signed` → `completed` (pas `expired` pendant 24h)
+
+#### Flow Police rejoint une session existante
+1. Policier scanne le QR sur téléphone du conducteur A
+2. App détecte login institutionnel → mode Police activé
+3. Policier voit tout ce qui a été saisi (données OCR, photos, circonstances, signatures)
+4. Il enrichit avec : infractions constatées, mesures, témoins assermentés, état conducteurs
+5. Il signe en tant qu'autorité → PDF enrichi généré (constat + PV officiel)
+
+#### Flow Police pré-envoie lien (gain de temps)
+1. Policier/centrale envoie SMS au conducteur : "boom.contact/join?police=xxx"
+2. Conducteur commence à remplir pendant que la patrouille arrive
+3. Policier arrive, scanne, tout est déjà prêt — il finalise et signe
 
 #### Architecture technique
 - Table `police_stations` (id, pays, région, zone GPS, email, langue)
 - Table `police_users` (id, station_id, login, JWT rôle "police")
-- Router `/police` protégé
-- Flow séparé : `PoliceFlow.tsx` (scan N véhicules → infos → croquis → signatures → PV)
+- Session étendue 24h + statut `signed` distinct de `expired`
+- QR accessible depuis écran Done (nouveau composant `SessionQR`)
+- Router `/police` protégé + flow `PoliceFlow.tsx`
 - PDF template "PV officiel" distinct du template CEA
+
+#### Idées avancées (sessions suivantes)
+- 🔴 Intégration assureurs temps réel (AXA, Baloise, Helvetia APIs) — envoi auto à signature
+- 🟠 Score cohérence IA — Claude analyse contradictions entre déclarations A et B
+- 🟡 Mode Témoin officiel — 3ème QR pour agent/témoin assermenté
+- 🟢 Escalade "accident grave" — si blessés graves cochés → option alerte secours (112/144)
+- 🔵 Géofencing — détection juridiction pour routing interne (sans notification auto)
 
 #### Marché cible
 - Cantons suisses (26 cantons, ~350 postes)
@@ -174,10 +203,13 @@ Les agents utilisent l'app sur scène d'accident pour établir le PV numérique 
 - Länder allemands, provinces belges, etc.
 - Modèle : CHF/€ 200–500/mois par poste = MRR massif récurrent
 
+- [ ] Allonger durée session 2h → 24h
+- [ ] QR code accessible depuis écran Done (`SessionQR` composant)
+- [ ] Bouton volontaire "Appeler la police" dans LocationStep
 - [ ] Maquette flow Police
 - [ ] Table `police_stations` + `police_users` (migrations)
 - [ ] Authentification institutionnelle JWT "police"
-- [ ] `PoliceFlow.tsx` — flow agent sur scène
+- [ ] `PoliceFlow.tsx` — flow agent rejoignant session existante
 - [ ] Template PDF "PV officiel"
 - [ ] Dashboard poste `/police/dashboard`
 - [ ] Démo canton pilote (Jura / Vaud ?)
