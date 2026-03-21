@@ -2,6 +2,7 @@ import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { QRSession } from '../components/constat/QRSession';
@@ -21,7 +22,6 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const data = JSON.parse(raw);
-    // Expire sessions older than 2h
     if (data.ts && Date.now() - data.ts > 2 * 60 * 60 * 1000) {
       localStorage.removeItem(STORAGE_KEY);
       return null;
@@ -33,6 +33,7 @@ function loadState() {
 }
 
 export function ConstatFlow() {
+  const { t } = useTranslation();
   const saved = loadState();
 
   const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'ocr');
@@ -46,11 +47,10 @@ export function ConstatFlow() {
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
   const [otherSigned, setOtherSigned] = useState(false);
 
-  // Persist state to localStorage on every change
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
     if (s === 'done') {
-      localStorage.removeItem(STORAGE_KEY); // clean up when done
+      localStorage.removeItem(STORAGE_KEY);
     }
   };
 
@@ -61,18 +61,18 @@ export function ConstatFlow() {
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos]);
 
+  // Steps with translated labels
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
-    { id: 'ocr',      icon: '📄', label: 'Scan' },
-    { id: 'location', icon: '📍', label: 'Lieu' },
-    { id: 'photos',   icon: '📸', label: 'Photos' },
-    { id: 'qr',       icon: '📱', label: 'QR' },
-    { id: 'form',     icon: '📋', label: 'Infos' },
-    { id: 'sketch',   icon: '✏️', label: 'Croquis' },
-    { id: 'diagram',  icon: '🚗', label: 'Choc' },
-    { id: 'sign',     icon: '✍️', label: 'Sign' },
+    { id: 'ocr',      icon: '📄', label: t('steps.scan') },
+    { id: 'location', icon: '📍', label: t('steps.location') },
+    { id: 'photos',   icon: '📸', label: t('steps.photos') },
+    { id: 'qr',       icon: '📱', label: t('steps.qr') },
+    { id: 'form',     icon: '📋', label: t('steps.form') },
+    { id: 'sketch',   icon: '✏️', label: t('steps.sketch') },
+    { id: 'diagram',  icon: '🚗', label: t('steps.damage') },
+    { id: 'sign',     icon: '✍️', label: t('steps.sign') },
   ];
 
-  // Create session when entering QR step
   useEffect(() => {
     if (step === 'qr' && !sessionId) createSession();
   }, [step]);
@@ -81,7 +81,6 @@ export function ConstatFlow() {
     onSuccess: (data) => {
       setSessionId(data.sessionId);
       setQrUrl(data.qrUrl);
-      // Push accidentData (location + photos) immediately after session creation
       if (Object.keys(accidentData).length > 0) {
         updateAccidentMutation.mutate({
           sessionId: data.sessionId,
@@ -188,15 +187,14 @@ export function ConstatFlow() {
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
           <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'monospace', letterSpacing: 1 }}>
-            CONDUCTEUR A — NOUVEAU CONSTAT
+            {t('flow.header.role_a')}
           </div>
         </div>
-        {/* Reset button in case session is stuck */}
         {step !== 'ocr' && step !== 'done' && (
           <button
             onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
             style={{ marginLeft: 'auto', fontSize: 10, opacity: 0.3, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-            title="Recommencer"
+            title={t('flow.header.reset_title')}
           >
             ↺
           </button>
@@ -265,7 +263,7 @@ export function ConstatFlow() {
                 background: 'var(--boom)', color: '#fff', cursor: 'pointer',
                 fontSize: 15, fontWeight: 700,
               }}>
-                Continuer → Signature
+                {t('common.continue')}
               </button>
             </div>
           </div>
