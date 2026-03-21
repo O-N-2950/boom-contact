@@ -1,0 +1,283 @@
+{
+  "common": {
+    "continue": "Continue →",
+    "confirm": "Confirm →",
+    "cancel": "Cancel",
+    "rescan": "🔄 Rescan",
+    "loading": "Loading…",
+    "saving": "⏳ Saving…",
+    "error": "Error",
+    "retry": "Retry",
+    "back": "←",
+    "optional": "Optional",
+    "required": "Required",
+    "yes": "Yes",
+    "no": "No",
+    "unknown": "Unknown"
+  },
+  "landing": {
+    "badge": "World's first accident report app",
+    "hero": {
+      "line1": "AFTER",
+      "line2": "THE BOOM",
+      "line3": "THE",
+      "line4": "CONTACT"
+    },
+    "subtitle": "Digital accident report in 5 minutes. Universal OCR, shared QR code, instant worldwide PDF.",
+    "cta": {
+      "start": "Start a report",
+      "pricing": "View pricing →",
+      "from": "FROM CHF/€ 4.90 · VALID WORLDWIDE",
+      "free": "FREE TO START · NO REGISTRATION · GDPR"
+    },
+    "mockup": {
+      "send": "Send to insurer",
+      "done": "Report completed!",
+      "waiting": "Session #8F2K · Waiting…",
+      "capture": "📸 Take photo"
+    },
+    "badges": {
+      "languages": "50 languages",
+      "time": "5 min",
+      "encrypted": "Encrypted"
+    },
+    "stats": {
+      "accidents": "reports/year in Europe",
+      "languages": "languages supported",
+      "time": "to complete"
+    },
+    "how": {
+      "label": "How it works",
+      "title": "5 steps.",
+      "title_accent": "5 minutes.",
+      "steps": [
+        { "step": "01", "icon": "📸", "title": "Scan your documents", "desc": "Photograph registration + green card. Automatic OCR." },
+        { "step": "02", "icon": "📱", "title": "Share the QR code", "desc": "The other driver scans the QR. Session shared in real time." },
+        { "step": "03", "icon": "📋", "title": "Fill in the form", "desc": "Universal form pre-filled by OCR. Check and tick the circumstances." },
+        { "step": "04", "icon": "🚗", "title": "Damage zones", "desc": "Click on the 18-zone diagram to indicate damage." },
+        { "step": "05", "icon": "✍️", "title": "Sign & send", "desc": "Two timestamped digital signatures. PDF certified instantly." }
+      ]
+    },
+    "features": {
+      "title": "Everything you need",
+      "list": [
+        { "icon": "📸", "title": "Universal OCR", "desc": "Claude Vision reads your documents in 50+ languages. Registration, RC Book, 行驶证 — zero manual entry." },
+        { "icon": "📱", "title": "Up to 5 vehicles", "desc": "3, 4 or 5 vehicle accident? Each driver scans their own QR. One PDF for everyone." },
+        { "icon": "📷", "title": "Scene photos", "desc": "5 categories: location, damage A, damage B, injuries, documents. Compressed and included in the PDF." },
+        { "icon": "✏️", "title": "Free-hand sketch", "desc": "Draw vehicle positions, direction arrows, infrastructure. PNG export embedded in the PDF." },
+        { "icon": "🚗", "title": "Damage diagram", "desc": "700+ models, adapted silhouette, real OCR color. 18 clickable zones for damage." },
+        { "icon": "✍️", "title": "Multi-party signatures", "desc": "N simultaneous touch signatures. Legal value in 150+ countries. QR active 24h for police." },
+        { "icon": "📄", "title": "PDF certified 150+ countries", "desc": "Complete digital document: witnesses, third-party damage, observations, sketch, photos. Recognised by all insurers." },
+        { "icon": "🚔", "title": "Police Module (soon)", "desc": "Officers join the session via QR. Official digital police report. Dashboard by station/canton." },
+        { "icon": "🌍", "title": "50 languages + RTL", "desc": "5 billion speakers. Arabic, Hebrew, Farsi, Urdu in native RTL. Geolocated emergencies." }
+      ]
+    },
+    "coverage": {
+      "label": "Global coverage",
+      "title": "From Switzerland to China",
+      "more": "+ 30 more countries · Built-in RTL support"
+    },
+    "legal": {
+      "title": "International standard",
+      "text": "Our digital PDF is recognised by insurance companies in over 50 countries. Better than paper: timestamped, digitally signed, tamper-proof."
+    },
+    "finalCta": {
+      "title": "Ready for an accident?",
+      "subtitle": "Keep boom.contact on your home screen. 5 minutes to complete everything.",
+      "button": "Start a report"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA / Groupe NEUKOMM",
+      "address": "PEP's Swiss SA · Groupe NEUKOMM · FINMA F01042365\nBellevue 7, 2950 Courgenay, Jura, Switzerland"
+    }
+  },
+  "steps": {
+    "scan": "Scan",
+    "location": "Location",
+    "photos": "Photos",
+    "qr": "QR",
+    "form": "Info",
+    "sketch": "Sketch",
+    "damage": "Damage",
+    "sign": "Sign"
+  },
+  "flow": {
+    "header": {
+      "role_a": "DRIVER A — NEW REPORT",
+      "reset_title": "Start over"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "Scan your documents",
+      "subtitle": "Start with your vehicle registration.\nGreen card is <strong>optional</strong>.",
+      "reg_label": "Vehicle registration",
+      "reg_sub": "Logbook, RC Book, Zulassung — <strong>required</strong>",
+      "tip": "💡 <strong>Green card optional.</strong> If you have it, scan it to automatically fill in your insurance details. Otherwise, enter them manually in the form."
+    },
+    "greencard": {
+      "scanned": "✅ Registration scanned",
+      "compressing": "· Compressing…",
+      "title": "Green card?",
+      "subtitle": "The international insurance certificate (green card) automatically fills in your insurance details. It is <strong>optional</strong> — you can enter this information manually.",
+      "scan_btn": "Scan the green card",
+      "scan_sub": "Recommended — fills in insurance data",
+      "skip_btn": "Continue without green card →"
+    },
+    "scanning": {
+      "title": "Analysing…",
+      "subtitle": "Claude Vision is reading your documents"
+    },
+    "review": {
+      "title_pair": "Documents analysed",
+      "title_single": "Registration analysed",
+      "confidence": "Confidence: {{pct}}%",
+      "skipped": "· Green card skipped",
+      "warnings": "⚠️ {{count}} field to check",
+      "warnings_plural": "⚠️ {{count}} fields to check",
+      "insurance_title": "🛡️ Enter your insurance details",
+      "company_label": "Insurance company *",
+      "company_placeholder": "AXA, Zurich, Allianz…",
+      "policy_label": "Policy number *",
+      "policy_placeholder": "UK-2026-12345",
+      "section_vehicle": "🚗 Vehicle",
+      "section_driver": "👤 Driver",
+      "section_greencard": "🟢 Insurance (green card)",
+      "rescan": "🔄 Rescan",
+      "confirm": "Confirm →"
+    }
+  },
+  "location": {
+    "vehicle_label": "Your vehicle",
+    "groups": {
+      "light": "Light vehicles",
+      "heavy": "Heavy vehicles",
+      "rail": "Public transport / rail",
+      "cycles": "Cycles",
+      "other": "Person / Other"
+    },
+    "vehicles": {
+      "car": { "label": "Car", "sub": "Sedan, SUV, estate, 4×4, city car" },
+      "van": { "label": "Van / Light commercial", "sub": "Minivan, van, light commercial" },
+      "motorcycle": { "label": "Motorcycle", "sub": "Motorcycle, motorbike" },
+      "scooter": { "label": "Scooter / Moped", "sub": "Scooter, 50cc" },
+      "moped": { "label": "Moped", "sub": "2-wheel <45km/h, 125cc" },
+      "escooter": { "label": "Electric scooter", "sub": "E-scooter, gyroscooter, hoverboard" },
+      "quad": { "label": "Quad / Buggy", "sub": "Off-road motorised vehicle" },
+      "truck": { "label": "Truck / HGV", "sub": "Semi-trailer, lorry, tipper" },
+      "bus": { "label": "Bus / Coach", "sub": "City bus, coach, minibus" },
+      "construction": { "label": "Construction vehicle", "sub": "Digger, crane, excavator, dumper" },
+      "tractor": { "label": "Agricultural tractor", "sub": "Tractor, agricultural equipment" },
+      "tram": { "label": "Tram", "sub": "Tram, light metro" },
+      "train": { "label": "Train / Metro", "sub": "Train, metro, underground" },
+      "bicycle": { "label": "Bicycle", "sub": "Classic bike, e-bike, electric bicycle" },
+      "cargo_bike": { "label": "Cargo bike", "sub": "Bakfiets, tricycle, electric cargo" },
+      "pedestrian": { "label": "Pedestrian", "sub": "On foot, rollerblades, skateboard" },
+      "boat": { "label": "Boat", "sub": "Vessel, jet-ski, dinghy" },
+      "other": { "label": "Other vehicle", "sub": "Not listed — specify in observations" }
+    },
+    "datetime_label": "Date & time of accident",
+    "date_label": "Date",
+    "time_label": "Time",
+    "datetime_warning": "⚠️ Enter the actual time of the accident, not the current time.",
+    "geo_label": "Accident location",
+    "gps_captured": "GPS captured — {{lat}}, {{lng}}",
+    "gps_loading": "Locating…",
+    "gps_denied": "GPS access denied — enter manually",
+    "gps_missing": "GPS position not captured",
+    "gps_saved": "Coordinates recorded in the document",
+    "address_label": "Street / Area / Motorway (e.g. M25 junction 5, Crossroads)",
+    "address_placeholder": "e.g. 4 Station Road, M25 junction 5…",
+    "city_label": "Town / City",
+    "city_placeholder": "London, Paris…",
+    "country_label": "Country",
+    "country_placeholder": "GB, FR…",
+    "location_tip": "💡 <strong>Important:</strong> Enter the <strong>exact accident location</strong>, even if you moved the vehicles to the side. GPS captures your <em>current</em> position — correct it if you moved.",
+    "injuries_label": "Are there any injuries?",
+    "no_injuries": "No — no injuries",
+    "yes_injuries": "Yes — injury/injuries",
+    "injury_details_title": "🚑 Injury details",
+    "severity_label": "Apparent severity",
+    "severity_minor": "Minor",
+    "severity_moderate": "Moderate",
+    "severity_serious": "Serious",
+    "injury_desc_label": "Description (body area, pain, visible injuries)",
+    "injury_desc_placeholder": "e.g. Neck pain, left knee bruise, forehead cut…",
+    "ambulance": "🚑 Treated by ambulance / paramedics",
+    "hospitalized": "🏥 Hospitalisation required or expected",
+    "injury_footer": "For serious injuries, call 112 (EU) or 999 (UK) immediately. This information will be included in the final document.",
+    "cta_no_vehicle": "Select your vehicle type",
+    "cta_no_injuries": "Indicate whether there are injuries",
+    "cta_no_location": "Enter the accident location",
+    "emergency_police": "🚔 Police · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Emergency · {{number}} {{label}}",
+    "emergency_voluntary": "These calls are voluntary — police are never notified automatically."
+  },
+  "cgu": {
+    "before_continue": "BEFORE CONTINUING",
+    "tab_cgu": "T&Cs",
+    "tab_privacy": "Privacy",
+    "cgu_title": "Terms and Conditions",
+    "privacy_title": "Privacy Policy & GDPR",
+    "cgu_version": "Version 1.0 — March 2026 · PEP's Swiss SA",
+    "privacy_version": "Compliant with EU GDPR 2016/679 and Swiss nFADP · March 2026",
+    "email_label": "Your email (to receive the PDF)",
+    "email_placeholder": "you@example.com",
+    "consent_cgu": "I accept the <cgu>Terms & Conditions</cgu> and the <privacy>Privacy Policy</privacy>",
+    "consent_marketing": "I agree that PEP's Swiss SA may use my email to offer complementary services from its applications (claims management, insurance, financial services). <opt>Optional — revocable at any time.</opt>",
+    "required_note": "* Required to use the service",
+    "submit": "Continue →",
+    "error_network": "Network error. Please try again.",
+    "cgu_sections": [
+      { "title": "1. Purpose", "text": "boom.contact is a digital service published by PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Switzerland. It enables the creation of digital amicable accident reports, usable worldwide." },
+      { "title": "2. Acceptance", "text": "Use of the service implies acceptance of these Terms. Any use for illegal, fraudulent or unlawful purposes is strictly prohibited." },
+      { "title": "3. Service description", "text": "boom.contact enables: (a) document capture by OCR (registration, green card); (b) real-time session sharing between drivers via QR code; (c) generation of a digitally signed certified PDF; (d) sending the PDF by email to each driver. The service does not replace each driver's legal obligation to declare the claim to their own insurer within the contractual timeframe." },
+      { "title": "4. Pricing", "text": "Access to the service is paid according to the packages available at time of purchase. Prices are shown inclusive of tax. Payment is processed via Stripe, a PCI-DSS certified provider. Each package corresponds to a number of credits to initiate reports. Credits have no expiry date. No refund can be granted once a report is finalised and the PDF generated." },
+      { "title": "5. Legal value", "text": "The digital document generated by boom.contact constitutes an amicable accident report recognised by insurance companies. PEP's Swiss SA does not guarantee acceptance in all countries and recommends submitting it to your insurer within the legal deadlines." },
+      { "title": "6. Liability", "text": "PEP's Swiss SA shall not be held liable for: (a) input or OCR errors not corrected by the user; (b) refusal by an insurer to accept the report; (c) any dispute between drivers. PEP's Swiss SA's liability is limited to the amount paid for the service." },
+      { "title": "7. Intellectual property", "text": "The software, trademarks, logos and content of boom.contact are the exclusive property of PEP's Swiss SA. Any reproduction without authorisation is prohibited." },
+      { "title": "8. Applicable law", "text": "These Terms are governed by Swiss law. Any dispute shall be subject to the exclusive jurisdiction of the courts of the Canton of Jura, Switzerland." }
+    ],
+    "privacy_sections": [
+      { "title": "Data controller", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Switzerland. DPO contact: privacy@boom.contact" },
+      { "title": "Data collected", "text": "In the context of the service: email address, name, address (extracted from OCR documents), licence plate, vehicle data, GPS coordinates of the accident, digital signatures, insurance data (company name, policy number). This data is strictly necessary for the provision of the service." },
+      { "title": "Legal basis", "text": "Processing necessary for contract performance (Art. 6.1.b GDPR) for accident report data. Explicit consent (Art. 6.1.a GDPR) for any secondary commercial use." },
+      { "title": "Retention period", "text": "Active sessions: 2 hours. PDFs and report data: 30 days then automatic deletion. Accounting data (payments): 10 years (legal obligation). Email and consents: until consent is withdrawn." },
+      { "title": "Data sharing", "text": "Your data is NEVER sold to third parties. It may be shared with: (a) Stripe Inc. for payment processing; (b) Resend Inc. for transactional email sending; (c) Anthropic Inc. for OCR analysis of documents (data processed without retention per Anthropic's Terms). If you expressly consent (optional box below), PEP's Swiss SA may use your email to offer complementary services from its applications." },
+      { "title": "Your rights", "text": "Access, rectification, erasure, portability, objection. Request to: privacy@boom.contact. Response within 30 days. Right of appeal to the FDPIC (Switzerland) or your national data protection authority." }
+    ]
+  },
+  "pricing": {
+    "title": "Choose a package",
+    "subtitle": "Buy your credits upfront — pay once",
+    "popular_badge": "⭐ Popular",
+    "economy": "Save {{pct}}",
+    "credits_label": "Credits",
+    "per_report": "Per report",
+    "validity": "Validity",
+    "no_expiry": "No expiry",
+    "buy_btn": "Buy — {{symbol}} {{price}}",
+    "redirecting": "Redirecting to Stripe…",
+    "error_missing_url": "Missing Stripe URL",
+    "trust": {
+      "stripe": "🔒 Secure payment via Stripe (PCI-DSS)",
+      "no_expiry": "📄 Credits with no expiry date",
+      "worldwide": "🌍 Certified digital document · valid in 150+ countries",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Switzerland"
+    },
+    "legal": "By purchasing, you accept boom.contact's Terms & Conditions.\nNo refund once the PDF has been generated.",
+    "packages": {
+      "single": { "label": "1 report", "description": "For a one-off accident" },
+      "pack3":  { "label": "3 reports", "description": "For the family" },
+      "pack10": { "label": "10 reports", "description": "Brokers, company fleets" }
+    }
+  },
+  "offline": {
+    "banner": "Offline — {{count}} session(s) pending",
+    "banner_0": "You are offline"
+  },
+  "language": {
+    "select": "Language",
+    "switch_tooltip": "Change language"
+  }
+}
