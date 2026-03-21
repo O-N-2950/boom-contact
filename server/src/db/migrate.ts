@@ -17,6 +17,12 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
       CREATE INDEX IF NOT EXISTS idx_sessions_status  ON sessions(status);
 
+      -- Add owner_email column if not exists (for existing deployments)
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS owner_email TEXT;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+
       CREATE TABLE IF NOT EXISTS users (
         id                    VARCHAR(20) PRIMARY KEY,
         email                 TEXT NOT NULL UNIQUE,
