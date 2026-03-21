@@ -215,6 +215,30 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
       }}>
         Nouveau constat →
       </button>
+
+      {/* QR persistant — pour la police ou un 3ème conducteur */}
+      <div style={{ marginTop: 20, padding: '16px', borderRadius: 12,
+        background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.35, letterSpacing: 1,
+          textTransform: 'uppercase', marginBottom: 10, textAlign: 'center' }}>
+          QR du constat — valable 24h
+        </div>
+        <div style={{ textAlign: 'center', marginBottom: 10 }}>
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`${window.location.origin}/join?session=${sessionId}`)}&bgcolor=0E0E18&color=F0EDE8&margin=2`}
+            alt="QR du constat"
+            style={{ width: 160, height: 160, borderRadius: 8, display: 'inline-block' }}
+          />
+        </div>
+        <div style={{ fontSize: 12, opacity: 0.45, textAlign: 'center', lineHeight: 1.6 }}>
+          Si la police intervient, elle peut scanner ce QR<br/>
+          pour accéder au constat et ajouter son rapport.
+        </div>
+        <div style={{ fontSize: 11, opacity: 0.25, textAlign: 'center', marginTop: 6,
+          fontFamily: 'monospace', letterSpacing: 1 }}>
+          SESSION {sessionId}
+        </div>
+      </div>
     </div>
   );
 }

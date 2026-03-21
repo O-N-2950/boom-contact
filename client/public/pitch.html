@@ -604,28 +604,7 @@ footer a:hover { color: var(--text); }
 
   <div class="hero-content">
     <div class="logo-ring">
-      <!-- Logo SVG boom.contact -->
-      <svg viewBox="0 0 80 80" fill="none">
-        <!-- Car A (blue) -->
-        <g transform="translate(4,32)">
-          <rect x="2" y="6" width="30" height="16" rx="4" fill="#1144AA"/>
-          <rect x="6" y="2" width="20" height="10" rx="3" fill="rgba(100,160,255,0.5)"/>
-          <circle cx="6" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-          <circle cx="28" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-        </g>
-        <!-- Explosion -->
-        <g transform="translate(28,14)">
-          <polygon points="12,0 15,10 24,5 18,14 28,14 20,22 26,30 16,26 14,36 10,26 0,30 6,22 -2,14 8,14 2,5 11,10" fill="#FF3500" opacity="0.9"/>
-          <text x="10" y="22" textAnchor="middle" fontSize="7" fontWeight="800" fill="white" fontFamily="sans-serif">BOOM</text>
-        </g>
-        <!-- Car B (orange) -->
-        <g transform="translate(46,32)">
-          <rect x="2" y="6" width="30" height="16" rx="4" fill="#FF6B00"/>
-          <rect x="8" y="2" width="20" height="10" rx="3" fill="rgba(255,200,100,0.5)"/>
-          <circle cx="6" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-          <circle cx="28" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-        </g>
-      </svg>
+      <img src="logo.png" alt="boom.contact" style="width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 8px 32px rgba(255,83,0,0.4));animation:logoIn 0.8s cubic-bezier(0.175,0.885,0.32,1.275) both;">
     </div>
 
     <h1 class="hero-title">
@@ -856,7 +835,7 @@ footer a:hover { color: var(--text); }
     <div class="feature reveal">
       <span class="feature-icon">🔒</span>
       <div class="feature-title">Sécurisé & RGPD</div>
-      <div class="feature-desc">Sessions chiffrées, expiration automatique 2h, suppression des données 30 jours. Hébergé en Europe. Consentements horodatés.</div>
+      <div class="feature-desc">Sessions chiffrées, actives 24h (police peut intervenir 2h après l'accident), suppression des données 30 jours. Hébergé en Europe. Consentements horodatés.</div>
     </div>
     <div class="feature reveal">
       <span class="feature-icon">🌍</span>
@@ -991,6 +970,77 @@ footer a:hover { color: var(--text); }
   </div>
 </section>
 
+<!-- ── MODULE POLICE ─────────────────────────────────────────── -->
+<section class="section" id="police">
+  <div class="section-label reveal">B2B Institutionnel</div>
+  <h2 class="section-title reveal">La police aussi.<br><span style="color:var(--boom);">Sur le terrain.</span></h2>
+  <p class="section-sub reveal">
+    boom.contact n'est pas seulement pour les conducteurs.<br>
+    Les agents de police peuvent rejoindre une session ou créer leur propre rapport officiel directement depuis leur téléphone.
+  </p>
+
+  <div class="features stagger" style="margin-top:40px;">
+    <div class="feature reveal" style="border-color:rgba(0,100,255,0.2);background:rgba(0,50,200,0.06);">
+      <span class="feature-icon">📲</span>
+      <div class="feature-title">Rejoindre une session existante</div>
+      <div class="feature-desc">Le policier scanne le QR code affiché sur le téléphone du conducteur. Il accède à tout ce qui a déjà été rempli et enrichit le dossier avec les éléments officiels : infractions, PV, mesures, témoins assermentés.</div>
+    </div>
+    <div class="feature reveal" style="border-color:rgba(0,100,255,0.2);background:rgba(0,50,200,0.06);">
+      <span class="feature-icon">⏱️</span>
+      <div class="feature-title">Pré-envoi avant arrivée</div>
+      <div class="feature-desc">La patrouille envoie un lien SMS au conducteur avant d'arriver. Il commence à remplir pendant que la police est en route. À l'arrivée, tout est déjà prêt — le policier n'a qu'à finaliser et signer.</div>
+    </div>
+    <div class="feature reveal" style="border-color:rgba(0,100,255,0.2);background:rgba(0,50,200,0.06);">
+      <span class="feature-icon">📋</span>
+      <div class="feature-title">PV officiel numérique</div>
+      <div class="feature-desc">Un template PDF "PV officiel" distinct du constat CEA. Dashboard sécurisé par poste de police. Archivage, filtres, export. Valeur légale officielle avec signature de l'agent.</div>
+    </div>
+    <div class="feature reveal" style="border-color:rgba(0,100,255,0.2);background:rgba(0,50,200,0.06);">
+      <span class="feature-icon">🔐</span>
+      <div class="feature-title">Modèle SaaS B2B</div>
+      <div class="feature-desc">Abonnement par poste / canton / département. 26 cantons suisses, 101 départements français, Länder allemands. Revenus récurrents institutionnels — indépendants du nombre d'accidents particuliers.</div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:40px;padding:24px;background:rgba(0,50,200,0.06);border:1px solid rgba(0,100,255,0.15);border-radius:16px;max-width:640px;margin-left:auto;margin-right:auto;">
+    <div style="font-size:12px;letter-spacing:2px;opacity:0.5;font-family:'DM Mono',monospace;margin-bottom:10px;">RÈGLE FONDAMENTALE</div>
+    <div style="font-size:15px;line-height:1.7;opacity:0.85;">
+      La police n'est <strong>jamais</strong> notifiée automatiquement. Elle intervient uniquement si le conducteur le demande explicitement ou si elle arrive d'elle-même. boom.contact respecte la vie privée — c'est ce qui fait qu'on l'utilise.
+    </div>
+  </div>
+</section>
+
+<!-- ── MULTI-VÉHICULES ────────────────────────────────────────── -->
+<section class="section" id="multi">
+  <div class="section-label reveal">Bientôt disponible</div>
+  <h2 class="section-title reveal">3, 4, 5 véhicules.<br><span style="color:var(--boom);">Aucun problème.</span></h2>
+  <p class="section-sub reveal">
+    Le constat papier CEA ne supporte que 2 véhicules.<br>
+    boom.contact n'a pas cette limite. Chaque conducteur scanne le QR et rejoint la même session.
+  </p>
+
+  <div class="comparison reveal" style="margin-top:40px;">
+    <div class="compare-card before">
+      <div class="compare-head">❌ Constat papier</div>
+      <div class="compare-item"><span class="compare-icon">2️⃣</span>Maximum 2 véhicules</div>
+      <div class="compare-item"><span class="compare-icon">📝</span>Un nouveau formulaire par paire</div>
+      <div class="compare-item"><span class="compare-icon">😵</span>Coordination manuelle entre conducteurs</div>
+      <div class="compare-item"><span class="compare-icon">📁</span>N formulaires papier à gérer</div>
+    </div>
+    <div class="compare-card after">
+      <div class="compare-head">✅ boom.contact</div>
+      <div class="compare-item"><span class="compare-icon">♾️</span>N véhicules — 1 seule session</div>
+      <div class="compare-item"><span class="compare-icon">📱</span>Chaque conducteur scanne le même QR</div>
+      <div class="compare-item"><span class="compare-icon">⚡</span>Données synchronisées en temps réel</div>
+      <div class="compare-item"><span class="compare-icon">📄</span>1 seul PDF complet pour tout le monde</div>
+    </div>
+  </div>
+
+  <p class="reveal" style="text-align:center;margin-top:24px;font-size:13px;opacity:0.4;font-family:'DM Mono',monospace;letter-spacing:1px;">
+    MULTI-VÉHICULES — EN DÉVELOPPEMENT — SESSION 5
+  </p>
+</section>
+
 <!-- ── CTA FINAL ──────────────────────────────────────────────── -->
 <section class="section" style="text-align:center;padding-bottom:120px;">
   <div class="section-label reveal" style="justify-content:center;display:flex;">Prêt ?</div>
@@ -1013,9 +1063,7 @@ footer a:hover { color: var(--text); }
 <!-- ── FOOTER ─────────────────────────────────────────────────── -->
 <footer>
   <div style="margin-bottom:16px;">
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--boom);">boom</span>
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;opacity:0.3;">.</span>
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;">contact</span>
+    <img src="logo.png" alt="boom.contact" style="height:60px;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(255,83,0,0.3));">
   </div>
   <div>
     <a href="#">CGU</a> &nbsp;·&nbsp;

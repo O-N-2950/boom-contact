@@ -153,7 +153,7 @@ export function JoinSession() {
 
       {/* Animated header */}
       <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <div style={{ fontSize: 72, marginBottom: 16, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }}>💥</div>
+        <img src="/logo.png" alt="boom.contact" style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
         <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 32, letterSpacing: '-0.5px', marginBottom: 8 }}>
           <span style={{ color: 'var(--boom)' }}>boom</span>
           <span style={{ opacity: 0.3 }}>.</span>
@@ -227,7 +227,9 @@ export function JoinSession() {
     <div style={{ maxWidth: 420, margin: '0 auto', minHeight: '100svh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>💥</div>
+        <div style={{ width: 36, height: 36, flexShrink: 0 }}>
+          <img src="/logo.png" alt="boom.contact" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
           <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>

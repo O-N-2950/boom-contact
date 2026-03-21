@@ -185,12 +185,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
         {/* Nav */}
         <nav style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 34, height: 34, borderRadius: 9, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, boxShadow: '0 4px 16px rgba(255,53,0,0.4)' }}>💥</div>
-            <div>
-              <span style={{ fontFamily: 'Oswald, sans-serif', fontSize: 18, letterSpacing: 1, color: 'var(--boom)' }}>boom</span>
-              <span style={{ opacity: 0.3, fontSize: 18 }}>.</span>
-              <span style={{ fontFamily: 'Oswald, sans-serif', fontSize: 18, letterSpacing: 1 }}>contact</span>
-            </div>
+            <img src="/logo.png" alt="boom.contact" style={{ width: 44, height: 44, objectFit: 'contain' }} />
           </div>
           <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
             RGPD · nLPD
@@ -330,7 +325,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
       <div style={{ padding: '44px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ fontSize: 56, marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }}>💥</div>
+          <img src="/logo.png" alt="boom.contact" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
           <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, marginBottom: 10 }}>Prêt en cas d'accident ?</h2>
           <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 280, margin: '0 auto 28px' }}>Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.</p>
           <button onClick={onStart} style={{ padding: '16px 32px', fontSize: 15, fontWeight: 700, borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
@@ -344,8 +339,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
       <div style={{ padding: '22px', borderTop: '1px solid var(--border)', background: 'var(--dark)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span>💥</span>
-            <span style={{ fontFamily: 'Oswald, sans-serif', fontSize: 14, color: 'var(--boom)' }}>boom.contact</span>
+            <img src="/logo.png" alt="boom.contact" style={{ height: 32, objectFit: 'contain' }} />
           </div>
           <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>© 2026 PEP's Swiss SA / Groupe NEUKOMM</span>
         </div>

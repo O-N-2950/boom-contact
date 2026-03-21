@@ -443,6 +443,77 @@ export function LocationStep({ onComplete }: Props) {
          !(city || address) ? 'Indiquez le lieu de l\'accident' :
          'Continuer →'}
       </button>
+
+      {/* ── Appel volontaire police ──────────────────────────── */}
+      {(() => {
+        // Numéros d'urgence par pays (code ISO 2 lettres)
+        const EMERGENCY: Record<string, { police: string; ambulance: string }> = {
+          CH: { police: '117',  ambulance: '144' },
+          FR: { police: '17',   ambulance: '15'  },
+          DE: { police: '110',  ambulance: '112' },
+          AT: { police: '133',  ambulance: '144' },
+          IT: { police: '113',  ambulance: '118' },
+          ES: { police: '091',  ambulance: '112' },
+          PT: { police: '112',  ambulance: '112' },
+          BE: { police: '101',  ambulance: '100' },
+          NL: { police: '0900-8844', ambulance: '112' },
+          LU: { police: '113',  ambulance: '112' },
+          GB: { police: '999',  ambulance: '999' },
+          IE: { police: '999',  ambulance: '999' },
+          US: { police: '911',  ambulance: '911' },
+          CA: { police: '911',  ambulance: '911' },
+          AU: { police: '000',  ambulance: '000' },
+          NZ: { police: '111',  ambulance: '111' },
+          JP: { police: '110',  ambulance: '119' },
+          CN: { police: '110',  ambulance: '120' },
+          MA: { police: '19',   ambulance: '15'  },
+          SN: { police: '17',   ambulance: '15'  },
+          TN: { police: '197',  ambulance: '190' },
+          DZ: { police: '17',   ambulance: '14'  },
+          ZA: { police: '10111',ambulance: '10177'},
+          BR: { police: '190',  ambulance: '192' },
+          MX: { police: '911',  ambulance: '911' },
+          AR: { police: '911',  ambulance: '107' },
+          IN: { police: '100',  ambulance: '102' },
+          RU: { police: '102',  ambulance: '103' },
+          PL: { police: '997',  ambulance: '999' },
+          CZ: { police: '158',  ambulance: '155' },
+          HU: { police: '107',  ambulance: '104' },
+          RO: { police: '112',  ambulance: '112' },
+          GR: { police: '100',  ambulance: '166' },
+          TR: { police: '155',  ambulance: '112' },
+          SE: { police: '114 14', ambulance: '112'},
+          NO: { police: '112',  ambulance: '113' },
+          DK: { police: '114',  ambulance: '112' },
+          FI: { police: '0295 419 800', ambulance: '112'},
+        };
+        // Fallback EU 112 si pays inconnu
+        const nums = EMERGENCY[country] || { police: '112', ambulance: '112' };
+        const label = country ? `(${country})` : '(EU)';
+        return (
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <a href={`tel:${nums.police}`} style={{
+                flex: 1, padding: '11px', borderRadius: 10, textDecoration: 'none',
+                border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
+                color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
+              }}>
+                🚔 Police · {nums.police} {label}
+              </a>
+              <a href={`tel:${nums.ambulance}`} style={{
+                flex: 1, padding: '11px', borderRadius: 10, textDecoration: 'none',
+                border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
+                color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
+              }}>
+                🚑 Urgences · {nums.ambulance} {label}
+              </a>
+            </div>
+            <div style={{ fontSize: 11, opacity: 0.28, textAlign: 'center' }}>
+              Ces appels sont volontaires — la police n'est jamais prévenue automatiquement.
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
