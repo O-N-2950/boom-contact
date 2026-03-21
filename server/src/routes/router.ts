@@ -6,7 +6,8 @@ import {
   createSession, getSession, joinSession,
   updateParticipant, updateAccident, signSession, getQRUrl
 } from '../services/session.service';
-import { generateConstatPDF } from '../services/pdf.service';
+import { generateConstatPDF } from '../services/pdf.service.js';
+import { sendPDFToDriver } from '../services/email.service.js';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -164,6 +165,41 @@ export const appRouter = router({
         return { pdfBase64, filename };
       }),
   }),
+  // ── EMAIL ─────────────────────────────────────────────────
+  email: router({
+    // Send PDF to driver's own email — they forward to their insurer
+    sendToDriver: publicProcedure
+      .input(z.object({
+        sessionId:   z.string(),
+        role:        z.enum(['A', 'B']),
+        driverEmail: z.string().email(),
+        pdfBase64:   z.string().min(100),
+      }))
+      .mutation(async ({ input }) => {
+        const session = await getSession(input.sessionId);
+        if (!session) throw new Error('Session not found');
+
+        const participant = input.role === 'A' ? session.participantA : session.participantB;
+        const driverName = [participant?.driver?.firstName, participant?.driver?.lastName]
+          .filter(Boolean).join(' ') || 'Conducteur';
+        const insurerName = participant?.insurance?.company || undefined;
+        const lang = participant?.language || 'fr';
+
+        const result = await sendPDFToDriver({
+          driverEmail:  input.driverEmail,
+          driverName,
+          role:         input.role,
+          sessionId:    input.sessionId,
+          pdfBase64:    input.pdfBase64,
+          insurerName,
+          language:     lang,
+        });
+
+        if (!result.ok) throw new Error(result.error || 'Email send failed');
+        return { ok: true, messageId: result.messageId };
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

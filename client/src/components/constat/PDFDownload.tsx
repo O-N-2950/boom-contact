@@ -3,14 +3,24 @@ import { useState } from 'react';
 interface Props {
   sessionId: string;
   role: 'A' | 'B';
+  insurerName?: string;   // Extrait de la carte verte OCR
+  driverName?: string;
 }
 
-export function PDFDownload({ sessionId, role }: Props) {
+export function PDFDownload({ sessionId, role, insurerName, driverName }: Props) {
   const [loading, setLoading] = useState(false);
-  const [downloaded, setDownloaded] = useState(false);
+  const [pdfBase64, setPdfBase64] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const downloadPDF = async () => {
+  // Email flow
+  const [email, setEmail] = useState('');
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+
+  const generatePDF = async (): Promise<string | null> => {
+    if (pdfBase64) return pdfBase64;
     setLoading(true);
     setError(null);
     try {
@@ -20,37 +30,56 @@ export function PDFDownload({ sessionId, role }: Props) {
         body: JSON.stringify({ sessionId }),
       });
       const data = await resp.json();
-      const { pdfBase64, filename } = data?.result?.data ?? {};
-      if (!pdfBase64) throw new Error('PDF non disponible');
-
-      // Decode and download
-      const bytes = Uint8Array.from(atob(pdfBase64), c => c.charCodeAt(0));
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename ?? `constat-${sessionId}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
-      setDownloaded(true);
+      const { pdfBase64: b64 } = data?.result?.data ?? {};
+      if (!b64) throw new Error('PDF non disponible');
+      setPdfBase64(b64);
+      return b64;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du téléchargement');
+      setError(err instanceof Error ? err.message : 'Erreur PDF');
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const shareByEmail = async () => {
-    const subject = encodeURIComponent('Constat amiable — boom.contact');
-    const body = encodeURIComponent(
-      `Bonjour,\n\nVeuillez trouver ci-joint le constat amiable numérique établi via boom.contact.\n\nRéférence session : ${sessionId}\n\nCordialement`
-    );
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  const download = async () => {
+    const b64 = await generatePDF();
+    if (!b64) return;
+    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `constat-${sessionId}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const sendEmail = async () => {
+    if (!email.includes('@')) return;
+    const b64 = await generatePDF();
+    if (!b64) return;
+    setSendingEmail(true);
+    setEmailError(null);
+    try {
+      const resp = await fetch('/trpc/email.sendToDriver', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, role, driverEmail: email, pdfBase64: b64 }),
+      });
+      const data = await resp.json();
+      if (data.error) throw new Error(data.error.message);
+      setEmailSent(true);
+    } catch (err) {
+      setEmailError(err instanceof Error ? err.message : 'Erreur envoi');
+    } finally {
+      setSendingEmail(false);
+    }
   };
 
   return (
     <div style={{ padding: 24 }}>
-      {/* Success header */}
+      {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 28 }}>
         <div style={{ fontSize: 64, marginBottom: 12 }}>🎉</div>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: '#22c55e', marginBottom: 8 }}>
@@ -59,7 +88,7 @@ export function PDFDownload({ sessionId, role }: Props) {
         <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.7 }}>
           Les deux parties ont signé. Le PDF conforme CEA est prêt.
         </p>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 12,
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10,
           padding: '5px 14px', borderRadius: 20,
           background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
           <span style={{ fontSize: 10, fontFamily: 'monospace', letterSpacing: 1, color: '#22c55e' }}>
@@ -68,84 +97,133 @@ export function PDFDownload({ sessionId, role }: Props) {
         </div>
       </div>
 
-      {/* PDF Preview card */}
-      <div style={{ marginBottom: 20, padding: 16, borderRadius: 12,
+      {/* PDF card */}
+      <div style={{ marginBottom: 16, padding: 16, borderRadius: 12,
         border: '1px solid rgba(255,53,0,0.2)', background: 'rgba(255,53,0,0.04)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-          <div style={{ width: 40, height: 40, borderRadius: 8, background: 'var(--boom)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>📄</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+          <div style={{ width: 38, height: 38, borderRadius: 8, background: 'var(--boom)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📄</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14 }}>Constat CEA — boom.contact</div>
-            <div style={{ fontSize: 11, opacity: 0.45, marginTop: 2 }}>
-              Standard européen · Valable dans 50+ pays
-            </div>
+            <div style={{ fontWeight: 700, fontSize: 13 }}>Constat CEA — boom.contact</div>
+            <div style={{ fontSize: 11, opacity: 0.45 }}>Standard européen · 50+ pays</div>
           </div>
         </div>
-        {/* What's in it */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
-          {[
-            '✅ Données véhicules A & B',
-            '✅ Coordonnées conducteurs',
-            '✅ Informations assurances',
-            '✅ Circonstances cochées',
-            '✅ Zones de choc',
-            '✅ 2 signatures digitales',
-            '✅ Géolocalisation GPS',
-            '✅ Horodatage légal',
-          ].map((item, i) => (
-            <div key={i} style={{ fontSize: 11, opacity: 0.65 }}>{item}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
+          {['✅ Données véhicules A & B','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ 2 signatures'].map((item, i) => (
+            <div key={i} style={{ fontSize: 11, opacity: 0.6 }}>{item}</div>
           ))}
         </div>
       </div>
 
-      {error && (
-        <div style={{ marginBottom: 14, padding: 12, borderRadius: 8,
-          background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-          fontSize: 13, color: '#ef4444' }}>
-          ⚠️ {error}
+      {/* Insurer info — from OCR */}
+      {insurerName && (
+        <div style={{ marginBottom: 16, padding: 14, borderRadius: 10,
+          background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
+          <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.5, textTransform: 'uppercase',
+            fontFamily: 'monospace', marginBottom: 4 }}>Votre assureur (carte verte)</div>
+          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>🟢 {insurerName}</div>
+          <div style={{ fontSize: 12, opacity: 0.55, lineHeight: 1.5 }}>
+            Contactez directement votre assureur pour déclarer le sinistre.
+            Ses coordonnées sinistres se trouvent sur votre police ou son site web.
+          </div>
         </div>
       )}
 
+      {error && (
+        <div style={{ marginBottom: 12, padding: 12, borderRadius: 8,
+          background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
+          fontSize: 13, color: '#ef4444' }}>⚠️ {error}</div>
+      )}
+
       {/* Actions */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <button onClick={downloadPDF} disabled={loading} style={{
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+
+        {/* Download */}
+        <button onClick={download} disabled={loading} style={{
           padding: '16px', borderRadius: 10, border: 'none',
           background: loading ? 'rgba(255,53,0,0.5)' : 'var(--boom)',
           color: '#fff', cursor: loading ? 'not-allowed' : 'pointer',
-          fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
+          fontSize: 15, fontWeight: 700,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
         }}>
-          {loading ? '⏳ Génération du PDF…' : downloaded ? '✅ Téléchargé — Retélécharger' : '⬇️ Télécharger le PDF'}
+          {loading ? '⏳ Génération…' : '⬇️ Télécharger le PDF'}
         </button>
 
-        <button onClick={shareByEmail} style={{
-          padding: '14px', borderRadius: 10,
-          border: '1.5px solid rgba(240,237,232,0.15)',
-          background: 'transparent', color: 'var(--text)', cursor: 'pointer',
-          fontSize: 14, fontWeight: 500,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-        }}>
-          📧 Envoyer par email à mon assureur
-        </button>
+        {/* Email — send to yourself */}
+        {!emailSent ? (
+          <div>
+            <button onClick={() => setShowEmailForm(!showEmailForm)} style={{
+              width: '100%', padding: '14px', borderRadius: 10,
+              border: '1.5px solid rgba(240,237,232,0.15)',
+              background: showEmailForm ? 'rgba(255,255,255,0.06)' : 'transparent',
+              color: 'var(--text)', cursor: 'pointer', fontSize: 14, fontWeight: 500,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            }}>
+              📧 Recevoir le PDF par email
+            </button>
+
+            {showEmailForm && (
+              <div style={{ marginTop: 8, padding: '14px', borderRadius: 10,
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ fontSize: 12, opacity: 0.5, marginBottom: 8, lineHeight: 1.5 }}>
+                  Entrez votre email. Vous recevrez le PDF en pièce jointe, que vous pourrez transmettre à votre assureur.
+                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="votre@email.com"
+                  style={{
+                    width: '100%', padding: '11px 13px', borderRadius: 8,
+                    border: '1.5px solid rgba(255,255,255,0.1)',
+                    background: 'rgba(255,255,255,0.05)',
+                    color: 'var(--text)', fontSize: 14, outline: 'none',
+                    marginBottom: 8, boxSizing: 'border-box',
+                  }}
+                  onKeyDown={e => e.key === 'Enter' && sendEmail()}
+                />
+                {emailError && (
+                  <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 8 }}>⚠️ {emailError}</div>
+                )}
+                <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} style={{
+                  width: '100%', padding: '11px', borderRadius: 8, border: 'none',
+                  background: !email.includes('@') ? 'rgba(255,255,255,0.1)' : 'rgba(34,197,94,0.8)',
+                  color: '#fff', cursor: !email.includes('@') ? 'not-allowed' : 'pointer',
+                  fontSize: 14, fontWeight: 600,
+                }}>
+                  {sendingEmail ? '⏳ Envoi…' : '✉️ Envoyer'}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ padding: '14px', borderRadius: 10,
+            background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)',
+            textAlign: 'center', fontSize: 14, color: '#22c55e', fontWeight: 600 }}>
+            ✅ PDF envoyé à {email}
+          </div>
+        )}
       </div>
 
-      {/* Insurance reminder */}
-      <div style={{ marginTop: 20, padding: 14, borderRadius: 10,
-        background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
-        <div style={{ fontSize: 12, color: '#f59e0b', fontWeight: 700, marginBottom: 6 }}>
-          ⏰ À faire dans les 5 jours ouvrables
+      {/* Legal reminder */}
+      <div style={{ padding: 14, borderRadius: 10,
+        background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)',
+        marginBottom: 14 }}>
+        <div style={{ fontSize: 12, color: '#f59e0b', fontWeight: 700, marginBottom: 5 }}>
+          ⏰ À transmettre à votre assureur
         </div>
-        <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.6 }}>
-          Envoyez ce constat à votre compagnie d'assurance dans les meilleurs délais.
-          Le délai légal varie selon les pays — vérifiez auprès de votre assureur.
+        <div style={{ fontSize: 12, opacity: 0.65, lineHeight: 1.65 }}>
+          Les deux conducteurs ont l'obligation de déclarer le sinistre à <strong>leur propre assureur</strong>.
+          Délai habituel : 5 jours en France, 8 jours en Suisse.
+          Vérifiez les conditions de votre police d'assurance.
         </div>
       </div>
 
-      {/* New constat button */}
       <button onClick={() => window.location.href = '/'} style={{
-        marginTop: 14, width: '100%', padding: '12px', borderRadius: 10,
+        width: '100%', padding: '11px', borderRadius: 10,
         border: '1px solid rgba(240,237,232,0.08)',
-        background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 13, opacity: 0.5,
+        background: 'transparent', color: 'var(--text)', cursor: 'pointer',
+        fontSize: 13, opacity: 0.45,
       }}>
         Nouveau constat →
       </button>
