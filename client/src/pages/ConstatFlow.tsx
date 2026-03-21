@@ -31,21 +31,15 @@ export function ConstatFlow() {
     if (step === 'qr' && !sessionId) createSession();
   }, [step]);
 
-  const createSession = async () => {
-    try {
-      const resp = await fetch('/trpc/session.create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
-      });
-      const data = await resp.json();
-      const session = data?.result?.data;
-      if (session) {
-        setSessionId(session.sessionId);
-        setQrUrl(session.qrUrl);
-      }
-    } catch (err) { console.error(err); }
-  };
+  const createSessionMutation = trpc.session.create.useMutation({
+    onSuccess: (data) => {
+      setSessionId(data.sessionId);
+      setQrUrl(data.qrUrl);
+    },
+    onError: (err) => console.error('session.create failed:', err.message),
+  });
+
+  const createSession = () => createSessionMutation.mutate();
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
     // Pre-fill participant data from OCR
@@ -65,7 +59,7 @@ export function ConstatFlow() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, role: 'A', data }),
-      });
+      }).catch(console.error);
     }
     setStep('diagram');
   };
@@ -81,19 +75,18 @@ export function ConstatFlow() {
     setStep('sign');
   };
 
-  const handleSign = async (signatureBase64: string) => {
-    if (sessionId) {
-      const resp = await fetch('/trpc/session.sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'A', signatureBase64 }),
-      });
-      const data = await resp.json();
-      if (data?.result?.data?.bothSigned) {
+  const signMutation = trpc.session.sign.useMutation({
+    onSuccess: (data) => {
+      if (data.bothSigned) {
         setOtherSigned(true);
         setTimeout(() => setStep('done'), 1500);
       }
-    }
+    },
+    onError: (err) => console.error('session.sign failed:', err.message),
+  });
+
+  const handleSign = (signatureBase64: string) => {
+    if (sessionId) signMutation.mutate({ sessionId, role: 'A', signatureBase64 });
   };
 
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
