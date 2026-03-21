@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { trpc } from '../../trpc';
 import type { OCRResult } from '../../../../shared/types';
 
 interface Props {

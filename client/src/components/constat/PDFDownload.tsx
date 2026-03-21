@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trpc } from '../../trpc';
 
 interface Props {
   sessionId: string;
