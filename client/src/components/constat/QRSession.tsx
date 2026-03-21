@@ -17,7 +17,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
     { sessionId },
     {
       refetchInterval: 2000,           // poll toutes les 2s
-      enabled: !partnerJoined,         // stop dès que rejoint
+      enabled: !!sessionId && !partnerJoined, // guard: sessionId must exist
       retry: false,
       staleTime: 0,
     }

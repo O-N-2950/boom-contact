@@ -19,12 +19,42 @@ const C = {
 // ─────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────
+function sanitize(text: string): string {
+  // WinAnsi charset: replace chars outside latin-1 range with ASCII equivalents
+  return text
+    .replace(/[\u0100-\uFFFF]/g, (c) => {
+      const map: Record<string, string> = {
+        '\u00e9': 'e', '\u00e8': 'e', '\u00ea': 'e', '\u00eb': 'e',
+        '\u00e0': 'a', '\u00e2': 'a', '\u00e4': 'a',
+        '\u00f9': 'u', '\u00fb': 'u', '\u00fc': 'u',
+        '\u00f4': 'o', '\u00f6': 'o',
+        '\u00ee': 'i', '\u00ef': 'i',
+        '\u00e7': 'c',
+        '\u00c9': 'E', '\u00c8': 'E', '\u00ca': 'E',
+        '\u00c0': 'A', '\u00c2': 'A',
+        '\u00d9': 'U', '\u00db': 'U',
+        '\u00d4': 'O', '\u00ce': 'I',
+        '\u00c7': 'C',
+        '\u2019': "'", '\u2018': "'", '\u201c': '"', '\u201d': '"',
+        '\u2013': '-', '\u2014': '-', '\u2026': '...',
+        '\u00ab': '<<', '\u00bb': '>>',
+      };
+      return map[c] ?? ' ';
+    });
+}
+
 function drawText(
   page: PDFPage, text: string, x: number, y: number,
   font: PDFFont, size: number, color = C.black
 ) {
   if (!text) return;
-  page.drawText(text, { x, y, font, size, color });
+  try {
+    page.drawText(sanitize(text), { x, y, font, size, color });
+  } catch {
+    // Fallback: strip everything non-ASCII
+    const safe = text.replace(/[^\x20-\x7E]/g, '?');
+    if (safe.trim()) page.drawText(safe, { x, y, font, size, color });
+  }
 }
 
 function drawRect(
@@ -96,7 +126,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── ACCIDENT SECTION ───────────────────────────────────────
   drawRect(page, margin, y - 38, width - margin * 2, 42, C.section, C.border);
-  drawText(page, '① ACCIDENT', margin + 6, y - 10, bold, 8, C.boom);
+  drawText(page, '1. ACCIDENT', margin + 6, y - 10, bold, 8, C.boom);
 
   const fieldW = (width - margin * 2 - 16) / 4;
 
@@ -153,7 +183,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── DRIVER DATA ────────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '② CONDUCTEURS', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, '2. CONDUCTEURS', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   drawSideBySide(
@@ -177,7 +207,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── INSURANCE DATA ─────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '③ ASSURANCES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, '3. ASSURANCES', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   drawSideBySide(
@@ -197,7 +227,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── CIRCUMSTANCES ──────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '④ CIRCONSTANCES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, '4. CIRCONSTANCES', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const circA = A?.circumstances ?? [];
@@ -225,14 +255,14 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
     const cy = y - row * 14;
     const inA = circA.includes(id);
     const inB = circB.includes(id);
-    drawText(page, `${inA ? '✓A ' : '   '}${inB ? '✓B ' : '   '}${CIRC_LABELS[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
+    drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${CIRC_LABELS[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
   });
 
   y -= Math.ceil(circItems.length / circCols) * 14 + 8;
 
   // ── DAMAGED ZONES ─────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '⑤ ZONES ENDOMMAGÉES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, '5. ZONES ENDOMMAGEES', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const zonesA = (A?.damagedZones ?? []).join(', ') || '—';
@@ -254,7 +284,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
       unknown: 'Responsabilité non déterminée',
     };
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-    drawText(page, '⑥ DÉCLARATION DE RESPONSABILITÉ', margin + 4, y - 8, bold, 7, C.boom);
+    drawText(page, '6. DECLARATION DE RESPONSABILITE', margin + 4, y - 8, bold, 7, C.boom);
     drawText(page, faultMap[acc.faultDeclaration] ?? '—', margin + 4, y - 18, bold, 9, C.black);
     y -= 30;
   }
@@ -262,7 +292,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── DESCRIPTION ────────────────────────────────────────────
   if (acc.description) {
     drawRect(page, margin, y - 36, width - margin * 2, 40, C.white, C.border);
-    drawText(page, '⑦ OBSERVATIONS', margin + 4, y - 8, bold, 7, C.boom);
+    drawText(page, '7. OBSERVATIONS', margin + 4, y - 8, bold, 7, C.boom);
     // Wrap text
     const words = acc.description.split(' ');
     let line = '';
@@ -284,7 +314,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── SIGNATURES ─────────────────────────────────────────────
   y -= 6;
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '⑧ SIGNATURES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, '8. SIGNATURES', margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const sigH = 60;
@@ -329,7 +359,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // Red corner accent
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
-  drawText(page, '💥', width - 28, 2, bold, 8, C.white);
+  // emoji removed (WinAnsi incompatible)
 
   return doc.save();
 }
