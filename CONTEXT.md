@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 21 Mars 2026 — Session 5
+> Dernière mise à jour : 21 Mars 2026 — Session 6
 
 ---
 
@@ -18,7 +18,7 @@
 | **ENV_ID** | e0247449-5574-4959-974e-c4b636da7419 |
 | **URL prod** | https://boom-contact-production.up.railway.app |
 | **Domaine** | https://www.boom.contact (DNS configuré) |
-| **Dernier commit** | 7ab8652 — Session 5 polish |
+| **Dernier commit** | 1f8c597 — Session 6 Police + PWA offline |
 | **Anthropic key** | sk-ant-[voir_fichiers_projet] |
 | **Resend API key** | re_[voir_fichiers_projet] (send-only) |
 | **Email expéditeur** | contact@boom.contact ✅ DKIM actif |
@@ -43,7 +43,7 @@
 
 - **Frontend** : React 18 + Vite + TypeScript
 - **Backend** : Express + tRPC v11 + Socket.io
-- **DB** : PostgreSQL (Drizzle ORM) — 4 tables : sessions, users, payments, credit_txns
+- **DB** : PostgreSQL (Drizzle ORM) — 6 tables : sessions, users, payments, credit_txns, police_stations, police_users
 - **OCR** : Claude Vision (Sonnet) — 50 langues, compression 1024px/q85
 - **PDF** : pdf-lib (server-side) — ⚠️ WinAnsi charset : pas de ①②③✓ dans les strings
 - **Email** : Resend — domaine boom.contact ✅ DKIM propagé — from: contact@boom.contact
@@ -65,6 +65,8 @@ client/src/
     JoinSession.tsx                — flow B-E : lit ?role=URL, même flow sans QR
     PricingPage.tsx                — 3 packages CHF/EUR, mutation tRPC ✅
     AgentDashboard.tsx             — 9 agents IA (?agents=true)
+    PoliceLogin.tsx                — auth institutionnelle email+password JWT
+    PoliceDashboard.tsx            — dashboard sessions 24h, stats, search
   components/
     CGUModal.tsx                   — CGU + RGPD, mutation tRPC ✅, validation email regex
     ErrorBoundary.tsx              — page erreur propre
@@ -81,6 +83,12 @@ client/src/
       LocationStep.tsx             — GPS + reverse geocoding + urgences géolocalisées 35 pays
       SignaturePad.tsx             — ResizeObserver + DPR Retina
       PDFDownload.tsx              — generate + email + QR persistant 24h pour police
+
+client/src/hooks/
+    useOffline.ts                  — détection offline, IndexedDB saveOffline()
+
+client/src/components/
+    OfflineBanner.tsx              — banner orange quand hors ligne
       StepIndicator.tsx            — barre de progression
 
 server/src/
@@ -93,6 +101,7 @@ server/src/
     pdf.service.ts                 — PDF 14 sections CEA + page croquis PNG + page photos grille
     email.service.ts               — Resend multilingue fr/de/it/en/es/pt
     stripe.service.ts              — Checkout, webhook, crédits
+    police.service.ts              — login JWT, dashboard sessions, verifyToken
   db/
     schema.ts                      — sessions(A-E JSONB, vehicleCount, expiresAt 24h), users, payments, credit_txns
 
@@ -127,10 +136,12 @@ Même flow sans étape QR. Rôle lu depuis `?role=B/C/D/E` dans l'URL.
 ## Base de données — 4 tables
 
 ```sql
-sessions       -- id, status, expiresAt(24h), accident JSONB, participantA-E JSONB, vehicleCount
-users          -- email, credits, consentCGU/Marketing horodatés
-payments       -- Stripe (packageId, creditsGranted, amountCents, currency, status, paidAt)
-credit_txns    -- mouvements crédits (delta, reason, ref, createdAt)
+sessions        -- id, status, expiresAt(24h), accident JSONB, participantA-E JSONB, vehicleCount
+users           -- email, credits, consentCGU/Marketing horodatés
+payments        -- Stripe (packageId, creditsGranted, amountCents, currency, status, paidAt)
+credit_txns     -- mouvements crédits (delta, reason, ref, createdAt)
+police_stations -- id, name, canton, country, city, email, phone, active
+police_users    -- id, stationId, email, firstName, lastName, badgeNumber, passwordHash, role, active
 ```
 
 ---
@@ -162,10 +173,12 @@ Frais Stripe €0.25 par package (pas par constat). Metadata: `application: 'boo
 
 ## Positionnement — décisions importantes
 
-- ✅ Positionnement mondial — supérieur au formulaire papier CEA
+- ✅ Positionnement mondial — supérieur au formulaire papier (toutes références "CEA" supprimées du front)
 - ✅ "Document numérique certifié · valable dans 150+ pays"
 - ✅ Double marché : B2C conducteurs + B2B institutions Police
 - ✅ Module Police : rejoindre session via QR, jamais notification automatique
+- ✅ Module Police accès : boom.contact/?police=true — auth JWT 8h
+- ✅ PWA Service Worker offline — cache assets, IndexedDB sessions hors ligne
 - ✅ Multi-véhicules jusqu'à 5 (game changer — papier limité à 2)
 - ✅ QR persistant 24h pour intervention police tardive
 - ✅ PEP's Swiss SA / Groupe NEUKOMM comme émetteur

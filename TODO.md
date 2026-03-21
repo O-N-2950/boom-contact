@@ -1,5 +1,5 @@
 # boom.contact — TODO.md
-> Mise à jour : 21 Mars 2026 — Fin Session 5
+> Mise à jour : 21 Mars 2026 — Fin Session 6
 
 ---
 
@@ -89,17 +89,29 @@
 
 ---
 
-## 🔴 PRIORITÉ 1 — Session 6
+## ✅ FAIT — Session 6
 
-### PWA Offline-first ★ CRITIQUE
-- [ ] Service Worker — cache assets + formulaire
-- [ ] IndexedDB — stocker session offline
-- [ ] Sync quand connexion rétablie
-- [ ] Essentiel pour accidents en montagne / tunnel / campagne
+### PWA Offline-first ✅
+- [x] Service Worker — cache-first assets, network-first API, SPA fallback offline
+- [x] IndexedDB — stocker session offline (boom-offline store)
+- [x] Background Sync quand connexion rétablie
+- [x] Hook useOffline.ts + OfflineBanner composant (banner orange)
+- [x] Préparé Push Notifications pour module Police
 
-### Carte verte optionnelle
-- [ ] Si carte verte absente → saisie manuelle NOM société + N° contrat uniquement
-- [ ] OCR : si aucune carte verte → passer directement à la saisie manuelle assurance
+### Carte verte optionnelle ✅
+- [x] Si carte verte absente → saisie inline société + N° contrat dans OCRScanner
+- [x] Données injectées dans result avant onComplete (fini le "pensez à renseigner")
+
+### Module Police B2B ✅ (base)
+- [x] Tables police_stations + police_users (migration auto au démarrage)
+- [x] police.service.ts — login JWT 8h, verifyToken, getPoliceDashboard
+- [x] tRPC police.login / police.dashboard / police.joinSession
+- [x] PoliceLogin.tsx — auth institutionnelle email+password
+- [x] PoliceDashboard.tsx — sessions actives 24h, stats, search, refresh 30s
+- [x] App.tsx route ?police=true, token persisté localStorage
+- [x] Suppression toutes références "CEA" du frontend
+
+## 🔴 PRIORITÉ — Session 7
 
 ---
 
@@ -120,16 +132,16 @@
 
 ---
 
-## 🟠 PRIORITÉ 3 — Module Police B2B
+## 🟠 PRIORITÉ 2 — Module Police B2B (suite)
 
-- [ ] Table `police_stations` + `police_users` (migrations)
-- [ ] Authentification institutionnelle JWT rôle "police"
-- [ ] PoliceFlow.tsx — agent rejoint session existante via QR
+- [x] Tables police_stations + police_users ✅
+- [x] Auth JWT rôle "police" ✅
+- [x] Dashboard sessions actives ✅
+- [ ] PoliceFlow.tsx — vue détaillée session + annotations agent
 - [ ] Enrichissement PV : infractions, mesures, témoins assermentés
-- [ ] Template PDF "PV officiel" distinct du template CEA
-- [ ] Dashboard poste /police/dashboard
+- [ ] Template PDF "Rapport d'intervention" distinct du PDF conducteur
 - [ ] SMS pré-envoi conducteur avant arrivée police
-- [ ] Démo canton pilote (Jura / Vaud)
+- [ ] Script onboarding canton pilote (Jura / Vaud) — créer station + agent
 
 **Règle absolue** : police jamais notifiée automatiquement — uniquement sur action volontaire utilisateur.
 
@@ -212,4 +224,4 @@
 - [ ] Test PDF téléchargement + email reçu
 - [ ] Test Stripe paiement réel
 - [ ] Test multi-véhicules 3 téléphones
-- [ ] PWA Service Worker offline
+- [x] PWA Service Worker offline ✅

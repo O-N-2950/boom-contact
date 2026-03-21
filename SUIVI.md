@@ -125,14 +125,51 @@
 
 ---
 
-## Session 6 — Prévue
+## Session 6 — PWA Offline + Police B2B + Carte verte
+**Date** : 21 Mars 2026
+**Commits** : 459efc5 → 1f8c597
+
+### Décisions importantes
+- **Suppression CEA** — toutes références "CEA / conforme CEA" retirées du frontend : boom.contact est supérieur au formulaire papier, pas une copie
+- **Module Police isolé** — couche séparée (police.*), ne touche pas au flow conducteur
+- **PWA offline** — Service Worker cache-first / Background Sync / OfflineBanner
+
+### Livré
+
+**PWA Offline-first**
+- `client/public/sw.js` — cache-first assets, network-first API, SPA fallback 503
+- Background Sync (`sync-session`) pour remonter sessions sauvegardées localement
+- Push Notifications préparé (pour Module Police futur)
+- `client/src/hooks/useOffline.ts` — détecte offline, expose `saveOffline()` IndexedDB
+- `OfflineBanner.tsx` — banner orange fixe quand hors ligne, compte sessions en attente
+- `main.tsx` — registration SW déjà présent depuis Session 5
+
+**Carte verte optionnelle améliorée**
+- `OCRScanner.tsx` — saisie inline société + N° contrat quand carte verte absente
+- Données injectées dans `result.greenCard.insurance` avant `onComplete`
+- Fini le message passif "pensez à renseigner" — action directe dans le flow
+
+**Module Police B2B — base complète**
+- Migration DB : tables `police_stations` + `police_users` (auto au démarrage)
+- `police.service.ts` : `loginPoliceUser` (JWT 8h), `verifyPoliceToken`, `getPoliceDashboard` (sessions actives 24h + stats)
+- tRPC `police.login` / `police.dashboard` / `police.joinSession`
+- `PoliceLogin.tsx` — login email+password, design dark cohérent
+- `PoliceDashboard.tsx` — stats 3 cartes, liste sessions triées, search, refresh 30s, accès via `?police=true`
+- `App.tsx` — route police, token JWT persisté localStorage 8h
+
+**Wording**
+- `LandingPage.tsx` : "PDF complet CEA" → "PDF certifié 150+ pays", "Section 13 CEA" → "Croquis libre"
+
+---
+
+## Session 7 — Prévue
 
 ### Priorités dans l'ordre
-1. **PWA Service Worker** — offline critique pour accidents montagne/tunnel
-2. **Carte verte optionnelle** — si absente → saisie manuelle assurance
-3. **Tests réels** — 2 téléphones, PDF, email, Stripe, multi-véhicules
-4. **Module Police** — auth institutionnelle, PoliceFlow, dashboard
-5. **i18n** — FR/DE/IT/EN (Suisse quadrilingue)
+1. **Tests réels** — 2 téléphones iOS + Android, PDF + email, Stripe, multi-véhicules
+2. **PoliceFlow.tsx** — vue détaillée session conducteur + annotations agent + PDF rapport
+3. **i18n** — FR/DE/IT/EN (i18next, détection auto, RTL arabe/hébreu)
+4. **Script onboarding pilote** — créer station Jura + agent test
+5. **Score cohérence IA** — détection contradictions A vs B avant signature
 
 ---
 
@@ -143,7 +180,7 @@
 | URL prod | https://boom-contact-production.up.railway.app ✅ |
 | URL custom | https://www.boom.contact ✅ |
 | Health check | /health → ok ✅ |
-| Dernier commit | 7ab8652 |
+| Dernier commit | 1f8c597 |
 | DKIM email | ✅ actif et propagé |
 | Stripe live | ✅ configuré |
 | Rate limiting | ✅ 4 routes |
@@ -151,4 +188,6 @@
 | Session durée | ✅ 24h |
 | PDF complet | ✅ croquis + photos + 14 sections CEA |
 | PWA installable | ✅ manifest + icons |
+| PWA Service Worker | ✅ offline-first |
+| Module Police | ✅ login + dashboard (base) |
 | SEO | ✅ Open Graph + Twitter Card |
