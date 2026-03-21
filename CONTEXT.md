@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 21 Mars 2026 — Session 4
+> Dernière mise à jour : 21 Mars 2026 — Session 5
 
 ---
 
@@ -18,8 +18,10 @@
 | **ENV_ID** | e0247449-5574-4959-974e-c4b636da7419 |
 | **URL prod** | https://boom-contact-production.up.railway.app |
 | **Domaine** | https://www.boom.contact (DNS configuré) |
+| **Dernier commit** | 7ab8652 — Session 5 polish |
 | **Anthropic key** | sk-ant-[voir_fichiers_projet] |
-| **Resend API key** | re_[voir_fichiers_projet] (restreinte send-only) |
+| **Resend API key** | re_[voir_fichiers_projet] (send-only) |
+| **Email expéditeur** | contact@boom.contact ✅ DKIM actif |
 | **Stripe SK** | sk_live_[voir_fichiers_projet] |
 | **Stripe PK** | pk_live_[voir_fichiers_projet] |
 | **Stripe Webhook ID** | we_1TDJLbGpzOqyzNB7UBSnffLM |
@@ -42,10 +44,10 @@
 - **Frontend** : React 18 + Vite + TypeScript
 - **Backend** : Express + tRPC v11 + Socket.io
 - **DB** : PostgreSQL (Drizzle ORM) — 4 tables : sessions, users, payments, credit_txns
-- **OCR** : Claude Vision (Sonnet) — 50 langues
+- **OCR** : Claude Vision (Sonnet) — 50 langues, compression 1024px/q85
 - **PDF** : pdf-lib (server-side) — ⚠️ WinAnsi charset : pas de ①②③✓ dans les strings
-- **Email** : Resend — domaine boom.contact configuré (DKIM manquant, voir TODO)
-- **Paiement** : Stripe live (même compte que PEP's V2) — metadata `application:'boom.contact'`
+- **Email** : Resend — domaine boom.contact ✅ DKIM propagé — from: contact@boom.contact
+- **Paiement** : Stripe live (même compte que PEP's V2) — metadata application:'boom.contact'
 - **Hébergement** : Railway (Europe West) — 2 services : boom-contact + PostgreSQL
 
 ---
@@ -58,116 +60,134 @@ client/src/
   trpc.ts                          — createTRPCReact + createTRPCClient typés AppRouter
   main.tsx                         — QueryClientProvider + trpc.Provider
   pages/
-    LandingPage.tsx                — landing animée, onStart + onPricing props
-    ConstatFlow.tsx                — flow conducteur A (ocr→location→qr→form→diagram→sign→done)
-    JoinSession.tsx                — flow conducteur B (landing→ocr→location→form→diagram→sign→done)
-    PricingPage.tsx                — 3 packages, sélecteur CHF/EUR, fetch() brut ⚠️ à migrer
+    LandingPage.tsx                — landing animée, 9 features, logo réel
+    ConstatFlow.tsx                — flow A : ocr→location→photos→qr→form→sketch→diagram→sign→done
+    JoinSession.tsx                — flow B-E : lit ?role=URL, même flow sans QR
+    PricingPage.tsx                — 3 packages CHF/EUR, mutation tRPC ✅
     AgentDashboard.tsx             — 9 agents IA (?agents=true)
   components/
-    CGUModal.tsx                   — CGU + RGPD, fetch() brut ⚠️ à migrer
-    ErrorBoundary.tsx              — page erreur propre au lieu de page blanche
-    ColorPicker.tsx                — 28 swatches visuels + saisie libre
+    CGUModal.tsx                   — CGU + RGPD, mutation tRPC ✅, validation email regex
+    ErrorBoundary.tsx              — page erreur propre
+    ColorPicker.tsx                — 28 swatches + saisie libre
     constat/
-      OCRScanner.tsx               — mobile:capture=environment / desktop:file picker, compression 1024px
-      QRSession.tsx                — trpc.session.get.useQuery(refetchInterval:2000)
-      ConstatForm.tsx              — 4 sections : vehicle/driver/insurance/circumstances
-      CarDiagram.tsx               — ⚠️ OBSOLÈTE — remplacé par VehicleDiagram
-      VehicleDiagram.tsx           — silhouettes adaptées + couleur réelle + badge identité
-      VehicleSilhouettes.tsx       — 8 SVG techniques : car/moto/scooter/bicycle/truck/bus/tram/pedestrian
+      OCRScanner.tsx               — capture=environment mobile / file picker desktop
+      QRSession.tsx                — multi-véhicules 2→5, QR coloré par rôle (B orange/C vert/D violet/E ambre)
+      PhotoCapture.tsx             — 5 catégories, compression 1024px, légendes, max 5 photos
+      AccidentSketch.tsx           — canvas dessin libre section 13 CEA
+      ConstatForm.tsx              — 5 sections : véhicule/conducteur/assurance/circonstances/complément
+      VehicleDiagram.tsx           — silhouettes + couleur réelle OCR
+      VehicleSilhouettes.tsx       — 8 SVG techniques
       vehicleMapper.ts             — 700+ modèles → bodyStyle + parseColor (30 langues)
-      LocationStep.tsx             — GPS + reverse geocoding + 17 types véhicules groupés + blessures
+      LocationStep.tsx             — GPS + reverse geocoding + urgences géolocalisées 35 pays
       SignaturePad.tsx             — ResizeObserver + DPR Retina
-      PDFDownload.tsx              — trpc.pdf.generate + trpc.email.sendToDriver mutations
+      PDFDownload.tsx              — generate + email + QR persistant 24h pour police
       StepIndicator.tsx            — barre de progression
 
 server/src/
-  index.ts                         — Express + Morgan + Helmet + tRPC + Socket.io + webhook Stripe
-  logger.ts                        — logger centralisé, process.stdout.write direct
-  routes/router.ts                 — tRPC routes : session/ocr/pdf/email/payment/user
+  index.ts                         — Express + Morgan + Helmet + tRPC + Socket.io + Stripe webhook
+                                     Rate limiting: OCR(10/min) create(5/min) join(10/min) payment(3/min)
+  routes/router.ts                 — tRPC routes — rôles A-E partout
   services/
-    session.service.ts             — CRUD PostgreSQL sessions
-    ocr.service.ts                 — Claude Vision, extraction 50 langues
-    pdf.service.ts                 — génération PDF pdf-lib ⚠️ WinAnsi only
+    session.service.ts             — CRUD sessions, TTL 24h, signSession N-véhicules
+    ocr.service.ts                 — Claude Vision, 50 langues
+    pdf.service.ts                 — PDF 14 sections CEA + page croquis PNG + page photos grille
     email.service.ts               — Resend multilingue fr/de/it/en/es/pt
-    stripe.service.ts              — Checkout Sessions, webhook, crédits
+    stripe.service.ts              — Checkout, webhook, crédits
   db/
-    schema.ts                      — sessions, users, payments, credit_txns
-    migrate.ts                     — migrations auto au démarrage
+    schema.ts                      — sessions(A-E JSONB, vehicleCount, expiresAt 24h), users, payments, credit_txns
 
-shared/types/index.ts              — VehicleType (17 types), BodyStyle, ScenePhoto, AccidentData...
+shared/types/index.ts              — VehicleType(17), ParticipantRole(A|B|C|D|E), ScenePhoto, AccidentData...
 
 client/public/
-  pitch.html                       — page présentation boom.contact (accessible sur /pitch.html)
+  logo.png                         — logo officiel (voitures bleue+orange + explosion BOOM)
+  icon-192.png / icon-512.png      — icônes PWA depuis logo réel
+  pitch.html                       — présentation complète (flow, features, Police B2B, multi-véhicules, pricing)
+  manifest.json                    — PWA installable
 ```
 
 ---
 
-## Flow utilisateur complet
+## Flow utilisateur complet (état Session 5)
 
-### Conducteur A
-1. **OCR** — 2 photos (permis + carte verte) → compression 1024px → Claude Vision
-2. **Location** — type véhicule (17 types) + GPS + date/heure + blessures
-3. **QR** — partage QR code → attend conducteur B (polling tRPC 2s)
-4. **Form** — 4 sections pré-remplies par OCR
-5. **Diagram** — VehicleDiagram avec silhouette adaptée + couleur réelle
-6. **Sign** — SignaturePad DPR-correct
-7. **Done** — PDFDownload (téléchargement + email)
+### Conducteur A — 8 étapes
+1. **OCR** — permis + carte verte → Claude Vision → pré-remplissage
+2. **Location** — type véhicule + GPS + blessures + boutons urgences géolocalisés
+3. **Photos** — 5 catégories, max 5 photos, compression 1024px
+4. **QR** — sélecteur 2→5 véhicules, un QR coloré par rôle B/C/D/E
+5. **Form** — 5 sections + complément CEA (témoins, dégâts tiers, observations, date éditable)
+6. **Sketch** — croquis canvas libre section 13
+7. **Diagram** — zones de choc sur silhouette adaptée
+8. **Sign + Done** — signature + PDF + email + QR persistant 24h
 
-### Conducteur B
-Même flow sans l'étape QR (il rejoint via le lien/QR scanné).
+### Conducteur B/C/D/E
+Même flow sans étape QR. Rôle lu depuis `?role=B/C/D/E` dans l'URL.
 
 ---
 
 ## Base de données — 4 tables
 
 ```sql
-sessions       -- constats (id, status, accident JSONB, participantA JSONB, participantB JSONB)
-users          -- comptes (email, credits, consentCGU, consentMarketing)
-payments       -- achats Stripe (packageId, creditsGranted, status, paidAt)
-credit_txns    -- mouvements crédits (delta, reason, ref)
+sessions       -- id, status, expiresAt(24h), accident JSONB, participantA-E JSONB, vehicleCount
+users          -- email, credits, consentCGU/Marketing horodatés
+payments       -- Stripe (packageId, creditsGranted, amountCents, currency, status, paidAt)
+credit_txns    -- mouvements crédits (delta, reason, ref, createdAt)
 ```
 
 ---
 
-## Tarification (décision finale)
+## Tarification
 
-| Package | Prix | Stripe effectif |
+| Package | Prix CHF/EUR | Économie |
 |---|---|---|
-| 1 constat | CHF/€ 4.90 | ~6.6% |
-| 3 constats | CHF/€ 12.90 | ~3.2% effectif |
-| 10 constats | CHF/€ 34.90 | ~1.2% effectif |
+| 1 constat | 4.90 | — |
+| 3 constats | 12.90 | 12% |
+| 10 constats | 34.90 | 29% |
 
-Frais Stripe €0.25 payés **une seule fois** par package (pas par constat).
-Métadonnées Stripe : `application: 'boom.contact'` sur chaque transaction.
+Frais Stripe €0.25 par package (pas par constat). Metadata: `application: 'boom.contact'`.
 
 ---
 
-## DNS boom.contact (état actuel)
+## DNS boom.contact — TOUT ✅
 
-| Type | Nom | Valeur | Statut |
-|---|---|---|---|
-| A | . | 66.33.22.223 (Railway) | ✅ |
-| CNAME | www | boom-contact-production.up.railway.app | ✅ |
-| MX | . | mta-gw.infomaniak.ch | ✅ |
-| MX | send | feedback-smtp.eu-west-1.amazonses.com | ✅ |
-| TXT | . | v=spf1 include:spf.infomaniak.ch include:spf.resend.com ~all | ✅ |
-| TXT | send | v=spf1 include:amazonses.com ~all | ✅ |
-| TXT | _dmarc | v=DMARC1; p=quarantine; rua=mailto:dmarc@boom.contact | ✅ |
-| TXT | resend._domainkey | p=MIGfMA0GCSq... | ✅ |
-
-**Action requise** : Infomaniak Manager → boom.contact → DNS → Ajouter TXT `resend._domainkey`
-Valeur : `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/9W6A0Ku3MNuKTPAgNqno/gfoWs5pojTRG4XpLhpsxJIUK1lEmGv75tYHgLzUC7aBd9tfKMGRV/WMpk3AJJA6xGyKtPmhixW2A96Vv9ZQ6cCzLsQqS0rCVvYbonlaARDlru4i8UqqWjslN+IbYzO1yrnEYYglIm34ZA8FJJ9TVQIDAQAB`
+| Type | Nom | Statut |
+|---|---|---|
+| A | . → Railway | ✅ |
+| CNAME | www | ✅ |
+| MX | Infomaniak | ✅ |
+| TXT | SPF Resend | ✅ |
+| TXT | DMARC | ✅ |
+| TXT | resend._domainkey | ✅ ACTIF ET PROPAGÉ |
 
 ---
 
 ## Positionnement — décisions importantes
 
-- ✅ Positionnement mondial — boom.contact est supérieur à tout formulaire papier
-- ✅ **"Document numérique certifié · valable dans 150+ pays"**
-- ✅ Les 17 circonstances sont reformulées dans nos propres termes
+- ✅ Positionnement mondial — supérieur au formulaire papier CEA
+- ✅ "Document numérique certifié · valable dans 150+ pays"
+- ✅ Double marché : B2C conducteurs + B2B institutions Police
+- ✅ Module Police : rejoindre session via QR, jamais notification automatique
+- ✅ Multi-véhicules jusqu'à 5 (game changer — papier limité à 2)
+- ✅ QR persistant 24h pour intervention police tardive
 - ✅ PEP's Swiss SA / Groupe NEUKOMM comme émetteur
-- ✅ **Double marché** : B2C conducteurs + B2B institutions (Police, Gendarmerie, Kantonspolizei)
-- ✅ Module Police = outil métier officiel sur scène d'accident (PV numérique, multi-véhicules, signatures)
+
+---
+
+## Rate limiting actif
+
+| Route | Limite |
+|---|---|
+| /trpc/ocr | 10 req/min/IP |
+| /trpc/session.create | 5 req/min/IP |
+| /trpc/session.join | 10 req/min/IP |
+| /trpc/payment.createCheckout | 3 req/min/IP |
+
+---
+
+## Numéros urgences géolocalisés
+
+35 pays — détection auto GPS + reverse geocoding.
+CH: 117/144 · FR: 17/15 · DE: 110/112 · IT: 113/118 · ES: 091/112 · UK: 999 · US/CA: 911
+Fallback: 112 universel EU.
 
 ---
 
@@ -179,9 +199,8 @@ VITE_STRIPE_PUBLISHABLE_KEY, RESEND_API_KEY
 
 ---
 
-## Agents IA disponibles
+## Agents IA
 
-Accessibles via : https://boom-contact-production.up.railway.app?agents=true
-
-debugger, deployment-validator, backend-architect, database-architect,
-frontend-developer, security-auditor, performance-engineer, code-reviewer, test-automator
+https://boom-contact-production.up.railway.app?agents=true
+debugger · deployment-validator · backend-architect · database-architect
+frontend-developer · security-auditor · performance-engineer · code-reviewer · test-automator
