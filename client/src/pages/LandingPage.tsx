@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 interface Props {
   onStart: () => void;
@@ -62,18 +64,19 @@ function FloatingBadge({ icon, text, style }: { icon: string; text: string; styl
 }
 
 function PhoneMockup() {
+  const { t } = useTranslation();
   const [step, setStep] = useState(0);
   const steps = ['📄 Scan', '📱 QR', '📋 Form', '✍️ Sign', '📄 PDF'];
   useEffect(() => {
-    const t = setInterval(() => setStep(s => (s + 1) % steps.length), 2200);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setStep(s => (s + 1) % steps.length), 2200);
+    return () => clearInterval(timer);
   }, []);
 
   return (
     <div style={{ position: 'relative', width: 200, height: 380, margin: '0 auto' }}>
-      <FloatingBadge icon="🌍" text="50 langues" style={{ top: 20, right: -75, animationDelay: '0s' }} />
-      <FloatingBadge icon="⚡" text="5 min" style={{ bottom: 90, left: -70, animationDelay: '1.5s' }} />
-      <FloatingBadge icon="🔒" text="Chiffré" style={{ top: 150, right: -60, animationDelay: '0.7s' }} />
+      <FloatingBadge icon="🌍" text={t('landing.badges.languages')} style={{ top: 20, right: -75, animationDelay: '0s' }} />
+      <FloatingBadge icon="⚡" text={t('landing.badges.time')} style={{ bottom: 90, left: -70, animationDelay: '1.5s' }} />
+      <FloatingBadge icon="🔒" text={t('landing.badges.encrypted')} style={{ top: 150, right: -60, animationDelay: '0.7s' }} />
       <div style={{
         width: 200, height: 380, borderRadius: 36,
         background: 'linear-gradient(160deg, #1a1a2e 0%, #111120 100%)',
@@ -100,12 +103,12 @@ function PhoneMockup() {
             <div style={{ fontSize: 32, marginBottom: 8 }}>📄</div>
             <div style={{ fontSize: 10, fontWeight: 700, marginBottom: 6 }}>Permis circulation</div>
             <div style={{ height: 55, borderRadius: 8, background: 'rgba(255,53,0,0.1)', border: '1px dashed rgba(255,53,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: 9, opacity: 0.5 }}>📸 Photographier</span>
+              <span style={{ fontSize: 9, opacity: 0.5 }}>{t('landing.mockup.capture')}</span>
             </div>
           </div>}
           {step === 1 && <div style={{ textAlign: 'center', animation: 'fadeInUp 0.4s ease' }}>
             <div style={{ width: 72, height: 72, margin: '0 auto 8px', borderRadius: 8, background: 'linear-gradient(135deg, #FF3500, #FFB300)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📱</div>
-            <div style={{ fontSize: 9, opacity: 0.5 }}>Session #8F2K · En attente…</div>
+            <div style={{ fontSize: 9, opacity: 0.5 }}>{t('landing.mockup.waiting')}</div>
           </div>}
           {step === 2 && <div style={{ animation: 'fadeInUp 0.4s ease' }}>
             {['Plaque', 'Marque', 'Assureur'].map((f, i) => (
@@ -117,13 +120,13 @@ function PhoneMockup() {
           </div>}
           {step === 3 && <div style={{ textAlign: 'center', animation: 'fadeInUp 0.4s ease' }}>
             <div style={{ height: 72, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 6 }} />
-            <div style={{ fontSize: 9, opacity: 0.5 }}>✍️ Signez ici</div>
+            <div style={{ fontSize: 9, opacity: 0.5 }}>✍️ Sign</div>
           </div>}
           {step === 4 && <div style={{ textAlign: 'center', animation: 'fadeInUp 0.4s ease' }}>
             <div style={{ fontSize: 32, marginBottom: 6 }}>📄</div>
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#22c55e', marginBottom: 6 }}>Constat finalisé !</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#22c55e', marginBottom: 6 }}>{t('landing.mockup.done')}</div>
             <div style={{ height: 26, borderRadius: 6, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: 9, fontWeight: 700 }}>Envoyer à l'assureur</span>
+              <span style={{ fontSize: 9, fontWeight: 700 }}>{t('landing.mockup.send')}</span>
             </div>
           </div>}
         </div>
@@ -161,20 +164,19 @@ function FeatureCard({ icon, title, desc, delay }: { icon: string; title: string
 }
 
 export function LandingPage({ onStart, onPricing }: Props) {
+  const { t } = useTranslation();
   const [heroVisible, setHeroVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); }, []);
 
   const flags = ['🇨🇭','🇫🇷','🇩🇪','🇮🇹','🇪🇸','🇬🇧','🇵🇹','🇧🇪','🇳🇱','🇵🇱','🇺🇸','🇯🇵','🇰🇷','🇨🇳','🇮🇳','🇧🇷','🇦🇺','🇲🇦','🇿🇦','🇸🇦'];
-  const features = [
-    { icon: '📸', title: 'OCR universel', desc: 'Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle.' },
-    { icon: '📱', title: 'Jusqu\'à 5 véhicules', desc: 'Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde.' },
-    { icon: '📷', title: 'Photos de scène', desc: '5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF.' },
-    { icon: '✏️', title: 'Croquis libre', desc: 'Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF.' },
-    { icon: '🚗', title: 'Schéma de choc', desc: '700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages.' },
-    { icon: '✍️', title: 'Signatures multi-parties', desc: 'N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police.' },
-    { icon: '📄', title: 'PDF certifié 150+ pays', desc: 'Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d\'assurance.' },
-    { icon: '🚔', title: 'Module Police (bientôt)', desc: 'Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton.' },
-    { icon: '🌍', title: '50 langues + RTL', desc: '5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées.' },
+
+  const features = t('landing.features.list', { returnObjects: true }) as { icon: string; title: string; desc: string }[];
+  const howSteps = t('landing.how.steps', { returnObjects: true }) as { step: string; icon: string; title: string; desc: string }[];
+
+  const stats = [
+    { val: 1800000, suffix: '', label: t('landing.stats.accidents') },
+    { val: 50,      suffix: '', label: t('landing.stats.languages') },
+    { val: 5,       suffix: ' min', label: t('landing.stats.time') },
   ];
 
   return (
@@ -190,8 +192,11 @@ export function LandingPage({ onStart, onPricing }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <img src="/logo.png" alt="boom.contact" style={{ width: 44, height: 44, objectFit: 'contain' }} />
           </div>
-          <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
-            RGPD · nLPD
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
+              RGPD · nLPD
+            </div>
+            <LanguageSwitcher compact />
           </div>
         </nav>
 
@@ -200,20 +205,20 @@ export function LandingPage({ onStart, onPricing }: Props) {
           {/* Badge */}
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 100, background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.2)', width: 'fit-content', marginBottom: 20, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(10px)', transition: 'all 0.5s ease' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--boom)', display: 'inline-block', animation: 'pulse-red 2s infinite' }} />
-            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>Première app mondiale</span>
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{t('landing.badge')}</span>
           </div>
 
           {/* Title */}
           <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 'clamp(48px,12vw,72px)', lineHeight: 0.95, letterSpacing: '-1px', marginBottom: 20, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(20px)', transition: 'all 0.6s ease 0.1s' }}>
-            <span style={{ display: 'block' }}>APRÈS</span>
-            <span style={{ display: 'block' }}>LE&nbsp;<span style={{ color: 'var(--boom)', textShadow: '0 0 40px rgba(255,53,0,0.5)' }}>BOOM</span></span>
-            <span style={{ display: 'block', opacity: 0.35 }}>LE</span>
-            <span style={{ display: 'block' }}>CONTACT</span>
+            <span style={{ display: 'block' }}>{t('landing.hero.line1')}</span>
+            <span style={{ display: 'block' }}>{t('landing.hero.line2').split(' ')[0]}&nbsp;<span style={{ color: 'var(--boom)', textShadow: '0 0 40px rgba(255,53,0,0.5)' }}>{t('landing.hero.line2').split(' ').slice(1).join(' ')}</span></span>
+            <span style={{ display: 'block', opacity: 0.35 }}>{t('landing.hero.line3')}</span>
+            <span style={{ display: 'block' }}>{t('landing.hero.line4')}</span>
           </h1>
 
           {/* Subtitle */}
           <p style={{ fontSize: 15, lineHeight: 1.65, opacity: heroVisible ? 0.6 : 0, marginBottom: 28, maxWidth: 340, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.2s' }}>
-            Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.
+            {t('landing.subtitle')}
           </p>
 
           {/* CTA */}
@@ -223,16 +228,16 @@ export function LandingPage({ onStart, onPricing }: Props) {
               onMouseUp={e => (e.currentTarget.style.transform = 'scale(1)')}
             >
               <span style={{ fontSize: 20 }}>💥</span>
-              Démarrer un constat
+              {t('landing.cta.start')}
               <span style={{ marginLeft: 'auto', fontSize: 20, opacity: 0.7 }}>→</span>
             </button>
             <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
               <p style={{ flex: 1, textAlign: 'center', fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
-                À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT
+                {t('landing.cta.from')}
               </p>
               {onPricing && (
                 <button onClick={onPricing} style={{ fontSize: 11, opacity: 0.5, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
-                  Voir les tarifs →
+                  {t('landing.cta.pricing')}
                 </button>
               )}
             </div>
@@ -248,11 +253,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
       {/* STATS */}
       <div style={{ padding: '44px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-          {[
-            { val: 1800000, suffix: '', label: 'constats/an en Europe' },
-            { val: 50, suffix: '', label: 'langues supportées' },
-            { val: 5, suffix: ' min', label: 'pour finaliser' },
-          ].map((stat, i) => (
+          {stats.map((stat, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: 'clamp(22px,6vw,30px)', color: 'var(--boom)', lineHeight: 1, marginBottom: 6 }}>
                 <Counter to={stat.val} suffix={stat.suffix} duration={2500} />
@@ -266,19 +267,13 @@ export function LandingPage({ onStart, onPricing }: Props) {
       {/* HOW IT WORKS */}
       <div style={{ padding: '52px 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
-          <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>Comment ça marche</div>
-          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 30, letterSpacing: '-0.5px' }}>5 étapes. <span style={{ color: 'var(--boom)' }}>5 minutes.</span></h2>
+          <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>{t('landing.how.label')}</div>
+          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 30, letterSpacing: '-0.5px' }}>{t('landing.how.title')} <span style={{ color: 'var(--boom)' }}>{t('landing.how.title_accent')}</span></h2>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-          {[
-            { step: '01', icon: '📸', title: 'Scannez vos documents', desc: 'Photographiez permis de circulation + carte verte. OCR automatique.' },
-            { step: '02', icon: '📱', title: 'Partagez le QR code', desc: "L'autre conducteur scanne le QR. Session partagée en temps réel." },
-            { step: '03', icon: '📋', title: 'Remplissez le formulaire', desc: 'Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances.' },
-            { step: '04', icon: '🚗', title: 'Zones de choc', desc: 'Cliquez sur le diagramme 18 zones pour indiquer les dommages.' },
-            { step: '05', icon: '✍️', title: 'Signez & envoyez', desc: 'Deux signatures digitales horodatées. PDF certifié instantanément.' },
-          ].map((item, i) => (
-            <div key={i} style={{ display: 'flex', gap: 16, position: 'relative', paddingBottom: i < 4 ? 28 : 0 }}>
-              {i < 4 && <div style={{ position: 'absolute', left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
+          {howSteps.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: 16, position: 'relative', paddingBottom: i < howSteps.length - 1 ? 28 : 0 }}>
+              {i < howSteps.length - 1 && <div style={{ position: 'absolute', left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
               <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Oswald, sans-serif', fontSize: 13, color: 'var(--boom)' }}>
                 {item.step}
               </div>
@@ -293,7 +288,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
 
       {/* FEATURES */}
       <div style={{ padding: '0 24px 52px' }}>
-        <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, textAlign: 'center', marginBottom: 28 }}>Tout ce dont vous avez besoin</h2>
+        <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, textAlign: 'center', marginBottom: 28 }}>{t('landing.features.title')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           {features.map((f, i) => <FeatureCard key={i} {...f} delay={i * 80} />)}
         </div>
@@ -302,13 +297,13 @@ export function LandingPage({ onStart, onPricing }: Props) {
       {/* COUNTRIES */}
       <div style={{ padding: '36px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ textAlign: 'center', marginBottom: 18 }}>
-          <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 8 }}>Couverture mondiale</div>
-          <h3 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22 }}>De la Suisse à la Chine</h3>
+          <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 8 }}>{t('landing.coverage.label')}</div>
+          <h3 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22 }}>{t('landing.coverage.title')}</h3>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
           {flags.map((f, i) => <span key={i} style={{ fontSize: 22, opacity: 0.7, cursor: 'default', transition: 'all 0.2s' }} onMouseEnter={e => { (e.target as HTMLElement).style.opacity = '1'; (e.target as HTMLElement).style.transform = 'scale(1.3)'; }} onMouseLeave={e => { (e.target as HTMLElement).style.opacity = '0.7'; (e.target as HTMLElement).style.transform = ''; }}>{f}</span>)}
         </div>
-        <p style={{ textAlign: 'center', marginTop: 14, fontSize: 11, opacity: 0.3 }}>+ 30 autres pays · Support RTL intégré</p>
+        <p style={{ textAlign: 'center', marginTop: 14, fontSize: 11, opacity: 0.3 }}>{t('landing.coverage.more')}</p>
       </div>
 
       {/* LEGAL */}
@@ -317,8 +312,8 @@ export function LandingPage({ onStart, onPricing }: Props) {
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
             <span style={{ fontSize: 26, flexShrink: 0 }}>⚖️</span>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5 }}>Standard international</div>
-              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.65 }}>Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable.</div>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5 }}>{t('landing.legal.title')}</div>
+              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
             </div>
           </div>
         </div>
@@ -329,12 +324,12 @@ export function LandingPage({ onStart, onPricing }: Props) {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <img src="/logo.png" alt="boom.contact" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
-          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, marginBottom: 10 }}>Prêt en cas d'accident ?</h2>
-          <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 280, margin: '0 auto 28px' }}>Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.</p>
+          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, marginBottom: 10 }}>{t('landing.finalCta.title')}</h2>
+          <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 280, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
           <button onClick={onStart} style={{ padding: '16px 32px', fontSize: 15, fontWeight: 700, borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
-            Démarrer un constat <span style={{ fontSize: 16 }}>→</span>
+            {t('landing.finalCta.button')} <span style={{ fontSize: 16 }}>→</span>
           </button>
-          <p style={{ marginTop: 10, fontSize: 10, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>GRATUIT · SANS INSCRIPTION · RGPD</p>
+          <p style={{ marginTop: 10, fontSize: 10, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>{t('landing.cta.free')}</p>
         </div>
       </div>
 
@@ -344,11 +339,10 @@ export function LandingPage({ onStart, onPricing }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <img src="/logo.png" alt="boom.contact" style={{ height: 32, objectFit: 'contain' }} />
           </div>
-          <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>© 2026 PEP's Swiss SA / Groupe NEUKOMM</span>
+          <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>{t('landing.footer.copyright')}</span>
         </div>
         <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8 }}>
-          PEP's Swiss SA · Groupe NEUKOMM · FINMA F01042365<br/>
-          Bellevue 7, 2950 Courgenay, Jura, Suisse
+          {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
         </div>
       </div>
     </div>
