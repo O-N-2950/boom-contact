@@ -3,9 +3,7 @@ import { db, schema } from '../db/index.js';
 import { eq } from 'drizzle-orm';
 import { randomBytes } from 'crypto';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-18.acacia',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 const BASE_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
