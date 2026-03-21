@@ -4,14 +4,28 @@
 
 export type SessionStatus = 'waiting' | 'active' | 'signing' | 'completed' | 'expired';
 
+// Types de véhicules — boom.contact
+export type VehicleType = 'car' | 'motorcycle' | 'truck' | 'bicycle' | 'pedestrian' | 'other';
+
 export interface VehicleData {
+  vehicleType?: VehicleType;       // type de véhicule impliqué
   licensePlate: string;
   brand: string;
   model: string;
   year?: string;
   color?: string;
   vin?: string;
-  category?: string;
+  category?: string;               // catégorie permis
+}
+
+// Blessures — pour piétons et conducteurs blessés
+export interface InjuryData {
+  hasInjuries: boolean;
+  description?: string;            // localisation des douleurs, blessures visibles
+  ambulance?: boolean;             // prise en charge par ambulance
+  hospitalized?: boolean;          // hospitalisation
+  selfReported?: string;           // déclaration libre du blessé
+  severity?: 'minor' | 'moderate' | 'serious'; // léger / moyen / grave
 }
 
 export interface DriverData {
@@ -88,6 +102,9 @@ export interface AccidentData {
   policeReport?: boolean;
   policeRef?: string;
   injuries?: boolean;
+  injuryDetails?: InjuryData;     // détails blessures si injuries=true
+  thirdPartyDamage?: boolean;     // dégâts à d'autres véhicules/biens
+  vehicleCount?: number;          // nb de véhicules impliqués
 }
 
 export interface ConstatSession {

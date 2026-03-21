@@ -1,3 +1,4 @@
+import { LocationStep } from '../components/constat/LocationStep';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -9,7 +10,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'qr' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -35,6 +36,8 @@ export function ConstatFlow() {
   const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'ocr');
   const [sessionId, setSessionId] = useState<string | null>(saved?.sessionId || null);
   const [qrUrl, setQrUrl] = useState<string>(saved?.qrUrl || '');
+  const [accidentData, setAccidentData] = useState<Partial<AccidentData>>(saved?.accidentData || {});
+  const [vehicleType, setVehicleType] = useState<VehicleType | null>(saved?.vehicleType || null);
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(saved?.participantData || { role: 'A' });
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [otherSigned, setOtherSigned] = useState(false);
@@ -84,6 +87,23 @@ export function ConstatFlow() {
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard.insurance    ?? {},
     }));
+    setStep('qr');
+  };
+
+  const handleLocationComplete = (data: Partial<AccidentData> & { vehicleType: VehicleType }) => {
+    const { vehicleType: vt, ...accident } = data;
+    setVehicleType(vt);
+    setAccidentData(accident);
+    // Save vehicle type in participant data
+    setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
+    // Update session with accident data
+    if (sessionId) {
+      fetch('/trpc/session.updateAccident', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, accident }),
+      }).catch(console.error);
+    }
     setStep('qr');
   };
 

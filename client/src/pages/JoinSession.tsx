@@ -1,3 +1,4 @@
+import { LocationStep } from '../components/constat/LocationStep';
 import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -8,7 +9,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData } from '../../../shared/types';
 
-type FlowStep = 'landing' | 'ocr' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'landing' | 'ocr' | 'location' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_b';
 
@@ -94,6 +95,12 @@ export function JoinSession() {
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard.insurance    ?? {},
     }));
+    setStep('form');
+  };
+
+  const handleLocationComplete = (data: any) => {
+    const { vehicleType: vt, ...accident } = data;
+    setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
     setStep('form');
   };
 
@@ -224,6 +231,9 @@ export function JoinSession() {
       {step !== 'done' && <StepIndicator steps={STEPS} currentIndex={currentStepIdx} />}
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
+        {step === 'location' && (
+          <LocationStep onComplete={handleLocationComplete} />
+        )}
         {step === 'ocr' && (
           <OCRScanner role="B" onComplete={handleOCRComplete} />
         )}
