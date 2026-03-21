@@ -43,15 +43,48 @@ export const io = new SocketServer(httpServer, {
 (async () => {
   try {
     const { rateLimit } = await import('express-rate-limit');
+
+    // OCR — 10 req/min (Claude Vision coûteux)
     app.use('/trpc/ocr', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
-        logger.warn('Rate limit hit', { ip: req.ip, path: req.path });
+        logger.warn('Rate limit hit OCR', { ip: req.ip });
         res.status(429).json({ error: 'Trop de requêtes OCR. Réessayez dans 1 minute.' });
       },
     }));
-    logger.info('🚦 Rate limiting active on /trpc/ocr (10 req/min)');
+
+    // session.create — 5 créations/min par IP
+    app.use('/trpc/session.create', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.create', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de sessions créées. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // session.join — 10 tentatives/min par IP
+    app.use('/trpc/session.join', rateLimit({
+      windowMs: 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.join', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // payment.createCheckout — 3 tentatives/min par IP (anti-abus Stripe)
+    app.use('/trpc/payment.createCheckout', rateLimit({
+      windowMs: 60 * 1000, max: 3,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit payment', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives de paiement. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min)');
   } catch (e) { logger.warn('Rate limit not available', { error: String(e) }); }
 })();
 

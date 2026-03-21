@@ -81,6 +81,13 @@ export function ConstatFlow() {
     onSuccess: (data) => {
       setSessionId(data.sessionId);
       setQrUrl(data.qrUrl);
+      // Push accidentData (location + photos) immediately after session creation
+      if (Object.keys(accidentData).length > 0) {
+        updateAccidentMutation.mutate({
+          sessionId: data.sessionId,
+          data: { ...accidentData, photos } as any,
+        });
+      }
     },
     onError: (err) => console.error('session.create failed:', err.message),
   });

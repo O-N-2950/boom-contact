@@ -13,7 +13,8 @@ export function CGUModal({ onAccept, onClose }: Props) {
   const [tab, setTab] = useState<'cgu' | 'privacy'>('cgu');
   const [error, setError] = useState<string | null>(null);
 
-  const canProceed = email.includes('@') && consentCGU;
+  const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
+  const canProceed = isValidEmail(email) && consentCGU;
 
   const saveConsentMutation = trpc.user.saveConsent.useMutation({
     onSuccess: () => {

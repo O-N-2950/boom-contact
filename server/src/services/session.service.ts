@@ -144,27 +144,49 @@ export async function updateAccident(
 // ─────────────────────────────────────────────────────────────
 export async function signSession(
   id: string,
-  role: 'A' | 'B',
+  role: string,
   signatureBase64: string,
 ): Promise<{ session: ConstatSession; bothSigned: boolean } | null> {
   const session = await getSession(id);
   if (!session) return null;
 
-  const key = role === 'A' ? 'participantA' : 'participantB';
-  const current = role === 'A' ? session.participantA : (session.participantB ?? {});
+  // Map role to DB column
+  const keyMap: Record<string, string> = {
+    A: 'participantA', B: 'participantB', C: 'participantC', D: 'participantD', E: 'participantE',
+  };
+  const key = keyMap[role];
+  if (!key) return null;
+
+  const current = (session as any)[role === 'A' ? 'participantA'
+    : role === 'B' ? 'participantB'
+    : role === 'C' ? 'participantC'
+    : role === 'D' ? 'participantD'
+    : 'participantE'] ?? {};
+
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
-  const otherKey = role === 'A' ? session.participantB : session.participantA;
-  const bothSigned = !!(otherKey as any)?.signature;
-  const newStatus = bothSigned ? 'completed' : 'signing';
+  // allSigned = every participant that exists (has a driver name) has now signed
+  const participants = [
+    role === 'A' ? updated : session.participantA,
+    role === 'B' ? updated : session.participantB,
+    (session as any).participantC && (role === 'C' ? updated : (session as any).participantC),
+    (session as any).participantD && (role === 'D' ? updated : (session as any).participantD),
+    (session as any).participantE && (role === 'E' ? updated : (session as any).participantE),
+  ].filter(Boolean);
+
+  const presentParticipants = participants.filter((p: any) => p?.driver?.firstName || p?.vehicle?.licensePlate);
+  const allSigned = presentParticipants.length >= 2 &&
+    presentParticipants.every((p: any) => !!p?.signature);
+
+  const newStatus = allSigned ? 'completed' : 'signing';
 
   const [row] = await db.update(schema.sessions)
-    .set({ [key]: updated, status: newStatus })
+    .set({ [key]: updated, status: newStatus } as any)
     .where(eq(schema.sessions.id, id))
     .returning();
 
-  logger.session(bothSigned ? 'completed' : `signed-${role}`, id, role);
-  return { session: rowToSession(row), bothSigned };
+  logger.session(allSigned ? 'completed' : `signed-${role}`, id, role);
+  return { session: rowToSession(row), bothSigned: allSigned };
 }
 
 // ─────────────────────────────────────────────────────────────

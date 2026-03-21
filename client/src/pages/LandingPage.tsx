@@ -166,12 +166,15 @@ export function LandingPage({ onStart, onPricing }: Props) {
 
   const flags = ['🇨🇭','🇫🇷','🇩🇪','🇮🇹','🇪🇸','🇬🇧','🇵🇹','🇧🇪','🇳🇱','🇵🇱','🇺🇸','🇯🇵','🇰🇷','🇨🇳','🇮🇳','🇧🇷','🇦🇺','🇲🇦','🇿🇦','🇸🇦'];
   const features = [
-    { icon: '📸', title: 'OCR universel', desc: 'Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证...' },
-    { icon: '📱', title: 'QR en temps réel', desc: 'Un QR relie les deux téléphones. Chacun remplit ses infos en parallèle.' },
-    { icon: '🚗', title: 'Schéma de choc', desc: '18 zones cliquables sur un diagramme SVG. Indiquez précisément les dommages.' },
-    { icon: '✍️', title: 'Double signature', desc: 'Deux signatures tactiles simultanées. Valeur légale dans 150+ pays.' },
-    { icon: '📄', title: 'PDF universel', desc: 'Document numérique reconnu par les assureurs dans le monde entier.' },
-    { icon: '🌍', title: '50 langues + RTL', desc: '5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif.' },
+    { icon: '📸', title: 'OCR universel', desc: 'Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle.' },
+    { icon: '📱', title: 'Jusqu\'à 5 véhicules', desc: 'Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde.' },
+    { icon: '📷', title: 'Photos de scène', desc: '5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF.' },
+    { icon: '✏️', title: 'Croquis libre', desc: 'Section 13 CEA — dessinez la position des véhicules, flèches de direction, route. Export PNG dans le PDF.' },
+    { icon: '🚗', title: 'Schéma de choc', desc: '700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages.' },
+    { icon: '✍️', title: 'Signatures multi-parties', desc: 'N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police.' },
+    { icon: '📄', title: 'PDF complet CEA', desc: '14 sections, témoins, dégâts tiers, observations, croquis, photos. Reconnu par tous les assureurs.' },
+    { icon: '🚔', title: 'Module Police (bientôt)', desc: 'Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton.' },
+    { icon: '🌍', title: '50 langues + RTL', desc: '5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées.' },
   ];
 
   return (
