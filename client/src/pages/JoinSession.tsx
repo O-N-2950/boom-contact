@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { ConstatForm } from '../components/constat/ConstatForm';
-import { CarDiagram } from '../components/constat/CarDiagram';
+import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
@@ -244,7 +244,15 @@ export function JoinSession() {
 
         {step === 'diagram' && (
           <div>
-            <CarDiagram role="B" selected={damagedZones} onChange={setDamagedZones} />
+            <VehicleDiagram
+                  role="B"
+                  vehicleType={participantData.vehicle?.vehicleType}
+                  brand={participantData.vehicle?.brand}
+                  model={participantData.vehicle?.model}
+                  color={participantData.vehicle?.color}
+                  selected={damagedZones}
+                  onChange={setDamagedZones}
+                />
             <div style={{ padding: '0 20px 20px' }}>
               <button onClick={handleDiagramDone} style={{ width: '100%', padding: '16px', borderRadius: 10, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700 }}>
                 Continuer → Signature

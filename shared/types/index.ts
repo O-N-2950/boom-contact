@@ -4,11 +4,60 @@
 
 export type SessionStatus = 'waiting' | 'active' | 'signing' | 'completed' | 'expired';
 
-// Types de véhicules — boom.contact
-export type VehicleType = 'car' | 'motorcycle' | 'truck' | 'bicycle' | 'pedestrian' | 'other';
+// ── Types de véhicules exhaustifs ─────────────────────────────
+export type VehicleType =
+  // Véhicules à moteur légers
+  | 'car'              // Voiture, SUV, berline, break, citadine
+  | 'motorcycle'       // Moto, motocyclette
+  | 'scooter'          // Scooter, cyclomoteur (<50cm3)
+  | 'moped'            // Vélomoteur, 2 roues <45km/h
+  | 'escooter'         // Trottinette électrique, EDPM
+  // Véhicules utilitaires / lourds
+  | 'truck'            // Camion, poids lourd, semi-remorque
+  | 'van'              // Fourgonnette, camionnette, utilitaire léger
+  | 'construction'     // Engin de chantier (tractopelle, grue...)
+  | 'tractor'          // Tracteur agricole
+  // Transport en commun
+  | 'bus'              // Bus, autocar, minibus
+  | 'tram'             // Tramway
+  | 'train'            // Train, RER, métro
+  // Cycles
+  | 'bicycle'          // Vélo, vélo électrique (VAE)
+  | 'cargo_bike'       // Vélo cargo, bakfiets
+  // Piéton / autre
+  | 'pedestrian'       // Piéton
+  | 'quad'             // Quad, buggy
+  | 'boat'             // Bateau, embarcation
+  | 'other';           // Autre / non listé
 
+// Groupe pour le croquis SVG
+export type VehicleShapeGroup =
+  | 'car'        // Voiture standard
+  | 'moto'       // 2 roues motorisé
+  | 'truck'      // Poids lourd / bus
+  | 'bicycle'    // Vélo / trottinette
+  | 'pedestrian' // Piéton
+  | 'rail'       // Tram / train
+  | 'other';     // Quad / autre
+
+export function getShapeGroup(type: VehicleType): VehicleShapeGroup {
+  switch (type) {
+    case 'car':                        return 'car';
+    case 'motorcycle': case 'scooter':
+    case 'moped': case 'escooter':     return 'moto';
+    case 'truck': case 'van':
+    case 'bus': case 'construction':
+    case 'tractor':                    return 'truck';
+    case 'bicycle': case 'cargo_bike': return 'bicycle';
+    case 'pedestrian':                 return 'pedestrian';
+    case 'tram': case 'train':         return 'rail';
+    default:                           return 'other';
+  }
+}
+
+// ── Données véhicule ─────────────────────────────────────────
 export interface VehicleData {
-  vehicleType?: VehicleType;       // type de véhicule impliqué
+  vehicleType?: VehicleType;
   licensePlate: string;
   brand: string;
   model: string;
@@ -18,16 +67,17 @@ export interface VehicleData {
   category?: string;               // catégorie permis
 }
 
-// Blessures — pour piétons et conducteurs blessés
+// ── Blessures ─────────────────────────────────────────────────
 export interface InjuryData {
   hasInjuries: boolean;
-  description?: string;            // localisation des douleurs, blessures visibles
-  ambulance?: boolean;             // prise en charge par ambulance
-  hospitalized?: boolean;          // hospitalisation
-  selfReported?: string;           // déclaration libre du blessé
-  severity?: 'minor' | 'moderate' | 'serious'; // léger / moyen / grave
+  description?: string;
+  ambulance?: boolean;
+  hospitalized?: boolean;
+  selfReported?: string;
+  severity?: 'minor' | 'moderate' | 'serious';
 }
 
+// ── Conducteur ────────────────────────────────────────────────
 export interface DriverData {
   firstName: string;
   lastName: string;
@@ -41,6 +91,7 @@ export interface DriverData {
   licenseExpiry?: string;
 }
 
+// ── Assurance ─────────────────────────────────────────────────
 export interface InsuranceData {
   company: string;
   policyNumber: string;
@@ -52,37 +103,57 @@ export interface InsuranceData {
   greenCardExpiry?: string;
 }
 
+// ── OCR ───────────────────────────────────────────────────────
 export interface LowConfidenceField {
-  field: string;    // e.g. "vehicle.licensePlate"
-  value: string;    // the uncertain value
-  confidence: number; // 0.0–0.74
+  field: string;
+  value: string;
+  confidence: number;
 }
 
 export interface OCRResult {
   type: 'vehicle_registration' | 'green_card' | 'drivers_license' | 'insurance_certificate' | 'unknown';
-  confidence: number;             // overall 0.0–1.0
-  country?: string;               // ISO code e.g. "CH", "FR"
-  language?: string;              // ISO code e.g. "fr", "de"
+  confidence: number;
+  country?: string;
+  language?: string;
   vehicle?: Partial<VehicleData>;
   driver?: Partial<DriverData>;
   insurance?: Partial<InsuranceData>;
-  lowConfidenceFields: LowConfidenceField[]; // fields needing human review
-  warnings: string[];             // expired doc, blurry, partial view, etc.
+  lowConfidenceFields: LowConfidenceField[];
+  warnings: string[];
   rawText: string;
 }
 
+// ── Photo de scène ────────────────────────────────────────────
+export type PhotoCategory =
+  | 'scene'      // Lieu du sinistre, vue générale
+  | 'vehicleA'   // Dommages véhicule A
+  | 'vehicleB'   // Dommages véhicule B
+  | 'injury'     // Blessures
+  | 'document'   // Document, plaque, papier
+  | 'other';     // Autre
+
+export interface ScenePhoto {
+  id: string;
+  category: PhotoCategory;
+  base64: string;       // JPEG compressé
+  caption?: string;
+  takenAt: string;      // ISO timestamp
+}
+
+// ── Participant ───────────────────────────────────────────────
 export interface ParticipantData {
   role: 'A' | 'B';
   vehicle: Partial<VehicleData>;
   driver: Partial<DriverData>;
   insurance: Partial<InsuranceData>;
-  damagedZones: string[];         // e.g. ['front', 'front-left']
-  circumstances: string[];        // accident circumstances checkboxes
-  signature?: string;             // base64 PNG
+  damagedZones: string[];
+  circumstances: string[];
+  signature?: string;
   signedAt?: Date;
-  language: string;               // ISO language code
+  language: string;
 }
 
+// ── Localisation ──────────────────────────────────────────────
 export interface AccidentLocation {
   address: string;
   city: string;
@@ -91,22 +162,25 @@ export interface AccidentLocation {
   lng?: number;
 }
 
+// ── Données accident ──────────────────────────────────────────
 export interface AccidentData {
   date: string;
   time: string;
   location: Partial<AccidentLocation>;
-  sketchImage?: string;           // base64 PNG
+  photos?: ScenePhoto[];           // Photos de la scène (max 10)
+  sketchImage?: string;            // Croquis base64 PNG
   description?: string;
   faultDeclaration?: 'A' | 'B' | 'shared' | 'unknown';
   witnesses?: string;
   policeReport?: boolean;
   policeRef?: string;
   injuries?: boolean;
-  injuryDetails?: InjuryData;     // détails blessures si injuries=true
-  thirdPartyDamage?: boolean;     // dégâts à d'autres véhicules/biens
-  vehicleCount?: number;          // nb de véhicules impliqués
+  injuryDetails?: InjuryData;
+  thirdPartyDamage?: boolean;
+  vehicleCount?: number;
 }
 
+// ── Session ───────────────────────────────────────────────────
 export interface ConstatSession {
   id: string;
   status: SessionStatus;

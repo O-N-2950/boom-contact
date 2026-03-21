@@ -5,13 +5,38 @@ interface Props {
   onComplete: (data: Partial<AccidentData> & { vehicleType: VehicleType }) => void;
 }
 
-const VEHICLE_TYPES: { id: VehicleType; icon: string; label: string; sub: string }[] = [
-  { id: 'car',         icon: '🚗', label: 'Voiture',          sub: 'Berline, SUV, break, citadine…' },
-  { id: 'motorcycle',  icon: '🏍️', label: 'Moto / Scooter',   sub: 'Deux-roues motorisé' },
-  { id: 'truck',       icon: '🚚', label: 'Camion / Utilitaire', sub: 'Poids lourd, van, camionnette' },
-  { id: 'bicycle',     icon: '🚲', label: 'Vélo / Trottinette', sub: 'Cycle, VAE, EDPM' },
-  { id: 'pedestrian',  icon: '🚶', label: 'Piéton',            sub: 'Personne à pied impliquée' },
-  { id: 'other',       icon: '🚌', label: 'Autre',             sub: 'Bus, tramway, quad…' },
+const VEHICLE_GROUPS: {
+  group: string;
+  types: { id: VehicleType; icon: string; label: string; sub: string }[];
+}[] = [
+  { group: 'Véhicules légers', types: [
+    { id: 'car',          icon: '🚗', label: 'Voiture',              sub: 'Berline, SUV, break, 4×4, citadine' },
+    { id: 'van',          icon: '🚐', label: 'Fourgon / Utilitaire', sub: 'Camionnette, van, utilitaire léger' },
+    { id: 'motorcycle',   icon: '🏍️', label: 'Moto',                 sub: 'Moto, motocyclette' },
+    { id: 'scooter',      icon: '🛵', label: 'Scooter / Cyclomoteur', sub: 'Scooter, 50cm³' },
+    { id: 'moped',        icon: '🛵', label: 'Vélomoteur',           sub: '2 roues <45km/h, 125cm³' },
+    { id: 'escooter',     icon: '🛴', label: 'Trottinette électrique', sub: 'EDPM, gyroroue, hoverboard' },
+    { id: 'quad',         icon: '🏎️', label: 'Quad / Buggy',         sub: 'Véhicule tout-terrain motorisé' },
+  ]},
+  { group: 'Véhicules lourds', types: [
+    { id: 'truck',        icon: '🚚', label: 'Camion / Poids lourd', sub: 'Semi-remorque, porteur, benne' },
+    { id: 'bus',          icon: '🚌', label: 'Bus / Autocar',        sub: 'Bus urbain, car, minibus' },
+    { id: 'construction', icon: '🚜', label: 'Engin de chantier',    sub: 'Tractopelle, grue, pelleteuse, dumper' },
+    { id: 'tractor',      icon: '🚜', label: 'Tracteur agricole',    sub: 'Tracteur, engin agricole' },
+  ]},
+  { group: 'Transport en commun / rail', types: [
+    { id: 'tram',         icon: '🚋', label: 'Tramway',              sub: 'Tram, métro léger' },
+    { id: 'train',        icon: '🚆', label: 'Train / Métro',        sub: 'Train, RER, métro souterrain' },
+  ]},
+  { group: 'Cycles', types: [
+    { id: 'bicycle',      icon: '🚲', label: 'Vélo',                 sub: 'Vélo classique, VAE, vélo électrique' },
+    { id: 'cargo_bike',   icon: '🚲', label: 'Vélo cargo',           sub: 'Bakfiets, triporteur, cargo électrique' },
+  ]},
+  { group: 'Personne / Autre', types: [
+    { id: 'pedestrian',   icon: '🚶', label: 'Piéton',               sub: 'Personne à pied, rollers, skateboard' },
+    { id: 'boat',         icon: '⛵', label: 'Bateau',               sub: 'Embarcation, jet-ski, canot' },
+    { id: 'other',        icon: '❓', label: 'Autre véhicule',       sub: 'Non listé — préciser dans observations' },
+  ]},
 ];
 
 type GeoStatus = 'idle' | 'loading' | 'success' | 'denied' | 'error';
@@ -106,27 +131,35 @@ export function LocationStep({ onComplete }: Props) {
           fontFamily: 'monospace', marginBottom: 12 }}>
           Votre véhicule
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-          {VEHICLE_TYPES.map(v => {
-            const sel = vehicleType === v.id;
-            return (
-              <button key={v.id} onClick={() => setVehicleType(v.id)} style={{
-                padding: '12px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
-                background: sel ? 'rgba(255,53,0,0.12)' : 'rgba(255,255,255,0.03)',
-                outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.08)',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-                transition: 'all 0.15s',
-              }}>
-                <span style={{ fontSize: 26 }}>{v.icon}</span>
-                <span style={{ fontSize: 12, fontWeight: sel ? 700 : 500, color: sel ? 'var(--boom)' : 'var(--text)' }}>
-                  {v.label}
-                </span>
-                <span style={{ fontSize: 9, opacity: 0.4, textAlign: 'center', lineHeight: 1.3 }}>
-                  {v.sub}
-                </span>
-              </button>
-            );
-          })}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {VEHICLE_GROUPS.map(group => (
+            <div key={group.group}>
+              <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.3, textTransform: 'uppercase',
+                fontFamily: 'monospace', marginBottom: 8 }}>{group.group}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+                {group.types.map(v => {
+                  const sel = vehicleType === v.id;
+                  return (
+                    <button key={v.id} onClick={() => setVehicleType(v.id)} style={{
+                      padding: '12px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
+                      background: sel ? 'rgba(255,53,0,0.12)' : 'rgba(255,255,255,0.03)',
+                      outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.08)',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                      transition: 'all 0.15s',
+                    }}>
+                      <span style={{ fontSize: 26 }}>{v.icon}</span>
+                      <span style={{ fontSize: 12, fontWeight: sel ? 700 : 500, color: sel ? 'var(--boom)' : 'var(--text)' }}>
+                        {v.label}
+                      </span>
+                      <span style={{ fontSize: 9, opacity: 0.4, textAlign: 'center', lineHeight: 1.3 }}>
+                        {v.sub}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
