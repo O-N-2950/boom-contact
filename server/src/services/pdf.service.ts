@@ -112,7 +112,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // Logo / title
   drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white);
   drawText(page, 'CONSTAT AMIABLE D\'ACCIDENT', margin, height - 34, normal, 9, rgb(1, 0.8, 0.75));
-  drawText(page, 'EUROPEAN ACCIDENT STATEMENT · CEA STANDARD', margin, height - 44, normal, 6.5, rgb(1, 0.7, 0.65));
+  drawText(page, 'BOOM.CONTACT · ACCIDENT REPORT · DIGITAL CERTIFIED', margin, height - 44, normal, 6.5, rgb(1, 0.7, 0.65));
 
   // Session info top right
   const sessionText = `Session: ${session.id}`;
@@ -354,7 +354,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   drawText(page, 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app', margin, 38, normal, 7, C.mid);
   drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - Groupe NEUKOMM`,
     margin, 28, mono, 6.5, C.mid);
-  drawText(page, 'Standard CEA (Comité Européen des Assurances) · Valable dans tous les pays membres',
+  drawText(page, 'boom.contact by PEP\'s Swiss SA · Document numérique certifié · Valable mondialement',
     margin, 18, normal, 6.5, C.mid);
 
   // Red corner accent

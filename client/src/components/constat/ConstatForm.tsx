@@ -7,25 +7,25 @@ interface Props {
   onSave: (data: Partial<ParticipantData>) => void;
 }
 
-// CEA standard circumstances checkboxes (translated for FR)
-const CEA_CIRCUMSTANCES = [
-  { id: 'c1',  label: 'En stationnement / à l\'arrêt' },
-  { id: 'c2',  label: 'Quittait un stationnement / une place de stationnement' },
-  { id: 'c3',  label: 'Prenait un stationnement / une place de stationnement' },
-  { id: 'c4',  label: 'Sortait d\'un parking, d\'un lieu privé, d\'un chemin de terre' },
-  { id: 'c5',  label: 'S\'engageait dans un parking, lieu privé, chemin de terre' },
-  { id: 'c6',  label: 'S\'engageait dans une voie de circulation' },
-  { id: 'c7',  label: 'Circulait dans le même sens, sur la même file' },
-  { id: 'c8',  label: 'Circulait dans le même sens, sur une file différente' },
-  { id: 'c9',  label: 'Changeait de file' },
-  { id: 'c10', label: 'Doublait' },
-  { id: 'c11', label: 'Prenait la droite pour une bifurcation' },
-  { id: 'c12', label: 'Prenait la gauche pour une bifurcation' },
-  { id: 'c13', label: 'Reculait' },
-  { id: 'c14', label: 'Empiétait sur la voie réservée à la circulation en sens inverse' },
-  { id: 'c15', label: 'Venait de droite (à un carrefour)' },
-  { id: 'c16', label: 'N\'avait pas respecté un signal de priorité ou un feu rouge' },
-  { id: 'c17', label: 'Autre — décrire dans les observations' },
+// Circonstances boom.contact — reformulées (17 situations standard)
+const ACCIDENT_CIRCUMSTANCES = [
+  { id: 'c1',  label: 'Était à l\'arrêt ou garé sur la chaussée' },
+  { id: 'c2',  label: 'Quittait sa place de stationnement ou s\'insérait dans la circulation' },
+  { id: 'c3',  label: 'Se garait ou cherchait à se stationner' },
+  { id: 'c4',  label: 'Sortait d\'un accès privé, d\'un parking ou d\'un chemin' },
+  { id: 'c5',  label: 'Entrait dans un accès privé, un parking ou un chemin' },
+  { id: 'c6',  label: 'S\'engageait dans un rond-point ou une voie de circulation' },
+  { id: 'c7',  label: 'Roulait dans le même sens sur la même voie' },
+  { id: 'c8',  label: 'Roulait dans le même sens sur une voie adjacente' },
+  { id: 'c9',  label: 'Changeait de voie ou se déportait latéralement' },
+  { id: 'c10', label: 'Effectuait un dépassement' },
+  { id: 'c11', label: 'Tournait à droite' },
+  { id: 'c12', label: 'Tournait à gauche' },
+  { id: 'c13', label: 'Effectuait une marche arrière' },
+  { id: 'c14', label: 'Circulait à contresens sur sa voie' },
+  { id: 'c15', label: 'Arrivait de droite à une intersection' },
+  { id: 'c16', label: 'N\'avait pas respecté un signal de priorité ou un feu de signalisation' },
+  { id: 'c17', label: 'Autre situation — préciser dans les observations' },
 ];
 
 type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances';
@@ -157,7 +157,7 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
             Cochez toutes les cases qui décrivent la situation de votre véhicule <strong>({role})</strong> au moment du choc.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {CEA_CIRCUMSTANCES.map(c => {
+            {ACCIDENT_CIRCUMSTANCES.map(c => {
               const checked = data.circumstances?.includes(c.id);
               return (
                 <button key={c.id} onClick={() => toggleCircumstance(c.id)} style={{

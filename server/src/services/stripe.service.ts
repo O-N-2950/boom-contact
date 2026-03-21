@@ -18,7 +18,7 @@ export const PACKAGES = {
     credits: 1,
     priceEUR: 490,   // centimes
     priceCHF: 490,
-    description: '1 constat amiable numérique CEA',
+    description: '1 constat numérique certifié boom.contact',
     popular: false,
   },
   pack3: {
@@ -27,7 +27,7 @@ export const PACKAGES = {
     credits: 3,
     priceEUR: 1290,
     priceCHF: 1290,
-    description: '3 constats — idéal pour la famille',
+    description: '3 constats numériques — idéal pour la famille',
     popular: true,
     savings: '12%',
   },

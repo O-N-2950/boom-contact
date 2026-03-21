@@ -63,7 +63,7 @@ export interface ParticipantData {
   driver: Partial<DriverData>;
   insurance: Partial<InsuranceData>;
   damagedZones: string[];         // e.g. ['front', 'front-left']
-  circumstances: string[];        // CEA checkboxes
+  circumstances: string[];        // accident circumstances checkboxes
   signature?: string;             // base64 PNG
   signedAt?: Date;
   language: string;               // ISO language code

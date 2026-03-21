@@ -192,7 +192,7 @@ export function PricingPage({ userEmail, onBack }: Props) {
           {[
             { icon: '🔒', text: 'Paiement sécurisé via Stripe (PCI-DSS)' },
             { icon: '📄', text: 'Crédits sans date d\'expiration' },
-            { icon: '🌍', text: 'PDF CEA valable dans 50+ pays' },
+            { icon: '🌍', text: 'Document numérique certifié · valable dans 150+ pays' },
             { icon: '🏛️', text: 'PEP\'s Swiss SA — Courgenay, Jura, Suisse' },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 12, opacity: 0.6 }}>

@@ -169,8 +169,8 @@ export function LandingPage({ onStart, onPricing }: Props) {
     { icon: '📸', title: 'OCR universel', desc: 'Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证...' },
     { icon: '📱', title: 'QR en temps réel', desc: 'Un QR relie les deux téléphones. Chacun remplit ses infos en parallèle.' },
     { icon: '🚗', title: 'Schéma de choc', desc: '18 zones cliquables sur un diagramme SVG. Indiquez précisément les dommages.' },
-    { icon: '✍️', title: 'Double signature', desc: 'Deux signatures tactiles simultanées. Équivalent légal CEA.' },
-    { icon: '📄', title: 'PDF CEA conforme', desc: 'Document reconnu par toutes les compagnies d\'assurance européennes.' },
+    { icon: '✍️', title: 'Double signature', desc: 'Deux signatures tactiles simultanées. Valeur légale dans 150+ pays.' },
+    { icon: '📄', title: 'PDF universel', desc: 'Document numérique reconnu par les assureurs dans le monde entier.' },
     { icon: '🌍', title: '50 langues + RTL', desc: '5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif.' },
   ];
 
@@ -193,7 +193,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
             </div>
           </div>
           <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
-            CEA · RGPD
+            RGPD · nLPD
           </div>
         </nav>
 
@@ -215,7 +215,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
 
           {/* Subtitle */}
           <p style={{ fontSize: 15, lineHeight: 1.65, opacity: heroVisible ? 0.6 : 0, marginBottom: 28, maxWidth: 340, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.2s' }}>
-            Constat amiable numérique en 5 minutes. OCR universel, QR code partagé, PDF conforme CEA.
+            Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.
           </p>
 
           {/* CTA */}
@@ -230,7 +230,7 @@ export function LandingPage({ onStart, onPricing }: Props) {
             </button>
             <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
               <p style={{ flex: 1, textAlign: 'center', fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
-                À PARTIR DE CHF/€ 4.90 · CONFORME CEA
+                À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT
               </p>
               {onPricing && (
                 <button onClick={onPricing} style={{ fontSize: 11, opacity: 0.5, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
@@ -275,9 +275,9 @@ export function LandingPage({ onStart, onPricing }: Props) {
           {[
             { step: '01', icon: '📸', title: 'Scannez vos documents', desc: 'Photographiez permis de circulation + carte verte. OCR automatique.' },
             { step: '02', icon: '📱', title: 'Partagez le QR code', desc: "L'autre conducteur scanne le QR. Session partagée en temps réel." },
-            { step: '03', icon: '📋', title: 'Remplissez le formulaire', desc: '17 champs CEA pré-remplis. Vérifiez et cochez les circonstances.' },
+            { step: '03', icon: '📋', title: 'Remplissez le formulaire', desc: 'Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances.' },
             { step: '04', icon: '🚗', title: 'Zones de choc', desc: 'Cliquez sur le diagramme 18 zones pour indiquer les dommages.' },
-            { step: '05', icon: '✍️', title: 'Signez & envoyez', desc: 'Deux signatures digitales. PDF conforme CEA instantanément.' },
+            { step: '05', icon: '✍️', title: 'Signez & envoyez', desc: 'Deux signatures digitales horodatées. PDF certifié instantanément.' },
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', gap: 16, position: 'relative', paddingBottom: i < 4 ? 28 : 0 }}>
               {i < 4 && <div style={{ position: 'absolute', left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
@@ -319,8 +319,8 @@ export function LandingPage({ onStart, onPricing }: Props) {
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
             <span style={{ fontSize: 26, flexShrink: 0 }}>⚖️</span>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5 }}>Standard CEA officiel</div>
-              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.65 }}>Notre PDF respecte intégralement le formulaire européen harmonisé CEA, reconnu par toutes les compagnies d'assurance en Europe.</div>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5 }}>Standard international</div>
+              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.65 }}>Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable.</div>
             </div>
           </div>
         </div>

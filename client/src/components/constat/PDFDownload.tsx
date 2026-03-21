@@ -74,7 +74,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
           Constat finalisé !
         </h2>
         <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.7 }}>
-          Les deux parties ont signé. Le PDF conforme CEA est prêt.
+          Les deux parties ont signé. Le document numérique certifié est prêt.
         </p>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10,
           padding: '5px 14px', borderRadius: 20,
@@ -92,8 +92,8 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
           <div style={{ width: 38, height: 38, borderRadius: 8, background: 'var(--boom)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📄</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 13 }}>Constat CEA — boom.contact</div>
-            <div style={{ fontSize: 11, opacity: 0.45 }}>Standard européen · 50+ pays</div>
+            <div style={{ fontWeight: 700, fontSize: 13 }}>Constat numérique — boom.contact</div>
+            <div style={{ fontSize: 11, opacity: 0.45 }}>Document certifié · 150+ pays</div>
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>

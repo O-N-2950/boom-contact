@@ -2,7 +2,7 @@ import { logger } from '../logger.js';
 /**
  * Email service — boom.contact
  *
- * LOGIQUE CEA CORRECTE:
+ * LOGIQUE EMAIL boom.contact:
  * - Les DEUX conducteurs envoient le constat à LEUR PROPRE assureur
  * - boom.contact envoie le PDF au conducteur lui-même par email
  * - Le conducteur transmet ensuite à son assureur (comme le constat papier)
@@ -50,7 +50,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Contactez votre assureur',
     step3: '📤 Transmettez-leur ce document',
     deadline: '⏰ Délai légal : 5 jours ouvrables en France, 8 jours en Suisse',
-    footer: 'Ce document est conforme au standard européen CEA.',
+    footer: 'Constat numérique certifié boom.contact — valable mondialement.',
   },
   de: {
     subject: 'Ihr digitaler Unfallbericht — boom.contact',
@@ -60,7 +60,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Kontaktieren Sie Ihre Versicherung',
     step3: '📤 Übermitteln Sie dieses Dokument',
     deadline: '⏰ Gesetzliche Frist: 8 Tage in der Schweiz',
-    footer: 'Dieses Dokument entspricht dem europäischen CEA-Standard.',
+    footer: 'Zertifiziertes digitales Unfallprotokoll boom.contact — weltweit gültig.',
   },
   it: {
     subject: 'Il vostro modulo di constatazione — boom.contact',
@@ -70,7 +70,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Contattate la vostra assicurazione',
     step3: '📤 Trasmettete questo documento',
     deadline: '⏰ Termine legale: entro 8 giorni',
-    footer: 'Questo documento è conforme allo standard europeo CEA.',
+    footer: 'Constatazione digitale certificata boom.contact — valida in tutto il mondo.',
   },
   en: {
     subject: 'Your accident statement — boom.contact',
@@ -80,7 +80,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Contact your insurance company',
     step3: '📤 Submit this document to them',
     deadline: '⏰ Legal deadline: typically 5-10 working days depending on your country',
-    footer: 'This document complies with the European CEA standard.',
+    footer: 'Certified digital accident report boom.contact — valid worldwide.',
   },
   es: {
     subject: 'Su declaración de accidente — boom.contact',
@@ -90,7 +90,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Contacte a su aseguradora',
     step3: '📤 Envíeles este documento',
     deadline: '⏰ Plazo legal: generalmente 7 días hábiles',
-    footer: 'Este documento cumple con el estándar europeo CEA.',
+    footer: 'Parte de accidente digital certificado boom.contact — válido en todo el mundo.',
   },
   pt: {
     subject: 'A sua declaração de acidente — boom.contact',
@@ -100,7 +100,7 @@ const TEMPLATES: Record<string, {
     step2: '📞 Contacte a sua seguradora',
     step3: '📤 Envie-lhes este documento',
     deadline: '⏰ Prazo legal: geralmente 8 dias úteis',
-    footer: 'Este documento está em conformidade com o padrão europeu CEA.',
+    footer: 'Relatório digital de acidente certificado boom.contact — válido em todo o mundo.',
   },
 };
 

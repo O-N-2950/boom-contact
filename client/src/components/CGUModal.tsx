@@ -90,7 +90,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
               {[
                 {
                   title: '1. Objet',
-                  text: 'boom.contact est un service numérique édité par PEP\'s Swiss SA (ci-après "PEP\'s Swiss"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l\'établissement de constats amiables d\'accident numériques conformes au standard européen CEA.'
+                  text: 'boom.contact est un service numérique édité par PEP\'s Swiss SA (ci-après "PEP\'s Swiss"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l\'établissement de constats amiables d\'accident numériques, utilisables dans le monde entier.'
                 },
                 {
                   title: '2. Acceptation',
@@ -98,7 +98,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
                 },
                 {
                   title: '3. Description du service',
-                  text: 'boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d\'une session temps réel entre deux conducteurs via QR code ; (c) la génération d\'un PDF conforme CEA signé numériquement ; (d) l\'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l\'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat.'
+                  text: 'boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d\'une session temps réel entre deux conducteurs via QR code ; (c) la génération d\'un PDF certifié signé numériquement ; (d) l\'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l\'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat.'
                 },
                 {
                   title: '4. Tarification',
@@ -106,7 +106,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
                 },
                 {
                   title: '5. Valeur légale',
-                  text: 'Le PDF généré respecte le formulaire harmonisé CEA (Conseil des Bureaux Européens d\'Assurance). Sa valeur légale est équivalente au constat papier dans les pays membres de la convention CEA. PEP\'s Swiss SA ne garantit pas son acceptation dans tous les pays et recommande de conserver le PDF et de le transmettre dans les délais légaux à son assureur.'
+                  text: 'Le document numérique généré par boom.contact constitue un constat amiable d\'accident reconnu par les compagnies d\'assurance. PEP\'s Swiss SA ne garantit pas l\'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur.'
                 },
                 {
                   title: '6. Responsabilité',
