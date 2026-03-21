@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   onStart: () => void;
+  onPricing?: () => void;
 }
 
 function Counter({ to, suffix = '', duration = 2000 }: { to: number; suffix?: string; duration?: number }) {
@@ -159,7 +160,7 @@ function FeatureCard({ icon, title, desc, delay }: { icon: string; title: string
   );
 }
 
-export function LandingPage({ onStart }: Props) {
+export function LandingPage({ onStart, onPricing }: Props) {
   const [heroVisible, setHeroVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); }, []);
 
@@ -227,9 +228,16 @@ export function LandingPage({ onStart }: Props) {
               Démarrer un constat
               <span style={{ marginLeft: 'auto', fontSize: 20, opacity: 0.7 }}>→</span>
             </button>
-            <p style={{ textAlign: 'center', marginTop: 10, fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
-              GRATUIT · SANS INSCRIPTION · CONFORME CEA
-            </p>
+            <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
+              <p style={{ flex: 1, textAlign: 'center', fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
+                À PARTIR DE CHF/€ 4.90 · CONFORME CEA
+              </p>
+              {onPricing && (
+                <button onClick={onPricing} style={{ fontSize: 11, opacity: 0.5, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+                  Voir les tarifs →
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Phone */}
@@ -339,10 +347,10 @@ export function LandingPage({ onStart }: Props) {
             <span>💥</span>
             <span style={{ fontFamily: 'Oswald, sans-serif', fontSize: 14, color: 'var(--boom)' }}>boom.contact</span>
           </div>
-          <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>© 2026 PEP's Swiss SA</span>
+          <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>© 2026 PEP's Swiss SA / Groupe NEUKOMM</span>
         </div>
         <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8 }}>
-          Groupe NEO · WW Finance Group SARL · FINMA F01042365<br/>
+          PEP's Swiss SA · Groupe NEUKOMM · FINMA F01042365<br/>
           Bellevue 7, 2950 Courgenay, Jura, Suisse
         </div>
       </div>

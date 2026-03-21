@@ -322,7 +322,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── FOOTER ─────────────────────────────────────────────────
   drawLine(page, margin, 48, width - margin, 48, C.border);
   drawText(page, 'boom.contact — Constat amiable numérique mondial · boom-contact-production.up.railway.app', margin, 38, normal, 7, C.mid);
-  drawText(page, `Session ID: ${session.id} · Généré le ${new Date().toLocaleString('fr-CH')} · PEP\'s Swiss SA — Groupe NEO`,
+  drawText(page, `Session ID: ${session.id} · Généré le ${new Date().toLocaleString('fr-CH')} · PEP\'s Swiss SA — Groupe NEUKOMM`,
     margin, 28, mono, 6.5, C.mid);
   drawText(page, 'Standard CEA (Comité Européen des Assurances) · Valable dans tous les pays membres',
     margin, 18, normal, 6.5, C.mid);

@@ -8,6 +8,7 @@ import {
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
+import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -197,6 +198,69 @@ export const appRouter = router({
 
         if (!result.ok) throw new Error(result.error || 'Email send failed');
         return { ok: true, messageId: result.messageId };
+      }),
+  }),
+
+  // ── PAYMENT — packages Stripe ─────────────────────────────
+  payment: router({
+    // Retourner les packages disponibles
+    packages: publicProcedure
+      .query(() => Object.values(PACKAGES)),
+
+    // Créer une session Stripe Checkout
+    createCheckout: publicProcedure
+      .input(z.object({
+        packageId: z.enum(['single', 'pack3', 'pack10']),
+        userEmail: z.string().email(),
+        currency:  z.enum(['EUR', 'CHF']).default('EUR'),
+        locale:    z.string().default('fr'),
+      }))
+      .mutation(async ({ input }) => {
+        return createCheckoutSession(
+          input.packageId,
+          input.userEmail,
+          input.currency,
+          input.locale,
+        );
+      }),
+
+    // Vérifier le solde de crédits
+    credits: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .query(async ({ input }) => {
+        const credits = await getUserCredits(input.email);
+        return { credits };
+      }),
+
+    // Utiliser 1 crédit pour démarrer un constat
+    useCredit: publicProcedure
+      .input(z.object({ email: z.string().email(), sessionId: z.string() }))
+      .mutation(async ({ input }) => {
+        const ok = await useCredit(input.email, input.sessionId);
+        if (!ok) throw new Error('Crédits insuffisants');
+        return { ok: true };
+      }),
+  }),
+
+  // ── USER — consentements RGPD ─────────────────────────────
+  user: router({
+    saveConsent: publicProcedure
+      .input(z.object({
+        email:             z.string().email(),
+        consentCGU:        z.boolean(),
+        consentMarketing:  z.boolean(),
+        country:           z.string().optional(),
+        language:          z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await saveConsent(
+          input.email,
+          input.consentCGU,
+          input.consentMarketing,
+          input.country,
+          input.language,
+        );
+        return { ok: true };
       }),
   }),
 

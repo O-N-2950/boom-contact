@@ -11,7 +11,7 @@
 
 Deux conducteurs. Un QR code. 5 minutes. Un PDF légal conforme CEA envoyé à chaque assureur.
 
-**Porteur :** Olivier Neukomm — PEP's Swiss SA / Groupe NEO
+**Porteur :** Olivier Neukomm — PEP's Swiss SA / Groupe NEUKOMM
 **URL future :** https://boom.contact
 **URL Railway :** https://boom-contact-production.up.railway.app
 
@@ -21,7 +21,7 @@ Deux conducteurs. Un QR code. 5 minutes. Un PDF légal conforme CEA envoyé à c
 
 | Entité | Rôle |
 |--------|------|
-| **Groupe NEO** (holding CH) | Holding chapeau — Bellevue 7, 2950 Courgenay, Jura |
+| **Groupe NEUKOMM** (holding CH) | Holding chapeau — Bellevue 7, 2950 Courgenay, Jura |
 | **WW Finance Group SARL** | Courtage assurances FINMA F01042365 |
 | **PEP's Swiss SA** | Studio digital — porteur technique de boom.contact |
 

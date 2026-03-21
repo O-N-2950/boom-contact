@@ -176,8 +176,8 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <!-- Footer -->
     <div style="border-top:1px solid #f0f0f0;padding:16px 28px;background:#fafafa;">
       <div style="font-size:11px;color:#aaa;line-height:1.6;">
-        boom.contact · PEP's Swiss SA · Groupe NEO<br>
-        Bellevue 7, 2950 Courgenay, Jura, Suisse
+        boom.contact · PEP's Swiss SA · Groupe NEUKOMM<br>
+        Bellevue 7, 2950 Courgenay, Jura, Suisse · CHE-XXX.XXX.XXX
       </div>
     </div>
   </div>

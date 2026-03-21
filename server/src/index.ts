@@ -63,6 +63,24 @@ app.use(cookieParser());
 // Health check — Railway
 app.get('/health', (_req, res) => res.json({ ok: true, service: 'boom.contact', env: process.env.NODE_ENV }));
 
+
+// ── Stripe Webhook — raw body required ───────────────────────
+app.post('/webhook/stripe',
+  express.raw({ type: 'application/json' }),
+  async (req, res) => {
+    const sig = req.headers['stripe-signature'] as string;
+    try {
+      const { handleStripeWebhook } = await import('./services/stripe.service.js');
+      await handleStripeWebhook(req.body, sig);
+      res.json({ received: true });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Webhook error';
+      console.error('Stripe webhook error:', msg);
+      res.status(400).json({ error: msg });
+    }
+  }
+);
+
 // tRPC router
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routes/router.js';
