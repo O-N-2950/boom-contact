@@ -1,4 +1,5 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
+import OfflineBanner from './components/OfflineBanner';
 import { useState, useEffect } from 'react';
 import { LandingPage } from './pages/LandingPage';
 import { ConstatFlow } from './pages/ConstatFlow';
@@ -68,6 +69,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+    <OfflineBanner />
     <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
       {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} />}
       {view === 'constat'  && <ConstatFlow />}
