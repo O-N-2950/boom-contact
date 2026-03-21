@@ -1,221 +1,215 @@
 # boom.contact — TODO.md
-> Mise à jour : Mars 2026 — Revue architecturale complète
-> Priorités basées sur audit code + retour terrain
+> Mise à jour : 21 Mars 2026 — Fin Session 3
 
 ---
 
-## ✅ RÉSOLU — Build & Infrastructure
+## ✅ FAIT — Session 1 (Build & Infrastructure)
 
-- [x] Build Railway SUCCESS — suppression vite.config.ts (conflit ESM)
-- [x] Service web doublon supprimé — projet propre: boom-contact + PostgreSQL
-- [x] Logger centralisé (Morgan + logger.ts) — tous les logs visibles Railway
-- [x] tRPC v11 mutations corrigées — plus de wrapper {json:{}}
-- [x] Stripe API version corrigée — checkout live fonctionnel
-- [x] CORS production — boom.contact + www.boom.contact acceptés
-- [x] Variables Railway — DB, Claude, Stripe, Resend, Webhook configurés
-
----
-
-## 🔴 URGENCE — Corrections critiques (session courante)
-
-### Fix 1 — OCRScanner mobile ✅ FAIT
-- [x] `capture="environment"` sur mobile, fallback file picker desktop
-- [x] Compression image avant envoi Claude Vision (max 1024px, q=85%) → -80% coût OCR
-
-### Fix 2 — tRPC client propre ✅ FAIT
-- [x] `main.tsx` wrappé QueryClientProvider + trpc.Provider
-- [x] `trpc.ts` créé — createTRPCReact + createTRPCClient
-- [x] `ConstatFlow.tsx` — session.create + sign via trpc.useMutation()
-
-### Fix 3 — Error Boundary React ✅ FAIT
-- [x] ErrorBoundary.tsx — page d'erreur propre au lieu de page blanche
-- [x] App.tsx wrappé ErrorBoundary
-
-### Fix 4 — Remaining fetch() → tRPC (à faire)
-- [ ] JoinSession.tsx — remplacer fetch() par trpc.session.join.useMutation()
-- [ ] QRSession.tsx — trpc.session.get.useQuery()
-- [ ] PDFDownload.tsx — trpc.pdf.generate.useMutation()
-- [ ] PricingPage.tsx — trpc.payment.createCheckout.useMutation()
-- [ ] CGUModal.tsx — trpc.user.saveConsent.useMutation()
+- [x] Build Railway SUCCESS
+- [x] Service web doublon supprimé — projet propre : boom-contact + PostgreSQL
+- [x] tRPC v11 mutations corrigées
+- [x] CORS production configuré
+- [x] Variables Railway : DB, Claude, Stripe, Resend, Webhook
+- [x] Logs Railway visibles (Morgan + logger.ts centralisé)
 
 ---
 
-## 🟠 PRIORITÉ 1 — Core App fonctionnelle
+## ✅ FAIT — Session 2 (Paiement & RGPD)
+
+- [x] Stripe live keys (récupérées depuis PEP's V2, même compte bancaire)
+- [x] Webhook Stripe dédié boom.contact (we_1TDJLbGpzOqyzNB7UBSnffLM)
+- [x] Métadonnées `application:'boom.contact'` sur toutes les transactions
+- [x] 3 packages : 1/3/10 constats — CHF 4.90 / 12.90 / 34.90
+- [x] Tables DB : users, payments, credit_txns
+- [x] CGUModal — case obligatoire CGU + case optionnelle marketing PEP's Swiss SA
+- [x] Consentements horodatés en base
+- [x] DNS boom.contact : A → Railway, CNAME www, SPF, DMARC
+- [x] MX + SPF Resend (send._domainkey, send TXT)
+
+---
+
+## ✅ FAIT — Session 3 (Qualité & Véhicules)
+
+- [x] Fix crash QRSession — `enabled: !!sessionId && !partnerJoined`
+- [x] Fix PDF WinAnsi — `①②③✓` remplacés par ASCII → PDF génère correctement
+- [x] Positionnement mondial — toutes références au formulaire papier supprimées partout
+- [x] 17 circonstances reformulées dans nos propres termes
+- [x] OCRScanner — `capture="environment"` mobile, file picker desktop
+- [x] Compression image 1024px / q=85% avant Claude Vision (-80% coût)
+- [x] tRPC client propre — main.tsx wrappé, trpc.ts créé
+- [x] Zéro `fetch('/trpc/...')` brut dans tous les composants principaux
+- [x] ErrorBoundary — page erreur propre au lieu de page blanche
+- [x] SignaturePad — ResizeObserver + DPR Retina
+- [x] VehicleType exhaustif : 17 types (trottinette, tram, train, engin de chantier…)
+- [x] LocationStep — sélecteur 17 types groupés + blessures détaillées
+- [x] 8 silhouettes SVG techniques (voiture, moto, scooter, vélo, camion, bus, tram, piéton)
+- [x] Mapper 700+ modèles marque+modèle → carrosserie + couleur (30 langues)
+- [x] VehicleDiagram — silhouette adaptée au type + couleur réelle OCR sur SVG
+- [x] ColorPicker — 28 swatches visuels + saisie libre dans ConstatForm
+- [x] Page de présentation /pitch.html
+
+---
+
+## 🔴 PRIORITÉ 1 — Session 4 à faire en premier
+
+### Photos de scène — MANQUANT CRITIQUE
+- [ ] Composant `PhotoCapture` — à créer
+  - Catégories : Lieu du sinistre · Dommages véhicule A · Dommages véhicule B · Blessures · Autre
+  - Max 5 photos au total, compression 1024px avant stockage
+  - Prévisualisation + suppression + légende libre
+  - Stockage dans `AccidentData.photos[]` (type ScenePhoto déjà dans shared/types)
+- [ ] Intégrer PhotoCapture dans ConstatFlow (après LocationStep, avant QR)
+- [ ] Intégrer PhotoCapture dans JoinSession
+- [ ] PDF — afficher les photos en grille 2 colonnes avec légendes
+- [ ] Email — photos en pièces jointes ou inline
+
+### DKIM Resend — 1 action manuelle Olivier
+- [ ] Infomaniak Manager → boom.contact → DNS → Ajouter TXT :
+  - Nom : `resend._domainkey`
+  - Valeur : `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/9W6A0Ku3MNuKTPAgNqno/gfoWs5pojTRG4XpLhpsxJIUK1lEmGv75tYHgLzUC7aBd9tfKMGRV/WMpk3AJJA6xGyKtPmhixW2A96Vv9ZQ6cCzLsQqS0rCVvYbonlaARDlru4i8UqqWjslN+IbYzO1yrnEYYglIm34ZA8FJJ9TVQIDAQAB`
+  - ⚠️ API Infomaniak bloque les `_domainkey` — doit être fait manuellement
+
+### fetch() bruts restants — à migrer tRPC
+- [ ] `PricingPage.tsx` — `fetch('/trpc/payment.createCheckout')` → mutation tRPC
+- [ ] `CGUModal.tsx` — `fetch('/trpc/user.saveConsent')` → mutation tRPC
+
+---
+
+## 🟠 PRIORITÉ 2 — Formulaire complet
+
+### Champs manquants par rapport au formulaire standard
+- [ ] Date/heure accident — éditable (actuellement timestamp session, pas modifiable)
+- [ ] Témoins — champ texte libre (noms, tél)
+- [ ] Dégâts matériels à des tiers autres que A et B (oui/non)
+- [ ] Blessés (oui/non) — ✅ déjà dans LocationStep
+- [ ] Observations libres conducteur A et B (section 14)
+- [ ] Dégâts apparents texte libre (section 11)
+- [ ] Preneur d'assurance (différent du conducteur) — champs séparés
+- [ ] N° carte verte — ✅ déjà dans InsuranceData
+- [ ] Attestation valable du/au — dates validité assurance
+- [ ] Catégorie permis (A, B...) — ✅ déjà dans DriverData
+- [ ] Date de naissance conducteur — ✅ à vérifier dans DriverData
+
+### Carte verte optionnelle
+- [ ] Si carte verte absente → saisie manuelle NOM société + N° contrat uniquement
+- [ ] OCR : si aucune carte verte → passer directement à la saisie manuelle assurance
+
+---
+
+## 🟠 PRIORITÉ 3 — Croquis de l'accident (Section 13)
+
+- [ ] Composant `AccidentSketch` — canvas dessin libre
+  - Outils : ✏️ Crayon · **A** Tampon véhicule A · **B** Tampon véhicule B · → Flèche · | Ligne route · **T** Texte · 🗑 Effacer
+  - Les tampons A et B utilisent la silhouette SVG du véhicule correspondant
+  - Export PNG → stocké dans `AccidentData.sketchImage`
+  - Intégré dans le PDF section croquis
+- [ ] Intégrer dans le flow entre Form et Diagram
+
+---
+
+## 🟡 PRIORITÉ 4 — Qualité & Robustesse
+
+### Silhouettes Niveau 2
+- [ ] 50 modèles les plus courants avec silhouettes distinctes par carrosserie
+  (hatchback_3 vs hatchback_5, SUV small vs large, pick-up, etc.)
+- [ ] Base : les 8 formes SVG actuelles + sous-variantes
+
+### CarDiagram visibilité
+- [ ] Le SVG est parfois trop sombre sur fond noir — ajouter fond légèrement contrasté
+- [ ] Tester sur iPhone en conditions réelles
 
 ### Rate limiting étendu
-- [ ] Limiter session.create (anti-bot DB saturation) — 5/min par IP
-- [ ] Limiter session.join — 10/min par IP
-- [ ] Captcha optionnel si abus détecté
-
-### CarDiagram SVG responsive
-- [ ] Migrer vers SVG viewBox relatif (%, pas px fixes)
-- [ ] Zones touch-friendly min 44px (WCAG)
-- [ ] Zones se chevauchent sur iPhone SE (375px) → à corriger
-
-### SignaturePad canvas responsive
-- [ ] Ajouter ResizeObserver — recalcule canvas.width/height si fenêtre change
-- [ ] Correction scaling : rect.width ≠ canvas.width sur devicePixelRatio > 1
-
-### OCR Engine — tests terrain
-- [ ] Tester sur vrai permis CH (VD, GE, BE)
-- [ ] Tester carte grise française (SIV format)
-- [ ] Tester Green Card internationale
-- [ ] Tester Zulassungsbescheinigung DE
-- [ ] Tester 行驶证 chinois
-- [ ] Tester RC Book indien
-- [ ] Fallback UI si confidence < 0.5 (saisie manuelle)
-
-### PDF Generator
-- [ ] Tester génération PDF bout-en-bout (données réelles)
-- [ ] Vérifier lisibilité signatures embedded
-- [ ] PDF multilingue selon langue conducteur A
-
-### JoinSession (Driver B)
-- [ ] Détecter langue navigateur → sélectionner automatiquement
-- [ ] WebSocket reconnect automatique si déconnexion
-
----
-
-## 🟡 PRIORITÉ 2 — Qualité & Robustesse
-
-### Photos des dégâts dans le PDF ★ NOUVEAU
-- [ ] Après l'OCR, permettre 3 photos des dégâts physiques
-- [ ] Miniatures intégrées dans le PDF final (valeur légale ++)
-- [ ] Compression avant upload (même logique que OCR)
-
-### Compression image côté client ✅ FAIT (OCR)
-- [ ] Appliquer aussi aux photos de dégâts
-
-### Détection contradictions par IA ★ NOUVEAU
-- [ ] Avant signature: Claude analyse les 2 déclarations
-- [ ] Alerte si contradiction: "A dit priorité droite, B ne coche pas cette circonstance"
-- [ ] Optionnel — ne bloque pas la signature
-
-### Mode Témoin ★ NOUVEAU
-- [ ] 3ème QR code pour un témoin de l'accident
-- [ ] Témoin prend photos + signe en tant que témoin
-- [ ] Valeur légale considérable
+- [ ] session.create — 5/min par IP (actuellement only /ocr est limité)
+- [ ] session.join — 10/min par IP
 
 ### Tests
-- [ ] Tests E2E Playwright: flow complet A+B
-- [ ] Tests unitaires: session.service, pdf.service, ocr.service
-- [ ] Test de charge: 100 sessions simultanées
-
-### Sécurité OWASP
-- [ ] Rate limiting session.create + join (pas seulement /ocr)
-- [ ] Validation taille image: max 5MB avant compression
-- [ ] CORS: vérifier headers en prod
+- [ ] Flow complet A+B sur 2 téléphones réels
+- [ ] Test PDF bout-en-bout (téléchargement + email)
+- [ ] Test OCR : permis CH / carte grise FR / Green Card internationale
+- [ ] Test Stripe paiement réel CHF
 
 ---
 
-## 🟢 PRIORITÉ 3 — Features avancées
+## 🟢 PRIORITÉ 5 — Features avancées
 
-### PWA Offline-first ★ CRITIQUE pour accidents sans réseau
-- [ ] Service Worker: cache assets + formulaire
-- [ ] IndexedDB: stocker session offline
+### PWA Offline-first ★ CRITIQUE
+- [ ] Service Worker : cache assets + formulaire
+- [ ] IndexedDB : stocker session offline
 - [ ] Sync quand connexion rétablie
-- [ ] Essentiel: accidents en montagne, tunnel, campagne
+- [ ] Essentiel pour accidents en montagne, tunnel, campagne
 
-### Détection contours documents (OCR précision)
-- [ ] Détecter rectangle du document dans la photo
-- [ ] Recadrer automatiquement avant envoi Claude Vision
-- [ ] OCR 2x plus précis, 4x moins cher
+### i18n — Interface multilingue
+- [ ] i18next + react-i18next
+- [ ] FR / DE / IT / EN minimum (Suisse quadrilingue)
+- [ ] Détection auto langue navigateur
+- [ ] Bascule RTL/LTR pour arabe/hébreu
 
-### NFC en plus du QR
-- [ ] Android + iOS 17+: tap NFC partage l'URL de session
-- [ ] Plus rapide que QR sous la pluie
+### Mode Témoin
+- [ ] 3ème QR pour un témoin de l'accident
+- [ ] Photos + déclaration + signature témoin
+- [ ] Valeur légale considérable
+
+### Détection contradictions IA
+- [ ] Avant signature : analyser les déclarations des 2 conducteurs
+- [ ] Alerter si contradiction flagrante
+- [ ] Ex : "A dit priorité droite, B ne coche pas cette circonstance"
 
 ### Dark mode automatique
-- [ ] Accidents de nuit: écran blanc aveuglant
-- [ ] prefers-color-scheme automatique
-- [ ] L'app est déjà dark — vérifier que le mode clair est aussi supporté
-
-### Voix guidée OCR
-- [ ] Guidance audio à l'étape OCR
-- [ ] "Posez votre carte grise à plat, prenez la photo maintenant"
-- [ ] Web Speech API, TTS natif
-
-### Email (Resend) — DKIM manquant
-- [ ] Ajouter TXT resend._domainkey sur Infomaniak (manuel, API bloquée)
-- [ ] Tester envoi PDF après double signature
-- [ ] Templates multilingues
-
-### Géolocalisation enrichie
-- [ ] Reverse geocoding: GPS → adresse complète
-- [ ] Carte Leaflet/OSM pour confirmer le lieu
-- [ ] Timestamp légal certifié
-
-### Langues (50)
-- [ ] i18next + react-i18next
-- [ ] Traduction UI complète (actuellement FR only)
-- [ ] Détection auto langue navigateur
-- [ ] Bascule RTL/LTR dynamique
+- [ ] prefers-color-scheme
+- [ ] Critique pour accidents nocturnes (écran blanc aveuglant)
 
 ---
 
-## 🔵 PRIORITÉ 4 — Business & Go-Live
-
-### Stripe & Packages ✅ FAIT
-- [x] 3 packages: 1 / 3 / 10 constats
-- [x] CHF 4.90 / 12.90 / 34.90
-- [x] Webhook + crédits DB
-- [x] Métadonnées application: 'boom.contact' (filtre Stripe dashboard)
-
-### CGU & RGPD ✅ FAIT
-- [x] CGUModal avec acceptation obligatoire
-- [x] Case optionnelle marketing PEP's Swiss SA
-- [x] Consentements horodatés en DB
-
-### Domaine & DNS ✅ QUASI COMPLET
-- [x] boom.contact → Railway (A + CNAME www)
-- [x] SPF: infomaniak + resend
-- [x] DMARC: p=quarantine
-- [ ] DKIM Resend: ajouter manuellement sur Infomaniak Manager
+## 🔵 PRIORITÉ 6 — Business & Go-Live
 
 ### Intégration NEO / WIN WIN
 - [ ] API /api/accidents/stats pour neo-api-gateway
-- [ ] Dashboard CEO: nb constats/jour, pays, langues
-- [ ] Relier sinistres → opportunités WIN WIN (courtage)
-- [ ] Si client WIN WIN impliqué: alerte temps réel cockpit
+- [ ] Dashboard CEO : nb constats/jour, pays, langues
+- [ ] Si client WIN WIN impliqué → alerte temps réel cockpit winwin.swiss
 
 ### Intégrations assureurs suisses (B2B)
 - [ ] AXA, Baloise, Helvetia, Mobilière — APIs partenaires
-- [ ] Push déclaration direct dans leur système
-- [ ] Premier sinistre déclaré en 30s en Suisse
+- [ ] Push déclaration directement dans leur système
+
+### App Store
+- [ ] PWA installable (manifest + Service Worker)
+- [ ] Publication App Store iOS + Google Play (via Capacitor ou PWA)
 
 ---
 
-## 📋 CHECKLIST AVANT MISE EN PRODUCTION
+## 📋 CHECKLIST AVANT LANCEMENT COMMERCIAL
 
 - [x] Build Railway SUCCESS
 - [x] Health check /health répond
-- [x] ANTHROPIC_API_KEY valide en prod
-- [x] DATABASE_URL connecté PostgreSQL
-- [x] Migrations DB appliquées au démarrage
+- [x] ANTHROPIC_API_KEY valide
+- [x] DATABASE_URL PostgreSQL connecté
+- [x] Migrations DB au démarrage
 - [x] Rate limiting OCR actif
-- [x] Logs Railway visibles (Morgan + logger)
-- [x] Stripe live keys configurées
+- [x] Logs Railway visibles
+- [x] Stripe live configuré
 - [x] 2 services propres (boom-contact + PostgreSQL)
-- [ ] DKIM Resend ajouté (Infomaniak manuel)
-- [ ] Tests E2E passent
-- [ ] Backup DB configuré
+- [x] DNS A + CNAME www configurés
+- [ ] DKIM Resend ajouté (Infomaniak manuel — 2 min)
 - [ ] Test flow complet mobile iOS + Android
-- [ ] Test avec vrais documents (3 pays minimum)
-- [ ] CarDiagram responsive vérifié iPhone SE
-- [ ] SignaturePad ResizeObserver
+- [ ] Test PDF téléchargement + email reçu
+- [ ] Test Stripe paiement réel
+- [ ] Photos de scène fonctionnelles
+- [ ] CGU + RGPD en production vérifiés
 
 ---
 
-## 🤖 AGENTS DISPONIBLES
+## 🤖 Agents IA disponibles
 
 | Agent | Utiliser quand |
-|-------|---------------|
+|---|---|
 | `debugger` | Build cassé, erreur Railway, bug logique |
 | `deployment-validator` | Avant chaque deploy Railway |
 | `backend-architect` | Nouvelle route tRPC, nouveau service |
-| `database-architect` | Schéma DB, migrations, requêtes |
+| `database-architect` | Schéma DB, migrations |
 | `frontend-developer` | Nouveaux composants React |
 | `security-auditor` | Avant mise en production |
 | `performance-engineer` | Optimisation OCR, PDF, WebSocket |
 | `code-reviewer` | Avant merge sur main |
 | `test-automator` | Écriture tests E2E Playwright |
+
+Accès : https://boom-contact-production.up.railway.app?agents=true
