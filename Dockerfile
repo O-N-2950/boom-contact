@@ -3,6 +3,10 @@ FROM node:20.19-alpine
 
 WORKDIR /app
 
+# Force Node.js stdout/stderr to be unbuffered in Docker
+ENV NODE_OPTIONS="--no-warnings"
+ENV FORCE_COLOR=1
+
 COPY package.json package-lock.json* ./
 
 RUN npm ci --no-fund --no-audit

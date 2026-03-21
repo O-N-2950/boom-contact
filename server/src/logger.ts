@@ -1,26 +1,43 @@
 /**
  * boom.contact — Logger centralisé
- * Tous les logs passent par ici → visible dans Railway dashboard
- * Format: [LEVEL] timestamp | message | data
+ * 
+ * CRITICAL: Force stdout/stderr to blocking mode
+ * In Docker (non-TTY), Node.js buffers stdout → logs never appear in Railway
+ * setBlocking(true) forces synchronous writes = logs appear immediately
  */
+
+// ── Force synchronous stdout/stderr (MUST be first) ──────────
+function forceUnbuffered() {
+  try {
+    if ((process.stdout as any)._handle?.setBlocking) {
+      (process.stdout as any)._handle.setBlocking(true);
+    }
+    if ((process.stderr as any)._handle?.setBlocking) {
+      (process.stderr as any)._handle.setBlocking(true);
+    }
+    // Also set encoding to prevent any encoding-related buffering
+    process.stdout.setDefaultEncoding('utf8');
+    process.stderr.setDefaultEncoding('utf8');
+  } catch {}
+}
+
+forceUnbuffered();
 
 type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
 
 function log(level: LogLevel, message: string, data?: Record<string, unknown>) {
   const ts = new Date().toISOString();
-  const prefix = `[${level}] ${ts}`;
-  
-  if (data && Object.keys(data).length > 0) {
-    // Railway captures stdout — use console.log for all levels so they appear
-    const dataStr = JSON.stringify(data, null, 0);
-    process.stdout.write(`${prefix} | ${message} | ${dataStr}\n`);
-  } else {
-    process.stdout.write(`${prefix} | ${message}\n`);
-  }
+  const dataStr = data && Object.keys(data).length > 0
+    ? ' | ' + JSON.stringify(data)
+    : '';
+  const line = `[${level}] ${ts} | ${message}${dataStr}\n`;
 
-  // Errors also go to stderr so Railway flags them
+  // process.stdout.write is now synchronous (setBlocking above)
+  process.stdout.write(line);
+
+  // Errors also to stderr
   if (level === 'ERROR') {
-    process.stderr.write(`${prefix} | ${message}${data ? ' | ' + JSON.stringify(data) : ''}\n`);
+    process.stderr.write(line);
   }
 }
 
@@ -32,57 +49,43 @@ export const logger = {
     if (process.env.LOG_DEBUG === 'true') log('DEBUG', msg, data);
   },
 
-  // Specialized loggers
   request: (method: string, path: string, status: number, ms: number, ip?: string) => {
     const level: LogLevel = status >= 500 ? 'ERROR' : status >= 400 ? 'WARN' : 'INFO';
     log(level, `${method} ${path} ${status} ${ms}ms`, ip ? { ip } : undefined);
   },
-
-  trpcError: (path: string, code: string, message: string) => {
-    log('ERROR', `tRPC ${path} → ${code}`, { message: message.slice(0, 200) });
-  },
-
-  payment: (event: string, email: string, pkg?: string, amount?: number) => {
-    log('INFO', `💳 PAYMENT ${event}`, { email: email.slice(0, 30), pkg, amount });
-  },
-
-  ocr: (action: string, country?: string, confidence?: number, durationMs?: number) => {
-    log('INFO', `🔍 OCR ${action}`, { country, confidence, durationMs });
-  },
-
-  session: (action: string, sessionId: string, role?: string) => {
-    log('INFO', `📋 SESSION ${action}`, { sessionId: sessionId.slice(0, 12), role });
-  },
-
-  email: (action: string, to: string, subject?: string) => {
-    log('INFO', `📧 EMAIL ${action}`, { to: to.slice(0, 30), subject });
-  },
+  trpcError: (path: string, code: string, message: string) =>
+    log('ERROR', `tRPC ${path} → ${code}`, { message: message.slice(0, 200) }),
+  payment: (event: string, email: string, pkg?: string, amount?: number) =>
+    log('INFO', `💳 PAYMENT ${event}`, { email: email.slice(0, 30), pkg, amount }),
+  ocr: (action: string, country?: string, confidence?: number, durationMs?: number) =>
+    log('INFO', `🔍 OCR ${action}`, { country, confidence, durationMs }),
+  session: (action: string, sessionId: string, role?: string) =>
+    log('INFO', `📋 SESSION ${action}`, { sessionId: sessionId.slice(0, 12), role }),
+  email: (action: string, to: string, subject?: string) =>
+    log('INFO', `📧 EMAIL ${action}`, { to: to.slice(0, 30), subject }),
 };
 
-// Override global console to use our logger (catches all console.log/error)
-const originalLog   = console.log.bind(console);
-const originalError = console.error.bind(console);
-const originalWarn  = console.warn.bind(console);
+// ── Override console — filter PG noise, force sync output ────
+const PG_NOISE = ['42P07','42701','already exists, skipping','severity_local','routine:','file: \'','line: \'','PL/pgSQL'];
 
-console.log   = (...args: unknown[]) => {
+console.log = (...args: unknown[]) => {
   const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
-  // Skip noisy PG NOTICE messages
-  if (msg.includes('42P07') || msg.includes('already exists, skipping') ||
-      msg.includes('severity_local') || msg.includes('routine:') ||
-      msg.includes('file: \'') || msg.includes('line: \'')) return;
+  if (PG_NOISE.some(n => msg.includes(n))) return;
   process.stdout.write(`[INFO] ${new Date().toISOString()} | ${msg}\n`);
 };
 
 console.error = (...args: unknown[]) => {
-  const msg = args.map(a => {
-    if (a instanceof Error) return `${a.message}\n${a.stack || ''}`;
-    return typeof a === 'object' ? JSON.stringify(a) : String(a);
-  }).join(' ');
-  process.stdout.write(`[ERROR] ${new Date().toISOString()} | ${msg}\n`);
-  process.stderr.write(`[ERROR] ${new Date().toISOString()} | ${msg}\n`);
+  const msg = args.map(a => a instanceof Error
+    ? `${a.message}\n${a.stack || ''}` : typeof a === 'object'
+    ? JSON.stringify(a) : String(a)).join(' ');
+  const line = `[ERROR] ${new Date().toISOString()} | ${msg}\n`;
+  process.stdout.write(line);
+  process.stderr.write(line);
 };
 
-console.warn  = (...args: unknown[]) => {
+console.warn = (...args: unknown[]) => {
   const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
   process.stdout.write(`[WARN] ${new Date().toISOString()} | ${msg}\n`);
 };
+
+console.info = console.log;
