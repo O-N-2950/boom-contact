@@ -1,9 +1,9 @@
 import { ColorPicker } from '../ColorPicker';
 import { useState } from 'react';
-import type { ParticipantData, AccidentData } from '../../../../shared/types';
+import type { ParticipantData, AccidentData, ParticipantRole } from '../../../../shared/types';
 
 interface Props {
-  role: 'A' | 'B';
+  role: ParticipantRole;
   prefilled?: Partial<ParticipantData>;
   accidentData?: Partial<AccidentData>;
   onSave: (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => void;

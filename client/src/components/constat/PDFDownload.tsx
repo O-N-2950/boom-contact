@@ -3,7 +3,7 @@ import { trpc } from '../../trpc';
 
 interface Props {
   sessionId: string;
-  role: 'A' | 'B';
+  role: string;
   driverEmail?: string;   // Extrait du formulaire ou OCR
   insurerName?: string;   // Extrait de la carte verte OCR
   driverName?: string;

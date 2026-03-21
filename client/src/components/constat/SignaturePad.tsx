@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 
 interface Props {
-  role: 'A' | 'B';
+  role: string;
   onSign: (signatureBase64: string) => void;
   otherSigned: boolean;
 }

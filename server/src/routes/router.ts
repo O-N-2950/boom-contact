@@ -115,7 +115,7 @@ export const appRouter = router({
     sign: publicProcedure
       .input(z.object({
         sessionId:       z.string(),
-        role:            z.enum(['A', 'B']),
+        role:            z.enum(['A', 'B', 'C', 'D', 'E']),
         signatureBase64: z.string().min(100),
       }))
       .mutation(async ({ input }) => {
@@ -179,7 +179,7 @@ export const appRouter = router({
     sendToDriver: publicProcedure
       .input(z.object({
         sessionId:   z.string(),
-        role:        z.enum(['A', 'B']),
+        role:        z.enum(['A', 'B', 'C', 'D', 'E']),
         driverEmail: z.string().email(),
         pdfBase64:   z.string().min(100),
       }))
@@ -187,7 +187,12 @@ export const appRouter = router({
         const session = await getSession(input.sessionId);
         if (!session) throw new Error('Session not found');
 
-        const participant = input.role === 'A' ? session.participantA : session.participantB;
+        const roleMap: Record<string, any> = {
+          A: session.participantA, B: session.participantB,
+          C: (session as any).participantC, D: (session as any).participantD,
+          E: (session as any).participantE,
+        };
+        const participant = roleMap[input.role];
         const driverName = [participant?.driver?.firstName, participant?.driver?.lastName]
           .filter(Boolean).join(' ') || 'Conducteur';
         const insurerName = participant?.insurance?.company || undefined;

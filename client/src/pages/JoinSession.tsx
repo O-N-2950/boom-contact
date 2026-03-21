@@ -9,7 +9,7 @@ import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
-import type { OCRResult, ParticipantData, ScenePhoto, AccidentData } from '../../../shared/types';
+import type { OCRResult, ParticipantData, ScenePhoto, AccidentData, ParticipantRole } from '../../../shared/types';
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'sketch' | 'diagram' | 'sign' | 'done';
 
@@ -35,6 +35,7 @@ function loadState(sessionId: string) {
 export function JoinSession() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session') || '';
+  const urlRole = (params.get('role') || 'B').toUpperCase() as ParticipantRole;
   const saved = loadState(sessionId);
 
   const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'landing');
@@ -42,7 +43,7 @@ export function JoinSession() {
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(
-    saved?.participantData || { role: 'B', language: navigator.language?.split('-')[0] || 'fr' }
+    saved?.participantData || { role: urlRole, language: navigator.language?.split('-')[0] || 'fr' }
   );
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
@@ -89,10 +90,7 @@ export function JoinSession() {
     if (!sessionId || joining) return;
     setJoining(true);
     setError(null);
-    joinMutation.mutate({
-      sessionId,
-      language: navigator.language?.split('-')[0] || 'fr',
-    });
+    joinMutation.mutate({ sessionId, language: navigator.language?.split('-')[0] || 'fr' });
   };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
@@ -122,7 +120,7 @@ export function JoinSession() {
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: 'B', data });
+      updateMutation.mutate({ sessionId, role: urlRole, data });
       if (accident && Object.keys(accident).length > 0) {
         updateAccidentMutationB.mutate({ sessionId, data: accident });
       }
@@ -138,7 +136,7 @@ export function JoinSession() {
 
   const handleDiagramDone = async () => {
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: 'B', data: { damagedZones } });
+      updateMutation.mutate({ sessionId, role: urlRole, data: { damagedZones } });
     }
     setStep('sign');
   };
@@ -160,7 +158,7 @@ export function JoinSession() {
   });
 
   const handleSign = (signatureBase64: string) => {
-    if (sessionId) signMutation.mutate({ sessionId, role: 'B', signatureBase64 });
+    if (sessionId) signMutation.mutate({ sessionId, role: urlRole, signatureBase64 });
   };
 
   // ── LANDING ──────────────────────────────────────────────
@@ -249,7 +247,7 @@ export function JoinSession() {
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
           <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
-            CONDUCTEUR B · SESSION {sessionId}
+            CONDUCTEUR {urlRole} · SESSION {sessionId}
           </div>
         </div>
       </div>

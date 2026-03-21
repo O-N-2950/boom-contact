@@ -4,7 +4,7 @@ import { VehicleSilhouetteSVG, getZonesForType, bodyStyleToShape, type DamageZon
 import { identifyVehicle, BODY_STYLE_LABELS } from './vehicleMapper';
 
 interface Props {
-  role: 'A' | 'B';
+  role: string;
   vehicleType?: VehicleType;
   brand?: string;
   model?: string;

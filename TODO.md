@@ -65,7 +65,25 @@
 
 ---
 
-## 🔴 PRIORITÉ 1 — Session 5 à faire en premier
+## ✅ FAIT — Session 5 (Croquis, Multi-véhicules, PDF complet)
+
+- [x] `AccidentSketch` — canvas dessin libre section 13 (crayon, tampons A/B, flèche, route, texte, gomme)
+- [x] Croquis intégré ConstatFlow + JoinSession, persisté localStorage + DB
+- [x] `ConstatForm` section Complément — date/heure éditable, témoins, dégâts tiers, observations section 14, dégâts apparents section 11, preneur assurance différent
+- [x] PDF enrichi — page croquis + page photos grille 2 colonnes + témoins + dégâts tiers
+- [x] Session TTL 24h effectif (police peut intervenir longtemps après)
+- [x] QR persistant écran Done avec message "police peut scanner"
+- [x] `QRSession` multi-véhicules — sélecteur 2→5 véhicules, QR coloré par rôle (B orange, C vert, D violet, E ambre)
+- [x] `JoinSession` — lit paramètre `?role=C` dans URL, toutes mutations utilisent le rôle dynamique
+- [x] `ConstatForm`, `VehicleDiagram`, `SignaturePad`, `PDFDownload` — role étendu à A/B/C/D/E
+- [x] `signSession` et `sendToDriver` router — acceptent rôles A-E
+- [x] Numéros urgences géolocalisés 35 pays (117/144 CH, 17/15 FR, 110/112 DE, 999 UK, 911 US...)
+- [x] Logo réel intégré partout (LandingPage, flows, pitch.html)
+- [x] pitch.html — sections Module Police B2B + Multi-véhicules ajoutées
+
+---
+
+## 🔴 PRIORITÉ 1 — Session 6
 
 ### Photos de scène — ✅ FAIT Session 4
 ### DKIM Resend — 1 action manuelle Olivier (inchangé)
