@@ -1,84 +1,75 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { AccidentData, VehicleType } from '../../../../shared/types';
 
 interface Props {
   onComplete: (data: Partial<AccidentData> & { vehicleType: VehicleType }) => void;
 }
 
-const VEHICLE_GROUPS: {
-  group: string;
-  types: { id: VehicleType; icon: string; label: string; sub: string }[];
-}[] = [
-  { group: 'Véhicules légers', types: [
-    { id: 'car',          icon: '🚗', label: 'Voiture',              sub: 'Berline, SUV, break, 4×4, citadine' },
-    { id: 'van',          icon: '🚐', label: 'Fourgon / Utilitaire', sub: 'Camionnette, van, utilitaire léger' },
-    { id: 'motorcycle',   icon: '🏍️', label: 'Moto',                 sub: 'Moto, motocyclette' },
-    { id: 'scooter',      icon: '🛵', label: 'Scooter / Cyclomoteur', sub: 'Scooter, 50cm³' },
-    { id: 'moped',        icon: '🛵', label: 'Vélomoteur',           sub: '2 roues <45km/h, 125cm³' },
-    { id: 'escooter',     icon: '🛴', label: 'Trottinette électrique', sub: 'EDPM, gyroroue, hoverboard' },
-    { id: 'quad',         icon: '🏎️', label: 'Quad / Buggy',         sub: 'Véhicule tout-terrain motorisé' },
+type VehicleGroup = {
+  groupKey: string;
+  types: { id: VehicleType; icon: string; labelKey: string; subKey: string }[];
+};
+
+const VEHICLE_GROUPS: VehicleGroup[] = [
+  { groupKey: 'location.groups.light', types: [
+    { id: 'car',          icon: '🚗', labelKey: 'location.vehicles.car.label',          subKey: 'location.vehicles.car.sub' },
+    { id: 'van',          icon: '🚐', labelKey: 'location.vehicles.van.label',          subKey: 'location.vehicles.van.sub' },
+    { id: 'motorcycle',   icon: '🏍️', labelKey: 'location.vehicles.motorcycle.label',   subKey: 'location.vehicles.motorcycle.sub' },
+    { id: 'scooter',      icon: '🛵', labelKey: 'location.vehicles.scooter.label',      subKey: 'location.vehicles.scooter.sub' },
+    { id: 'moped',        icon: '🛵', labelKey: 'location.vehicles.moped.label',        subKey: 'location.vehicles.moped.sub' },
+    { id: 'escooter',     icon: '🛴', labelKey: 'location.vehicles.escooter.label',     subKey: 'location.vehicles.escooter.sub' },
+    { id: 'quad',         icon: '🏎️', labelKey: 'location.vehicles.quad.label',         subKey: 'location.vehicles.quad.sub' },
   ]},
-  { group: 'Véhicules lourds', types: [
-    { id: 'truck',        icon: '🚚', label: 'Camion / Poids lourd', sub: 'Semi-remorque, porteur, benne' },
-    { id: 'bus',          icon: '🚌', label: 'Bus / Autocar',        sub: 'Bus urbain, car, minibus' },
-    { id: 'construction', icon: '🚜', label: 'Engin de chantier',    sub: 'Tractopelle, grue, pelleteuse, dumper' },
-    { id: 'tractor',      icon: '🚜', label: 'Tracteur agricole',    sub: 'Tracteur, engin agricole' },
+  { groupKey: 'location.groups.heavy', types: [
+    { id: 'truck',        icon: '🚚', labelKey: 'location.vehicles.truck.label',        subKey: 'location.vehicles.truck.sub' },
+    { id: 'bus',          icon: '🚌', labelKey: 'location.vehicles.bus.label',          subKey: 'location.vehicles.bus.sub' },
+    { id: 'construction', icon: '🚜', labelKey: 'location.vehicles.construction.label', subKey: 'location.vehicles.construction.sub' },
+    { id: 'tractor',      icon: '🚜', labelKey: 'location.vehicles.tractor.label',      subKey: 'location.vehicles.tractor.sub' },
   ]},
-  { group: 'Transport en commun / rail', types: [
-    { id: 'tram',         icon: '🚋', label: 'Tramway',              sub: 'Tram, métro léger' },
-    { id: 'train',        icon: '🚆', label: 'Train / Métro',        sub: 'Train, RER, métro souterrain' },
+  { groupKey: 'location.groups.rail', types: [
+    { id: 'tram',         icon: '🚋', labelKey: 'location.vehicles.tram.label',         subKey: 'location.vehicles.tram.sub' },
+    { id: 'train',        icon: '🚆', labelKey: 'location.vehicles.train.label',        subKey: 'location.vehicles.train.sub' },
   ]},
-  { group: 'Cycles', types: [
-    { id: 'bicycle',      icon: '🚲', label: 'Vélo',                 sub: 'Vélo classique, VAE, vélo électrique' },
-    { id: 'cargo_bike',   icon: '🚲', label: 'Vélo cargo',           sub: 'Bakfiets, triporteur, cargo électrique' },
+  { groupKey: 'location.groups.cycles', types: [
+    { id: 'bicycle',      icon: '🚲', labelKey: 'location.vehicles.bicycle.label',      subKey: 'location.vehicles.bicycle.sub' },
+    { id: 'cargo_bike',   icon: '🚲', labelKey: 'location.vehicles.cargo_bike.label',   subKey: 'location.vehicles.cargo_bike.sub' },
   ]},
-  { group: 'Personne / Autre', types: [
-    { id: 'pedestrian',   icon: '🚶', label: 'Piéton',               sub: 'Personne à pied, rollers, skateboard' },
-    { id: 'boat',         icon: '⛵', label: 'Bateau',               sub: 'Embarcation, jet-ski, canot' },
-    { id: 'other',        icon: '❓', label: 'Autre véhicule',       sub: 'Non listé — préciser dans observations' },
+  { groupKey: 'location.groups.other', types: [
+    { id: 'pedestrian',   icon: '🚶', labelKey: 'location.vehicles.pedestrian.label',   subKey: 'location.vehicles.pedestrian.sub' },
+    { id: 'boat',         icon: '⛵', labelKey: 'location.vehicles.boat.label',         subKey: 'location.vehicles.boat.sub' },
+    { id: 'other',        icon: '❓', labelKey: 'location.vehicles.other.label',        subKey: 'location.vehicles.other.sub' },
   ]},
 ];
 
 type GeoStatus = 'idle' | 'loading' | 'success' | 'denied' | 'error';
 
 export function LocationStep({ onComplete }: Props) {
+  const { t } = useTranslation();
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(null);
   const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
-  const [accidentDate, setAccidentDate] = useState(() => {
-    const now = new Date();
-    return now.toISOString().split('T')[0]; // YYYY-MM-DD
-  });
-  const [accidentTime, setAccidentTime] = useState(() => {
-    const now = new Date();
-    return now.toTimeString().slice(0, 5); // HH:MM
-  });
+  const [accidentDate, setAccidentDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [accidentTime, setAccidentTime] = useState(() => new Date().toTimeString().slice(0, 5));
   const [injuries, setInjuries] = useState<boolean | null>(null);
   const [injuryDesc, setInjuryDesc] = useState('');
   const [ambulance, setAmbulance] = useState(false);
   const [hospitalized, setHospitalized] = useState(false);
   const [injurySeverity, setInjurySeverity] = useState<'minor' | 'moderate' | 'serious'>('minor');
 
-  // Auto-géolocalisation au montage
-  useEffect(() => {
-    requestGeo();
-  }, []);
+  useEffect(() => { requestGeo(); }, []);
 
   const requestGeo = () => {
-    if (!navigator.geolocation) {
-      setGeoStatus('error');
-      return;
-    }
+    if (!navigator.geolocation) { setGeoStatus('error'); return; }
     setGeoStatus('loading');
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude: lat, longitude: lng } = pos.coords;
         setCoords({ lat, lng });
         setGeoStatus('success');
-        // Reverse geocoding via nominatim (gratuit, aucune clé API)
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=fr`,
@@ -86,23 +77,17 @@ export function LocationStep({ onComplete }: Props) {
           );
           const data = await res.json();
           const addr = data.address || {};
-          setAddress(
-            [addr.road, addr.house_number].filter(Boolean).join(' ') ||
-            addr.pedestrian || addr.path || ''
-          );
+          setAddress([addr.road, addr.house_number].filter(Boolean).join(' ') || addr.pedestrian || addr.path || '');
           setCity(addr.city || addr.town || addr.village || addr.municipality || '');
           setCountry(addr.country_code?.toUpperCase() || '');
-        } catch { /* ignore reverse geocoding errors */ }
+        } catch { /* ignore */ }
       },
-      (err) => {
-        setGeoStatus(err.code === 1 ? 'denied' : 'error');
-      },
+      (err) => { setGeoStatus(err.code === 1 ? 'denied' : 'error'); },
       { timeout: 10000, enableHighAccuracy: true }
     );
   };
 
-  const canContinue = vehicleType !== null && injuries !== null &&
-    (city || address) && accidentDate && accidentTime;
+  const canContinue = vehicleType !== null && injuries !== null && (city || address) && accidentDate && accidentTime;
 
   const handleContinue = () => {
     if (!vehicleType || injuries === null) return;
@@ -112,30 +97,29 @@ export function LocationStep({ onComplete }: Props) {
       time: accidentTime,
       location: { address, city, country, lat: coords?.lat, lng: coords?.lng },
       injuries,
-      injuryDetails: injuries ? {
-        hasInjuries: true,
-        description: injuryDesc,
-        ambulance,
-        hospitalized,
-        severity: injurySeverity,
-      } : undefined,
+      injuryDetails: injuries ? { hasInjuries: true, description: injuryDesc, ambulance, hospitalized, severity: injurySeverity } : undefined,
     });
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '11px 13px', borderRadius: 8,
+    border: '1.5px solid rgba(255,255,255,0.1)',
+    background: 'rgba(255,255,255,0.05)',
+    color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
   };
 
   return (
     <div style={{ padding: '20px 20px 32px', maxWidth: 480, margin: '0 auto' }}>
 
-      {/* ── Type de véhicule ─────────────────────────────────── */}
+      {/* Vehicle type */}
       <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase',
-          fontFamily: 'monospace', marginBottom: 12 }}>
-          Votre véhicule
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 12 }}>
+          {t('location.vehicle_label')}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {VEHICLE_GROUPS.map(group => (
-            <div key={group.group}>
-              <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.3, textTransform: 'uppercase',
-                fontFamily: 'monospace', marginBottom: 8 }}>{group.group}</div>
+            <div key={group.groupKey}>
+              <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.3, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                 {group.types.map(v => {
                   const sel = vehicleType === v.id;
@@ -149,10 +133,10 @@ export function LocationStep({ onComplete }: Props) {
                     }}>
                       <span style={{ fontSize: 26 }}>{v.icon}</span>
                       <span style={{ fontSize: 12, fontWeight: sel ? 700 : 500, color: sel ? 'var(--boom)' : 'var(--text)' }}>
-                        {v.label}
+                        {t(v.labelKey)}
                       </span>
                       <span style={{ fontSize: 9, opacity: 0.4, textAlign: 'center', lineHeight: 1.3 }}>
-                        {v.sub}
+                        {t(v.subKey)}
                       </span>
                     </button>
                   );
@@ -163,171 +147,100 @@ export function LocationStep({ onComplete }: Props) {
         </div>
       </div>
 
-      {/* ── Date & heure ────────────────────────────────────── */}
+      {/* Date & Time */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase',
-          fontFamily: 'monospace', marginBottom: 10 }}>
-          Date & heure de l'accident
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          {t('location.datetime_label')}
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <div style={{ flex: 2 }}>
-            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>Date</div>
-            <input
-              type="date"
-              value={accidentDate}
-              max={new Date().toISOString().split('T')[0]}
-              onChange={e => setAccidentDate(e.target.value)}
-              style={{
-                width: '100%', padding: '11px 13px', borderRadius: 8,
-                border: '1.5px solid rgba(255,255,255,0.1)',
-                background: 'rgba(255,255,255,0.05)',
-                color: 'var(--text)', fontSize: 14, outline: 'none', boxSizing: 'border-box',
-              }}
-            />
+            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.date_label')}</div>
+            <input type="date" value={accidentDate} max={new Date().toISOString().split('T')[0]}
+              onChange={e => setAccidentDate(e.target.value)} style={{ ...inputStyle, fontSize: 14 }} />
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>Heure</div>
-            <input
-              type="time"
-              value={accidentTime}
-              onChange={e => setAccidentTime(e.target.value)}
-              style={{
-                width: '100%', padding: '11px 13px', borderRadius: 8,
-                border: '1.5px solid rgba(255,255,255,0.1)',
-                background: 'rgba(255,255,255,0.05)',
-                color: 'var(--text)', fontSize: 14, outline: 'none', boxSizing: 'border-box',
-              }}
-            />
+            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.time_label')}</div>
+            <input type="time" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
+              style={{ ...inputStyle, fontSize: 14 }} />
           </div>
         </div>
         <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6, lineHeight: 1.5 }}>
-          ⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.
+          {t('location.datetime_warning')}
         </div>
       </div>
 
-      {/* ── Géolocalisation ──────────────────────────────────── */}
+      {/* Geolocation */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase',
-          fontFamily: 'monospace', marginBottom: 10 }}>
-          Lieu de l'accident
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          {t('location.geo_label')}
         </div>
 
-        {/* GPS status bar */}
         <div style={{
           padding: '10px 14px', borderRadius: 10, marginBottom: 12,
-          background: geoStatus === 'success' ? 'rgba(34,197,94,0.08)' :
-                      geoStatus === 'loading' ? 'rgba(245,158,11,0.08)' :
-                      'rgba(255,255,255,0.04)',
-          border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' :
-                                geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' :
-                                'rgba(255,255,255,0.08)'}`,
+          background: geoStatus === 'success' ? 'rgba(34,197,94,0.08)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.04)',
+          border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' : 'rgba(255,255,255,0.08)'}`,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 16 }}>
-              {geoStatus === 'success' ? '📍' : geoStatus === 'loading' ? '⏳' :
-               geoStatus === 'denied' ? '🚫' : '📍'}
+              {geoStatus === 'success' ? '📍' : geoStatus === 'loading' ? '⏳' : geoStatus === 'denied' ? '🚫' : '📍'}
             </span>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 600,
-                color: geoStatus === 'success' ? '#22c55e' : geoStatus === 'denied' ? '#ef4444' : 'var(--text)' }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: geoStatus === 'success' ? '#22c55e' : geoStatus === 'denied' ? '#ef4444' : 'var(--text)' }}>
                 {geoStatus === 'success' && coords
-                  ? `GPS capturé — ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`
-                  : geoStatus === 'loading' ? 'Localisation en cours…'
-                  : geoStatus === 'denied' ? 'Accès GPS refusé — saisie manuelle'
-                  : 'Position GPS non capturée'}
+                  ? t('location.gps_captured', { lat: coords.lat.toFixed(5), lng: coords.lng.toFixed(5) })
+                  : geoStatus === 'loading' ? t('location.gps_loading')
+                  : geoStatus === 'denied' ? t('location.gps_denied')
+                  : t('location.gps_missing')}
               </div>
               {geoStatus === 'success' && (
-                <div style={{ fontSize: 10, opacity: 0.5, marginTop: 1 }}>
-                  Coordonnées enregistrées dans le document
-                </div>
+                <div style={{ fontSize: 10, opacity: 0.5, marginTop: 1 }}>{t('location.gps_saved')}</div>
               )}
             </div>
           </div>
           {(geoStatus === 'denied' || geoStatus === 'error') && (
             <button onClick={requestGeo} style={{
               padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)',
-              background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 11,
-              whiteSpace: 'nowrap',
-            }}>
-              Réessayer
-            </button>
+              background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap',
+            }}>{t('common.retry')}</button>
           )}
         </div>
 
-        {/* Adresse manuelle — toujours visible pour correction */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div>
-            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>
-              Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)
-            </div>
-            <input
-              type="text"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
-              placeholder="Ex: Avenue de la Gare 4, A1 direction Berne km 47..."
-              style={{
-                width: '100%', padding: '11px 13px', borderRadius: 8,
-                border: '1.5px solid rgba(255,255,255,0.1)',
-                background: 'rgba(255,255,255,0.05)',
-                color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
-              }}
-            />
+            <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.address_label')}</div>
+            <input type="text" value={address} onChange={e => setAddress(e.target.value)}
+              placeholder={t('location.address_placeholder')} style={inputStyle} />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
             <div style={{ flex: 2 }}>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>Ville / Localité</div>
-              <input
-                type="text"
-                value={city}
-                onChange={e => setCity(e.target.value)}
-                placeholder="Lausanne, Paris..."
-                style={{
-                  width: '100%', padding: '11px 13px', borderRadius: 8,
-                  border: '1.5px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
-                }}
-              />
+              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.city_label')}</div>
+              <input type="text" value={city} onChange={e => setCity(e.target.value)}
+                placeholder={t('location.city_placeholder')} style={inputStyle} />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>Pays</div>
-              <input
-                type="text"
-                value={country}
-                onChange={e => setCountry(e.target.value)}
-                placeholder="CH, FR..."
-                style={{
-                  width: '100%', padding: '11px 13px', borderRadius: 8,
-                  border: '1.5px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
-                }}
-              />
+              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.country_label')}</div>
+              <input type="text" value={country} onChange={e => setCountry(e.target.value)}
+                placeholder={t('location.country_placeholder')} style={inputStyle} />
             </div>
           </div>
         </div>
 
-        <div style={{ marginTop: 8, padding: '10px 12px', borderRadius: 8,
-          background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-          <div style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.6 }}>
-            💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>,
-            même si vous avez déplacé les véhicules sur le côté.
-            Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.
-          </div>
+        <div style={{ marginTop: 8, padding: '10px 12px', borderRadius: 8, background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
+          <div style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.6 }}
+            dangerouslySetInnerHTML={{ __html: t('location.location_tip') }} />
         </div>
       </div>
 
-      {/* ── Blessés ─────────────────────────────────────────── */}
+      {/* Injuries */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase',
-          fontFamily: 'monospace', marginBottom: 10 }}>
-          Y a-t-il des blessés ?
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          {t('location.injuries_label')}
         </div>
         <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
           {([
-            { val: false, label: 'Non — aucun blessé', icon: '✅', color: '#22c55e' },
-            { val: true,  label: 'Oui — blessure(s)',  icon: '🚑', color: '#ef4444' },
+            { val: false, label: t('location.no_injuries'), icon: '✅', color: '#22c55e' },
+            { val: true,  label: t('location.yes_injuries'), icon: '🚑', color: '#ef4444' },
           ] as const).map(opt => (
             <button key={String(opt.val)} onClick={() => setInjuries(opt.val)} style={{
               flex: 1, padding: '14px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
@@ -337,32 +250,26 @@ export function LocationStep({ onComplete }: Props) {
               transition: 'all 0.15s',
             }}>
               <span style={{ fontSize: 24 }}>{opt.icon}</span>
-              <span style={{ fontSize: 12, fontWeight: 600,
-                color: injuries === opt.val ? opt.color : 'rgba(240,237,232,0.6)' }}>
+              <span style={{ fontSize: 12, fontWeight: 600, color: injuries === opt.val ? opt.color : 'rgba(240,237,232,0.6)' }}>
                 {opt.label}
               </span>
             </button>
           ))}
         </div>
 
-        {/* Détails blessures — si oui */}
         {injuries === true && (
-          <div style={{
-            padding: 16, borderRadius: 12, border: '1.5px solid rgba(239,68,68,0.25)',
-            background: 'rgba(239,68,68,0.05)', display: 'flex', flexDirection: 'column', gap: 12,
-          }}>
+          <div style={{ padding: 16, borderRadius: 12, border: '1.5px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.05)', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: '#ef4444', marginBottom: 2 }}>
-              🚑 Détails des blessures
+              {t('location.injury_details_title')}
             </div>
 
-            {/* Gravité */}
             <div>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6 }}>Gravité apparente</div>
+              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6 }}>{t('location.severity_label')}</div>
               <div style={{ display: 'flex', gap: 6 }}>
                 {([
-                  { val: 'minor',    label: 'Légère',    color: '#f59e0b' },
-                  { val: 'moderate', label: 'Modérée',   color: '#f97316' },
-                  { val: 'serious',  label: 'Grave',     color: '#ef4444' },
+                  { val: 'minor',    label: t('location.severity_minor'),    color: '#f59e0b' },
+                  { val: 'moderate', label: t('location.severity_moderate'), color: '#f97316' },
+                  { val: 'serious',  label: t('location.severity_serious'),  color: '#ef4444' },
                 ] as const).map(s => (
                   <button key={s.val} onClick={() => setInjurySeverity(s.val)} style={{
                     flex: 1, padding: '8px 4px', borderRadius: 8, border: 'none', cursor: 'pointer',
@@ -377,39 +284,25 @@ export function LocationStep({ onComplete }: Props) {
               </div>
             </div>
 
-            {/* Description */}
             <div>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>
-                Description (zone du corps, douleurs, blessures visibles)
-              </div>
-              <textarea
-                value={injuryDesc}
-                onChange={e => setInjuryDesc(e.target.value)}
-                placeholder="Ex: Douleur cervicale, contusion genou gauche, coupure front…"
-                rows={3}
-                style={{
-                  width: '100%', padding: '10px 13px', borderRadius: 8,
-                  border: '1.5px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.05)',
-                  color: 'var(--text)', fontSize: 13, resize: 'none',
-                  outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
-                }}
+              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
+              <textarea value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
+                placeholder={t('location.injury_desc_placeholder')} rows={3}
+                style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />
             </div>
 
-            {/* Ambulance / hospitalisation */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
-                { val: ambulance,    set: setAmbulance,    label: '🚑 Prise en charge par ambulance / SMUR' },
-                { val: hospitalized, set: setHospitalized, label: '🏥 Hospitalisation nécessaire ou envisagée' },
+                { val: ambulance,    set: setAmbulance,    label: t('location.ambulance') },
+                { val: hospitalized, set: setHospitalized, label: t('location.hospitalized') },
               ].map((item, i) => (
                 <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                   <div onClick={() => item.set(!item.val)} style={{
                     width: 20, height: 20, borderRadius: 5, flexShrink: 0,
                     border: item.val ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
                     background: item.val ? '#ef4444' : 'transparent',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'all 0.15s',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
                   }}>
                     {item.val && <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>✓</span>}
                   </div>
@@ -418,76 +311,48 @@ export function LocationStep({ onComplete }: Props) {
               ))}
             </div>
 
-            <div style={{ fontSize: 11, opacity: 0.5, lineHeight: 1.6 }}>
-              En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement.
-              Ces informations seront incluses dans le document final.
-            </div>
+            <div style={{ fontSize: 11, opacity: 0.5, lineHeight: 1.6 }}>{t('location.injury_footer')}</div>
           </div>
         )}
       </div>
 
-      {/* ── CTA ─────────────────────────────────────────────── */}
-      <button
-        onClick={handleContinue}
-        disabled={!canContinue}
-        style={{
-          width: '100%', padding: '16px', borderRadius: 12, border: 'none',
-          background: canContinue ? 'var(--boom)' : 'rgba(255,255,255,0.08)',
-          color: canContinue ? '#fff' : 'rgba(255,255,255,0.3)',
-          cursor: canContinue ? 'pointer' : 'not-allowed',
-          fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
-        }}
-      >
-        {!vehicleType ? 'Sélectionnez votre type de véhicule' :
-         injuries === null ? 'Indiquez s\'il y a des blessés' :
-         !(city || address) ? 'Indiquez le lieu de l\'accident' :
-         'Continuer →'}
+      {/* CTA */}
+      <button onClick={handleContinue} disabled={!canContinue} style={{
+        width: '100%', padding: '16px', borderRadius: 12, border: 'none',
+        background: canContinue ? 'var(--boom)' : 'rgba(255,255,255,0.08)',
+        color: canContinue ? '#fff' : 'rgba(255,255,255,0.3)',
+        cursor: canContinue ? 'pointer' : 'not-allowed',
+        fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
+      }}>
+        {!vehicleType ? t('location.cta_no_vehicle') :
+         injuries === null ? t('location.cta_no_injuries') :
+         !(city || address) ? t('location.cta_no_location') :
+         t('common.continue')}
       </button>
 
-      {/* ── Appel volontaire police ──────────────────────────── */}
+      {/* Emergency numbers */}
       {(() => {
-        // Numéros d'urgence par pays (code ISO 2 lettres)
         const EMERGENCY: Record<string, { police: string; ambulance: string }> = {
-          CH: { police: '117',  ambulance: '144' },
-          FR: { police: '17',   ambulance: '15'  },
-          DE: { police: '110',  ambulance: '112' },
-          AT: { police: '133',  ambulance: '144' },
-          IT: { police: '113',  ambulance: '118' },
-          ES: { police: '091',  ambulance: '112' },
-          PT: { police: '112',  ambulance: '112' },
-          BE: { police: '101',  ambulance: '100' },
-          NL: { police: '0900-8844', ambulance: '112' },
-          LU: { police: '113',  ambulance: '112' },
-          GB: { police: '999',  ambulance: '999' },
-          IE: { police: '999',  ambulance: '999' },
-          US: { police: '911',  ambulance: '911' },
-          CA: { police: '911',  ambulance: '911' },
-          AU: { police: '000',  ambulance: '000' },
-          NZ: { police: '111',  ambulance: '111' },
-          JP: { police: '110',  ambulance: '119' },
-          CN: { police: '110',  ambulance: '120' },
-          MA: { police: '19',   ambulance: '15'  },
-          SN: { police: '17',   ambulance: '15'  },
-          TN: { police: '197',  ambulance: '190' },
-          DZ: { police: '17',   ambulance: '14'  },
-          ZA: { police: '10111',ambulance: '10177'},
-          BR: { police: '190',  ambulance: '192' },
-          MX: { police: '911',  ambulance: '911' },
-          AR: { police: '911',  ambulance: '107' },
-          IN: { police: '100',  ambulance: '102' },
-          RU: { police: '102',  ambulance: '103' },
-          PL: { police: '997',  ambulance: '999' },
-          CZ: { police: '158',  ambulance: '155' },
-          HU: { police: '107',  ambulance: '104' },
-          RO: { police: '112',  ambulance: '112' },
-          GR: { police: '100',  ambulance: '166' },
-          TR: { police: '155',  ambulance: '112' },
-          SE: { police: '114 14', ambulance: '112'},
-          NO: { police: '112',  ambulance: '113' },
-          DK: { police: '114',  ambulance: '112' },
-          FI: { police: '0295 419 800', ambulance: '112'},
+          CH: { police: '117',  ambulance: '144' }, FR: { police: '17',   ambulance: '15'  },
+          DE: { police: '110',  ambulance: '112' }, AT: { police: '133',  ambulance: '144' },
+          IT: { police: '113',  ambulance: '118' }, ES: { police: '091',  ambulance: '112' },
+          PT: { police: '112',  ambulance: '112' }, BE: { police: '101',  ambulance: '100' },
+          NL: { police: '0900-8844', ambulance: '112' }, LU: { police: '113', ambulance: '112' },
+          GB: { police: '999',  ambulance: '999' }, IE: { police: '999',  ambulance: '999' },
+          US: { police: '911',  ambulance: '911' }, CA: { police: '911',  ambulance: '911' },
+          AU: { police: '000',  ambulance: '000' }, NZ: { police: '111',  ambulance: '111' },
+          JP: { police: '110',  ambulance: '119' }, CN: { police: '110',  ambulance: '120' },
+          MA: { police: '19',   ambulance: '15'  }, SN: { police: '17',   ambulance: '15'  },
+          TN: { police: '197',  ambulance: '190' }, DZ: { police: '17',   ambulance: '14'  },
+          ZA: { police: '10111',ambulance: '10177'}, BR: { police: '190',  ambulance: '192' },
+          MX: { police: '911',  ambulance: '911' }, AR: { police: '911',  ambulance: '107' },
+          IN: { police: '100',  ambulance: '102' }, RU: { police: '102',  ambulance: '103' },
+          PL: { police: '997',  ambulance: '999' }, CZ: { police: '158',  ambulance: '155' },
+          HU: { police: '107',  ambulance: '104' }, RO: { police: '112',  ambulance: '112' },
+          GR: { police: '100',  ambulance: '166' }, TR: { police: '155',  ambulance: '112' },
+          SE: { police: '114 14', ambulance: '112'}, NO: { police: '112',  ambulance: '113' },
+          DK: { police: '114',  ambulance: '112' }, FI: { police: '0295 419 800', ambulance: '112'},
         };
-        // Fallback EU 112 si pays inconnu
         const nums = EMERGENCY[country] || { police: '112', ambulance: '112' };
         const label = country ? `(${country})` : '(EU)';
         return (
@@ -498,18 +363,18 @@ export function LocationStep({ onComplete }: Props) {
                 border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
                 color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
               }}>
-                🚔 Police · {nums.police} {label}
+                {t('location.emergency_police', { number: nums.police, label })}
               </a>
               <a href={`tel:${nums.ambulance}`} style={{
                 flex: 1, padding: '11px', borderRadius: 10, textDecoration: 'none',
                 border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
                 color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
               }}>
-                🚑 Urgences · {nums.ambulance} {label}
+                {t('location.emergency_ambulance', { number: nums.ambulance, label })}
               </a>
             </div>
             <div style={{ fontSize: 11, opacity: 0.28, textAlign: 'center' }}>
-              Ces appels sont volontaires — la police n'est jamais prévenue automatiquement.
+              {t('location.emergency_voluntary')}
             </div>
           </div>
         );
