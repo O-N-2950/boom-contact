@@ -1,3 +1,4 @@
+import { ColorPicker } from '../ColorPicker';
 import { useState } from 'react';
 import type { ParticipantData, AccidentData } from '../../../../shared/types';
 
@@ -118,7 +119,14 @@ export function ConstatForm({ role, prefilled, onSave }: Props) {
           <Field sec section="vehicle" field="brand"        label="Marque"          placeholder="Toyota, VW, Peugeot..." required />
           <Field sec section="vehicle" field="model"        label="Modèle"          placeholder="Yaris, Golf, 208..." />
           <Field sec section="vehicle" field="year"         label="Année"           placeholder="2019" type="number" />
-          <Field sec section="vehicle" field="color"        label="Couleur"         placeholder="Blanc, Noir, Rouge..." />
+          {/* Couleur — sélecteur visuel */}
+          <ColorPicker
+            value={data.vehicle?.color ?? ''}
+            onChange={v => setData(prev => ({
+              ...prev,
+              vehicle: { ...prev.vehicle, color: v }
+            }))}
+          />
           <Field sec section="vehicle" field="vin"          label="N° châssis (VIN)" placeholder="VF1..." />
         </>}
 

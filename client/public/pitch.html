@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>boom.contact — Constat numérique mondial</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --boom: #FF3500;
+  --boom2: #FF6B00;
+  --blue: #0033FF;
+  --black: #06060C;
+  --dark: #0E0E18;
+  --card: #12121E;
+  --text: #F0EDE8;
+  --muted: rgba(240,237,232,0.45);
+  --border: rgba(240,237,232,0.08);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--black);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ─────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ── HERO ──────────────────────────────────────────────────── */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative; overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,53,0,0.12), transparent 65%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,51,255,0.06), transparent 60%);
+}
+
+/* Grid lines */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,53,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,53,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black, transparent);
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+/* Logo */
+.logo-ring {
+  width: 100px; height: 100px; border-radius: 24px;
+  background: rgba(255,53,0,0.1);
+  border: 1px solid rgba(255,53,0,0.3);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+  box-shadow: 0 0 60px rgba(255,53,0,0.15);
+  animation: logoIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.logo-ring svg { width: 60px; height: 60px; }
+
+@keyframes logoIn {
+  from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Title */
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 15vw, 140px);
+  line-height: 0.92;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+  animation: titleIn 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-title .t1 { color: var(--text); }
+.hero-title .t2 { color: var(--boom); }
+.hero-title .t3 { color: rgba(240,237,232,0.25); font-size: 0.6em; }
+
+@keyframes titleIn {
+  from { transform: translateY(40px) skewY(2deg); opacity: 0; }
+  to   { transform: translateY(0) skewY(0deg); opacity: 1; }
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0 auto 40px;
+  animation: fadeUp 0.8s 0.4s both;
+}
+
+.hero-sub strong { color: var(--text); font-weight: 600; }
+
+@keyframes fadeUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* CTA buttons */
+.hero-ctas {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.6s both;
+}
+
+.btn-primary {
+  padding: 16px 36px; border-radius: 50px; border: none;
+  background: var(--boom);
+  color: #fff; font-size: 15px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 32px rgba(255,53,0,0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255,53,0,0.5);
+}
+
+.btn-secondary {
+  padding: 16px 32px; border-radius: 50px;
+  border: 1.5px solid rgba(240,237,232,0.2);
+  background: transparent; color: var(--text);
+  font-size: 15px; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(240,237,232,0.5);
+  background: rgba(240,237,232,0.05);
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex; gap: 0; margin-top: 64px;
+  border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  animation: fadeUp 0.8s 0.8s both;
+}
+
+.stat {
+  flex: 1; padding: 18px 20px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+
+.stat-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; color: var(--boom);
+  line-height: 1;
+}
+
+.stat-l {
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.5px; margin-top: 4px;
+}
+
+/* ── HOW IT WORKS ───────────────────────────────────────────── */
+.section {
+  padding: 100px 24px;
+  max-width: 1100px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--boom);
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1; letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  font-size: 17px; color: var(--muted); max-width: 540px;
+  line-height: 1.7; margin-bottom: 60px;
+}
+
+/* Steps — phone mockups */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .steps { grid-template-columns: 1fr; } }
+
+.step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,53,0,0.3);
+}
+
+.step-screen {
+  height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  background: var(--dark);
+}
+
+.step-num {
+  position: absolute; top: 12px; left: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--boom); letter-spacing: 1px;
+  background: rgba(255,53,0,0.12);
+  padding: 3px 8px; border-radius: 20px;
+  border: 1px solid rgba(255,53,0,0.25);
+}
+
+.step-body { padding: 20px; }
+.step-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.step-desc  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* Phone illustration for each step */
+.phone-mock {
+  width: 90px; height: 156px;
+  background: #0a0a14;
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,0.15);
+  position: relative; overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.phone-screen {
+  position: absolute; inset: 6px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  gap: 4px; padding: 6px;
+}
+
+/* ── Step SVG illustrations ─────────────────────────────────── */
+
+/* Step 1 — OCR scan */
+.step1-content { position: relative; width: 100%; height: 100%; }
+.scan-card {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px; height: 45px;
+  background: linear-gradient(135deg, #1a2a3e, #2a3a5e);
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.scan-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: var(--boom);
+  border-style: solid;
+}
+.scan-line {
+  position: absolute; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--boom), transparent);
+  animation: scanMove 2s ease-in-out infinite;
+}
+@keyframes scanMove {
+  0%,100% { top: 18%; }
+  50%      { top: 72%; }
+}
+.ocr-dots {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 4px;
+}
+.ocr-dot {
+  width: 40px; height: 4px; background: rgba(255,255,255,0.08);
+  border-radius: 2px; overflow: hidden;
+}
+.ocr-dot::after {
+  content: ''; display: block; height: 100%;
+  background: var(--boom);
+  animation: scanBar 2s ease-in-out infinite;
+}
+.ocr-dot:nth-child(2)::after { animation-delay: 0.3s; width: 70%; }
+.ocr-dot:nth-child(3)::after { animation-delay: 0.6s; width: 50%; }
+@keyframes scanBar {
+  from { width: 0%; } 50% { width: 90%; } to { width: 0%; }
+}
+
+/* Step 2 — QR code */
+.qr-mock {
+  width: 64px; height: 64px;
+  background: #0a0a14;
+  padding: 5px; border-radius: 8px;
+  border: 1.5px solid rgba(255,53,0,0.4);
+  box-shadow: 0 0 20px rgba(255,53,0,0.2);
+}
+.qr-inner { width: 100%; height: 100%; }
+/* SVG QR pattern */
+
+/* Step 3 — Form */
+.form-lines { width: 72px; display: flex; flex-direction: column; gap: 6px; }
+.form-line {
+  height: 4px; border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden; position: relative;
+}
+.form-line.filled::after {
+  content: ''; position: absolute;
+  inset: 0; width: 100%;
+  background: rgba(255,53,0,0.5);
+  border-radius: 2px;
+}
+.form-check {
+  display: flex; align-items: center; gap: 4px; margin-top: 2px;
+}
+.check-box {
+  width: 8px; height: 8px; border-radius: 2px;
+  background: var(--boom);
+  display: flex; align-items: center; justify-content: center;
+}
+.check-box.empty { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
+
+/* Step 4 — Signature */
+.sig-area {
+  width: 72px; height: 36px;
+  border: 1px solid rgba(255,53,0,0.3); border-radius: 6px;
+  overflow: hidden; position: relative;
+  background: rgba(255,53,0,0.04);
+}
+.sig-path {
+  position: absolute; inset: 0;
+}
+.sig-path svg { width: 100%; height: 100%; }
+
+/* Step 5 — PDF */
+.pdf-mock {
+  width: 58px; height: 74px;
+  background: #f8f8f2;
+  border-radius: 4px 10px 4px 4px;
+  position: relative; overflow: hidden;
+}
+.pdf-corner {
+  position: absolute; top: 0; right: 0;
+  width: 12px; height: 12px;
+  background: #ddd;
+  clip-path: polygon(0 0, 100% 100%, 100% 0);
+}
+.pdf-lines { padding: 10px 6px 6px; display: flex; flex-direction: column; gap: 3px; }
+.pdf-line  { height: 2.5px; background: #ccc; border-radius: 1px; }
+.pdf-line.blue { background: #1144AA; width: 70%; }
+.pdf-badge {
+  position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+  background: var(--boom); color: #fff; font-size: 5px; font-weight: 700;
+  padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* ── FEATURES GRID ──────────────────────────────────────────── */
+.features {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 60px;
+}
+@media (max-width: 700px) { .features { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .features { grid-template-columns: 1fr; } }
+
+.feature {
+  padding: 28px 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.feature:hover { border-color: rgba(255,53,0,0.25); transform: translateY(-3px); }
+
+.feature-icon {
+  font-size: 28px; margin-bottom: 12px; display: block;
+}
+.feature-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.feature-desc  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── COMPARISON ─────────────────────────────────────────────── */
+.comparison {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-top: 60px;
+}
+@media (max-width: 600px) { .comparison { grid-template-columns: 1fr; } }
+
+.compare-card {
+  padding: 28px;
+  border-radius: 20px; overflow: hidden;
+}
+.compare-card.before {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+}
+.compare-card.after {
+  background: rgba(255,53,0,0.06);
+  border: 1px solid rgba(255,53,0,0.25);
+}
+
+.compare-head {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  font-family: 'DM Mono', monospace; margin-bottom: 20px;
+}
+.compare-card.before .compare-head { color: var(--muted); }
+.compare-card.after  .compare-head { color: var(--boom); }
+
+.compare-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; line-height: 1.5; margin-bottom: 14px;
+}
+.compare-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── PRICING ────────────────────────────────────────────────── */
+.pricing {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 60px; align-items: start;
+}
+@media (max-width: 700px) { .pricing { grid-template-columns: 1fr; } }
+
+.price-card {
+  padding: 28px 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  position: relative; overflow: hidden;
+  transition: transform 0.2s;
+}
+.price-card:hover { transform: translateY(-4px); }
+.price-card.popular {
+  border-color: rgba(255,53,0,0.4);
+  background: rgba(255,53,0,0.06);
+}
+.popular-badge {
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  background: var(--boom); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  padding: 4px 14px; border-radius: 0 0 12px 12px;
+  text-transform: uppercase;
+}
+.price-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.price-label { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+.price-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; line-height: 1; color: var(--text);
+}
+.price-amount .currency { font-size: 24px; vertical-align: super; }
+.price-amount .period { font-size: 18px; color: var(--muted); }
+.price-desc { font-size: 12px; color: var(--muted); margin: 10px 0 20px; line-height: 1.6; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.price-features li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: rgba(240,237,232,0.75);
+}
+.price-features li::before { content: '✓'; color: var(--boom); font-weight: 700; }
+.price-btn {
+  display: block; width: 100%;
+  margin-top: 24px; padding: 14px;
+  border-radius: 12px; border: none;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  text-align: center; transition: all 0.2s;
+}
+.price-btn.outline {
+  background: transparent;
+  border: 1.5px solid rgba(240,237,232,0.2);
+  color: var(--text);
+}
+.price-btn.outline:hover {
+  border-color: var(--boom); color: var(--boom);
+}
+.price-btn.solid {
+  background: var(--boom); color: #fff;
+  box-shadow: 0 6px 20px rgba(255,53,0,0.3);
+}
+.price-btn.solid:hover {
+  box-shadow: 0 10px 30px rgba(255,53,0,0.5);
+  transform: translateY(-1px);
+}
+
+/* ── TRUST LOGOS ────────────────────────────────────────────── */
+.trust-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 30px 0;
+  margin: 0 24px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 40px; flex-wrap: wrap;
+}
+.trust-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq { display: flex; flex-direction: column; gap: 12px; margin-top: 60px; }
+.faq-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.faq-q {
+  padding: 18px 22px; font-size: 15px; font-weight: 600;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  user-select: none;
+}
+.faq-q:hover { color: var(--boom); }
+.faq-chevron { transition: transform 0.25s; font-style: normal; }
+.faq-a {
+  padding: 0 22px; max-height: 0; overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s;
+  font-size: 14px; color: var(--muted); line-height: 1.75;
+}
+.faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+/* ── FOOTER ─────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  text-align: center;
+  font-size: 12px; color: var(--muted);
+  line-height: 2;
+  position: relative; z-index: 1;
+}
+
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--text); }
+
+/* ── ANIMATIONS on scroll ──────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Staggered children */
+.stagger .reveal:nth-child(1) { transition-delay: 0s; }
+.stagger .reveal:nth-child(2) { transition-delay: 0.1s; }
+.stagger .reveal:nth-child(3) { transition-delay: 0.2s; }
+.stagger .reveal:nth-child(4) { transition-delay: 0.3s; }
+.stagger .reveal:nth-child(5) { transition-delay: 0.4s; }
+.stagger .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+/* ── Scrolling ticker ───────────────────────────────────────── */
+.ticker-wrap {
+  overflow: hidden; border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0; margin-bottom: 0;
+  background: rgba(255,53,0,0.04);
+}
+.ticker {
+  display: flex; gap: 60px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; letter-spacing: 2px;
+  color: rgba(255,53,0,0.6); text-transform: uppercase;
+  display: flex; align-items: center; gap: 16px;
+}
+.ticker-item::before { content: '✦'; color: var(--boom); }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="logo-ring">
+      <!-- Logo SVG boom.contact -->
+      <svg viewBox="0 0 80 80" fill="none">
+        <!-- Car A (blue) -->
+        <g transform="translate(4,32)">
+          <rect x="2" y="6" width="30" height="16" rx="4" fill="#1144AA"/>
+          <rect x="6" y="2" width="20" height="10" rx="3" fill="rgba(100,160,255,0.5)"/>
+          <circle cx="6" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+          <circle cx="28" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+        </g>
+        <!-- Explosion -->
+        <g transform="translate(28,14)">
+          <polygon points="12,0 15,10 24,5 18,14 28,14 20,22 26,30 16,26 14,36 10,26 0,30 6,22 -2,14 8,14 2,5 11,10" fill="#FF3500" opacity="0.9"/>
+          <text x="10" y="22" textAnchor="middle" fontSize="7" fontWeight="800" fill="white" fontFamily="sans-serif">BOOM</text>
+        </g>
+        <!-- Car B (orange) -->
+        <g transform="translate(46,32)">
+          <rect x="2" y="6" width="30" height="16" rx="4" fill="#FF6B00"/>
+          <rect x="8" y="2" width="20" height="10" rx="3" fill="rgba(255,200,100,0.5)"/>
+          <circle cx="6" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+          <circle cx="28" cy="23" r="4" fill="#0a0a18" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+        </g>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="t1">boom</span><span class="t2">.</span><br>
+      <span class="t1">contact</span>
+    </h1>
+
+    <p class="hero-sub">
+      Le <strong>constat numérique</strong> en 5 minutes.<br>
+      OCR universel · QR code · Double signature · PDF certifié
+    </p>
+
+    <div class="hero-ctas">
+      <a href="https://boom-contact-production.up.railway.app" class="btn-primary" target="_blank">
+        💥 Démarrer un constat
+      </a>
+      <a href="#how" class="btn-secondary">
+        Comment ça marche →
+      </a>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-n">5 min</div><div class="stat-l">Durée moyenne</div></div>
+      <div class="stat"><div class="stat-n">150+</div><div class="stat-l">Pays</div></div>
+      <div class="stat"><div class="stat-n">50</div><div class="stat-l">Langues OCR</div></div>
+      <div class="stat"><div class="stat-n">CHF 4.90</div><div class="stat-l">Par constat</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ─────────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Suisse</span>
+    <span class="ticker-item">France</span>
+    <span class="ticker-item">Allemagne</span>
+    <span class="ticker-item">Italie</span>
+    <span class="ticker-item">Espagne</span>
+    <span class="ticker-item">Portugal</span>
+    <span class="ticker-item">Belgique</span>
+    <span class="ticker-item">Maroc</span>
+    <span class="ticker-item">Sénégal</span>
+    <span class="ticker-item">Brésil</span>
+    <span class="ticker-item">Thaïlande</span>
+    <span class="ticker-item">Japon</span>
+    <span class="ticker-item">États-Unis</span>
+    <span class="ticker-item">Canada</span>
+    <span class="ticker-item">Australie</span>
+    <!-- duplicate for infinite scroll -->
+    <span class="ticker-item">Suisse</span>
+    <span class="ticker-item">France</span>
+    <span class="ticker-item">Allemagne</span>
+    <span class="ticker-item">Italie</span>
+    <span class="ticker-item">Espagne</span>
+    <span class="ticker-item">Portugal</span>
+    <span class="ticker-item">Belgique</span>
+    <span class="ticker-item">Maroc</span>
+    <span class="ticker-item">Sénégal</span>
+    <span class="ticker-item">Brésil</span>
+    <span class="ticker-item">Thaïlande</span>
+    <span class="ticker-item">Japon</span>
+    <span class="ticker-item">États-Unis</span>
+    <span class="ticker-item">Canada</span>
+    <span class="ticker-item">Australie</span>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ──────────────────────────────────────────── -->
+<section class="section" id="how">
+  <div class="section-label reveal">Fonctionnement</div>
+  <h2 class="section-title reveal">4 étapes.<br>5 minutes.</h2>
+  <p class="section-sub reveal">Vous venez d'avoir un accident. Votre téléphone devient votre assistant juridique.</p>
+
+  <div class="steps stagger">
+    <!-- Step 1 — Scan -->
+    <div class="step reveal">
+      <div class="step-screen">
+        <div class="step-num">01</div>
+        <!-- Scan animation -->
+        <div style="position:relative;width:90px;height:80px;">
+          <div class="scan-card"></div>
+          <div class="scan-corner" style="top:4px;left:10px;border-width:2px 0 0 2px;"></div>
+          <div class="scan-corner" style="top:4px;right:10px;border-width:2px 2px 0 0;"></div>
+          <div class="scan-corner" style="bottom:4px;left:10px;border-width:0 0 2px 2px;"></div>
+          <div class="scan-corner" style="bottom:4px;right:10px;border-width:0 2px 2px 0;"></div>
+          <div class="scan-line"></div>
+        </div>
+        <div class="ocr-dots">
+          <div class="ocr-dot"></div>
+          <div class="ocr-dot"></div>
+          <div class="ocr-dot"></div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">📄 Scan OCR</div>
+        <div class="step-desc">Photographiez votre permis de circulation et votre carte verte. Claude Vision extrait toutes les données en 3 secondes. 50 langues.</div>
+      </div>
+    </div>
+
+    <!-- Step 2 — QR -->
+    <div class="step reveal">
+      <div class="step-screen" style="flex-direction:column;gap:8px;">
+        <div class="step-num">02</div>
+        <div class="qr-mock">
+          <svg class="qr-inner" viewBox="0 0 54 54" fill="none">
+            <!-- QR pattern -->
+            <rect x="2" y="2" width="20" height="20" rx="2" fill="rgba(255,53,0,0.3)" stroke="#FF3500" strokeWidth="1.5"/>
+            <rect x="5" y="5" width="14" height="14" rx="1" fill="#FF3500"/>
+            <rect x="32" y="2" width="20" height="20" rx="2" fill="rgba(255,53,0,0.3)" stroke="#FF3500" strokeWidth="1.5"/>
+            <rect x="35" y="5" width="14" height="14" rx="1" fill="#FF3500"/>
+            <rect x="2" y="32" width="20" height="20" rx="2" fill="rgba(255,53,0,0.3)" stroke="#FF3500" strokeWidth="1.5"/>
+            <rect x="5" y="35" width="14" height="14" rx="1" fill="#FF3500"/>
+            <rect x="24" y="24" width="4" height="4" fill="#FF3500"/>
+            <rect x="30" y="24" width="4" height="4" fill="#FF3500"/>
+            <rect x="36" y="24" width="4" height="4" fill="#FF3500"/>
+            <rect x="24" y="30" width="4" height="4" fill="#FF3500"/>
+            <rect x="30" y="30" width="4" height="4" fill="#FF3500"/>
+            <rect x="36" y="30" width="4" height="4" fill="#FF3500"/>
+            <rect x="42" y="30" width="4" height="4" fill="#FF3500"/>
+            <rect x="24" y="36" width="4" height="4" fill="#FF3500"/>
+            <rect x="36" y="36" width="4" height="4" fill="#FF3500"/>
+            <rect x="42" y="36" width="4" height="4" fill="#FF3500"/>
+            <rect x="30" y="42" width="4" height="4" fill="#FF3500"/>
+            <rect x="36" y="42" width="4" height="4" fill="#FF3500"/>
+            <rect x="42" y="42" width="4" height="4" fill="#FF3500"/>
+          </svg>
+        </div>
+        <div style="font-size:10px;color:rgba(255,53,0,0.7);font-family:'DM Mono',monospace;letter-spacing:1px;">SESSION lHWA1H2K</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">📱 QR Code partagé</div>
+        <div class="step-desc">Un QR code unique relie les deux téléphones. L'autre conducteur le scanne — chacun remplit ses infos en temps réel.</div>
+      </div>
+    </div>
+
+    <!-- Step 3 — Form + Sign -->
+    <div class="step reveal">
+      <div class="step-screen" style="flex-direction:column;gap:10px;">
+        <div class="step-num">03</div>
+        <div class="form-lines">
+          <div class="form-line filled" style="width:90%"></div>
+          <div class="form-line filled" style="width:75%"></div>
+          <div class="form-line filled" style="width:85%"></div>
+          <div class="form-check">
+            <div class="check-box"></div>
+            <div style="height:3px;width:40px;background:rgba(255,53,0,0.4);border-radius:1px;"></div>
+          </div>
+          <div class="form-check">
+            <div class="check-box empty"></div>
+            <div style="height:3px;width:35px;background:rgba(255,255,255,0.08);border-radius:1px;"></div>
+          </div>
+          <div class="form-check">
+            <div class="check-box"></div>
+            <div style="height:3px;width:42px;background:rgba(255,53,0,0.4);border-radius:1px;"></div>
+          </div>
+        </div>
+        <div class="sig-area">
+          <svg class="sig-path" viewBox="0 0 72 36">
+            <path d="M8,24 C12,12 16,8 20,16 C24,24 28,10 34,14 C40,18 42,28 50,20 C56,14 60,22 64,18"
+              stroke="#FF3500" strokeWidth="2" fill="none" strokeLinecap="round"
+              stroke-dasharray="120" stroke-dashoffset="120">
+              <animate attributeName="stroke-dashoffset" values="120;0" dur="1.5s" repeatCount="indefinite"/>
+            </path>
+          </svg>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">✍️ Formulaire + Signature</div>
+        <div class="step-desc">Complétez les circonstances, indiquez les zones de choc sur le schéma du véhicule. Signez avec votre doigt.</div>
+      </div>
+    </div>
+
+    <!-- Step 4 — PDF -->
+    <div class="step reveal">
+      <div class="step-screen">
+        <div class="step-num">04</div>
+        <div class="pdf-mock">
+          <div class="pdf-corner"></div>
+          <div class="pdf-lines">
+            <div class="pdf-line blue"></div>
+            <div class="pdf-line" style="width:90%"></div>
+            <div class="pdf-line" style="width:60%"></div>
+            <div class="pdf-line"></div>
+            <div class="pdf-line" style="width:80%"></div>
+            <div class="pdf-line" style="width:50%"></div>
+            <div class="pdf-line"></div>
+            <div class="pdf-line" style="width:70%"></div>
+            <div class="pdf-line" style="width:85%"></div>
+            <div class="pdf-line" style="width:40%"></div>
+          </div>
+          <div class="pdf-badge">boom.contact</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">📄 PDF certifié</div>
+        <div class="step-desc">Le PDF est généré instantanément et envoyé par email aux deux conducteurs. À transmettre à votre assureur.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ──────────────────────────────────────────────── -->
+<section class="section">
+  <div class="section-label reveal">Pourquoi boom.contact</div>
+  <h2 class="section-title reveal">Supérieur au<br>papier. En tout.</h2>
+
+  <div class="features stagger">
+    <div class="feature reveal">
+      <span class="feature-icon">🔍</span>
+      <div class="feature-title">OCR 50 langues</div>
+      <div class="feature-desc">Claude Vision lit automatiquement les permis de circulation dans 50 langues. Suisse, Europe, Asie, Afrique. Zéro saisie manuelle.</div>
+    </div>
+    <div class="feature reveal">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Temps réel</div>
+      <div class="feature-desc">Les deux conducteurs voient les données se remplir simultanément via WebSocket. Comme un Google Doc mais pour un constat.</div>
+    </div>
+    <div class="feature reveal">
+      <span class="feature-icon">🚗</span>
+      <div class="feature-title">700+ véhicules</div>
+      <div class="feature-desc">Silhouettes SVG détaillées pour voiture, moto, camion, bus, tram, vélo, trottinette, piéton. La couleur réelle du véhicule est appliquée.</div>
+    </div>
+    <div class="feature reveal">
+      <span class="feature-icon">📍</span>
+      <div class="feature-title">Géolocalisation</div>
+      <div class="feature-desc">GPS automatique + reverse geocoding. Corrigeable si vous vous êtes déplacés après l'accident. Coordonnées dans le PDF.</div>
+    </div>
+    <div class="feature reveal">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Sécurisé & RGPD</div>
+      <div class="feature-desc">Sessions chiffrées, expiration automatique 2h, suppression des données 30 jours. Hébergé en Europe. Consentements horodatés.</div>
+    </div>
+    <div class="feature reveal">
+      <span class="feature-icon">🌍</span>
+      <div class="feature-title">Mondial</div>
+      <div class="feature-desc">Fonctionne dans 150+ pays. Interface disponible en 6 langues. Le PDF est reconnu par les assureurs du monde entier.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPARISON ────────────────────────────────────────────── -->
+<section class="section">
+  <div class="section-label reveal">Comparaison</div>
+  <h2 class="section-title reveal">Constat papier<br>vs boom.contact</h2>
+
+  <div class="comparison reveal">
+    <div class="compare-card before">
+      <div class="compare-head">❌ Constat papier</div>
+      <div class="compare-item"><span class="compare-icon">🌧️</span>Remplir sous la pluie, la main qui tremble</div>
+      <div class="compare-item"><span class="compare-icon">✏️</span>Écriture illisible, cases mal remplies</div>
+      <div class="compare-item"><span class="compare-icon">📠</span>Copier le papier chez l'assureur</div>
+      <div class="compare-item"><span class="compare-icon">🔎</span>Litige possible sur l'interprétation</div>
+      <div class="compare-item"><span class="compare-icon">📁</span>Risque de perte ou d'oubli</div>
+      <div class="compare-item"><span class="compare-icon">🌐</span>Illisible si langue différente</div>
+      <div class="compare-item"><span class="compare-icon">⏱️</span>20-30 minutes en moyenne</div>
+    </div>
+    <div class="compare-card after">
+      <div class="compare-head">✅ boom.contact</div>
+      <div class="compare-item"><span class="compare-icon">📱</span>Smartphone, n'importe où, n'importe quand</div>
+      <div class="compare-item"><span class="compare-icon">🔍</span>OCR automatique — zéro saisie manuelle</div>
+      <div class="compare-item"><span class="compare-icon">✉️</span>PDF envoyé par email instantanément</div>
+      <div class="compare-item"><span class="compare-icon">⏰</span>Horodaté et signé numériquement</div>
+      <div class="compare-item"><span class="compare-icon">☁️</span>Stocké 30 jours, accessible partout</div>
+      <div class="compare-item"><span class="compare-icon">🌍</span>50 langues, 150+ pays</div>
+      <div class="compare-item"><span class="compare-icon">⚡</span>5 minutes en moyenne</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ────────────────────────────────────────────────── -->
+<section class="section" id="pricing">
+  <div class="section-label reveal">Tarifs</div>
+  <h2 class="section-title reveal">Simple.<br>Transparent.</h2>
+  <p class="section-sub reveal">Achetez des crédits à l'avance. Pas d'abonnement, pas de surprise. Les crédits n'expirent jamais.</p>
+
+  <div class="pricing stagger">
+    <div class="price-card reveal">
+      <span class="price-icon">📄</span>
+      <div class="price-label">1 constat</div>
+      <div class="price-amount"><span class="currency">CHF</span> 4<span>.90</span></div>
+      <div class="price-desc">Pour un accident ponctuel. Valable une fois, sans expiration.</div>
+      <ul class="price-features">
+        <li>1 constat numérique</li>
+        <li>OCR documents inclus</li>
+        <li>PDF + email</li>
+        <li>Sans expiration</li>
+      </ul>
+      <a href="https://boom-contact-production.up.railway.app?pricing=true" class="price-btn outline" target="_blank">Acheter</a>
+    </div>
+
+    <div class="price-card popular reveal">
+      <div class="popular-badge">⭐ Populaire</div>
+      <span class="price-icon">👨‍👩‍👧</span>
+      <div class="price-label">3 constats — famille</div>
+      <div class="price-amount"><span class="currency">CHF</span> 12<span>.90</span></div>
+      <div class="price-desc">Idéal pour une famille. CHF 4.30 par constat au lieu de 4.90.</div>
+      <ul class="price-features">
+        <li>3 constats numériques</li>
+        <li>Économie 12%</li>
+        <li>OCR documents inclus</li>
+        <li>PDF + email</li>
+        <li>Sans expiration</li>
+      </ul>
+      <a href="https://boom-contact-production.up.railway.app?pricing=true" class="price-btn solid" target="_blank">Acheter</a>
+    </div>
+
+    <div class="price-card reveal">
+      <span class="price-icon">🚗</span>
+      <div class="price-label">10 constats — pro</div>
+      <div class="price-amount"><span class="currency">CHF</span> 34<span>.90</span></div>
+      <div class="price-desc">Courtiers, flottes d'entreprise. CHF 3.49 par constat.</div>
+      <ul class="price-features">
+        <li>10 constats numériques</li>
+        <li>Économie 29%</li>
+        <li>OCR documents inclus</li>
+        <li>PDF + email</li>
+        <li>Sans expiration</li>
+      </ul>
+      <a href="https://boom-contact-production.up.railway.app?pricing=true" class="price-btn outline" target="_blank">Acheter</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ──────────────────────────────────────────────── -->
+<div class="trust-bar">
+  <span class="trust-item">Stripe PCI-DSS</span>
+  <span class="trust-item">Railway EU</span>
+  <span class="trust-item">RGPD · nLPD</span>
+  <span class="trust-item">PEP's Swiss SA</span>
+  <span class="trust-item">Jura · Suisse</span>
+</div>
+
+<!-- ── FAQ ───────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="section-label reveal">FAQ</div>
+  <h2 class="section-title reveal">Questions<br>fréquentes</h2>
+
+  <div class="faq reveal">
+    <div class="faq-item">
+      <div class="faq-q">Le document est-il légalement valide ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Oui. Le constat numérique boom.contact a la même valeur légale qu'un constat papier traditionnel. Il est horodaté, signé numériquement par les deux parties et peut être présenté à votre assureur comme preuve officielle de l'accident.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Que se passe-t-il si l'autre conducteur n'a pas smartphone ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">L'autre conducteur peut rejoindre la session depuis n'importe quel navigateur web en scannant le QR code ou en tapant l'URL manuellement. Aucune installation d'application n'est requise.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Et si je n'ai pas de connexion internet sur place ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Le mode hors-ligne est en cours de développement. En attendant, la plupart des accidents surviennent en zone couverte. En cas d'absence totale de réseau, commencez le constat en zone couverte et complétez-le dès que vous avez du réseau.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">L'OCR fonctionne-t-il avec les documents étrangers ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Oui. Claude Vision lit les permis de circulation dans 50 langues et reconnaît les formats de documents de plus de 150 pays. Permis japonais, chinois, arabe, cyrillique — tout fonctionne.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Mes données sont-elles en sécurité ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Les sessions sont chiffrées et expirent automatiquement après 2 heures. Les données de constat sont supprimées après 30 jours. Vos données ne sont jamais vendues. Hébergement en Europe, conforme RGPD et nLPD suisse.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quels types de véhicules sont supportés ? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Tous : voiture, SUV, moto, scooter, trottinette électrique, vélo, camion, utilitaire, bus, tramway, train, quad, et même piéton. Un schéma adapté au type exact de véhicule est affiché pour indiquer les zones endommagées.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ──────────────────────────────────────────────── -->
+<section class="section" style="text-align:center;padding-bottom:120px;">
+  <div class="section-label reveal" style="justify-content:center;display:flex;">Prêt ?</div>
+  <h2 class="section-title reveal" style="font-size:clamp(48px,10vw,96px);">
+    Votre prochain<br>
+    accident,<br>
+    <span style="color:var(--boom);">géré en 5 min.</span>
+  </h2>
+  <p class="section-sub reveal" style="margin:24px auto 40px;">
+    Mettez l'app en favoris maintenant.<br>
+    En cas d'accident, vous serez prêt.
+  </p>
+  <div class="reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://boom-contact-production.up.railway.app" class="btn-primary" target="_blank" style="font-size:17px;padding:18px 44px;">
+      💥 Démarrer maintenant — CHF 4.90
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div style="margin-bottom:16px;">
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--boom);">boom</span>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;opacity:0.3;">.</span>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;">contact</span>
+  </div>
+  <div>
+    <a href="#">CGU</a> &nbsp;·&nbsp;
+    <a href="#">Politique de confidentialité</a> &nbsp;·&nbsp;
+    <a href="mailto:contact@boom.contact">contact@boom.contact</a>
+  </div>
+  <div style="margin-top:12px;">
+    © 2026 PEP's Swiss SA / Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Suisse
+  </div>
+</footer>
+
+<script>
+// ── Reveal on scroll ─────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── FAQ accordion ────────────────────────────────────────────
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
