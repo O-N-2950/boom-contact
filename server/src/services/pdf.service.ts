@@ -275,6 +275,34 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   drawText(page, zonesB, margin + colW + 12, y - 18, bold, 8, C.black);
   y -= 30;
 
+  // ── WITNESSES ─────────────────────────────────────────────
+  if (acc.witnesses) {
+    page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
+    drawText(page, 'TEMOINS', margin + 4, y - 9, bold, 7.5, C.boom);
+    y -= 18;
+    drawRect(page, margin, y - 26, width - margin * 2, 30, C.white, C.border);
+    const wWords = acc.witnesses.split(' ');
+    let wLine = '';
+    let wY = y - 10;
+    for (const word of wWords) {
+      const test = wLine ? `${wLine} ${word}` : word;
+      if (normal.widthOfTextAtSize(test, 8) > width - margin * 2 - 12) {
+        drawText(page, wLine, margin + 4, wY, normal, 8, C.black);
+        wLine = word; wY -= 10;
+      } else { wLine = test; }
+    }
+    if (wLine) drawText(page, wLine, margin + 4, wY, normal, 8, C.black);
+    y -= 34;
+  }
+
+  // ── THIRD PARTY DAMAGE ────────────────────────────────────
+  if (acc.thirdPartyDamage !== undefined) {
+    drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
+    drawText(page, 'DEGATS MATERIELS A DES TIERS', margin + 4, y - 8, normal, 6, C.mid);
+    drawText(page, acc.thirdPartyDamage ? 'OUI - Dommages à des tiers signalés' : 'NON', margin + 4, y - 18, bold, 9, C.black);
+    y -= 30;
+  }
+
   // ── FAULT DECLARATION ──────────────────────────────────────
   if (acc.faultDeclaration) {
     const faultMap: Record<string, string> = {
@@ -348,6 +376,71 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   drawText(page, `Signé le : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
 
   y -= sigH + 28;
+
+  // ── SKETCH (Section 13) ────────────────────────────────────
+  if (acc.sketchImage) {
+    try {
+      // New page for sketch
+      const sketchPage = doc.addPage([595, 842]);
+      sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
+      drawText(sketchPage, 'SECTION 13 - CROQUIS DE L\'ACCIDENT', margin, 820, bold, 10, C.boom);
+      drawText(sketchPage, `Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+      const sketchBytes = Buffer.from(acc.sketchImage, 'base64');
+      const sketchImg = await doc.embedPng(sketchBytes);
+      const maxW = 595 - margin * 2;
+      const maxH = 700;
+      const scale = Math.min(maxW / sketchImg.width, maxH / sketchImg.height, 1);
+      sketchPage.drawImage(sketchImg, {
+        x: margin,
+        y: 820 - 10 - sketchImg.height * scale,
+        width: sketchImg.width * scale,
+        height: sketchImg.height * scale,
+      });
+      drawText(sketchPage, 'boom.contact - Croquis accident - Document numerique certifie', margin, 18, normal, 7, C.mid);
+    } catch { /* sketch embed failed */ }
+  }
+
+  // ── PHOTOS (Section scene) ─────────────────────────────────
+  if (acc.photos && acc.photos.length > 0) {
+    try {
+      const photoPage = doc.addPage([595, 842]);
+      photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
+      drawText(photoPage, 'PHOTOS DE LA SCENE', margin, 820, bold, 10, C.boom);
+      drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+
+      const cols = 2;
+      const photoW = (595 - margin * 2 - 10) / cols;
+      const photoH = 180;
+      let px = margin;
+      let py = 795;
+
+      for (let i = 0; i < acc.photos.length; i++) {
+        const photo = acc.photos[i];
+        try {
+          const imgBytes = Buffer.from(photo.base64, 'base64');
+          const img = await doc.embedJpg(imgBytes);
+          const scale = Math.min(photoW / img.width, photoH / img.height, 1);
+          const iw = img.width * scale;
+          const ih = img.height * scale;
+          photoPage.drawImage(img, { x: px + (photoW - iw) / 2, y: py - photoH + (photoH - ih), width: iw, height: ih });
+          // Caption
+          const catLabel = photo.category.toUpperCase();
+          drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom);
+          if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black);
+          // Border
+          photoPage.drawRectangle({ x: px, y: py - photoH, width: photoW, height: photoH, borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5, color: undefined as any });
+        } catch { /* photo embed failed */ }
+
+        if (i % cols === cols - 1) {
+          px = margin;
+          py -= photoH + 30;
+        } else {
+          px += photoW + 10;
+        }
+      }
+      drawText(photoPage, 'boom.contact - Photos de scene - Document numerique certifie', margin, 18, normal, 7, C.mid);
+    } catch { /* photos page failed */ }
+  }
 
   // ── FOOTER ─────────────────────────────────────────────────
   drawLine(page, margin, 48, width - margin, 48, C.border);
