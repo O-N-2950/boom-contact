@@ -20,27 +20,21 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
   const [emailError, setEmailError] = useState<string | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(!!driverEmail);
 
+  const pdfMutation = trpc.pdf.generate.useMutation({
+    onSuccess: (data) => { setPdfBase64(data.pdfBase64); },
+    onError: (err) => { setError(err.message); setLoading(false); },
+  });
+
   const generatePDF = async (): Promise<string | null> => {
     if (pdfBase64) return pdfBase64;
     setLoading(true);
     setError(null);
-    try {
-      const resp = await fetch('/trpc/pdf.generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId }),
+    return new Promise((resolve) => {
+      pdfMutation.mutate({ sessionId }, {
+        onSuccess: (data) => { setLoading(false); resolve(data.pdfBase64); },
+        onError:   ()     => { setLoading(false); resolve(null); },
       });
-      const data = await resp.json();
-      const { pdfBase64: b64 } = data?.result?.data ?? {};
-      if (!b64) throw new Error('PDF non disponible');
-      setPdfBase64(b64);
-      return b64;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur PDF');
-      return null;
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const download = async () => {
@@ -56,26 +50,18 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
     URL.revokeObjectURL(url);
   };
 
+  const emailMutation = trpc.email.sendToDriver.useMutation({
+    onSuccess: () => { setEmailSent(true); setSendingEmail(false); },
+    onError:   (err) => { setEmailError(err.message); setSendingEmail(false); },
+  });
+
   const sendEmail = async () => {
     if (!email.includes('@')) return;
     const b64 = await generatePDF();
     if (!b64) return;
     setSendingEmail(true);
     setEmailError(null);
-    try {
-      const resp = await fetch('/trpc/email.sendToDriver', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role, driverEmail: email, pdfBase64: b64 }),
-      });
-      const data = await resp.json();
-      if (data.error) throw new Error(data.error.message);
-      setEmailSent(true);
-    } catch (err) {
-      setEmailError(err instanceof Error ? err.message : 'Erreur envoi');
-    } finally {
-      setSendingEmail(false);
-    }
+    emailMutation.mutate({ sessionId, role, driverEmail: email, pdfBase64: b64 });
   };
 
   return (

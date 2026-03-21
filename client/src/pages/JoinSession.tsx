@@ -28,25 +28,6 @@ export function JoinSession() {
   ];
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
 
-  const join = async () => {
-    if (!sessionId) { setError('Lien invalide'); return; }
-    setJoining(true); setError(null);
-    try {
-      const resp = await fetch('/trpc/session.join', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, language: participantData.language }),
-      });
-      const data = await resp.json();
-      if (data.error) throw new Error(data.error.message || 'Erreur de connexion');
-      setJoined(true);
-      setTimeout(() => setStep('ocr'), 600);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur réseau');
-    } finally {
-      setJoining(false);
-    }
-  };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
     setParticipantData(prev => ({
@@ -61,41 +42,36 @@ export function JoinSession() {
   const handleFormSave = async (data: Partial<ParticipantData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      await fetch('/trpc/session.updateParticipant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'B', data }),
-      });
+      updateMutation.mutate({ sessionId, role: 'B', data });
     }
     setStep('diagram');
   };
 
   const handleDiagramDone = async () => {
     if (sessionId) {
-      await fetch('/trpc/session.updateParticipant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'B', data: { damagedZones } }),
-      });
+      updateMutation.mutate({ sessionId, role: 'B', data: { damagedZones } });
     }
     setStep('sign');
   };
 
-  const handleSign = async (signatureBase64: string) => {
-    if (sessionId) {
-      const resp = await fetch('/trpc/session.sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'B', signatureBase64 }),
-      });
-      const data = await resp.json();
-      if (data?.result?.data?.bothSigned) {
+  const updateMutation = trpc.session.updateParticipant.useMutation({
+    onError: (err) => console.error('updateParticipant failed:', err.message),
+  });
+
+  const signMutation = trpc.session.sign.useMutation({
+    onSuccess: (data) => {
+      if (data.bothSigned) {
         setOtherSigned(true);
         setTimeout(() => setStep('done'), 1500);
       } else {
         setStep('done');
       }
-    }
+    },
+    onError: (err) => console.error('session.sign failed:', err.message),
+  });
+
+  const handleSign = (signatureBase64: string) => {
+    if (sessionId) signMutation.mutate({ sessionId, role: 'B', signatureBase64 });
   };
 
   // ── LANDING ──────────────────────────────────────────────

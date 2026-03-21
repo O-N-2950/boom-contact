@@ -55,25 +55,21 @@ export function ConstatFlow() {
   const handleFormSave = async (data: Partial<ParticipantData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      await fetch('/trpc/session.updateParticipant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'A', data }),
-      }).catch(console.error);
+      updateMutation.mutate({ sessionId, role: 'A', data });
     }
     setStep('diagram');
   };
 
   const handleDiagramDone = async () => {
     if (sessionId) {
-      await fetch('/trpc/session.updateParticipant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, role: 'A', data: { damagedZones } }),
-      });
+      updateMutation.mutate({ sessionId, role: 'A', data: { damagedZones } });
     }
     setStep('sign');
   };
+
+  const updateMutation = trpc.session.updateParticipant.useMutation({
+    onError: (err) => console.error('updateParticipant failed:', err.message),
+  });
 
   const signMutation = trpc.session.sign.useMutation({
     onSuccess: (data) => {

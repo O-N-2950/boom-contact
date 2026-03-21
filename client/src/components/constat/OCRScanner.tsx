@@ -82,26 +82,23 @@ export function OCRScanner({ role, onComplete }: Props) {
     reader.readAsDataURL(file);
   }, [step, regImage]);
 
-  const triggerScan = async (reg: string, gc: string) => {
+  const scanMutation = trpc.ocr.scanPair.useMutation({
+    onSuccess: (data) => {
+      setResult(data);
+      setStep('review');
+      setScanning(false);
+    },
+    onError: (err) => {
+      setError(err.message || 'Erreur lors du scan');
+      setStep('idle');
+      setScanning(false);
+    },
+  });
+
+  const triggerScan = (reg: string, gc: string) => {
     setScanning(true);
     setError(null);
-    try {
-      const resp = await fetch('/trpc/ocr.scanPair', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registrationBase64: reg, greenCardBase64: gc }),
-      });
-      const data = await resp.json();
-      const scanResult = data.result?.data;
-      if (!scanResult) throw new Error('Réponse invalide du serveur');
-      setResult(scanResult);
-      setStep('review');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors du scan');
-      setStep('idle');
-    } finally {
-      setScanning(false);
-    }
+    scanMutation.mutate({ registrationBase64: reg, greenCardBase64: gc });
   };
 
   const getConfidenceColor = (conf: number) => conf >= 0.85 ? '#22c55e' : conf >= 0.75 ? '#f59e0b' : '#ef4444';
