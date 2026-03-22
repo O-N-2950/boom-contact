@@ -9,6 +9,7 @@ import {
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
+import { transcribeAudio } from '../services/voice.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { io } from '../index';
 
@@ -399,6 +400,29 @@ export const appRouter = router({
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
         const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
         return { pdfBase64, filename };
+      }),
+
+  }),
+
+
+  // ── VOICE — Transcription Whisper ─────────────────────────
+  voice: router({
+
+    transcribe: publicProcedure
+      .input(z.object({
+        audioBase64: z.string().min(100),
+        mimeType:    z.string().default('audio/webm'),
+        lang:        z.string().optional(), // hint langue pour Whisper
+        sessionId:   z.string(),
+        role:        z.enum(['A', 'B', 'C', 'D', 'E']),
+      }))
+      .mutation(async ({ input }) => {
+        const result = await transcribeAudio(
+          input.audioBase64,
+          input.mimeType,
+          input.lang
+        );
+        return result;
       }),
 
   }),
