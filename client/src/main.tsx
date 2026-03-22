@@ -6,6 +6,7 @@ import App from './App';
 import { trpc } from './trpc';
 import './i18n'; // ← i18next init (must be before App)
 import './index.css';
+import { detectBestLanguage, applyLang } from './i18n';
 
 function Root() {
   const [queryClient] = useState(() => new QueryClient({
@@ -35,6 +36,20 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Root />
   </React.StrictMode>
 );
+
+// ── Détection langue intelligente (async, non-bloquante) ──────
+// Lance la détection IP après le render initial
+// Ne change la langue QUE si l'utilisateur n'a pas déjà fait un choix
+detectBestLanguage().then(({ lang, source, country }) => {
+  // Si source = localStorage → l'utilisateur a déjà choisi, on ne touche à rien
+  if (source !== 'localStorage') {
+    applyLang(lang);
+    // Stocker le pays détecté pour l'ordre du sélecteur de langue
+    if (country) {
+      sessionStorage.setItem('boom_detected_country', country);
+    }
+  }
+});
 
 // PWA Service Worker
 if ('serviceWorker' in navigator) {
