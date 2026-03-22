@@ -139,10 +139,10 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
                 <div style={{ fontSize: 11, opacity: 0.65, lineHeight: 1.6, marginBottom: 10 }}>
                   {secondPartyType === 'pedestrian'
                     ? "Le piéton n'a pas de téléphone ? Continuez seul. Ses coordonnées seront saisies dans le formulaire. Appelez le 117 si blessé."
+                    ? "Le piéton n'a pas de téléphone? Continuez seul. Ses coordonnées seront saisies. Appelez le 117 si blessé."
                     : secondPartyType === 'object'
-                    : "Dégâts matériels sans autre conducteur — continuez seul."
+                    ? "Dégâts matériels, aucun autre conducteur — continuez seul."
                     : "Vous êtes seul impliqué — continuez pour documenter l'incident."}
-                </div>
                 <button onClick={onPartnerJoined}
                   style={{ width: '100%', padding: '11px', borderRadius: 8, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700, touchAction: 'manipulation' }}>
                   Continuer sans autre conducteur →
