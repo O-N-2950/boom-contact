@@ -5,6 +5,16 @@ import type { AccidentData, VehicleType } from '../../../../shared/types';
 interface Props {
   onComplete: (data: Partial<AccidentData> & { vehicleType: VehicleType }) => void;
   initialVehicleType?: VehicleType | null;
+  // Pour driver B : accident data déjà saisie par driver A
+  initialAccidentData?: {
+    date?: string;
+    time?: string;
+    address?: string;
+    city?: string;
+    country?: string;
+    lat?: number;
+    lng?: number;
+  } | null;
 }
 
 type VehicleGroup = {
@@ -45,16 +55,16 @@ const VEHICLE_GROUPS: VehicleGroup[] = [
 
 type GeoStatus = 'idle' | 'loading' | 'success' | 'denied' | 'error';
 
-export function LocationStep({ onComplete, initialVehicleType }: Props) {
+export function LocationStep({ onComplete, initialVehicleType, initialAccidentData }: Props) {
   const { t } = useTranslation();
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(initialVehicleType ?? null);
   const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
+  const [address, setAddress] = useState(initialAccidentData?.address || '');
+  const [city, setCity] = useState(initialAccidentData?.city || '');
   const [country, setCountry] = useState('');
-  const [accidentDate, setAccidentDate] = useState(() => new Date().toISOString().split('T')[0]);
-  const [accidentTime, setAccidentTime] = useState(() => new Date().toTimeString().slice(0, 5));
+  const [accidentDate, setAccidentDate] = useState(initialAccidentData?.date || new Date().toISOString().split('T')[0]);
+  const [accidentTime, setAccidentTime] = useState(initialAccidentData?.time || new Date().toTimeString().slice(0, 5));
   const [injuries, setInjuries] = useState<boolean | null>(null);
   const [injuryDesc, setInjuryDesc] = useState('');
   const [ambulance, setAmbulance] = useState(false);
@@ -88,7 +98,9 @@ export function LocationStep({ onComplete, initialVehicleType }: Props) {
     );
   };
 
-  const canContinue = vehicleType !== null && injuries !== null && (city || address) && accidentDate && accidentTime;
+  // Si les données accident sont pré-remplies (driver B), la location est déjà validée par driver A
+  const locationOk = !!(city || address) || !!initialAccidentData;
+  const canContinue = vehicleType !== null && injuries !== null && locationOk && accidentDate && accidentTime;
 
   const handleContinue = () => {
     if (!vehicleType || injuries === null) return;
@@ -333,7 +345,6 @@ export function LocationStep({ onComplete, initialVehicleType }: Props) {
       }}>
         {!vehicleType ? t('location.cta_no_vehicle') :
          injuries === null ? t('location.cta_no_injuries') :
-         !(city || address) ? t('location.cta_no_location') :
          t('common.continue')}
       </button>
 
