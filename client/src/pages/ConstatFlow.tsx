@@ -297,7 +297,7 @@ export function ConstatFlow() {
         )}
 
         {step === 'form' && (
-          <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} />
+          <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
         )}
 
         {step === 'sketch' && (
