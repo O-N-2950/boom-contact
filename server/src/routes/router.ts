@@ -149,6 +149,20 @@ export const appRouter = router({
         return scanDocument(input.imageBase64, input.mediaType, hint);
       }),
 
+    // Scan multi-documents — analyse N photos en parallèle, retourne N résultats
+    batchScan: publicProcedure
+      .input(z.object({
+        images: z.array(z.string().min(100)).min(1).max(4),
+      }))
+      .mutation(async ({ input }) => {
+        const results = await Promise.all(
+          input.images.map(imageBase64 =>
+            scanDocument(imageBase64, 'image/jpeg', { documentType: 'auto' })
+          )
+        );
+        return results;
+      }),
+
     scanPair: publicProcedure
       .input(z.object({
         registrationBase64: z.string().min(100),
