@@ -19,13 +19,11 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
       CREATE INDEX IF NOT EXISTS idx_sessions_status  ON sessions(status);
 
-      -- Add owner_email column if not exists (for existing deployments)
       DO $$ BEGIN
         ALTER TABLE sessions ADD COLUMN IF NOT EXISTS owner_email TEXT;
       EXCEPTION WHEN duplicate_column THEN NULL;
       END $$;
 
-      -- Multi-véhicules — Session 5
       DO $$ BEGIN
         ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_c JSONB;
         ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_d JSONB;
@@ -103,6 +101,27 @@ export async function runMigrations() {
       );
       CREATE INDEX IF NOT EXISTS idx_police_users_email   ON police_users(email);
       CREATE INDEX IF NOT EXISTS idx_police_users_station ON police_users(station_id);
+    `);
+
+    // ── Block 3 : Annotations police — Session 7 ─────────────────────────
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS police_annotations (
+        id            VARCHAR(30) PRIMARY KEY,
+        session_id    VARCHAR(20) NOT NULL,
+        agent_id      VARCHAR(20) NOT NULL,
+        station_id    VARCHAR(20) NOT NULL,
+        country       VARCHAR(5)  NOT NULL DEFAULT 'CH',
+        report_number TEXT,
+        infractions   JSONB NOT NULL DEFAULT '[]',
+        measures      JSONB NOT NULL DEFAULT '[]',
+        witnesses     JSONB NOT NULL DEFAULT '[]',
+        observations  TEXT,
+        created_at    TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at    TIMESTAMP NOT NULL DEFAULT NOW(),
+        consulted_at  TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_police_annotations_session ON police_annotations(session_id);
+      CREATE INDEX IF NOT EXISTS idx_police_annotations_agent   ON police_annotations(agent_id);
     `);
 
     logger.info('✅ DB migrations applied');
