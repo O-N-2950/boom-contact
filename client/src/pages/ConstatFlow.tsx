@@ -379,6 +379,10 @@ export function ConstatFlow() {
             brand={participantData.vehicle?.brand}
             onComplete={(vehiclePos, mapImageB64) => {
               setSketchImage(mapImageB64);
+              // Envoyer la carte au serveur pour le PDF
+              if (sessionId && mapImageB64) {
+                updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64 } });
+              }
               setParticipantData(prev => ({
                 ...prev,
                 vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
