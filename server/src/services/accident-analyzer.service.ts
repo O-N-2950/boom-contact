@@ -35,12 +35,16 @@ export interface AccidentSceneAnalysis {
   scenario: ScenarioType;
   vehicleA: VehicleSceneData;
   vehicleB: VehicleSceneData;
-  confidence: number;          // 0-1
+  confidence: number;
   fault?: 'A' | 'B' | 'shared' | 'unknown';
-  circumstances: string[];     // codes circonstances (c1-c17)
-  description: string;         // Résumé en FR
-  language: string;            // Langue détectée du témoignage
-  // Questions de clarification si confidence < 0.80
+  circumstances: string[];
+  description: string;
+  language: string;
+  trafficSide?: 'right' | 'left';
+  country?: string;
+  // Nombre de véhicules impliqués (détecté par IA)
+  vehicleCount: 2 | 3 | 4;
+  vehicleCountNote?: string; // Message si 3+ véhicules
   questions?: ClarifyQuestion[];
 }
 
@@ -88,6 +92,13 @@ GOOD: "Le véhicule B roulait-il sur la voie de droite ou de gauche ?"
 BAD: "Pouvez-vous décrire la collision ?"
 GOOD: "Sortiez-vous en marche avant ou en marche arrière ?"
 
+VEHICLE COUNT DETECTION (CRITICAL):
+- Count ALL vehicles mentioned in testimony (not just A and B)
+- "un troisième véhicule", "a third car", "ein drittes Fahrzeug", "3 vehicles" → vehicleCount: 3
+- "quatre véhicules", "4 cars" → vehicleCount: 4
+- Default: vehicleCount: 2
+- If vehicleCount >= 3: vehicleCountNote explains that multiple constats are needed
+
 CIRCUMSTANCES CODES: c1=parked, c2=leaving_park, c3=parking, c4=exiting_private, c5=entering_park, c6=entering_road, c7=same_direction_same_lane, c8=opposite_directions, c9=changing_lane, c10=overtaking, c11=turning_right, c12=turning_left, c13=reversing, c14=wrong_side, c15=right_side_priority, c16=failed_priority_or_red, c17=other
 
 OUTPUT JSON:
@@ -114,6 +125,8 @@ OUTPUT JSON:
   "confidence": 0.0-1.0,
   "fault": "A|B|shared|unknown",
   "circumstances": ["c13", "c15"],
+  "vehicleCount": 2,
+  "vehicleCountNote": null,
   "description": "Résumé concis en français",
   "language": "fr",
   "questions": [
@@ -183,6 +196,7 @@ export async function analyzeAccidentTranscript(
       circumstances: ['c17'],
       description: transcript.slice(0, 200),
       language: 'fr',
+      vehicleCount: 2,
       questions: [],
     };
   }
