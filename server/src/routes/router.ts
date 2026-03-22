@@ -10,6 +10,7 @@ import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
+import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { io } from '../index';
 
@@ -421,6 +422,20 @@ export const appRouter = router({
           input.audioBase64,
           input.mimeType,
           input.lang
+        );
+        return result;
+      }),
+
+    // Analyse IA du témoignage → scénario + questions
+    analyzeAccident: publicProcedure
+      .input(z.object({
+        transcript:      z.string().min(1),
+        previousAnswers: z.record(z.string()).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const result = await analyzeAccidentTranscript(
+          input.transcript,
+          input.previousAnswers
         );
         return result;
       }),
