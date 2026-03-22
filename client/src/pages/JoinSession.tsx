@@ -68,6 +68,8 @@ export function JoinSession() {
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(
     saved?.participantData || { role: urlRole, language: navigator.language?.split('-')[0] || 'fr' }
   );
+  // Données accident de driver A — pré-remplissage pour driver B
+  const [sessionAccidentData, setSessionAccidentData] = useState<any>(null);
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
@@ -103,6 +105,29 @@ export function JoinSession() {
     { id: 'sign',     icon: '✍️', label: 'Sign' },
   ];
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
+
+  // Charger les données de la session (accident data de driver A)
+  const sessionQuery = trpc.session.get.useQuery(
+    { sessionId },
+    {
+      enabled: joined && !!sessionId,
+      onSuccess: (data: any) => {
+        if (data?.accident) {
+          const acc = data.accident;
+          const loc = acc.location || {};
+          setSessionAccidentData({
+            date:    acc.date,
+            time:    acc.time,
+            address: loc.address,
+            city:    loc.city,
+            country: loc.country,
+            lat:     loc.lat,
+            lng:     loc.lng,
+          });
+        }
+      },
+    }
+  );
 
   const joinMutation = trpc.session.join.useMutation({
     onSuccess: () => {
@@ -356,7 +381,11 @@ export function JoinSession() {
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {step === 'location' && (
-          <LocationStep onComplete={handleLocationComplete} initialVehicleType={participantData.vehicle?.vehicleType as any} />
+          <LocationStep
+            onComplete={handleLocationComplete}
+            initialVehicleType={participantData.vehicle?.vehicleType as any}
+            initialAccidentData={sessionAccidentData}
+          />
         )}
 
         {step === 'photos' && (
