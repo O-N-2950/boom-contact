@@ -127,6 +127,19 @@ export function ConstatFlow() {
   const createSession = () => createSessionMutation.mutate();
 
 
+  function guessVehicleType(cat?: string): string {
+    if (!cat) return 'car';
+    const c = cat.toLowerCase();
+    if (c.includes('tourisme') || c.includes('break') || c.includes('berline')) return 'car';
+    if (c.includes('suv') || c.includes('4x4') || c.includes('tout-terrain')) return 'suv';
+    if (c.includes('fourgon') || c.includes('utilitaire') || c.includes('van')) return 'van';
+    if (c.includes('camion') || c.includes('poids lourd')) return 'truck';
+    if (c.includes('moto') || c.includes('motorcycle')) return 'motorcycle';
+    if (c.includes('scooter')) return 'scooter';
+    if (c.includes('trottinette')) return 'escooter';
+    return 'car';
+  }
+
   function ocrCategoryToType(cat?: string): any {
     if (!cat) return null;
     const c = cat.toLowerCase();
@@ -160,6 +173,16 @@ export function ConstatFlow() {
       insurance: result.greenCard?.insurance   ?? result.registration.insurance ?? {},
     }));
     setStep('location');
+
+    // Exposer les données véhicule pour le moteur de dessin
+    // (couleur, type, marque extraites par OCR)
+    const vehData = result.registration?.vehicle as any;
+    (window as any).__boomVehicleA = {
+      color: vehData?.color,
+      type:  vehData?.vehicleType || guessVehicleType(vehData?.category),
+      brand: vehData?.brand,
+      model: vehData?.model,
+    };
   };
 
   const updateAccidentMutation = trpc.session.updateAccident.useMutation({
