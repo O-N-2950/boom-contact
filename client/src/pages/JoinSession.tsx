@@ -182,6 +182,12 @@ export function JoinSession() {
       insurance: result.greenCard?.insurance   ?? result.registration.insurance ?? {},
     }));
     setStep('location');
+
+    const vB = result.registration?.vehicle as any;
+    (window as any).__boomVehicleB = {
+      color: vB?.color, type: vB?.vehicleType || 'car',
+      brand: vB?.brand, model: vB?.model,
+    };
   };
 
   const handleLocationComplete = (data: any) => {
