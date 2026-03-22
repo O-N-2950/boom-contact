@@ -1,4 +1,8 @@
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
+import {
+  determineLangs, getBilingualLabels, getLabels, countryToLang,
+  type PdfLang, type PdfLabels,
+} from './pdf.labels.js';
 import type { ConstatSession } from '../../../shared/types';
 
 // ─────────────────────────────────────────────────────────────
@@ -82,7 +86,13 @@ function labelValue(
 // ─────────────────────────────────────────────────────────────
 // Main export
 // ─────────────────────────────────────────────────────────────
-export async function generateConstatPDF(session: ConstatSession): Promise<Uint8Array> {
+// Génère le PDF pour un conducteur spécifique
+// role 'A' → PDF dans la langue du conducteur A + langue du pays accident si différente
+// role 'B' → PDF dans la langue du conducteur B + langue du pays accident si différente
+export async function generateConstatPDF(
+  session: ConstatSession,
+  forRole: 'A' | 'B' = 'A'
+): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   doc.setTitle('Constat Amiable — boom.contact');
   doc.setAuthor('boom.contact by PEP\'s Swiss SA');
@@ -100,6 +110,12 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   const A = session.participantA;
   const B = session.participantB;
   const acc = session.accident;
+
+  // ── Détermination des langues ───────────────────────────────
+  const { langA, langB, langAccident } = determineLangs(A, B, acc);
+  const driverLang: PdfLang = forRole === 'A' ? langA : langB;
+  const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
+
   const margin = 28;
   const colW = (width - margin * 2 - 8) / 2;
 
@@ -111,8 +127,8 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // Logo / title
   drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white);
-  drawText(page, 'CONSTAT AMIABLE D\'ACCIDENT', margin, height - 34, normal, 9, rgb(1, 0.8, 0.75));
-  drawText(page, 'BOOM.CONTACT · ACCIDENT REPORT · DIGITAL CERTIFIED', margin, height - 44, normal, 6.5, rgb(1, 0.7, 0.65));
+  drawText(page, L.title, margin, height - 34, normal, 9, rgb(1, 0.8, 0.75));
+  drawText(page, L.subtitle, margin, height - 44, normal, 6.5, rgb(1, 0.7, 0.65));
 
   // Session info top right
   const sessionText = `Session: ${session.id}`;
@@ -126,20 +142,20 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── ACCIDENT SECTION ───────────────────────────────────────
   drawRect(page, margin, y - 38, width - margin * 2, 42, C.section, C.border);
-  drawText(page, '1. ACCIDENT', margin + 6, y - 10, bold, 8, C.boom);
+  drawText(page, L.s1, margin + 6, y - 10, bold, 8, C.boom);
 
   const fieldW = (width - margin * 2 - 16) / 4;
 
-  labelValue(page, 'DATE', acc.date ?? '', margin + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, 'HEURE', acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, 'PAYS', acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
-  labelValue(page, 'BLESSÉS ?', acc.injuries ? 'OUI' : 'NON', margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);
+  labelValue(page, L.date, acc.date ?? '', margin + 4, y - 12, fieldW, normal, bold);
+  labelValue(page, L.time, acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
+  labelValue(page, L.country, acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
+  labelValue(page, L.injuries, acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);
 
   y -= 42;
 
   // Location full width
   drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-  drawText(page, 'LIEU DE L\'ACCIDENT', margin + 4, y - 8, normal, 6, C.mid);
+  drawText(page, L.location, margin + 4, y - 8, normal, 6, C.mid);
   const locationStr = [acc.location?.address, acc.location?.city, acc.location?.country].filter(Boolean).join(', ');
   drawText(page, locationStr || '-', margin + 6, y - 18, bold, 9, C.black);
   y -= 28;
@@ -148,14 +164,14 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   y -= 6;
   // Column A header
   page.drawRectangle({ x: margin, y: y - 22, width: colW, height: 22, color: C.black });
-  drawText(page, 'VÉHICULE A', margin + 6, y - 8, bold, 8, C.white);
-  drawText(page, `Conducteur : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '-',
+  drawText(page, L.vehicleA, margin + 6, y - 8, bold, 8, C.white);
+  drawText(page, `${L.driver} : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '-',
     margin + 6, y - 17, normal, 7, C.light);
 
   // Column B header
   page.drawRectangle({ x: margin + colW + 8, y: y - 22, width: colW, height: 22, color: C.dark });
-  drawText(page, 'VÉHICULE B', margin + colW + 14, y - 8, bold, 8, C.white);
-  drawText(page, `Conducteur : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '-',
+  drawText(page, L.vehicleB, margin + colW + 14, y - 8, bold, 8, C.white);
+  drawText(page, `${L.driver} : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '-',
     margin + colW + 14, y - 17, normal, 7, C.light);
   y -= 28;
 
@@ -167,36 +183,36 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   };
 
   drawSideBySide(
-    'IMMATRICULATION', A?.vehicle?.licensePlate ?? '',
-    'IMMATRICULATION', B?.vehicle?.licensePlate ?? ''
+    L.plate, A?.vehicle?.licensePlate ?? '',
+    L.plate, B?.vehicle?.licensePlate ?? ''
   );
   drawSideBySide(
-    'MARQUE / MODÈLE', `${A?.vehicle?.brand ?? ''} ${A?.vehicle?.model ?? ''}`.trim(),
-    'MARQUE / MODÈLE', `${B?.vehicle?.brand ?? ''} ${B?.vehicle?.model ?? ''}`.trim()
+    L.brand, `${A?.vehicle?.brand ?? ''} ${A?.vehicle?.model ?? ''}`.trim(),
+    L.brand, `${B?.vehicle?.brand ?? ''} ${B?.vehicle?.model ?? ''}`.trim()
   );
   drawSideBySide(
-    'ANNÉE / COULEUR', `${A?.vehicle?.year ?? ''} ${A?.vehicle?.color ?? ''}`.trim(),
-    'ANNÉE / COULEUR', `${B?.vehicle?.year ?? ''} ${B?.vehicle?.color ?? ''}`.trim()
+    'YEAR / COLOUR / JAHR / ANNO', `${A?.vehicle?.year ?? ''} ${A?.vehicle?.color ?? ''}`.trim(),
+    'YEAR / COLOUR / JAHR / ANNO', `${B?.vehicle?.year ?? ''} ${B?.vehicle?.color ?? ''}`.trim()
   );
 
   y -= 4;
 
   // ── DRIVER DATA ────────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '2. CONDUCTEURS', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s2, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   drawSideBySide(
-    'NOM COMPLET', `${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim(),
-    'NOM COMPLET', `${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim()
+    L.name, `${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim(),
+    L.name, `${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim()
   );
   drawSideBySide(
-    'ADRESSE', `${A?.driver?.address ?? ''} ${A?.driver?.city ?? ''}`.trim(),
-    'ADRESSE', `${B?.driver?.address ?? ''} ${B?.driver?.city ?? ''}`.trim()
+    L.address, `${A?.driver?.address ?? ''} ${A?.driver?.city ?? ''}`.trim(),
+    L.address, `${B?.driver?.address ?? ''} ${B?.driver?.city ?? ''}`.trim()
   );
   drawSideBySide(
-    'TÉLÉPHONE', A?.driver?.phone ?? '',
-    'TÉLÉPHONE', B?.driver?.phone ?? ''
+    'TEL', A?.driver?.phone ?? '',
+    'TEL', B?.driver?.phone ?? ''
   );
   drawSideBySide(
     'N° PERMIS DE CONDUIRE', A?.driver?.licenseNumber ?? '',
@@ -207,12 +223,12 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── INSURANCE DATA ─────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '3. ASSURANCES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s3, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   drawSideBySide(
-    'COMPAGNIE', A?.insurance?.company ?? '',
-    'COMPAGNIE', B?.insurance?.company ?? ''
+    L.insurer, A?.insurance?.company ?? '',
+    L.insurer, B?.insurance?.company ?? ''
   );
   drawSideBySide(
     'N° DE POLICE', A?.insurance?.policyNumber ?? '',
@@ -227,24 +243,12 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
 
   // ── CIRCUMSTANCES ──────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '4. CIRCONSTANCES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s4, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const circA = A?.circumstances ?? [];
   const circB = B?.circumstances ?? [];
   const allCirc = Array.from(new Set([...circA, ...circB]));
-
-  const CIRC_LABELS: Record<string, string> = {
-    c1: 'En stationnement / arrêt', c2: 'Quittait un stationnement',
-    c3: 'Prenait un stationnement', c4: 'Sortait d\'un parking/lieu privé',
-    c5: 'S\'engageait dans un parking', c6: 'S\'engageait dans une voie',
-    c7: 'Même sens, même file', c8: 'Même sens, file différente',
-    c9: 'Changeait de file', c10: 'Doublait',
-    c11: 'Prenait la droite (bifurcation)', c12: 'Prenait la gauche (bifurcation)',
-    c13: 'Reculait', c14: 'Empiétait sur voie inverse',
-    c15: 'Venait de droite (carrefour)', c16: 'N\'avait pas respecté priorité/feu rouge',
-    c17: 'Autre (voir observations)',
-  };
 
   const circCols = 2;
   const circItems = allCirc.slice(0, 8); // show first 8 in page
@@ -255,30 +259,30 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
     const cy = y - row * 14;
     const inA = circA.includes(id);
     const inB = circB.includes(id);
-    drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${CIRC_LABELS[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
+    drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${L.circ[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
   });
 
   y -= Math.ceil(circItems.length / circCols) * 14 + 8;
 
   // ── DAMAGED ZONES ─────────────────────────────────────────
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '5. ZONES ENDOMMAGEES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s5, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const zonesA = (A?.damagedZones ?? []).join(', ') || '-';
   const zonesB = (B?.damagedZones ?? []).join(', ') || '-';
   drawRect(page, margin, y - 22, colW, 26, C.white, C.border);
-  drawText(page, 'VÉHICULE A', margin + 4, y - 8, normal, 6, C.mid);
+  drawText(page, L.vehicleA, margin + 4, y - 8, normal, 6, C.mid);
   drawText(page, zonesA, margin + 4, y - 18, bold, 8, C.black);
   drawRect(page, margin + colW + 8, y - 22, colW, 26, C.white, C.border);
-  drawText(page, 'VÉHICULE B', margin + colW + 12, y - 8, normal, 6, C.mid);
+  drawText(page, L.vehicleB, margin + colW + 12, y - 8, normal, 6, C.mid);
   drawText(page, zonesB, margin + colW + 12, y - 18, bold, 8, C.black);
   y -= 30;
 
   // ── WITNESSES ─────────────────────────────────────────────
   if (acc.witnesses) {
     page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-    drawText(page, 'TEMOINS', margin + 4, y - 9, bold, 7.5, C.boom);
+    drawText(page, L.witnesses, margin + 4, y - 9, bold, 7.5, C.boom);
     y -= 18;
     drawRect(page, margin, y - 26, width - margin * 2, 30, C.white, C.border);
     const wWords = acc.witnesses.split(' ');
@@ -298,21 +302,21 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── THIRD PARTY DAMAGE ────────────────────────────────────
   if (acc.thirdPartyDamage !== undefined) {
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-    drawText(page, 'DEGATS MATERIELS A DES TIERS', margin + 4, y - 8, normal, 6, C.mid);
-    drawText(page, acc.thirdPartyDamage ? 'OUI - Dommages à des tiers signalés' : 'NON', margin + 4, y - 18, bold, 9, C.black);
+    drawText(page, L.thirdParty, margin + 4, y - 8, normal, 6, C.mid);
+    drawText(page, acc.thirdPartyDamage ? L.thirdPartyYes : L.no, margin + 4, y - 18, bold, 9, C.black);
     y -= 30;
   }
 
   // ── FAULT DECLARATION ──────────────────────────────────────
   if (acc.faultDeclaration) {
     const faultMap: Record<string, string> = {
-      A: 'Le conducteur A se déclare responsable',
-      B: 'Le conducteur B se déclare responsable',
-      shared: 'Responsabilité partagée',
-      unknown: 'Responsabilité non déterminée',
+      A: L.fault_A,
+      B: L.fault_B,
+      shared: L.fault_shared,
+      unknown: L.fault_unknown,
     };
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-    drawText(page, '6. DECLARATION DE RESPONSABILITE', margin + 4, y - 8, bold, 7, C.boom);
+    drawText(page, L.s6, margin + 4, y - 8, bold, 7, C.boom);
     drawText(page, faultMap[acc.faultDeclaration] ?? '-', margin + 4, y - 18, bold, 9, C.black);
     y -= 30;
   }
@@ -320,7 +324,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── DESCRIPTION ────────────────────────────────────────────
   if (acc.description) {
     drawRect(page, margin, y - 36, width - margin * 2, 40, C.white, C.border);
-    drawText(page, '7. OBSERVATIONS', margin + 4, y - 8, bold, 7, C.boom);
+    drawText(page, L.s7, margin + 4, y - 8, bold, 7, C.boom);
     // Wrap text
     const words = acc.description.split(' ');
     let line = '';
@@ -342,15 +346,15 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // ── SIGNATURES ─────────────────────────────────────────────
   y -= 6;
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, '8. SIGNATURES', margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s8, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const sigH = 60;
   drawRect(page, margin, y - sigH, colW, sigH + 20, C.white, C.border);
-  drawText(page, 'SIGNATURE CONDUCTEUR A', margin + 4, y - 8, normal, 6.5, C.mid);
+  drawText(page, L.sigA, margin + 4, y - 8, normal, 6.5, C.mid);
 
   drawRect(page, margin + colW + 8, y - sigH, colW, sigH + 20, C.white, C.border);
-  drawText(page, 'SIGNATURE CONDUCTEUR B', margin + colW + 12, y - 8, normal, 6.5, C.mid);
+  drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid);
 
   // Embed signatures if available
   for (const [participant, xOff] of [[A, margin], [B, margin + colW + 8]] as const) {
@@ -372,8 +376,8 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
   // Signed/date fields
   const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '-';
   const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '-';
-  drawText(page, `Signé le : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
-  drawText(page, `Signé le : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
+  drawText(page, `${L.signedAt} : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
+  drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
 
   y -= sigH + 28;
 
@@ -383,7 +387,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
       // New page for sketch
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-      drawText(sketchPage, 'SECTION 13 - CROQUIS DE L\'ACCIDENT', margin, 820, bold, 10, C.boom);
+      drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
       drawText(sketchPage, `Session: ${session.id}`, margin, 808, mono, 7, C.mid);
       const sketchBytes = Buffer.from(acc.sketchImage, 'base64');
       const sketchImg = await doc.embedPng(sketchBytes);
@@ -396,7 +400,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
         width: sketchImg.width * scale,
         height: sketchImg.height * scale,
       });
-      drawText(sketchPage, 'boom.contact - Croquis accident - Document numerique certifie', margin, 18, normal, 7, C.mid);
+      drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid);
     } catch { /* sketch embed failed */ }
   }
 
@@ -405,7 +409,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
     try {
       const photoPage = doc.addPage([595, 842]);
       photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-      drawText(photoPage, 'PHOTOS DE LA SCENE', margin, 820, bold, 10, C.boom);
+      drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom);
       drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid);
 
       const cols = 2;
@@ -438,7 +442,7 @@ export async function generateConstatPDF(session: ConstatSession): Promise<Uint8
           px += photoW + 10;
         }
       }
-      drawText(photoPage, 'boom.contact - Photos de scene - Document numerique certifie', margin, 18, normal, 7, C.mid);
+      drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid);
     } catch { /* photos page failed */ }
   }
 
