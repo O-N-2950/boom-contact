@@ -10,9 +10,10 @@ import { PricingPage } from './pages/PricingPage';
 import { CGUModal } from './components/CGUModal';
 import { PoliceLogin } from './pages/PoliceLogin';
 import { PoliceDashboard } from './pages/PoliceDashboard';
+import { PoliceFlow } from './pages/PoliceFlow';
 import { applyDir } from './i18n';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'police_login' | 'police_dashboard';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
 const CGU_KEY   = 'boom_cgu_accepted';
@@ -22,6 +23,10 @@ function getInitialView(): AppView {
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
+  if (params.get('session') && params.get('role') === 'police') {
+    const token = params.get('token') || localStorage.getItem('boom_police_token');
+    if (token) return 'police_flow';
+  }
   if (params.get('police') === 'true' || window.location.pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
     return token ? 'police_dashboard' : 'police_login';
@@ -40,6 +45,14 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; }
   });
   const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | null>(null);
+  const [policeSessionId, setPoliceSessionId] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('session') || '';
+  });
+  const [policeFlowToken, setPoliceFlowToken] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('token') || localStorage.getItem('boom_police_token') || '';
+  });
 
   // Apply RTL direction whenever language changes
   useEffect(() => {
@@ -108,7 +121,22 @@ export default function App() {
           user={policeUser as any}
           onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); setView('landing'); }}
           onViewSession={(sessionId) => {
-            window.open(`/?session=${sessionId}&role=police&token=${policeToken}`, '_blank');
+            setPoliceSessionId(sessionId);
+            setPoliceFlowToken(policeToken);
+            setView('police_flow');
+          }}
+        />
+      )}
+
+      {view === 'police_flow' && policeUser && policeSessionId && (
+        <PoliceFlow
+          sessionId={policeSessionId}
+          token={policeFlowToken || policeToken}
+          agent={policeUser as any}
+          onLogout={() => {
+            localStorage.removeItem('boom_police_token');
+            localStorage.removeItem('boom_police_user');
+            setView('landing');
           }}
         />
       )}
@@ -123,3 +151,4 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
