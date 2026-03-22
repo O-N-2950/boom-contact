@@ -1,6 +1,7 @@
 import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
+import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
@@ -14,7 +15,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData, ScenePhoto, AccidentData, ParticipantRole } from '../../../shared/types';
 
-type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'sketch' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_b';
 
@@ -100,6 +101,7 @@ export function JoinSession() {
     { id: 'location', icon: '📍', label: 'Lieu' },
     { id: 'photos',   icon: '📸', label: 'Photos' },
     { id: 'form',     icon: '📋', label: 'Infos' },
+    { id: 'voice',    icon: '🎙️', label: 'Vocal' },
     { id: 'sketch',   icon: '✏️', label: 'Croquis' },
     { id: 'diagram',  icon: '🚗', label: 'Choc' },
     { id: 'sign',     icon: '✍️', label: 'Sign' },
@@ -204,7 +206,7 @@ export function JoinSession() {
         updateAccidentMutationB.mutate({ sessionId, data: accident });
       }
     }
-    setStep('sketch');
+    setStep('voice');
   };
 
   const handleSketchDoneB = (base64: string) => {
@@ -402,6 +404,25 @@ export function JoinSession() {
 
         {step === 'form' && (
           <ConstatForm role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} language={participantData.language} />
+        )}
+
+        {step === 'voice' && sessionId && (
+          <VoiceSketchFlow
+            role={urlRole as 'A' | 'B' | 'C' | 'D' | 'E'}
+            sessionId={sessionId}
+            lang={participantData.language}
+            onComplete={(data) => {
+              setSketchImage(data.sketchBase64);
+              if (data.analysis?.circumstances?.length > 0) {
+                setParticipantData(prev => ({
+                  ...prev,
+                  circumstances: data.analysis.circumstances,
+                }));
+              }
+              setStep('sketch');
+            }}
+            onSkip={() => setStep('sketch')}
+          />
         )}
 
         {step === 'sketch' && (
