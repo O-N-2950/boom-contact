@@ -401,7 +401,7 @@ export function JoinSession() {
         )}
 
         {step === 'form' && (
-          <ConstatForm role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} />
+          <ConstatForm role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} language={participantData.language} />
         )}
 
         {step === 'sketch' && (
