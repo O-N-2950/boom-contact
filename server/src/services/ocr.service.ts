@@ -132,6 +132,7 @@ function mapToOCRResult(raw: RawOCRResponse): OCRResult {
     year:         extractValue(raw.vehicle?.year),
     color:        extractValue(raw.vehicle?.color),
     vin:          extractValue(raw.vehicle?.vin),
+    category:     extractValue(raw.vehicle?.category), // "Voiture de tourisme", "Motocycle", etc.
   };
 
   const driver: Partial<DriverData> = {
