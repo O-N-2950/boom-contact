@@ -1,7 +1,6 @@
 // client/src/components/constat/MapVehiclePlacer.tsx
-// Conducteur positionne son véhicule sur la vraie carte
-// Géocodage Nominatim si lat/lng absent
-// Toggle satellite (ESRI) / plan (OSM)
+// v2 — Plan OSM par défaut (pas de voitures fantômes), satellite en option
+// Géocodage automatique si lat/lng absent (Nominatim OSM)
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 
@@ -14,6 +13,7 @@ interface Props {
   accidentLng?: number;
   accidentAddress?: string;
   accidentCity?: string;
+  accidentCountry?: string;
   vehicleColor?: string;
   vehicleType?: string;
   brand?: string;
@@ -22,311 +22,419 @@ interface Props {
   onSkip: () => void;
 }
 
-const ZOOM = 19;
+const ZOOM = 18;
 const TILE_SIZE = 256;
 const CANVAS_W = 380;
-const CANVAS_H = 380;
+const CANVAS_H = 360;
 
+// ── Tile URLs ─────────────────────────────────────────────────
+function getTileUrl(x: number, y: number, zoom: number, satellite: boolean): string {
+  if (satellite) {
+    // ESRI World Imagery — satellite haute résolution, gratuit
+    return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y}/${x}`;
+  }
+  // OSM Plan — routes dessinées, aucune voiture sur la carte
+  const s = ['a','b','c'][Math.abs(x + y) % 3];
+  return `https://${s}.tile.openstreetmap.org/${zoom}/${x}/${y}.png`;
+}
+
+// ── Conversions ───────────────────────────────────────────────
 function latlngToTile(lat: number, lng: number, zoom: number) {
   const n = Math.pow(2, zoom);
-  const x = Math.floor((lng + 180) / 360 * n);
-  const latRad = lat * Math.PI / 180;
-  const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
-  return { x, y };
-}
-function pixelToLatlng(px: number, py: number, originLat: number, originLng: number, zoom: number) {
-  const n = Math.pow(2, zoom);
-  const latRad = originLat * Math.PI / 180;
-  const owx = (originLng + 180) / 360 * n * TILE_SIZE;
-  const owy = (1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n * TILE_SIZE;
-  const wx = owx + (px - CANVAS_W / 2);
-  const wy = owy + (py - CANVAS_H / 2);
-  const lng = wx / (n * TILE_SIZE) * 360 - 180;
-  const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * wy / (n * TILE_SIZE)))) * 180 / Math.PI;
-  return { lat, lng };
+  return {
+    x: Math.floor((lng + 180) / 360 * n),
+    y: Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n),
+  };
 }
 
-function drawVehicle(ctx: CanvasRenderingContext2D, x: number, y: number, angle: number,
-  color: string, label: string, roleColor: string, length = 32, width = 16, selected = false) {
+function latlngToCanvasPixel(lat: number, lng: number, centerLat: number, centerLng: number, zoom: number) {
+  const n = Math.pow(2, zoom) * TILE_SIZE;
+  const toW = (la: number, lo: number) => ({
+    x: (lo + 180) / 360 * n,
+    y: (1 - Math.log(Math.tan(la * Math.PI / 180) + 1 / Math.cos(la * Math.PI / 180)) / Math.PI) / 2 * n,
+  });
+  const c = toW(centerLat, centerLng);
+  const p = toW(lat, lng);
+  return { px: p.x - c.x + CANVAS_W / 2, py: p.y - c.y + CANVAS_H / 2 };
+}
+
+function canvasPixelToLatlng(px: number, py: number, centerLat: number, centerLng: number, zoom: number) {
+  const n = Math.pow(2, zoom) * TILE_SIZE;
+  const c = {
+    x: (centerLng + 180) / 360 * n,
+    y: (1 - Math.log(Math.tan(centerLat * Math.PI / 180) + 1 / Math.cos(centerLat * Math.PI / 180)) / Math.PI) / 2 * n,
+  };
+  const wx = c.x + (px - CANVAS_W / 2);
+  const wy = c.y + (py - CANVAS_H / 2);
+  return {
+    lng: wx / n * 360 - 180,
+    lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * wy / n))) * 180 / Math.PI,
+  };
+}
+
+// ── Couleur véhicule ──────────────────────────────────────────
+const COLOR_MAP: Record<string, string> = {
+  noir:'#1c1c2a', black:'#1c1c2a', schwarz:'#1c1c2a', nero:'#1c1c2a',
+  blanc:'#e8e8e0', white:'#e8e8e0', weiss:'#e8e8e0', bianco:'#e8e8e0',
+  gris:'#7a7a8c', grey:'#7a7a8c', gray:'#7a7a8c', grau:'#7a7a8c',
+  rouge:'#b82020', red:'#b82020', rot:'#b82020', rosso:'#b82020',
+  bleu:'#1a44aa', blue:'#1a44aa', blau:'#1a44aa',
+  vert:'#1a6622', green:'#1a6622',
+  jaune:'#cc9900', yellow:'#cc9900',
+  orange:'#cc5500', argent:'#aab0bb', silver:'#aab0bb',
+};
+
+function parseColor(s?: string): string {
+  if (!s) return '#4466aa';
+  const low = s.toLowerCase();
+  for (const [k, v] of Object.entries(COLOR_MAP)) {
+    if (low.includes(k)) return v;
+  }
+  return '#4466aa';
+}
+
+// ── Dessin véhicule vue de dessus ─────────────────────────────
+function drawVehicle(
+  ctx: CanvasRenderingContext2D,
+  x: number, y: number, angleDeg: number,
+  bodyColor: string, label: string, roleColor: string,
+  selected = false, length = 32, width = 16
+) {
   ctx.save();
   ctx.translate(x, y);
-  ctx.rotate(angle * Math.PI / 180);
-  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 6; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 2;
-  ctx.fillStyle = color;
+  ctx.rotate(angleDeg * Math.PI / 180);
+
+  // Ombre
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 7;
+  ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 3;
+
+  // Carrosserie
+  ctx.fillStyle = bodyColor;
   ctx.strokeStyle = selected ? '#FFD700' : 'rgba(0,0,0,0.7)';
   ctx.lineWidth = selected ? 2.5 : 1.2;
   ctx.beginPath();
   const r = 4;
   ctx.moveTo(-length/2+r, -width/2); ctx.lineTo(length/2-r, -width/2);
-  ctx.arcTo(length/2,-width/2,length/2,-width/2+r,r); ctx.lineTo(length/2,width/2-r);
-  ctx.arcTo(length/2,width/2,length/2-r,width/2,r); ctx.lineTo(-length/2+r,width/2);
-  ctx.arcTo(-length/2,width/2,-length/2,width/2-r,r); ctx.lineTo(-length/2,-width/2+r);
-  ctx.arcTo(-length/2,-width/2,-length/2+r,-width/2,r);
-  ctx.closePath(); ctx.fill(); ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0; ctx.stroke();
-  const tr=parseInt(color.slice(1,3),16), tg=parseInt(color.slice(3,5),16), tb=parseInt(color.slice(5,7),16);
-  ctx.fillStyle=`rgb(${Math.max(0,tr-35)},${Math.max(0,tg-35)},${Math.max(0,tb-35)})`;
-  ctx.fillRect(-length/3,-width/2.8,length*2/3,width/1.4);
-  ctx.fillStyle='rgba(140,195,225,0.75)';
-  ctx.beginPath(); ctx.moveTo(length/2-5,-width/3); ctx.lineTo(length/2-5,width/3);
-  ctx.lineTo(length/3+2,width/3.5); ctx.lineTo(length/3+2,-width/3.5); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='rgba(100,155,180,0.6)';
-  ctx.beginPath(); ctx.moveTo(-length/2+4,-width/3); ctx.lineTo(-length/2+4,width/3);
-  ctx.lineTo(-length/3-2,width/3.5); ctx.lineTo(-length/3-2,-width/3.5); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='#FFE88A';
-  ctx.beginPath(); ctx.ellipse(length/2-3,-width/2+3,3.5,2.5,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(length/2-3,width/2-3,3.5,2.5,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#DD2222';
-  ctx.beginPath(); ctx.ellipse(-length/2+3,-width/2+3,3,2,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(-length/2+3,width/2-3,3,2,0,0,Math.PI*2); ctx.fill();
-  [[-length/3,-width/2-2],[length/3,-width/2-2],[-length/3,width/2+2],[length/3,width/2+2]].forEach(([wx,wy])=>{
-    ctx.fillStyle='#111118'; ctx.beginPath(); ctx.ellipse(wx,wy,5,3,0,0,Math.PI*2); ctx.fill();
-  });
-  ctx.fillStyle=roleColor; ctx.strokeStyle='white'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.arc(0,0,10,0,Math.PI*2); ctx.fill(); ctx.stroke();
-  ctx.fillStyle='white'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(label,0,0);
-  ctx.fillStyle='rgba(255,255,255,0.85)';
-  ctx.beginPath(); ctx.moveTo(length/2+8,0); ctx.lineTo(length/2+18,-5); ctx.lineTo(length/2+18,5);
+  ctx.arcTo(length/2,-width/2, length/2,-width/2+r, r);
+  ctx.lineTo(length/2, width/2-r);
+  ctx.arcTo(length/2, width/2, length/2-r, width/2, r);
+  ctx.lineTo(-length/2+r, width/2);
+  ctx.arcTo(-length/2, width/2, -length/2, width/2-r, r);
+  ctx.lineTo(-length/2, -width/2+r);
+  ctx.arcTo(-length/2,-width/2, -length/2+r,-width/2, r);
   ctx.closePath(); ctx.fill();
+  ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+  ctx.stroke();
+
+  // Toit
+  const [rr,rg,rb] = [1,3,5].map(i => parseInt(bodyColor.slice(i,i+2)||'44',16));
+  ctx.fillStyle = `rgb(${Math.max(0,rr-35)},${Math.max(0,rg-35)},${Math.max(0,rb-35)})`;
+  ctx.fillRect(-length/3, -width/2.8, length*2/3, width/1.4);
+
+  // Pare-brise
+  ctx.fillStyle = 'rgba(140,195,225,0.75)';
+  ctx.beginPath();
+  ctx.moveTo(length/2-5,-width/3); ctx.lineTo(length/2-5,width/3);
+  ctx.lineTo(length/3+2,width/3.5); ctx.lineTo(length/3+2,-width/3.5);
+  ctx.closePath(); ctx.fill();
+
+  // Lunette arrière
+  ctx.fillStyle = 'rgba(100,155,180,0.55)';
+  ctx.beginPath();
+  ctx.moveTo(-length/2+4,-width/3); ctx.lineTo(-length/2+4,width/3);
+  ctx.lineTo(-length/3-2,width/3.5); ctx.lineTo(-length/3-2,-width/3.5);
+  ctx.closePath(); ctx.fill();
+
+  // Phares
+  ctx.fillStyle = '#FFE88A';
+  for (const sy of [-1,1]) { ctx.beginPath(); ctx.ellipse(length/2-3, sy*(width/2-3), 3.5, 2, 0, 0, Math.PI*2); ctx.fill(); }
+  // Feux
+  ctx.fillStyle = '#DD2222';
+  for (const sy of [-1,1]) { ctx.beginPath(); ctx.ellipse(-length/2+3, sy*(width/2-3), 3, 1.8, 0, 0, Math.PI*2); ctx.fill(); }
+  // Roues
+  ctx.fillStyle = '#111118';
+  for (const [wx,wy] of [[-length/3,-width/2-2],[length/3,-width/2-2],[-length/3,width/2+2],[length/3,width/2+2]] as [number,number][]) {
+    ctx.save(); ctx.translate(wx,wy); ctx.fillRect(-5,-3,10,6); ctx.restore();
+  }
+
+  // Badge rôle
+  ctx.fillStyle = roleColor; ctx.strokeStyle = 'white'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(0,0,10,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'white'; ctx.font = 'bold 10px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(label, 0, 0);
+
+  // Flèche direction
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.beginPath(); ctx.moveTo(length/2+8,0); ctx.lineTo(length/2+18,-5); ctx.lineTo(length/2+18,5); ctx.closePath(); ctx.fill();
+
   ctx.restore();
 }
 
-type MapStyle = 'satellite' | 'plan';
-
-const TILE_URLS: Record<MapStyle, (z:number,x:number,y:number)=>string> = {
-  satellite: (z,x,y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`,
-  plan: (z,x,y) => `https://${'abc'[Math.abs(x+y)%3]}.tile.openstreetmap.org/${z}/${x}/${y}.png`,
-};
-
-export function MapVehiclePlacer({
-  role, accidentLat, accidentLng, accidentAddress, accidentCity,
-  vehicleColor, vehicleType, brand, existingVehicles=[],
-  onComplete, onSkip,
-}: Props) {
+// ── Composant principal ───────────────────────────────────────
+export function MapVehiclePlacer({ role, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const tilesRef = useRef<Map<string,HTMLImageElement>>(new Map());
-  const [loading, setLoading] = useState(true);
-  const [geocoding, setGeocoding] = useState(false);
-  const [centerLat, setCenterLat] = useState<number>(0);
-  const [centerLng, setCenterLng] = useState<number>(0);
+  const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
+
+  // Plan OSM par défaut — pas de voitures sur la carte
+  const [satellite, setSatellite] = useState(false);
+  const [centerLat, setCenterLat] = useState<number | null>(accidentLat || null);
+  const [centerLng, setCenterLng] = useState<number | null>(accidentLng || null);
+  const [geoStatus, setGeoStatus] = useState<'loading'|'ok'|'error'>('loading');
   const [tilesLoaded, setTilesLoaded] = useState(0);
-  const [mapStyle, setMapStyle] = useState<MapStyle>('satellite');
-  const [position, setPosition] = useState({x:CANVAS_W/2, y:CANVAS_H/2});
+  const [totalTiles, setTotalTiles] = useState(25);
+  const [position, setPosition] = useState({ x: CANVAS_W/2, y: CANVAS_H/2 });
   const [angle, setAngle] = useState(0);
   const [dragging, setDragging] = useState(false);
+  const dragStart = useRef<{ x: number; y: number; posX: number; posY: number } | null>(null);
   const [step, setStep] = useState<'place'|'rotate'|'confirm'>('place');
   const [confirmed, setConfirmed] = useState(false);
-  const dragStart = useRef<{x:number;y:number;posX:number;posY:number}|null>(null);
 
-  const roleColor = {A:'#1a44cc',B:'#cc3300',C:'#228833',D:'#9933cc'}[role]||'#444';
-  const bodyColor = !vehicleColor||vehicleColor==='—' ? '#4466aa' :
-    /^#/.test(vehicleColor) ? vehicleColor :
-    ({noir:'#1c1c2a',black:'#1c1c2a',blanc:'#e0e0d8',white:'#e0e0d8',
-      rouge:'#b82020',red:'#b82020',bleu:'#1a44aa',blue:'#1a44aa',
-      gris:'#7a7a8c',grey:'#7a7a8c',gray:'#7a7a8c',silber:'#aab0bb',
-      vert:'#1a6622',green:'#1a6622',jaune:'#cc9900',orange:'#cc5500'}
-      [vehicleColor.toLowerCase()] || '#4466aa');
+  const roleColors: Record<string, string> = { A:'#1a44cc', B:'#cc3300', C:'#228833', D:'#9933cc' };
+  const roleColor = roleColors[role] || '#444';
+  const bodyColor = parseColor(vehicleColor);
 
-  // ── 1. Résoudre les coordonnées ────────────────────────────
+  // ── Géocodage de l'adresse si lat/lng manquants ──────────────
   useEffect(() => {
-    if (accidentLat && accidentLng && accidentLat !== 0 && accidentLng !== 0) {
-      setCenterLat(accidentLat);
-      setCenterLng(accidentLng);
-      return;
+    if (accidentLat && accidentLng) {
+      setCenterLat(accidentLat); setCenterLng(accidentLng); setGeoStatus('ok'); return;
     }
-    // Pas de GPS → géocoder l'adresse via Nominatim
-    const query = [accidentAddress, accidentCity].filter(Boolean).join(', ');
-    if (!query) {
-      // Fallback Courgenay (siège PEP's Swiss SA)
-      setCenterLat(47.4088); setCenterLng(7.1124); return;
-    }
-    setGeocoding(true);
-    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`,
-      {headers:{'User-Agent':'boom.contact/1.0'}})
-      .then(r=>r.json())
+    const parts = [accidentAddress, accidentCity, accidentCountry].filter(Boolean).join(', ');
+    if (!parts) { setGeoStatus('error'); return; }
+
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(parts)}&format=json&limit=1`, {
+      headers: { 'User-Agent': 'boom.contact/1.0 accident-report' }
+    })
+      .then(r => r.json())
       .then(results => {
-        if (results.length > 0) {
+        if (results?.[0]) {
           setCenterLat(parseFloat(results[0].lat));
           setCenterLng(parseFloat(results[0].lon));
-        } else {
-          setCenterLat(47.4088); setCenterLng(7.1124);
-        }
-        setGeocoding(false);
+          setGeoStatus('ok');
+        } else { setGeoStatus('error'); }
       })
-      .catch(() => { setCenterLat(47.4088); setCenterLng(7.1124); setGeocoding(false); });
-  }, [accidentLat, accidentLng, accidentAddress, accidentCity]);
+      .catch(() => setGeoStatus('error'));
+  }, [accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry]);
 
-  // ── 2. Charger les tiles quand coordonnées + style prêts ──
+  // ── Chargement tiles ──────────────────────────────────────────
   useEffect(() => {
     if (!centerLat || !centerLng) return;
-    setLoading(true);
+    tilesRef.current.clear();
     setTilesLoaded(0);
     const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, ZOOM);
-    const pad = 2; const total = (pad*2+1)*(pad*2+1); let loaded = 0;
-    for (let dy=-pad;dy<=pad;dy++) for (let dx=-pad;dx<=pad;dx++) {
-      const tx=cx+dx, ty=cy+dy;
-      const key=`${mapStyle}/${ZOOM}/${tx}/${ty}`;
-      if (tilesRef.current.has(key)) { loaded++; if(loaded===total) setLoading(false); continue; }
-      const img = new Image(); img.crossOrigin='anonymous';
-      img.src = TILE_URLS[mapStyle](ZOOM,tx,ty);
-      img.onload = () => { tilesRef.current.set(key,img); loaded++; setTilesLoaded(loaded); if(loaded===total)setLoading(false); };
-      img.onerror= () => { loaded++; setTilesLoaded(loaded); if(loaded===total)setLoading(false); };
-    }
-  }, [centerLat, centerLng, mapStyle]);
+    const pad = 2;
+    const total = (pad*2+1)*(pad*2+1);
+    setTotalTiles(total);
+    let loaded = 0;
 
-  // ── 3. Rendu canvas ───────────────────────────────────────
+    for (let dy = -pad; dy <= pad; dy++) {
+      for (let dx = -pad; dx <= pad; dx++) {
+        const tx = cx+dx, ty = cy+dy;
+        const key = `${satellite?'sat':'osm'}/${ZOOM}/${ty}/${tx}`;
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = getTileUrl(tx, ty, ZOOM, satellite);
+        img.onload  = () => { tilesRef.current.set(key, img); loaded++; setTilesLoaded(loaded); };
+        img.onerror = () => { loaded++; setTilesLoaded(loaded); };
+      }
+    }
+  }, [centerLat, centerLng, satellite]);
+
+  // ── Rendu ────────────────────────────────────────────────────
   const render = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas||!centerLat||!centerLng) return;
+    if (!canvas || !centerLat || !centerLng) return;
     const ctx = canvas.getContext('2d')!;
-    ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
-    const {x:cx,y:cy} = latlngToTile(centerLat,centerLng,ZOOM);
-    const pad=2;
-    const latRad=centerLat*Math.PI/180;
-    const owx=(centerLng+180)/360*Math.pow(2,ZOOM)*TILE_SIZE;
-    const owy=(1-Math.log(Math.tan(latRad)+1/Math.cos(latRad))/Math.PI)/2*Math.pow(2,ZOOM)*TILE_SIZE;
-    for(let dy=-pad;dy<=pad;dy++) for(let dx=-pad;dx<=pad;dx++) {
-      const tx=cx+dx, ty=cy+dy;
-      const img=tilesRef.current.get(`${mapStyle}/${ZOOM}/${tx}/${ty}`);
-      if(img) { const drawX=tx*TILE_SIZE-owx+CANVAS_W/2; const drawY=ty*TILE_SIZE-owy+CANVAS_H/2; ctx.drawImage(img,drawX,drawY,TILE_SIZE,TILE_SIZE); }
+    ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+
+    const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, ZOOM);
+    const pad = 2;
+    const latRad = centerLat * Math.PI / 180;
+    const originX = (centerLng + 180) / 360 * Math.pow(2, ZOOM) * TILE_SIZE;
+    const originY = (1 - Math.log(Math.tan(latRad) + 1/Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, ZOOM) * TILE_SIZE;
+
+    for (let dy = -pad; dy <= pad; dy++) {
+      for (let dx = -pad; dx <= pad; dx++) {
+        const tx = cx+dx, ty = cy+dy;
+        const img = tilesRef.current.get(`${satellite?'sat':'osm'}/${ZOOM}/${ty}/${tx}`);
+        if (img) {
+          const drawX = tx*TILE_SIZE - originX + CANVAS_W/2;
+          const drawY = ty*TILE_SIZE - originY + CANVAS_H/2;
+          ctx.drawImage(img, drawX, drawY, TILE_SIZE, TILE_SIZE);
+        }
+      }
     }
-    existingVehicles.forEach(ev=>{
-      const oc={A:'#1a44cc',B:'#cc3300',C:'#228833',D:'#9933cc'}[ev.role]||'#444';
-      drawVehicle(ctx,ev.pos.x,ev.pos.y,ev.pos.angle,'#888888',ev.role,oc,28,13,false);
+
+    // Véhicules existants
+    for (const ev of existingVehicles) {
+      drawVehicle(ctx, ev.pos.x, ev.pos.y, ev.pos.angle, '#888', ev.role, roleColors[ev.role]||'#444', false, 28, 13);
+    }
+
+    // Véhicule courant
+    drawVehicle(ctx, position.x, position.y, angle, bodyColor, role, roleColor, true, 34, 16);
+
+    // Croix GPS (point d'accident)
+    const gpx = CANVAS_W/2, gpy = CANVAS_H/2;
+    ctx.strokeStyle = 'rgba(255,50,0,0.7)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(gpx-10,gpy); ctx.lineTo(gpx+10,gpy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gpx,gpy-10); ctx.lineTo(gpx,gpy+10); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,50,0,0.3)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(gpx,gpy,18,0,Math.PI*2); ctx.stroke();
+
+    // Barre inférieure
+    ctx.fillStyle = 'rgba(0,0,0,0.62)';
+    ctx.fillRect(0, CANVAS_H-26, CANVAS_W, 26);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+    const instr = step==='place' ? '✋ Faites glisser votre véhicule à sa position exacte'
+                : step==='rotate' ? '↻ Orientez votre véhicule dans sa direction'
+                : '✓ Position confirmée';
+    ctx.fillText(instr, CANVAS_W/2, CANVAS_H-9);
+
+    // Attribution
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(0, 0, satellite ? 195 : 205, 14);
+    ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '8px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(satellite ? '© Esri, Maxar, Earthstar Geographics' : '© OpenStreetMap contributors', 4, 10);
+  }, [position, angle, bodyColor, role, roleColor, existingVehicles, step, tilesLoaded, centerLat, centerLng, satellite]);
+
+  useEffect(() => { render(); }, [render]);
+
+  // ── Handlers touch/mouse ─────────────────────────────────────
+  const getPos = (e: React.TouchEvent | React.MouseEvent) => {
+    const r = (e.currentTarget as HTMLCanvasElement).getBoundingClientRect();
+    const sx = CANVAS_W / r.width, sy = CANVAS_H / r.height;
+    if ('touches' in e && e.touches.length > 0)
+      return { x: (e.touches[0].clientX - r.left)*sx, y: (e.touches[0].clientY - r.top)*sy };
+    return { x: ((e as React.MouseEvent).clientX - r.left)*sx, y: ((e as React.MouseEvent).clientY - r.top)*sy };
+  };
+
+  const onStart = (e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault(); if (confirmed) return;
+    const p = getPos(e);
+    const d = Math.hypot(p.x - position.x, p.y - position.y);
+    if (d < 35) {
+      setDragging(true);
+      dragStart.current = { x: p.x, y: p.y, posX: position.x, posY: position.y };
+      setStep('place');
+    }
+  };
+  const onMove = (e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault(); if (!dragging || !dragStart.current || confirmed) return;
+    const p = getPos(e);
+    setPosition({
+      x: Math.max(20, Math.min(CANVAS_W-20, dragStart.current.posX + p.x - dragStart.current.x)),
+      y: Math.max(20, Math.min(CANVAS_H-20, dragStart.current.posY + p.y - dragStart.current.y)),
     });
-    drawVehicle(ctx,position.x,position.y,angle,bodyColor,role,roleColor,34,16,true);
-    // Croix GPS centre
-    const [ix,iy]=[CANVAS_W/2,CANVAS_H/2];
-    ctx.strokeStyle='rgba(255,50,0,0.7)'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(ix-14,iy); ctx.lineTo(ix+14,iy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(ix,iy-14); ctx.lineTo(ix,iy+14); ctx.stroke();
-    ctx.strokeStyle='rgba(255,50,0,0.3)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.arc(ix,iy,22,0,Math.PI*2); ctx.stroke();
-    // Légende bas
-    ctx.fillStyle='rgba(0,0,0,0.6)'; ctx.fillRect(0,CANVAS_H-28,CANVAS_W,28);
-    ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='12px sans-serif'; ctx.textAlign='center';
-    const instr=step==='place'?'✋ Faites glisser votre véhicule':step==='rotate'?'↻ Orientez le véhicule':'✓ Position confirmée';
-    ctx.fillText(instr,CANVAS_W/2,CANVAS_H-10);
-  }, [position,angle,bodyColor,role,roleColor,existingVehicles,step,tilesLoaded,centerLat,centerLng,mapStyle]);
-
-  useEffect(()=>{render();},[render]);
-
-  const getPos=(e:React.TouchEvent|React.MouseEvent)=>{
-    const canvas=canvasRef.current!; const rect=canvas.getBoundingClientRect();
-    const sx=CANVAS_W/rect.width, sy=CANVAS_H/rect.height;
-    if('touches' in e && e.touches.length>0) return {x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};
-    return {x:((e as React.MouseEvent).clientX-rect.left)*sx,y:((e as React.MouseEvent).clientY-rect.top)*sy};
   };
-  const onStart=(e:React.TouchEvent|React.MouseEvent)=>{
-    e.preventDefault(); if(confirmed) return;
-    const pos=getPos(e);
-    const dx=pos.x-position.x, dy=pos.y-position.y;
-    if(Math.sqrt(dx*dx+dy*dy)<40) { setDragging(true); dragStart.current={x:pos.x,y:pos.y,posX:position.x,posY:position.y}; setStep('place'); }
-  };
-  const onMove=(e:React.TouchEvent|React.MouseEvent)=>{
-    e.preventDefault(); if(!dragging||!dragStart.current||confirmed) return;
-    const pos=getPos(e);
-    setPosition({x:Math.max(20,Math.min(CANVAS_W-20,dragStart.current.posX+(pos.x-dragStart.current.x))),y:Math.max(20,Math.min(CANVAS_H-20,dragStart.current.posY+(pos.y-dragStart.current.y)))});
-  };
-  const onEnd=()=>{ if(dragging){setDragging(false);dragStart.current=null;setStep('rotate');} };
+  const onEnd = () => { if (dragging) { setDragging(false); dragStart.current = null; setStep('rotate'); } };
 
-  const confirm=()=>{
-    const canvas=canvasRef.current!;
-    const gps=pixelToLatlng(position.x,position.y,centerLat,centerLng,ZOOM);
-    const b64=canvas.toDataURL('image/jpeg',0.92).split(',')[1];
+  const confirm = () => {
+    if (!centerLat || !centerLng) return;
+    const canvas = canvasRef.current!;
+    const gps = canvasPixelToLatlng(position.x, position.y, centerLat, centerLng, ZOOM);
+    const b64 = canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
     setConfirmed(true); setStep('confirm');
-    onComplete({x:position.x,y:position.y,angle,lat:gps.lat,lng:gps.lng},b64);
+    onComplete({ x: position.x, y: position.y, angle, lat: gps.lat, lng: gps.lng }, b64);
   };
 
-  if (geocoding||(!centerLat&&!centerLng)) return (
-    <div style={{padding:40,textAlign:'center'}}>
-      <div style={{fontSize:36,marginBottom:12}}>📍</div>
-      <div style={{fontWeight:700,fontSize:15,marginBottom:6}}>Localisation de l'accident…</div>
-      <div style={{fontSize:12,opacity:0.5}}>Géocodage de l'adresse via OpenStreetMap</div>
-    </div>
-  );
-  if (loading) return (
-    <div style={{padding:40,textAlign:'center'}}>
-      <div style={{fontSize:36,marginBottom:12,display:'inline-block',animation:'spin 1s linear infinite'}}>🛰️</div>
-      <div style={{fontWeight:700,fontSize:15,marginBottom:6}}>Chargement de la carte…</div>
-      <div style={{fontSize:12,opacity:0.5}}>{tilesLoaded}/25 tiles · {mapStyle==='satellite'?'© Esri World Imagery':'© OpenStreetMap'}</div>
-      <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
+  // ── Rendu JSX ────────────────────────────────────────────────
+  if (geoStatus === 'loading') return (
+    <div style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
+      <div style={{ fontSize: 36, marginBottom: 12, animation: 'spin 1s linear infinite', display:'inline-block' }}>🌍</div>
+      <div style={{ fontWeight: 700 }}>Localisation de l'accident…</div>
+      <div style={{ fontSize: 12, opacity: 0.5, marginTop: 6 }}>Géocodage de l'adresse</div>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
-  const rch = {A:'#1a44cc',B:'#cc3300',C:'#228833',D:'#9933cc'}[role]||'#444';
+  if (geoStatus === 'error') return (
+    <div style={{ padding: 24 }}>
+      <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', marginBottom: 14, fontSize: 13, color: 'rgba(255,200,100,0.9)' }}>
+        ⚠️ Impossible de localiser l'adresse sur la carte. Vérifiez l'adresse saisie à l'étape Lieu.
+      </div>
+      <button onClick={onSkip} style={{ width: '100%', padding: 12, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13 }}>
+        Passer cette étape
+      </button>
+    </div>
+  );
+
+  const loadingTiles = tilesLoaded < totalTiles;
+  const roleLabel = { A:'Conducteur A', B:'Conducteur B', C:'Conducteur C', D:'Conducteur D' }[role];
 
   return (
-    <div style={{padding:'14px 18px'}}>
+    <div style={{ padding: '14px 18px' }}>
       {/* Header */}
-      <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
-        <div style={{width:34,height:34,borderRadius:'50%',background:`${rch}22`,border:`2px solid ${rch}`,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:15,color:rch}}>{role}</div>
-        <div>
-          <div style={{fontWeight:700,fontSize:14}}>Conducteur {role} — Positionner mon véhicule</div>
-          <div style={{fontSize:11,opacity:0.5}}>{brand?`${brand} · `:''}Carte: {accidentAddress||accidentCity||'Lieu de l\'accident'}</div>
+      <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
+        <div style={{ width:34, height:34, borderRadius:'50%', background:`${roleColor}22`, border:`2px solid ${roleColor}`, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:15, color:roleColor }}>
+          {role}
         </div>
+        <div>
+          <div style={{ fontWeight:700, fontSize:14 }}>{roleLabel} — Positionner mon véhicule</div>
+          <div style={{ fontSize:11, opacity:0.45 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
+        </div>
+        {/* Toggle plan / satellite */}
+        <button
+          onClick={() => setSatellite(s => !s)}
+          style={{ marginLeft:'auto', padding:'5px 10px', borderRadius:16, border:`1px solid ${satellite ? '#f59e0b' : 'rgba(255,255,255,0.15)'}`, background: satellite ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.04)', color: satellite ? '#f59e0b' : 'rgba(255,255,255,0.55)', fontSize:11, cursor:'pointer', fontWeight:600, touchAction:'manipulation', whiteSpace:'nowrap' }}>
+          {satellite ? '🛰 Satellite' : '🗺 Plan'}
+        </button>
       </div>
 
-      {/* Steps */}
-      <div style={{display:'flex',gap:6,marginBottom:10}}>
-        {([['place','✋','1. Placer'],['rotate','↻','2. Orienter'],['confirm','✓','3. Valider']] as const).map(([s,ic,lb])=>(
-          <div key={s} style={{flex:1,padding:'5px 3px',borderRadius:8,textAlign:'center',fontSize:11,
-            background:step===s?`${rch}20`:'rgba(255,255,255,0.03)',
-            border:`1px solid ${step===s?rch:'rgba(255,255,255,0.07)'}`,
-            color:step===s?rch:'rgba(255,255,255,0.35)',fontWeight:step===s?700:400}}>
-            {ic} {lb}
+      {/* Étapes */}
+      <div style={{ display:'flex', gap:6, marginBottom:10 }}>
+        {[['place','✋','1. Placer'],['rotate','↻','2. Orienter'],['confirm','✓','3. Valider']] .map(([s,icon,label]) => (
+          <div key={s} style={{ flex:1, padding:'5px 3px', borderRadius:8, textAlign:'center', background:step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border:`1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, fontSize:10, color:step===s?roleColor:'rgba(255,255,255,0.35)', fontWeight:step===s?700:400 }}>
+            {icon} {label}
           </div>
-        ))}
-      </div>
-
-      {/* Toggle satellite / plan */}
-      <div style={{display:'flex',gap:6,marginBottom:10}}>
-        {([['satellite','🛰️ Satellite'],['plan','🗺️ Plan']] as const).map(([s,lb])=>(
-          <button key={s} onClick={()=>setMapStyle(s)}
-            style={{flex:1,padding:'7px',borderRadius:8,cursor:'pointer',fontSize:12,border:'none',
-              background:mapStyle===s?rch:'rgba(255,255,255,0.07)',
-              color:mapStyle===s?'#fff':'rgba(255,255,255,0.6)',
-              fontWeight:mapStyle===s?700:400,touchAction:'manipulation'}}>
-            {lb}
-          </button>
         ))}
       </div>
 
       {/* Canvas */}
-      <div style={{borderRadius:10,overflow:'hidden',border:`2px solid ${rch}44`,marginBottom:12,boxShadow:`0 0 16px ${rch}22`}}>
-        <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
-          style={{width:'100%',display:'block',cursor:dragging?'grabbing':'grab',touchAction:'none'}}
+      <div style={{ borderRadius:12, overflow:'hidden', border:`2px solid ${roleColor}44`, marginBottom:12, position:'relative' }}>
+        {loadingTiles && (
+          <div style={{ position:'absolute', top:8, right:8, background:'rgba(0,0,0,0.6)', borderRadius:8, padding:'3px 8px', fontSize:10, color:'rgba(255,255,255,0.6)', zIndex:10 }}>
+            {tilesLoaded}/{totalTiles} tiles…
+          </div>
+        )}
+        <canvas
+          ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
+          style={{ width:'100%', display:'block', cursor:dragging?'grabbing':'grab', touchAction:'none' }}
           onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
-          onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}/>
+          onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
+        />
       </div>
 
-      {/* Rotation */}
-      {step==='rotate'&&(
-        <div style={{marginBottom:12}}>
-          <div style={{fontSize:11,opacity:0.6,marginBottom:6,textAlign:'center'}}>
-            Direction : {angle}° &nbsp;
-            {angle<23?'→ Est':angle<68?'↘':angle<113?'↓ Sud':angle<158?'↙':angle<203?'← Ouest':angle<248?'↖':angle<293?'↑ Nord':angle<338?'↗':'→ Est'}
+      {/* Slider rotation */}
+      {step === 'rotate' && !confirmed && (
+        <div style={{ marginBottom:12 }}>
+          <div style={{ fontSize:11, opacity:0.55, textAlign:'center', marginBottom:6 }}>
+            Direction : {angle}° {angle<22?'→ Est':angle<67?'↘ SE':angle<112?'↓ Sud':angle<157?'↙ SO':angle<202?'← Ouest':angle<247?'↖ NO':angle<292?'↑ Nord':angle<337?'↗ NE':'→ Est'}
           </div>
-          <input type="range" min={0} max={359} value={angle} onChange={e=>setAngle(Number(e.target.value))}
-            style={{width:'100%',accentColor:rch}}/>
-          <div style={{display:'flex',justifyContent:'space-between',fontSize:10,opacity:0.4,marginTop:2}}>
-            <span>↑ N</span><span>→ E</span><span>↓ S</span><span>← O</span>
+          <input type="range" min={0} max={359} value={angle}
+            onChange={e => setAngle(Number(e.target.value))}
+            style={{ width:'100%', accentColor:roleColor }} />
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, opacity:0.35, marginTop:2 }}>
+            <span>↑N</span><span>→E</span><span>↓S</span><span>←O</span>
           </div>
         </div>
       )}
 
       {/* Boutons */}
-      {!confirmed?(
-        <div style={{display:'flex',gap:8}}>
-          <button onClick={onSkip} style={{flex:1,padding:'11px',borderRadius:9,border:'1px solid rgba(255,255,255,0.08)',background:'transparent',cursor:'pointer',fontSize:13,color:'rgba(255,255,255,0.35)',touchAction:'manipulation'}}>Passer</button>
-          <button onClick={step==='place'?()=>setStep('rotate'):confirm}
-            style={{flex:2,padding:'13px',borderRadius:9,border:'none',background:rch,color:'#fff',cursor:'pointer',fontSize:14,fontWeight:700,touchAction:'manipulation'}}>
-            {step==='place'?'Orienter →':'✓ Valider la position'}
+      {!confirmed ? (
+        <div style={{ display:'flex', gap:8 }}>
+          <button onClick={onSkip}
+            style={{ flex:1, padding:'11px', borderRadius:10, border:'1px solid rgba(255,255,255,0.08)', background:'transparent', cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.35)', touchAction:'manipulation' }}>
+            Passer
+          </button>
+          <button onClick={step==='place' ? () => setStep('rotate') : confirm}
+            style={{ flex:2, padding:'13px', borderRadius:10, border:'none', background:roleColor, color:'#fff', cursor:'pointer', fontSize:14, fontWeight:700, touchAction:'manipulation' }}>
+            {step==='place' ? 'Orienter →' : '✓ Valider ma position'}
           </button>
         </div>
-      ):(
-        <div style={{padding:'13px',borderRadius:9,background:'rgba(34,197,94,0.1)',border:'1px solid rgba(34,197,94,0.3)',textAlign:'center',fontSize:14,color:'#22c55e',fontWeight:700}}>
-          ✅ Position enregistrée
+      ) : (
+        <div style={{ padding:'13px', borderRadius:10, background:'rgba(34,197,94,0.09)', border:'1px solid rgba(34,197,94,0.28)', textAlign:'center', fontSize:14, color:'#22c55e', fontWeight:700 }}>
+          ✅ Position enregistrée sur la carte
         </div>
       )}
     </div>
