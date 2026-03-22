@@ -25,6 +25,7 @@ function ocrCategoryToVehicleType(category?: string): VehicleType | null {
 
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
+import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trpc } from '../trpc';
@@ -37,7 +38,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'sketch' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -69,6 +70,7 @@ export function ConstatFlow() {
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
+  const [voiceAnalysis, setVoiceAnalysis] = useState<any>(null);
   const [otherSigned, setOtherSigned] = useState(false);
 
   const setStep = (s: FlowStep) => {
@@ -193,7 +195,7 @@ export function ConstatFlow() {
         setAccidentData(prev => ({ ...prev, ...accident }));
       }
     }
-    setStep('sketch');
+    setStep('voice');
   };
 
   const handleSketchDone = (base64: string) => {
@@ -298,6 +300,27 @@ export function ConstatFlow() {
 
         {step === 'form' && (
           <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
+        )}
+
+        {step === 'voice' && sessionId && (
+          <VoiceSketchFlow
+            role="A"
+            sessionId={sessionId}
+            lang={participantData.language}
+            onComplete={(data) => {
+              setVoiceAnalysis(data.analysis);
+              setSketchImage(data.sketchBase64);
+              // Pré-remplir les circonstances depuis l'analyse IA
+              if (data.analysis?.circumstances?.length > 0) {
+                setParticipantData(prev => ({
+                  ...prev,
+                  circumstances: data.analysis.circumstances,
+                }));
+              }
+              setStep('sketch');
+            }}
+            onSkip={() => setStep('sketch')}
+          />
         )}
 
         {step === 'sketch' && (
