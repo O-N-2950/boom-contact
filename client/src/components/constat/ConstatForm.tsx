@@ -1,4 +1,5 @@
 import { ColorPicker } from '../ColorPicker';
+import { VoiceRecorder } from './VoiceRecorder';
 import { useState } from 'react';
 import type { ParticipantData, AccidentData, ParticipantRole } from '../../../../shared/types';
 
@@ -7,6 +8,8 @@ interface Props {
   prefilled?: Partial<ParticipantData>;
   accidentData?: Partial<AccidentData>;
   onSave: (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => void;
+  sessionId?: string;
+  language?: string;
 }
 
 // Circonstances boom.contact — reformulées (17 situations standard)
@@ -32,7 +35,7 @@ const ACCIDENT_CIRCUMSTANCES = [
 
 type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances' | 'complement';
 
-export function ConstatForm({ role, prefilled, accidentData, onSave }: Props) {
+export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
   const [section, setSection] = useState<Section>('vehicle');
   const [data, setData] = useState<Partial<ParticipantData>>({
     role,
@@ -53,6 +56,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave }: Props) {
   );
   const [observations, setObservations] = useState('');
   const [visibleDamage, setVisibleDamage] = useState('');
+  const [voiceDeclaration, setVoiceDeclaration] = useState('');
 
   const sections: { id: Section; icon: string; label: string }[] = [
     { id: 'vehicle',      icon: '🚗', label: 'Véhicule' },
@@ -245,6 +249,28 @@ export function ConstatForm({ role, prefilled, accidentData, onSave }: Props) {
                 rows={3}
                 style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>
+
+            {/* Déclaration vocale */}
+            {sessionId && (
+              <div>
+                <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 10 }}>
+                  🎙️ Déclaration vocale (optionnel)
+                </div>
+                <VoiceRecorder
+                  role={role as 'A' | 'B' | 'C' | 'D' | 'E'}
+                  sessionId={sessionId}
+                  lang={language}
+                  onComplete={(transcript) => {
+                    setVoiceDeclaration(transcript);
+                    // Ajouter la transcription aux observations
+                    setObservations(prev => prev
+                      ? prev + '\n\n[Déclaration vocale]: ' + transcript
+                      : '[Déclaration vocale]: ' + transcript
+                    );
+                  }}
+                />
+              </div>
+            )}
 
             {/* Observations libres section 14 */}
             <div>
