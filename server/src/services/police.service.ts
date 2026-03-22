@@ -1,15 +1,15 @@
 // server/src/services/police.service.ts
-// Module Police B2B — authentification + dashboard + accès sessions
+// Module Police B2B — authentification + dashboard + annotations
 
 import { db } from '../db/index.js';
-import { policeStations, policeUsers, sessions } from '../db/schema.js';
+import { policeStations, policeUsers, policeAnnotations, sessions } from '../db/schema.js';
 import { eq, and, desc, gte } from 'drizzle-orm';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'boom-jwt-secret';
 
-// ── Helpers ─────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────
 
 function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password + 'boom-police-salt').digest('hex');
@@ -33,12 +33,10 @@ export async function loginPoliceUser(email: string, password: string) {
   const hash = hashPassword(password);
   if (hash !== user.passwordHash) throw new Error('Identifiants incorrects');
 
-  // Update last login
   await db.update(policeUsers)
     .set({ lastLoginAt: new Date() })
     .where(eq(policeUsers.id, user.id));
 
-  // Get station info
   const [station] = await db
     .select()
     .from(policeStations)
@@ -46,7 +44,13 @@ export async function loginPoliceUser(email: string, password: string) {
     .limit(1);
 
   const token = jwt.sign(
-    { userId: user.id, stationId: user.stationId, role: 'police', canton: station?.canton },
+    {
+      userId: user.id,
+      stationId: user.stationId,
+      role: 'police',
+      canton: station?.canton,
+      country: station?.country || 'CH',
+    },
     JWT_SECRET,
     { expiresIn: '8h' }
   );
@@ -59,7 +63,13 @@ export async function loginPoliceUser(email: string, password: string) {
       lastName: user.lastName,
       badgeNumber: user.badgeNumber,
       role: user.role,
-      station: station ? { id: station.id, name: station.name, canton: station.canton } : null,
+      station: station ? {
+        id: station.id,
+        name: station.name,
+        canton: station.canton,
+        country: station.country,
+        city: station.city,
+      } : null,
     }
   };
 }
@@ -71,16 +81,16 @@ export function verifyPoliceToken(token: string) {
       stationId: string;
       role: 'police';
       canton?: string;
+      country?: string;
     };
   } catch {
     throw new Error('Token invalide ou expiré');
   }
 }
 
-// ── Dashboard — sessions récentes actives ────────────────────
+// ── Dashboard ────────────────────────────────────────────────
 
 export async function getPoliceDashboard(stationId: string) {
-  // Sessions actives (non expirées) dans les dernières 24h
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   const activeSessions = await db
@@ -100,6 +110,16 @@ export async function getPoliceDashboard(stationId: string) {
     .orderBy(desc(sessions.createdAt))
     .limit(50);
 
+  // Check which sessions have police annotations from this station
+  const annotatedIds = new Set<string>();
+  if (activeSessions.length > 0) {
+    const annotations = await db
+      .select({ sessionId: policeAnnotations.sessionId })
+      .from(policeAnnotations)
+      .where(eq(policeAnnotations.stationId, stationId));
+    annotations.forEach(a => annotatedIds.add(a.sessionId));
+  }
+
   return {
     activeSessions: activeSessions.map(s => ({
       id: s.id,
@@ -108,17 +128,149 @@ export async function getPoliceDashboard(stationId: string) {
       expiresAt: s.expiresAt,
       vehicleCount: s.vehicleCount,
       location: (s.accident as any)?.location?.address || null,
-      hasInjuries: (s.accident as any)?.location?.hasInjuries || false,
+      city: (s.accident as any)?.location?.city || null,
+      hasInjuries: (s.accident as any)?.injuries || false,
+      hasAnnotations: annotatedIds.has(s.id),
     })),
     stats: {
       total: activeSessions.length,
-      withInjuries: activeSessions.filter(s => (s.accident as any)?.location?.hasInjuries).length,
-      signed: activeSessions.filter(s => s.status === 'signed').length,
+      withInjuries: activeSessions.filter(s => (s.accident as any)?.injuries).length,
+      signed: activeSessions.filter(s => s.status === 'signed' || s.status === 'completed').length,
+      annotated: annotatedIds.size,
     }
   };
 }
 
-// ── Admin : créer station + agent (pour onboarding pilote) ───
+// ── Annotations ──────────────────────────────────────────────
+
+export interface Infraction {
+  code: string;      // ex: "LCR 32" (Suisse), "L3121-1" (France)
+  description: string;
+  party: 'A' | 'B' | 'both';
+}
+
+export interface Measure {
+  type: 'alcotest' | 'drug_test' | 'licence_seized' | 'vehicle_towed' | 'pv_issued' | 'warning' | 'other';
+  description: string;
+  party?: 'A' | 'B' | 'both';
+}
+
+export interface Witness {
+  name: string;
+  address?: string;
+  phone?: string;
+  statement?: string;
+}
+
+export interface AnnotationData {
+  reportNumber?: string;
+  infractions: Infraction[];
+  measures: Measure[];
+  witnesses: Witness[];
+  observations?: string;
+}
+
+export async function getOrCreateAnnotation(
+  sessionId: string,
+  agentId: string,
+  stationId: string,
+  country: string = 'CH'
+) {
+  // Log consultation (audit trail RGPD)
+  const [existing] = await db
+    .select()
+    .from(policeAnnotations)
+    .where(and(
+      eq(policeAnnotations.sessionId, sessionId),
+      eq(policeAnnotations.stationId, stationId)
+    ))
+    .limit(1);
+
+  if (existing) {
+    // Update consulted_at for audit trail
+    await db.update(policeAnnotations)
+      .set({ consultedAt: new Date() })
+      .where(eq(policeAnnotations.id, existing.id));
+    return existing;
+  }
+
+  // Create new annotation record
+  const id = generateId('pan');
+  const [created] = await db.insert(policeAnnotations).values({
+    id,
+    sessionId,
+    agentId,
+    stationId,
+    country,
+    infractions: [],
+    measures: [],
+    witnesses: [],
+    consultedAt: new Date(),
+  }).returning();
+
+  return created;
+}
+
+export async function saveAnnotation(
+  sessionId: string,
+  agentId: string,
+  stationId: string,
+  data: AnnotationData
+) {
+  const [existing] = await db
+    .select()
+    .from(policeAnnotations)
+    .where(and(
+      eq(policeAnnotations.sessionId, sessionId),
+      eq(policeAnnotations.stationId, stationId)
+    ))
+    .limit(1);
+
+  if (existing) {
+    const [updated] = await db.update(policeAnnotations)
+      .set({
+        reportNumber: data.reportNumber,
+        infractions: data.infractions as any,
+        measures: data.measures as any,
+        witnesses: data.witnesses as any,
+        observations: data.observations,
+        updatedAt: new Date(),
+      })
+      .where(eq(policeAnnotations.id, existing.id))
+      .returning();
+    return updated;
+  }
+
+  // Should not happen (getOrCreate called first), but safety net
+  const id = generateId('pan');
+  const [created] = await db.insert(policeAnnotations).values({
+    id,
+    sessionId,
+    agentId,
+    stationId,
+    reportNumber: data.reportNumber,
+    infractions: data.infractions as any,
+    measures: data.measures as any,
+    witnesses: data.witnesses as any,
+    observations: data.observations,
+    consultedAt: new Date(),
+  }).returning();
+  return created;
+}
+
+export async function getAnnotation(sessionId: string, stationId: string) {
+  const [annotation] = await db
+    .select()
+    .from(policeAnnotations)
+    .where(and(
+      eq(policeAnnotations.sessionId, sessionId),
+      eq(policeAnnotations.stationId, stationId)
+    ))
+    .limit(1);
+  return annotation || null;
+}
+
+// ── Admin : créer station + agent ────────────────────────────
 
 export async function createPoliceStation(data: {
   name: string;
