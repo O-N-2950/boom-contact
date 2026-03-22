@@ -46,8 +46,9 @@ export function OCRScanner({ role, onComplete }: Props) {
   const openPicker = () => isMobile ? cameraRef.current?.click() : galleryRef.current?.click();
 
   const captureFor = (s: Step) => {
+    // CRITICAL: do NOT call setStep here — would unmount hiddenInputs on iOS
+    // Only update the ref so handleFile knows which step we're capturing for
     currentStep.current = s;
-    setStep(s);
     openPicker();
   };
 
