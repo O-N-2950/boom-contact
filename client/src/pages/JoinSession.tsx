@@ -78,6 +78,13 @@ export function JoinSession() {
     if (s === 'done') localStorage.removeItem(STORAGE_KEY);
   };
 
+  const PREV_B: Partial<Record<FlowStep, FlowStep>> = {
+    ocr:'landing', location:'ocr', photos:'location',
+    form:'photos', sketch:'form', diagram:'sketch', sign:'diagram',
+  };
+  const goBack = () => { const p = PREV_B[step]; if (p) setStep(p); };
+  const canGoBack = !!PREV_B[step] && step !== 'done' && step !== 'landing';
+
   // Persist state
   useEffect(() => {
     if (step === 'done' || step === 'landing') return;
@@ -121,10 +128,23 @@ export function JoinSession() {
     joinMutation.mutate({ sessionId, language: selectedLang });
   };
 
-  const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
-    const ocrCategory = result.registration.vehicle?.category as string | undefined;
-    const detectedType = ocrCategoryToVehicleType(ocrCategory);
 
+  function ocrCategoryToType(cat?: string): any {
+    if (!cat) return null;
+    const c = cat.toLowerCase();
+    if (c.includes('tourisme')||c.includes('automobile')||c.includes('personenwagen')||
+        c.includes('voiture')||c.includes('car')||c.includes('pkw')||c.includes('break')||
+        c==='a'||c==='1') return 'car';
+    if (c.includes('moto')||c.includes('motorcycle')) return 'motorcycle';
+    if (c.includes('scooter')||c.includes('cyclom')) return 'scooter';
+    if (c.includes('camion')||c.includes('truck')||c.includes('lkw')) return 'truck';
+    if (c.includes('fourgon')||c.includes('van')) return 'van';
+    return null;
+  }
+
+  const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
+    const cat = (result.registration.vehicle as any)?.category;
+    const detectedType = ocrCategoryToType(cat);
     setParticipantData(prev => ({
       ...prev,
       vehicle: {
@@ -318,6 +338,17 @@ export function JoinSession() {
           <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
             CONDUCTEUR {urlRole} · SESSION {sessionId}
           </div>
+        </div>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+          {canGoBack && (
+            <button onClick={goBack} style={{
+              display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
+              borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(255,255,255,0.05)', cursor: 'pointer',
+              fontSize: 13, fontWeight: 600, color: 'var(--text)',
+              touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
+            }}>← Retour</button>
+          )}
         </div>
       </div>
 
