@@ -171,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Dokumente scannen",
-      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nScannen Sie dann Ihr <strong>Versicherungsdokument</strong> (Grüne Karte, Versicherungsnachweis).",
-      "reg_label": "Fahrzeugausweis",
-      "reg_sub": "Fahrzeugschein, RC Book, Zulassung — <strong>Pflichtfeld</strong>",
-      "tip": "💡 <strong>Tipp:</strong> Bereiten Sie auch Ihr <strong>Versicherungsdokument</strong> vor — Internationale Grüne Karte, Versicherungsnachweis oder Policenzertifikat. Es enthält Versicherer und Policennummer."
+      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nEin <strong>Versicherungsdokument wird empfohlen</strong>.",
+      "reg_label": "Fahrzeugausweis / Zulassungsbescheinigung",
+      "reg_sub": "Fahrzeugausweis CH, Zulassung DE, Carte grise FR, V5C GB… — <strong>Pflichtfeld</strong>",
+      "tip": "💡 <strong>Versicherungsdokument empfohlen.</strong> Grüne Karte (IMIC), Versicherungsbestätigung — dieses Dokument enthält Versicherungsgesellschaft und Policennummer. Ohne dieses müssen Sie die Daten manuell eingeben."
     },
     "greencard": {
       "scanned": "✅ Fahrzeugausweis analysiert",
       "compressing": "· Komprimierung…",
-      "title": "Versicherungsdokument",
-      "subtitle": "Scannen Sie Ihre <strong>Internationale Grüne Karte</strong>, Ihren Versicherungsnachweis oder Ihr Versicherungszertifikat. Dieses Dokument enthält Versicherer und Policennummer.<br/>🇨🇭 CH · 🇪🇺 Europa · 🇬🇧 UK · 🇺🇸 US · 🌍 Weltweit",
+      "title": "Versicherungsdokument?",
+      "subtitle": "Scannen Sie Ihre <strong>Grüne Karte (IMIC)</strong>, Versicherungsbestätigung oder ähnliches. Dieses Dokument enthält Versicherer und Policennummer. Es ist <strong>empfohlen</strong> — ohne manuelle Eingabe erforderlich.",
       "scan_btn": "Versicherungsdokument scannen",
-      "scan_sub": "Grüne Karte · Versicherungsnachweis · Insurance ID card · Zertifikat",
-      "skip_btn": "Kein Dokument vorhanden → manuelle Eingabe"
+      "scan_sub": "Grüne Karte, Versicherungsbestätigung, Insurance Card…",
+      "skip_btn": "Versicherungsdaten manuell eingeben →"
     },
     "scanning": {
       "title": "Analyse läuft…",
