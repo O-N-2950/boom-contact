@@ -184,10 +184,20 @@ export function JoinSession() {
     setStep('location');
 
     const vB = result.registration?.vehicle as any;
-    (window as any).__boomVehicleB = {
+    const bData = {
       color: vB?.color, type: vB?.vehicleType || 'car',
       brand: vB?.brand, model: vB?.model,
     };
+    (window as any).__boomVehicleB = bData;
+
+    // Sauvegarder dans la session pour que conducteur A puisse récupérer
+    if (sessionId) {
+      updateParticipantMutation.mutate({
+        sessionId,
+        role: urlRole,
+        data: { vehicle: { ...vB, vehicleData: bData } } as any,
+      });
+    }
   };
 
   const handleLocationComplete = (data: any) => {
