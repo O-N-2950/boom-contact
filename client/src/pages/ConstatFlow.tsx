@@ -25,6 +25,7 @@ function ocrCategoryToVehicleType(category?: string): VehicleType | null {
 
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
+import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
 import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -367,31 +368,23 @@ export function ConstatFlow() {
         )}
 
         {step === 'sketch' && (
-          voiceAnalysis ? (
-            // Sketch IA — toutes les données véhicules sont maintenant connues
-            <VoiceSketchFlow
-              role="A"
-              sessionId={sessionId || ''}
-              lang={participantData.language}
-              preloadedAnalysis={voiceAnalysis}
-              vehicleAData={allVehicles.A}
-              vehicleBData={allVehicles.B}
-              onComplete={(data) => {
-                setSketchImage(data.sketchBase64);
-                setStep('form');
-              }}
-              onSkip={() => setStep('form')}
-            />
-          ) : (
-            // Fallback sketch manuel si pas d'analyse vocale
-            <AccidentSketch
-              vehicleTypeA={participantData.vehicle?.vehicleType}
-              vehicleTypeB={undefined}
-              sketchImage={sketchImage}
-              onChange={setSketchImage}
-              onContinue={() => { handleSketchDone(sketchImage); setStep('form'); }}
-            />
-          )
+          <MapVehiclePlacer
+            role="A"
+            accidentLat={accidentData.location?.lat}
+            accidentLng={accidentData.location?.lng}
+            vehicleColor={participantData.vehicle?.color}
+            vehicleType={participantData.vehicle?.vehicleType}
+            brand={participantData.vehicle?.brand}
+            onComplete={(vehiclePos, mapImageB64) => {
+              setSketchImage(mapImageB64);
+              setParticipantData(prev => ({
+                ...prev,
+                vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
+              }));
+              setStep('form');
+            }}
+            onSkip={() => setStep('form')}
+          />
         )}
 
         {step === 'diagram' && (
