@@ -64,6 +64,16 @@
 
 ---
 
+## ✅ FAIT — Session 11 (Tests E2E + WinWin)
+
+- [x] Tests E2E 8 pays — CH/FR/DE/BE/LU/IT/GB/ES — 80/80 étapes PASS ✅
+- [x] 5 Edge cases PASS (session inexistante, PDF sans sig, WinWin clés, packages)
+- [x] Section partenariat WinWin sur LandingPage (home boom.contact) ✅
+- [x] BUG FIX : URL WinWin /api/trpc → /trpc (commit 1050838) ✅
+- [x] Intégration WinWin validée bout-en-bout : clé valide → session pré-chargée prefilled=true ✅
+
+---
+
 ## 🔴 PRIORITÉ 1 — PoliceFlow (pilote Jura)
 
 - [ ] `police.boom.contact` — subdomain Railway + routing
@@ -82,7 +92,7 @@
 
 ## 🔴 PRIORITÉ 2 — Tests terrain complets
 
-- [ ] Tests 8 pays E2E avec PDF (sandbox connexion à relancer)
+- [x] Tests 8 pays E2E avec PDF — 8/8 PASS, 80/80 étapes, 37.7s ✅ (22 Mars 2026)
 - [ ] Flow complet A+B sur 2 iPhones réels
 - [ ] Test Stripe paiement CHF réel
 - [ ] Test vocal → IA → questions → croquis en conditions réelles
