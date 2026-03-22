@@ -22,9 +22,123 @@ const TOOLS: { id: Tool; icon: string; label: string }[] = [
 
 const COLORS = ['#F0EDE8', '#FF3500', '#3B82F6', '#22C55E', '#FFB300', '#A855F7'];
 
+
+// ── Templates de scénarios d'accident ────────────────────────
+const ACCIDENT_SCENARIOS = [
+  {
+    id: 'intersection_priority',
+    label: 'Carrefour — priorité',
+    icon: '✚',
+    description: 'Non-respect de la priorité à droite ou au feu',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.25)';
+      ctx.lineWidth = 14;
+      // Route horizontale
+      ctx.beginPath(); ctx.moveTo(0, h/2 - 7); ctx.lineTo(w, h/2 - 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h/2 + 7); ctx.lineTo(w, h/2 + 7); ctx.stroke();
+      // Route verticale
+      ctx.beginPath(); ctx.moveTo(w/2 - 7, 0); ctx.lineTo(w/2 - 7, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w/2 + 7, 0); ctx.lineTo(w/2 + 7, h); ctx.stroke();
+      // Centre
+      ctx.fillStyle = 'rgba(240,237,232,0.08)';
+      ctx.fillRect(w/2 - 7, h/2 - 7, 14, 14);
+    },
+  },
+  {
+    id: 'intersection_t',
+    label: 'Intersection en T',
+    icon: 'T',
+    description: 'Sortie de voie secondaire sur route principale',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.25)';
+      ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.moveTo(0, h/2 - 7); ctx.lineTo(w, h/2 - 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h/2 + 7); ctx.lineTo(w, h/2 + 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w/2 - 7, h/2); ctx.lineTo(w/2 - 7, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w/2 + 7, h/2); ctx.lineTo(w/2 + 7, h); ctx.stroke();
+    },
+  },
+  {
+    id: 'straight_rear',
+    label: 'Ligne droite',
+    icon: '⬅',
+    description: 'Collision frontale ou arrière sur ligne droite',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.25)';
+      ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.moveTo(0, h/2 - 20); ctx.lineTo(w, h/2 - 20); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h/2 + 20); ctx.lineTo(w, h/2 + 20); ctx.stroke();
+      // Ligne médiane pointillée
+      ctx.setLineDash([20, 15]);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'rgba(240,237,232,0.15)';
+      ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+      ctx.setLineDash([]);
+    },
+  },
+  {
+    id: 'roundabout',
+    label: 'Rond-point',
+    icon: '⟳',
+    description: 'Accident dans ou à la sortie d'un rond-point',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.25)';
+      ctx.lineWidth = 14;
+      // Cercle central
+      ctx.beginPath(); ctx.arc(w/2, h/2, 80, 0, Math.PI * 2); ctx.stroke();
+      // Entrées/sorties
+      const entries = [[w/2, 0], [w, h/2], [w/2, h], [0, h/2]];
+      entries.forEach(([ex, ey]) => {
+        const angle = Math.atan2(ey - h/2, ex - w/2);
+        const ix = w/2 + Math.cos(angle) * 80;
+        const iy = h/2 + Math.sin(angle) * 80;
+        ctx.beginPath(); ctx.moveTo(ex as number, ey as number); ctx.lineTo(ix, iy); ctx.stroke();
+      });
+    },
+  },
+  {
+    id: 'parking',
+    label: 'Parking',
+    icon: 'P',
+    description: 'Manœuvre de parking, sortie de place',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.2)';
+      ctx.lineWidth = 3;
+      // Allée
+      ctx.fillStyle = 'rgba(240,237,232,0.05)';
+      ctx.fillRect(0, h/2 - 35, w, 70);
+      ctx.beginPath(); ctx.moveTo(0, h/2 - 35); ctx.lineTo(w, h/2 - 35); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h/2 + 35); ctx.lineTo(w, h/2 + 35); ctx.stroke();
+      // Places
+      for (let i = 0; i < 6; i++) {
+        ctx.beginPath(); ctx.moveTo(i * (w/6), h/2 + 35); ctx.lineTo(i * (w/6), h); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(i * (w/6), h/2 - 35); ctx.lineTo(i * (w/6), 0); ctx.stroke();
+      }
+    },
+  },
+  {
+    id: 'overtaking',
+    label: 'Dépassement',
+    icon: '⇉',
+    description: 'Collision lors d'un dépassement',
+    draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+      ctx.strokeStyle = 'rgba(240,237,232,0.25)';
+      ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.moveTo(0, h/2 - 40); ctx.lineTo(w, h/2 - 40); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, h/2 + 40); ctx.lineTo(w, h/2 + 40); ctx.stroke();
+      // Ligne centrale interdite
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = 'rgba(255,165,0,0.4)';
+      ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+    },
+  },
+];
+
 export function AccidentSketch({ sketchImage, onChange, onContinue }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [tool, setTool]       = useState<Tool>('pen');
+  const [showTemplates, setShowTemplates] = useState(true); // Afficher d'abord les templates
+  const [accidentDesc, setAccidentDesc]   = useState('');   // Description textuelle
   const [color, setColor]     = useState('#F0EDE8');
   const [strokeW, setStrokeW] = useState(3);
   const [drawing, setDrawing] = useState(false);
@@ -65,13 +179,21 @@ export function AccidentSketch({ sketchImage, onChange, onContinue }: Props) {
   const getPos = (e: React.TouchEvent | React.MouseEvent): { x: number; y: number } => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
+    const scaleX = canvas.width  / rect.width;
     const scaleY = canvas.height / rect.height;
     if ('touches' in e) {
       const t = e.touches[0];
-      return { x: (t.clientX - rect.left) * scaleX, y: (t.clientY - rect.top) * scaleY };
+      // FIX iOS: clientX/clientY sont déjà relatifs au viewport (pas besoin de scroll)
+      // rect.left/top incluent le scroll via getBoundingClientRect
+      const x = (t.clientX - rect.left) * scaleX;
+      const y = (t.clientY - rect.top)  * scaleY;
+      return { x: Math.max(0, Math.min(canvas.width,  x)),
+               y: Math.max(0, Math.min(canvas.height, y)) };
     }
-    return { x: ((e as React.MouseEvent).clientX - rect.left) * scaleX, y: ((e as React.MouseEvent).clientY - rect.top) * scaleY };
+    const x = ((e as React.MouseEvent).clientX - rect.left) * scaleX;
+    const y = ((e as React.MouseEvent).clientY - rect.top)  * scaleY;
+    return { x: Math.max(0, Math.min(canvas.width,  x)),
+             y: Math.max(0, Math.min(canvas.height, y)) };
   };
 
   const drawVehicleStamp = (ctx: CanvasRenderingContext2D, x: number, y: number, role: 'A' | 'B') => {
@@ -237,8 +359,65 @@ export function AccidentSketch({ sketchImage, onChange, onContinue }: Props) {
     onChange('');
   };
 
+  const applyTemplate = (scenario: typeof ACCIDENT_SCENARIOS[0]) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    scenario.draw(ctx, canvas.width, canvas.height);
+    onChange(canvas.toDataURL('image/png').split(',')[1]);
+    setHasContent(true);
+    setShowTemplates(false);
+  };
+
   return (
     <div style={{ padding: '16px 20px', maxWidth: 420, margin: '0 auto' }}>
+
+      {/* Description textuelle */}
+      <div style={{ marginBottom: 16, padding: '12px 14px', borderRadius: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 8 }}>
+          💬 Description de l&apos;accident (optionnel)
+        </div>
+        <textarea
+          value={accidentDesc}
+          onChange={e => setAccidentDesc(e.target.value)}
+          placeholder="Ex: Au carrefour, B n'a pas respecté ma priorité. — Dépassement en ligne blanche. — Marche arrière dans parking…"
+          rows={3}
+          style={{ width:'100%', padding:'9px 11px', borderRadius:8, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'var(--text)', fontSize:13, outline:'none', boxSizing:'border-box', resize:'none', fontFamily:'inherit', lineHeight:1.5 }}
+        />
+      </div>
+
+      {/* Templates ou dessin libre */}
+      {showTemplates ? (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 10 }}>
+            🗺️ Choisissez un modèle de scène
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
+            {ACCIDENT_SCENARIOS.map(s => (
+              <button key={s.id} onClick={() => applyTemplate(s)}
+                style={{ padding:'10px 6px', borderRadius:10, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', cursor:'pointer', textAlign:'center', touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+                <div style={{ fontSize:20, marginBottom:3 }}>{s.icon}</div>
+                <div style={{ fontSize:10, fontWeight:600, color:'var(--text)', marginBottom:2 }}>{s.label}</div>
+                <div style={{ fontSize:9, opacity:0.4, lineHeight:1.3 }}>{s.description}</div>
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setShowTemplates(false)}
+            style={{ width:'100%', padding:'9px', borderRadius:8, border:'1px solid rgba(255,255,255,0.08)', background:'transparent', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:12, touchAction:'manipulation' }}>
+            Dessin libre sans modèle →
+          </button>
+        </div>
+      ) : (
+        <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:8 }}>
+          <button onClick={() => setShowTemplates(true)}
+            style={{ padding:'5px 10px', borderRadius:6, border:'1px solid rgba(255,255,255,0.08)', background:'transparent', cursor:'pointer', fontSize:11, color:'rgba(255,255,255,0.4)', touchAction:'manipulation' }}>
+            ← Modèles
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ marginBottom: 14 }}>
         <h2 style={{ fontWeight: 800, fontSize: 18, marginBottom: 4 }}>✏️ Croquis de l'accident</h2>
