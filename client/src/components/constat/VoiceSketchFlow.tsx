@@ -4,6 +4,8 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { trpc } from '../../trpc';
+import { renderAccidentSketch } from './sketch-engine';
+import type { SceneAnalysis } from './sketch-engine';
 
 // ── Types ─────────────────────────────────────────────────────
 type FlowState =
@@ -15,8 +17,6 @@ type FlowState =
   | 'sketching'      // Croquis pré-dessiné à valider
   | 'done';
 
-import { renderAccidentSketch } from './sketch-engine';
-import type { SceneAnalysis } from './sketch-engine';
 
 interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
