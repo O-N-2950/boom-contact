@@ -162,15 +162,20 @@ export const appRouter = router({
   // ── PDF ──────────────────────────────────────────────────
   pdf: router({
     generate: publicProcedure
-      .input(z.object({ sessionId: z.string() }))
+      .input(z.object({
+        sessionId: z.string(),
+        role: z.enum(['A', 'B', 'C', 'D', 'E']).default('A'),
+      }))
       .mutation(async ({ input }) => {
         const session = await getSession(input.sessionId);
         if (!session) throw new Error('Session not found');
         if (session.status !== 'completed') throw new Error('Both parties must sign before generating PDF');
 
-        const pdfBytes = await generateConstatPDF(session);
+        // PDF personnalisé pour le rôle demandé (langue du conducteur + pays accident)
+        const role = (input.role === 'A' || input.role === 'B') ? input.role : 'A';
+        const pdfBytes = await generateConstatPDF(session, role);
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
-        const filename = `constat-${session.id}-${new Date().toISOString().split('T')[0]}.pdf`;
+        const filename = `constat-${session.id}-${role}-${new Date().toISOString().split('T')[0]}.pdf`;
         return { pdfBase64, filename };
       }),
   }),
