@@ -1,4 +1,5 @@
 import { renderSketch } from './sketch-renderer.service.js';
+import { logger } from '../logger.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import {
   determineLangs, getBilingualLabels, getLabels, countryToLang,
@@ -520,3 +521,4 @@ export async function generateConstatPDF(
 
   return doc.save();
 }
+
