@@ -171,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Scan your documents",
-      "subtitle": "Start with your vehicle registration.\nThen scan your <strong>insurance document</strong> (green card, certificate).",
-      "reg_label": "Vehicle registration",
-      "reg_sub": "Logbook, RC Book, Zulassung — <strong>required</strong>",
-      "tip": "💡 <strong>Tip:</strong> Also prepare your <strong>insurance document</strong> — international green card, insurance certificate or proof of insurance. It contains your insurer and policy number."
+      "subtitle": "Start with your vehicle registration.\nAn <strong>insurance document is recommended</strong>.",
+      "reg_label": "Vehicle registration document",
+      "reg_sub": "Logbook, V5C, Carte grise, Zulassung, Permis CH… — <strong>required</strong>",
+      "tip": "💡 <strong>Insurance document recommended.</strong> Green Card (IMIC), Certificate of Motor Insurance, Insurance ID Card — this document contains your insurer and policy number. Without it, you will need to enter them manually."
     },
     "greencard": {
       "scanned": "✅ Vehicle registration analysed",
       "compressing": "· Compressing…",
-      "title": "Insurance document",
-      "subtitle": "Scan your <strong>international green card</strong>, insurance certificate or certificate of motor insurance. This document contains your insurer and policy number.<br/>🇨🇭 CH · 🇪🇺 Europe · 🇬🇧 UK · 🇺🇸 US · 🌍 Worldwide",
+      "title": "Insurance document?",
+      "subtitle": "Scan your <strong>Green Card (IMIC)</strong>, Certificate of Motor Insurance, Insurance ID Card or equivalent. This document contains your insurer and policy number. It is <strong>recommended</strong> — without it, manual entry is required.",
       "scan_btn": "Scan insurance document",
-      "scan_sub": "Green card · Insurance certificate · Proof of insurance · Certificate of Motor Insurance",
-      "skip_btn": "I don't have this document → manual entry"
+      "scan_sub": "Green card, certificate, insurance ID card…",
+      "skip_btn": "Enter insurance details manually →"
     },
     "scanning": {
       "title": "Analysing…",
