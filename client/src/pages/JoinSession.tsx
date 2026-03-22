@@ -35,6 +35,22 @@ function loadState(sessionId: string) {
   }
 }
 
+
+function ocrCategoryToVehicleType(category?: string): any {
+  if (!category) return null;
+  const c = category.toLowerCase();
+  if (c.includes('tourisme') || c.includes('automobile') || c.includes('personenwagen') ||
+      c.includes('car') || c.includes('break') || c.includes('suv') || c.includes('voiture') ||
+      c.includes('pkw') || c === 'a') return 'car';
+  if (c.includes('moto') || c.includes('motorcycle') || c.includes('motorrad')) return 'motorcycle';
+  if (c.includes('scooter') || c.includes('cyclom')) return 'scooter';
+  if (c.includes('velom') || c.includes('mofa')) return 'moped';
+  if (c.includes('camion') || c.includes('truck') || c.includes('lkw')) return 'truck';
+  if (c.includes('fourgon') || c.includes('van') || c.includes('transporter')) return 'van';
+  if (c.includes('bus') || c.includes('autocar')) return 'bus';
+  return null;
+}
+
 export function JoinSession() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session') || '';
@@ -106,11 +122,17 @@ export function JoinSession() {
   };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
+    const ocrCategory = result.registration.vehicle?.category as string | undefined;
+    const detectedType = ocrCategoryToVehicleType(ocrCategory);
+
     setParticipantData(prev => ({
       ...prev,
-      vehicle:   result.registration.vehicle   ?? {},
+      vehicle: {
+        ...(result.registration.vehicle ?? {}),
+        vehicleType: detectedType ?? prev.vehicle?.vehicleType,
+      },
       driver:    result.registration.driver    ?? {},
-      insurance: result.greenCard.insurance    ?? {},
+      insurance: result.greenCard?.insurance   ?? result.registration.insurance ?? {},
     }));
     setStep('location');
   };
@@ -303,7 +325,7 @@ export function JoinSession() {
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {step === 'location' && (
-          <LocationStep onComplete={handleLocationComplete} />
+          <LocationStep onComplete={handleLocationComplete} initialVehicleType={participantData.vehicle?.vehicleType as any} />
         )}
 
         {step === 'photos' && (
