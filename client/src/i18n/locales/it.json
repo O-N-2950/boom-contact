@@ -51,25 +51,86 @@
       "title": "5 passaggi.",
       "title_accent": "5 minuti.",
       "steps": [
-        { "step": "01", "icon": "📸", "title": "Scansiona i documenti", "desc": "Fotografa la carta di circolazione + carta verde. OCR automatico." },
-        { "step": "02", "icon": "📱", "title": "Condividi il QR code", "desc": "L'altro conducente scansiona il QR. Sessione condivisa in tempo reale." },
-        { "step": "03", "icon": "📋", "title": "Compila il modulo", "desc": "Modulo universale precompilato dall'OCR. Verifica e spunta le circostanze." },
-        { "step": "04", "icon": "🚗", "title": "Zone di danno", "desc": "Clicca sul diagramma a 18 zone per indicare i danni." },
-        { "step": "05", "icon": "✍️", "title": "Firma & invia", "desc": "Due firme digitali con marcatura temporale. PDF certificato all'istante." }
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "Scansiona i documenti",
+          "desc": "Fotografa la carta di circolazione + carta verde. OCR automatico."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "Condividi il QR code",
+          "desc": "L'altro conducente scansiona il QR. Sessione condivisa in tempo reale."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Compila il modulo",
+          "desc": "Modulo universale precompilato dall'OCR. Verifica e spunta le circostanze."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Zone di danno",
+          "desc": "Clicca sul diagramma a 18 zone per indicare i danni."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Firma & invia",
+          "desc": "Due firme digitali con marcatura temporale. PDF certificato all'istante."
+        }
       ]
     },
     "features": {
       "title": "Tutto ciò di cui hai bisogno",
       "list": [
-        { "icon": "📸", "title": "OCR universale", "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — nessuna inserzione manuale." },
-        { "icon": "📱", "title": "Fino a 5 veicoli", "desc": "Incidente con 3, 4 o 5 veicoli? Ogni conducente scansiona il proprio QR. Un solo PDF per tutti." },
-        { "icon": "📷", "title": "Foto della scena", "desc": "5 categorie: luogo, danni A, danni B, feriti, documenti. Compresse e incluse nel PDF." },
-        { "icon": "✏️", "title": "Schizzo libero", "desc": "Disegna posizioni dei veicoli, frecce di direzione, infrastrutture. Esportazione PNG integrata nel PDF." },
-        { "icon": "🚗", "title": "Schema dei danni", "desc": "700+ modelli, sagoma adattata, colore reale OCR. 18 zone cliccabili per i danni." },
-        { "icon": "✍️", "title": "Firme multiple", "desc": "N firme touch simultanee. Valore legale in 150+ paesi. QR attivo 24h per la polizia." },
-        { "icon": "📄", "title": "PDF certificato 150+ paesi", "desc": "Documento digitale completo: testimoni, danni a terzi, osservazioni, schizzo, foto. Riconosciuto da tutte le compagnie assicurative." },
-        { "icon": "🚔", "title": "Modulo Polizia (presto)", "desc": "Gli agenti si uniscono alla sessione via QR. Verbale digitale ufficiale. Dashboard per posto/cantone." },
-        { "icon": "🌍", "title": "50 lingue + RTL", "desc": "5 miliardi di parlanti. Arabo, ebraico, farsi, urdu in RTL nativo. Emergenze geolocalizzate." }
+        {
+          "icon": "📸",
+          "title": "OCR universale",
+          "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — nessuna inserzione manuale."
+        },
+        {
+          "icon": "📱",
+          "title": "Fino a 5 veicoli",
+          "desc": "Incidente con 3, 4 o 5 veicoli? Ogni conducente scansiona il proprio QR. Un solo PDF per tutti."
+        },
+        {
+          "icon": "📷",
+          "title": "Foto della scena",
+          "desc": "5 categorie: luogo, danni A, danni B, feriti, documenti. Compresse e incluse nel PDF."
+        },
+        {
+          "icon": "✏️",
+          "title": "Schizzo libero",
+          "desc": "Disegna posizioni dei veicoli, frecce di direzione, infrastrutture. Esportazione PNG integrata nel PDF."
+        },
+        {
+          "icon": "🚗",
+          "title": "Schema dei danni",
+          "desc": "700+ modelli, sagoma adattata, colore reale OCR. 18 zone cliccabili per i danni."
+        },
+        {
+          "icon": "✍️",
+          "title": "Firme multiple",
+          "desc": "N firme touch simultanee. Valore legale in 150+ paesi. QR attivo 24h per la polizia."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF certificato 150+ paesi",
+          "desc": "Documento digitale completo: testimoni, danni a terzi, osservazioni, schizzo, foto. Riconosciuto da tutte le compagnie assicurative."
+        },
+        {
+          "icon": "🚔",
+          "title": "Modulo Polizia (presto)",
+          "desc": "Gli agenti si uniscono alla sessione via QR. Verbale digitale ufficiale. Dashboard per posto/cantone."
+        },
+        {
+          "icon": "🌍",
+          "title": "50 lingue + RTL",
+          "desc": "5 miliardi di parlanti. Arabo, ebraico, farsi, urdu in RTL nativo. Emergenze geolocalizzate."
+        }
       ]
     },
     "coverage": {
@@ -110,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Scansiona i documenti",
-      "subtitle": "Inizia con la tua carta di circolazione.\nLa carta verde è <strong>opzionale</strong>.",
+      "subtitle": "Inizia con la tua carta di circolazione.\nPoi scansiona il tuo <strong>documento assicurativo</strong> (carta verde, attestato).",
       "reg_label": "Carta di circolazione",
       "reg_sub": "Libretto, RC Book, Zulassung — <strong>obbligatorio</strong>",
-      "tip": "💡 <strong>Carta verde opzionale.</strong> Se ce l'hai, scansionala per compilare automaticamente i dati assicurativi. Altrimenti inseriscili manualmente nel modulo."
+      "tip": "💡 <strong>Consiglio:</strong> Prepara anche il tuo <strong>documento assicurativo</strong> — carta verde internazionale, attestato o certificato di assicurazione. Contiene il tuo assicuratore e il numero di polizza."
     },
     "greencard": {
-      "scanned": "✅ Carta di circolazione scansionata",
+      "scanned": "✅ Carta di circolazione analizzata",
       "compressing": "· Compressione…",
-      "title": "Carta verde?",
-      "subtitle": "Il certificato internazionale di assicurazione (carta verde) compila automaticamente i tuoi dati assicurativi. È <strong>facoltativo</strong> — puoi inserire queste informazioni manualmente.",
-      "scan_btn": "Scansiona la carta verde",
-      "scan_sub": "Consigliato — compila i dati assicurativi",
-      "skip_btn": "Continua senza carta verde →"
+      "title": "Documento assicurativo",
+      "subtitle": "Scansiona la tua <strong>carta verde internazionale</strong>, l'attestato assicurativo o il certificato di assicurazione. Contiene il tuo assicuratore e il numero di polizza.<br/>🇨🇭 CH · 🇪🇺 Europa · 🇬🇧 UK · 🇺🇸 US · 🌍 Mondo",
+      "scan_btn": "Scansiona documento assicurativo",
+      "scan_sub": "Carta verde · Attestato assicurativo · Certificato · Insurance ID card",
+      "skip_btn": "Non ho questo documento → inserimento manuale"
     },
     "scanning": {
       "title": "Analisi in corso…",
@@ -135,7 +196,7 @@
       "skipped": "· Carta verde ignorata",
       "warnings": "⚠️ {{count}} campo da verificare",
       "warnings_plural": "⚠️ {{count}} campi da verificare",
-      "insurance_title": "🛡️ Inserisci i dati assicurativi",
+      "insurance_title": "🛡️ Dati assicurativi — inserimento manuale",
       "company_label": "Compagnia assicurativa *",
       "company_placeholder": "Zurich, AXA, Helvetia, Generali…",
       "policy_label": "N° di contratto / polizza *",
@@ -157,24 +218,78 @@
       "other": "Persona / Altro"
     },
     "vehicles": {
-      "car": { "label": "Auto", "sub": "Berlina, SUV, station wagon, 4×4, citycar" },
-      "van": { "label": "Furgone / Commerciale", "sub": "Furgoncino, van, veicolo commerciale leggero" },
-      "motorcycle": { "label": "Moto", "sub": "Motocicletta, moto da enduro" },
-      "scooter": { "label": "Scooter / Ciclomotore", "sub": "Scooter, 50cc" },
-      "moped": { "label": "Moped", "sub": "2 ruote <45km/h, 125cc" },
-      "escooter": { "label": "Monopattino elettrico", "sub": "E-scooter, giroscopio, hoverboard" },
-      "quad": { "label": "Quad / Buggy", "sub": "Veicolo fuoristrada motorizzato" },
-      "truck": { "label": "Camion / Mezzo pesante", "sub": "Semirimorchio, porteur, ribaltabile" },
-      "bus": { "label": "Bus / Pullman", "sub": "Bus urbano, pullman, minibus" },
-      "construction": { "label": "Mezzo da cantiere", "sub": "Escavatore, gru, pala meccanica, dumper" },
-      "tractor": { "label": "Trattore agricolo", "sub": "Trattore, mezzo agricolo" },
-      "tram": { "label": "Tram", "sub": "Tram, metropolitana leggera" },
-      "train": { "label": "Treno / Metro", "sub": "Treno, ferrovia, metropolitana" },
-      "bicycle": { "label": "Bicicletta", "sub": "Bici classica, e-bike, bici elettrica" },
-      "cargo_bike": { "label": "Cargo bike", "sub": "Bakfiets, triciclo, cargo elettrico" },
-      "pedestrian": { "label": "Pedone", "sub": "A piedi, pattini, skateboard" },
-      "boat": { "label": "Barca", "sub": "Imbarcazione, jet-ski, canotto" },
-      "other": { "label": "Altro veicolo", "sub": "Non elencato — precisare nelle osservazioni" }
+      "car": {
+        "label": "Auto",
+        "sub": "Berlina, SUV, station wagon, 4×4, citycar"
+      },
+      "van": {
+        "label": "Furgone / Commerciale",
+        "sub": "Furgoncino, van, veicolo commerciale leggero"
+      },
+      "motorcycle": {
+        "label": "Moto",
+        "sub": "Motocicletta, moto da enduro"
+      },
+      "scooter": {
+        "label": "Scooter / Ciclomotore",
+        "sub": "Scooter, 50cc"
+      },
+      "moped": {
+        "label": "Moped",
+        "sub": "2 ruote <45km/h, 125cc"
+      },
+      "escooter": {
+        "label": "Monopattino elettrico",
+        "sub": "E-scooter, giroscopio, hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Veicolo fuoristrada motorizzato"
+      },
+      "truck": {
+        "label": "Camion / Mezzo pesante",
+        "sub": "Semirimorchio, porteur, ribaltabile"
+      },
+      "bus": {
+        "label": "Bus / Pullman",
+        "sub": "Bus urbano, pullman, minibus"
+      },
+      "construction": {
+        "label": "Mezzo da cantiere",
+        "sub": "Escavatore, gru, pala meccanica, dumper"
+      },
+      "tractor": {
+        "label": "Trattore agricolo",
+        "sub": "Trattore, mezzo agricolo"
+      },
+      "tram": {
+        "label": "Tram",
+        "sub": "Tram, metropolitana leggera"
+      },
+      "train": {
+        "label": "Treno / Metro",
+        "sub": "Treno, ferrovia, metropolitana"
+      },
+      "bicycle": {
+        "label": "Bicicletta",
+        "sub": "Bici classica, e-bike, bici elettrica"
+      },
+      "cargo_bike": {
+        "label": "Cargo bike",
+        "sub": "Bakfiets, triciclo, cargo elettrico"
+      },
+      "pedestrian": {
+        "label": "Pedone",
+        "sub": "A piedi, pattini, skateboard"
+      },
+      "boat": {
+        "label": "Barca",
+        "sub": "Imbarcazione, jet-ski, canotto"
+      },
+      "other": {
+        "label": "Altro veicolo",
+        "sub": "Non elencato — precisare nelle osservazioni"
+      }
     },
     "datetime_label": "Data e ora dell'incidente",
     "date_label": "Data",
@@ -229,22 +344,64 @@
     "submit": "Continua →",
     "error_network": "Errore di rete. Riprova.",
     "cgu_sections": [
-      { "title": "1. Oggetto", "text": "boom.contact è un servizio digitale pubblicato da PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Consente la creazione di constatazioni amichevoli di incidente digitali, utilizzabili in tutto il mondo." },
-      { "title": "2. Accettazione", "text": "L'utilizzo del servizio implica l'accettazione delle presenti CGC. Qualsiasi utilizzo per scopi illeciti, fraudolenti o contrari all'ordine pubblico è severamente vietato." },
-      { "title": "3. Descrizione del servizio", "text": "boom.contact consente: (a) acquisizione di documenti tramite OCR; (b) condivisione di sessione in tempo reale tramite QR; (c) generazione di PDF certificato firmato digitalmente; (d) invio del PDF via email. Il servizio non sostituisce l'obbligo di denuncia del sinistro al proprio assicuratore." },
-      { "title": "4. Tariffazione", "text": "Il servizio è a pagamento secondo i pacchetti disponibili. IVA inclusa. Pagamento via Stripe (PCI-DSS). Nessun rimborso dopo la generazione del PDF." },
-      { "title": "5. Valore legale", "text": "Il documento generato da boom.contact è una constatazione amichevole riconosciuta dalle compagnie assicurative. PEP's Swiss SA non garantisce l'accettazione in tutti i paesi." },
-      { "title": "6. Responsabilità", "text": "PEP's Swiss SA non è responsabile per: (a) errori OCR non corretti dall'utente; (b) rifiuto da parte dell'assicuratore; (c) controversie tra conducenti. La responsabilità è limitata all'importo pagato." },
-      { "title": "7. Proprietà intellettuale", "text": "Software, marchi, loghi e contenuti di boom.contact sono di proprietà esclusiva di PEP's Swiss SA. Qualsiasi riproduzione non autorizzata è vietata." },
-      { "title": "8. Legge applicabile", "text": "Le presenti CGC sono soggette al diritto svizzero. Le controversie saranno soggette alla giurisdizione esclusiva dei tribunali del Canton Giura." }
+      {
+        "title": "1. Oggetto",
+        "text": "boom.contact è un servizio digitale pubblicato da PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Consente la creazione di constatazioni amichevoli di incidente digitali, utilizzabili in tutto il mondo."
+      },
+      {
+        "title": "2. Accettazione",
+        "text": "L'utilizzo del servizio implica l'accettazione delle presenti CGC. Qualsiasi utilizzo per scopi illeciti, fraudolenti o contrari all'ordine pubblico è severamente vietato."
+      },
+      {
+        "title": "3. Descrizione del servizio",
+        "text": "boom.contact consente: (a) acquisizione di documenti tramite OCR; (b) condivisione di sessione in tempo reale tramite QR; (c) generazione di PDF certificato firmato digitalmente; (d) invio del PDF via email. Il servizio non sostituisce l'obbligo di denuncia del sinistro al proprio assicuratore."
+      },
+      {
+        "title": "4. Tariffazione",
+        "text": "Il servizio è a pagamento secondo i pacchetti disponibili. IVA inclusa. Pagamento via Stripe (PCI-DSS). Nessun rimborso dopo la generazione del PDF."
+      },
+      {
+        "title": "5. Valore legale",
+        "text": "Il documento generato da boom.contact è una constatazione amichevole riconosciuta dalle compagnie assicurative. PEP's Swiss SA non garantisce l'accettazione in tutti i paesi."
+      },
+      {
+        "title": "6. Responsabilità",
+        "text": "PEP's Swiss SA non è responsabile per: (a) errori OCR non corretti dall'utente; (b) rifiuto da parte dell'assicuratore; (c) controversie tra conducenti. La responsabilità è limitata all'importo pagato."
+      },
+      {
+        "title": "7. Proprietà intellettuale",
+        "text": "Software, marchi, loghi e contenuti di boom.contact sono di proprietà esclusiva di PEP's Swiss SA. Qualsiasi riproduzione non autorizzata è vietata."
+      },
+      {
+        "title": "8. Legge applicabile",
+        "text": "Le presenti CGC sono soggette al diritto svizzero. Le controversie saranno soggette alla giurisdizione esclusiva dei tribunali del Canton Giura."
+      }
     ],
     "privacy_sections": [
-      { "title": "Responsabile del trattamento", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Contatto DPO: privacy@boom.contact" },
-      { "title": "Dati raccolti", "text": "Email, nome/cognome, indirizzo (dai documenti OCR), targa, dati del veicolo, coordinate GPS, firme digitali, dati assicurativi." },
-      { "title": "Base giuridica", "text": "Esecuzione del contratto (art. 6.1.b GDPR) per i dati della constatazione. Consenso esplicito (art. 6.1.a GDPR) per uso commerciale secondario." },
-      { "title": "Durata di conservazione", "text": "Sessioni attive: 2 ore. PDF e dati: 30 giorni, poi cancellazione automatica. Dati contabili: 10 anni. Email e consensi: fino alla revoca." },
-      { "title": "Condivisione dei dati", "text": "I tuoi dati NON vengono mai venduti. Condivisione solo con: Stripe (pagamenti), Resend (email), Anthropic (OCR senza conservazione)." },
-      { "title": "I tuoi diritti", "text": "Accesso, rettifica, cancellazione, portabilità, opposizione. Richiesta a: privacy@boom.contact. Risposta entro 30 giorni. Reclamo al GPDP (Italia) o alla tua autorità nazionale." }
+      {
+        "title": "Responsabile del trattamento",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Contatto DPO: privacy@boom.contact"
+      },
+      {
+        "title": "Dati raccolti",
+        "text": "Email, nome/cognome, indirizzo (dai documenti OCR), targa, dati del veicolo, coordinate GPS, firme digitali, dati assicurativi."
+      },
+      {
+        "title": "Base giuridica",
+        "text": "Esecuzione del contratto (art. 6.1.b GDPR) per i dati della constatazione. Consenso esplicito (art. 6.1.a GDPR) per uso commerciale secondario."
+      },
+      {
+        "title": "Durata di conservazione",
+        "text": "Sessioni attive: 2 ore. PDF e dati: 30 giorni, poi cancellazione automatica. Dati contabili: 10 anni. Email e consensi: fino alla revoca."
+      },
+      {
+        "title": "Condivisione dei dati",
+        "text": "I tuoi dati NON vengono mai venduti. Condivisione solo con: Stripe (pagamenti), Resend (email), Anthropic (OCR senza conservazione)."
+      },
+      {
+        "title": "I tuoi diritti",
+        "text": "Accesso, rettifica, cancellazione, portabilità, opposizione. Richiesta a: privacy@boom.contact. Risposta entro 30 giorni. Reclamo al GPDP (Italia) o alla tua autorità nazionale."
+      }
     ]
   },
   "pricing": {
@@ -267,9 +424,18 @@
     },
     "legal": "Acquistando, accetti le CGC di boom.contact.\nNessun rimborso dopo la generazione del PDF.",
     "packages": {
-      "single": { "label": "1 constatazione", "description": "Per un incidente occasionale" },
-      "pack3":  { "label": "3 constatazioni", "description": "Per la famiglia" },
-      "pack10": { "label": "10 constatazioni", "description": "Broker, flotte aziendali" }
+      "single": {
+        "label": "1 constatazione",
+        "description": "Per un incidente occasionale"
+      },
+      "pack3": {
+        "label": "3 constatazioni",
+        "description": "Per la famiglia"
+      },
+      "pack10": {
+        "label": "10 constatazioni",
+        "description": "Broker, flotte aziendali"
+      }
     }
   },
   "offline": {
