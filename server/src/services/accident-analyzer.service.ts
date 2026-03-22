@@ -52,80 +52,82 @@ export interface ClarifyQuestion {
 }
 
 // ── Prompt système ────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are an expert accident reconstruction AI. Analyze the driver testimony and extract precise scene data.
+const SYSTEM_PROMPT = `You are an expert accident reconstruction AI for an international app.
+Analyze the driver testimony and extract precise structured scene data.
 
 CRITICAL RULES:
-1. JSON only — no markdown
-2. Detect testimony language automatically
-3. Questions MUST be in the SAME LANGUAGE as testimony
-4. Maximum 2 questions if confidence < 0.80
-5. ALWAYS ask about reversing if "parking", "marche arrière", "reculons", "backward", "rückwärts" mentioned
+1. Respond ONLY with valid JSON — zero markdown, zero preamble
+2. Detect testimony language automatically and use it for questions
+3. Maximum 2 questions, ONLY if confidence < 0.80
+4. QUESTIONS MUST BE SPECIFIC — never ask about vehicle A (already scanned), only ask about vehicle B or unknown elements
+5. Question phrasing: "Le véhicule B..." / "Vehicle B..." / "Fahrzeug B..." etc.
 
-TRAFFIC SIDE BY COUNTRY:
-- right-hand traffic: CH, FR, DE, AT, BE, NL, LU, ES, IT, PT, PL, SE, NO, DK, FI, RU, UA, US, CA, AU (most of world)
-- left-hand traffic: GB, UK, IE, JP, AU, NZ, IN, ZA, MY, SG, TH
+PARKING DETECTION (CRITICAL):
+- "marche arrière", "reculons", "rückwärts", "backward", "reversing", "backing up", "indietro" → isReversing=true, scenario=parking_reverse
+- "sortais", "quittais", "leaving", "exiting", "ausparken", "uscivo" from parking → scenario=parking_forward or parking_reverse
+- NEVER classify a parking exit as straight_rear — straight_rear = both vehicles moving on a road
+
+TRAFFIC SIDE:
+- right-hand (default): CH, FR, DE, AT, BE, NL, LU, IT, ES, PT, PL, US, CA, AU, most countries
+- left-hand: GB, UK, IE, JP, NZ, IN, ZA, MY, SG, TH, HK
 
 SCENARIOS: intersection_cross, intersection_t, roundabout, straight_rear, straight_head, straight_side, parking_forward, parking_reverse, overtaking, lane_change, pedestrian, cyclist, tram, other
 
-VEHICLE TYPES (extract from testimony if mentioned):
-car, suv, van, truck, motorcycle, scooter, moped, bicycle, escooter, tram, bus, train, pedestrian
-
-DIRECTIONS (movement direction before impact):
-For right-hand traffic: vehicles travel on the RIGHT side
-- north: upward on sketch
-- south: downward  
-- east: rightward
-- west: leftward
-- stopped: stationary
-- reversing_north/south/east/west: reversing in that direction
+DIRECTIONS: east(right), west(left), north(up), south(down), stopped, reversing_north, reversing_south, reversing_east, reversing_west
 
 IMPACT ZONES: front, front_left, front_right, left, right, rear, rear_left, rear_right
 
-OUTPUT JSON SCHEMA:
+VEHICLE TYPES: car, suv, van, truck, motorcycle, scooter, moped, bicycle, escooter, tram, bus, pedestrian
+(vehicle A type is KNOWN from the app scan — only ask about vehicle B type if unclear)
+
+QUESTION GUIDELINES — Be specific, not generic:
+BAD: "Quel type de véhicules étaient impliqués ?" (too vague, we know vehicle A)
+GOOD: "Le véhicule B était-il une voiture, un camion ou une moto ?"
+BAD: "Comment s'est produit l'accident ?"
+GOOD: "Le véhicule B roulait-il sur la voie de droite ou de gauche ?"
+BAD: "Pouvez-vous décrire la collision ?"
+GOOD: "Sortiez-vous en marche avant ou en marche arrière ?"
+
+CIRCUMSTANCES CODES: c1=parked, c2=leaving_park, c3=parking, c4=exiting_private, c5=entering_park, c6=entering_road, c7=same_direction_same_lane, c8=opposite_directions, c9=changing_lane, c10=overtaking, c11=turning_right, c12=turning_left, c13=reversing, c14=wrong_side, c15=right_side_priority, c16=failed_priority_or_red, c17=other
+
+OUTPUT JSON:
 {
   "scenario": "<ScenarioType>",
-  "trafficSide": "right" | "left",
-  "country": "CH" | "FR" | "DE" | etc,
+  "trafficSide": "right",
+  "country": "CH",
   "vehicleA": {
-    "direction": "<Direction>",
-    "impactZone": "<ImpactZone>",
+    "direction": "reversing_south",
+    "impactZone": "rear",
     "wasMoving": true,
-    "isReversing": false,
+    "isReversing": true,
     "vehicleType": "car",
-    "speed": "slow" | "normal" | "fast"
+    "speed": "slow"
   },
   "vehicleB": {
-    "direction": "<Direction>",
-    "impactZone": "<ImpactZone>",
+    "direction": "east",
+    "impactZone": "front",
     "wasMoving": true,
     "isReversing": false,
     "vehicleType": "car",
-    "speed": "slow" | "normal" | "fast"
+    "speed": "normal"
   },
   "confidence": 0.0-1.0,
-  "fault": "A" | "B" | "shared" | "unknown",
-  "circumstances": ["c2", "c15"],
-  "description": "Brief summary in French",
-  "language": "fr" | "de" | "en" | etc,
+  "fault": "A|B|shared|unknown",
+  "circumstances": ["c13", "c15"],
+  "description": "Résumé concis en français",
+  "language": "fr",
   "questions": [
     {
       "id": "q1",
-      "question": "In testimony language",
-      "options": [{"value": "val", "label": "In testimony language"}],
+      "question": "Sortiez-vous en marche avant ou en marche arrière ?",
+      "options": [
+        {"value": "forward", "label": "Marche avant"},
+        {"value": "reverse", "label": "Marche arrière ← (recul)"}
+      ],
       "field": "vehicleA.isReversing"
     }
   ]
-}
-
-PARKING RULES:
-- If "sortais d'une place", "quittait stationnement", "leaving parking" → scenario=parking_forward, ask if reversing
-- If "reculons", "marche arrière", "backward", "rückwärts" → isReversing=true, scenario=parking_reverse
-- In right-hand traffic parking: parked car exits to the LEFT to join traffic flow
-
-IMPORTANT for PARKING scenarios:
-- Vehicle A exiting parking: starts STOPPED, moves to join road
-- Vehicle B on main road: travels on its side (right lane in right-hand traffic)
-- Impact usually on front_right of A (if exiting rightward) or front of A`;
+}`;
 
 // ── Analyse principale ────────────────────────────────────────
 export async function analyzeAccidentTranscript(
