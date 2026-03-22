@@ -54,10 +54,11 @@ export function LanguageSwitcher({ style, compact = false }: Props) {
       {/* Dropdown */}
       {open && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — onMouseDown fires AFTER button onMouseDown on iOS */}
           <div
             style={{ position: 'fixed', inset: 0, zIndex: 999 }}
-            onClick={() => setOpen(false)}
+            onMouseDown={() => setOpen(false)}
+            onTouchStart={() => setOpen(false)}
           />
           <div style={{
             position: 'absolute',
@@ -78,7 +79,8 @@ export function LanguageSwitcher({ style, compact = false }: Props) {
               return (
                 <button
                   key={lang}
-                  onClick={() => handleChange(lang)}
+                  onMouseDown={(e) => { e.stopPropagation(); handleChange(lang); }}
+                  onTouchEnd={(e) => { e.preventDefault(); e.stopPropagation(); handleChange(lang); }}
                   style={{
                     width: '100%',
                     display: 'flex',
