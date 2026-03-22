@@ -113,6 +113,16 @@ app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
+// ── Redirection apex → www ───────────────────────────────────
+// boom.contact → www.boom.contact (301 permanent)
+app.use((req, res, next) => {
+  const host = req.hostname || req.headers.host || '';
+  if (host === 'boom.contact') {
+    return res.redirect(301, `https://www.boom.contact${req.originalUrl}`);
+  }
+  next();
+});
+
 // ── Health check ─────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'boom.contact', env: process.env.NODE_ENV, ts: new Date().toISOString() });
