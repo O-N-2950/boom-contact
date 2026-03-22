@@ -99,10 +99,23 @@ export async function renderSketch(input: SketchRenderInput): Promise<string> {
     // HTML complet — tout embarqué, aucune dépendance externe
     const html = buildHtml(input, sketchEngineJs, W, H);
     
-    await page.setContent(html, { waitUntil: 'networkidle0', timeout: 15000 });
+    // Capturer les erreurs JS dans la page pour diagnostic
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => { pageErrors.push(err.message); logger.error('[sketch-renderer] Page JS error:', err.message.slice(0,200)); });
+    page.on('console', (msg) => { if (msg.type() === 'error') logger.warn('[sketch-renderer] Console error:', msg.text().slice(0,200)); });
+
+    await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 20000 });
     
     // Attendre que le Canvas soit rendu
-    await page.waitForFunction(() => window.__sketchDone === true, { timeout: 10000 });
+    await page.waitForFunction(
+      () => (window as any).__sketchDone === true || (window as any).__sketchError != null,
+      { timeout: 30000 }
+    );
+    
+    // Vérifier si erreur
+    const sketchError = await page.evaluate(() => (window as any).__sketchError);
+    if (sketchError) throw new Error('Sketch render error: ' + sketchError);
+    logger.info('[sketch-renderer] ✅ Canvas rendu en succès');
     
     // Screenshot du canvas uniquement
     const canvasElement = await page.$('#sketch-canvas');
@@ -146,6 +159,7 @@ ${sketchJs}
 
 // ── Rendu principal ───────────────────────────────────────────
 window.__sketchDone = false;
+  window.__sketchError = null;
 
 (async function() {
   const canvas = document.getElementById('sketch-canvas');
@@ -274,7 +288,12 @@ window.__sketchDone = false;
   ctx.fillText('boom.contact · Croquis IA · © OpenStreetMap', W-12, H-14);
 
   window.__sketchDone = true;
-})();
+  console.log('[sketch] Done!');
+})().catch(function(err) {
+  window.__sketchError = err.message || String(err);
+  console.error('[sketch] FATAL:', window.__sketchError);
+  window.__sketchDone = true;  // débloquer waitForFunction
+});
 </script>
 </body>
 </html>`;
@@ -283,3 +302,4 @@ window.__sketchDone = false;
 export async function closeBrowser(): Promise<void> {
   if (browser) { await browser.close(); browser = null; }
 }
+
