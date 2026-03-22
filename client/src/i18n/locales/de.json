@@ -51,25 +51,86 @@
       "title": "5 Schritte.",
       "title_accent": "5 Minuten.",
       "steps": [
-        { "step": "01", "icon": "📸", "title": "Dokumente scannen", "desc": "Fahrzeugausweis + grüne Karte fotografieren. Automatisches OCR." },
-        { "step": "02", "icon": "📱", "title": "QR-Code teilen", "desc": "Der andere Fahrer scannt den QR-Code. Echtzeit-gemeinsame Sitzung." },
-        { "step": "03", "icon": "📋", "title": "Formular ausfüllen", "desc": "Universelles Formular, vom OCR vorausgefüllt. Überprüfen und Umstände ankreuzen." },
-        { "step": "04", "icon": "🚗", "title": "Schadenszonen", "desc": "Auf das 18-Zonen-Diagramm klicken, um Schäden zu markieren." },
-        { "step": "05", "icon": "✍️", "title": "Unterschreiben & senden", "desc": "Zwei zeitgestempelte digitale Unterschriften. PDF sofort zertifiziert." }
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "Dokumente scannen",
+          "desc": "Fahrzeugausweis + grüne Karte fotografieren. Automatisches OCR."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "QR-Code teilen",
+          "desc": "Der andere Fahrer scannt den QR-Code. Echtzeit-gemeinsame Sitzung."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Formular ausfüllen",
+          "desc": "Universelles Formular, vom OCR vorausgefüllt. Überprüfen und Umstände ankreuzen."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Schadenszonen",
+          "desc": "Auf das 18-Zonen-Diagramm klicken, um Schäden zu markieren."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Unterschreiben & senden",
+          "desc": "Zwei zeitgestempelte digitale Unterschriften. PDF sofort zertifiziert."
+        }
       ]
     },
     "features": {
       "title": "Alles was Sie brauchen",
       "list": [
-        { "icon": "📸", "title": "Universelles OCR", "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugausweis, RC Book, 行驶证 — kein manueller Eintrag." },
-        { "icon": "📱", "title": "Bis zu 5 Fahrzeuge", "desc": "Unfall mit 3, 4 oder 5 Fahrzeugen? Jeder Fahrer scannt seinen eigenen QR-Code. Ein PDF für alle." },
-        { "icon": "📷", "title": "Unfallfotos", "desc": "5 Kategorien: Ort, Schäden A, Schäden B, Verletzungen, Dokumente. Komprimiert und im PDF enthalten." },
-        { "icon": "✏️", "title": "Freie Skizze", "desc": "Fahrzeugpositionen, Richtungspfeile, Infrastruktur zeichnen. PNG-Export im PDF integriert." },
-        { "icon": "🚗", "title": "Schadensdiagramm", "desc": "700+ Modelle, angepasste Silhouette, echte OCR-Farbe. 18 klickbare Zonen für Schäden." },
-        { "icon": "✍️", "title": "Mehrfach-Unterschriften", "desc": "N simultane Touch-Unterschriften. Rechtsgültigkeit in 150+ Ländern. QR 24h aktiv für die Polizei." },
-        { "icon": "📄", "title": "PDF zertifiziert 150+ Länder", "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Bemerkungen, Skizze, Fotos. Von allen Versicherungen anerkannt." },
-        { "icon": "🚔", "title": "Polizei-Modul (demnächst)", "desc": "Beamte treten der Sitzung via QR bei. Offizielles digitales Polizeiprotokoll. Dashboard pro Posten/Kanton." },
-        { "icon": "🌍", "title": "50 Sprachen + RTL", "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Georeferenzierte Notfallnummern." }
+        {
+          "icon": "📸",
+          "title": "Universelles OCR",
+          "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugausweis, RC Book, 行驶证 — kein manueller Eintrag."
+        },
+        {
+          "icon": "📱",
+          "title": "Bis zu 5 Fahrzeuge",
+          "desc": "Unfall mit 3, 4 oder 5 Fahrzeugen? Jeder Fahrer scannt seinen eigenen QR-Code. Ein PDF für alle."
+        },
+        {
+          "icon": "📷",
+          "title": "Unfallfotos",
+          "desc": "5 Kategorien: Ort, Schäden A, Schäden B, Verletzungen, Dokumente. Komprimiert und im PDF enthalten."
+        },
+        {
+          "icon": "✏️",
+          "title": "Freie Skizze",
+          "desc": "Fahrzeugpositionen, Richtungspfeile, Infrastruktur zeichnen. PNG-Export im PDF integriert."
+        },
+        {
+          "icon": "🚗",
+          "title": "Schadensdiagramm",
+          "desc": "700+ Modelle, angepasste Silhouette, echte OCR-Farbe. 18 klickbare Zonen für Schäden."
+        },
+        {
+          "icon": "✍️",
+          "title": "Mehrfach-Unterschriften",
+          "desc": "N simultane Touch-Unterschriften. Rechtsgültigkeit in 150+ Ländern. QR 24h aktiv für die Polizei."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF zertifiziert 150+ Länder",
+          "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Bemerkungen, Skizze, Fotos. Von allen Versicherungen anerkannt."
+        },
+        {
+          "icon": "🚔",
+          "title": "Polizei-Modul (demnächst)",
+          "desc": "Beamte treten der Sitzung via QR bei. Offizielles digitales Polizeiprotokoll. Dashboard pro Posten/Kanton."
+        },
+        {
+          "icon": "🌍",
+          "title": "50 Sprachen + RTL",
+          "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Georeferenzierte Notfallnummern."
+        }
       ]
     },
     "coverage": {
@@ -110,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Dokumente scannen",
-      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nDie grüne Karte ist <strong>optional</strong>.",
+      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nScannen Sie dann Ihr <strong>Versicherungsdokument</strong> (Grüne Karte, Versicherungsnachweis).",
       "reg_label": "Fahrzeugausweis",
       "reg_sub": "Fahrzeugschein, RC Book, Zulassung — <strong>Pflichtfeld</strong>",
-      "tip": "💡 <strong>Grüne Karte optional.</strong> Falls vorhanden, scannen Sie sie, um Versicherungsdaten automatisch auszufüllen. Sonst manuell im Formular eingeben."
+      "tip": "💡 <strong>Tipp:</strong> Bereiten Sie auch Ihr <strong>Versicherungsdokument</strong> vor — Internationale Grüne Karte, Versicherungsnachweis oder Policenzertifikat. Es enthält Versicherer und Policennummer."
     },
     "greencard": {
-      "scanned": "✅ Fahrzeugausweis gescannt",
+      "scanned": "✅ Fahrzeugausweis analysiert",
       "compressing": "· Komprimierung…",
-      "title": "Grüne Karte?",
-      "subtitle": "Die internationale Versicherungsbescheinigung (grüne Karte) füllt Ihre Versicherungsdaten automatisch aus. Sie ist <strong>optional</strong> — Sie können diese Informationen manuell eingeben.",
-      "scan_btn": "Grüne Karte scannen",
-      "scan_sub": "Empfohlen — füllt Versicherungsdaten aus",
-      "skip_btn": "Ohne grüne Karte weiter →"
+      "title": "Versicherungsdokument",
+      "subtitle": "Scannen Sie Ihre <strong>Internationale Grüne Karte</strong>, Ihren Versicherungsnachweis oder Ihr Versicherungszertifikat. Dieses Dokument enthält Versicherer und Policennummer.<br/>🇨🇭 CH · 🇪🇺 Europa · 🇬🇧 UK · 🇺🇸 US · 🌍 Weltweit",
+      "scan_btn": "Versicherungsdokument scannen",
+      "scan_sub": "Grüne Karte · Versicherungsnachweis · Insurance ID card · Zertifikat",
+      "skip_btn": "Kein Dokument vorhanden → manuelle Eingabe"
     },
     "scanning": {
       "title": "Analyse läuft…",
@@ -135,7 +196,7 @@
       "skipped": "· Grüne Karte übersprungen",
       "warnings": "⚠️ {{count}} Feld zu prüfen",
       "warnings_plural": "⚠️ {{count}} Felder zu prüfen",
-      "insurance_title": "🛡️ Versicherungsdaten eingeben",
+      "insurance_title": "🛡️ Versicherungsdaten — manuelle Eingabe",
       "company_label": "Versicherungsgesellschaft *",
       "company_placeholder": "AXA, Zurich, Helvetia, Mobiliar…",
       "policy_label": "Vertragsnummer / Police *",
@@ -157,24 +218,78 @@
       "other": "Person / Sonstiges"
     },
     "vehicles": {
-      "car": { "label": "Auto", "sub": "Limousine, SUV, Kombi, 4×4, Kleinwagen" },
-      "van": { "label": "Lieferwagen / Nutzfahrzeug", "sub": "Kleinbus, Van, leichtes Nutzfahrzeug" },
-      "motorcycle": { "label": "Motorrad", "sub": "Motorrad, Motocross" },
-      "scooter": { "label": "Roller / Mofa", "sub": "Roller, 50ccm" },
-      "moped": { "label": "Moped", "sub": "2-Rad <45km/h, 125ccm" },
-      "escooter": { "label": "E-Scooter", "sub": "E-Tretroller, Gyroroller, Hoverboard" },
-      "quad": { "label": "Quad / Buggy", "sub": "Geländefahrzeug motorisiert" },
-      "truck": { "label": "LKW / Schwerlast", "sub": "Sattelzug, Pritschenwagen, Kipper" },
-      "bus": { "label": "Bus / Reisebus", "sub": "Stadtbus, Reisecar, Minibus" },
-      "construction": { "label": "Baufahrzeug", "sub": "Bagger, Kran, Schaufellader, Dumper" },
-      "tractor": { "label": "Landwirtschaftlicher Traktor", "sub": "Traktor, Landmaschine" },
-      "tram": { "label": "Strassenbahn", "sub": "Tram, Stadtbahn" },
-      "train": { "label": "Zug / Metro", "sub": "Zug, S-Bahn, U-Bahn" },
-      "bicycle": { "label": "Fahrrad", "sub": "Klassisches Fahrrad, E-Bike" },
-      "cargo_bike": { "label": "Lastenfahrrad", "sub": "Bakfiets, Dreirad, Elektro-Cargo" },
-      "pedestrian": { "label": "Fussgänger", "sub": "Zu Fuss, Rollschuhe, Skateboard" },
-      "boat": { "label": "Boot", "sub": "Wasserfahrzeug, Jet-Ski, Kanu" },
-      "other": { "label": "Anderes Fahrzeug", "sub": "Nicht aufgeführt — in Bemerkungen präzisieren" }
+      "car": {
+        "label": "Auto",
+        "sub": "Limousine, SUV, Kombi, 4×4, Kleinwagen"
+      },
+      "van": {
+        "label": "Lieferwagen / Nutzfahrzeug",
+        "sub": "Kleinbus, Van, leichtes Nutzfahrzeug"
+      },
+      "motorcycle": {
+        "label": "Motorrad",
+        "sub": "Motorrad, Motocross"
+      },
+      "scooter": {
+        "label": "Roller / Mofa",
+        "sub": "Roller, 50ccm"
+      },
+      "moped": {
+        "label": "Moped",
+        "sub": "2-Rad <45km/h, 125ccm"
+      },
+      "escooter": {
+        "label": "E-Scooter",
+        "sub": "E-Tretroller, Gyroroller, Hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Geländefahrzeug motorisiert"
+      },
+      "truck": {
+        "label": "LKW / Schwerlast",
+        "sub": "Sattelzug, Pritschenwagen, Kipper"
+      },
+      "bus": {
+        "label": "Bus / Reisebus",
+        "sub": "Stadtbus, Reisecar, Minibus"
+      },
+      "construction": {
+        "label": "Baufahrzeug",
+        "sub": "Bagger, Kran, Schaufellader, Dumper"
+      },
+      "tractor": {
+        "label": "Landwirtschaftlicher Traktor",
+        "sub": "Traktor, Landmaschine"
+      },
+      "tram": {
+        "label": "Strassenbahn",
+        "sub": "Tram, Stadtbahn"
+      },
+      "train": {
+        "label": "Zug / Metro",
+        "sub": "Zug, S-Bahn, U-Bahn"
+      },
+      "bicycle": {
+        "label": "Fahrrad",
+        "sub": "Klassisches Fahrrad, E-Bike"
+      },
+      "cargo_bike": {
+        "label": "Lastenfahrrad",
+        "sub": "Bakfiets, Dreirad, Elektro-Cargo"
+      },
+      "pedestrian": {
+        "label": "Fussgänger",
+        "sub": "Zu Fuss, Rollschuhe, Skateboard"
+      },
+      "boat": {
+        "label": "Boot",
+        "sub": "Wasserfahrzeug, Jet-Ski, Kanu"
+      },
+      "other": {
+        "label": "Anderes Fahrzeug",
+        "sub": "Nicht aufgeführt — in Bemerkungen präzisieren"
+      }
     },
     "datetime_label": "Datum & Uhrzeit des Unfalls",
     "date_label": "Datum",
@@ -229,22 +344,64 @@
     "submit": "Weiter →",
     "error_network": "Netzwerkfehler. Bitte erneut versuchen.",
     "cgu_sections": [
-      { "title": "1. Gegenstand", "text": "boom.contact ist ein digitaler Dienst von PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. Er ermöglicht die Erstellung digitaler Unfallprotokolle, weltweit nutzbar." },
-      { "title": "2. Annahme", "text": "Die Nutzung des Dienstes impliziert die Annahme dieser AGB. Jede rechtswidrige, betrügerische oder gegen die öffentliche Ordnung verstossende Nutzung ist streng verboten." },
-      { "title": "3. Dienstbeschreibung", "text": "boom.contact ermöglicht: (a) Dokumenterfassung per OCR (Zulassung, grüne Karte); (b) Echtzeit-Sitzungsteilung per QR-Code; (c) Erstellung eines digital signierten PDF; (d) PDF-Versand per E-Mail. Der Dienst ersetzt nicht die gesetzliche Meldepflicht gegenüber der eigenen Versicherung." },
-      { "title": "4. Preisgestaltung", "text": "Der Dienst ist kostenpflichtig gemäss den verfügbaren Paketen. Preise inkl. MwSt. Zahlung über Stripe (PCI-DSS-zertifiziert). Keine Rückerstattung nach PDF-Generierung." },
-      { "title": "5. Rechtswert", "text": "Das von boom.contact erstellte Dokument ist ein von Versicherungen anerkanntes Unfallprotokoll. PEP's Swiss SA garantiert nicht die Akzeptanz in allen Ländern." },
-      { "title": "6. Haftung", "text": "PEP's Swiss SA haftet nicht für: (a) nicht korrigierte OCR-Fehler; (b) Ablehnung durch Versicherungen; (c) Streitigkeiten zwischen Fahrern. Die Haftung ist auf den bezahlten Betrag begrenzt." },
-      { "title": "7. Geistiges Eigentum", "text": "Software, Marken, Logos und Inhalte von boom.contact sind Eigentum von PEP's Swiss SA. Jede unerlaubte Vervielfältigung ist verboten." },
-      { "title": "8. Anwendbares Recht", "text": "Diese AGB unterliegen Schweizer Recht. Streitigkeiten unterliegen der ausschliesslichen Zuständigkeit der Gerichte des Kantons Jura." }
+      {
+        "title": "1. Gegenstand",
+        "text": "boom.contact ist ein digitaler Dienst von PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. Er ermöglicht die Erstellung digitaler Unfallprotokolle, weltweit nutzbar."
+      },
+      {
+        "title": "2. Annahme",
+        "text": "Die Nutzung des Dienstes impliziert die Annahme dieser AGB. Jede rechtswidrige, betrügerische oder gegen die öffentliche Ordnung verstossende Nutzung ist streng verboten."
+      },
+      {
+        "title": "3. Dienstbeschreibung",
+        "text": "boom.contact ermöglicht: (a) Dokumenterfassung per OCR (Zulassung, grüne Karte); (b) Echtzeit-Sitzungsteilung per QR-Code; (c) Erstellung eines digital signierten PDF; (d) PDF-Versand per E-Mail. Der Dienst ersetzt nicht die gesetzliche Meldepflicht gegenüber der eigenen Versicherung."
+      },
+      {
+        "title": "4. Preisgestaltung",
+        "text": "Der Dienst ist kostenpflichtig gemäss den verfügbaren Paketen. Preise inkl. MwSt. Zahlung über Stripe (PCI-DSS-zertifiziert). Keine Rückerstattung nach PDF-Generierung."
+      },
+      {
+        "title": "5. Rechtswert",
+        "text": "Das von boom.contact erstellte Dokument ist ein von Versicherungen anerkanntes Unfallprotokoll. PEP's Swiss SA garantiert nicht die Akzeptanz in allen Ländern."
+      },
+      {
+        "title": "6. Haftung",
+        "text": "PEP's Swiss SA haftet nicht für: (a) nicht korrigierte OCR-Fehler; (b) Ablehnung durch Versicherungen; (c) Streitigkeiten zwischen Fahrern. Die Haftung ist auf den bezahlten Betrag begrenzt."
+      },
+      {
+        "title": "7. Geistiges Eigentum",
+        "text": "Software, Marken, Logos und Inhalte von boom.contact sind Eigentum von PEP's Swiss SA. Jede unerlaubte Vervielfältigung ist verboten."
+      },
+      {
+        "title": "8. Anwendbares Recht",
+        "text": "Diese AGB unterliegen Schweizer Recht. Streitigkeiten unterliegen der ausschliesslichen Zuständigkeit der Gerichte des Kantons Jura."
+      }
     ],
     "privacy_sections": [
-      { "title": "Verantwortlicher", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. DSB-Kontakt: privacy@boom.contact" },
-      { "title": "Erhobene Daten", "text": "E-Mail-Adresse, Name/Vorname, Adresse (aus OCR-Dokumenten), Kennzeichen, Fahrzeugdaten, GPS-Koordinaten, digitale Unterschriften, Versicherungsdaten." },
-      { "title": "Rechtsgrundlage", "text": "Vertragserfüllung (Art. 6.1.b DSGVO) für Unfalldaten. Ausdrückliche Einwilligung (Art. 6.1.a DSGVO) für sekundäre kommerzielle Nutzung." },
-      { "title": "Aufbewahrungsdauer", "text": "Aktive Sitzungen: 2 Stunden. PDFs und Unfalldaten: 30 Tage, dann automatische Löschung. Buchhaltungsdaten: 10 Jahre. E-Mail und Einwilligungen: bis zum Widerruf." },
-      { "title": "Datenweitergabe", "text": "Ihre Daten werden NIEMALS verkauft. Weitergabe nur an: Stripe (Zahlungen), Resend (E-Mails), Anthropic (OCR ohne Speicherung)." },
-      { "title": "Ihre Rechte", "text": "Zugang, Berichtigung, Löschung, Portabilität, Widerspruch. Anfrage an: privacy@boom.contact. Antwort innerhalb 30 Tagen. Beschwerderecht beim EDÖB (Schweiz)." }
+      {
+        "title": "Verantwortlicher",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. DSB-Kontakt: privacy@boom.contact"
+      },
+      {
+        "title": "Erhobene Daten",
+        "text": "E-Mail-Adresse, Name/Vorname, Adresse (aus OCR-Dokumenten), Kennzeichen, Fahrzeugdaten, GPS-Koordinaten, digitale Unterschriften, Versicherungsdaten."
+      },
+      {
+        "title": "Rechtsgrundlage",
+        "text": "Vertragserfüllung (Art. 6.1.b DSGVO) für Unfalldaten. Ausdrückliche Einwilligung (Art. 6.1.a DSGVO) für sekundäre kommerzielle Nutzung."
+      },
+      {
+        "title": "Aufbewahrungsdauer",
+        "text": "Aktive Sitzungen: 2 Stunden. PDFs und Unfalldaten: 30 Tage, dann automatische Löschung. Buchhaltungsdaten: 10 Jahre. E-Mail und Einwilligungen: bis zum Widerruf."
+      },
+      {
+        "title": "Datenweitergabe",
+        "text": "Ihre Daten werden NIEMALS verkauft. Weitergabe nur an: Stripe (Zahlungen), Resend (E-Mails), Anthropic (OCR ohne Speicherung)."
+      },
+      {
+        "title": "Ihre Rechte",
+        "text": "Zugang, Berichtigung, Löschung, Portabilität, Widerspruch. Anfrage an: privacy@boom.contact. Antwort innerhalb 30 Tagen. Beschwerderecht beim EDÖB (Schweiz)."
+      }
     ]
   },
   "pricing": {
@@ -267,9 +424,18 @@
     },
     "legal": "Mit dem Kauf akzeptieren Sie die AGB von boom.contact.\nKeine Rückerstattung nach PDF-Generierung.",
     "packages": {
-      "single": { "label": "1 Bericht", "description": "Für einen einmaligen Unfall" },
-      "pack3":  { "label": "3 Berichte", "description": "Für die Familie" },
-      "pack10": { "label": "10 Berichte", "description": "Makler, Firmenflotten" }
+      "single": {
+        "label": "1 Bericht",
+        "description": "Für einen einmaligen Unfall"
+      },
+      "pack3": {
+        "label": "3 Berichte",
+        "description": "Für die Familie"
+      },
+      "pack10": {
+        "label": "10 Berichte",
+        "description": "Makler, Firmenflotten"
+      }
     }
   },
   "offline": {
