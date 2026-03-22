@@ -544,41 +544,41 @@ export const appRouter = router({
 
   }),
 
-});
-
 
   // ── SKETCH RENDERER (Puppeteer Chrome) ───────────────────
   sketch: router({
     render: publicProcedure
       .input(z.object({
-        scenario:         z.string().default('intersection_cross'),
-        trafficSide:      z.enum(['right','left']).default('right'),
-        vehicleAType:     z.string().default('car'),
-        vehicleAColor:    z.string().default('bleu'),
-        vehicleADirection:z.string().default('east'),
+        scenario:          z.string().default('intersection_cross'),
+        trafficSide:       z.enum(['right','left']).default('right'),
+        vehicleAType:      z.string().default('car'),
+        vehicleAColor:     z.string().default('bleu'),
+        vehicleADirection: z.string().default('east'),
         vehicleAImpactZone:z.string().default('front'),
-        vehicleAMoving:   z.boolean().default(true),
-        vehicleAReversing:z.boolean().default(false),
-        vehicleABrand:    z.string().optional(),
-        vehicleAModel:    z.string().optional(),
-        vehicleAPlate:    z.string().optional(),
-        vehicleBType:     z.string().default('car'),
-        vehicleBColor:    z.string().default('rouge'),
-        vehicleBDirection:z.string().default('west'),
+        vehicleAMoving:    z.boolean().default(true),
+        vehicleAReversing: z.boolean().default(false),
+        vehicleABrand:     z.string().optional(),
+        vehicleAModel:     z.string().optional(),
+        vehicleAPlate:     z.string().optional(),
+        vehicleBType:      z.string().default('car'),
+        vehicleBColor:     z.string().default('rouge'),
+        vehicleBDirection: z.string().default('west'),
         vehicleBImpactZone:z.string().default('front'),
-        vehicleBMoving:   z.boolean().default(true),
-        vehicleBReversing:z.boolean().default(false),
-        vehicleBBrand:    z.string().optional(),
-        vehicleBModel:    z.string().optional(),
-        vehicleBPlate:    z.string().optional(),
-        mapImageBase64:   z.string().optional(),
-        width:            z.number().default(900),
-        height:           z.number().default(650),
+        vehicleBMoving:    z.boolean().default(true),
+        vehicleBReversing: z.boolean().default(false),
+        vehicleBBrand:     z.string().optional(),
+        vehicleBModel:     z.string().optional(),
+        vehicleBPlate:     z.string().optional(),
+        mapImageBase64:    z.string().optional(),
+        width:             z.number().default(900),
+        height:            z.number().default(650),
       }))
       .mutation(async ({ input }) => {
         const pngBase64 = await renderSketch(input);
         return { pngBase64, width: input.width, height: input.height };
       }),
   }),
+
+});
 
 export type AppRouter = typeof appRouter;
