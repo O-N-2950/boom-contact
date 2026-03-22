@@ -442,7 +442,109 @@ export const appRouter = router({
 
   }),
 
+  // ── PARTENAIRE WIN WIN ────────────────────────────────────
+  // Permet à WIN WIN de créer une session boom.contact avec le
+  // véhicule du client pré-chargé (plaque, marque, assureur).
+  // Aucun scan de permis ou carte verte requis côté client.
+  winwin: router({
+
+    // POST winwin.createSession — crée une session avec véhicule pré-chargé
+    // Header requis: x-winwin-key = WINWIN_PARTNER_KEY (variable Railway boom)
+    createSession: publicProcedure
+      .input(z.object({
+        // Clé partenaire WIN WIN (validée côté serveur)
+        partnerKey: z.string().min(10),
+        // Données véhicule WIN WIN
+        vehicle: z.object({
+          plaque:        z.string().optional(),
+          marque:        z.string().optional(),
+          modele:        z.string().optional(),
+          couleur:       z.string().optional(),
+          annee:         z.number().optional(),
+          numeroPolice:  z.string().optional(),
+        }),
+        // Données assurance WIN WIN
+        insurance: z.object({
+          compagnie:     z.string().optional(),
+          numeroPolice:  z.string().optional(),
+          agence:        z.string().optional(),
+          agenceTel:     z.string().optional(),
+          agenceEmail:   z.string().optional(),
+        }).optional(),
+        // Données conducteur (optionnel)
+        driver: z.object({
+          nom:     z.string().optional(),
+          prenom:  z.string().optional(),
+          adresse: z.string().optional(),
+          npa:     z.string().optional(),
+          localite:z.string().optional(),
+          tel:     z.string().optional(),
+        }).optional(),
+        // Langue préférée
+        language: z.string().default('fr'),
+      }))
+      .mutation(async ({ input }) => {
+        // Valider la clé partenaire
+        const validKey = process.env.WINWIN_PARTNER_KEY;
+        if (!validKey || input.partnerKey !== validKey) {
+          throw new Error('Clé partenaire invalide');
+        }
+
+        // Créer la session boom.contact
+        const session = await createSession();
+
+        // Pré-charger les données du véhicule WIN WIN (conducteur A)
+        const vehicleData: Record<string, any> = {};
+        if (input.vehicle.plaque)       vehicleData.licensePlate = input.vehicle.plaque;
+        if (input.vehicle.marque)       vehicleData.make = input.vehicle.marque;
+        if (input.vehicle.modele)       vehicleData.model = input.vehicle.modele;
+        if (input.vehicle.couleur)      vehicleData.color = input.vehicle.couleur;
+        if (input.vehicle.annee)        vehicleData.year = String(input.vehicle.annee);
+        if (input.vehicle.numeroPolice) vehicleData.policyNumber = input.vehicle.numeroPolice;
+
+        const insuranceData: Record<string, any> = {};
+        if (input.insurance?.compagnie)    insuranceData.companyName = input.insurance.compagnie;
+        if (input.insurance?.numeroPolice) insuranceData.policyNumber = input.insurance.numeroPolice;
+        if (input.insurance?.agence)       insuranceData.agencyName = input.insurance.agence;
+        if (input.insurance?.agenceTel)    insuranceData.agencyPhone = input.insurance.agenceTel;
+        if (input.insurance?.agenceEmail)  insuranceData.agencyEmail = input.insurance.agenceEmail;
+        // WIN WIN est toujours le courtier
+        insuranceData.brokerName  = 'WIN WIN Finance Group';
+        insuranceData.brokerPhone = '+41 32 466 11 00';
+        insuranceData.brokerEmail = 'sinistre@winwin.swiss';
+
+        const driverData: Record<string, any> = {};
+        if (input.driver?.nom)      driverData.lastName = input.driver.nom;
+        if (input.driver?.prenom)   driverData.firstName = input.driver.prenom;
+        if (input.driver?.adresse)  driverData.address = input.driver.adresse;
+        if (input.driver?.npa)      driverData.zipCode = input.driver.npa;
+        if (input.driver?.localite) driverData.city = input.driver.localite;
+        if (input.driver?.tel)      driverData.phone = input.driver.tel;
+
+        // Pré-charger la session avec les données WIN WIN
+        await updateParticipant(session.id, 'A', {
+          vehicle:   Object.keys(vehicleData).length > 0 ? vehicleData : undefined,
+          insurance: Object.keys(insuranceData).length > 0 ? insuranceData : undefined,
+          driver:    Object.keys(driverData).length > 0 ? driverData : undefined,
+          language:  input.language,
+        });
+
+        const qrUrl = getQRUrl(session.id, CLIENT_URL);
+
+        return {
+          ok: true,
+          sessionId: session.id,
+          qrUrl,
+          // URL directe pour que le client A accède sans scanner le QR
+          directUrl: `${CLIENT_URL}/constat/${session.id}?lang=${input.language}&prefilled=true`,
+          message: `Session créée. Véhicule ${input.vehicle.plaque || ''} pré-chargé.`,
+        };
+      }),
+
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;
+
 
