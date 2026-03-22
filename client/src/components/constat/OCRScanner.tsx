@@ -71,7 +71,15 @@ export function OCRScanner({ role, onComplete }: Props) {
 
   const scanRegistrationOnly = trpc.ocr.scan.useMutation({
     onSuccess: (data) => {
-      setResult({ registration: data as OCRResult });
+      const reg = data as OCRResult;
+      setResult({ registration: reg });
+      // Pré-remplir assureur si extrait du permis (ex: "emmental" sur permis CH)
+      if (reg.insurance?.company) {
+        setManualInsurance(prev => ({
+          company: prev.company || reg.insurance!.company!,
+          policyNumber: prev.policyNumber || reg.insurance!.policyNumber || '',
+        }));
+      }
       setProcessing(false);
       setStep('review');
     },
@@ -187,31 +195,48 @@ export function OCRScanner({ role, onComplete }: Props) {
   if (step === 'greencard') return (
     <div style={{ padding: 24 }}>
       {fileInput}
-      <div style={{ marginBottom: 20, padding: '10px 14px', borderRadius: 8, background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', fontSize: 13, color: '#22c55e' }}>
-        ✅ {t('ocr.greencard.scanned')}
+
+      {/* Étape 1 confirmée */}
+      <div style={{ marginBottom: 16, padding: '10px 14px', borderRadius: 8, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', fontSize: 13, color: '#22c55e', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span>✅</span>
+        <div>
+          <strong>{t('ocr.greencard.scanned')}</strong>
+          {/* Afficher l'assureur si déjà extrait du permis (CH) */}
+          {regImage && scanRegistrationOnly.data?.insurance?.company && (
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>
+              Assureur détecté : <strong>{(scanRegistrationOnly.data as any)?.insurance?.company}</strong>
+            </div>
+          )}
+        </div>
       </div>
 
-      <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, textAlign: 'center' }}>{t('ocr.greencard.title')}</h3>
-      <p style={{ fontSize: 13, opacity: 0.55, lineHeight: 1.65, textAlign: 'center', marginBottom: 28 }}
+      {/* Étape 2 — Document assurance */}
+      <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#fff', flexShrink: 0 }}>2</div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>{t('ocr.greencard.title')}</h3>
+      </div>
+      <p style={{ fontSize: 13, opacity: 0.55, lineHeight: 1.65, marginBottom: 20 }}
         dangerouslySetInnerHTML={{ __html: t('ocr.greencard.subtitle') }} />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* Bouton principal — bien visible */}
         <button
           onClick={() => openCamera('greencard')}
           disabled={processing}
-          style={{ padding: '16px', borderRadius: 10, border: '1.5px solid rgba(255,53,0,0.4)', background: 'rgba(255,53,0,0.06)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, fontWeight: 600, color: 'var(--text)' }}
+          style={{ padding: '18px 16px', borderRadius: 12, border: '2px solid rgba(255,53,0,0.5)', background: 'rgba(255,53,0,0.08)', cursor: processing ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 14, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
         >
-          <span style={{ fontSize: 24 }}>🟢</span>
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontWeight: 700 }}>{t('ocr.greencard.scan_btn')}</div>
-            <div style={{ fontSize: 11, opacity: 0.5 }}>{t('ocr.greencard.scan_sub')}</div>
+          <span style={{ fontSize: 28 }}>🪪</span>
+          <div style={{ textAlign: 'left', flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--text)' }}>{t('ocr.greencard.scan_btn')}</div>
+            <div style={{ fontSize: 11, opacity: 0.5, marginTop: 2 }}>{t('ocr.greencard.scan_sub')}</div>
           </div>
-          <span style={{ marginLeft: 'auto' }}>{isMobile ? '📸' : '📁'}</span>
+          <span style={{ fontSize: 20 }}>{isMobile ? '📸' : '📁'}</span>
         </button>
 
+        {/* Skip — discret, en bas, clairement secondaire */}
         <button
           onClick={handleSkipGreenCard}
-          style={{ padding: '16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', cursor: 'pointer', fontSize: 14, color: 'rgba(240,237,232,0.6)' }}
+          style={{ padding: '12px 16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'rgba(240,237,232,0.45)', textAlign: 'center', touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}
         >
           {t('ocr.greencard.skip_btn')}
         </button>
@@ -271,8 +296,12 @@ export function OCRScanner({ role, onComplete }: Props) {
         )}
 
         {skipGreenCard && (
-          <div style={{ marginBottom: 16, padding: 14, borderRadius: 10, background: 'rgba(255,165,0,0.07)', border: '1px solid rgba(255,165,0,0.25)' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', marginBottom: 10 }}>{t('ocr.review.insurance_title')}</div>
+          <div style={{ marginBottom: 16, padding: 14, borderRadius: 10, background: result.registration.insurance?.company ? 'rgba(34,197,94,0.07)' : 'rgba(255,165,0,0.07)', border: `1px solid ${result.registration.insurance?.company ? 'rgba(34,197,94,0.25)' : 'rgba(255,165,0,0.25)'}` }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: result.registration.insurance?.company ? '#22c55e' : '#f59e0b', marginBottom: 10 }}>
+              {result.registration.insurance?.company
+                ? `✅ Assureur détecté : ${result.registration.insurance.company}`
+                : t('ocr.review.insurance_title')}
+            </div>
             <div style={{ marginBottom: 8 }}>
               <label style={{ fontSize: 11, opacity: 0.5, letterSpacing: 1, textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{t('ocr.review.company_label')}</label>
               <input
@@ -299,7 +328,12 @@ export function OCRScanner({ role, onComplete }: Props) {
         {[
           { title: t('ocr.review.section_vehicle'), data: result.registration.vehicle },
           { title: t('ocr.review.section_driver'), data: result.registration.driver },
-          ...(result.greenCard?.insurance ? [{ title: t('ocr.review.section_greencard'), data: result.greenCard.insurance }] : []),
+          // Assurance : depuis la carte verte si disponible, sinon depuis le permis (CH)
+          ...(result.greenCard?.insurance
+            ? [{ title: t('ocr.review.section_greencard'), data: result.greenCard.insurance }]
+            : result.registration.insurance?.company
+              ? [{ title: t('ocr.review.section_greencard'), data: result.registration.insurance }]
+              : []),
         ].map(({ title, data }) => data && Object.values(data as object).some(Boolean) && (
           <div key={title} style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', marginBottom: 7, fontFamily: 'monospace' }}>{title}</div>
@@ -323,8 +357,13 @@ export function OCRScanner({ role, onComplete }: Props) {
           </button>
           <button
             onClick={() => {
-              const finalResult = skipGreenCard && (manualInsurance.company || manualInsurance.policyNumber)
-                ? { ...result, greenCard: { ...result.greenCard, insurance: { company: manualInsurance.company, policyNumber: manualInsurance.policyNumber } } as OCRResult }
+              // Construction du résultat final avec toutes les données assurance disponibles
+              const insuranceData = {
+                company: manualInsurance.company || result.registration.insurance?.company || '',
+                policyNumber: manualInsurance.policyNumber || result.registration.insurance?.policyNumber || '',
+              };
+              const finalResult = skipGreenCard
+                ? { ...result, greenCard: { ...result.greenCard, insurance: insuranceData } as OCRResult }
                 : result;
               setStep('done');
               onComplete(finalResult);
