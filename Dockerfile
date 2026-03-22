@@ -1,10 +1,9 @@
 # boom.contact — Dockerfile Session 12
-# node:20.19-alpine + Chromium pour Puppeteer (sketch renderer)
+# node:20.19-alpine + Chromium pour Puppeteer headless
 FROM node:20.19-alpine
 
 WORKDIR /app
 
-# Chromium et dépendances pour Puppeteer headless sur Alpine
 RUN apk add --no-cache \
     chromium \
     nss \
@@ -15,7 +14,6 @@ RUN apk add --no-cache \
     font-noto \
     font-noto-cjk
 
-# Variables Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     NODE_OPTIONS="--no-warnings" \
@@ -23,17 +21,16 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 COPY package.json package-lock.json* ./
 
-RUN npm ci --no-fund --no-audit
+# npm install (pas npm ci) pour résoudre puppeteer-core absent du lock
+RUN npm install --no-fund --no-audit
 
 COPY . .
 
-# Copier sketch-engine.js dans les assets serveur
 RUN mkdir -p server/src/assets
 
-# Vite choisit .ts avant .js — on supprime lancien .ts qui a @tailwindcss/vite
 RUN rm -f vite.config.ts
 
-# cache-bust: 2026-03-22-session12-puppeteer
+# cache-bust: 2026-03-22-session12-npm-install
 RUN npm run build
 
 EXPOSE 3000
