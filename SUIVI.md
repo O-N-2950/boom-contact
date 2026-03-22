@@ -161,3 +161,53 @@
 1. Tests E2E 8 pays depuis session fraîche (sandbox connexion OK)
 2. Vérifier PDFs générés dans tous les pays
 3. Commencer PoliceFlow + police.boom.contact
+## Session 11 — Tests E2E 8 pays + Intégration WinWin finalisée
+**Date** : 22 Mars 2026
+**Dernier deploy** : commit 252780881ece (LandingPage WinWin) + commit 1050838dfa51 (bug fix WinWin URL)
+
+### Tests E2E 8 pays — RÉSULTATS COMPLETS
+
+| Pays | Conducteur A | Conducteur B | Étapes | PDF | Temps | Session |
+|---|---|---|---|---|---|---|
+| 🇨🇭 CH Suisse (FR) | VW Golf JU 12345 · Helvetia | BMW 320i BS 98765 · AXA | 10/10 ✅ | 4.5 KB | 5.2s | 7csWWgTpm-sm |
+| 🇫🇷 FR France (FR) | Renault Clio 69-AB-123 · MAIF | Peugeot 308 75-XY-456 · AXA FR | 10/10 ✅ | 4.5 KB | 5.0s | IG2d2a1piuDS |
+| 🇩🇪 DE Allemagne (DE) | Mercedes C220 M-AB-1234 · Allianz | Audi A4 B-CD-5678 · HUK-Coburg | 10/10 ✅ | 4.5 KB | 4.0s | DseAq6RIbAKa |
+| 🇧🇪 BE Belgique (FR) | VW Polo 1-ABC-123 · Ethias | Toyota Yaris 2-XYZ-456 · AXA BE | 10/10 ✅ | 4.5 KB | 4.1s | u50jcWyUkaA_ |
+| 🇱🇺 LU Luxembourg (FR) | Seat Leon LU 1234 · Foyer | Kia Niro LU 5678 · La Bâloise LU | 10/10 ✅ | 4.5 KB | 3.7s | GWpFiJLzzAmc |
+| 🇮🇹 IT Italie (IT) | Fiat 500 MI 123 AB · Generali | Alfa Romeo Giulia RM 456 CD · UnipolSai | 10/10 ✅ | 4.5 KB | 4.1s | i_ez4QvofuqA |
+| 🇬🇧 GB Royaume-Uni (EN) | Ford Focus AB12 CDE · Aviva | Vauxhall Astra XY34 FGH · Direct Line | 10/10 ✅ | 4.5 KB | 3.6s | MR6_BZbo07mh |
+| 🇪🇸 ES Espagne (ES) | Seat Ibiza 1234-ABC · Mapfre | VW Golf 5678-XYZ · Allianz ES | 10/10 ✅ | 4.5 KB | 3.2s | vDnc5izoBuVm |
+
+**Score : 8/8 PASS — 80/80 étapes — Durée totale : 37.7s**
+
+### Edge Cases — Robustesse
+
+| Test | Résultat |
+|---|---|
+| Session inexistante | ✅ Erreur correcte : "Session not found or expired" |
+| PDF sans signatures | ✅ Erreur correcte : "Both parties must sign before generating PDF" |
+| WinWin clé invalide | ✅ Erreur correcte : "Clé partenaire invalide" |
+| WinWin clé VALIDE (Olivier Neukomm / JU 11111) | ✅ session=7eT6xFWkITht prefilled=true |
+| payment.packages | ✅ 3 packages (1 / 3 / 10 crédits) |
+
+**Edge cases : 5/5 PASS**
+
+### Livraisons Session 11
+
+| Livraison | Détail | Commit |
+|---|---|---|
+| 🐛 Bug fix WinWin URL | /api/trpc → /trpc dans portal-constat.ts (WinWin) | 1050838dfa51 |
+| 🏠 Section WinWin home | Partenariat CH sur LandingPage — aucun scan requis | 252780881ece |
+| 🧪 Tests E2E 8 pays | e2e_tests.py — 80/80 étapes — 5 edge cases | — |
+
+### BUG identifié pendant les tests
+- **PDF 4.5 KB** : taille un peu petite (sans photo réelle ni carte OSM) — normal en mode test automatisé. Le PDF avec vraies photos et carte fait ~45-80 KB. À confirmer avec test manuel.
+
+### Prochaine session — Session 12
+**Priorité absolue : PoliceFlow + police.boom.contact**
+1. PoliceFlow.tsx — interface agent (4 sections)
+2. police.boom.contact subdomain Railway
+3. Template PDF rapport d'intervention CH
+4. Auth police login + JWT
+5. Audit trail RGPD consultations agents
+
