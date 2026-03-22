@@ -1,227 +1,117 @@
 # boom.contact — TODO.md
-> Mise à jour : 21 Mars 2026 — Fin Session 6
+> Mise à jour : 22 Mars 2026 — Fin Session 10
 
 ---
 
-## ✅ FAIT — Session 1 (Build & Infrastructure)
+## ✅ FAIT — Sessions 1-4 (Infrastructure + Core)
 
 - [x] Build Railway SUCCESS
-- [x] Service web doublon supprimé — projet propre : boom-contact + PostgreSQL
+- [x] Service web doublon supprimé
 - [x] tRPC v11 mutations corrigées
 - [x] CORS production configuré
-- [x] Variables Railway : DB, Claude, Stripe, Resend, Webhook
-- [x] Logs Railway visibles (Morgan + logger.ts centralisé)
+- [x] PostgreSQL + Drizzle ORM
+- [x] Flow constat complet A+B (SCAN→LIEU→PHOTOS→QR→INFOS→CROQUIS→CHOC→SIGN)
+- [x] OCR Claude Vision — permis CH/FR/DE/GB + carte verte
+- [x] Stripe live CHF+EUR — 3 packages (1/3/10 constats)
+- [x] Webhook Stripe vérifié
+- [x] PDF multilingue pdf-lib (12 langues)
+- [x] Email Resend — DKIM actif, domaine boom.contact vérifié
+- [x] Socket.io temps réel A↔B
+- [x] PWA offline-first (Service Worker + IndexedDB)
+- [x] i18n FR/DE/IT/EN
 
 ---
 
-## ✅ FAIT — Session 2 (Paiement & RGPD)
+## ✅ FAIT — Sessions 5-7 (Qualité + i18n)
 
-- [x] Stripe live keys (récupérées depuis PEP's V2, même compte bancaire)
-- [x] Webhook Stripe dédié boom.contact (we_1TDJLbGpzOqyzNB7UBSnffLM)
-- [x] Métadonnées application:'boom.contact' sur toutes les transactions
-- [x] 3 packages : 1/3/10 constats — CHF 4.90 / 12.90 / 34.90
-- [x] Tables DB : users, payments, credit_txns
-- [x] CGUModal — case obligatoire CGU + case optionnelle marketing PEP's Swiss SA
-- [x] Consentements horodatés en base
-- [x] DNS boom.contact : A → Railway, CNAME www, SPF, DMARC
-- [x] MX + SPF Resend
+- [x] OCR mondial IMIC — 50 langues, prompt universel
+- [x] Redirection apex → www
+- [x] PDF multilingue 12 langues (FR/DE/IT/EN/ES/PT/NL/PL/RO/CS/SK/HR)
+- [x] PoliceFlow DB tables (police_stations, police_users)
+- [x] JWT police 8h — auth séparée des conducteurs
+- [x] i18n FR/DE/IT/EN complet, deploy SUCCESS
 
 ---
 
-## ✅ FAIT — Session 3 (Qualité & Véhicules)
+## ✅ FAIT — Sessions 8-9 (Features avancées)
 
-- [x] Fix crash QRSession
-- [x] Fix PDF WinAnsi — ASCII uniquement
-- [x] Positionnement mondial — références formulaire papier supprimées
-- [x] 17 circonstances reformulées
-- [x] OCRScanner — capture=environment mobile
-- [x] Compression image 1024px / q=85%
-- [x] tRPC client propre — zéro fetch brut dans composants principaux
-- [x] ErrorBoundary
-- [x] SignaturePad DPR Retina
-- [x] VehicleType exhaustif 17 types
-- [x] LocationStep — 17 types groupés + blessures
-- [x] 8 silhouettes SVG
-- [x] Mapper 700+ modèles
-- [x] VehicleDiagram silhouette + couleur réelle
-- [x] ColorPicker 28 swatches
-- [x] pitch.html — page présentation
+- [x] Géolocalisation IP → langue (180+ pays, cascade 4 niveaux)
+- [x] Scanner multi-documents (jusqu'à 4 photos simultanées, merge résultats)
+- [x] Navigation retour entre étapes (bouton ← Retour)
+- [x] Véhicule pré-sélectionné depuis OCR (type auto-détecté)
+- [x] Driver B débloqué — pré-rempli depuis données A
+- [x] Croquis — 6 templates + description textuelle + fix iOS
+- [x] Transcription vocale réelle — Whisper-1, 99 langues, max 3 min
+- [x] Flow vocal → IA → questions → croquis automatique
+- [x] Moteur dessin professionnel (sketch-engine.ts) — silhouettes + couleurs OCR
+- [x] Détection multi-véhicules (2/3/4 véhicules)
+- [x] Reordering flow : VOCAL avant QR, CROQUIS après QR
+- [x] allVehicles state — enrichi au fur et à mesure
 
 ---
 
-## ✅ FAIT — Session 4 (Photos & Architecture)
+## ✅ FAIT — Session 10 (Carte + PDF + Audit)
 
-- [x] PhotoCapture — 5 catégories, compression 1024px, légendes, preview, max 5 photos
-- [x] PhotoCapture intégré ConstatFlow + JoinSession
-- [x] LocationStep câblé dans ConstatFlow (manquait dans le JSX)
-- [x] photos persistées localStorage + DB via updateAccident
-- [x] updateAccident tRPC — schéma étendu avec photos[]
-- [x] PricingPage — fetch() brut → mutation tRPC ✅
-- [x] CGUModal — fetch() brut → mutation tRPC ✅
-- [x] Email sender corrigé contact@boom.contact
-- [x] DKIM Resend confirmé actif et propagé ✅
-- [x] Module Police documenté dans TODO + CONTEXT
-- [x] Logo réel intégré partout (LandingPage, flows, pitch.html)
-- [x] Session TTL 2h → 24h (police peut intervenir tard)
-- [x] QR persistant écran Done avec message police
-- [x] Numéros urgences géolocalisés 35 pays
+- [x] MapVehiclePlacer — conducteur place son véhicule sur carte réelle
+- [x] Plan OSM par défaut (pas de voitures fantômes) + toggle satellite ESRI
+- [x] Géocodage Nominatim — fallback si lat/lng absent
+- [x] Mode piéton/solo/objet — bypass QR sans 2e conducteur
+- [x] Boutons Piéton/Enfant, Objet/Animal, Seul dans QRSession
+- [x] Image carte JPEG envoyée au serveur (updateAccidentMutation)
+- [x] PDF auto-detect JPEG vs PNG (fix crash embedPng sur JPEG)
+- [x] **BUG FIX CRITIQUE** : bothSigned → status 'completed' — presentParticipants élargi
+- [x] Audit A→Z complet — 11/14 routes OK (3 bugs trouvés et corrigés)
 
 ---
 
-## ✅ FAIT — Session 5 (Croquis, Multi-véhicules, PDF complet)
+## 🔴 PRIORITÉ 1 — PoliceFlow (pilote Jura)
 
-- [x] AccidentSketch — canvas section 13 (crayon, tampons A/B, flèche, route, texte, gomme)
-- [x] Croquis intégré ConstatFlow + JoinSession, persisté localStorage + DB
-- [x] ConstatForm section Complément — date/heure éditable, témoins, dégâts tiers, observations (section 14), dégâts apparents (section 11), preneur assurance différent
-- [x] PDF enrichi — page croquis PNG + page photos grille 2 colonnes + témoins + dégâts tiers
-- [x] QRSession multi-véhicules — sélecteur 2→5, QR coloré par rôle
-- [x] JoinSession — lit ?role=B/C/D/E dans URL, mutations dynamiques
-- [x] ParticipantRole A|B|C|D|E dans shared/types
-- [x] ConstatForm/VehicleDiagram/SignaturePad/PDFDownload — rôle étendu A-E
-- [x] signSession — supporte N véhicules, allSigned = tous présents ont signé
-- [x] router sign + sendToDriver — acceptent rôles A-E
-- [x] Rate limiting étendu : session.create(5/min) + session.join(10/min) + payment(3/min)
-- [x] accidentData poussé en DB dès création session
-- [x] CGUModal — validation email regex renforcée
-- [x] PWA icons 192/512 générés depuis vrai logo
-- [x] index.html — SEO complet, Open Graph, Twitter Card, fonts préchargées
-- [x] LandingPage — 9 features (photos, croquis, multi-véhicules, police, urgences)
+- [ ] `police.boom.contact` — subdomain Railway + routing
+- [ ] `PoliceFlow.tsx` — vue session + annotations agent
+  - [ ] Section 1 : Résumé incident (lieu, date, heure, blessés)
+  - [ ] Section 2 : Conducteurs A & B (OCR + divergences)
+  - [ ] Section 3 : Médias (galerie 5 catégories + croquis)
+  - [ ] Section 4 : Annotations agent (infractions, mesures, témoins)
+- [ ] PDF "Rapport d'intervention" modulaire CH (2 pages)
+- [ ] Auth police — login + JWT 8h
+- [ ] Audit trail consultations agents (RGPD)
+- [ ] Séparation droits par juridiction/poste
+- [ ] Script onboarding Canton Jura (créer station + agent en DB)
 
 ---
 
-## ✅ FAIT — Session 6
+## 🔴 PRIORITÉ 2 — Tests terrain complets
 
-### PWA Offline-first ✅
-- [x] Service Worker — cache-first assets, network-first API, SPA fallback offline
-- [x] IndexedDB — stocker session offline (boom-offline store)
-- [x] Background Sync quand connexion rétablie
-- [x] Hook useOffline.ts + OfflineBanner composant (banner orange)
-- [x] Préparé Push Notifications pour module Police
-
-### Carte verte optionnelle ✅
-- [x] Si carte verte absente → saisie inline société + N° contrat dans OCRScanner
-- [x] Données injectées dans result avant onComplete (fini le "pensez à renseigner")
-
-### Module Police B2B ✅ (base)
-- [x] Tables police_stations + police_users (migration auto au démarrage)
-- [x] police.service.ts — login JWT 8h, verifyToken, getPoliceDashboard
-- [x] tRPC police.login / police.dashboard / police.joinSession
-- [x] PoliceLogin.tsx — auth institutionnelle email+password
-- [x] PoliceDashboard.tsx — sessions actives 24h, stats, search, refresh 30s
-- [x] App.tsx route ?police=true, token persisté localStorage
-- [x] Suppression toutes références "CEA" du frontend
-
-## 🔴 PRIORITÉ — Session 7
+- [ ] Tests 8 pays E2E avec PDF (sandbox connexion à relancer)
+- [ ] Flow complet A+B sur 2 iPhones réels
+- [ ] Test Stripe paiement CHF réel
+- [ ] Test vocal → IA → questions → croquis en conditions réelles
+- [ ] Vérifier questions IA ciblées (pas génériques)
+- [ ] Vérifier parking_reverse correctement détecté
 
 ---
 
-## 🟠 PRIORITÉ 2 — Session 6-7
+## 🟠 PRIORITÉ 3 — Qualité produit
 
-### Tests réels
-- [ ] Flow complet A+B sur 2 téléphones iOS + Android
-- [ ] Test PDF téléchargement + email reçu avec DKIM
-- [ ] Test OCR : permis CH / carte grise FR / Green Card internationale
-- [ ] Test Stripe paiement réel CHF
-- [ ] Test multi-véhicules 3 téléphones
-
-### Champs CEA restants
-- [ ] Attestation assurance valable du/au (dates validité)
-- [ ] Catégorie permis (A, B...) — vérifier dans DriverData
-- [ ] Date de naissance conducteur — vérifier dans DriverData
-- [ ] Preneur d'assurance adresse complète
+- [ ] Score cohérence IA (contradictions A vs B avant signature)
+- [ ] Champs CEA manquants : date validité assurance, catégorie permis, date naissance
+- [ ] Mode Témoin officiel (3e QR dans ConstatFlow)
+- [ ] PDF conducteur B avec sa propre déclaration vocale
+- [ ] Transcription vocale dans PDF (section 14 observations)
+- [ ] Croquis IA dans PDF (remplace croquis manuel)
+- [ ] 50 silhouettes véhicules niveau 2 (hatchback, SUV small/large, pick-up...)
+- [ ] Cron nettoyage sessions > 7 jours
+- [ ] Dark mode (prefers-color-scheme)
 
 ---
 
-## 🟠 PRIORITÉ 2 — Module Police B2B (suite)
+## 🟡 PRIORITÉ 4 — Scaling / B2G Europe
 
-- [x] Tables police_stations + police_users ✅
-- [x] Auth JWT rôle "police" ✅
-- [x] Dashboard sessions actives ✅
-- [ ] PoliceFlow.tsx — vue détaillée session + annotations agent
-- [ ] Enrichissement PV : infractions, mesures, témoins assermentés
-- [ ] Template PDF "Rapport d'intervention" distinct du PDF conducteur
-- [ ] SMS pré-envoi conducteur avant arrivée police
-- [ ] Script onboarding canton pilote (Jura / Vaud) — créer station + agent
-
-**Règle absolue** : police jamais notifiée automatiquement — uniquement sur action volontaire utilisateur.
-
----
-
-## 🟡 PRIORITÉ 4 — i18n
-
-- [ ] i18next + react-i18next
-- [ ] FR / DE / IT / EN minimum (Suisse quadrilingue)
-- [ ] Détection auto langue navigateur
-- [ ] Bascule RTL/LTR pour arabe/hébreu
-
----
-
-## 🟡 PRIORITÉ 5 — Qualité & Robustesse
-
-### Silhouettes niveau 2
-- [ ] 50 modèles courants avec silhouettes distinctes (hatchback_3/5, SUV small/large, pick-up...)
-
-### Dark mode
-- [ ] prefers-color-scheme — critique pour accidents nocturnes
-
-### Rate limiting DB
-- [ ] Nettoyer sessions expirées > 7 jours (cron job)
-
----
-
-## 🟢 PRIORITÉ 6 — Features avancées
-
-### Score cohérence IA
-- [ ] Claude analyse contradictions entre déclarations A et B avant signature
-- [ ] Ex : "A dit priorité droite, B ne coche pas cette circonstance"
-- [ ] Alerte non bloquante — informatif uniquement
-
-### Mode Témoin officiel
-- [ ] 3ème QR pour témoin (différent du conducteur C/D/E)
-- [ ] Photos + déclaration + signature témoin
-
-### Intégration assureurs CH (B2B)
-- [ ] AXA, Baloise, Helvetia, Mobilière — APIs partenaires
-- [ ] Push déclaration directement dans leur système à la signature
-
-### Géofencing juridiction
-- [ ] Détection canton/département pour routing interne dashboards police
-- [ ] Pas de notification automatique
-
----
-
-## 🔵 PRIORITÉ 7 — Business & Go-Live
-
-### Intégration NEO / WIN WIN
-- [ ] API /api/accidents/stats pour neo-api-gateway
-- [ ] Dashboard CEO : nb constats/jour, pays, langues
-- [ ] Si client WIN WIN impliqué → alerte cockpit winwin.swiss
-
-### App Store
-- [ ] PWA installable (manifest + Service Worker)
-- [ ] Publication App Store iOS + Google Play (Capacitor ou PWA)
-
----
-
-## 📋 CHECKLIST AVANT LANCEMENT COMMERCIAL
-
-- [x] Build Railway SUCCESS
-- [x] Health check /health répond
-- [x] ANTHROPIC_API_KEY valide
-- [x] DATABASE_URL PostgreSQL connecté
-- [x] Migrations DB au démarrage
-- [x] Rate limiting actif (4 routes)
-- [x] Logs Railway visibles
-- [x] Stripe live configuré
-- [x] 2 services propres (boom-contact + PostgreSQL)
-- [x] DNS A + CNAME www configurés
-- [x] DKIM Resend actif ✅
-- [x] Email contact@boom.contact ✅
-- [x] Logo officiel intégré ✅
-- [x] PWA installable (manifest + icons)
-- [x] SEO / Open Graph complet
-- [ ] Test flow complet mobile iOS + Android
-- [ ] Test PDF téléchargement + email reçu
-- [ ] Test Stripe paiement réel
-- [ ] Test multi-véhicules 3 téléphones
-- [x] PWA Service Worker offline ✅
+- [ ] Templates PDF rapport police par pays : FR (LRPPN), BE, LU
+- [ ] i18n PoliceFlow DE/FR/IT/EN
+- [ ] API assureurs : webhook export structuré sinistre
+- [ ] Migration Infomaniak CH (déclenchée par premier contrat cantonal)
+- [ ] Mode Témoin officiel
+- [ ] Intégration assureurs CH : AXA, Baloise, Helvetia, Mobilière
+- [ ] Google Maps Static API — créer nouvelle clé non expirée
+- [ ] Multi-tenant par canton/pays
