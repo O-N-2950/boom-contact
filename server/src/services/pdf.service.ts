@@ -1,3 +1,4 @@
+import { renderSketch } from './sketch-renderer.service.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import {
   determineLangs, getBilingualLabels, getLabels, countryToLang,
@@ -381,8 +382,64 @@ export async function generateConstatPDF(
 
   y -= sigH + 28;
 
-  // ── SKETCH (Section 13) ────────────────────────────────────
-  if (acc.sketchImage) {
+  // ── SKETCH (Section 13) — Puppeteer Chrome + sketch-engine ─
+  // Générer le rendu Puppeteer si les données de session sont disponibles
+  let finalSketchBase64 = acc.sketchImage || null;
+  try {
+    const hasParticipants = A && B;
+    if (hasParticipants) {
+      // Déterminer le scénario depuis les circonstances
+      const circA = A.circumstances || [];
+      const circB = B.circumstances || [];
+      const allCirc = [...circA, ...circB];
+      
+      const scenario = allCirc.some(c => ['c6','c7'].includes(c)) ? 'roundabout'
+        : allCirc.some(c => ['c13'].includes(c)) ? 'parking_reverse'
+        : allCirc.some(c => ['c4','c5'].includes(c)) ? 'parking_forward'
+        : allCirc.some(c => ['c7','c8','c9','c10'].includes(c)) ? 'straight_rear'
+        : allCirc.some(c => ['c14'].includes(c)) ? 'straight_head'
+        : 'intersection_cross';
+
+      const trafficSide = ['AU','GB','JP','IN','ZA','NZ','IE','MT','CY','TH','MY','ID','SG','HK','MO','KE','TZ','UG','ZW','ZM'].includes(acc.location?.country || '') ? 'left' : 'right';
+
+      const dirA = circA.includes('c12') ? 'west' : circA.includes('c11') ? 'east' : 'east';
+      const dirB = 'west';
+
+      logger.info('[pdf] Rendu sketch Puppeteer...');
+      const puppeteerPng = await renderSketch({
+        scenario,
+        trafficSide,
+        vehicleAType:     (A.vehicle?.vehicleType || 'car') as string,
+        vehicleAColor:    A.vehicle?.color || 'bleu',
+        vehicleADirection: dirA,
+        vehicleAImpactZone: (A.damagedZones?.[0] || 'front').replace('-','_'),
+        vehicleAMoving:   true,
+        vehicleAReversing: circA.includes('c13'),
+        vehicleABrand:    A.vehicle?.brand,
+        vehicleAModel:    A.vehicle?.model,
+        vehicleAPlate:    A.vehicle?.licensePlate,
+        vehicleBType:     (B.vehicle?.vehicleType || 'car') as string,
+        vehicleBColor:    B.vehicle?.color || 'rouge',
+        vehicleBDirection: dirB,
+        vehicleBImpactZone: (B.damagedZones?.[0] || 'rear').replace('-','_'),
+        vehicleBMoving:   true,
+        vehicleBReversing: circB.includes('c13'),
+        vehicleBBrand:    B.vehicle?.brand,
+        vehicleBModel:    B.vehicle?.model,
+        vehicleBPlate:    B.vehicle?.licensePlate,
+        mapImageBase64:   acc.sketchImage || undefined,
+        width: 900,
+        height: 650,
+      });
+      finalSketchBase64 = puppeteerPng;
+      logger.info('[pdf] ✅ Sketch Puppeteer rendu');
+    }
+  } catch (sketchErr: any) {
+    logger.warn('[pdf] Sketch Puppeteer fallback:', sketchErr.message);
+    // Garder sketchImage original si dispo
+  }
+
+  if (finalSketchBase64) {
     try {
       // New page for sketch / carte
       const sketchPage = doc.addPage([595, 842]);
@@ -390,7 +447,7 @@ export async function generateConstatPDF(
       drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
       drawText(sketchPage, `Carte positionnée par le conducteur A  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
       drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light);
-      const sketchBytes = Buffer.from(acc.sketchImage, 'base64');
+      const sketchBytes = Buffer.from(finalSketchBase64!, 'base64');
       // Auto-detect JPEG (FF D8 FF) ou PNG (89 50 4E 47)
       const isJpeg = sketchBytes[0] === 0xFF && sketchBytes[1] === 0xD8;
       const sketchImg = isJpeg ? await doc.embedJpg(sketchBytes) : await doc.embedPng(sketchBytes);
