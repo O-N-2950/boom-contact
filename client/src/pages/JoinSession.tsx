@@ -3,7 +3,8 @@ import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGS, LANG_META, applyDir } from '../i18n';
+import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
+import type { SupportedLang } from '../i18n';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { ConstatForm } from '../components/constat/ConstatForm';
@@ -94,9 +95,7 @@ export function JoinSession() {
 
   const handleLangChange = (lang: string) => {
     setSelectedLang(lang);
-    i18n.changeLanguage(lang);
-    applyDir(lang);
-    localStorage.setItem('boom_lang', lang);
+    applyLang(lang as SupportedLang);
   };
 
   const join = () => {
@@ -232,7 +231,7 @@ export function JoinSession() {
           Votre langue / Your language / Ihre Sprache / La tua lingua
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
-          {SUPPORTED_LANGS.map(lang => {
+          {getLangOrder(sessionStorage.getItem('boom_detected_country')).map(lang => {
             const isActive = lang === selectedLang;
             return (
               <button
