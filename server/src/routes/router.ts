@@ -9,7 +9,7 @@ import {
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
-import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard } from '../services/police.service.js';
+import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -317,8 +317,74 @@ export const appRouter = router({
         };
       }),
 
+    // Session complète avec audit trail
+    getFullSession: publicProcedure
+      .input(z.object({ token: z.string(), sessionId: z.string() }))
+      .query(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        const session = await getSession(input.sessionId);
+        if (!session) throw new Error('Session introuvable ou expirée');
+        await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, (payload as any).country || 'CH');
+        return { session, policeAgent: payload };
+      }),
+
+    // Charger annotations existantes
+    getAnnotation: publicProcedure
+      .input(z.object({ token: z.string(), sessionId: z.string() }))
+      .query(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        return getAnnotation(input.sessionId, payload.stationId);
+      }),
+
+    // Sauvegarder annotations agent
+    saveAnnotation: publicProcedure
+      .input(z.object({
+        token:     z.string(),
+        sessionId: z.string(),
+        data: z.object({
+          reportNumber:  z.string().optional(),
+          infractions:   z.array(z.object({ code: z.string(), description: z.string(), party: z.enum(['A','B','both']) })),
+          measures:      z.array(z.object({ type: z.string(), description: z.string(), party: z.enum(['A','B','both']).optional() })),
+          witnesses:     z.array(z.object({ name: z.string(), address: z.string().optional(), phone: z.string().optional(), statement: z.string().optional() })),
+          observations:  z.string().optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data as any);
+        return { ok: true, id: result.id };
+      }),
+
+    // Générer PDF rapport d'intervention
+    generateReport: publicProcedure
+      .input(z.object({ token: z.string(), sessionId: z.string() }))
+      .mutation(async ({ input }) => {
+        const payload = verifyPoliceToken(input.token);
+        const session = await getSession(input.sessionId);
+        if (!session) throw new Error('Session introuvable');
+        const annotation = await getAnnotation(input.sessionId, payload.stationId);
+        const { db } = await import('../db/index.js');
+        const { policeUsers, policeStations } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const [agentRow] = await db.select().from(policeUsers).where(eq(policeUsers.id, payload.userId)).limit(1);
+        const [stationRow] = await db.select().from(policeStations).where(eq(policeStations.id, payload.stationId)).limit(1);
+        const annotationData = annotation
+          ? { reportNumber: annotation.reportNumber || undefined, infractions: (annotation.infractions as any) || [], measures: (annotation.measures as any) || [], witnesses: (annotation.witnesses as any) || [], observations: annotation.observations || undefined }
+          : { infractions: [], measures: [], witnesses: [] };
+        const { generatePoliceReport } = await import('../services/pdf.police.js');
+        const pdfBytes = await generatePoliceReport(
+          session as any, annotationData,
+          { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
+          (payload as any).country || 'CH'
+        );
+        const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+        const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
+        return { pdfBase64, filename };
+      }),
+
   }),
 
 });
 
 export type AppRouter = typeof appRouter;
+
