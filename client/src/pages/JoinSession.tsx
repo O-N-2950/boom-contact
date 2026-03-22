@@ -2,6 +2,8 @@ import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SUPPORTED_LANGS, LANG_META, applyDir } from '../i18n';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { ConstatForm } from '../components/constat/ConstatForm';
@@ -38,6 +40,10 @@ export function JoinSession() {
   const urlRole = (params.get('role') || 'B').toUpperCase() as ParticipantRole;
   const saved = loadState(sessionId);
 
+  const { i18n } = useTranslation();
+  const [selectedLang, setSelectedLang] = useState<string>(() => {
+    return saved?.lang || localStorage.getItem('boom_lang') || navigator.language?.split('-')[0] || 'fr';
+  });
   const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'landing');
   const [joined, setJoined] = useState(saved?.joined || false);
   const [joining, setJoining] = useState(false);
@@ -86,11 +92,18 @@ export function JoinSession() {
     },
   });
 
+  const handleLangChange = (lang: string) => {
+    setSelectedLang(lang);
+    i18n.changeLanguage(lang);
+    applyDir(lang);
+    localStorage.setItem('boom_lang', lang);
+  };
+
   const join = () => {
     if (!sessionId || joining) return;
     setJoining(true);
     setError(null);
-    joinMutation.mutate({ sessionId, language: navigator.language?.split('-')[0] || 'fr' });
+    joinMutation.mutate({ sessionId, language: selectedLang });
   };
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
@@ -212,6 +225,41 @@ export function JoinSession() {
           ⚠️ {error}
         </div>
       )}
+
+      {/* Sélecteur de langue — chaque conducteur choisit sa propre langue */}
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 11, opacity: 0.4, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: 10, textAlign: 'center' }}>
+          Votre langue / Your language / Ihre Sprache / La tua lingua
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+          {SUPPORTED_LANGS.map(lang => {
+            const isActive = lang === selectedLang;
+            return (
+              <button
+                key={lang}
+                onClick={() => handleLangChange(lang)}
+                title={LANG_META[lang].label}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                  padding: '10px 12px', borderRadius: 10,
+                  border: isActive ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.12)',
+                  background: isActive ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.04)',
+                  cursor: 'pointer', fontSize: 24,
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
+                  minWidth: 60, minHeight: 60,
+                  transition: 'all 0.15s',
+                }}
+              >
+                <span>{LANG_META[lang].flag}</span>
+                <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 400, color: isActive ? 'var(--boom)' : 'rgba(255,255,255,0.5)' }}>
+                  {LANG_META[lang].label.split(' ')[0]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <button onClick={join} disabled={joining || !sessionId} style={{
         width: '100%', padding: '18px', borderRadius: 12, border: 'none',
