@@ -87,12 +87,12 @@ const ACCIDENT_SCENARIOS = [
       // Cercle central
       ctx.beginPath(); ctx.arc(w/2, h/2, 80, 0, Math.PI * 2); ctx.stroke();
       // Entrées/sorties
-      const entries = [[w/2, 0], [w, h/2], [w/2, h], [0, h/2]];
+      const entries: [number, number][] = [[w/2, 0], [w, h/2], [w/2, h], [0, h/2]];
       entries.forEach(([ex, ey]) => {
         const angle = Math.atan2(ey - h/2, ex - w/2);
         const ix = w/2 + Math.cos(angle) * 80;
         const iy = h/2 + Math.sin(angle) * 80;
-        ctx.beginPath(); ctx.moveTo(ex as number, ey as number); ctx.lineTo(ix, iy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(ix, iy); ctx.stroke();
       });
     },
   },
@@ -204,11 +204,11 @@ export function AccidentSketch({ sketchImage, onChange, onContinue }: Props) {
     // Car body
     ctx.fillStyle = c;
     ctx.beginPath();
-    ctx.roundRect(0, h * 0.35, w, h * 0.55, 4);
+    ctx.rect(0, h * 0.35, w, h * 0.55);
     ctx.fill();
     // Roof
     ctx.beginPath();
-    ctx.roundRect(w * 0.15, h * 0.1, w * 0.7, h * 0.35, 4);
+    ctx.rect(w * 0.15, h * 0.1, w * 0.7, h * 0.35);
     ctx.fill();
     // Wheels
     ctx.fillStyle = '#0a0a18';
@@ -397,7 +397,7 @@ export function AccidentSketch({ sketchImage, onChange, onContinue }: Props) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
             {ACCIDENT_SCENARIOS.map(s => (
               <button key={s.id} onClick={() => applyTemplate(s)}
-                style={{ padding:'10px 6px', borderRadius:10, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', cursor:'pointer', textAlign:'center', touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+                style={{ padding:'10px 6px', borderRadius:10, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', cursor:'pointer', textAlign:'center', touchAction:'manipulation', WebkitTapHighlightColor:'transparent' as any }}>
                 <div style={{ fontSize:20, marginBottom:3 }}>{s.icon}</div>
                 <div style={{ fontSize:10, fontWeight:600, color:'var(--text)', marginBottom:2 }}>{s.label}</div>
                 <div style={{ fontSize:9, opacity:0.4, lineHeight:1.3 }}>{s.description}</div>
