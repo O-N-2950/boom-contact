@@ -171,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Scansiona i documenti",
-      "subtitle": "Inizia con la tua carta di circolazione.\nPoi scansiona il tuo <strong>documento assicurativo</strong> (carta verde, attestato).",
-      "reg_label": "Carta di circolazione",
-      "reg_sub": "Libretto, RC Book, Zulassung — <strong>obbligatorio</strong>",
-      "tip": "💡 <strong>Consiglio:</strong> Prepara anche il tuo <strong>documento assicurativo</strong> — carta verde internazionale, attestato o certificato di assicurazione. Contiene il tuo assicuratore e il numero di polizza."
+      "subtitle": "Inizia con la tua carta di circolazione.\nUn <strong>documento assicurativo è raccomandato</strong>.",
+      "reg_label": "Carta di circolazione / Documento immatricolazione",
+      "reg_sub": "Permis CH, carta di circolazione IT, carte grise FR, V5C GB… — <strong>obbligatorio</strong>",
+      "tip": "💡 <strong>Documento assicurativo raccomandato.</strong> Carta verde (IMIC), attestato assicurazione — questo documento contiene assicuratore e numero polizza. Senza, dovrete inserirli manualmente."
     },
     "greencard": {
       "scanned": "✅ Carta di circolazione analizzata",
       "compressing": "· Compressione…",
-      "title": "Documento assicurativo",
-      "subtitle": "Scansiona la tua <strong>carta verde internazionale</strong>, l'attestato assicurativo o il certificato di assicurazione. Contiene il tuo assicuratore e il numero di polizza.<br/>🇨🇭 CH · 🇪🇺 Europa · 🇬🇧 UK · 🇺🇸 US · 🌍 Mondo",
+      "title": "Documento assicurativo?",
+      "subtitle": "Scansiona la tua <strong>carta verde (IMIC)</strong>, attestato assicurazione o documento equivalente. Contiene assicuratore e numero polizza. È <strong>raccomandato</strong> — senza, inserimento manuale richiesto.",
       "scan_btn": "Scansiona documento assicurativo",
-      "scan_sub": "Carta verde · Attestato assicurativo · Certificato · Insurance ID card",
-      "skip_btn": "Non ho questo documento → inserimento manuale"
+      "scan_sub": "Carta verde, attestato, insurance card…",
+      "skip_btn": "Inserire manualmente dati assicurativi →"
     },
     "scanning": {
       "title": "Analisi in corso…",
