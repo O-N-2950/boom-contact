@@ -174,7 +174,7 @@ export async function signSession(
     (session as any).participantE && (role === 'E' ? updated : (session as any).participantE),
   ].filter(Boolean);
 
-  const presentParticipants = participants.filter((p: any) => p?.driver?.firstName || p?.vehicle?.licensePlate);
+  const presentParticipants = participants.filter((p: any) => p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate || p?.name || p?.vehicle?.brand);
   const allSigned = presentParticipants.length >= 2 &&
     presentParticipants.every((p: any) => !!p?.signature);
 
