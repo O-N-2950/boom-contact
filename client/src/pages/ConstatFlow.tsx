@@ -372,6 +372,8 @@ export function ConstatFlow() {
             role="A"
             accidentLat={accidentData.location?.lat}
             accidentLng={accidentData.location?.lng}
+            accidentAddress={accidentData.location?.address}
+            accidentCity={accidentData.location?.city}
             vehicleColor={participantData.vehicle?.color}
             vehicleType={participantData.vehicle?.vehicleType}
             brand={participantData.vehicle?.brand}
