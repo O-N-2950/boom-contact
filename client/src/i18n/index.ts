@@ -1,5 +1,6 @@
 // boom.contact — i18n setup
-// i18next + react-i18next + browser language detector
+// Cascade: localStorage → IP géoloc → navigateur → fallback FR
+// Aucune permission requise — transparent pour l'utilisateur
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -34,28 +35,36 @@ i18n
     },
     fallbackLng: 'fr',
     supportedLngs: SUPPORTED_LANGS,
-    // Detection order: localStorage → navigator → default
+    // Détection initiale: localStorage d'abord, puis navigateur
+    // La géoloc IP est appliquée en async après init (voir main.tsx)
     detection: {
       order: ['localStorage', 'navigator'],
       lookupLocalStorage: 'boom_lang',
       caches: ['localStorage'],
     },
     interpolation: {
-      escapeValue: false, // React handles XSS
+      escapeValue: false,
     },
-    // Return key if translation missing (dev-friendly)
     parseMissingKeyHandler: (key) => `[${key}]`,
   });
 
 export default i18n;
 
-// Helper: apply RTL direction to document
+// Helper: applique la direction RTL/LTR au document
 export function applyDir(lang: string) {
   const dir = RTL_LANGS.includes(lang) ? 'rtl' : 'ltr';
   document.documentElement.setAttribute('dir', dir);
   document.documentElement.setAttribute('lang', lang);
 }
 
-// Re-export 50-lang metadata for OCR/email service use
-export type { };
+// Helper: applique une langue et la persiste
+export function applyLang(lang: SupportedLang) {
+  i18n.changeLanguage(lang);
+  applyDir(lang);
+  localStorage.setItem('boom_lang', lang);
+}
+
 export const TOTAL_LANGUAGES = 50;
+
+// Re-export geo-lang utilities
+export { detectBestLanguage, getLangOrder, langFromCountry } from './geo-lang';
