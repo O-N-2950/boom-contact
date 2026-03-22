@@ -1,9 +1,10 @@
 // boom.contact — LanguageSwitcher
 // 4 boutons drapeaux toujours visibles — pas de dropdown, pas de bug iOS
-// La solution la plus simple est la meilleure
+// Ordre des langues : langue du pays détecté en premier
 
 import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGS, LANG_META, applyDir } from '../i18n';
+import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
+import type { SupportedLang } from '../i18n';
 
 interface Props {
   style?: React.CSSProperties;
@@ -13,15 +14,16 @@ interface Props {
 export function LanguageSwitcher({ style, compact = false }: Props) {
   const { i18n } = useTranslation();
 
-  const currentLang = (SUPPORTED_LANGS.includes(i18n.language as any)
+  const currentLang = (SUPPORTED_LANGS.includes(i18n.language as SupportedLang)
     ? i18n.language
-    : 'fr') as keyof typeof LANG_META;
+    : 'fr') as SupportedLang;
 
-  const handleChange = (lang: string) => {
-    i18n.changeLanguage(lang);
-    applyDir(lang);
-    // Persister dans localStorage
-    localStorage.setItem('boom_lang', lang);
+  // Ordre basé sur le pays détecté (stocké en sessionStorage par main.tsx)
+  const detectedCountry = sessionStorage.getItem('boom_detected_country');
+  const orderedLangs = getLangOrder(detectedCountry);
+
+  const handleChange = (lang: SupportedLang) => {
+    applyLang(lang);
   };
 
   return (
@@ -31,7 +33,7 @@ export function LanguageSwitcher({ style, compact = false }: Props) {
       gap: 4,
       ...style,
     }}>
-      {SUPPORTED_LANGS.map(lang => {
+      {orderedLangs.map(lang => {
         const isActive = lang === currentLang;
         return (
           <button
@@ -54,7 +56,6 @@ export function LanguageSwitcher({ style, compact = false }: Props) {
               cursor: 'pointer',
               fontSize: compact ? 16 : 18,
               transition: 'all 0.15s',
-              // iOS: supprime délai 300ms et highlight bleu au tap
               touchAction: 'manipulation',
               WebkitTapHighlightColor: 'transparent',
               padding: 0,
