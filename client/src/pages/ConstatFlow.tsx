@@ -38,7 +38,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'location' | 'photos' | 'qr' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -71,6 +71,11 @@ export function ConstatFlow() {
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
   const [voiceAnalysis, setVoiceAnalysis] = useState<any>(null);
+  const [vehicleCount, setVehicleCount] = useState<2|3|4>(2);
+  // Données de tous les véhicules (enrichies au fur et à mesure des scans)
+  const [allVehicles, setAllVehicles] = useState<Record<string, any>>({
+    A: saved?.vehicleA || null,
+  });
   const [otherSigned, setOtherSigned] = useState(false);
 
   const setStep = (s: FlowStep) => {
@@ -81,8 +86,8 @@ export function ConstatFlow() {
   };
 
   const PREV: Partial<Record<FlowStep, FlowStep>> = {
-    location:'ocr', photos:'location', qr:'photos',
-    form:'qr', sketch:'form', diagram:'sketch', sign:'diagram',
+    location:'ocr', photos:'location', voice:'photos',
+    qr:'voice', sketch:'qr', form:'sketch', diagram:'form', sign:'diagram',
   };
   const goBack = () => { const p = PREV[step]; if (p) setStep(p); };
   const canGoBack = !!PREV[step] && step !== 'done';
@@ -218,7 +223,7 @@ export function ConstatFlow() {
         setAccidentData(prev => ({ ...prev, ...accident }));
       }
     }
-    setStep('voice');
+    setStep('diagram');
   };
 
   const handleSketchDone = (base64: string) => {
@@ -317,7 +322,18 @@ export function ConstatFlow() {
           <QRSession
             sessionId={sessionId}
             qrUrl={qrUrl}
-            onPartnerJoined={() => setStep('form')}
+            onPartnerJoined={async () => {
+              // Charger les données véhicule B depuis la session avant le sketch
+              try {
+                const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
+                const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
+                if (bParticipant?.vehicle?.vehicleData) {
+                  setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
+                  (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
+                }
+              } catch (e) { /* ignore */ }
+              setStep('sketch');
+            }}
           />
         )}
 
@@ -332,28 +348,49 @@ export function ConstatFlow() {
             lang={participantData.language}
             onComplete={(data) => {
               setVoiceAnalysis(data.analysis);
-              setSketchImage(data.sketchBase64);
-              // Pré-remplir les circonstances depuis l'analyse IA
+              // Stocker le nombre de véhicules détecté par l'IA
+              const count = data.analysis?.vehicleCount || 2;
+              setVehicleCount(count as 2|3|4);
+              // Pré-remplir circonstances
               if (data.analysis?.circumstances?.length > 0) {
                 setParticipantData(prev => ({
                   ...prev,
                   circumstances: data.analysis.circumstances,
                 }));
               }
-              setStep('sketch');
+              // Aller vers QR — attendre les autres conducteurs
+              setStep('qr');
             }}
-            onSkip={() => setStep('sketch')}
+            onSkip={() => setStep('qr')}
           />
         )}
 
         {step === 'sketch' && (
-          <AccidentSketch
-            vehicleTypeA={participantData.vehicle?.vehicleType}
-            vehicleTypeB={undefined}
-            sketchImage={sketchImage}
-            onChange={setSketchImage}
-            onContinue={() => handleSketchDone(sketchImage)}
-          />
+          voiceAnalysis ? (
+            // Sketch IA — toutes les données véhicules sont maintenant connues
+            <VoiceSketchFlow
+              role="A"
+              sessionId={sessionId || ''}
+              lang={participantData.language}
+              preloadedAnalysis={voiceAnalysis}
+              vehicleAData={allVehicles.A}
+              vehicleBData={allVehicles.B}
+              onComplete={(data) => {
+                setSketchImage(data.sketchBase64);
+                setStep('form');
+              }}
+              onSkip={() => setStep('form')}
+            />
+          ) : (
+            // Fallback sketch manuel si pas d'analyse vocale
+            <AccidentSketch
+              vehicleTypeA={participantData.vehicle?.vehicleType}
+              vehicleTypeB={undefined}
+              sketchImage={sketchImage}
+              onChange={setSketchImage}
+              onContinue={() => { handleSketchDone(sketchImage); setStep('form'); }}
+            />
+          )
         )}
 
         {step === 'diagram' && (
