@@ -144,8 +144,8 @@ export async function analyzeAccidentTranscript(
     : '';
 
   const userMessage = previousAnswers && Object.keys(previousAnswers).length > 0
-    ? \`TESTIMONY: "\${transcript}"\n\nCLARIFICATION ANSWERS: \${JSON.stringify(previousAnswers)}\n\nNow provide final analysis with higher confidence.\`
-    : \`Analyze this accident testimony and extract scene data:\n\n"\${transcript}"\${contextHint}\`;
+    ? `TESTIMONY: "\${transcript}"\n\nCLARIFICATION ANSWERS: \${JSON.stringify(previousAnswers)}\n\nNow provide final analysis with higher confidence.`
+    : `Analyze this accident testimony and extract scene data:\n\n"\${transcript}"\${contextHint}`;
 
   try {
     const response = await anthropic.messages.create({
