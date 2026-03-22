@@ -104,6 +104,7 @@ export function ConstatFlow() {
     { id: 'ocr',      icon: '📄', label: t('steps.scan') },
     { id: 'location', icon: '📍', label: t('steps.location') },
     { id: 'photos',   icon: '📸', label: t('steps.photos') },
+    { id: 'voice',    icon: '🎙️', label: 'Vocal' },
     { id: 'qr',       icon: '📱', label: t('steps.qr') },
     { id: 'form',     icon: '📋', label: t('steps.form') },
     { id: 'sketch',   icon: '✏️', label: t('steps.sketch') },
