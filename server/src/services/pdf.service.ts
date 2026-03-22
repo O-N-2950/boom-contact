@@ -384,13 +384,16 @@ export async function generateConstatPDF(
   // ── SKETCH (Section 13) ────────────────────────────────────
   if (acc.sketchImage) {
     try {
-      // New page for sketch
+      // New page for sketch / carte
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
       drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
-      drawText(sketchPage, `Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+      drawText(sketchPage, `Carte positionnée par le conducteur A  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+      drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light);
       const sketchBytes = Buffer.from(acc.sketchImage, 'base64');
-      const sketchImg = await doc.embedPng(sketchBytes);
+      // Auto-detect JPEG (FF D8 FF) ou PNG (89 50 4E 47)
+      const isJpeg = sketchBytes[0] === 0xFF && sketchBytes[1] === 0xD8;
+      const sketchImg = isJpeg ? await doc.embedJpg(sketchBytes) : await doc.embedPng(sketchBytes);
       const maxW = 595 - margin * 2;
       const maxH = 700;
       const scale = Math.min(maxW / sketchImg.width, maxH / sketchImg.height, 1);
