@@ -22,6 +22,12 @@ interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   sessionId: string;
   lang?: string;
+  // Mode "sketch seulement" — analyse déjà faite, on connaît tous les véhicules
+  preloadedAnalysis?: SceneAnalysis | null;
+  vehicleAData?: { color?: string; type?: string; brand?: string; model?: string } | null;
+  vehicleBData?: { color?: string; type?: string; brand?: string; model?: string } | null;
+  vehicleCData?: { color?: string; type?: string; brand?: string; model?: string } | null;
+  vehicleDData?: { color?: string; type?: string; brand?: string; model?: string } | null;
   onComplete: (data: {
     transcript: string;
     analysis: SceneAnalysis;
@@ -45,11 +51,12 @@ async function blobToBase64(blob: Blob): Promise<string> {
 
 
 // ── Composant principal ───────────────────────────────────────
-export function VoiceSketchFlow({ role, sessionId, lang, onComplete, onSkip }: Props) {
-  const [flowState, setFlowState] = useState<FlowState>('intro');
+export function VoiceSketchFlow({ role, sessionId, lang, preloadedAnalysis, vehicleAData, vehicleBData, vehicleCData, vehicleDData, onComplete, onSkip }: Props) {
+  // Si analyse déjà disponible (après QR) → aller direct au sketch
+  const [flowState, setFlowState] = useState<FlowState>(preloadedAnalysis ? 'sketching' : 'intro');
   const [elapsed, setElapsed]     = useState(0);
   const [transcript, setTranscript]   = useState('');
-  const [analysis, setAnalysis]       = useState<SceneAnalysis | null>(null);
+  const [analysis, setAnalysis]       = useState<SceneAnalysis | null>(preloadedAnalysis || null);
   const [answers, setAnswers]         = useState<Record<string, string>>({});
   const [error, setError]             = useState('');
 
@@ -59,6 +66,13 @@ export function VoiceSketchFlow({ role, sessionId, lang, onComplete, onSkip }: P
   const streamRef   = useRef<MediaStream | null>(null);
   const canvasRef   = useRef<HTMLCanvasElement>(null);
   const sketchB64Ref = useRef('');
+
+  // Dessiner immédiatement si données déjà disponibles
+  useEffect(() => {
+    if (preloadedAnalysis && flowState === 'sketching') {
+      setTimeout(() => renderSketch(preloadedAnalysis), 100);
+    }
+  }, [preloadedAnalysis]);
 
   useEffect(() => () => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -91,14 +105,14 @@ export function VoiceSketchFlow({ role, sessionId, lang, onComplete, onSkip }: P
   const renderSketch = useCallback((scene: SceneAnalysis) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // Enrichir avec les données OCR (couleur, type de véhicule)
-    const vehicleAColor = (window as any).__boomVehicleA?.color;
-    const vehicleBColor = (window as any).__boomVehicleB?.color;
-    const vehicleAType  = (window as any).__boomVehicleA?.type;
-    const vehicleBType  = (window as any).__boomVehicleB?.type;
-    renderAccidentSketch(canvas, scene, vehicleAColor, vehicleBColor, vehicleAType, vehicleBType);
+    // Priorité: props directes (après QR) > window (avant QR) > fallback
+    const aColor = vehicleAData?.color || (window as any).__boomVehicleA?.color;
+    const bColor = vehicleBData?.color || (window as any).__boomVehicleB?.color;
+    const aType  = vehicleAData?.type  || (window as any).__boomVehicleA?.type;
+    const bType  = vehicleBData?.type  || (window as any).__boomVehicleB?.type;
+    renderAccidentSketch(canvas, scene, aColor, bColor, aType, bType);
     sketchB64Ref.current = canvas.toDataURL('image/png').split(',')[1];
-  }, []);
+  }, [vehicleAData, vehicleBData]);
 
   // ── Recording ────────────────────────────────────────────────
   const startRecording = async () => {
