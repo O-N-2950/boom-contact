@@ -24,7 +24,15 @@ const COLORS = ['#F0EDE8', '#FF3500', '#3B82F6', '#22C55E', '#FFB300', '#A855F7'
 
 
 // ── Templates de scénarios d'accident ────────────────────────
-const ACCIDENT_SCENARIOS = [
+interface ScenarioTemplate {
+  id: string;
+  label: string;
+  icon: string;
+  description: string;
+  draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void;
+}
+
+const ACCIDENT_SCENARIOS: ScenarioTemplate[] = [
   {
     id: 'intersection_priority',
     label: 'Carrefour — priorité',
