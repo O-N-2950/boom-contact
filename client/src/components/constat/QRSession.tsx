@@ -20,6 +20,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
   const [partnerJoined, setPartnerJoined] = useState(false);
   const [copied, setCopied] = useState<ParticipantRole | null>(null);
   const [vehicleCount, setVehicleCount] = useState(2);
+  const [secondPartyType, setSecondPartyType] = useState<'vehicle'|'pedestrian'|'object'|'solo'>('vehicle');
   const [qrDataUrls, setQrDataUrls] = useState<Record<string, string>>({});
   const [activeQR, setActiveQR] = useState<ParticipantRole>('B');
   const [joinedRoles, setJoinedRoles] = useState<Set<string>>(new Set());
@@ -37,7 +38,8 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
     if ((sessionData as any).participantD?.driver?.firstName) newJoined.add('D');
     if ((sessionData as any).participantE?.driver?.firstName) newJoined.add('E');
     setJoinedRoles(newJoined);
-    const expectedRoles = ['B', 'C', 'D', 'E'].slice(0, vehicleCount - 1);
+    if (vehicleCount === 1) { onPartnerJoined(); return; }
+  const expectedRoles = ['B', 'C', 'D', 'E'].slice(0, vehicleCount - 1);
     const allJoined = expectedRoles.every(r => newJoined.has(r));
     const status = sessionData.status;
     if (allJoined || status === 'active' || status === 'signing' || status === 'completed') {
@@ -102,8 +104,53 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
             <div style={{ fontSize: 13, fontWeight: 700 }}>Véhicules impliqués</div>
             <div style={{ fontSize: 11, opacity: 0.4, marginTop: 2 }}>Ajoutez si nécessaire (max {MAX_VEHICLES})</div>
           </div>
+
+            {/* Type de partie adverse */}
+            <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {([
+                { val: 'vehicle', icon: '🚗', label: 'Véhicule' },
+                { val: 'pedestrian', icon: '🚶', label: 'Piéton / Enfant' },
+                { val: 'object', icon: '🏗️', label: 'Objet / Animal' },
+                { val: 'solo', icon: '🧍', label: 'Seul' },
+              ] as const).map(opt => (
+                <button key={opt.val}
+                  onClick={() => {
+                    setSecondPartyType(opt.val);
+                    if (opt.val !== 'vehicle') setVehicleCount(1);
+                    else setVehicleCount(v => Math.max(2, v));
+                  }}
+                  style={{
+                    padding: '5px 10px', borderRadius: 20, cursor: 'pointer', fontSize: 11,
+                    border: secondPartyType === opt.val ? '1.5px solid var(--boom)' : '1px solid rgba(255,255,255,0.1)',
+                    background: secondPartyType === opt.val ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.03)',
+                    color: secondPartyType === opt.val ? 'var(--boom)' : 'rgba(255,255,255,0.55)',
+                    fontWeight: secondPartyType === opt.val ? 700 : 400,
+                    touchAction: 'manipulation',
+                  }}>{opt.icon} {opt.label}</button>
+              ))}
+            </div>
+
+            {vehicleCount === 1 && (
+              <div style={{ marginTop: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(255,179,0,0.07)', border: '1px solid rgba(255,179,0,0.2)' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#f59e0b', marginBottom: 6 }}>
+                  {secondPartyType === 'pedestrian' ? '🚶 Piéton impliqué' :
+                   secondPartyType === 'object' ? '🏗️ Aucun autre conducteur' : '🧍 Conducteur seul'}
+                </div>
+                <div style={{ fontSize: 11, opacity: 0.65, lineHeight: 1.6, marginBottom: 10 }}>
+                  {secondPartyType === 'pedestrian'
+                    ? 'Le piéton n'a pas de téléphone ? Continuez seul. Ses coordonnées seront saisies dans le formulaire. ⚠️ Appelez le 117 si blessé.'
+                    : secondPartyType === 'object'
+                    ? 'Dégâts matériels sans autre conducteur — continuez seul et photographiez les dégâts.'
+                    : 'Vous êtes seul impliqué — continuez pour documenter l'incident.'}
+                </div>
+                <button onClick={onPartnerJoined}
+                  style={{ width: '100%', padding: '11px', borderRadius: 8, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700, touchAction: 'manipulation' }}>
+                  Continuer sans autre conducteur →
+                </button>
+              </div>
+            )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <button onClick={() => setVehicleCount(v => Math.max(2, v - 1))} disabled={vehicleCount <= 2}
+            <button onClick={() => setVehicleCount(v => Math.max(1, v - 1))} disabled={vehicleCount <= 1}
               style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: vehicleCount <= 2 ? 'rgba(240,237,232,0.05)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', fontSize: 18, fontWeight: 700, opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
             <span style={{ fontSize: 22, fontWeight: 800, minWidth: 24, textAlign: 'center', color: 'var(--boom)' }}>{vehicleCount}</span>
             <button onClick={() => setVehicleCount(v => Math.min(MAX_VEHICLES, v + 1))} disabled={vehicleCount >= MAX_VEHICLES}
