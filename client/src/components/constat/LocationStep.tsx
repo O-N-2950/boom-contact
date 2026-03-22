@@ -4,6 +4,7 @@ import type { AccidentData, VehicleType } from '../../../../shared/types';
 
 interface Props {
   onComplete: (data: Partial<AccidentData> & { vehicleType: VehicleType }) => void;
+  initialVehicleType?: VehicleType | null;
 }
 
 type VehicleGroup = {
@@ -44,9 +45,9 @@ const VEHICLE_GROUPS: VehicleGroup[] = [
 
 type GeoStatus = 'idle' | 'loading' | 'success' | 'denied' | 'error';
 
-export function LocationStep({ onComplete }: Props) {
+export function LocationStep({ onComplete, initialVehicleType }: Props) {
   const { t } = useTranslation();
-  const [vehicleType, setVehicleType] = useState<VehicleType | null>(null);
+  const [vehicleType, setVehicleType] = useState<VehicleType | null>(initialVehicleType ?? null);
   const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [address, setAddress] = useState('');
@@ -120,6 +121,12 @@ export function LocationStep({ onComplete }: Props) {
           {VEHICLE_GROUPS.map(group => (
             <div key={group.groupKey}>
               <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.3, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
+              {initialVehicleType && (
+                <div style={{ marginBottom: 12, padding: '10px 14px', borderRadius: 8, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', fontSize: 12, color: '#22c55e', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span>✅</span>
+                  <span>Véhicule détecté automatiquement — vous pouvez modifier si nécessaire</span>
+                </div>
+              )}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                 {group.types.map(v => {
                   const sel = vehicleType === v.id;
