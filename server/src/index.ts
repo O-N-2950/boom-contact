@@ -22,6 +22,7 @@ const ALLOWED_ORIGINS = [
   'https://boom-contact-production.up.railway.app',
   'https://boom.contact',
   'https://www.boom.contact',
+  'https://police.boom.contact',
   'http://localhost:5173',
 ].filter(Boolean) as string[];
 
@@ -231,3 +232,4 @@ start().catch((err) => {
   });
   process.exit(1);
 });
+
