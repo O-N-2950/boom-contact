@@ -171,19 +171,19 @@
   "ocr": {
     "idle": {
       "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nEnsuite scannez votre <strong>document d'assurance</strong> (carte verte, attestation).",
-      "reg_label": "Permis de circulation",
-      "reg_sub": "Carte grise, RC Book, Zulassung — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Conseil :</strong> Préparez aussi votre <strong>document d'assurance</strong> — carte verte internationale, attestation ou certificat. Il contient votre assureur et N° de police."
+      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
+      "reg_label": "Permis de circulation / Carte grise",
+      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
+      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
     },
     "greencard": {
-      "scanned": "✅ Permis de circulation analysé",
+      "scanned": "✅ Permis de circulation scanné",
       "compressing": "· Compression…",
-      "title": "Document d'assurance",
-      "subtitle": "Scannez votre <strong>carte verte internationale</strong>, attestation d'assurance ou certificate of motor insurance. Ce document contient votre assureur et N° de police.<br/>🇨🇭 CH · 🇪🇺 Europe · 🇬🇧 UK · 🇺🇸 US · 🌍 Monde entier",
+      "title": "Document d'assurance ?",
+      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
       "scan_btn": "Scanner le document d'assurance",
-      "scan_sub": "Carte verte · Attestation · Insurance ID card · Certificate of Motor Insurance",
-      "skip_btn": "Je n'ai pas ce document → saisie manuelle"
+      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
+      "skip_btn": "Saisir manuellement les données d'assurance →"
     },
     "scanning": {
       "title": "Analyse en cours…",
