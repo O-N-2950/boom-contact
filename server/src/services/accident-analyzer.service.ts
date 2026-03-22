@@ -119,7 +119,13 @@ OUTPUT JSON SCHEMA:
   ]
 }
 
-IMPORTANT: questions array should be empty [] if confidence >= 0.80`;
+IMPORTANT RULES FOR QUESTIONS:
+- questions array should be empty [] if confidence >= 0.80
+- For parking/reversing scenarios: ALWAYS include rear impact zones (rear, rear_left, rear_right) in options
+- If transcript mentions "reculons", "marche arrière", "en reculant", "backing", "rückwärts", "en reculant": set vehicleA.direction to relevant direction AND impactZone to rear/rear_left/rear_right
+- Impact zone options must reflect the ACTUAL physics: reversing = rear impact, pulling out forward = front impact
+- Always include ALL relevant options — never limit to only front zones for a parking scenario
+- If parking scenario detected, the question about impact zone MUST include: rear, rear_left, rear_right, front, front_left, front_right, left, right options`;
 
 // ── Analyse principale ────────────────────────────────────────
 export async function analyzeAccidentTranscript(
@@ -127,9 +133,19 @@ export async function analyzeAccidentTranscript(
   previousAnswers?: Record<string, string>
 ): Promise<AccidentSceneAnalysis> {
 
+  // Détecter marche arrière dans le témoignage pour enrichir le contexte
+  const isReversing = /reculons|marche.arri[eè]re|en reculant|backing|rückwärts|marcha atr[aá]s|в обратном|倒车/i.test(transcript);
+  const isParkingExit = /sortais?.*(place|parking|parc)|quittais|leaving.park|verlasse.Parkplatz/i.test(transcript);
+
+  const contextHint = isReversing
+    ? '\n\nCONTEXT: The driver explicitly mentions reversing/backing out. Vehicle A was moving BACKWARDS. Impact zone is likely REAR (rear, rear_left, or rear_right). Set wasMoving=true and direction accordingly.'
+    : isParkingExit
+    ? '\n\nCONTEXT: Driver was exiting a parking space. Consider both forward and reverse exit. Include rear impact options in questions.'
+    : '';
+
   const userMessage = previousAnswers && Object.keys(previousAnswers).length > 0
-    ? `TESTIMONY: "${transcript}"\n\nCLARIFICATION ANSWERS: ${JSON.stringify(previousAnswers)}\n\nNow provide final analysis with higher confidence.`
-    : `Analyze this accident testimony and extract scene data:\n\n"${transcript}"`;
+    ? \`TESTIMONY: "\${transcript}"\n\nCLARIFICATION ANSWERS: \${JSON.stringify(previousAnswers)}\n\nNow provide final analysis with higher confidence.\`
+    : \`Analyze this accident testimony and extract scene data:\n\n"\${transcript}"\${contextHint}\`;
 
   try {
     const response = await anthropic.messages.create({
