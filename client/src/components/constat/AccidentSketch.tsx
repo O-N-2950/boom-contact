@@ -37,7 +37,7 @@ const ACCIDENT_SCENARIOS: ScenarioTemplate[] = [
     id: 'intersection_priority',
     label: 'Carrefour — priorité',
     icon: '✚',
-    description: 'Non-respect de la priorité à droite ou au feu',
+    description: 'Non-respect de la priorit\u00e9 \u00e0 droite ou au feu',
     draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
       ctx.strokeStyle = 'rgba(240,237,232,0.25)';
       ctx.lineWidth = 14;
@@ -88,7 +88,7 @@ const ACCIDENT_SCENARIOS: ScenarioTemplate[] = [
     id: 'roundabout',
     label: 'Rond-point',
     icon: '⟳',
-    description: 'Accident dans ou à la sortie d'un rond-point',
+    description: 'Accident dans ou a la sortie d\'un rond-point',
     draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
       ctx.strokeStyle = 'rgba(240,237,232,0.25)';
       ctx.lineWidth = 14;
@@ -128,7 +128,7 @@ const ACCIDENT_SCENARIOS: ScenarioTemplate[] = [
     id: 'overtaking',
     label: 'Dépassement',
     icon: '⇉',
-    description: 'Collision lors d'un dépassement',
+    description: 'Collision lors d\'un d\u00e9passement',
     draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => {
       ctx.strokeStyle = 'rgba(240,237,232,0.25)';
       ctx.lineWidth = 14;
