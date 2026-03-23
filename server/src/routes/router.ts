@@ -136,6 +136,21 @@ export const appRouter = router({
         }
         return { ok: true, bothSigned, status: session.status };
       }),
+
+    // GET session.history — sessions where owner_email = logged-in user
+    history: publicProcedure
+      .query(async ({ ctx }) => {
+        if (!ctx.authUser) return [];
+        const { db } = await import('../db/index.js');
+        const { sessions } = await import('../db/schema.js');
+        const { eq, desc } = await import('drizzle-orm');
+        return db.query.sessions.findMany({
+          where: eq(sessions.ownerEmail, ctx.authUser.email),
+          orderBy: [desc(sessions.createdAt)],
+          limit: 50,
+        });
+      }),
+
   }),
 
   // ── OCR ──────────────────────────────────────────────────
