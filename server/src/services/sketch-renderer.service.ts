@@ -578,9 +578,6 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
     });
     ` : `ctx.fillStyle='#12121f'; ctx.fillRect(0,0,W,H);`}
 
-    // Route
-    drawRoadScene(ctx, W, H, '${inp.scenario}', '${inp.trafficSide}');
-
     // Positions
     const {posA, posB, impactX, impactY} = calcVehiclePositions(
       '${inp.scenario}', '${inp.trafficSide}', W, H
@@ -659,3 +656,4 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
 export async function closeBrowser(): Promise<void> {
   if (_browser) { await _browser.close(); _browser = null; }
 }
+
