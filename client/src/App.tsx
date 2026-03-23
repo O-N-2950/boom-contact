@@ -13,10 +13,11 @@ import { PoliceDashboard } from './pages/PoliceDashboard';
 import { PoliceFlow } from './pages/PoliceFlow';
 import { AuthModal } from './components/AuthModal';
 import { AccountPage } from './pages/AccountPage';
+import { AdminDashboard } from './pages/AdminDashboard';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -33,6 +34,7 @@ function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
   // WinWin directUrl: /constat/:sessionId?lang=fr&prefilled=true
   if (getWinWinSessionId()) return 'constat';
+  if (params.get('admin') === 'true') return 'admin';
   // Magic link / gift link handled inline after mount
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
@@ -205,6 +207,13 @@ export default function App() {
         />
       )}
 
+      {view === 'admin' && authUser?.role === 'admin' && (
+        <AdminDashboard
+          token={authToken}
+          onBack={() => setView('landing')}
+        />
+      )}
+
       {view === 'account' && authUser && (
         <AccountPage
           user={authUser}
@@ -231,5 +240,6 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
