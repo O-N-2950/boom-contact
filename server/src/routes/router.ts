@@ -669,7 +669,26 @@ export const appRouter = router({
         return { ok: true, giftUrl, waUrl: `https://wa.me/?text=${waText}` };
       }),
 
-    // POST auth.claimGift
+  
+  // POST auth.adminBootstrap — set admin password (protected by ADMIN_BOOTSTRAP_SECRET env)
+  // One-time use route to set the admin password hash
+  // Call: POST /trpc/auth.adminBootstrap with { secret, password }
+  // Remove ADMIN_BOOTSTRAP_SECRET env var after use
+  adminBootstrap: publicProcedure
+    .input(z.object({ secret: z.string(), password: z.string().min(6) }))
+    .mutation(async ({ input }) => {
+      const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
+      if (!expected || input.secret !== expected) throw new Error('Invalid secret.');
+      const { hashPassword } = await import('../services/auth.service.js');
+      const { db } = await import('../db/index.js');
+      const { users } = await import('../db/schema.js');
+      const { eq } = await import('drizzle-orm');
+      const hash = await hashPassword(input.password);
+      await db.update(users).set({ passwordHash: hash, role: 'admin', credits: 999999 }).where(eq(users.email, 'contact@boom.contact'));
+      return { ok: true };
+    }),
+
+  // POST auth.claimGift
     claimGift: publicProcedure
       .input(z.object({ token: z.string(), email: z.string().email() }))
       .mutation(async ({ input }) => {
