@@ -41,7 +41,8 @@
     "stripe": "^20.4.1",
     "tsx": "^4.7.0",
     "zod": "^3.22.0",
-    "puppeteer-core": "^22.0.0"
+    "puppeteer-core": "^22.0.0",
+    "canvas": "^2.11.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
