@@ -170,7 +170,16 @@ export default function App() {
     <OfflineBanner />
     <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
       {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} onAccount={() => authUser ? setView('account') : setShowAuthModal(true)} authUser={authUser} />}
-      {view === 'constat'  && <ConstatFlow initialSessionId={getWinWinSessionId() || undefined} authToken={authToken || undefined} />}
+      {view === 'constat' && (
+        <ConstatFlow
+          initialSessionId={getWinWinSessionId() || undefined}
+          authToken={authToken || undefined}
+          authUser={authUser}
+          onShowAuth={() => setShowAuthModal(true)}
+          onAccount={() => authUser ? setView('account') : setShowAuthModal(true)}
+          onBuyPack={() => setView('pricing')}
+        />
+      )}
       {view === 'join'     && <JoinSession />}
       {view === 'agents'   && <AgentDashboard />}
       {view === 'pricing'  && (
@@ -246,6 +255,7 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
 
