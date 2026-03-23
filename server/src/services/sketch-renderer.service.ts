@@ -375,7 +375,7 @@ function parseColor(colorStr) {
 
 // ── Sélecteur de véhicule ──────────────────────────────────
 function drawVehicle(ctx, cx, cy, angle, vehicleData, label) {
-  const VW = 110, VH = 50;
+  const VW = 32, VH = 15;
   const color = parseColor(vehicleData.color);
   const type = vehicleData.vehicleType || 'car';
   switch (type) {
@@ -397,10 +397,10 @@ function drawTrajectoryArrow(ctx, fromX, fromY, toX, toY, color, isReversing) {
   const len = Math.sqrt((toX-fromX)**2 + (toY-fromY)**2);
   if (len < 10) return;
   const angle = Math.atan2(toY-fromY, toX-fromX);
-  const headLen = 18;
+  const headLen = 10;
   ctx.save();
   ctx.strokeStyle = color; ctx.fillStyle = color;
-  ctx.lineWidth = 3; ctx.globalAlpha = 0.85; ctx.setLineDash([12,8]);
+  ctx.lineWidth = 2; ctx.globalAlpha = 0.85; ctx.setLineDash([8,5]);
   ctx.beginPath();
   ctx.moveTo(fromX, fromY);
   ctx.lineTo(toX - Math.cos(angle)*headLen, toY - Math.sin(angle)*headLen);
@@ -518,7 +518,7 @@ function drawRoadScene(ctx, W, H, scenario, trafficSide) {
 
 // ── Calcul positions véhicules ─────────────────────────────
 function calcVehiclePositions(scenario, trafficSide, W, H) {
-  const cx = W/2, cy = H/2, L = 55;
+  const cx = W/2, cy = H/2, L = 20;
   const side = trafficSide === 'left' ? -1 : 1;
 
   switch(scenario) {
@@ -598,7 +598,7 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
     ctx.save();
     ctx.shadowColor='#ef4444'; ctx.shadowBlur=25;
     ctx.fillStyle='#ef4444';
-    ctx.beginPath(); ctx.arc(impactX,impactY,13,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(impactX,impactY,7,0,Math.PI*2); ctx.fill();
     ctx.shadowBlur=0;
     ctx.strokeStyle='#fff'; ctx.lineWidth=3;
     ctx.beginPath(); ctx.moveTo(impactX-9,impactY-9); ctx.lineTo(impactX+9,impactY+9); ctx.stroke();
@@ -616,8 +616,8 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
       ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText(txt,x,y-5);
     }
-    tag(posA.x, posA.y-60, '${labelA}', '#4488ff');
-    tag(posB.x, posB.y-60, '${labelB}', '#ff8833');
+    tag(posA.x, posA.y-22, '${labelA}', '#4488ff');
+    tag(posB.x, posB.y-22, '${labelB}', '#ff8833');
 
     // Plaques
     function plate(x, y, num) {
@@ -656,4 +656,5 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
 export async function closeBrowser(): Promise<void> {
   if (_browser) { await _browser.close(); _browser = null; }
 }
+
 
