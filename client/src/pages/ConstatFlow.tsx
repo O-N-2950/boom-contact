@@ -577,19 +577,22 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
         )}
 
         {step === 'done' && (
-          <PDFDownload
-            sessionId={sessionId!}
-            role="A"
-            driverEmail={participantData.driver?.email}
-            insurerName={participantData.insurance?.company}
-            driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
-          />
-          <EmergencyNumbers mode="compact" />
+          <>
+            <PDFDownload
+              sessionId={sessionId!}
+              role="A"
+              driverEmail={participantData.driver?.email}
+              insurerName={participantData.insurance?.company}
+              driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
+            />
+            <EmergencyNumbers mode="compact" />
+          </>
         )}
       </div>
     </div>
   );
 }
+
 
 
 
