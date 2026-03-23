@@ -126,8 +126,8 @@ export async function createCheckoutSession(
     locale: (locale as any) || 'fr',
     // ── Facture PDF automatique envoyée par Stripe ──────────
     invoice_creation: { enabled: true },
-    // ── TVA automatique par pays (activer dans Stripe Tax dashboard) ──
-    // automatic_tax: { enabled: true },
+    // ── TVA automatique — activée si STRIPE_TAX_ENABLED=true (configurer dans Stripe Tax dashboard) ──
+    ...(process.env.STRIPE_TAX_ENABLED === 'true' ? { automatic_tax: { enabled: true } } : {}),
     line_items: [{
       price_data: {
         currency: currencyLower,
@@ -274,4 +274,5 @@ export async function saveConsent(
     language: language || null,
   }).where(eq(schema.users.email, email));
 }
+
 
