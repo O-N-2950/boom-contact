@@ -240,7 +240,8 @@ export function ConstatFlow() {
     if (sessionId) {
       updateMutation.mutate({ sessionId, role: 'A', data: { damagedZones } });
     }
-    setStep('sign');
+    // Croquis obligatoire — placement véhicule sur carte avant signature
+    setStep('sketch');
   };
 
   const updateMutation = trpc.session.updateParticipant.useMutation({
@@ -416,7 +417,47 @@ export function ConstatFlow() {
         )}
 
         {step === 'sign' && (
-          <SignaturePad role="A" onSign={handleSign} otherSigned={otherSigned} />
+          <>
+            {!sketchImage && (
+              <div style={{
+                margin: '0 20px 16px',
+                padding: '12px 16px',
+                background: 'rgba(255,160,0,0.12)',
+                border: '1px solid rgba(255,160,0,0.4)',
+                borderRadius: 10,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+              }}>
+                <span style={{ fontSize: 20 }}>🗺️</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: '#F59E0B' }}>
+                    {t('sketch.requiredTitle', 'Croquis requis')}
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
+                    {t('sketch.requiredMsg', 'Placez votre véhicule sur la carte pour continuer')}
+                  </div>
+                  <button
+                    onClick={() => setStep('sketch')}
+                    style={{
+                      marginTop: 8, padding: '6px 14px',
+                      background: '#F59E0B', color: '#fff',
+                      border: 'none', borderRadius: 6,
+                      fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                    }}
+                  >
+                    {t('sketch.openMap', 'Ouvrir la carte')} →
+                  </button>
+                </div>
+              </div>
+            )}
+            <SignaturePad
+              role="A"
+              onSign={handleSign}
+              otherSigned={otherSigned}
+              disabled={!sketchImage}
+            />
+          </>
         )}
 
         {step === 'done' && (
@@ -432,4 +473,5 @@ export function ConstatFlow() {
     </div>
   );
 }
+
 
