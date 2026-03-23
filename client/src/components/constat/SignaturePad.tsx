@@ -4,9 +4,10 @@ interface Props {
   role: string;
   onSign: (signatureBase64: string) => void;
   otherSigned: boolean;
+  disabled?: boolean; // Bloque la signature si croquis manquant
 }
 
-export function SignaturePad({ role, onSign, otherSigned }: Props) {
+export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Props) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const [signing, setSigning]   = useState(false);
@@ -189,7 +190,7 @@ export function SignaturePad({ role, onSign, otherSigned }: Props) {
           <button onClick={clear} style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1.5px solid rgba(240,237,232,0.12)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 13 }}>
             🗑 Effacer
           </button>
-          <button onClick={confirmSign} disabled={isEmpty || signing} style={{ flex: 2, padding: '13px', borderRadius: 10, border: 'none', background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', color: '#fff', cursor: isEmpty ? 'not-allowed' : 'pointer', fontSize: 14, fontWeight: 700, transition: 'all 0.2s' }}>
+          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} style={{ flex: 2, opacity: disabled ? 0.4 : 1, padding: '13px', borderRadius: 10, border: 'none', background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', color: '#fff', cursor: isEmpty ? 'not-allowed' : 'pointer', fontSize: 14, fontWeight: 700, transition: 'all 0.2s' }}>
             {signing ? '⏳ Enregistrement…' : '✍️ Confirmer la signature'}
           </button>
         </div>
@@ -213,3 +214,4 @@ export function SignaturePad({ role, onSign, otherSigned }: Props) {
     </div>
   );
 }
+
