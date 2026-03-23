@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
@@ -10,9 +10,10 @@ interface AccountPageProps {
   onLogout: () => void;
 }
 
-type PageView = 'garage' | 'add_vehicle' | 'edit_vehicle';
+type PageTab   = 'garage' | 'history' | 'profile';
+type VehicleView = 'list' | 'add' | 'edit';
 
-interface VehicleData {
+interface VehicleForm {
   id?: string;
   nickname?: string;
   plate?: string;
@@ -26,183 +27,124 @@ interface VehicleData {
 }
 
 export function AccountPage({ user, token, onBack, onLogout }: AccountPageProps) {
-  const [view, setView]             = useState<PageView>('garage');
-  const [editVehicle, setEditVehicle] = useState<VehicleData | null>(null);
-  const [scanMode, setScanMode]     = useState<'license' | 'insurance' | null>(null);
-  const [form, setForm]             = useState<VehicleData>({});
-  const [saving, setSaving]         = useState(false);
-  const [feedback, setFeedback]     = useState('');
+  const [tab, setTab]                 = useState<PageTab>('garage');
+  const [vehicleView, setVehicleView] = useState<VehicleView>('list');
+  const [form, setForm]               = useState<VehicleForm>({});
+  const [scanning, setScanning]       = useState(false);
+  const [saving, setSaving]           = useState(false);
+  const [feedback, setFeedback]       = useState('');
 
-  const vehicleListQ = trpc.vehicle.list.useQuery(undefined, {
-    enabled: !!token,
-  });
-  const saveMut   = trpc.vehicle.save.useMutation();
-  const deleteMut = trpc.vehicle.delete.useMutation();
+  const vehicleListQ = trpc.vehicle.list.useQuery(undefined);
+  const historyQ     = trpc.session.history.useQuery(undefined, { enabled: tab === 'history' });
+  const saveMut      = trpc.vehicle.save.useMutation();
+  const deleteMut    = trpc.vehicle.delete.useMutation();
 
-  const startAdd = () => {
-    setForm({});
-    setEditVehicle(null);
-    setScanMode(null);
-    setView('add_vehicle');
-  };
+  const toast = (msg: string) => { setFeedback(msg); setTimeout(() => setFeedback(''), 4000); };
 
-  const startEdit = (v: VehicleData) => {
-    setForm({ ...v });
-    setEditVehicle(v);
-    setScanMode(null);
-    setView('edit_vehicle');
-  };
+  const startAdd  = () => { setForm({}); setVehicleView('add'); };
+  const startEdit = (v: any) => { setForm({ ...v }); setVehicleView('edit'); };
 
-  const handleOCRResult = (result: OCRResult) => {
-    setScanMode(null);
-    if (result.type === 'driving_license' || result.type === 'vehicle_registration') {
-      setForm(prev => ({
-        ...prev,
-        plate:    result.licensePlate  || prev.plate,
-        make:     result.make          || prev.make,
-        model:    result.model         || prev.model,
-        color:    result.color         || prev.color,
-        year:     result.year          || prev.year,
-        category: result.vehicleCategory || prev.category,
-        licenseData: { ...prev.licenseData, ...result },
-      }));
-      setFeedback('✅ Permis de circuler scanné !');
-    } else if (result.type === 'insurance_card') {
-      setForm(prev => ({
-        ...prev,
-        insuranceData: { ...prev.insuranceData, ...result },
-      }));
-      setFeedback('✅ Carte verte scannée !');
-    }
-    setTimeout(() => setFeedback(''), 3000);
+  const handleScanComplete = (result: { registration: OCRResult; greenCard?: OCRResult }) => {
+    setScanning(false);
+    const reg = result.registration;
+    const ins = result.greenCard;
+    setForm(prev => ({
+      ...prev,
+      plate:    (reg as any).vehicle?.licensePlate || (reg as any).licensePlate || prev.plate,
+      make:     (reg as any).vehicle?.make         || (reg as any).make         || prev.make,
+      model:    (reg as any).vehicle?.model        || (reg as any).model        || prev.model,
+      color:    (reg as any).vehicle?.color        || (reg as any).color        || prev.color,
+      year:     (reg as any).vehicle?.year         || (reg as any).year         || prev.year,
+      category: (reg as any).vehicle?.vehicleCategory || prev.category,
+      licenseData: { ...prev.licenseData, ...reg },
+      insuranceData: ins
+        ? { ...prev.insuranceData, company: (ins as any).insurance?.company || (ins as any).company, policyNumber: (ins as any).insurance?.policyNumber || (ins as any).policyNumber, ...ins }
+        : prev.insuranceData,
+    }));
+    toast('✅ Documents scannés et pré-remplis !');
   };
 
   const handleSave = async () => {
-    if (!form.plate && !form.make && !form.nickname) {
-      setFeedback('Ajoutez au moins une information (plaque, marque ou surnom).');
-      return;
-    }
+    if (!form.plate && !form.make && !form.nickname) { toast('Ajoutez au moins une information.'); return; }
     setSaving(true);
     try {
-      await saveMut.mutateAsync({ ...form });
+      await saveMut.mutateAsync(form);
       await vehicleListQ.refetch();
-      setView('garage');
-      setFeedback('✅ Véhicule sauvegardé !');
-      setTimeout(() => setFeedback(''), 3000);
-    } catch (e: any) {
-      setFeedback('Erreur : ' + e.message);
-    } finally {
-      setSaving(false);
-    }
+      setVehicleView('list');
+      toast('✅ Véhicule sauvegardé !');
+    } catch (e: any) { toast('Erreur : ' + e.message); }
+    finally { setSaving(false); }
   };
 
-  const handleDelete = async (id: string, nickname?: string) => {
-    if (!confirm(`Supprimer ${nickname || 'ce véhicule'} ?`)) return;
-    try {
-      await deleteMut.mutateAsync({ id });
-      await vehicleListQ.refetch();
-    } catch (e: any) {
-      setFeedback('Erreur : ' + e.message);
-    }
+  const handleDelete = async (id: string, name?: string) => {
+    if (!confirm('Supprimer ' + (name || 'ce véhicule') + ' ?')) return;
+    try { await deleteMut.mutateAsync({ id }); await vehicleListQ.refetch(); }
+    catch (e: any) { toast('Erreur : ' + e.message); }
   };
 
-  // ── OCR scan overlay ────────────────────────────────────────
-  if (scanMode) {
+  // ── OCR Scan overlay ─────────────────────────────────────────
+  if (scanning) {
     return (
       <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
         <div style={{ maxWidth: 500, margin: '0 auto' }}>
-          <button onClick={() => setScanMode(null)} style={backBtnStyle}>← Annuler</button>
-          <h2 style={{ color: '#fff', marginBottom: 16 }}>
-            {scanMode === 'license' ? '📄 Scannez votre permis de circuler' : '🛡️ Scannez votre carte verte'}
-          </h2>
-          <OCRScanner
-            onResult={handleOCRResult}
-            documentType={scanMode === 'license' ? 'driving_license' : 'insurance_card'}
-          />
+          <button onClick={() => setScanning(false)} style={backBtn}>← Annuler</button>
+          <p style={{ color: '#888', fontSize: 13, marginBottom: 16 }}>
+            Photographiez votre <strong style={{ color: '#fff' }}>permis de circuler</strong> et/ou votre <strong style={{ color: '#fff' }}>carte verte</strong>.
+          </p>
+          <OCRScanner role="A" onComplete={handleScanComplete} />
         </div>
       </div>
     );
   }
 
-  // ── Vehicle form (add/edit) ──────────────────────────────────
-  if (view === 'add_vehicle' || view === 'edit_vehicle') {
-    const isEdit = view === 'edit_vehicle';
+  // ── Vehicle form ─────────────────────────────────────────────
+  if (vehicleView !== 'list') {
     return (
       <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
         <div style={{ maxWidth: 500, margin: '0 auto' }}>
-          <button onClick={() => setView('garage')} style={backBtnStyle}>← Garage</button>
-          <h2 style={{ color: '#fff', marginBottom: 4, fontSize: 22, fontWeight: 800 }}>
-            {isEdit ? '✏️ Modifier le véhicule' : '➕ Ajouter un véhicule'}
+          <button onClick={() => setVehicleView('list')} style={backBtn}>← Garage</button>
+          <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
+            {vehicleView === 'add' ? '➕ Ajouter un véhicule' : '✏️ Modifier le véhicule'}
           </h2>
-          <p style={{ color: '#666', fontSize: 13, marginBottom: 24 }}>
-            Scannez vos documents une fois — tout sera pré-rempli lors de vos prochains constats.
+          <p style={{ color: '#666', fontSize: 13, marginBottom: 20 }}>
+            Scannez vos documents pour tout pré-remplir automatiquement.
           </p>
 
-          {feedback && (
-            <div style={{ background: feedback.startsWith('✅') ? '#0a2a0a' : '#2a0a0a',
-              border: `1px solid ${feedback.startsWith('✅') ? '#1a5c1a' : '#5c1a1a'}`,
-              borderRadius: 10, padding: 12, marginBottom: 16, color: '#ccc', fontSize: 14 }}>
-              {feedback}
+          {feedback && <FeedbackBanner msg={feedback} />}
+
+          <button onClick={() => setScanning(true)} style={{ width: '100%', background: '#0d1f2a', border: '1px solid #1a4a6a', borderRadius: 12, padding: '14px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+            <span style={{ fontSize: 28 }}>📄</span>
+            <div style={{ textAlign: 'left' as const }}>
+              <div style={{ color: '#60c8f0', fontWeight: 700 }}>Scanner permis + carte verte</div>
+              <div style={{ color: '#555', fontSize: 12 }}>Reconnaissance automatique · 50 langues</div>
             </div>
-          )}
+          </button>
 
-          {/* Scan buttons */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
-            <button onClick={() => setScanMode('license')} style={scanBtnStyle}>
-              📄 Scanner permis de circuler
-            </button>
-            <button onClick={() => setScanMode('insurance')} style={scanBtnStyle}>
-              🛡️ Scanner carte verte
-            </button>
-          </div>
-
-          {/* Manual fields */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <label style={labelStyle}>Surnom du véhicule (pour vous repérer)</label>
-            <input placeholder='ex: "Ma Golf bleue"' value={form.nickname || ''} onChange={e => setForm(p => ({ ...p, nickname: e.target.value }))} style={inputStyle} />
-
-            <label style={labelStyle}>Plaque d'immatriculation</label>
-            <input placeholder="JU 12345 ou 75-ABC-123" value={form.plate || ''} onChange={e => setForm(p => ({ ...p, plate: e.target.value.toUpperCase() }))} style={inputStyle} />
-
+            <Field label="Surnom" placeholder='ex: "Ma Golf bleue"' value={form.nickname || ''} onChange={v => setForm(p => ({ ...p, nickname: v }))} />
+            <Field label="Plaque" placeholder="JU 12345" value={form.plate || ''} onChange={v => setForm(p => ({ ...p, plate: v.toUpperCase() }))} />
             <div style={{ display: 'flex', gap: 10 }}>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Marque</label>
-                <input placeholder="Volkswagen" value={form.make || ''} onChange={e => setForm(p => ({ ...p, make: e.target.value }))} style={inputStyle} />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Modèle</label>
-                <input placeholder="Golf 7" value={form.model || ''} onChange={e => setForm(p => ({ ...p, model: e.target.value }))} style={inputStyle} />
-              </div>
+              <div style={{ flex: 1 }}><Field label="Marque" placeholder="Volkswagen" value={form.make || ''} onChange={v => setForm(p => ({ ...p, make: v }))} /></div>
+              <div style={{ flex: 1 }}><Field label="Modèle" placeholder="Golf 8" value={form.model || ''} onChange={v => setForm(p => ({ ...p, model: v }))} /></div>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <div style={{ flex: 1 }}><Field label="Couleur" placeholder="Bleue" value={form.color || ''} onChange={v => setForm(p => ({ ...p, color: v }))} /></div>
+              <div style={{ flex: 1 }}><Field label="Année" placeholder="2022" value={form.year || ''} onChange={v => setForm(p => ({ ...p, year: v }))} /></div>
             </div>
 
-            <div style={{ display: 'flex', gap: 10 }}>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Couleur</label>
-                <input placeholder="Bleue" value={form.color || ''} onChange={e => setForm(p => ({ ...p, color: e.target.value }))} style={inputStyle} />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>Année</label>
-                <input placeholder="2021" value={form.year || ''} onChange={e => setForm(p => ({ ...p, year: e.target.value }))} style={inputStyle} />
-              </div>
-            </div>
-
-            {/* Insurance summary */}
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
               <div style={{ background: '#0d2a0d', border: '1px solid #1a4a1a', borderRadius: 10, padding: 14 }}>
-                <div style={{ color: '#4ade80', fontWeight: 700, marginBottom: 6 }}>🛡️ Assurance enregistrée</div>
-                {form.insuranceData.companyName && <div style={{ color: '#ccc', fontSize: 13 }}>Compagnie : {form.insuranceData.companyName}</div>}
-                {form.insuranceData.policyNumber && <div style={{ color: '#ccc', fontSize: 13 }}>Police n° : {form.insuranceData.policyNumber}</div>}
-                <button onClick={() => setScanMode('insurance')} style={{ ...scanBtnStyle, marginTop: 8, width: '100%' }}>
-                  Mettre à jour l'assurance
+                <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 13, marginBottom: 4 }}>🛡️ Assurance enregistrée</div>
+                {form.insuranceData.company && <div style={{ color: '#ccc', fontSize: 13 }}>{form.insuranceData.company}</div>}
+                {form.insuranceData.policyNumber && <div style={{ color: '#999', fontSize: 12 }}>Police n° {form.insuranceData.policyNumber}</div>}
+                <button onClick={() => setScanning(true)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a4a2a', borderRadius: 8, padding: '6px 12px', color: '#4ade80', fontSize: 12, cursor: 'pointer' }}>
+                  Mettre à jour →
                 </button>
               </div>
             )}
 
-            <button onClick={handleSave} disabled={saving} style={{
-              background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12,
-              padding: '14px 20px', fontSize: 16, fontWeight: 700, cursor: 'pointer', marginTop: 8,
-            }}>
-              {saving ? 'Sauvegarde...' : '💾 Sauvegarder'}
+            <button onClick={handleSave} disabled={saving} style={primaryBtn}>
+              {saving ? 'Sauvegarde...' : '💾 Sauvegarder ce véhicule'}
             </button>
           </div>
         </div>
@@ -210,135 +152,176 @@ export function AccountPage({ user, token, onBack, onLogout }: AccountPageProps)
     );
   }
 
-  // ── Garage view ──────────────────────────────────────────────
+  // ── Main page ─────────────────────────────────────────────────
   const vehicles = vehicleListQ.data || [];
+  const history  = (historyQ.data || []) as any[];
 
   return (
     <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
       <div style={{ maxWidth: 500, margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <button onClick={onBack} style={backBtnStyle}>← Retour</button>
-          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: 13 }}>
-            Déconnexion
-          </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <button onClick={onBack} style={backBtn}>← Retour</button>
+          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: 13 }}>Déconnexion</button>
         </div>
 
-        {/* Profile badge */}
-        <div style={{ background: '#111', border: '1px solid #222', borderRadius: 14, padding: '16px 20px', marginBottom: 24 }}>
-          <div style={{ color: '#FF3500', fontWeight: 800, fontSize: 18 }}>💥 Mon compte</div>
-          <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>{user.email}</div>
-          <div style={{ marginTop: 10, display: 'flex', gap: 12 }}>
-            <div style={{ background: '#1a1a1a', borderRadius: 8, padding: '8px 14px', textAlign: 'center' }}>
-              <div style={{ color: '#FF3500', fontSize: 20, fontWeight: 800 }}>{user.credits}</div>
-              <div style={{ color: '#666', fontSize: 11 }}>crédit{user.credits !== 1 ? 's' : ''}</div>
-            </div>
-            <div style={{ background: '#1a1a1a', borderRadius: 8, padding: '8px 14px', textAlign: 'center' }}>
-              <div style={{ color: '#fff', fontSize: 20, fontWeight: 800 }}>{vehicles.length}</div>
-              <div style={{ color: '#666', fontSize: 11 }}>véhicule{vehicles.length !== 1 ? 's' : ''}</div>
-            </div>
+        {/* Profile card */}
+        <div style={{ background: '#111', border: '1px solid #222', borderRadius: 16, padding: 20, marginBottom: 20 }}>
+          <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>💥 boom.contact</div>
+          <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{user.email}</div>
+          <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
+            <StatBadge value={user.credits === 999999 ? '∞' : user.credits} label="crédits" highlight />
+            <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
+            <StatBadge value={history.length || '—'} label="constats" />
           </div>
         </div>
 
-        {feedback && (
-          <div style={{ background: '#0a2a0a', border: '1px solid #1a5c1a', borderRadius: 10, padding: 12, marginBottom: 16, color: '#ccc', fontSize: 14 }}>
-            {feedback}
-          </div>
-        )}
+        {feedback && <FeedbackBanner msg={feedback} />}
 
-        {/* Garage */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <h2 style={{ color: '#fff', margin: 0, fontSize: 18, fontWeight: 800 }}>🚗 Mon garage</h2>
-          <button onClick={startAdd} style={{
-            background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8,
-            padding: '8px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer',
-          }}>
-            + Ajouter
-          </button>
-        </div>
-
-        {vehicleListQ.isLoading && (
-          <div style={{ color: '#555', textAlign: 'center', padding: 32 }}>Chargement...</div>
-        )}
-
-        {!vehicleListQ.isLoading && vehicles.length === 0 && (
-          <div style={{ background: '#111', border: '1px dashed #333', borderRadius: 14, padding: 32, textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>🚗</div>
-            <div style={{ color: '#888', fontSize: 14, lineHeight: 1.6 }}>
-              Aucun véhicule enregistré.<br />
-              Ajoutez votre véhicule pour ne plus rien saisir lors d'un accident.
-            </div>
-            <button onClick={startAdd} style={{
-              marginTop: 16, background: '#FF3500', color: '#fff', border: 'none',
-              borderRadius: 10, padding: '12px 20px', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-            }}>
-              ➕ Ajouter mon premier véhicule
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
+          {(['garage', 'history', 'profile'] as PageTab[]).map(t => (
+            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222'), color: '#fff', borderRadius: 10, padding: '9px 6px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+              {t === 'garage' ? '🚗 Garage' : t === 'history' ? '📋 Historique' : '👤 Profil'}
             </button>
-          </div>
+          ))}
+        </div>
+
+        {/* GARAGE */}
+        {tab === 'garage' && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div style={{ color: '#fff', fontWeight: 700 }}>Mon garage ({vehicles.length})</div>
+              <button onClick={startAdd} style={{ background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>+ Ajouter</button>
+            </div>
+            {vehicles.length === 0 && (
+              <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
+                <button onClick={startAdd} style={{ ...primaryBtn, width: 'auto', padding: '11px 20px', marginTop: 16 }}>➕ Ajouter mon premier véhicule</button>
+              </EmptyState>
+            )}
+            {vehicles.map((v: any) => (
+              <div key={v.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
+                    {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
+                    <div style={{ color: '#555', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button onClick={() => startEdit(v)} style={iconBtn}>✏️</button>
+                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn}>🗑️</button>
+                  </div>
+                </div>
+                {v.insuranceData && Object.keys(v.insuranceData).length > 0
+                  ? <div style={{ marginTop: 10, background: '#0d2a0d', borderRadius: 8, padding: '7px 12px', fontSize: 12, color: '#4ade80' }}>🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
+                  : <button onClick={() => startEdit(v)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a2a2a', borderRadius: 8, padding: '5px 10px', color: '#555', fontSize: 11, cursor: 'pointer' }}>+ Ajouter assurance</button>
+                }
+              </div>
+            ))}
+          </>
         )}
 
-        {vehicles.map((v: any) => (
-          <div key={v.id} style={{
-            background: '#111', border: '1px solid #222', borderRadius: 14,
-            padding: 16, marginBottom: 12,
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <div style={{ color: '#fff', fontWeight: 700, fontSize: 16 }}>
-                  {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule sans nom'}
-                </div>
-                {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 14, marginTop: 2 }}>{v.plate}</div>}
-                <div style={{ color: '#666', fontSize: 12, marginTop: 4 }}>
-                  {[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button onClick={() => startEdit(v)} style={iconBtnStyle}>✏️</button>
-                <button onClick={() => handleDelete(v.id, v.nickname)} style={{ ...iconBtnStyle, color: '#ff4444' }}>🗑️</button>
-              </div>
-            </div>
-
-            {/* Insurance badge */}
-            {v.insuranceData && Object.keys(v.insuranceData).length > 0 ? (
-              <div style={{ marginTop: 10, background: '#0d2a0d', borderRadius: 8, padding: '8px 12px', display: 'flex', gap: 8, alignItems: 'center' }}>
-                <span style={{ color: '#4ade80', fontSize: 13 }}>🛡️</span>
-                <span style={{ color: '#ccc', fontSize: 12 }}>
-                  {v.insuranceData.companyName || 'Assurance enregistrée'}
-                  {v.insuranceData.policyNumber ? ` · ${v.insuranceData.policyNumber}` : ''}
-                </span>
-              </div>
-            ) : (
-              <div style={{ marginTop: 10 }}>
-                <button onClick={() => { startEdit(v); setScanMode('insurance'); }} style={{ background: 'none', border: '1px dashed #333', borderRadius: 8, padding: '6px 12px', color: '#666', fontSize: 12, cursor: 'pointer' }}>
-                  + Ajouter l'assurance
-                </button>
-              </div>
+        {/* HISTORY */}
+        {tab === 'history' && (
+          <>
+            <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12 }}>Mes constats ({history.length})</div>
+            {historyQ.isLoading && <div style={{ color: '#555', textAlign: 'center', padding: 32 }}>Chargement...</div>}
+            {!historyQ.isLoading && history.length === 0 && (
+              <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
+            {history.map((s: any) => {
+              const a = s.participantA || {};
+              const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
+              const date = new Date(s.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' });
+              const statusIcon = s.status === 'completed' ? '✅' : s.status === 'signing' ? '✍️' : '⏳';
+              return (
+                <div key={s.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 12 }}>{s.id}</div>
+                      <div style={{ color: '#fff', fontWeight: 600, marginTop: 2 }}>Plaque : {plate}</div>
+                      <div style={{ color: '#555', fontSize: 12, marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
+                      {s.accident?.location?.address && <div style={{ color: '#555', fontSize: 11, marginTop: 4 }}>📍 {s.accident.location.address}</div>}
+                    </div>
+                    {s.pdfUrl && (
+                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, padding: '7px 12px', color: '#ccc', fontSize: 12, textDecoration: 'none' }}>📄 PDF</a>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
+
+        {/* PROFILE */}
+        {tab === 'profile' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <InfoCard label="Email" value={user.email} />
+            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 20 }}>
+              <div style={{ color: '#888', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
+              <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{user.credits === 999999 ? '∞' : user.credits}</div>
+              <div style={{ color: '#555', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
+            </div>
+            <div style={{ background: '#0d1f2a', border: '1px solid #1a3a4a', borderRadius: 14, padding: 20 }}>
+              <div style={{ color: '#60c8f0', fontWeight: 700, fontSize: 15, marginBottom: 8 }}>🎁 Offrir un constat via WhatsApp</div>
+              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.7 }}>
+                Votre enfant a eu un accident ? Un employé a besoin d'aide urgente ?<br />
+                Envoyez-lui un crédit <strong style={{ color: '#fff' }}>en 3 secondes</strong> sur son mobile.
+              </div>
+              <button style={{ ...primaryBtn, marginTop: 14, background: '#25D366', fontSize: 14 }}>
+                📲 Envoyer un crédit par WhatsApp
+              </button>
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────
-const backBtnStyle: React.CSSProperties = {
-  background: 'none', border: 'none', color: '#888', cursor: 'pointer',
-  fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block',
-};
-const inputStyle: React.CSSProperties = {
-  background: '#1a1a1a', border: '1px solid #333', borderRadius: 10,
-  color: '#fff', padding: '11px 14px', fontSize: 14, width: '100%',
-  boxSizing: 'border-box',
-};
-const labelStyle: React.CSSProperties = {
-  color: '#888', fontSize: 12, fontWeight: 600, letterSpacing: 0.5,
-};
-const scanBtnStyle: React.CSSProperties = {
-  background: '#1a1a1a', border: '1px solid #333', borderRadius: 10,
-  color: '#ccc', padding: '10px 12px', fontSize: 12, cursor: 'pointer', flex: 1,
-};
-const iconBtnStyle: React.CSSProperties = {
-  background: '#1a1a1a', border: '1px solid #222', borderRadius: 8,
-  padding: '6px 10px', cursor: 'pointer', fontSize: 16,
-};
+function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <div>
+      <div style={{ color: '#666', fontSize: 11, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{label.toUpperCase()}</div>
+      <input placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
+        style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, color: '#fff', padding: '11px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const }} />
+    </div>
+  );
+}
+
+function StatBadge({ value, label, highlight }: { value: any; label: string; highlight?: boolean }) {
+  return (
+    <div style={{ background: '#1a1a1a', borderRadius: 10, padding: '8px 14px', textAlign: 'center' as const, flex: 1 }}>
+      <div style={{ color: highlight ? '#FF3500' : '#fff', fontSize: 20, fontWeight: 900 }}>{value}</div>
+      <div style={{ color: '#555', fontSize: 11 }}>{label}</div>
+    </div>
+  );
+}
+
+function FeedbackBanner({ msg }: { msg: string }) {
+  const ok = msg.startsWith('✅');
+  return <div style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a'), borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#ccc', fontSize: 14 }}>{msg}</div>;
+}
+
+function InfoCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 20 }}>
+      <div style={{ color: '#666', fontSize: 12, marginBottom: 4 }}>{label.toUpperCase()}</div>
+      <div style={{ color: '#fff', fontSize: 15 }}>{value}</div>
+    </div>
+  );
+}
+
+function EmptyState({ icon, title, subtitle, children }: { icon: string; title: string; subtitle: string; children?: React.ReactNode }) {
+  return (
+    <div style={{ background: '#111', border: '1px dashed #2a2a2a', borderRadius: 14, padding: 32, textAlign: 'center' as const }}>
+      <div style={{ fontSize: 40, marginBottom: 12 }}>{icon}</div>
+      <div style={{ color: '#fff', fontWeight: 700, marginBottom: 6 }}>{title}</div>
+      <div style={{ color: '#888', fontSize: 14, lineHeight: 1.6 }}>{subtitle}</div>
+      {children}
+    </div>
+  );
+}
+
+const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block' };
+const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
+const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
