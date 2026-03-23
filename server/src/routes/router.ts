@@ -858,8 +858,45 @@ export const appRouter = router({
   }),
 
 
+  // ── EMERGENCY INSURANCE LOOKUP ───────────────────────────────
+  emergency: router({
+
+    // POST emergency.insuranceLookup — DB first, AI fallback
+    // Looks up 24h assistance number for any insurer worldwide
+    insuranceLookup: publicProcedure
+      .input(z.object({
+        insurerA: z.string().optional(),  // From participant A OCR
+        insurerB: z.string().optional(),  // From participant B OCR
+        countryCode: z.string().optional(), // ISO 2-letter country code
+      }))
+      .mutation(async ({ input }) => {
+        const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
+
+        const [resultA, resultB] = await Promise.all([
+          input.insurerA ? getInsuranceAssistance(input.insurerA, input.countryCode) : Promise.resolve(null),
+          input.insurerB ? getInsuranceAssistance(input.insurerB, input.countryCode) : Promise.resolve(null),
+        ]);
+
+        return { participantA: resultA, participantB: resultB };
+      }),
+
+    // GET emergency.singleLookup — for AccountPage / manual use
+    singleLookup: publicProcedure
+      .input(z.object({
+        insurer: z.string().min(2),
+        country: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
+        return getInsuranceAssistance(input.insurer, input.country);
+      }),
+
+  }),
+
+
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
