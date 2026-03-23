@@ -880,6 +880,18 @@ export const appRouter = router({
         return { participantA: resultA, participantB: resultB };
       }),
 
+
+    // GET emergency.countryLookup — DB first, AI fallback for any country
+    countryLookup: publicProcedure
+      .input(z.object({
+        countryCode: z.string().min(2).max(3),
+        countryName: z.string().optional(),
+      }))
+      .query(async ({ input }) => {
+        const { getCountryEmergencyNumbers } = await import('../services/emergency-numbers.service.js');
+        return getCountryEmergencyNumbers(input.countryCode, input.countryName);
+      }),
+
     // GET emergency.singleLookup — for AccountPage / manual use
     singleLookup: publicProcedure
       .input(z.object({
