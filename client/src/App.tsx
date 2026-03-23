@@ -14,10 +14,11 @@ import { PoliceFlow } from './pages/PoliceFlow';
 import { AuthModal } from './components/AuthModal';
 import { AccountPage } from './pages/AccountPage';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { EmergencyNumbers } from './components/EmergencyNumbers';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'emergency' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -35,6 +36,7 @@ function getInitialView(): AppView {
   // WinWin directUrl: /constat/:sessionId?lang=fr&prefilled=true
   if (getWinWinSessionId()) return 'constat';
   if (params.get('admin') === 'true') return 'admin';
+  if (params.get('urgences') === 'true') return 'emergency';
   // Magic link / gift link handled inline after mount
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
@@ -207,6 +209,10 @@ export default function App() {
         />
       )}
 
+      {view === 'emergency' && (
+        <EmergencyNumbers mode="full" onClose={() => setView('landing')} />
+      )}
+
       {view === 'admin' && authUser?.role === 'admin' && (
         <AdminDashboard
           token={authToken}
@@ -240,6 +246,7 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
 
