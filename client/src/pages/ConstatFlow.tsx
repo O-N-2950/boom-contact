@@ -37,6 +37,7 @@ import { VehicleDiagram } from '../components/constat/VehicleDiagram';
 import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
+import { EmergencyNumbers } from '../components/EmergencyNumbers';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
@@ -87,6 +88,7 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
     A: saved?.vehicleA || null,
   });
   const [otherSigned, setOtherSigned] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
 
   // WinWin: apply lang param from URL on mount
   useEffect(() => {
@@ -314,6 +316,11 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
   };
 
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
+
+  // Emergency overlay
+  if (showEmergency) {
+    return <EmergencyNumbers mode="full" onClose={() => setShowEmergency(false)} />;
+  }
 
   return (
     <div style={{ maxWidth: 420, margin: '0 auto', minHeight: '100vh',
@@ -553,6 +560,22 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
           </>
         )}
 
+        {step !== 'done' && step !== 'ocr' && (
+          <button
+            onClick={() => setShowEmergency(true)}
+            title="Numéros d'urgence"
+            style={{
+              position: 'fixed', bottom: 20, right: 16, zIndex: 500,
+              background: '#c00', border: 'none', borderRadius: '50%',
+              width: 48, height: 48, fontSize: 20, cursor: 'pointer',
+              boxShadow: '0 4px 16px rgba(200,0,0,0.5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            🆘
+          </button>
+        )}
+
         {step === 'done' && (
           <PDFDownload
             sessionId={sessionId!}
@@ -561,11 +584,13 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
             insurerName={participantData.insurance?.company}
             driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
           />
+          <EmergencyNumbers mode="compact" />
         )}
       </div>
     </div>
   );
 }
+
 
 
 
