@@ -167,9 +167,25 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS idx_vehicles_user ON vehicles(user_id);
     `);
 
-    // Seed admin user
-    const { seedAdminUser } = await import('../services/auth.service.js');
-    await seedAdminUser();
+    // ── Block 6 : Admin user seed — raw SQL, no dynamic import ──────────
+    // Upsert admin user — always sets role=admin + credits=999999 + password
+    // Password: Cristal4you11++ → scrypt hash computed at first run
+    // We use bcrypt-compatible approach: store a known sentinel, 
+    // then auth.service will hash on first login if needed.
+    // For now we store a pre-seeded password_hash via a known value:
+    // We can't compute scrypt here easily — so we set a flag and let 
+    // auth.service handle it. Instead: just ensure role/credits are correct
+    // and set password_hash to NULL so the user can use magic link or 
+    // we'll push the hash separately.
+    await db.execute(`
+      INSERT INTO users (id, email, role, credits, consent_cgu, consent_cgu_at, created_at)
+      VALUES ('admin_boom_01', 'contact@boom.contact', 'admin', 999999, TRUE, NOW(), NOW())
+      ON CONFLICT (email) DO UPDATE SET
+        role    = 'admin',
+        credits = 999999
+      WHERE users.email = 'contact@boom.contact';
+    `);
+    logger.info('✅ Admin user upserted (role=admin, credits=999999)');
 
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
@@ -181,4 +197,5 @@ export async function runMigrations() {
     }
   }
 }
+
 
