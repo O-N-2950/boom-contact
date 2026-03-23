@@ -58,12 +58,20 @@ function loadState() {
   }
 }
 
-export function ConstatFlow() {
-  const { t } = useTranslation();
-  const saved = loadState();
+interface ConstatFlowProps {
+  initialSessionId?: string; // WinWin pre-created session
+}
 
-  const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'ocr');
-  const [sessionId, setSessionId] = useState<string | null>(saved?.sessionId || null);
+export function ConstatFlow({ initialSessionId }: ConstatFlowProps = {}) {
+  const { t, i18n } = useTranslation();
+  // If WinWin initialSessionId, ignore localStorage (fresh prefilled session)
+  const saved = initialSessionId ? null : loadState();
+
+  const [step, setStepRaw] = useState<FlowStep>(() => {
+    if (initialSessionId) return 'qr'; // Skip OCR, jump to QR step
+    return saved?.step || 'ocr';
+  });
+  const [sessionId, setSessionId] = useState<string | null>(initialSessionId || saved?.sessionId || null);
   const [qrUrl, setQrUrl] = useState<string>(saved?.qrUrl || '');
   const [accidentData, setAccidentData] = useState<Partial<AccidentData>>(saved?.accidentData || {});
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(saved?.vehicleType || null);
@@ -78,6 +86,16 @@ export function ConstatFlow() {
     A: saved?.vehicleA || null,
   });
   const [otherSigned, setOtherSigned] = useState(false);
+
+  // WinWin: apply lang param from URL on mount
+  useEffect(() => {
+    if (!initialSessionId) return;
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get('lang');
+    if (lang) i18n.changeLanguage(lang);
+    // Clean URL
+    window.history.replaceState({}, '', '/');
+  }, []);
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
@@ -115,6 +133,10 @@ export function ConstatFlow() {
 
   useEffect(() => {
     if (step === 'qr' && !sessionId) createSession();
+    // WinWin: session already exists, just build the QR URL
+    if (step === 'qr' && sessionId && !qrUrl) {
+      setQrUrl(`${window.location.origin}/?session=${sessionId}`);
+    }
   }, [step]);
 
   const createSessionMutation = trpc.session.create.useMutation({
@@ -473,5 +495,6 @@ export function ConstatFlow() {
     </div>
   );
 }
+
 
 
