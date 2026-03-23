@@ -40,6 +40,7 @@ import { PDFDownload } from '../components/constat/PDFDownload';
 import { EmergencyNumbers } from '../components/EmergencyNumbers';
 import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
 import { UnknownCountryLookup } from '../components/EmergencyNumbers';
+import { PostConstatCTA } from '../components/constat/PostConstatCTA';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
@@ -62,11 +63,15 @@ function loadState() {
 }
 
 interface ConstatFlowProps {
-  initialSessionId?: string; // WinWin pre-created session
-  authToken?: string;        // JWT if logged in
+  initialSessionId?: string;
+  authToken?: string;
+  authUser?: { id: string; email: string; role: string; credits: number } | null;
+  onShowAuth?: () => void;
+  onAccount?: () => void;
+  onBuyPack?: () => void;
 }
 
-export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = {}) {
+export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth, onAccount, onBuyPack }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
   // If WinWin initialSessionId, ignore localStorage (fresh prefilled session)
   const saved = initialSessionId ? null : loadState();
@@ -601,12 +606,21 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
               />
             )}
             <EmergencyNumbers mode="compact" />
+            <PostConstatCTA
+              sessionId={sessionId!}
+              authToken={authToken}
+              authUser={authUser}
+              onLogin={onShowAuth || (() => {})}
+              onAccount={onAccount || (() => {})}
+              onBuyPack={onBuyPack || (() => {})}
+            />
           </>
         )}
       </div>
     </div>
   );
 }
+
 
 
 
