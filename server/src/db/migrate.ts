@@ -124,6 +124,53 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS idx_police_annotations_agent   ON police_annotations(agent_id);
     `);
 
+    // ── Block 4 : Auth — password + magic tokens — Session 13 ────────────
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'customer';
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+
+      CREATE TABLE IF NOT EXISTS magic_tokens (
+        id           VARCHAR(30) PRIMARY KEY,
+        email        TEXT NOT NULL,
+        token        TEXT NOT NULL UNIQUE,
+        type         VARCHAR(20) NOT NULL DEFAULT 'login',
+        gift_credits INTEGER,
+        expires_at   TIMESTAMP NOT NULL,
+        used_at      TIMESTAMP,
+        created_at   TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_magic_tokens_token ON magic_tokens(token);
+      CREATE INDEX IF NOT EXISTS idx_magic_tokens_email ON magic_tokens(email);
+    `);
+
+
+    // ── Block 5 : Garage personnel — vehicles — Session 13 ───────────────
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS vehicles (
+        id             VARCHAR(20) PRIMARY KEY,
+        user_id        VARCHAR(20) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        nickname       TEXT,
+        plate          TEXT,
+        make           TEXT,
+        model          TEXT,
+        color          TEXT,
+        year           TEXT,
+        category       TEXT,
+        license_data   JSONB NOT NULL DEFAULT '{}',
+        insurance_data JSONB NOT NULL DEFAULT '{}',
+        created_at     TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at     TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_vehicles_user ON vehicles(user_id);
+    `);
+
+    // Seed admin user
+    const { seedAdminUser } = await import('../services/auth.service.js');
+    await seedAdminUser();
+
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
@@ -134,3 +181,4 @@ export async function runMigrations() {
     }
   }
 }
+
