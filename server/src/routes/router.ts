@@ -13,6 +13,8 @@ import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
+import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
+import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { io } from '../index';
 
 const t = initTRPC.context<Context>().create();
@@ -579,6 +581,133 @@ export const appRouter = router({
       }),
   }),
 
+  // ── AUTH ─────────────────────────────────────────────────────
+  auth: router({
+
+    // POST auth.register
+    register: publicProcedure
+      .input(z.object({ email: z.string().email(), password: z.string().min(6) }))
+      .mutation(async ({ input }) => {
+        try {
+          const result = await registerUser(input.email, input.password);
+          return { ok: true, ...result };
+        } catch (err: any) {
+          if (err.message === 'EMAIL_EXISTS') throw new Error('Cet email est déjà utilisé.');
+          throw err;
+        }
+      }),
+
+    // POST auth.login
+    login: publicProcedure
+      .input(z.object({ email: z.string().email(), password: z.string() }))
+      .mutation(async ({ input }) => {
+        try { return await loginWithPassword(input.email, input.password); }
+        catch { throw new Error('Email ou mot de passe incorrect.'); }
+      }),
+
+    // POST auth.magicLinkRequest
+    magicLinkRequest: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const token = await createMagicToken(input.email);
+        const magicUrl = `${CLIENT_URL}/?magic=${token}`;
+        await sendMagicLink(input.email, magicUrl);
+        return { ok: true };
+      }),
+
+    // POST auth.magicLinkVerify
+    magicLinkVerify: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const result = await verifyMagicToken(input.token);
+        if (!result) throw new Error('Lien invalide ou expiré.');
+        return { ok: true, ...result };
+      }),
+
+    // GET auth.me
+    me: publicProcedure
+      .query(async ({ ctx }) => {
+        if (!ctx.authUser) return null;
+        const { db } = await import('../db/index.js');
+        const { users } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
+        if (!user) return null;
+        return { id: user.id, email: user.email, role: user.role, credits: user.credits };
+      }),
+
+    // POST auth.grantCredits — admin only
+    grantCredits: publicProcedure
+      .input(z.object({
+        credits: z.number().min(1).max(1000),
+        recipientEmail: z.string().email().optional(),
+        sendEmail: z.boolean().default(false),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+        const token = await createGiftLink(input.credits, ctx.authUser.email);
+        const giftUrl = `${CLIENT_URL}/?gift=${token}`;
+        if (input.sendEmail && input.recipientEmail) {
+          await sendGiftCreditsLink(input.recipientEmail, giftUrl, input.credits);
+        }
+        const waText = encodeURIComponent(`🎁 ${input.credits} crédit${input.credits > 1 ? 's' : ''} offert${input.credits > 1 ? 's' : ''} sur boom.contact ! Clique ici pour les réclamer : ${giftUrl}`);
+        return { ok: true, giftUrl, waUrl: `https://wa.me/?text=${waText}` };
+      }),
+
+    // POST auth.claimGift
+    claimGift: publicProcedure
+      .input(z.object({ token: z.string(), email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const result = await claimGiftLink(input.token, input.email);
+        return { ok: true, ...result };
+      }),
+
+  }),
+
+  // ── VEHICLES — garage personnel ──────────────────────────────
+  vehicle: router({
+
+    // GET vehicle.list
+    list: publicProcedure
+      .query(async ({ ctx }) => {
+        if (!ctx.authUser) return [];
+        const { listVehicles } = await import('../services/vehicle.service.js');
+        return listVehicles(ctx.authUser.sub);
+      }),
+
+    // POST vehicle.save — create or update
+    save: publicProcedure
+      .input(z.object({
+        id:           z.string().optional(),
+        nickname:     z.string().optional(),
+        plate:        z.string().optional(),
+        make:         z.string().optional(),
+        model:        z.string().optional(),
+        color:        z.string().optional(),
+        year:         z.string().optional(),
+        category:     z.string().optional(),
+        licenseData:  z.record(z.any()).optional(),
+        insuranceData:z.record(z.any()).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.authUser) throw new Error('Connexion requise.');
+        const { saveVehicle } = await import('../services/vehicle.service.js');
+        return saveVehicle(ctx.authUser.sub, input);
+      }),
+
+    // POST vehicle.delete
+    delete: publicProcedure
+      .input(z.object({ id: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.authUser) throw new Error('Connexion requise.');
+        const { deleteVehicle } = await import('../services/vehicle.service.js');
+        return deleteVehicle(ctx.authUser.sub, input.id);
+      }),
+
+  }),
+
+
 });
 
 export type AppRouter = typeof appRouter;
+
