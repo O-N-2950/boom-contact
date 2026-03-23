@@ -392,7 +392,7 @@ function drawVan(ctx, cx, cy, W, H, color, label, angle) {
   ctx.fillStyle = 'rgba(0,0,0,0.2)';
   ctx.beginPath(); ctx.roundRect(-w*0.45, -h/2 - h*0.6, w*0.9, h*0.65, 4); ctx.fill();
 
-  ctx.fillStyle = '#fff'; ctx.font = `bold ${h*0.5}px sans-serif`;
+  ctx.fillStyle = '#fff'; ctx.font = 'bold ' + (h*0.5) + 'px sans-serif';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
   ctx.fillText(label, 0, 0); ctx.shadowBlur = 0;
@@ -462,11 +462,11 @@ function drawTrain(
   // Numéro de ligne / logo
   ctx.fillStyle = 'rgba(255,255,255,0.9)';
   ctx.beginPath(); ctx.roundRect(-w/2+3, -h*0.36, w*0.1, h*0.3, 2); ctx.fill();
-  ctx.fillStyle = color; ctx.font = `bold ${h*0.28}px sans-serif`;
+  ctx.fillStyle = color; ctx.font = 'bold ' + (h*0.28) + 'px sans-serif';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('⊟', -w/2+3+w*0.05, -h*0.21);
 
-  ctx.fillStyle = '#fff'; ctx.font = `bold ${h*0.5}px sans-serif`;
+  ctx.fillStyle = '#fff'; ctx.font = 'bold ' + (h*0.5) + 'px sans-serif';
   ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
   ctx.fillText(label, 0, 0); ctx.shadowBlur = 0;
   ctx.restore();
@@ -535,7 +535,7 @@ function drawTractor(
   ctx.beginPath(); ctx.ellipse(w*0.43, h*0.12, 5, 4, 0, 0, Math.PI*2); ctx.fill();
   ctx.shadowBlur=0;
 
-  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.42}px sans-serif`;
+  ctx.fillStyle='#fff'; ctx.font='bold ' + (h*0.42) + 'px sans-serif';
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
   ctx.fillText(label, -w*0.05, 0); ctx.shadowBlur=0;
@@ -603,7 +603,7 @@ function drawQuad(
   ctx.beginPath(); ctx.ellipse(-w*0.4, -h*0.14, 4, 3, 0, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(-w*0.4, h*0.14, 4, 3, 0, 0, Math.PI*2); ctx.fill();
 
-  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.45}px sans-serif`;
+  ctx.fillStyle='#fff'; ctx.font='bold ' + (h*0.45) + 'px sans-serif';
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
   ctx.fillText(label, 0, 0); ctx.shadowBlur=0;
@@ -688,7 +688,7 @@ function drawConstruction(
   ctx.beginPath(); ctx.ellipse(w*0.44, -h*0.18, 5, 4, 0, 0, Math.PI*2); ctx.fill();
   ctx.shadowBlur=0;
 
-  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.38}px sans-serif`;
+  ctx.fillStyle='#fff'; ctx.font='bold ' + (h*0.38) + 'px sans-serif';
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
   ctx.fillText(label, 0, 0); ctx.shadowBlur=0;
@@ -753,7 +753,7 @@ function drawBoat(
   ctx.fillStyle='#333';
   ctx.beginPath(); ctx.roundRect(-w*0.5, -h*0.18, w*0.1, h*0.36, 3); ctx.fill();
 
-  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.6}px sans-serif`;
+  ctx.fillStyle='#fff'; ctx.font='bold ' + (h*0.6) + 'px sans-serif';
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
   ctx.fillText(label, 0, h*0.05); ctx.shadowBlur=0;
