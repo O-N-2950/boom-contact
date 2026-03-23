@@ -10,40 +10,81 @@ const BASE_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
   || 'https://boom-contact-production.up.railway.app';
 
-// ── Packages disponibles ─────────────────────────────────────
+// ── Devises supportées ───────────────────────────────────────
+export const SUPPORTED_CURRENCIES = ['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY'] as const;
+export type SupportedCurrency = typeof SUPPORTED_CURRENCIES[number];
+
+// Mapping pays ISO → devise
+export const COUNTRY_TO_CURRENCY: Record<string, SupportedCurrency> = {
+  CH: 'CHF', LI: 'CHF',
+  DE: 'EUR', FR: 'EUR', BE: 'EUR', LU: 'EUR', IT: 'EUR', ES: 'EUR',
+  AT: 'EUR', NL: 'EUR', PT: 'EUR', FI: 'EUR', IE: 'EUR', GR: 'EUR',
+  GB: 'GBP',
+  AU: 'AUD', NZ: 'AUD',
+  US: 'USD', MX: 'USD',
+  CA: 'CAD',
+  SG: 'SGD', MY: 'SGD',
+  JP: 'JPY',
+};
+
+// ── Grille tarifaire internationale ──────────────────────────
+// Arrondie aux psychologiques par devise
 export const PACKAGES = {
   single: {
     id: 'single',
     label: '1 constat',
     credits: 1,
-    priceEUR: 490,   // centimes
-    priceCHF: 490,
     description: '1 constat numérique certifié boom.contact',
     popular: false,
+    savings: null,
+    prices: {
+      CHF: 490,  EUR: 490,  GBP: 390,
+      AUD: 790,  USD: 490,  CAD: 690,
+      SGD: 690,  JPY: 75000, // centimes sauf JPY en yen (pas de décimales)
+    },
   },
   pack3: {
     id: 'pack3',
     label: '3 constats',
     credits: 3,
-    priceEUR: 1290,
-    priceCHF: 1290,
-    description: '3 constats numériques — idéal pour la famille',
+    description: '3 constats — idéal famille · économie 12%',
     popular: true,
     savings: '12%',
+    prices: {
+      CHF: 1290, EUR: 1290, GBP:  990,
+      AUD: 1990, USD: 1290, CAD: 1790,
+      SGD: 1790, JPY: 190000,
+    },
   },
   pack10: {
     id: 'pack10',
     label: '10 constats',
     credits: 10,
-    priceEUR: 3490,
-    priceCHF: 3490,
-    description: '10 constats — pour professionnels et flottes',
+    description: '10 constats — flottes et entreprises · économie 29%',
     popular: false,
     savings: '29%',
+    prices: {
+      CHF: 3490, EUR: 3490, GBP: 2790,
+      AUD: 5490, USD: 3490, CAD: 4790,
+      SGD: 4790, JPY: 520000,
+    },
   },
 } as const;
 
 export type PackageId = keyof typeof PACKAGES;
+
+// Prix en centimes pour une devise
+export function getPrice(packageId: PackageId, currency: SupportedCurrency): number {
+  return (PACKAGES[packageId].prices as any)[currency] ?? PACKAGES[packageId].prices.EUR;
+}
+
+// Formatage lisible ex: "CHF 4.90" ou "¥750"
+export function formatPrice(amountCents: number, currency: SupportedCurrency): string {
+  if (currency === 'JPY') return `¥${amountCents}`;
+  const amount = (amountCents / 100).toFixed(2);
+  const symbols: Record<string, string> = { CHF:'CHF ', EUR:'€', GBP:'£', AUD:'A$', USD:'$', CAD:'C$', SGD:'S$' };
+  return `${symbols[currency] || ''}${amount}`;
+}
 
 function makeId(size = 12) {
   return randomBytes(size).toString('base64url').slice(0, size);
@@ -70,19 +111,23 @@ async function upsertUser(email: string, country?: string, language?: string) {
 export async function createCheckoutSession(
   packageId: PackageId,
   userEmail: string,
-  currency: 'EUR' | 'CHF' = 'EUR',
+  currency: SupportedCurrency = 'EUR',
   locale: string = 'fr',
 ) {
   const pkg = PACKAGES[packageId];
   if (!pkg) throw new Error(`Package inconnu: ${packageId}`);
 
-  const priceAmount = currency === 'CHF' ? pkg.priceCHF : pkg.priceEUR;
+  const priceAmount = getPrice(packageId, currency);
   const currencyLower = currency.toLowerCase();
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     customer_email: userEmail,
     locale: (locale as any) || 'fr',
+    // ── Facture PDF automatique envoyée par Stripe ──────────
+    invoice_creation: { enabled: true },
+    // ── TVA automatique par pays (activer dans Stripe Tax dashboard) ──
+    // automatic_tax: { enabled: true },
     line_items: [{
       price_data: {
         currency: currencyLower,
@@ -109,8 +154,6 @@ export async function createCheckoutSession(
     },
     success_url: `${BASE_URL}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url:  `${BASE_URL}?payment=cancelled`,
-    // Stripe Tax (optionnel — activer si domaine vérifié)
-    // automatic_tax: { enabled: true },
   });
 
   // Enregistrer le paiement en pending
@@ -231,3 +274,4 @@ export async function saveConsent(
     language: language || null,
   }).where(eq(schema.users.email, email));
 }
+
