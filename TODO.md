@@ -1,127 +1,157 @@
 # boom.contact — TODO.md
-> Mise à jour : 22 Mars 2026 — Fin Session 10
+> Mise à jour : 23 Mars 2026 — Fin Session 12
 
 ---
 
-## ✅ FAIT — Sessions 1-4 (Infrastructure + Core)
+## ✅ FAIT — Sessions 1-11 (voir SUIVI.md pour détails)
 
-- [x] Build Railway SUCCESS
-- [x] Service web doublon supprimé
-- [x] tRPC v11 mutations corrigées
-- [x] CORS production configuré
-- [x] PostgreSQL + Drizzle ORM
-- [x] Flow constat complet A+B (SCAN→LIEU→PHOTOS→QR→INFOS→CROQUIS→CHOC→SIGN)
-- [x] OCR Claude Vision — permis CH/FR/DE/GB + carte verte
-- [x] Stripe live CHF+EUR — 3 packages (1/3/10 constats)
-- [x] Webhook Stripe vérifié
-- [x] PDF multilingue pdf-lib (12 langues)
-- [x] Email Resend — DKIM actif, domaine boom.contact vérifié
-- [x] Socket.io temps réel A↔B
-- [x] PWA offline-first (Service Worker + IndexedDB)
+- [x] Infrastructure Railway + PostgreSQL + tRPC v11
+- [x] Flow constat complet A+B (10 étapes)
+- [x] OCR Claude Vision 50 langues
+- [x] Stripe live CHF+EUR — 3 packages (1/3/10 crédits)
+- [x] PDF multilingue 12 langues
 - [x] i18n FR/DE/IT/EN
+- [x] MapVehiclePlacer — carte OSM + satellite ESRI
+- [x] Mode piéton/solo/objet
+- [x] Transcription vocale Whisper-1
+- [x] WinWin intégration partenaire CH
+- [x] LandingPage section WinWin
 
 ---
 
-## ✅ FAIT — Sessions 5-7 (Qualité + i18n)
+## ✅ FAIT — Session 12 (Chrome Puppeteer + OSM + Véhicules)
 
-- [x] OCR mondial IMIC — 50 langues, prompt universel
-- [x] Redirection apex → www
-- [x] PDF multilingue 12 langues (FR/DE/IT/EN/ES/PT/NL/PL/RO/CS/SK/HR)
-- [x] PoliceFlow DB tables (police_stations, police_users)
-- [x] JWT police 8h — auth séparée des conducteurs
-- [x] i18n FR/DE/IT/EN complet, deploy SUCCESS
-
----
-
-## ✅ FAIT — Sessions 8-9 (Features avancées)
-
-- [x] Géolocalisation IP → langue (180+ pays, cascade 4 niveaux)
-- [x] Scanner multi-documents (jusqu'à 4 photos simultanées, merge résultats)
-- [x] Navigation retour entre étapes (bouton ← Retour)
-- [x] Véhicule pré-sélectionné depuis OCR (type auto-détecté)
-- [x] Driver B débloqué — pré-rempli depuis données A
-- [x] Croquis — 6 templates + description textuelle + fix iOS
-- [x] Transcription vocale réelle — Whisper-1, 99 langues, max 3 min
-- [x] Flow vocal → IA → questions → croquis automatique
-- [x] Moteur dessin professionnel (sketch-engine.ts) — silhouettes + couleurs OCR
-- [x] Détection multi-véhicules (2/3/4 véhicules)
-- [x] Reordering flow : VOCAL avant QR, CROQUIS après QR
-- [x] allVehicles state — enrichi au fur et à mesure
+- [x] Chrome headless Puppeteer sur Railway Alpine (chromium)
+- [x] Carte OSM server-side (Cairo + node-canvas + Nominatim)
+- [x] 16 types de véhicules — 5 nouvelles silhouettes (train, tracteur, quad, chantier, bateau)
+- [x] MapVehiclePlacer OBLIGATOIRE avant signature — diagram→sketch→sign
+- [x] PDF avec vraie carte OSM + véhicules Chrome
+- [x] drawRoadScene supprimé — carte pure
+- [x] Coordonnées exactes Bellevue 7 Courgenay : 47.4088, 7.1124
+- [x] 10/10 tests E2E 10 pays — 0 erreur logs
 
 ---
 
-## ✅ FAIT — Session 10 (Carte + PDF + Audit)
+## 🔴 SESSION 13 — PRIORITÉ HAUTE
 
-- [x] MapVehiclePlacer — conducteur place son véhicule sur carte réelle
-- [x] Plan OSM par défaut (pas de voitures fantômes) + toggle satellite ESRI
-- [x] Géocodage Nominatim — fallback si lat/lng absent
-- [x] Mode piéton/solo/objet — bypass QR sans 2e conducteur
-- [x] Boutons Piéton/Enfant, Objet/Animal, Seul dans QRSession
-- [x] Image carte JPEG envoyée au serveur (updateAccidentMutation)
-- [x] PDF auto-detect JPEG vs PNG (fix crash embedPng sur JPEG)
-- [x] **BUG FIX CRITIQUE** : bothSigned → status 'completed' — presentParticipants élargi
-- [x] Audit A→Z complet — 11/14 routes OK (3 bugs trouvés et corrigés)
+### 1. Fix WinWin — lien partenaire
+- [ ] Identifier pourquoi le lien WinWin ne fonctionne pas en prod
+- [ ] Tester `POST /trpc/winwin.createSession` depuis le portail WinWin
+- [ ] Vérifier le directUrl généré et le QR code affiché
+- [ ] Documenter le flow WinWin end-to-end
+
+### 2. Authentification — Magic Links + Mot de passe
+- [ ] Table `users` : email, password_hash, role (admin/customer), credits, created_at
+- [ ] Magic link : email → token 15min → session JWT 30j
+- [ ] Mot de passe : bcrypt hash, reset par email
+- [ ] Page `/login` et `/register` (React)
+- [ ] Middleware auth tRPC — protéger les routes achat/profil
+- [ ] Compte admin : contact@boom.contact / Cristal4you11++ — crédits illimités
+- [ ] Envoi gratuit de crédits par WhatsApp (lien unique)
+
+### 3. Grille tarifaire internationale
+- [ ] Prix par devise et par pays (CHF/EUR/GBP/AUD/USD/INR...)
+- [ ] Page `/pricing` avec grille interactive par pays
+- [ ] Détection automatique de la devise selon le pays de l'utilisateur
+- [ ] Packs : 1 constat / 3 constats ⭐ / 10 constats — déclinaisons par devise
+
+| Pack | CHF | EUR | GBP | AUD | USD |
+|---|---|---|---|---|---|
+| 1 constat | 4.90 | 4.90 | 3.90 | 7.90 | 4.90 |
+| 3 constats | 12.90 | 12.90 | 9.90 | 19.90 | 12.90 |
+| 10 constats | 34.90 | 34.90 | 27.90 | 54.90 | 34.90 |
+
+### 4. Stripe international
+- [ ] Stripe Checkout multi-devises (CHF/EUR/GBP/AUD/USD)
+- [ ] Stripe Tax (TVA automatique par pays)
+- [ ] Facture PDF automatique par email après achat
+- [ ] Webhook Stripe → créditer le compte utilisateur
+- [ ] Historique achats dans le dashboard utilisateur
+
+### 5. Accès admin + crédits illimités
+- [ ] Compte admin : contact@boom.contact / Cristal4you11++
+- [ ] Pack illimité (credits = 999999)
+- [ ] Interface d'envoi de crédits gratuits : générer lien unique → WhatsApp
+- [ ] Admin peut voir et gérer tous les comptes
+
+### 6. Dashboard admin
+- [ ] `/admin` — protégé par rôle admin
+- [ ] Constats en live : nombre par pays, carte monde temps réel
+- [ ] Revenus Stripe en temps réel et par pays
+- [ ] KPI coûts IA (Claude Vision OCR) — coût par session, coût total/jour
+- [ ] Statistiques packs achetés (1/3/10) — conversion, panier moyen
+- [ ] Utilisateurs actifs, inscrits, rétention
+- [ ] Sessions actives live (WebSocket)
+- [ ] Alertes : erreur PDF, erreur OCR, Stripe webhook fail
+
+### 7. Réseaux sociaux
+- [ ] Connexion Facebook Page boom.contact
+- [ ] Connexion TikTok Business boom.contact
+- [ ] Connexion LinkedIn Page boom.contact
+- [ ] Connexion Instagram boom.contact
+- [ ] Publication automatique journalière (voir code PEP's V2 Facebook)
+- [ ] Contenu auto-généré : conseils sécurité routière, tips constat, stats pays
+- [ ] Scheduler : 1 post/jour par plateforme, heures optimales
+
+### 8. Numéros d'urgence par pays
+- [ ] Table `emergency_numbers` : pays, service, numéro, description
+- [ ] Suisse : TCS (0800 140 140), ACS (044 628 88 99), Helvetia, AXA, Zurich, Mobilière...
+- [ ] France, Allemagne, Belgique, Luxembourg, Italie, Espagne...
+- [ ] Affichage dans l'app après accident (step dédié ou dans PDF)
+- [ ] Exemple CH : TCS dépannage 24h/7j = 0800 140 140
+
+### 9. Tests finaux + Mise en production
+- [ ] Tests manuels complets : iOS Safari + Android Chrome
+- [ ] Test Stripe paiement réel CHF/EUR
+- [ ] Test magic link email
+- [ ] Test admin dashboard live
+- [ ] Test réseaux sociaux post automatique
+- [ ] Vérification RGPD / nLPD (cookie consent, politique vie privée)
+- [ ] Mise en production officielle — annonce presse
 
 ---
 
-## ✅ FAIT — Session 11 (Tests E2E + WinWin)
+## 🟠 SESSION 14+ — MOYEN TERME
 
-- [x] Tests E2E 8 pays — CH/FR/DE/BE/LU/IT/GB/ES — 80/80 étapes PASS ✅
-- [x] 5 Edge cases PASS (session inexistante, PDF sans sig, WinWin clés, packages)
-- [x] Section partenariat WinWin sur LandingPage (home boom.contact) ✅
-- [x] BUG FIX : URL WinWin /api/trpc → /trpc (commit 1050838) ✅
-- [x] Intégration WinWin validée bout-en-bout : clé valide → session pré-chargée prefilled=true ✅
+### PoliceFlow (pilote Canton Jura)
+- [ ] police.boom.contact subdomain Railway
+- [ ] PoliceFlow.tsx — 4 sections (résumé, conducteurs, médias, annotations)
+- [ ] PDF rapport d'intervention CH modulaire
+- [ ] Auth police login + JWT 8h
+- [ ] Audit trail RGPD consultations agents
+- [ ] Hébergement Infomaniak (si contrat cantonal signé)
 
----
-
-## 🔴 PRIORITÉ 1 — PoliceFlow (pilote Jura)
-
-- [ ] `police.boom.contact` — subdomain Railway + routing
-- [ ] `PoliceFlow.tsx` — vue session + annotations agent
-  - [ ] Section 1 : Résumé incident (lieu, date, heure, blessés)
-  - [ ] Section 2 : Conducteurs A & B (OCR + divergences)
-  - [ ] Section 3 : Médias (galerie 5 catégories + croquis)
-  - [ ] Section 4 : Annotations agent (infractions, mesures, témoins)
-- [ ] PDF "Rapport d'intervention" modulaire CH (2 pages)
-- [ ] Auth police — login + JWT 8h
-- [ ] Audit trail consultations agents (RGPD)
-- [ ] Séparation droits par juridiction/poste
-- [ ] Script onboarding Canton Jura (créer station + agent en DB)
-
----
-
-## 🔴 PRIORITÉ 2 — Tests terrain complets
-
-- [x] Tests 8 pays E2E avec PDF — 8/8 PASS, 80/80 étapes, 37.7s ✅ (22 Mars 2026)
-- [ ] Flow complet A+B sur 2 iPhones réels
-- [ ] Test Stripe paiement CHF réel
-- [ ] Test vocal → IA → questions → croquis en conditions réelles
-- [ ] Vérifier questions IA ciblées (pas génériques)
-- [ ] Vérifier parking_reverse correctement détecté
-
----
-
-## 🟠 PRIORITÉ 3 — Qualité produit
-
-- [ ] Score cohérence IA (contradictions A vs B avant signature)
-- [ ] Champs CEA manquants : date validité assurance, catégorie permis, date naissance
-- [ ] Mode Témoin officiel (3e QR dans ConstatFlow)
-- [ ] PDF conducteur B avec sa propre déclaration vocale
-- [ ] Transcription vocale dans PDF (section 14 observations)
-- [ ] Croquis IA dans PDF (remplace croquis manuel)
+### Qualité produit
+- [ ] Champs CEA manquants (dates validité assurance, permis, date naissance, adresse preneur)
 - [ ] 50 silhouettes véhicules niveau 2 (hatchback, SUV small/large, pick-up...)
-- [ ] Cron nettoyage sessions > 7 jours
+- [ ] Tests iOS + Android réels (2 téléphones)
 - [ ] Dark mode (prefers-color-scheme)
+- [ ] Cron nettoyage sessions > 7 jours
+- [ ] Score cohérence IA (contradictions A vs B avant signature)
+- [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
+
+### B2B Assureurs
+- [ ] API webhook assureurs (AXA, Baloise, Helvetia, Mobilière)
+- [ ] Export structuré sinistre
+- [ ] White-label assureur
+- [ ] Licence données agrégées anonymisées
 
 ---
 
-## 🟡 PRIORITÉ 4 — Scaling / B2G Europe
+## 📊 ÉTAT TECHNIQUE ACTUEL
 
-- [ ] Templates PDF rapport police par pays : FR (LRPPN), BE, LU
-- [ ] i18n PoliceFlow DE/FR/IT/EN
-- [ ] API assureurs : webhook export structuré sinistre
-- [ ] Migration Infomaniak CH (déclenchée par premier contrat cantonal)
-- [ ] Mode Témoin officiel
-- [ ] Intégration assureurs CH : AXA, Baloise, Helvetia, Mobilière
-- [ ] Google Maps Static API — créer nouvelle clé non expirée
-- [ ] Multi-tenant par canton/pays
+| Composant | État |
+|---|---|
+| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
+| Backend | Express + tRPC v11 + Socket.io |
+| Base de données | PostgreSQL (Drizzle ORM) — 6 tables + 2 tables police |
+| OCR | Claude Vision (Sonnet) — 50 langues |
+| PDF | pdf-lib server-side + Puppeteer Chrome headless |
+| Carte | OSM tiles server-side (Cairo + node-canvas) + GPS conducteur |
+| Email | Resend — contact@boom.contact, DKIM actif |
+| Paiement | Stripe live CHF + EUR (sans auth utilisateur pour l'instant) |
+| Hébergement | Railway Europe West |
+| Domaine | www.boom.contact — DNS + SSL actifs |
+| PWA | Service Worker, IndexedDB, Background Sync, offline-first |
+| Véhicules | 16 types avec silhouettes (dont train, tracteur, quad, chantier, bateau) |
+
