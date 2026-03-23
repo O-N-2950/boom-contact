@@ -8,7 +8,7 @@ import {
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
-import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES } from '../services/stripe.service.js';
+import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
@@ -262,10 +262,11 @@ export const appRouter = router({
     // Créer une session Stripe Checkout
     createCheckout: publicProcedure
       .input(z.object({
-        packageId: z.enum(['single', 'pack3', 'pack10']),
-        userEmail: z.string().email(),
-        currency:  z.enum(['EUR', 'CHF']).default('EUR'),
-        locale:    z.string().default('fr'),
+        packageId:   z.enum(['single', 'pack3', 'pack10']),
+        userEmail:   z.string().email(),
+        currency:    z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
+        locale:      z.string().default('fr'),
+        countryCode: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         return createCheckoutSession(
@@ -274,6 +275,22 @@ export const appRouter = router({
           input.currency,
           input.locale,
         );
+      }),
+
+    // GET payment.currencies — return full pricing grid
+    currencies: publicProcedure
+      .query(() => {
+        const grid: Record<string, any> = {};
+        for (const pkgId of ['single','pack3','pack10'] as const) {
+          grid[pkgId] = {};
+          for (const cur of SUPPORTED_CURRENCIES) {
+            grid[pkgId][cur] = {
+              amountCents: getPrice(pkgId, cur),
+              formatted: formatPrice(getPrice(pkgId, cur), cur),
+            };
+          }
+        }
+        return { packages: grid, currencies: SUPPORTED_CURRENCIES, countryMap: COUNTRY_TO_CURRENCY };
       }),
 
     // Vérifier le solde de crédits
@@ -909,6 +926,7 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
