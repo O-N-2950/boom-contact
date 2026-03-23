@@ -21,6 +21,8 @@ export const sessions = pgTable('sessions', {
 export const users = pgTable('users', {
   id:               varchar('id', { length: 20 }).primaryKey(),
   email:            text('email').notNull().unique(),
+  passwordHash:     text('password_hash'),
+  role:             varchar('role', { length: 20 }).notNull().default('customer'),
   createdAt:        timestamp('created_at').notNull().defaultNow(),
   credits:          integer('credits').notNull().default(0),
   consentCGU:       boolean('consent_cgu').notNull().default(false),
@@ -32,6 +34,21 @@ export const users = pgTable('users', {
   lastSeenAt:       timestamp('last_seen_at'),
 }, (t) => ({
   emailIdx: index('users_email_idx').on(t.email),
+}));
+
+// ── Magic tokens — login links + gift credits ─────────────────
+export const magicTokens = pgTable('magic_tokens', {
+  id:          varchar('id', { length: 30 }).primaryKey(),
+  email:       text('email').notNull(),
+  token:       text('token').notNull().unique(),
+  type:        varchar('type', { length: 20 }).notNull().default('login'), // 'login' | 'gift'
+  giftCredits: integer('gift_credits'),
+  expiresAt:   timestamp('expires_at').notNull(),
+  usedAt:      timestamp('used_at'),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  tokenIdx: index('magic_tokens_token_idx').on(t.token),
+  emailIdx: index('magic_tokens_email_idx').on(t.email),
 }));
 
 // ── Payments ─────────────────────────────────────────────────
@@ -115,4 +132,24 @@ export const policeAnnotations = pgTable('police_annotations', {
 }, (t) => ({
   sessionIdx: index('police_annotations_session_idx').on(t.sessionId),
   agentIdx:   index('police_annotations_agent_idx').on(t.agentId),
+}));
+
+
+// ── Vehicles — garage personnel ───────────────────────────────
+export const vehicles = pgTable('vehicles', {
+  id:           varchar('id', { length: 20 }).primaryKey(),
+  userId:       varchar('user_id', { length: 20 }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  nickname:     text('nickname'),                          // ex: "Ma Golf bleue"
+  plate:        text('plate'),
+  make:         text('make'),
+  model:        text('model'),
+  color:        text('color'),
+  year:         text('year'),
+  category:     text('category'),                          // ex: "Voiture de tourisme"
+  licenseData:  jsonb('license_data').notNull().default({}),   // raw OCR permis de circuler
+  insuranceData:jsonb('insurance_data').notNull().default({}), // raw OCR carte verte + mises à jour manuelles
+  createdAt:    timestamp('created_at').notNull().defaultNow(),
+  updatedAt:    timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  userIdx: index('vehicles_user_idx').on(t.userId),
 }));
