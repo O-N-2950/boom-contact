@@ -1,5 +1,6 @@
 import { InsuranceSearchWidget } from './constat/InsuranceAssistance';
 import { useState } from 'react';
+import { trpc } from '../trpc';
 
 // ── Data ──────────────────────────────────────────────────────
 interface EmergencyContact {
@@ -350,6 +351,119 @@ const TYPE_COLOR: Record<string, string> = {
   police: '#60c8f0', ambulance: '#f87171', rescue: '#fb923c', roadside: '#fbbf24', insurance: '#4ade80',
 };
 
+
+// ── Dynamic lookup for any unlisted country ──────────────────
+export function UnknownCountryLookup({ countryCode, countryName }: { countryCode: string; countryName?: string }) {
+  const { data, isLoading, error } = trpc.emergency.countryLookup.useQuery(
+    { countryCode, countryName },
+    { enabled: !!countryCode, retry: 1 }
+  );
+
+  if (isLoading) return (
+    <div style={{ background: '#111', border: '1px solid #222', borderRadius: 12, padding: 16 }}>
+      <div style={{ color: '#666', fontSize: 13, display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ width: 16, height: 16, border: '2px solid #333', borderTopColor: '#FF3500', borderRadius: '50%', flexShrink: 0 }} />
+        Recherche des numéros d'urgence pour {countryName || countryCode}...
+      </div>
+    </div>
+  );
+
+  if (!data || error) return (
+    <div style={{ background: '#1a1010', border: '1px solid #3a1a1a', borderRadius: 12, padding: 14 }}>
+      <div style={{ color: '#f87171', fontSize: 13 }}>⚠️ Numéros non trouvés pour {countryName || countryCode}</div>
+      <div style={{ color: '#555', fontSize: 12, marginTop: 4 }}>Composez le <strong style={{ color: '#fff' }}>112</strong> (valable dans 200+ pays).</div>
+    </div>
+  );
+
+  const sourceLabel = data.source === 'db' ? '✅ Vérifié' : data.source === 'ai' ? '🤖 IA live' : '⚠️';
+  const confidenceColor = data.confidence === 'high' ? '#4ade80' : data.confidence === 'medium' ? '#fbbf24' : '#f87171';
+
+  return (
+    <div style={{ background: '#0d1a0d', border: '1px solid #1a3a1a', borderRadius: 12, padding: 14 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <div style={{ color: '#4ade80', fontWeight: 700 }}>🆘 {data.countryName}</div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <span style={{ color: '#555', fontSize: 10 }}>{sourceLabel}</span>
+          <span style={{ color: confidenceColor, fontSize: 10, fontWeight: 700 }}>{data.confidence.toUpperCase()}</span>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        {[
+          { label: '🚔 Police', number: data.police, color: '#60c8f0' },
+          { label: '🚑 Ambulance', number: data.ambulance, color: '#f87171' },
+          { label: '🚒 Pompiers', number: data.fire, color: '#fb923c' },
+          ...(data.roadside ? [{ label: '🔧 Dépannage', number: data.roadside, color: '#fbbf24', note: data.roadsideNote }] : []),
+        ].map((item: any, i: number) => (
+          <a key={i} href={`tel:${item.number.replace(/[\s().+]/g, '')}`} style={{
+            display: 'flex', flexDirection: 'column' as const, background: '#111',
+            border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
+          }}>
+            <div style={{ color: '#666', fontSize: 10, marginBottom: 2 }}>{item.label}</div>
+            <div style={{ color: item.color, fontWeight: 900, fontSize: 18, fontFamily: 'monospace' }}>{item.number}</div>
+            {item.note && <div style={{ color: '#555', fontSize: 10, marginTop: 2 }}>{item.note}</div>}
+          </a>
+        ))}
+      </div>
+      {data.universal && data.universal !== data.police && (
+        <div style={{ marginTop: 10, background: '#111', border: '1px solid #222', borderRadius: 8, padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: '#888', fontSize: 12 }}>Urgences universel</span>
+          <a href={`tel:${data.universal}`} style={{ color: '#fff', fontWeight: 900, fontSize: 18, fontFamily: 'monospace', textDecoration: 'none' }}>{data.universal}</a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Country search widget — for any country in the world ──────
+export function CountryEmergencySearch() {
+  const [code, setCode]   = useState('');
+  const [name, setName]   = useState('');
+  const [search, setSearch] = useState(false);
+  const [submitted, setSubmitted] = useState<{code: string; name: string} | null>(null);
+
+  const handleSubmit = () => {
+    if (!code.trim()) return;
+    setSubmitted({ code: code.toUpperCase().trim(), name: name.trim() });
+    setSearch(true);
+  };
+
+  return (
+    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 16 }}>
+      <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12, fontSize: 14 }}>
+        🌍 Urgences pour un autre pays
+      </div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <input
+          placeholder="Code pays (ex: MA, KE, VN...)"
+          value={code}
+          onChange={e => setCode(e.target.value.toUpperCase().slice(0,3))}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          style={{ width: 100, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 10px', fontSize: 14, boxSizing: 'border-box' as const }}
+        />
+        <input
+          placeholder="Nom du pays (optionnel)"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
+        />
+        <button onClick={handleSubmit} disabled={!code.trim()} style={{
+          background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8,
+          padding: '9px 14px', fontWeight: 700, cursor: 'pointer', fontSize: 14, flexShrink: 0,
+        }}>
+          🔍
+        </button>
+      </div>
+      {submitted && search && (
+        <UnknownCountryLookup countryCode={submitted.code} countryName={submitted.name || undefined} />
+      )}
+      <div style={{ color: '#333', fontSize: 11, marginTop: 8 }}>
+        ISO 3166-1 alpha-2 · Si non trouvé, une recherche IA est lancée automatiquement.
+      </div>
+    </div>
+  );
+}
+
 interface EmergencyNumbersProps {
   mode?: 'full' | 'compact';
   initialCountry?: string;
@@ -475,6 +589,9 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {/* Insurance search widget */}
         <InsuranceSearchWidget />
 
+        {/* Dynamic country lookup */}
+        <CountryEmergencySearch />
+
         <div style={{ color: '#888', fontSize: 13, marginBottom: 12, marginTop: 16 }}>
           {selected.flag} <strong style={{ color: '#fff' }}>{selected.name}</strong> — {contacts.length} numéro{contacts.length !== 1 ? 's' : ''}
         </div>
@@ -514,5 +631,6 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
     </div>
   );
 }
+
 
 
