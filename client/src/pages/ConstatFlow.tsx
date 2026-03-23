@@ -39,6 +39,7 @@ import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import { EmergencyNumbers } from '../components/EmergencyNumbers';
 import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
+import { UnknownCountryLookup } from '../components/EmergencyNumbers';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
@@ -591,6 +592,14 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
               insurerB={(accidentData as any)?.insurerB}
               countryCode={(accidentData as any)?.location?.country}
             />
+            {/* If country detected from accident location, show live lookup */}
+            {(accidentData as any)?.location?.country &&
+             !['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','JP','CN','IN','KR','SG','RU','AE','ZA','BR','NZ','MA','TR'].includes((accidentData as any)?.location?.country) && (
+              <UnknownCountryLookup
+                countryCode={(accidentData as any).location.country}
+                countryName={(accidentData as any).location.countryName}
+              />
+            )}
             <EmergencyNumbers mode="compact" />
           </>
         )}
