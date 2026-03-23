@@ -132,6 +132,24 @@ export default function App() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('payment') === 'success') {
       window.history.replaceState({}, '', '/');
+      // Refresh credits if user is logged in
+      if (localStorage.getItem('boom_refresh_credits')) {
+        localStorage.removeItem('boom_refresh_credits');
+        // Re-fetch authUser from server to get updated credits
+        const token = localStorage.getItem('boom_user_token');
+        if (token) {
+          fetch('/trpc/auth.me', { headers: { 'Authorization': 'Bearer ' + token } })
+            .then(r => r.json())
+            .then(d => {
+              const user = d?.result?.data;
+              if (user) {
+                localStorage.setItem('boom_user', JSON.stringify(user));
+                setAuthUser(user);
+              }
+            })
+            .catch(() => {});
+        }
+      }
     }
   }, []);
 
@@ -186,6 +204,11 @@ export default function App() {
         <PricingPage
           userEmail={userEmail}
           onBack={() => setView('landing')}
+          authUser={authUser}
+          onAuthSuccess={() => {
+            // Refresh authUser credits after Stripe purchase
+            trpc.auth.me.invalidate?.();
+          }}
         />
       )}
 
@@ -255,6 +278,7 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
 
