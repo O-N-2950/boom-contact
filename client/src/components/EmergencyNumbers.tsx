@@ -1,3 +1,4 @@
+import { InsuranceSearchWidget } from './constat/InsuranceAssistance';
 import { useState } from 'react';
 
 // ── Data ──────────────────────────────────────────────────────
@@ -471,7 +472,10 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           ))}
         </div>
 
-        <div style={{ color: '#888', fontSize: 13, marginBottom: 12 }}>
+        {/* Insurance search widget */}
+        <InsuranceSearchWidget />
+
+        <div style={{ color: '#888', fontSize: 13, marginBottom: 12, marginTop: 16 }}>
           {selected.flag} <strong style={{ color: '#fff' }}>{selected.name}</strong> — {contacts.length} numéro{contacts.length !== 1 ? 's' : ''}
         </div>
 
