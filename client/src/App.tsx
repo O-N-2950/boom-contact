@@ -11,11 +11,16 @@ import { CGUModal } from './components/CGUModal';
 import { PoliceLogin } from './pages/PoliceLogin';
 import { PoliceDashboard } from './pages/PoliceDashboard';
 import { PoliceFlow } from './pages/PoliceFlow';
+import { AuthModal } from './components/AuthModal';
+import { AccountPage } from './pages/AccountPage';
 import { applyDir } from './i18n';
+import { trpc } from './trpc';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
+const USER_TOKEN_KEY = 'boom_user_token';
+const USER_DATA_KEY  = 'boom_user';
 const CGU_KEY   = 'boom_cgu_accepted';
 
 function getWinWinSessionId(): string | null {
@@ -28,6 +33,7 @@ function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
   // WinWin directUrl: /constat/:sessionId?lang=fr&prefilled=true
   if (getWinWinSessionId()) return 'constat';
+  // Magic link / gift link handled inline after mount
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
@@ -47,6 +53,56 @@ export default function App() {
   const { i18n } = useTranslation();
   const [view, setView] = useState<AppView>(getInitialView);
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
+  const [authUser, setAuthUser] = useState<any>(() => {
+    try { return JSON.parse(localStorage.getItem(USER_DATA_KEY) || 'null'); } catch { return null; }
+  });
+  const [authToken, setAuthToken] = useState<string>(() => localStorage.getItem(USER_TOKEN_KEY) || '');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();
+  const claimGiftMut    = trpc.auth.claimGift.useMutation();
+
+  // Handle ?magic= and ?gift= on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const magicToken = params.get('magic');
+    const giftToken  = params.get('gift');
+    if (magicToken) {
+      window.history.replaceState({}, '', '/');
+      magicVerifyMut.mutate({ token: magicToken }, {
+        onSuccess: (res) => {
+          localStorage.setItem(USER_TOKEN_KEY, res.token);
+          localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
+          setAuthUser(res.user);
+          setAuthToken(res.token);
+          setView('account');
+        },
+        onError: () => alert('Lien de connexion invalide ou expiré.'),
+      });
+    }
+    if (giftToken && authUser?.email) {
+      window.history.replaceState({}, '', '/');
+      claimGiftMut.mutate({ token: giftToken, email: authUser.email }, {
+        onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
+      });
+    }
+  }, []);
+
+  const handleAuth = (token: string, user: any) => {
+    localStorage.setItem(USER_TOKEN_KEY, token);
+    localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
+    setAuthToken(token);
+    setAuthUser(user);
+    setShowAuthModal(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem(USER_TOKEN_KEY);
+    localStorage.removeItem(USER_DATA_KEY);
+    setAuthToken('');
+    setAuthUser(null);
+    setView('landing');
+  };
   const [showCGU, setShowCGU] = useState(false);
   const [policeToken, setPoliceToken] = useState<string>(() => localStorage.getItem('boom_police_token') || '');
   const [policeUser, setPoliceUser]   = useState<unknown>(() => {
@@ -109,8 +165,8 @@ export default function App() {
     <ErrorBoundary>
     <OfflineBanner />
     <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
-      {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} />}
-      {view === 'constat'  && <ConstatFlow initialSessionId={getWinWinSessionId() || undefined} />}
+      {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} onAccount={() => authUser ? setView('account') : setShowAuthModal(true)} authUser={authUser} />}
+      {view === 'constat'  && <ConstatFlow initialSessionId={getWinWinSessionId() || undefined} authToken={authToken || undefined} />}
       {view === 'join'     && <JoinSession />}
       {view === 'agents'   && <AgentDashboard />}
       {view === 'pricing'  && (
@@ -146,6 +202,22 @@ export default function App() {
             localStorage.removeItem('boom_police_user');
             setView('landing');
           }}
+        />
+      )}
+
+      {view === 'account' && authUser && (
+        <AccountPage
+          user={authUser}
+          token={authToken}
+          onBack={() => setView('landing')}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {showAuthModal && (
+        <AuthModal
+          onAuth={handleAuth}
+          onSkip={() => setShowAuthModal(false)}
         />
       )}
 
