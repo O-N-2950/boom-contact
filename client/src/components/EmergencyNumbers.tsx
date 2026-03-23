@@ -222,9 +222,10 @@ export const EMERGENCY_DATA: CountryEmergency[] = [
     contacts: [
       { name: 'Police / Ambulance / Fire', number: '000', type: 'rescue', free: true },
       { name: 'NRMA Roadside (NSW/ACT)', number: '13 11 22', type: 'roadside', free: true },
-      { name: 'RACQ Roadside (QLD)', number: '13 11 11', type: 'roadside', free: true },
-      { name: 'RACV Roadside (VIC)', number: '13 72 28', type: 'roadside', free: true },
-      { name: 'RAA Roadside (SA)', number: '13 11 11', type: 'roadside', free: true },
+      { name: 'RACQ Roadside (QLD)', number: '13 1905', type: 'roadside', free: true },
+      { name: 'RACV Roadside (VIC)', number: '13 11 11', type: 'roadside', free: true },
+      { name: 'RAA Roadside (SA)', number: '8202 4600', type: 'roadside', note: 'Royal Automobile Association SA' },
+      { name: 'RAC Roadside (WA)', number: '13 17 03', type: 'roadside', free: true },
     ],
   },
   {
@@ -266,6 +267,10 @@ export const EMERGENCY_DATA: CountryEmergency[] = [
       { name: 'Police', number: '100', type: 'police', free: true },
       { name: 'Ambulance', number: '108', type: 'ambulance', free: true },
       { name: 'Fire', number: '101', type: 'rescue', free: true },
+      { name: 'NHAI Autoroutes (panne/accident)', number: '1033', type: 'roadside', free: true, note: '24h/7j — autoroutes nationales' },
+      { name: 'Maruti Suzuki assistance', number: '1800 102 1800', type: 'roadside', free: true, note: 'Membres / sous garantie' },
+      { name: 'Hyundai assistance', number: '1800 102 4645', type: 'roadside', free: true },
+      { name: 'Tata Motors assistance', number: '1800 209 7979', type: 'roadside', free: true },
     ],
   },
   {
@@ -276,6 +281,19 @@ export const EMERGENCY_DATA: CountryEmergency[] = [
     ],
   },
   // ── MOYEN-ORIENT / AFRIQUE ─────────────────────────────────
+
+  {
+    code: 'RU', flag: '🇷🇺', name: 'Россия Russia', region: 'Europe',
+    contacts: [
+      { name: 'Полиция Police', number: '102', type: 'police', free: true, note: 'Ou 112 depuis mobile' },
+      { name: 'Скорая Ambulance', number: '103', type: 'ambulance', free: true },
+      { name: 'Пожарная Fire', number: '101', type: 'rescue', free: true },
+      { name: 'Единый Urgences universal', number: '112', type: 'rescue', free: true, note: 'Toutes urgences — opérateur EN disponible' },
+      { name: 'ГИБДД Police route (accidents)', number: '112', type: 'police', free: true, note: 'Rapport accidents — demander ГИБДД' },
+      { name: 'RAMC Dépannage 24h/7j', number: '+7 495 623 0503', type: 'roadside', note: 'Russian AutoMotoClub — Moscou et toute la Russie' },
+      { name: 'Rosgosstrakh assistance', number: '8 800 200 00 00', type: 'insurance', free: true, note: 'Assurance auto — gratuit depuis mobile' },
+    ],
+  },
   {
     code: 'AE', flag: '🇦🇪', name: 'UAE / Dubai', region: 'Middle East',
     contacts: [
@@ -492,4 +510,5 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
     </div>
   );
 }
+
 
