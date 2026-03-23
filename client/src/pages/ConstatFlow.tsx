@@ -88,7 +88,7 @@ export function ConstatFlow() {
 
   const PREV: Partial<Record<FlowStep, FlowStep>> = {
     location:'ocr', photos:'location', voice:'photos',
-    qr:'voice', sketch:'qr', form:'sketch', diagram:'form', sign:'diagram',
+    qr:'voice', form:'qr', diagram:'form', sketch:'diagram', sign:'sketch',
   };
   const goBack = () => { const p = PREV[step]; if (p) setStep(p); };
   const canGoBack = !!PREV[step] && step !== 'done';
@@ -108,8 +108,8 @@ export function ConstatFlow() {
     { id: 'voice',    icon: '🎙️', label: 'Vocal' },
     { id: 'qr',       icon: '📱', label: t('steps.qr') },
     { id: 'form',     icon: '📋', label: t('steps.form') },
-    { id: 'sketch',   icon: '✏️', label: t('steps.sketch') },
     { id: 'diagram',  icon: '🚗', label: t('steps.damage') },
+    { id: 'sketch',   icon: '🗺️', label: t('steps.sketch') },
     { id: 'sign',     icon: '✍️', label: t('steps.sign') },
   ];
 
@@ -363,12 +363,12 @@ export function ConstatFlow() {
               // Aller vers QR — attendre les autres conducteurs
               setStep('qr');
             }}
-            onSkip={() => setStep('qr')}
           />
         )}
 
         {step === 'sketch' && (
           <MapVehiclePlacer
+            required={true}
             role="A"
             accidentLat={accidentData.location?.lat}
             accidentLng={accidentData.location?.lng}
@@ -387,10 +387,9 @@ export function ConstatFlow() {
                 ...prev,
                 vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
               }));
-              setStep('form');
+              setStep('sign');
             }}
-            onSkip={() => setStep('form')}
-          />
+/>
         )}
 
         {step === 'diagram' && (
@@ -433,3 +432,4 @@ export function ConstatFlow() {
     </div>
   );
 }
+
