@@ -741,7 +741,125 @@ export const appRouter = router({
   }),
 
 
+  // ── ADMIN ─────────────────────────────────────────────────────
+  admin: router({
+
+    // GET admin.stats — full dashboard data, admin only
+    stats: publicProcedure
+      .query(async ({ ctx }) => {
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+
+        const { db } = await import('../db/index.js');
+        const { sessions, users, payments, creditTxns } = await import('../db/schema.js');
+        const { desc, gte, eq, count, sum, sql } = await import('drizzle-orm');
+
+        const now = new Date();
+        const since24h = new Date(now.getTime() - 24 * 3600 * 1000);
+        const since7d  = new Date(now.getTime() - 7  * 24 * 3600 * 1000);
+        const since30d = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
+
+        // Sessions stats
+        const [totalSessions]     = await db.select({ c: count() }).from(sessions);
+        const [completedSessions] = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'completed'));
+        const [activeSessions]    = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'active'));
+        const [sessions24h]       = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since24h));
+        const [sessions7d]        = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since7d));
+
+        // Recent sessions (last 30)
+        const recentSessions = await db.query.sessions.findMany({
+          orderBy: [desc(sessions.createdAt)],
+          limit: 30,
+          columns: { id: true, status: true, createdAt: true, ownerEmail: true, accident: true, participantA: true },
+        });
+
+        // Users stats
+        const [totalUsers]  = await db.select({ c: count() }).from(users);
+        const [users7d]     = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since7d));
+        const [users30d]    = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since30d));
+
+        // Revenue stats
+        const [totalRevenue]   = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid'));
+        const [revenue30d]     = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since30d));
+        const [revenue7d]      = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since7d));
+        const [totalCredits]   = await db.select({ s: sum(payments.creditsGranted) }).from(payments).where(eq(payments.status, 'paid'));
+
+        // Revenue by package
+        const revenueByPack = await db.select({
+          packageId: payments.packageId,
+          count: count(),
+          revenue: sum(payments.amountCents),
+          credits: sum(payments.creditsGranted),
+        }).from(payments).where(eq(payments.status, 'paid')).groupBy(payments.packageId);
+
+        // Recent payments (last 20)
+        const recentPayments = await db.query.payments.findMany({
+          orderBy: [desc(payments.createdAt)],
+          limit: 20,
+          columns: { id: true, userEmail: true, packageId: true, packageLabel: true, amountCents: true, currency: true, status: true, paidAt: true, creditsGranted: true },
+        });
+
+        // IA costs estimate: OCR scans ≈ 0.003€/scan (Claude Sonnet Vision)
+        // Each completed session uses ~2 OCR scans avg
+        const ocrCostPerScan = 0.003;
+        const estOcrScans    = (completedSessions.c || 0) * 2;
+        const estOcrCost     = estOcrScans * ocrCostPerScan;
+
+        // Credit transactions (gifts sent)
+        const [giftsTotal] = await db.select({ s: sum(creditTxns.delta) }).from(creditTxns).where(eq(creditTxns.reason, 'gift'));
+
+        return {
+          sessions: {
+            total:     totalSessions.c || 0,
+            completed: completedSessions.c || 0,
+            active:    activeSessions.c || 0,
+            last24h:   sessions24h.c || 0,
+            last7d:    sessions7d.c || 0,
+            recent:    recentSessions,
+          },
+          users: {
+            total:  totalUsers.c || 0,
+            last7d: users7d.c || 0,
+            last30d:users30d.c || 0,
+          },
+          revenue: {
+            totalCents:  Number(totalRevenue.s  || 0),
+            last30dCents:Number(revenue30d.s     || 0),
+            last7dCents: Number(revenue7d.s      || 0),
+            totalCredits:Number(totalCredits.s   || 0),
+            byPackage:   revenueByPack,
+            recent:      recentPayments,
+          },
+          ai: {
+            estOcrScans,
+            estOcrCostEur: Math.round(estOcrCost * 100) / 100,
+            costPerSession: ocrCostPerScan * 2,
+          },
+          gifts: {
+            totalGiven: Number(giftsTotal.s || 0),
+          },
+        };
+      }),
+
+    // GET admin.users — paginated user list
+    users: publicProcedure
+      .input(z.object({ limit: z.number().default(50) }))
+      .query(async ({ ctx, input }) => {
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+        const { db } = await import('../db/index.js');
+        const { users } = await import('../db/schema.js');
+        const { desc } = await import('drizzle-orm');
+        return db.query.users.findMany({
+          orderBy: [desc(users.createdAt)],
+          limit: input.limit,
+          columns: { id: true, email: true, role: true, credits: true, createdAt: true, lastSeenAt: true, country: true },
+        });
+      }),
+
+  }),
+
+
 });
 
 export type AppRouter = typeof appRouter;
+
 
