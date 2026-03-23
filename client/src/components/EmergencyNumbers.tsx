@@ -29,7 +29,7 @@ export const EMERGENCY_DATA: CountryEmergency[] = [
       { name: 'TCS Dépannage 24h/7j', number: '0800 140 140', type: 'roadside', free: true, note: 'Touring Club Suisse — membres' },
       { name: 'ACS Assistance', number: '044 283 33 77', type: 'roadside', note: 'Automobile Club Suisse (depuis 2018)' },
       { name: 'REGA Hélicoptère', number: '1414', type: 'ambulance', note: 'Garde aérienne de sauvetage' },
-      { name: 'emmental versicherung', number: '031 790 31 11', type: 'insurance', note: 'Siège Konolfingen — sinistres & conseil' },
+      { name: 'emmental versicherung dépannage', number: '031 790 24 24', type: 'roadside', note: 'Panne & remorquage 24h · depuis étranger: +41 31 790 24 24' },
       { name: 'SIMPEGO sinistres 24h', number: '+41 58 521 11 11', type: 'insurance', note: 'Customer Solution Center 24h/24' },
       { name: 'AXA sinistres CH', number: '0800 809 809', type: 'insurance', free: true },
       { name: 'Allianz sinistres CH', number: '0800 800 801', type: 'insurance', free: true },
@@ -492,3 +492,4 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
     </div>
   );
 }
+
