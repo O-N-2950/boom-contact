@@ -5,6 +5,8 @@ import { trpc } from '../trpc';
 interface Props {
   userEmail: string;
   onBack: () => void;
+  authUser?: { id: string; email: string; role: string; credits: number } | null;
+  onAuthSuccess?: () => void; // callback to refresh authUser credits after purchase
 }
 
 type CurrencyCode = 'CHF' | 'EUR' | 'GBP' | 'AUD' | 'USD' | 'CAD' | 'SGD' | 'JPY';
@@ -81,7 +83,7 @@ async function detectCurrency(): Promise<CurrencyCode> {
   }
 }
 
-export function PricingPage({ userEmail, onBack }: Props) {
+export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Props) {
   const { t } = useTranslation();
   const [currency, setCurrency] = useState<CurrencyCode>('CHF');
   const [loading, setLoading]   = useState<string | null>(null);
@@ -98,19 +100,24 @@ export function PricingPage({ userEmail, onBack }: Props) {
 
   const checkoutMutation = trpc.payment.createCheckout.useMutation({
     onSuccess: (data) => {
-      if (data.url) window.location.href = data.url;
-      else { setError('URL de paiement manquante'); setLoading(null); }
+      if (data.url) {
+        // Store pending callback to refresh credits on return
+        if (onAuthSuccess) localStorage.setItem('boom_refresh_credits', '1');
+        window.location.href = data.url;
+      } else { setError('URL de paiement manquante'); setLoading(null); }
     },
     onError: (err) => { setError(err.message || 'Erreur'); setLoading(null); },
   });
 
+  const effectiveEmail = authUser?.email || userEmail;
+
   const handleBuy = (packageId: string) => {
-    if (!userEmail) { setError('Email requis pour acheter'); return; }
+    if (!effectiveEmail) { setError('Email requis pour acheter'); return; }
     setLoading(packageId);
     setError(null);
     checkoutMutation.mutate({
       packageId: packageId as any,
-      userEmail,
+      userEmail: effectiveEmail,
       currency,
       locale: navigator.language?.split('-')[0] || 'fr',
     });
@@ -127,6 +134,19 @@ export function PricingPage({ userEmail, onBack }: Props) {
           <div style={{ fontSize: 11, opacity: 0.4 }}>Crédits sans expiration · Partageables par WhatsApp</div>
         </div>
       </div>
+
+      {/* Credits badge if logged in */}
+      {authUser && (
+        <div style={{ background: authUser.credits > 0 ? '#0d2a0d' : '#1a1000', border: `1px solid ${authUser.credits > 0 ? '#1a4a1a' : '#3a2000'}`, borderRadius: 12, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24', fontWeight: 700, fontSize: 14 }}>
+              {authUser.credits > 0 ? `✅ ${authUser.credits} crédit${authUser.credits > 1 ? 's' : ''} disponible${authUser.credits > 1 ? 's' : ''}` : '⚡ Aucun crédit — rechargez maintenant'}
+            </div>
+            <div style={{ color: '#666', fontSize: 12, marginTop: 2 }}>{authUser.email}</div>
+          </div>
+          {authUser.credits === 999999 && <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>∞</span>}
+        </div>
+      )}
 
       {/* Currency selector */}
       <div style={{ marginBottom: 20 }}>
@@ -267,3 +287,4 @@ export function PricingPage({ userEmail, onBack }: Props) {
     </div>
   );
 }
+
