@@ -395,8 +395,14 @@ export function drawVehicle(
     case 'escooter': drawEscooter(ctx, cx, cy, VW, VH, color, label, angle); break;
     case 'pedestrian': drawPedestrian(ctx, cx, cy, VW, VH, color, label, angle); break;
     case 'tram':     drawTram(ctx, cx, cy, VW, VH, color, label, angle); break;
-    case 'bus':      drawTruck(ctx, cx, cy, VW, VH, '#2255aa', label, angle); break;
-    default:         drawCar(ctx, cx, cy, VW, VH, color, label, angle);
+    case 'bus':        drawTruck(ctx, cx, cy, VW, VH, '#2255aa', label, angle); break;
+    case 'train':      drawTrain(ctx, cx, cy, VW, VH, color, label, angle); break;
+    case 'tractor':    drawTractor(ctx, cx, cy, VW, VH, color, label, angle); break;
+    case 'quad':       drawQuad(ctx, cx, cy, VW, VH, color, label, angle); break;
+    case 'construction': drawConstruction(ctx, cx, cy, VW, VH, color || '#F59E0B', label, angle); break;
+    case 'boat':       drawBoat(ctx, cx, cy, VW, VH, color, label, angle); break;
+    case 'cargo_bike': drawBicycle(ctx, cx, cy, VW*1.3, VH*1.2, color, label, angle); break;
+    default:           drawCar(ctx, cx, cy, VW, VH, color, label, angle);
   }
 
   // Zone d'impact
@@ -696,6 +702,373 @@ export function calcVehiclePositions(
   }
 }
 
+
+// ── TRAIN / MÉTRO / RER ─────────────────────────────────────────────────────
+function drawTrain(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  W: number, H: number,
+  color: string, label: string,
+  angle: number
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  const w = W * 2.2, h = H * 1.2; // Train = très long, plus haut que tram
+
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 12;
+  // Caisse principale — gris acier
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.roundRect(-w/2, -h/2, w, h, 6); ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(-w/2, -h/2, w, h, 6); ctx.stroke();
+
+  // Bande colorée longitudinale (livrée)
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath(); ctx.roundRect(-w/2, -h*0.05, w, h*0.1, 2); ctx.fill();
+
+  // Fenêtres (7 fenêtres)
+  ctx.fillStyle = 'rgba(150,210,255,0.5)'; ctx.strokeStyle = 'rgba(80,140,200,0.4)'; ctx.lineWidth = 1;
+  for (let i = 0; i < 7; i++) {
+    const fx = -w/2 + w*0.08 + i*(w*0.12);
+    ctx.beginPath(); ctx.roundRect(fx, -h*0.38, w*0.09, h*0.76, 2); ctx.fill(); ctx.stroke();
+  }
+
+  // Portes (2 portes)
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+  ctx.beginPath(); ctx.roundRect(-w*0.28, -h/2, w*0.05, h, 0); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(w*0.22, -h/2, w*0.05, h, 0); ctx.fill();
+
+  // Pantographe électrique (caténaire)
+  ctx.strokeStyle = 'rgba(180,180,180,0.6)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(-w*0.3, -h/2); ctx.lineTo(-w*0.3, -h/2 - h*0.5); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(w*0.3, -h/2); ctx.lineTo(w*0.3, -h/2 - h*0.5); ctx.stroke();
+  ctx.setLineDash([6,3]);
+  ctx.beginPath(); ctx.moveTo(-w*0.3, -h/2-h*0.5); ctx.lineTo(w*0.3, -h/2-h*0.5); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Rails (bogies — 3 paires)
+  const bogies = [[-w*0.42,-h/2],[-w*0.42,h/2],[0,-h/2],[0,h/2],[w*0.42,-h/2],[w*0.42,h/2]];
+  bogies.forEach(([bx,by]) => {
+    ctx.fillStyle = '#111'; ctx.strokeStyle = '#333'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(bx-h*0.2, by-h*0.08, h*0.4, h*0.16, 3); ctx.fill(); ctx.stroke();
+  });
+
+  // Phares
+  ctx.fillStyle = '#ffffcc'; ctx.shadowColor='#ffff88'; ctx.shadowBlur=6;
+  ctx.beginPath(); ctx.rect(w/2-4, -h*0.3, 4, h*0.25); ctx.fill();
+  ctx.beginPath(); ctx.rect(w/2-4, h*0.05, 4, h*0.25); ctx.fill();
+  ctx.shadowBlur=0; ctx.fillStyle='#ff2222';
+  ctx.beginPath(); ctx.rect(-w/2, -h*0.3, 4, h*0.25); ctx.fill();
+  ctx.beginPath(); ctx.rect(-w/2, h*0.05, 4, h*0.25); ctx.fill();
+
+  // Numéro de ligne / logo
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.beginPath(); ctx.roundRect(-w/2+3, -h*0.36, w*0.1, h*0.3, 2); ctx.fill();
+  ctx.fillStyle = color; ctx.font = `bold ${h*0.28}px sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('⊟', -w/2+3+w*0.05, -h*0.21);
+
+  ctx.fillStyle = '#fff'; ctx.font = `bold ${h*0.5}px sans-serif`;
+  ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
+  ctx.fillText(label, 0, 0); ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+// ── TRACTEUR AGRICOLE ────────────────────────────────────────────────────────
+function drawTractor(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  W: number, H: number,
+  color: string, label: string,
+  angle: number
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  const w = W * 0.9, h = H * 1.1;
+
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 10;
+
+  // Grandes roues arrière (caractéristique tracteur)
+  ctx.fillStyle = '#111'; ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.ellipse(-w*0.28, 0, h*0.48, h*0.48, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#555';
+  ctx.beginPath(); ctx.ellipse(-w*0.28, 0, h*0.22, h*0.22, 0, 0, Math.PI*2); ctx.fill();
+  // Crampons roue arrière
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+  for (let a = 0; a < Math.PI*2; a += Math.PI/4) {
+    ctx.beginPath();
+    ctx.moveTo(-w*0.28 + h*0.22*Math.cos(a), h*0.22*Math.sin(a));
+    ctx.lineTo(-w*0.28 + h*0.46*Math.cos(a), h*0.46*Math.sin(a));
+    ctx.stroke();
+  }
+
+  // Petites roues avant
+  ctx.fillStyle = '#111'; ctx.strokeStyle = '#333'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.ellipse(w*0.32, 0, h*0.26, h*0.26, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#555';
+  ctx.beginPath(); ctx.ellipse(w*0.32, 0, h*0.12, h*0.12, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Capot moteur (avant)
+  ctx.fillStyle = color; ctx.shadowColor='rgba(0,0,0,0.4)'; ctx.shadowBlur=6;
+  ctx.beginPath(); ctx.roundRect(w*0.05, -h*0.3, w*0.38, h*0.6, 4); ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.roundRect(w*0.05, -h*0.3, w*0.38, h*0.6, 4); ctx.stroke();
+
+  // Cabine
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.roundRect(-w*0.18, -h*0.52, w*0.28, h*0.65, 5); ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.roundRect(-w*0.18, -h*0.52, w*0.28, h*0.65, 5); ctx.stroke();
+
+  // Vitre cabine
+  ctx.fillStyle = 'rgba(150,210,255,0.5)';
+  ctx.beginPath(); ctx.roundRect(-w*0.15, -h*0.48, w*0.22, h*0.36, 3); ctx.fill();
+
+  // Pot d'échappement (vertical sur le capot)
+  ctx.fillStyle = '#333'; ctx.strokeStyle='#222'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(w*0.18, -h*0.44, w*0.05, h*0.28, 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(w*0.205, -h*0.44, w*0.04, h*0.04, 0, 0, Math.PI*2); ctx.fill();
+
+  // Phare avant
+  ctx.fillStyle='#ffffcc'; ctx.shadowColor='#ffff88'; ctx.shadowBlur=5;
+  ctx.beginPath(); ctx.ellipse(w*0.43, -h*0.12, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(w*0.43, h*0.12, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+
+  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.42}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
+  ctx.fillText(label, -w*0.05, 0); ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+// ── QUAD / BUGGY ─────────────────────────────────────────────────────────────
+function drawQuad(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  W: number, H: number,
+  color: string, label: string,
+  angle: number
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  const w = W * 0.75, h = H * 1.05; // Quad = trapu, large
+
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 8;
+
+  // 4 roues larges et épaisses (caractéristique quad)
+  const wheelPositions: [number,number][] = [
+    [w*0.28, -h*0.52], [w*0.28, h*0.52],
+    [-w*0.28, -h*0.52], [-w*0.28, h*0.52],
+  ];
+  wheelPositions.forEach(([wx, wy]) => {
+    ctx.fillStyle = '#111'; ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(wx, wy, h*0.22, h*0.28, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    // Crampons
+    ctx.strokeStyle = '#444'; ctx.lineWidth = 1.5;
+    for (let a = 0; a < Math.PI*2; a += Math.PI/3) {
+      ctx.beginPath();
+      ctx.moveTo(wx + h*0.12*Math.cos(a), wy + h*0.15*Math.sin(a));
+      ctx.lineTo(wx + h*0.20*Math.cos(a), wy + h*0.26*Math.sin(a));
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#666';
+    ctx.beginPath(); ctx.ellipse(wx, wy, h*0.1, h*0.12, 0, 0, Math.PI*2); ctx.fill();
+  });
+  ctx.shadowBlur=0;
+
+  // Châssis / carrosserie
+  ctx.fillStyle = color; ctx.shadowColor='rgba(0,0,0,0.4)'; ctx.shadowBlur=6;
+  ctx.beginPath(); ctx.roundRect(-w*0.42, -h*0.32, w*0.84, h*0.64, h*0.18); ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='rgba(0,0,0,0.35)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.roundRect(-w*0.42, -h*0.32, w*0.84, h*0.64, h*0.18); ctx.stroke();
+
+  // Reflet carrosserie
+  ctx.fillStyle='rgba(255,255,255,0.18)';
+  ctx.beginPath(); ctx.roundRect(-w*0.3, -h*0.28, w*0.4, h*0.18, 4); ctx.fill();
+
+  // Guidon (barre horizontale avant)
+  ctx.strokeStyle='#333'; ctx.lineWidth=h*0.1; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(w*0.28, -h*0.22); ctx.lineTo(w*0.28, h*0.22); ctx.stroke();
+
+  // Phares avant
+  ctx.fillStyle='#ffffcc'; ctx.shadowColor='#ffff88'; ctx.shadowBlur=6;
+  ctx.beginPath(); ctx.ellipse(w*0.4, -h*0.15, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(w*0.4, h*0.15, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+
+  // Feux arrière
+  ctx.fillStyle='#ff2222';
+  ctx.beginPath(); ctx.ellipse(-w*0.4, -h*0.14, 4, 3, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-w*0.4, h*0.14, 4, 3, 0, 0, Math.PI*2); ctx.fill();
+
+  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.45}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
+  ctx.fillText(label, 0, 0); ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+// ── ENGIN DE CHANTIER ────────────────────────────────────────────────────────
+function drawConstruction(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  W: number, H: number,
+  color: string, label: string,
+  angle: number
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  const w = W * 1.1, h = H * 1.3;
+
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 12;
+
+  // Chenilles (caractéristique engin de chantier)
+  ctx.fillStyle = '#222'; ctx.strokeStyle = '#111'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(-w*0.5, -h/2, w, h*0.22, 5); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.roundRect(-w*0.5, h*0.28, w, h*0.22, 5); ctx.fill(); ctx.stroke();
+  // Motif chenille
+  ctx.strokeStyle = '#444'; ctx.lineWidth = 1;
+  for (let i = 0; i < 8; i++) {
+    const tx = -w*0.48 + i*(w*0.13);
+    ctx.beginPath(); ctx.moveTo(tx, -h/2); ctx.lineTo(tx, -h*0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(tx, h*0.28); ctx.lineTo(tx, h*0.5); ctx.stroke();
+  }
+  ctx.shadowBlur=0;
+
+  // Corps principal jaune
+  ctx.fillStyle = color; ctx.shadowColor='rgba(0,0,0,0.4)'; ctx.shadowBlur=8;
+  ctx.beginPath(); ctx.roundRect(-w*0.45, -h*0.28, w*0.9, h*0.56, 5); ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.roundRect(-w*0.45, -h*0.28, w*0.9, h*0.56, 5); ctx.stroke();
+
+  // Cabine (coin avant supérieur)
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.roundRect(w*0.05, -h*0.5, w*0.38, h*0.45, 4); ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.roundRect(w*0.05, -h*0.5, w*0.38, h*0.45, 4); ctx.stroke();
+
+  // Vitre cabine
+  ctx.fillStyle='rgba(150,210,255,0.5)';
+  ctx.beginPath(); ctx.roundRect(w*0.08, -h*0.46, w*0.30, h*0.32, 3); ctx.fill();
+
+  // Bras/godet (avant)
+  ctx.fillStyle='#333'; ctx.strokeStyle='#111'; ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(-w*0.45, -h*0.1);
+  ctx.lineTo(-w*0.7, h*0.05);
+  ctx.lineTo(-w*0.78, h*0.18);
+  ctx.stroke();
+  // Godet
+  ctx.fillStyle='#555';
+  ctx.beginPath();
+  ctx.moveTo(-w*0.78, h*0.18);
+  ctx.lineTo(-w*0.85, h*0.28);
+  ctx.lineTo(-w*0.75, h*0.32);
+  ctx.lineTo(-w*0.68, h*0.22);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+
+  // Bandes de sécurité jaune/noir
+  ctx.fillStyle='rgba(0,0,0,0.3)';
+  for (let i=0; i<4; i++) {
+    if (i%2===0) {
+      ctx.beginPath();
+      ctx.moveTo(-w*0.45+i*w*0.22, -h*0.28);
+      ctx.lineTo(-w*0.45+i*w*0.22+w*0.11, -h*0.28);
+      ctx.lineTo(-w*0.45+i*w*0.22+w*0.18, h*0.28);
+      ctx.lineTo(-w*0.45+i*w*0.22+w*0.07, h*0.28);
+      ctx.closePath(); ctx.fill();
+    }
+  }
+
+  // Phare
+  ctx.fillStyle='#ffffcc'; ctx.shadowColor='#ffff88'; ctx.shadowBlur=5;
+  ctx.beginPath(); ctx.ellipse(w*0.44, -h*0.18, 5, 4, 0, 0, Math.PI*2); ctx.fill();
+  ctx.shadowBlur=0;
+
+  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.38}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
+  ctx.fillText(label, 0, 0); ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+// ── BATEAU ────────────────────────────────────────────────────────────────────
+function drawBoat(
+  ctx: CanvasRenderingContext2D,
+  cx: number, cy: number,
+  W: number, H: number,
+  color: string, label: string,
+  angle: number
+) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  const w = W * 1.4, h = H * 0.7;
+
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 10;
+
+  // Coque (forme de bateau — ellipse aplatie pointue à l'avant)
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(-w*0.5, 0);
+  ctx.bezierCurveTo(-w*0.5, -h*0.6, w*0.2, -h*0.6, w*0.52, 0);
+  ctx.bezierCurveTo(w*0.2, h*0.6, -w*0.5, h*0.6, -w*0.5, 0);
+  ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.strokeStyle='rgba(0,0,0,0.35)'; ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(-w*0.5, 0);
+  ctx.bezierCurveTo(-w*0.5, -h*0.6, w*0.2, -h*0.6, w*0.52, 0);
+  ctx.bezierCurveTo(w*0.2, h*0.6, -w*0.5, h*0.6, -w*0.5, 0);
+  ctx.stroke();
+
+  // Ligne de flottaison
+  ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(-w*0.48, 0);
+  ctx.bezierCurveTo(-w*0.3, -h*0.25, w*0.1, -h*0.25, w*0.48, 0);
+  ctx.stroke();
+
+  // Cabine/wheelhouse
+  ctx.fillStyle='rgba(255,255,255,0.15)';
+  ctx.beginPath(); ctx.roundRect(-w*0.15, -h*0.85, w*0.35, h*0.7, 5); ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.roundRect(-w*0.15, -h*0.85, w*0.35, h*0.7, 5); ctx.stroke();
+
+  // Hublots
+  ctx.fillStyle='rgba(150,210,255,0.6)';
+  ctx.beginPath(); ctx.arc(-w*0.05, -h*0.58, h*0.1, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(w*0.1, -h*0.58, h*0.1, 0, Math.PI*2); ctx.fill();
+
+  // Mât
+  ctx.strokeStyle='#555'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(w*0.0, -h*0.85); ctx.lineTo(w*0.0, -h*1.5); ctx.stroke();
+  // Pavillon
+  ctx.fillStyle='#EF4444';
+  ctx.beginPath(); ctx.moveTo(w*0.0,-h*1.5); ctx.lineTo(w*0.15,-h*1.35); ctx.lineTo(w*0.0,-h*1.2); ctx.closePath(); ctx.fill();
+
+  // Moteur (arrière)
+  ctx.fillStyle='#333';
+  ctx.beginPath(); ctx.roundRect(-w*0.5, -h*0.18, w*0.1, h*0.36, 3); ctx.fill();
+
+  ctx.fillStyle='#fff'; ctx.font=`bold ${h*0.6}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
+  ctx.fillText(label, 0, h*0.05); ctx.shadowBlur=0;
+  ctx.restore();
+}
+
 // ── Fonction principale ───────────────────────────────────────
 export function renderAccidentSketch(
   canvas: HTMLCanvasElement,
@@ -777,3 +1150,4 @@ export function renderAccidentSketch(
   ctx.fillStyle = 'rgba(255,255,230,0.15)';
   ctx.fillText(`IA BOOM.CONTACT · ${trafficSide === 'left' ? 'Left-hand traffic' : 'Circulation à droite'}`, W - 10, H - 10);
 }
+
