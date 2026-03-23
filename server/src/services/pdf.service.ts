@@ -1,4 +1,5 @@
 import { renderSketch } from './sketch-renderer.service.js';
+import { fetchAccidentMap, geocodeAddress } from './osm-map.service.js';
 import { logger } from '../logger.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import {
@@ -428,7 +429,36 @@ export async function generateConstatPDF(
         vehicleBBrand:    B.vehicle?.brand,
         vehicleBModel:    B.vehicle?.model,
         vehicleBPlate:    B.vehicle?.licensePlate,
-        mapImageBase64:   acc.sketchImage || undefined,
+        mapImageBase64:   await (async () => {
+          // Priorité 1: sketchImage du client (carte OSM déjà capturée)
+          if (acc.sketchImage && acc.sketchImage.length > 1000) {
+            // Extraire base64 pur si c'est un data URL
+            const raw = acc.sketchImage.replace(/^data:image\/[^;]+;base64,/, '');
+            return raw;
+          }
+          // Priorité 2: fetcher la carte OSM depuis les coordonnées GPS
+          const loc = acc.location as any;
+          const lat = loc?.lat || loc?.latitude;
+          const lng = loc?.lng || loc?.longitude || loc?.lon;
+          if (lat && lng) {
+            try {
+              logger.info(`[pdf] Fetch carte OSM: ${lat},${lng}`);
+              return await fetchAccidentMap(lat, lng, 900, 650, 18);
+            } catch (e: any) { logger.warn('[pdf] OSM fetch failed:', e.message); }
+          }
+          // Priorité 3: géocoder l'adresse
+          const addr = [loc?.address, loc?.city, loc?.country].filter(Boolean).join(', ');
+          if (addr) {
+            try {
+              logger.info(`[pdf] Géocodage: ${addr}`);
+              const coords = await geocodeAddress(addr);
+              if (coords) {
+                return await fetchAccidentMap(coords.lat, coords.lng, 900, 650, 18);
+              }
+            } catch (e: any) { logger.warn('[pdf] Geocode/OSM failed:', e.message); }
+          }
+          return undefined;
+        })(),
         width: 900,
         height: 650,
       });
@@ -521,4 +551,5 @@ export async function generateConstatPDF(
 
   return doc.save();
 }
+
 
