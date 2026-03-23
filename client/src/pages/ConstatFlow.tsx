@@ -60,9 +60,10 @@ function loadState() {
 
 interface ConstatFlowProps {
   initialSessionId?: string; // WinWin pre-created session
+  authToken?: string;        // JWT if logged in
 }
 
-export function ConstatFlow({ initialSessionId }: ConstatFlowProps = {}) {
+export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
   // If WinWin initialSessionId, ignore localStorage (fresh prefilled session)
   const saved = initialSessionId ? null : loadState();
@@ -96,6 +97,34 @@ export function ConstatFlow({ initialSessionId }: ConstatFlowProps = {}) {
     // Clean URL
     window.history.replaceState({}, '', '/');
   }, []);
+
+  // Saved vehicles (if logged in)
+  const vehicleListQ = trpc.vehicle.list.useQuery(undefined, {
+    enabled: !!authToken && step === 'ocr',
+  });
+  const savedVehicles = vehicleListQ.data || [];
+  const [showVehiclePicker, setShowVehiclePicker] = useState(false);
+
+  const applyVehicle = (v: any) => {
+    setShowVehiclePicker(false);
+    const newData: Partial<ParticipantData> = {
+      role: 'A',
+      vehicle: {
+        licensePlate:   v.plate,
+        make:           v.make,
+        model:          v.model,
+        color:          v.color,
+        year:           v.year,
+        vehicleCategory: v.category,
+        ...(v.licenseData || {}),
+      },
+      insurance: v.insuranceData && Object.keys(v.insuranceData).length > 0
+        ? { companyName: v.insuranceData.companyName, policyNumber: v.insuranceData.policyNumber, ...v.insuranceData }
+        : undefined,
+    };
+    setParticipantData(newData);
+    setStep('location'); // skip OCR — jump straight to location
+  };
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
@@ -327,6 +356,48 @@ export function ConstatFlow({ initialSessionId }: ConstatFlowProps = {}) {
 
       {/* Main content */}
       <div style={{ flex: 1, overflowY: 'auto' }}>
+        {step === 'ocr' && savedVehicles.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            {!showVehiclePicker ? (
+              <button
+                onClick={() => setShowVehiclePicker(true)}
+                style={{
+                  width: '100%', background: '#0d2a0d', border: '1px solid #1a5c1a',
+                  borderRadius: 12, padding: '14px 16px', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 12,
+                }}
+              >
+                <span style={{ fontSize: 24 }}>🚗</span>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 14 }}>Utiliser un véhicule enregistré</div>
+                  <div style={{ color: '#666', fontSize: 12 }}>Pré-remplissage automatique — pas besoin de scanner</div>
+                </div>
+                <span style={{ color: '#4ade80', marginLeft: 'auto' }}>→</span>
+              </button>
+            ) : (
+              <div style={{ background: '#111', border: '1px solid #1a5c1a', borderRadius: 12, padding: 16 }}>
+                <div style={{ color: '#4ade80', fontWeight: 700, marginBottom: 12 }}>Choisissez votre véhicule :</div>
+                {savedVehicles.map((v: any) => (
+                  <button key={v.id} onClick={() => applyVehicle(v)} style={{
+                    width: '100%', background: '#1a2a1a', border: '1px solid #2a4a2a',
+                    borderRadius: 10, padding: '12px 14px', marginBottom: 8, cursor: 'pointer',
+                    textAlign: 'left' as const,
+                  }}>
+                    <div style={{ color: '#fff', fontWeight: 600 }}>
+                      {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
+                    </div>
+                    {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 13 }}>{v.plate}</div>}
+                    {v.insuranceData?.companyName && <div style={{ color: '#666', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
+                  </button>
+                ))}
+                <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 13 }}>
+                  Annuler
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {step === 'ocr' && (
           <OCRScanner role="A" onComplete={handleOCRComplete} />
         )}
