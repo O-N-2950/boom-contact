@@ -228,3 +228,66 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
     return { ok: false, error: msg };
   }
 }
+
+
+// ── Magic link email ──────────────────────────────────────────
+export async function sendMagicLink(email: string, magicUrl: string): Promise<void> {
+  const RESEND_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_KEY) { logger.warn('RESEND missing — magic link not sent'); return; }
+
+  try {
+    const { Resend } = await import('resend');
+    const resend = new Resend(RESEND_KEY);
+    await resend.emails.send({
+      from: 'boom.contact <contact@boom.contact>',
+      to: email,
+      subject: '🔑 Votre lien de connexion boom.contact',
+      html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f4f4f5;margin:0;padding:32px;">
+<div style="max-width:480px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+  <div style="background:#06060C;padding:24px 28px;">
+    <span style="color:#FF3500;font-size:20px;font-weight:700;">💥 boom.contact</span>
+  </div>
+  <div style="padding:28px;">
+    <h2 style="margin:0 0 12px;font-size:20px;color:#111;">Votre lien de connexion</h2>
+    <p style="color:#555;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
+    <a href="${magicUrl}" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:16px;">Se connecter →</a>
+    <p style="color:#999;font-size:12px;margin-top:24px;">Si vous n'avez pas demandé ce lien, ignorez cet email.</p>
+  </div>
+</div></body></html>`,
+    });
+    logger.email('magic-link', email, 'magic link sent');
+  } catch (err) {
+    logger.error('sendMagicLink failed', { error: String(err) });
+  }
+}
+
+// ── Gift credits email ────────────────────────────────────────
+export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: string, credits: number): Promise<void> {
+  const RESEND_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_KEY) { logger.warn('RESEND missing — gift email not sent'); return; }
+
+  try {
+    const { Resend } = await import('resend');
+    const resend = new Resend(RESEND_KEY);
+    await resend.emails.send({
+      from: 'boom.contact <contact@boom.contact>',
+      to: recipientEmail,
+      subject: `🎁 ${credits} crédit${credits > 1 ? 's' : ''} offert${credits > 1 ? 's' : ''} sur boom.contact`,
+      html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f4f4f5;margin:0;padding:32px;">
+<div style="max-width:480px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+  <div style="background:#06060C;padding:24px 28px;">
+    <span style="color:#FF3500;font-size:20px;font-weight:700;">💥 boom.contact</span>
+  </div>
+  <div style="padding:28px;">
+    <h2 style="margin:0 0 12px;font-size:20px;color:#111;">🎁 ${credits} crédit${credits > 1 ? 's' : ''} offert${credits > 1 ? 's' : ''} !</h2>
+    <p style="color:#555;margin:0 0 24px;line-height:1.6;">Vous recevez <strong>${credits} crédit${credits > 1 ? 's' : ''}</strong> pour utiliser boom.contact gratuitement. Cliquez ci-dessous pour les réclamer.</p>
+    <a href="${giftUrl}" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:16px;">Réclamer mes crédits →</a>
+    <p style="color:#999;font-size:12px;margin-top:24px;">Lien valable 7 jours. Un compte sera créé automatiquement si nécessaire.</p>
+  </div>
+</div></body></html>`,
+    });
+    logger.email('gift-credits', recipientEmail, `${credits} credits gift sent`);
+  } catch (err) {
+    logger.error('sendGiftCreditsLink failed', { error: String(err) });
+  }
+}
