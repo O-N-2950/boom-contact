@@ -18,8 +18,16 @@ type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | '
 const EMAIL_KEY = 'boom_user_email';
 const CGU_KEY   = 'boom_cgu_accepted';
 
+function getWinWinSessionId(): string | null {
+  // Detect /constat/:id path (WinWin directUrl pattern)
+  const match = window.location.pathname.match(/^\/constat\/([a-zA-Z0-9_-]+)$/);
+  return match ? match[1] : null;
+}
+
 function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
+  // WinWin directUrl: /constat/:sessionId?lang=fr&prefilled=true
+  if (getWinWinSessionId()) return 'constat';
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
@@ -102,7 +110,7 @@ export default function App() {
     <OfflineBanner />
     <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
       {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} />}
-      {view === 'constat'  && <ConstatFlow />}
+      {view === 'constat'  && <ConstatFlow initialSessionId={getWinWinSessionId() || undefined} />}
       {view === 'join'     && <JoinSession />}
       {view === 'agents'   && <AgentDashboard />}
       {view === 'pricing'  && (
@@ -151,4 +159,5 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
