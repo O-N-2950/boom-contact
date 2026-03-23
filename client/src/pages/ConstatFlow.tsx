@@ -38,6 +38,7 @@ import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
 import { EmergencyNumbers } from '../components/EmergencyNumbers';
+import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
@@ -585,6 +586,11 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
               insurerName={participantData.insurance?.company}
               driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
             />
+            <InsuranceAssistance
+              insurerA={participantData.insurance?.companyName || (participantData.insurance as any)?.company}
+              insurerB={(accidentData as any)?.insurerB}
+              countryCode={(accidentData as any)?.location?.country}
+            />
             <EmergencyNumbers mode="compact" />
           </>
         )}
@@ -592,6 +598,7 @@ export function ConstatFlow({ initialSessionId, authToken }: ConstatFlowProps = 
     </div>
   );
 }
+
 
 
 
