@@ -5,6 +5,9 @@ import { LanguageSwitcher } from '../components/LanguageSwitcher';
 interface Props {
   onStart: () => void;
   onPricing?: () => void;
+  onGarage?: () => void;
+  onAccount?: () => void;
+  authUser?: { email: string; credits: number } | null;
 }
 
 function Counter({ to, suffix = '', duration = 2000 }: { to: number; suffix?: string; duration?: number }) {
@@ -163,7 +166,7 @@ function FeatureCard({ icon, title, desc, delay }: { icon: string; title: string
   );
 }
 
-export function LandingPage({ onStart, onPricing }: Props) {
+export function LandingPage({ onStart, onPricing, onGarage, onAccount, authUser }: Props) {
   const { t } = useTranslation();
   const [heroVisible, setHeroVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); }, []);
@@ -223,6 +226,24 @@ export function LandingPage({ onStart, onPricing }: Props) {
 
           {/* CTA */}
           <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.3s', marginBottom: 44 }}>
+
+            {/* Header compte si connecté */}
+            {authUser && (
+              <button onClick={onAccount} style={{
+                width: '100%', marginBottom: 10, padding: '10px 16px',
+                borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.04)',
+                color: 'var(--text)', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 10, fontSize: 13,
+              }}>
+                <span style={{ fontSize: 18 }}>👤</span>
+                <span style={{ opacity: 0.7 }}>{authUser.email}</span>
+                <span style={{ marginLeft: 'auto', background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 700 }}>
+                  {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
+                </span>
+              </button>
+            )}
+
             <button onClick={onStart} style={{ width: '100%', padding: '18px 24px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxShadow: '0 8px 32px rgba(255,53,0,0.45)', transition: 'transform 0.15s' }}
               onMouseDown={e => (e.currentTarget.style.transform = 'scale(0.98)')}
               onMouseUp={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -231,6 +252,29 @@ export function LandingPage({ onStart, onPricing }: Props) {
               {t('landing.cta.start')}
               <span style={{ marginLeft: 'auto', fontSize: 20, opacity: 0.7 }}>→</span>
             </button>
+
+            {/* Bouton Garage — préparer à l'avance */}
+            <button onClick={onGarage} style={{
+              width: '100%', marginTop: 10, padding: '14px 18px',
+              borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.12)',
+              background: 'rgba(255,255,255,0.04)',
+              color: 'rgba(240,237,232,0.8)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, fontWeight: 600,
+              transition: 'all 0.15s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,53,0,0.4)'; e.currentTarget.style.background = 'rgba(255,53,0,0.06)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+            >
+              <span style={{ fontSize: 20 }}>🚗</span>
+              <div style={{ textAlign: 'left' as const, flex: 1 }}>
+                <div>Préparer mon garage</div>
+                <div style={{ fontSize: 11, opacity: 0.45, fontWeight: 400, marginTop: 1 }}>
+                  Enregistre tes véhicules à l'avance · 30 sec par scan
+                </div>
+              </div>
+              <span style={{ opacity: 0.35, fontSize: 16 }}>›</span>
+            </button>
+
             <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
               <p style={{ flex: 1, textAlign: 'center', fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
                 {t('landing.cta.from')}
@@ -420,5 +464,6 @@ export function LandingPage({ onStart, onPricing }: Props) {
     </div>
   );
 }
+
 
 
