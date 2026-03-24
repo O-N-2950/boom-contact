@@ -1,4 +1,4 @@
-# boom.contact — Dockerfile Session 12
+# boom.contact — Dockerfile Session 15
 # node:20.19-alpine + Chromium (Puppeteer) + Cairo (canvas OSM)
 FROM node:20.19-alpine
 
@@ -19,21 +19,18 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     NODE_OPTIONS="--no-warnings" \
     FORCE_COLOR=1
 
-COPY package.json package-lock.json* ./
-
-# npm install résout puppeteer-core + canvas
-RUN npm install --no-fund --no-audit
-
-ARG CACHEBUST=2026-03-24-session15-final
+# IMPORTANT: COPY tout en une fois AVANT npm install
+# Garantit que chaque deploy reconstruit avec le code frais
+# cache-bust: 2026-03-24-session15-nocache
 COPY . .
+
+RUN npm install --no-fund --no-audit
 
 RUN mkdir -p server/src/assets
 RUN rm -f vite.config.ts
 
-# cache-bust: 2026-03-24-session15-final-v2
 RUN npm run build
 
 EXPOSE 3000
 
 CMD ["node_modules/.bin/tsx", "server/src/index.ts"]
-
