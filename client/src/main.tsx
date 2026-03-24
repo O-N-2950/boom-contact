@@ -38,22 +38,41 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 
 // ── Détection langue intelligente (async, non-bloquante) ──────
-// Lance la détection IP après le render initial
-// Ne change la langue QUE si l'utilisateur n'a pas déjà fait un choix
 detectBestLanguage().then(({ lang, source, country }) => {
-  // Si source = localStorage → l'utilisateur a déjà choisi, on ne touche à rien
   if (source !== 'localStorage') {
     applyLang(lang);
-    // Stocker le pays détecté pour l'ordre du sélecteur de langue
     if (country) {
       sessionStorage.setItem('boom_detected_country', country);
     }
   }
 });
 
-// PWA Service Worker
+// ── PWA Service Worker — avec force-update iOS ────────────────
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  window.addEventListener('load', async () => {
+    try {
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      
+      // Force la mise à jour immédiate du SW (critique pour iOS PWA raccourci)
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // Nouveau SW prêt — forcer activation sans attendre fermeture onglets
+              newWorker.postMessage('SKIP_WAITING');
+              // Recharger la page pour charger la nouvelle version
+              window.location.reload();
+            }
+          });
+        }
+      });
+      
+      // Vérifier si une mise à jour est disponible au démarrage
+      registration.update().catch(() => {});
+      
+    } catch (e) {
+      console.warn('SW registration failed:', e);
+    }
   });
 }
