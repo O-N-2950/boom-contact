@@ -317,12 +317,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     onError: (err) => console.error('updateParticipant failed:', err.message),
   });
 
-  // Vrai si l'autre partie n'a pas besoin de signer
-  // (piéton, trottinette, vélo, ou partie B indisponible)
-  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike'];
+  // ── Cas où aucune signature de la partie adverse n'est requise ──
+  // Véhicules non-conducteurs (ne signent jamais)
+  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
+  // Accident solo = vehicleCount à 1 OU vehicleType absent ET vehicleCount=1
+  const isSoloAccident = vehicleCount === 1;
   const otherPartyNoSignRequired =
-    NON_SIGNING_TYPES.includes(vehicleType || '') ||
-    !!partyBStatus;
+    isSoloAccident ||                                    // Accident seul
+    NON_SIGNING_TYPES.includes(vehicleType || '') ||     // Piéton, vélo, trottinette, vélomoteur
+    !!partyBStatus;                                      // Blessé grave, décédé, fuite, refus, sans smartphone
 
   const signMutation = trpc.session.sign.useMutation({
     onSuccess: (data) => {
@@ -449,6 +452,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <QRSession
               sessionId={sessionId}
               qrUrl={qrUrl}
+              onVehicleCountChange={(count) => setVehicleCount(count as 2|3|4)}
               onPartnerJoined={async () => {
                 // Charger les données véhicule B depuis la session avant le sketch
                 try {
@@ -775,6 +779,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     </div>
   );
 }
+
 
 
 
