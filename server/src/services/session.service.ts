@@ -188,9 +188,10 @@ export async function signSession(
 
   const signingParticipants = presentParticipants.filter((p: any) => !isPedestrianOrNonSigning(p));
 
-  // Cas accident solo : vehicleCount=1 dans l'accident → 1 seul conducteur suffit
+  // vehicleCount est une colonne DB sur la session, pas dans l'objet accident
   const accidentData = (session as any).accident ?? {};
-  const isSolo = accidentData.vehicleCount === 1;
+  const sessionVehicleCount = (session as any).vehicleCount ?? 2;
+  const isSolo = sessionVehicleCount === 1;
 
   // Cas partyBStatus : partie adverse déclarée indisponible (fuite, blessé, refus…)
   const hasPartyBStatus = !!accidentData.partyBStatus;
