@@ -41,9 +41,10 @@ import { EmergencyNumbers } from '../components/EmergencyNumbers';
 import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
 import { UnknownCountryLookup } from '../components/EmergencyNumbers';
 import { PostConstatCTA } from '../components/constat/PostConstatCTA';
+import { PedestrianForm } from '../components/constat/PedestrianForm';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
-type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -96,6 +97,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   });
   const [otherSigned, setOtherSigned] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
+  // ── Piéton ────────────────────────────────────────────────
+  const [pedestrianData, setPedestrianData] = useState<Record<string, any> | null>(null);
+  const [pedestrianHasPhone, setPedestrianHasPhone] = useState<boolean | null>(null);
 
   // WinWin: apply lang param from URL on mount
   useEffect(() => {
@@ -428,7 +432,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           />
         )}
 
-        {step === 'qr' && sessionId && (
+        {step === 'qr' && sessionId && vehicleType !== 'pedestrian' && (
           <QRSession
             sessionId={sessionId}
             qrUrl={qrUrl}
@@ -444,6 +448,103 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               } catch (e) { /* ignore */ }
               setStep('sketch');
             }}
+          />
+        )}
+
+        {/* ── CAS PIÉTON : choix téléphone ou pas ── */}
+        {step === 'qr' && sessionId && vehicleType === 'pedestrian' && pedestrianHasPhone === null && (
+          <div style={{ padding: 24, maxWidth: 480, margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: 28 }}>
+              <div style={{ fontSize: 48, marginBottom: 10 }}>🚶</div>
+              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Autre partie : piéton</h2>
+              <p style={{ fontSize: 13, opacity: 0.5, marginTop: 8 }}>
+                Le piéton a-t-il un téléphone mobile pour scanner le QR code ?
+              </p>
+            </div>
+            <button
+              onClick={() => setPedestrianHasPhone(true)}
+              style={{
+                width: '100%', padding: '18px', borderRadius: 14, border: 'none',
+                background: 'var(--boom)', color: '#fff',
+                fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 12,
+              }}
+            >
+              📱 Oui — il scanne le QR code
+            </button>
+            <button
+              onClick={() => { setPedestrianHasPhone(false); setStep('pedestrian_form'); }}
+              style={{
+                width: '100%', padding: '18px', borderRadius: 14,
+                border: '1.5px solid rgba(255,255,255,0.15)',
+                background: 'transparent', color: 'var(--text)',
+                fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 12,
+              }}
+            >
+              📋 Non — je remplis ses coordonnées
+            </button>
+            <button
+              onClick={() => { setPedestrianHasPhone(false); setStep('sketch'); }}
+              style={{
+                width: '100%', padding: '14px', borderRadius: 14,
+                border: '1px solid rgba(255,255,255,0.07)',
+                background: 'transparent', color: 'rgba(240,237,232,0.35)',
+                fontSize: 13, cursor: 'pointer',
+              }}
+            >
+              Continuer sans coordonnées piéton
+            </button>
+          </div>
+        )}
+
+        {/* ── CAS PIÉTON avec téléphone : afficher QR ── */}
+        {step === 'qr' && sessionId && vehicleType === 'pedestrian' && pedestrianHasPhone === true && (
+          <QRSession
+            sessionId={sessionId}
+            qrUrl={qrUrl}
+            isPedestrianMode
+            onPartnerJoined={async () => {
+              try {
+                const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
+                const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
+                if (bParticipant) setPedestrianData(bParticipant);
+              } catch (e) { /* ignore */ }
+              setStep('sketch');
+            }}
+          />
+        )}
+
+        {/* ── FORMULAIRE PIÉTON rempli par conducteur A ── */}
+        {step === 'pedestrian_form' && (
+          <PedestrianForm
+            filledByDriverA
+            onComplete={async (ped) => {
+              setPedestrianData(ped);
+              // Sauvegarder dans la session comme participantB piéton
+              if (sessionId) {
+                try {
+                  await trpcUtils.client.session.updateParticipant.mutate({
+                    sessionId,
+                    role: 'B',
+                    data: {
+                      vehicle: { vehicleType: 'pedestrian' },
+                      driver: {
+                        firstName: ped.firstName || '',
+                        lastName: ped.lastName || '',
+                        address: ped.address || '',
+                        city: ped.city || '',
+                        postalCode: ped.postalCode || '',
+                        country: ped.country || '',
+                        phone: ped.phone || '',
+                        email: ped.email || '',
+                      },
+                      isPedestrian: true,
+                    } as any,
+                  });
+                } catch (e) { /* ignore — on continue quand même */ }
+              }
+              setStep('sketch');
+            }}
+            onSkip={() => setStep('sketch')}
           />
         )}
 
@@ -620,6 +721,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     </div>
   );
 }
+
 
 
 
