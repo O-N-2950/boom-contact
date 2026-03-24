@@ -42,6 +42,8 @@ import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
 import { UnknownCountryLookup } from '../components/EmergencyNumbers';
 import { PostConstatCTA } from '../components/constat/PostConstatCTA';
 import { PedestrianForm } from '../components/constat/PedestrianForm';
+import { PartyUnavailableModal } from '../components/constat/PartyUnavailableModal';
+import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
@@ -100,6 +102,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   // ── Piéton ────────────────────────────────────────────────
   const [pedestrianData, setPedestrianData] = useState<Record<string, any> | null>(null);
   const [pedestrianHasPhone, setPedestrianHasPhone] = useState<boolean | null>(null);
+  // ── Partie B indisponible ──────────────────────────────────
+  const [partyBStatus, setPartyBStatus] = useState<PartyBStatus | null>(null);
+  const [showUnavailableModal, setShowUnavailableModal] = useState(false);
 
   // WinWin: apply lang param from URL on mount
   useEffect(() => {
@@ -433,22 +438,40 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
 
         {step === 'qr' && sessionId && vehicleType !== 'pedestrian' && (
-          <QRSession
-            sessionId={sessionId}
-            qrUrl={qrUrl}
-            onPartnerJoined={async () => {
-              // Charger les données véhicule B depuis la session avant le sketch
-              try {
-                const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
-                const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
-                if (bParticipant?.vehicle?.vehicleData) {
-                  setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
-                  (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
-                }
-              } catch (e) { /* ignore */ }
-              setStep('sketch');
-            }}
-          />
+          <>
+            <QRSession
+              sessionId={sessionId}
+              qrUrl={qrUrl}
+              onPartnerJoined={async () => {
+                // Charger les données véhicule B depuis la session avant le sketch
+                try {
+                  const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
+                  const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
+                  if (bParticipant?.vehicle?.vehicleData) {
+                    setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
+                    (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
+                  }
+                } catch (e) { /* ignore */ }
+                setStep('sketch');
+              }}
+            />
+            {/* Bouton partie B indisponible — toujours visible */}
+            <div style={{ padding: '0 20px 24px', maxWidth: 480, margin: '0 auto' }}>
+              <button
+                onClick={() => setShowUnavailableModal(true)}
+                style={{
+                  width: '100%', padding: '14px', borderRadius: 12,
+                  border: '1.5px solid rgba(239,68,68,0.3)',
+                  background: 'rgba(239,68,68,0.05)',
+                  color: 'rgba(239,68,68,0.8)',
+                  cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                }}
+              >
+                ⚠️ La partie B est indisponible (blessé, fuite, refus…)
+              </button>
+            </div>
+          </>
         )}
 
         {/* ── CAS PIÉTON : choix téléphone ou pas ── */}
@@ -718,9 +741,33 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           </>
         )}
       </div>
+
+      {/* ── Modal Partie B indisponible ── */}
+      {showUnavailableModal && (
+        <PartyUnavailableModal
+          onConfirm={async (status) => {
+            setPartyBStatus(status);
+            setShowUnavailableModal(false);
+            // Stocker dans la session (accident JSONB)
+            if (sessionId) {
+              try {
+                await updateAccidentMutation.mutateAsync({
+                  sessionId,
+                  data: { ...accidentData, partyBStatus: status } as any,
+                });
+              } catch { /* ignore */ }
+            }
+            setAccidentData(prev => ({ ...prev, partyBStatus: status } as any));
+            // Passer directement au croquis — pas besoin que B rejoigne
+            setStep('sketch');
+          }}
+          onCancel={() => setShowUnavailableModal(false)}
+        />
+      )}
     </div>
   );
 }
+
 
 
 
