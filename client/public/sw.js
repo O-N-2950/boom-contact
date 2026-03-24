@@ -1,115 +1,100 @@
-// boom.contact — Service Worker v3.0 — cache purgé automatiquement à chaque déploiement
-// Offline-first : critique pour accidents en montagne / tunnel / campagne
+// boom.contact — Service Worker v4
+// Stratégie : Network-First pour tout
+// iOS PWA : toujours servir la version fraîche du réseau
 
-const CACHE_NAME = 'boom-contact-v3';
-const STATIC_CACHE = 'boom-static-v3';
-const DATA_CACHE = 'boom-data-v3';
+const CACHE_NAME = 'boom-contact-v4';
+const OFFLINE_URL = '/';
 
-// Assets à cacher immédiatement à l'installation
-const STATIC_ASSETS = [
-  '/',
-  '/manifest.json',
-  '/logo.png',
-  '/icon-192.png',
-  '/icon-512.png',
-];
-
-// ——— INSTALL ———
+// ── INSTALL — minimal, juste mettre en cache la page principale ──
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    }).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll([OFFLINE_URL, '/manifest.json']);
+    }).then(() => {
+      // skipWaiting immédiat — crucial pour iOS PWA
+      return self.skipWaiting();
+    })
   );
 });
 
-// ——— ACTIVATE — purge tous les anciens caches ———
+// ── ACTIVATE — purger TOUS les anciens caches ──────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys
-          .filter((k) => k !== STATIC_CACHE && k !== DATA_CACHE)
-          .map((k) => {
-            console.log('[SW] Suppression ancien cache:', k);
-            return caches.delete(k);
-          })
+        keys.filter((k) => k !== CACHE_NAME).map((k) => {
+          console.log('[SW v4] Suppression cache obsolète:', k);
+          return caches.delete(k);
+        })
       )
     ).then(() => {
-      console.log('[SW] v3 actif — caches purgés');
+      console.log('[SW v4] Actif — tous les anciens caches supprimés');
       return self.clients.claim();
     })
   );
 });
 
-// Message pour forcer la mise à jour depuis l'app
-self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
-// ——— FETCH ———
+// ── FETCH — Network-First pour tout ───────────────────────────
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Ne pas intercepter les requêtes tRPC en offline — laisser passer pour erreur explicite
-  // sauf pour les assets statiques
+  // Socket.io : toujours réseau, jamais caché
+  if (url.pathname.startsWith('/socket.io')) return;
+
+  // tRPC API : network-only avec fallback JSON d'erreur
   if (url.pathname.startsWith('/trpc')) {
-    // Stratégie network-first pour les appels API
-    event.respondWith(networkFirstWithFallback(request));
+    event.respondWith(
+      fetch(request).catch(() =>
+        new Response(JSON.stringify({ error: { message: 'OFFLINE', code: 'OFFLINE' } }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' }
+        })
+      )
+    );
     return;
   }
 
-  // Pour socket.io : toujours network
-  if (url.pathname.startsWith('/socket.io')) {
-    return;
-  }
-
-  // Pour tous les assets (JS, CSS, images) : cache-first
-  event.respondWith(cacheFirst(request));
+  // Tout le reste (HTML, JS, CSS, images) : Network-First
+  event.respondWith(networkFirst(request));
 });
 
-// Cache-first : pour assets statiques
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-
+async function networkFirst(request) {
   try {
+    // Toujours essayer le réseau en premier
     const response = await fetch(request);
+    
+    // Mettre en cache la réponse fraîche
     if (response.ok && request.method === 'GET') {
-      const cache = await caches.open(STATIC_CACHE);
+      const cache = await caches.open(CACHE_NAME);
       cache.put(request, response.clone());
     }
     return response;
   } catch {
-    // Offline et pas en cache → retourner la page principale (SPA fallback)
-    const fallback = await caches.match('/');
-    return fallback || new Response('Hors ligne — boom.contact', {
+    // Réseau indispo → fallback cache
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    
+    // Pas de cache → page principale (SPA)
+    const fallback = await caches.match(OFFLINE_URL);
+    return fallback || new Response('boom.contact — Hors ligne', {
       status: 503,
       headers: { 'Content-Type': 'text/plain; charset=utf-8' }
     });
   }
 }
 
-// Network-first : pour les appels API
-async function networkFirstWithFallback(request) {
-  try {
-    const response = await fetch(request);
-    return response;
-  } catch {
-    // Offline → retourner erreur JSON structurée pour que l'app gère proprement
-    return new Response(JSON.stringify({
-      error: { message: 'OFFLINE', code: 'OFFLINE' }
-    }), {
-      status: 503,
-      headers: { 'Content-Type': 'application/json' }
-    });
+// ── MESSAGE — force update depuis l'app ────────────────────────
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
-}
+  if (event.data === 'GET_VERSION') {
+    event.source?.postMessage({ version: 'v4', cache: CACHE_NAME });
+  }
+});
 
-// ——— BACKGROUND SYNC (pour sauvegarder session hors ligne) ———
+// ── BACKGROUND SYNC ────────────────────────────────────────────
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-session') {
     event.waitUntil(syncPendingSessions());
@@ -128,16 +113,11 @@ async function syncPendingSessions() {
           body: JSON.stringify(session.data)
         });
         await markSynced(db, session.id);
-      } catch {
-        // Sera retenté au prochain sync
-      }
+      } catch { }
     }
-  } catch {
-    // IndexedDB non dispo
-  }
+  } catch { }
 }
 
-// ——— IndexedDB helpers ———
 function openIndexedDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open('boom-offline', 1);
@@ -170,7 +150,7 @@ function markSynced(db, id) {
   });
 }
 
-// ——— PUSH NOTIFICATIONS (optionnel — préparé pour le module Police) ———
+// ── PUSH NOTIFICATIONS ─────────────────────────────────────────
 self.addEventListener('push', (event) => {
   if (!event.data) return;
   const data = event.data.json();
@@ -183,4 +163,3 @@ self.addEventListener('push', (event) => {
     })
   );
 });
-
