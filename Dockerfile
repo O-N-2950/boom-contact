@@ -24,12 +24,13 @@ COPY package.json package-lock.json* ./
 # npm install résout puppeteer-core + canvas
 RUN npm install --no-fund --no-audit
 
+ARG CACHEBUST=2026-03-24-session15-final
 COPY . .
 
 RUN mkdir -p server/src/assets
 RUN rm -f vite.config.ts
 
-# cache-bust: 2026-03-24-session15-full-rebuild
+# cache-bust: 2026-03-24-session15-final-v2
 RUN npm run build
 
 EXPOSE 3000
