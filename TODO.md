@@ -1,9 +1,9 @@
 # boom.contact — TODO.md
-> Mise à jour : 23 Mars 2026 — Fin Session 12
+> Mise à jour : 24 Mars 2026 — Fin Session 13
 
 ---
 
-## ✅ FAIT — Sessions 1-11 (voir SUIVI.md pour détails)
+## ✅ FAIT — Sessions 1-12 (voir SUIVI.md pour détails)
 
 - [x] Infrastructure Railway + PostgreSQL + tRPC v11
 - [x] Flow constat complet A+B (10 étapes)
@@ -16,102 +16,96 @@
 - [x] Transcription vocale Whisper-1
 - [x] WinWin intégration partenaire CH
 - [x] LandingPage section WinWin
-
----
-
-## ✅ FAIT — Session 12 (Chrome Puppeteer + OSM + Véhicules)
-
-- [x] Chrome headless Puppeteer sur Railway Alpine (chromium)
+- [x] Chrome headless Puppeteer sur Railway Alpine
 - [x] Carte OSM server-side (Cairo + node-canvas + Nominatim)
-- [x] 16 types de véhicules — 5 nouvelles silhouettes (train, tracteur, quad, chantier, bateau)
-- [x] MapVehiclePlacer OBLIGATOIRE avant signature — diagram→sketch→sign
+- [x] 16 types de véhicules
+- [x] MapVehiclePlacer OBLIGATOIRE avant signature
 - [x] PDF avec vraie carte OSM + véhicules Chrome
-- [x] drawRoadScene supprimé — carte pure
-- [x] Coordonnées exactes Bellevue 7 Courgenay : 47.4088, 7.1124
-- [x] 10/10 tests E2E 10 pays — 0 erreur logs
 
 ---
 
-## 🔴 SESSION 13 — PRIORITÉ HAUTE
+## ✅ FAIT — Session 13 (24 Mars 2026)
 
-### 1. Fix WinWin — lien partenaire
-- [ ] Identifier pourquoi le lien WinWin ne fonctionne pas en prod
-- [ ] Tester `POST /trpc/winwin.createSession` depuis le portail WinWin
-- [ ] Vérifier le directUrl généré et le QR code affiché
-- [ ] Documenter le flow WinWin end-to-end
+### Fix & Auth
+- [x] Fix WinWin directUrl `/constat/:id` — détection path + prop initialSessionId
+- [x] Auth Magic Links (email 15min) + mot de passe (scrypt)
+- [x] JWT 30j — auth.me, login, register
+- [x] Compte admin contact@boom.contact / Cristal4you11++ (role=admin, credits=∞)
+- [x] grantCredits → lien WhatsApp one-click
+- [x] claimGift — réclamer crédits offerts
+- [x] ?magic=TOKEN et ?gift=TOKEN dans App.tsx
 
-### 2. Authentification — Magic Links + Mot de passe
-- [ ] Table `users` : email, password_hash, role (admin/customer), credits, created_at
-- [ ] Magic link : email → token 15min → session JWT 30j
-- [ ] Mot de passe : bcrypt hash, reset par email
-- [ ] Page `/login` et `/register` (React)
-- [ ] Middleware auth tRPC — protéger les routes achat/profil
-- [ ] Compte admin : contact@boom.contact / Cristal4you11++ — crédits illimités
-- [ ] Envoi gratuit de crédits par WhatsApp (lien unique)
+### Garage véhicules
+- [x] Table `vehicles` en DB
+- [x] CRUD garage (list/save/delete) avec ownership check
+- [x] Scan OCR permis + carte verte → sauvegardé dans garage
+- [x] ConstatFlow — "Utiliser mon véhicule" → skip OCR
+- [x] AccountPage — Garage + Historique + Profil (3 onglets)
+- [x] session.history par email
 
-### 3. Grille tarifaire internationale
-- [ ] Prix par devise et par pays (CHF/EUR/GBP/AUD/USD/INR...)
-- [ ] Page `/pricing` avec grille interactive par pays
-- [ ] Détection automatique de la devise selon le pays de l'utilisateur
-- [ ] Packs : 1 constat / 3 constats ⭐ / 10 constats — déclinaisons par devise
+### Admin Dashboard
+- [x] Route admin.stats — sessions, revenus, users, coûts IA
+- [x] Route admin.users — liste paginée
+- [x] AdminDashboard.tsx — KPIs + sessions live + revenus + coûts IA
+- [x] Accès via /?admin=true (connecté admin)
+- [x] Auto-refresh 30s
 
-| Pack | CHF | EUR | GBP | AUD | USD |
-|---|---|---|---|---|---|
-| 1 constat | 4.90 | 4.90 | 3.90 | 7.90 | 4.90 |
-| 3 constats | 12.90 | 12.90 | 9.90 | 19.90 | 12.90 |
-| 10 constats | 34.90 | 34.90 | 27.90 | 54.90 | 34.90 |
+### Numéros d'urgence
+- [x] EmergencyNumbers.tsx — 25 pays DB locale
+- [x] Bouton 🆘 flottant dans le flow constat
+- [x] Section compacte dans step done (police/ambulance/pompiers)
+- [x] Page complète /?urgences=true — filtrable, searchable, tap-to-call
+- [x] emmental versicherung dépannage : 031 790 24 24 ✅ (vérifié source officielle)
+- [x] SIMPEGO : +41 58 521 11 11 ✅
+- [x] ACS nouveau numéro : 044 283 33 77 ✅
+- [x] Russie, Inde NHAI 1033, Australie corrigé (RACQ 13 1905, RACV 13 11 11, RAC 13 17 03)
 
-### 4. Stripe international
-- [ ] Stripe Checkout multi-devises (CHF/EUR/GBP/AUD/USD)
-- [ ] Stripe Tax (TVA automatique par pays)
-- [ ] Facture PDF automatique par email après achat
-- [ ] Webhook Stripe → créditer le compte utilisateur
-- [ ] Historique achats dans le dashboard utilisateur
+### Insurance lookup intelligent
+- [x] insurance-assistance.service.ts — DB 100+ assureurs mondiaux
+- [x] Fallback IA Claude web_search si assureur inconnu
+- [x] emergency.insuranceLookup — pour conducteurs A et B simultanément
+- [x] emergency.singleLookup — recherche manuelle
+- [x] InsuranceAssistance.tsx — affiché dans step done
+- [x] InsuranceSearchWidget dans page urgences
 
-### 5. Accès admin + crédits illimités
-- [ ] Compte admin : contact@boom.contact / Cristal4you11++
-- [ ] Pack illimité (credits = 999999)
-- [ ] Interface d'envoi de crédits gratuits : générer lien unique → WhatsApp
-- [ ] Admin peut voir et gérer tous les comptes
+### Emergency country lookup
+- [x] emergency-numbers.service.ts — DB 60+ pays
+- [x] Fallback IA Claude web_search pour pays inconnus
+- [x] emergency.countryLookup route tRPC
+- [x] UnknownCountryLookup component
+- [x] CountryEmergencySearch — recherche n'importe quel pays
 
-### 6. Dashboard admin
-- [ ] `/admin` — protégé par rôle admin
-- [ ] Constats en live : nombre par pays, carte monde temps réel
-- [ ] Revenus Stripe en temps réel et par pays
-- [ ] KPI coûts IA (Claude Vision OCR) — coût par session, coût total/jour
-- [ ] Statistiques packs achetés (1/3/10) — conversion, panier moyen
-- [ ] Utilisateurs actifs, inscrits, rétention
-- [ ] Sessions actives live (WebSocket)
-- [ ] Alertes : erreur PDF, erreur OCR, Stripe webhook fail
+### PostConstatCTA (conversion)
+- [x] PostConstatCTA.tsx — 3 modes (anonyme / connecté sans crédits / avec crédits)
+- [x] Scénarios marketing : enfant, employé, ami étranger
+- [x] WhatsApp gift one-click
+- [x] CTA garage + recharge crédits
 
-### 7. Réseaux sociaux
-- [ ] Connexion Facebook Page boom.contact
-- [ ] Connexion TikTok Business boom.contact
-- [ ] Connexion LinkedIn Page boom.contact
-- [ ] Connexion Instagram boom.contact
-- [ ] Publication automatique journalière (voir code PEP's V2 Facebook)
-- [ ] Contenu auto-généré : conseils sécurité routière, tips constat, stats pays
-- [ ] Scheduler : 1 post/jour par plateforme, heures optimales
+### Stripe international
+- [x] Multi-devises CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY
+- [x] Détection auto devise par IP
+- [x] Grille tarifaire internationale
+- [x] Factures PDF automatiques (Stripe invoice_creation)
+- [x] Badge crédits sur PricingPage si connecté
+- [x] Rafraîchissement crédits après retour paiement
+- [x] Stripe Tax conditionnel (STRIPE_TAX_ENABLED=true)
 
-### 8. Numéros d'urgence par pays
-- [ ] Table `emergency_numbers` : pays, service, numéro, description
-- [ ] Suisse : TCS (0800 140 140), ACS (044 628 88 99), Helvetia, AXA, Zurich, Mobilière...
-- [ ] France, Allemagne, Belgique, Luxembourg, Italie, Espagne...
-- [ ] Affichage dans l'app après accident (step dédié ou dans PDF)
-- [ ] Exemple CH : TCS dépannage 24h/7j = 0800 140 140
+### RGPD / CGU / Privacy
+- [x] CookieBanner.tsx — RGPD/nLPD compliant, 2 choix
+- [x] PrivacyPage.tsx — mentions légales + tableau RGPD art.13 + sous-traitants + cookies
+- [x] /?privacy=true route
+- [x] Footer LandingPage avec 6 liens légaux
+- [x] CGU existantes 4 langues (depuis session précédente)
 
-### 9. Tests finaux + Mise en production
-- [ ] Tests manuels complets : iOS Safari + Android Chrome
-- [ ] Test Stripe paiement réel CHF/EUR
-- [ ] Test magic link email
-- [ ] Test admin dashboard live
-- [ ] Test réseaux sociaux post automatique
-- [ ] Vérification RGPD / nLPD (cookie consent, politique vie privée)
-- [ ] Mise en production officielle — annonce presse
+### Réseaux sociaux (manuel)
+- [x] Facebook Page boom.contact — créée, bannière Gemini, post lancement
+- [x] TikTok @boomcontact — créé, post publié
+- [x] Instagram @boom.contact — créé, bio, lien www.boom.contact
+- [x] LinkedIn — post publié depuis PEP's Swiss SA (page séparée à créer depuis ordi)
 
 ---
 
-## 🟠 SESSION 14+ — MOYEN TERME
+## 🔴 SESSION 14 — PRIORITÉ HAUTE
 
 ### PoliceFlow (pilote Canton Jura)
 - [ ] police.boom.contact subdomain Railway
@@ -120,6 +114,12 @@
 - [ ] Auth police login + JWT 8h
 - [ ] Audit trail RGPD consultations agents
 - [ ] Hébergement Infomaniak (si contrat cantonal signé)
+
+### Réseaux sociaux automatiques
+- [ ] Posts automatiques journaliers (scheduler cron)
+- [ ] Contenu auto-généré Claude — conseils sécurité, tips constat, stats pays
+- [ ] LinkedIn Page boom.contact séparée (depuis ordi)
+- [ ] Meta Business Suite — publier FB + IG simultanément
 
 ### Qualité produit
 - [ ] Champs CEA manquants (dates validité assurance, permis, date naissance, adresse preneur)
@@ -130,7 +130,7 @@
 - [ ] Score cohérence IA (contradictions A vs B avant signature)
 - [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
 
-### B2B Assureurs
+### B2B Assureurs (M12+)
 - [ ] API webhook assureurs (AXA, Baloise, Helvetia, Mobilière)
 - [ ] Export structuré sinistre
 - [ ] White-label assureur
@@ -144,14 +144,17 @@
 |---|---|
 | Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
 | Backend | Express + tRPC v11 + Socket.io |
-| Base de données | PostgreSQL (Drizzle ORM) — 6 tables + 2 tables police |
+| Base de données | PostgreSQL (Drizzle ORM) — 8 tables |
 | OCR | Claude Vision (Sonnet) — 50 langues |
 | PDF | pdf-lib server-side + Puppeteer Chrome headless |
 | Carte | OSM tiles server-side (Cairo + node-canvas) + GPS conducteur |
 | Email | Resend — contact@boom.contact, DKIM actif |
-| Paiement | Stripe live CHF + EUR (sans auth utilisateur pour l'instant) |
+| Paiement | Stripe live CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY |
+| Auth | JWT 30j + Magic Links + bcrypt/scrypt |
+| Garage | Véhicules + assurance par utilisateur |
+| Urgences | DB 60+ pays + AI fallback mondial |
+| Insurance | DB 100+ assureurs + AI fallback mondial |
+| RGPD | Cookie banner + Privacy page + CGU 4 langues |
 | Hébergement | Railway Europe West |
 | Domaine | www.boom.contact — DNS + SSL actifs |
-| PWA | Service Worker, IndexedDB, Background Sync, offline-first |
-| Véhicules | 16 types avec silhouettes (dont train, tracteur, quad, chantier, bateau) |
-
+| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ LinkedIn (partiel) |
