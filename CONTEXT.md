@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 22 Mars 2026 — Session 10
+> Dernière mise à jour : 24 Mars 2026 — Session 13
 
 ---
 
@@ -19,8 +19,18 @@
 | **GitHub TOKEN** | ghp_****_voir_projet_Claude_github_skill |
 | **Anthropic API KEY** | voir projet Claude `Key_Anthropic_` |
 | **OpenAI API KEY** | voir projet Claude `Open_ai_key_pour_reconnaissance_vocales` (Whisper-1) |
-| **Google Maps Key** | AIzaSy****_voir_projet_Claude (⚠️ EXPIRÉE) |
-| **Gemini API Key** | AIzaSy****_voir_projet_Claude |
+
+---
+
+## Compte admin boom.contact
+
+| | |
+|---|---|
+| **Email** | contact@boom.contact |
+| **Password** | Cristal4you11++ |
+| **Role** | admin |
+| **Credits** | 999999 (∞) |
+| **Accès dashboard** | https://www.boom.contact/?admin=true |
 
 ---
 
@@ -33,6 +43,7 @@
 5. **tRPC format** : input direct sans wrapper `{"json":...}` → `?input={"sessionId":"xxx"}`
 6. **Police jamais notifiée automatiquement**
 7. **Valider la syntaxe TSX avant push** — pas d'itération en prod sur des erreurs de syntaxe
+8. **Tutoiement partout** sur les réseaux sociaux et dans les textes marketing
 
 ---
 
@@ -42,13 +53,14 @@
 |---|---|
 | Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
 | Backend | Express + tRPC v11 + Socket.io |
-| Base de données | PostgreSQL (Drizzle ORM) — sessions, participants, signatures |
+| Base de données | PostgreSQL (Drizzle ORM) — sessions, participants, signatures, users, payments, credit_txns, vehicles, magic_tokens, police_stations, police_users, police_annotations |
 | OCR | Claude Vision (Anthropic Sonnet) — 50+ langues |
 | Analyse accident | Claude Sonnet — transcript vocal → scénario structuré |
 | Transcription vocale | OpenAI Whisper-1 — 99 langues, $0.006/min |
 | PDF | pdf-lib server-side — 12 langues, JPEG+PNG auto-detect |
 | Email | Resend — contact@boom.contact, DKIM actif, domaine vérifié |
-| Paiement | Stripe live — CHF + EUR, webhook vérifié, 3 packages |
+| Paiement | Stripe live — CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY, webhook, factures PDF auto |
+| Auth | JWT 30j + Magic Links 15min + scrypt passwords |
 | Hébergement | Railway Europe West — déploiement auto depuis GitHub |
 | Domaine | www.boom.contact — DNS + SSL actifs |
 | PWA | Service Worker actif, IndexedDB, Background Sync, offline-first |
@@ -61,45 +73,69 @@
 
 ```
 session.create         POST  → { sessionId, qrUrl, status }
-session.get            GET   → session complète (participantA, participantB, accident...)
+session.get            GET   → session complète
 session.updateAccident POST  → { ok: true }
 session.updateParticipant POST → { ok: true }
 session.join           POST  → session active
-session.sign           POST  → { ok, bothSigned }  ← status → 'completed' si les 2 signent
-pdf.generate           POST  → { pdfBase64 }  ← nécessite status === 'completed'
-ocr.scan               POST  → résultat OCR  ← input: { imageBase64, mediaType, documentType }
+session.sign           POST  → { ok, bothSigned }
+session.history        GET   → sessions par ownerEmail (auth requise)
+pdf.generate           POST  → { pdfBase64 }
+ocr.scan               POST  → résultat OCR
 voice.transcribe       POST  → { transcript }
-payment.packages       GET   → 3 packages: single / pack3 / pack10
+payment.packages       GET   → 3 packages
 payment.createCheckout POST  → { url }
+payment.currencies     GET   → grille tarifaire internationale
+auth.register          POST  → { id, token }
+auth.login             POST  → { token, user }
+auth.magicLinkRequest  POST  → { ok }
+auth.magicLinkVerify   POST  → { token, user }
+auth.me                GET   → user courant (JWT)
+auth.grantCredits      POST  → { giftUrl, waUrl } (admin)
+auth.claimGift         POST  → { credits }
+auth.adminBootstrap    POST  → { ok } (protégé ADMIN_BOOTSTRAP_SECRET)
+vehicle.list           GET   → véhicules du compte
+vehicle.save           POST  → { id }
+vehicle.delete         POST  → { ok }
+admin.stats            GET   → dashboard complet (admin)
+admin.users            GET   → liste utilisateurs (admin)
+emergency.countryLookup GET  → police/ambulance/dépannage par pays (DB + AI)
+emergency.insuranceLookup POST → assistance A+B depuis OCR (DB + AI)
+emergency.singleLookup POST  → recherche assureur manuel (DB + AI)
+police.*               ...   → module police (auth séparée)
+winwin.createSession   POST  → { sessionId, directUrl }
 ```
-
-**Format input correct** :
-- GET : `?input={"sessionId":"xxx"}` (sans wrapper json)
-- POST : body `{"sessionId":"xxx", "data":{...}}` (sans wrapper json)
 
 ---
 
-## Etat des fonctionnalités (22 Mars 2026)
+## Etat des fonctionnalités (24 Mars 2026)
 
 ### ✅ En production et fonctionnel
 
 | Fonctionnalité | Notes |
 |---|---|
 | Scan OCR multi-documents | Permis CH/FR/DE/GB + carte verte + 50 langues |
-| Géolocalisation IP → langue | 180+ pays, cascade localStorage→IP→navigator |
+| Géolocalisation IP → langue | 180+ pays |
 | Flow constat complet A+B | SCAN→LIEU→PHOTOS→VOCAL→QR→CROQUIS→INFOS→CHOC→SIGN |
-| Session temps réel | Socket.io, QR code, join B depuis lien |
-| Transcription vocale | Whisper-1, 99 langues, max 3 min |
-| Analyse IA accident | Claude Sonnet → scénario + responsabilité + circonstances |
-| Signature numérique | Canvas HTML5, base64 PNG |
-| Génération PDF | pdf-lib, 12 langues, JPEG+PNG auto-detect, carte intégrée |
-| Stripe paiement | 3 packages (1/3/10 constats), CHF + EUR, webhook |
+| Session temps réel | Socket.io, QR code |
+| Transcription vocale | Whisper-1, 99 langues |
+| Analyse IA accident | Claude Sonnet → scénario + responsabilité |
+| Signature numérique | Canvas HTML5 |
+| Génération PDF | pdf-lib, 12 langues, carte OSM intégrée |
+| Stripe international | 8 devises, factures PDF auto, webhook |
 | i18n | FR / DE / IT / EN complet |
 | PWA offline-first | Service Worker, IndexedDB, Background Sync |
-| Mode piéton/solo | Bypass QR si pas de 2e conducteur (piéton, objet, seul) |
+| Mode piéton/solo | Bypass QR si pas de 2e conducteur |
 | Carte OSM + satellite | MapVehiclePlacer — conducteur positionne son véhicule |
-| Géocodage adresse | Nominatim fallback si lat/lng absent |
-| bothSigned → completed | Fix session 10 — status mis à jour correctement |
+| Auth complet | Magic links + password + JWT 30j |
+| Garage véhicules | CRUD + OCR scan + assurance par véhicule |
+| Admin dashboard | Stats temps réel, revenus, coûts IA |
+| Numéros d'urgence | 60+ pays DB + AI fallback mondial |
+| Insurance lookup | 100+ assureurs DB + AI fallback mondial |
+| PostConstatCTA | Conversion post-constat — 3 modes |
+| Cookie banner | RGPD/nLPD compliant |
+| Privacy page | Mentions légales + sous-traitants + droits |
+| WinWin | directUrl /constat/:id opérationnel |
+| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ |
 
 ### ❌ Pas encore fait
 
@@ -107,11 +143,12 @@ payment.createCheckout POST  → { url }
 |---|---|
 | PoliceFlow (police.boom.contact) | 🔴 CRITIQUE — pilote Jura |
 | PDF rapport police CH | 🔴 CRITIQUE |
+| Posts automatiques réseaux sociaux | 🟠 |
+| LinkedIn Page boom.contact séparée | 🟠 |
 | Score cohérence IA (A vs B) | 🟠 |
 | 50 silhouettes véhicules niveau 2 | 🟡 |
 | Dark mode | 🟡 |
 | Cron nettoyage sessions > 7j | 🟡 |
-| Tests Stripe CHF réels | 🟠 |
 | Champs CEA manquants | 🟠 |
 
 ---
@@ -121,26 +158,37 @@ payment.createCheckout POST  → { url }
 ```
 client/src/
   pages/
-    ConstatFlow.tsx         — Flow principal conducteur A (étapes SCAN→SIGN)
+    ConstatFlow.tsx         — Flow principal conducteur A
     JoinSession.tsx         — Flow conducteur B
-  components/constat/
-    MapVehiclePlacer.tsx    — Carte OSM/satellite + placement véhicule
-    QRSession.tsx           — QR code + mode piéton/solo/objet
-    OCRScanner.tsx          — Scanner multi-documents
-    VoiceRecorder.tsx       — Enregistreur vocal Whisper
-    VoiceSketchFlow.tsx     — Flow vocal → IA → croquis
-    AccidentSketch.tsx      — Croquis manuel fallback
-  i18n/
-    geo-lang.ts             — Géolocalisation IP → langue
+    PricingPage.tsx         — Tarifs multi-devises
+    AccountPage.tsx         — Garage + Historique + Profil
+    AdminDashboard.tsx      — Dashboard admin
+    PrivacyPage.tsx         — Mentions légales RGPD
+    PoliceFlow.tsx          — Module police (en cours)
+  components/
+    AuthModal.tsx           — Login/register/magic link
+    CookieBanner.tsx        — RGPD cookie consent
+    EmergencyNumbers.tsx    — Urgences mondiales + insurance search
+    constat/
+      InsuranceAssistance.tsx — Lookup assureur A+B post-constat
+      PostConstatCTA.tsx      — CTA conversion après constat
+      MapVehiclePlacer.tsx
+      OCRScanner.tsx
+      VoiceRecorder.tsx
 
 server/src/
   routes/router.ts          — Toutes les routes tRPC
   services/
-    session.service.ts      — CRUD sessions + bothSigned fix
-    pdf.service.ts          — Génération PDF multilingue (JPEG+PNG)
-    ocr.service.ts          — Claude Vision OCR
-    voice.service.ts        — Whisper transcription
-    accident-analyzer.service.ts — Claude Sonnet analyse
+    auth.service.ts         — JWT, magic links, scrypt
+    vehicle.service.ts      — CRUD garage
+    insurance-assistance.service.ts — DB assureurs + AI fallback
+    emergency-numbers.service.ts   — DB urgences + AI fallback
+    stripe.service.ts       — Multi-devises, factures, webhook
+    session.service.ts
+    pdf.service.ts
+    ocr.service.ts
+    voice.service.ts
+    police.service.ts
 ```
 
 ---
@@ -158,20 +206,31 @@ server/src/
 | VITE_STRIPE_PUBLISHABLE_KEY | ✅ |
 | RESEND_API_KEY | ✅ |
 | JWT_SECRET | ✅ |
-| GOOGLE_MAPS_API_KEY | ⚠️ SET mais EXPIRÉE |
-| GEMINI_API_KEY | ⚠️ SET mais Maps non activé |
+| STRIPE_TAX_ENABLED | ⬜ optionnel (activer après config Stripe Tax dashboard) |
+| WINWIN_PARTNER_KEY | ✅ |
 
 ---
 
 ## Monétisation
 
-| Package | Prix | Crédits | Frais Stripe |
-|---|---|---|---|
-| 1 constat | CHF/€ 4.90 | 1 | €0.25 par package |
-| 3 constats ⭐ | CHF/€ 12.90 | 3 | €0.25 par package |
-| 10 constats | CHF/€ 34.90 | 10 | €0.25 par package |
+| Package | CHF | EUR | GBP | AUD | USD | CAD | SGD | JPY |
+|---|---|---|---|---|---|---|---|---|
+| 1 constat | 4.90 | 4.90 | 3.90 | 7.90 | 4.90 | 6.90 | 6.90 | ¥750 |
+| 3 constats ⭐ | 12.90 | 12.90 | 9.90 | 19.90 | 12.90 | 17.90 | 17.90 | ¥1900 |
+| 10 constats | 34.90 | 34.90 | 27.90 | 54.90 | 34.90 | 47.90 | 47.90 | ¥5200 |
 
-RGPD : checkbox optionnelle partage données avec PEP's Swiss SA.
+Stripe fixe €0.25 par package (pas par constat). Crédits sans expiration. Partageables par WhatsApp.
+
+---
+
+## Réseaux sociaux
+
+| Plateforme | Compte | Status |
+|---|---|---|
+| Facebook | Page Boom.contact | ✅ Actif |
+| TikTok | @boomcontact | ✅ Actif |
+| Instagram | @boom.contact | ✅ Actif |
+| LinkedIn | Via PEP's Swiss SA | ⚠️ Page séparée à créer depuis ordi |
 
 ---
 
