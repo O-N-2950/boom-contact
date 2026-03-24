@@ -203,9 +203,27 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const session = await getSession(input.sessionId);
         if (!session) throw new Error('Session not found');
-        if (session.status !== 'completed') throw new Error('Both parties must sign before generating PDF');
 
-        // PDF personnalisé pour le rôle demandé (langue du conducteur + pays accident)
+        // Conditions pour générer le PDF :
+        // 1. Session completed (deux signatures) — cas normal
+        // 2. Session signing + partyBStatus (déclaration unilatérale)
+        // 3. Session signing + piéton/vélo côté B (pas de signature adverse requise)
+        const acc = (session as any).accident ?? {};
+        const hasPartyBStatus = !!acc.partyBStatus;
+        const isSolo = acc.vehicleCount === 1;
+        const NON_SIGNING = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
+        const bIsNonSigning =
+          NON_SIGNING.includes((session.participantB as any)?.vehicle?.vehicleType) ||
+          NON_SIGNING.includes((session.participantB as any)?.vehicle?.bodyStyle) ||
+          (session.participantB as any)?.isPedestrian === true;
+        const aHasSigned = !!(session.participantA as any)?.signature;
+
+        const canGenerate =
+          session.status === 'completed' ||
+          (session.status === 'signing' && aHasSigned && (hasPartyBStatus || isSolo || bIsNonSigning));
+
+        if (!canGenerate) throw new Error('Both parties must sign before generating PDF');
+
         const role = (input.role === 'A' || input.role === 'B') ? input.role : 'A';
         const pdfBytes = await generateConstatPDF(session, role);
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
@@ -926,6 +944,7 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
