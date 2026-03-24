@@ -213,7 +213,40 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         </div>
         <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}`}</style>
       </div>
+
+      {/* Témoin officiel */}
+      <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 10, background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+          <span style={{ fontSize: 16 }}>👁️</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#a855f7' }}>Témoin officiel</span>
+          <span style={{ fontSize: 10, opacity: 0.4, marginLeft: 'auto' }}>Optionnel</span>
+        </div>
+        <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 8, lineHeight: 1.5 }}>
+          Un témoin peut rejoindre le constat pour enregistrer sa déclaration. Son témoignage est joint au PDF.
+        </div>
+        <button
+          onClick={async () => {
+            try {
+              const witnessUrl = `${window.location.origin}/join?session=${sessionId}&role=W`;
+              if (navigator.share) {
+                await navigator.share({ title: 'boom.contact — Témoin', text: 'Rejoignez le constat en tant que témoin', url: witnessUrl });
+              } else {
+                await navigator.clipboard.writeText(witnessUrl);
+                alert('Lien témoin copié !');
+              }
+            } catch { /* ignore */ }
+          }}
+          style={{
+            padding: '8px 14px', borderRadius: 8, border: '1px solid rgba(168,85,247,0.3)',
+            background: 'rgba(168,85,247,0.1)', color: '#a855f7',
+            cursor: 'pointer', fontSize: 12, fontWeight: 600,
+          }}
+        >
+          📤 Partager lien témoin
+        </button>
+      </div>
     </div>
   );
 }
+
 
