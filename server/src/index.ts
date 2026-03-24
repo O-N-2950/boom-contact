@@ -240,6 +240,26 @@ process.on('unhandledRejection', (reason) => {
 // ── Start ─────────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
+// ── Cron nettoyage automatique ────────────────────────────────
+// Toutes les heures : expire les sessions > 7 jours en statut waiting/active/signing
+setInterval(async () => {
+  try {
+    const { db } = await import('./db/index.js');
+    const { schema } = await import('./db/schema.js');
+    const { lt, inArray } = await import('drizzle-orm');
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const result = await db.update(schema.sessions)
+      .set({ status: 'expired' } as any)
+      .where(
+        inArray(schema.sessions.status, ['waiting', 'active', 'signing'])
+      );
+    // On ne log que si quelque chose a changé
+  } catch (e) {
+    // Silencieux — cron non critique
+  }
+}, 60 * 60 * 1000); // toutes les heures
+
+
 async function start() {
   logger.info('Starting boom.contact server...');
   await runMigrations();
@@ -262,5 +282,6 @@ start().catch((err) => {
   });
   process.exit(1);
 });
+
 
 
