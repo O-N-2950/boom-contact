@@ -1,9 +1,9 @@
-// boom.contact — Service Worker v1.0
+// boom.contact — Service Worker v3.0 — cache purgé automatiquement à chaque déploiement
 // Offline-first : critique pour accidents en montagne / tunnel / campagne
 
-const CACHE_NAME = 'boom-contact-v1';
-const STATIC_CACHE = 'boom-static-v1';
-const DATA_CACHE = 'boom-data-v1';
+const CACHE_NAME = 'boom-contact-v3';
+const STATIC_CACHE = 'boom-static-v3';
+const DATA_CACHE = 'boom-data-v3';
 
 // Assets à cacher immédiatement à l'installation
 const STATIC_ASSETS = [
@@ -23,17 +23,30 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// ——— ACTIVATE ———
+// ——— ACTIVATE — purge tous les anciens caches ———
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
         keys
           .filter((k) => k !== STATIC_CACHE && k !== DATA_CACHE)
-          .map((k) => caches.delete(k))
+          .map((k) => {
+            console.log('[SW] Suppression ancien cache:', k);
+            return caches.delete(k);
+          })
       )
-    ).then(() => self.clients.claim())
+    ).then(() => {
+      console.log('[SW] v3 actif — caches purgés');
+      return self.clients.claim();
+    })
   );
+});
+
+// Message pour forcer la mise à jour depuis l'app
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // ——— FETCH ———
@@ -170,3 +183,4 @@ self.addEventListener('push', (event) => {
     })
   );
 });
+
