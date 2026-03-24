@@ -6,6 +6,8 @@ interface Props {
   sessionId: string;
   qrUrl: string;
   onPartnerJoined: () => void;
+  isPedestrianMode?: boolean;
+  onVehicleCountChange?: (count: number) => void;
 }
 
 const MAX_VEHICLES = 5;
@@ -16,11 +18,11 @@ const ROLE_COLORS: Record<ParticipantRole, string> = {
   A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#F59E0B',
 };
 
-export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
+export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode = false, onVehicleCountChange }: Props) {
   const [partnerJoined, setPartnerJoined] = useState(false);
   const [copied, setCopied] = useState<ParticipantRole | null>(null);
-  const [vehicleCount, setVehicleCount] = useState(2);
-  const [secondPartyType, setSecondPartyType] = useState<'vehicle'|'pedestrian'|'object'|'solo'>('vehicle');
+  const [vehicleCount, setVehicleCount] = useState(isPedestrianMode ? 1 : 2);
+  const [secondPartyType, setSecondPartyType] = useState<'vehicle'|'pedestrian'|'object'|'solo'>(isPedestrianMode ? 'pedestrian' : 'vehicle');
   const [qrDataUrls, setQrDataUrls] = useState<Record<string, string>>({});
   const [activeQR, setActiveQR] = useState<ParticipantRole>('B');
   const [joinedRoles, setJoinedRoles] = useState<Set<string>>(new Set());
@@ -116,8 +118,9 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
                 <button key={opt.val}
                   onClick={() => {
                     setSecondPartyType(opt.val);
-                    if (opt.val !== 'vehicle') setVehicleCount(1);
-                    else setVehicleCount(v => Math.max(2, v));
+                    const newCount = opt.val !== 'vehicle' ? 1 : Math.max(2, vehicleCount);
+                    setVehicleCount(newCount);
+                    onVehicleCountChange?.(newCount);
                   }}
                   style={{
                     padding: '5px 10px', borderRadius: 20, cursor: 'pointer', fontSize: 11,
@@ -213,3 +216,4 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined }: Props) {
     </div>
   );
 }
+
