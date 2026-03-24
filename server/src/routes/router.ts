@@ -144,6 +144,98 @@ export const appRouter = router({
 
         if (bothSigned) {
           io.to(`session:${input.sessionId}`).emit('constat-complete', { sessionId: input.sessionId });
+
+          // ── Génération PDF + envoi email automatique ─────────────
+          // Fait côté serveur pour garantir la livraison même si le client ferme l'app
+          setImmediate(async () => {
+            try {
+              const { db } = await import('../db/index.js');
+              const { schema } = await import('../db/schema.js');
+              const { eq } = await import('drizzle-orm');
+              const { generateConstatPDF } = await import('../services/pdf.service.js');
+              const { sendPDFToDriver } = await import('../services/email.service.js');
+              const { savePdfUrl } = await import('../services/session.service.js');
+
+              // Récupérer la session fraîche avec toutes les données
+              const { getSession } = await import('../services/session.service.js');
+              const fullSession = await getSession(input.sessionId);
+              if (!fullSession) return;
+
+              const A = fullSession.participantA as any;
+              const B = fullSession.participantB as any;
+              const emailA = A?.driver?.email;
+              const emailB = B?.driver?.email;
+
+              // Stocker ownerEmail en DB (= email du conducteur A)
+              if (emailA) {
+                await db.update(schema.sessions)
+                  .set({ ownerEmail: emailA } as any)
+                  .where(eq(schema.sessions.id, input.sessionId));
+              }
+
+              // Générer PDF pour A
+              const pdfBytesA = await generateConstatPDF(fullSession, 'A');
+              const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
+              const filename = `constat-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
+
+              // Sauvegarder l'URL en DB (base64 stocké temporairement)
+              await savePdfUrl(input.sessionId, `data:application/pdf;base64,${pdfB64A.slice(0, 50)}...`);
+
+              // Envoyer à conducteur A
+              if (emailA) {
+                const nameA = [A?.driver?.firstName, A?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur A';
+                await sendPDFToDriver({
+                  driverEmail: emailA,
+                  driverName: nameA,
+                  role: 'A',
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64A,
+                  insurerName: A?.insurance?.company,
+                  language: A?.language || 'fr',
+                });
+                logger.info(`PDF envoyé à conducteur A: ${emailA}`);
+              }
+
+              // Envoyer à conducteur B (si email disponible et pas piéton)
+              const bVehicleType = B?.vehicle?.vehicleType;
+              const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
+              const bIsPedestrian = NON_SIGNING.includes(bVehicleType) || B?.isPedestrian;
+
+              if (emailB && !bIsPedestrian) {
+                const pdfBytesB = await generateConstatPDF(fullSession, 'B');
+                const pdfB64B = Buffer.from(pdfBytesB).toString('base64');
+                const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur B';
+                await sendPDFToDriver({
+                  driverEmail: emailB,
+                  driverName: nameB,
+                  role: 'B',
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64B,
+                  insurerName: B?.insurance?.company,
+                  language: B?.language || 'fr',
+                });
+                logger.info(`PDF envoyé à conducteur B: ${emailB}`);
+              }
+
+              // Piéton avec email → envoyer PDF version A aussi
+              if (emailB && bIsPedestrian) {
+                const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Piéton';
+                await sendPDFToDriver({
+                  driverEmail: emailB,
+                  driverName: nameB,
+                  role: 'A', // version A du PDF pour le piéton
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64A,
+                  language: B?.language || 'fr',
+                });
+                logger.info(`PDF envoyé au piéton: ${emailB}`);
+              }
+
+            } catch (err) {
+              // Ne jamais bloquer la réponse — l'envoi email est best-effort
+              logger.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
+            }
+          });
         }
         return { ok: true, bothSigned, status: session.status };
       }),
@@ -954,9 +1046,59 @@ export const appRouter = router({
   }),
 
 
+
+  // ── ADMIN MAINTENANCE ──────────────────────────────────────────
+  adminCleanupSessions: publicProcedure
+    .mutation(async ({ ctx }) => {
+      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      const { db } = await import('../db/index.js');
+      const { schema } = await import('../db/schema.js');
+      const { eq } = await import('drizzle-orm');
+      const signing = await db.query.sessions.findMany({ where: eq(schema.sessions.status, 'signing') });
+      let fixed = 0;
+      const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
+      for (const s of signing) {
+        const A = (s.participantA as any) ?? {};
+        const B = (s.participantB as any);
+        const acc = (s.accident as any) ?? {};
+        const sigA = !!A?.signature;
+        if (!sigA) continue;
+        const bHasRealData = B && (B?.driver?.firstName || B?.vehicle?.licensePlate);
+        const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType) || B?.isPedestrian);
+        const hasPartyBStatus = !!acc.partyBStatus;
+        const isSolo = (s.vehicleCount ?? 2) === 1;
+        if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {
+          await db.update(schema.sessions).set({ status: 'completed' } as any).where(eq(schema.sessions.id, s.id));
+          fixed++;
+        }
+      }
+      return { fixed, total: signing.length };
+    }),
+
+  adminFixOwnerEmails: publicProcedure
+    .mutation(async ({ ctx }) => {
+      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      const { db } = await import('../db/index.js');
+      const { schema } = await import('../db/schema.js');
+      const { eq, isNull, and } = await import('drizzle-orm');
+      const missing = await db.query.sessions.findMany({
+        where: and(eq(schema.sessions.status, 'completed'), isNull(schema.sessions.ownerEmail)),
+      });
+      let fixed = 0;
+      for (const s of missing) {
+        const email = (s.participantA as any)?.driver?.email;
+        if (email) {
+          await db.update(schema.sessions).set({ ownerEmail: email } as any).where(eq(schema.sessions.id, s.id));
+          fixed++;
+        }
+      }
+      return { fixed, total: missing.length };
+    }),
+
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
