@@ -150,7 +150,7 @@ export const appRouter = router({
           setImmediate(async () => {
             try {
               const { db } = await import('../db/index.js');
-              const { schema } = await import('../db/schema.js');
+              const { sessions: sessionsTable } = await import('../db/schema.js');
               const { eq } = await import('drizzle-orm');
               const { generateConstatPDF } = await import('../services/pdf.service.js');
               const { sendPDFToDriver } = await import('../services/email.service.js');
@@ -168,9 +168,9 @@ export const appRouter = router({
 
               // Stocker ownerEmail en DB (= email du conducteur A)
               if (emailA) {
-                await db.update(schema.sessions)
+                await db.update(sessionsTable)
                   .set({ ownerEmail: emailA } as any)
-                  .where(eq(schema.sessions.id, input.sessionId));
+                  .where(eq(sessionsTable.id, input.sessionId));
               }
 
               // Générer PDF pour A
@@ -1052,9 +1052,9 @@ export const appRouter = router({
     .mutation(async ({ ctx }) => {
       if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
       const { db } = await import('../db/index.js');
-      const { schema } = await import('../db/schema.js');
+      const { sessions } = await import('../db/schema.js');
       const { eq } = await import('drizzle-orm');
-      const signing = await db.query.sessions.findMany({ where: eq(schema.sessions.status, 'signing') });
+      const signing = await db.query.sessions.findMany({ where: eq(sessions.status, 'signing') });
       let fixed = 0;
       const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
       for (const s of signing) {
@@ -1068,7 +1068,7 @@ export const appRouter = router({
         const hasPartyBStatus = !!acc.partyBStatus;
         const isSolo = (s.vehicleCount ?? 2) === 1;
         if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {
-          await db.update(schema.sessions).set({ status: 'completed' } as any).where(eq(schema.sessions.id, s.id));
+          await db.update(sessions).set({ status: 'completed' } as any).where(eq(sessions.id, s.id));
           fixed++;
         }
       }
@@ -1079,16 +1079,16 @@ export const appRouter = router({
     .mutation(async ({ ctx }) => {
       if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
       const { db } = await import('../db/index.js');
-      const { schema } = await import('../db/schema.js');
+      const { sessions } = await import('../db/schema.js');
       const { eq, isNull, and } = await import('drizzle-orm');
       const missing = await db.query.sessions.findMany({
-        where: and(eq(schema.sessions.status, 'completed'), isNull(schema.sessions.ownerEmail)),
+        where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
       });
       let fixed = 0;
       for (const s of missing) {
         const email = (s.participantA as any)?.driver?.email;
         if (email) {
-          await db.update(schema.sessions).set({ ownerEmail: email } as any).where(eq(schema.sessions.id, s.id));
+          await db.update(sessions).set({ ownerEmail: email } as any).where(eq(sessions.id, s.id));
           fixed++;
         }
       }
