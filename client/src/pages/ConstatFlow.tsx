@@ -452,7 +452,16 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <QRSession
               sessionId={sessionId}
               qrUrl={qrUrl}
-              onVehicleCountChange={(count) => setVehicleCount(count as 2|3|4)}
+              onVehicleCountChange={(count) => {
+                setVehicleCount(count as 2|3|4);
+                // Synchroniser vehicleCount vers la DB — critique pour solo
+                if (sessionId) {
+                  updateAccidentMutation.mutate({
+                    sessionId,
+                    data: { vehicleCount: count } as any,
+                  });
+                }
+              }}
               onPartnerJoined={async () => {
                 // Charger les données véhicule B depuis la session avant le sketch
                 try {
@@ -779,6 +788,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     </div>
   );
 }
+
 
 
 
