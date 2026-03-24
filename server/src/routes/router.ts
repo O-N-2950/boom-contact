@@ -100,6 +100,8 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
+          vehicleCount:     z.number().optional(),   // 1=solo, 2=standard, 3-5=multi
+          partyBStatus:     z.record(z.string(), z.any()).optional(), // fuite/blessé/refus/décédé
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -112,6 +114,15 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const session = await updateAccident(input.sessionId, input.data as any);
         if (!session) throw new Error('Session not found');
+
+        // Si vehicleCount fourni, mettre à jour la colonne DB dédiée
+        if (input.data.vehicleCount !== undefined) {
+          const { db, schema } = await import('../db/index.js');
+          const { eq } = await import('drizzle-orm');
+          await db.update(schema.sessions)
+            .set({ vehicleCount: input.data.vehicleCount } as any)
+            .where(eq(schema.sessions.id, input.sessionId));
+        }
 
         io.to(`session:${input.sessionId}`).emit('accident-updated', input.data);
         return { ok: true };
@@ -208,9 +219,11 @@ export const appRouter = router({
         // 1. Session completed (deux signatures) — cas normal
         // 2. Session signing + partyBStatus (déclaration unilatérale)
         // 3. Session signing + piéton/vélo côté B (pas de signature adverse requise)
+        // 4. Accident solo (vehicleCount=1 dans la colonne DB session, pas dans accident)
         const acc = (session as any).accident ?? {};
         const hasPartyBStatus = !!acc.partyBStatus;
-        const isSolo = acc.vehicleCount === 1;
+        const sessionVehicleCount = (session as any).vehicleCount ?? 2;
+        const isSolo = sessionVehicleCount === 1;
         const NON_SIGNING = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
         const bIsNonSigning =
           NON_SIGNING.includes((session.participantB as any)?.vehicle?.vehicleType) ||
