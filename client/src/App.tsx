@@ -15,10 +15,12 @@ import { AuthModal } from './components/AuthModal';
 import { AccountPage } from './pages/AccountPage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { EmergencyNumbers } from './components/EmergencyNumbers';
+import { CookieBanner } from './components/CookieBanner';
+import { PrivacyPage } from './pages/PrivacyPage';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'emergency' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -37,6 +39,7 @@ function getInitialView(): AppView {
   if (getWinWinSessionId()) return 'constat';
   if (params.get('admin') === 'true') return 'admin';
   if (params.get('urgences') === 'true') return 'emergency';
+  if (params.get('privacy') === 'true') return 'privacy';
   // Magic link / gift link handled inline after mount
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
@@ -241,6 +244,10 @@ export default function App() {
         />
       )}
 
+      {view === 'privacy' && (
+        <PrivacyPage onBack={() => setView('landing')} />
+      )}
+
       {view === 'emergency' && (
         <EmergencyNumbers mode="full" onClose={() => setView('landing')} />
       )}
@@ -274,10 +281,12 @@ export default function App() {
           onClose={() => { setShowCGU(false); setPendingAction(null); }}
         />
       )}
+      <CookieBanner />
     </div>
     </ErrorBoundary>
   );
 }
+
 
 
 
