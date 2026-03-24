@@ -59,6 +59,24 @@ export function PostConstatCTA({
           Créer mon compte gratuit →
         </button>
 
+        {/* Rappel garage — juste après inscription */}
+        <div style={{
+          marginTop: 10, padding: '12px 16px', borderRadius: 12,
+          background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)',
+          display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <span style={{ fontSize: 22 }}>🚗</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(240,237,232,0.9)' }}>
+              Ensuite, enregistre ton véhicule
+            </div>
+            <div style={{ fontSize: 11, opacity: 0.45, marginTop: 2 }}>
+              Scan permis de circuler + carte verte · 30 sec · plus jamais à resaisir
+            </div>
+          </div>
+          <span style={{ fontSize: 16, opacity: 0.4 }}>›</span>
+        </div>
+
         <div style={dividerStyle}>
           <div style={dividerLine} />
           <span style={dividerText}>ou passez directement</span>
@@ -328,3 +346,4 @@ const dividerStyle: React.CSSProperties = {
 
 const dividerLine: React.CSSProperties = { flex: 1, height: 1, background: '#1a1a1a' };
 const dividerText: React.CSSProperties = { color: '#444', fontSize: 11, whiteSpace: 'nowrap' as const };
+
