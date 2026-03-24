@@ -59,6 +59,7 @@ function getInitialView(): AppView {
 export default function App() {
   const { i18n } = useTranslation();
   const [view, setView] = useState<AppView>(getInitialView);
+  const [accountInitialTab, setAccountInitialTab] = useState<'garage'|'history'|'profile'>('garage');
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
   const [authUser, setAuthUser] = useState<any>(() => {
     try { return JSON.parse(localStorage.getItem(USER_DATA_KEY) || 'null'); } catch { return null; }
@@ -101,6 +102,12 @@ export default function App() {
     setAuthToken(token);
     setAuthUser(user);
     setShowAuthModal(false);
+    // Redirection post-login selon pendingAction
+    if (pendingAction === 'garage') {
+      setAccountInitialTab('garage');
+      setView('account');
+      setPendingAction(null);
+    }
   };
 
   const handleLogout = () => {
@@ -115,7 +122,7 @@ export default function App() {
   const [policeUser, setPoliceUser]   = useState<unknown>(() => {
     try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; }
   });
-  const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | null>(null);
+  const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | 'garage' | null>(null);
   const [policeSessionId, setPoliceSessionId] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('session') || '';
@@ -186,11 +193,28 @@ export default function App() {
     }
   };
 
+  const goToGarage = () => {
+    setAccountInitialTab('garage');
+    if (authUser) {
+      setView('account');
+    } else {
+      // Pas encore connecté → ouvrir AuthModal, puis rediriger vers garage
+      setPendingAction('garage' as any);
+      setShowAuthModal(true);
+    }
+  };
+
   return (
     <ErrorBoundary>
     <OfflineBanner />
     <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
-      {view === 'landing'  && <LandingPage onStart={startConstat} onPricing={goToPricing} onAccount={() => authUser ? setView('account') : setShowAuthModal(true)} authUser={authUser} />}
+      {view === 'landing'  && <LandingPage
+        onStart={startConstat}
+        onPricing={goToPricing}
+        onGarage={goToGarage}
+        onAccount={() => authUser ? setView('account') : setShowAuthModal(true)}
+        authUser={authUser}
+      />}
       {view === 'constat' && (
         <ConstatFlow
           initialSessionId={getWinWinSessionId() || undefined}
@@ -265,6 +289,7 @@ export default function App() {
           token={authToken}
           onBack={() => setView('landing')}
           onLogout={handleLogout}
+          initialTab={accountInitialTab}
         />
       )}
 
@@ -286,6 +311,7 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
 
