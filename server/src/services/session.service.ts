@@ -166,6 +166,13 @@ export async function signSession(
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
   // allSigned = every participant that exists (has a driver name) has now signed
+  // Piétons, cyclistes et trottinettes n'ont pas besoin de signer
+  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike'];
+  const isPedestrianOrNonSigning = (p: any) =>
+    NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
+    NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
+    p?.isPedestrian === true;
+
   const participants = [
     role === 'A' ? updated : session.participantA,
     role === 'B' ? updated : session.participantB,
@@ -174,9 +181,19 @@ export async function signSession(
     (session as any).participantE && (role === 'E' ? updated : (session as any).participantE),
   ].filter(Boolean);
 
-  const presentParticipants = participants.filter((p: any) => p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate || p?.name || p?.vehicle?.brand);
-  const allSigned = presentParticipants.length >= 2 &&
-    presentParticipants.every((p: any) => !!p?.signature);
+  // Un participant "présent" = a des données OU est un piéton/vélo (pas de plaque mais bodyStyle connu)
+  const presentParticipants = participants.filter((p: any) =>
+    p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate ||
+    p?.name || p?.vehicle?.brand || isPedestrianOrNonSigning(p)
+  );
+
+  // Les non-conducteurs (piétons, vélos…) ne signent pas — seuls les conducteurs signent
+  const signingParticipants = presentParticipants.filter((p: any) => !isPedestrianOrNonSigning(p));
+
+  const allSigned =
+    presentParticipants.length >= 2 &&        // Au moins 2 parties impliquées
+    signingParticipants.length >= 1 &&         // Au moins 1 conducteur doit signer
+    signingParticipants.every((p: any) => !!p?.signature); // Tous les conducteurs ont signé
 
   const newStatus = allSigned ? 'completed' : 'signing';
 
@@ -204,3 +221,4 @@ export async function savePdfUrl(id: string, url: string): Promise<void> {
 export function getQRUrl(sessionId: string, baseUrl: string): string {
   return `${baseUrl}?session=${sessionId}`;
 }
+
