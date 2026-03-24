@@ -29,7 +29,7 @@ COPY . .
 RUN mkdir -p server/src/assets
 RUN rm -f vite.config.ts
 
-# cache-bust: 2026-03-22-session12-osm-canvas
+# cache-bust: 2026-03-24-session15-full-rebuild
 RUN npm run build
 
 EXPOSE 3000
