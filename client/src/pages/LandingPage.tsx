@@ -396,8 +396,29 @@ export function LandingPage({ onStart, onPricing }: Props) {
         <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8 }}>
           {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
         </div>
+        {/* Legal links */}
+        <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap' as const, gap: 12 }}>
+          {[
+            { label: 'Politique de confidentialité', href: '/?privacy=true' },
+            { label: 'CGU', href: '#cgu', action: 'cgu' },
+            { label: 'Cookies', href: '#cookies' },
+            { label: 'Mentions légales', href: '/?privacy=true' },
+            { label: 'RGPD · nLPD', href: '/?privacy=true' },
+            { label: 'privacy@boom.contact', href: 'mailto:privacy@boom.contact' },
+          ].map(({ label, href, action }) => (
+            <a key={label} href={href}
+              onClick={action === 'cgu' ? (e: any) => { e.preventDefault(); } : undefined}
+              style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', textDecoration: 'none' }}
+              onMouseOver={(e: any) => e.target.style.color = 'rgba(255,255,255,0.5)'}
+              onMouseOut={(e: any) => e.target.style.color = 'rgba(255,255,255,0.2)'}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
+
 
