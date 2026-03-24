@@ -317,11 +317,18 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     onError: (err) => console.error('updateParticipant failed:', err.message),
   });
 
+  // Vrai si l'autre partie n'a pas besoin de signer
+  // (piéton, trottinette, vélo, ou partie B indisponible)
+  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike'];
+  const otherPartyNoSignRequired =
+    NON_SIGNING_TYPES.includes(vehicleType || '') ||
+    !!partyBStatus;
+
   const signMutation = trpc.session.sign.useMutation({
     onSuccess: (data) => {
-      if (data.bothSigned) {
+      if (data.bothSigned || otherPartyNoSignRequired) {
         setOtherSigned(true);
-        setTimeout(() => setStep('done'), 1500);
+        setTimeout(() => setStep('done'), 1200);
       }
     },
     onError: (err) => console.error('session.sign failed:', err.message),
@@ -686,6 +693,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               role="A"
               onSign={handleSign}
               otherSigned={otherSigned}
+              isOtherPedestrian={otherPartyNoSignRequired}
               disabled={!sketchImage}
             />
           </>
@@ -767,6 +775,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     </div>
   );
 }
+
 
 
 
