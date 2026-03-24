@@ -170,3 +170,30 @@ body {
   background: rgba(255,53,0,0.04);
 }
 .input-boom::placeholder { opacity: 0.35; }
+
+
+/* ── Light mode (pour usage en plein soleil / préférence système) ─── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --boom:   #E52D00;
+    --boom2:  #D4930A;
+    --boom3:  #E55A25;
+    --black:  #F5F4F2;
+    --dark:   #EDECEA;
+    --card:   #FFFFFF;
+    --card2:  #F8F7F5;
+    --border: rgba(15,12,8,0.12);
+    --text:   #0F0C08;
+    --muted:  rgba(15,12,8,0.45);
+    --green:  #16a34a;
+    --amber:  #d97706;
+    --red:    #dc2626;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+  }
+
+  ::-webkit-scrollbar-thumb { background: rgba(229,45,0,0.25); }
+}
