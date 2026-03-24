@@ -97,7 +97,21 @@ export async function generateConstatPDF(
   forRole: 'A' | 'B' = 'A'
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
-  doc.setTitle('Constat Amiable — boom.contact');
+
+  // ── Détection mode unilatéral ────────────────────────────
+  const acc = session.accident;
+  const partyBStatus = (acc as any)?.partyBStatus as {
+    reason: string; reasonLabel: string;
+    plateNumber?: string; platePhoto?: string;
+    vehicleDescription?: string; policeReportRef?: string;
+    notes?: string; recordedAt: string;
+  } | undefined;
+  const isUnilateral = !!partyBStatus;
+
+  const docTitle = isUnilateral
+    ? 'Declaration Unilaterale de Sinistre — boom.contact'
+    : 'Constat Amiable — boom.contact';
+  doc.setTitle(docTitle);
   doc.setAuthor('boom.contact by PEP\'s Swiss SA');
   doc.setSubject(`Constat #${session.id}`);
   doc.setCreator('boom.contact');
@@ -112,7 +126,6 @@ export async function generateConstatPDF(
 
   const A = session.participantA;
   const B = session.participantB;
-  const acc = session.accident;
 
   // ── Détermination des langues ───────────────────────────────
   const { langA, langB, langAccident } = determineLangs(A, B, acc);
@@ -125,13 +138,18 @@ export async function generateConstatPDF(
   let y = height - margin;
 
   // ── HEADER ─────────────────────────────────────────────────
-  // Red header band
-  page.drawRectangle({ x: 0, y: height - 52, width, height: 52, color: C.boom });
+  // Bande header — rouge standard ou orange ambre si unilatéral
+  const headerColor = isUnilateral ? rgb(0.6, 0.35, 0.0) : C.boom;
+  page.drawRectangle({ x: 0, y: height - 52, width, height: 52, color: headerColor });
 
   // Logo / title
   drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white);
-  drawText(page, L.title, margin, height - 34, normal, 9, rgb(1, 0.8, 0.75));
-  drawText(page, L.subtitle, margin, height - 44, normal, 6.5, rgb(1, 0.7, 0.65));
+  const pdfTitle = isUnilateral ? 'Declaration Unilaterale de Sinistre' : L.title;
+  const pdfSubtitle = isUnilateral
+    ? 'Document valable aupres des assurances — Convention Europeenne 46 pays'
+    : L.subtitle;
+  drawText(page, pdfTitle, margin, height - 34, normal, 9, rgb(1, 0.9, 0.7));
+  drawText(page, pdfSubtitle, margin, height - 44, normal, 6.5, rgb(1, 0.85, 0.6));
 
   // Session info top right
   const sessionText = `Session: ${session.id}`;
@@ -142,6 +160,62 @@ export async function generateConstatPDF(
   drawText(page, dateStr, width - margin - dateW, height - 30, normal, 7, rgb(1, 0.85, 0.8));
 
   y = height - 64;
+
+  // ── BANNIÈRE DÉCLARATION UNILATÉRALE ───────────────────────
+  if (isUnilateral && partyBStatus) {
+    // Fond ambre
+    page.drawRectangle({
+      x: margin, y: y - 62, width: width - margin * 2, height: 62,
+      color: rgb(0.18, 0.12, 0.0),
+      borderColor: rgb(0.6, 0.4, 0.0),
+      borderWidth: 1,
+    });
+
+    drawText(page, 'DECLARATION UNILATERALE DE SINISTRE', margin + 8, y - 12, bold, 9, rgb(0.95, 0.72, 0.1));
+    drawText(page,
+      `Raison : ${partyBStatus.reasonLabel}  |  Enregistre le : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
+      margin + 8, y - 24, normal, 7.5, rgb(0.9, 0.75, 0.4)
+    );
+
+    if (partyBStatus.plateNumber) {
+      drawText(page, `Plaque partie B : ${partyBStatus.plateNumber}`, margin + 8, y - 36, bold, 8, rgb(0.95, 0.72, 0.1));
+    }
+    if (partyBStatus.vehicleDescription) {
+      drawText(page, `Vehicule B : ${partyBStatus.vehicleDescription}`, margin + 8, y - 46, normal, 7, rgb(0.85, 0.7, 0.4));
+    }
+    if (partyBStatus.policeReportRef) {
+      drawText(page, `Ref. police : ${partyBStatus.policeReportRef}`, margin + 240, y - 36, normal, 7, rgb(0.85, 0.7, 0.4));
+    }
+    if (partyBStatus.notes) {
+      const notesShort = partyBStatus.notes.length > 80 ? partyBStatus.notes.slice(0, 80) + '...' : partyBStatus.notes;
+      drawText(page, `Observations : ${notesShort}`, margin + 8, y - 56, normal, 6.5, rgb(0.75, 0.62, 0.35));
+    }
+
+    // Embed photo plaque si disponible
+    if (partyBStatus.platePhoto) {
+      try {
+        const plateBytes = Buffer.from(partyBStatus.platePhoto, 'base64');
+        let plateImg;
+        try { plateImg = await doc.embedJpg(plateBytes); } catch { plateImg = await doc.embedPng(plateBytes); }
+        const plateH = 52;
+        const plateW = Math.min(90, plateImg.width * plateH / plateImg.height);
+        page.drawImage(plateImg, {
+          x: width - margin - plateW - 4,
+          y: y - 60,
+          width: plateW,
+          height: plateH,
+        });
+        page.drawRectangle({
+          x: width - margin - plateW - 4, y: y - 60,
+          width: plateW, height: plateH,
+          borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 0.5,
+          color: undefined as any,
+        });
+      } catch { /* photo embed failed */ }
+    }
+
+    y -= 72;
+  }
 
   // ── ACCIDENT SECTION ───────────────────────────────────────
   drawRect(page, margin, y - 38, width - margin * 2, 42, C.section, C.border);
@@ -353,14 +427,38 @@ export async function generateConstatPDF(
   y -= 18;
 
   const sigH = 60;
+
+  // Colonne A — toujours présente
   drawRect(page, margin, y - sigH, colW, sigH + 20, C.white, C.border);
   drawText(page, L.sigA, margin + 4, y - 8, normal, 6.5, C.mid);
 
-  drawRect(page, margin + colW + 8, y - sigH, colW, sigH + 20, C.white, C.border);
-  drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid);
+  if (isUnilateral && partyBStatus) {
+    // Colonne B — remplacée par encadré "Non signé — raison"
+    page.drawRectangle({
+      x: margin + colW + 8, y: y - sigH, width: colW, height: sigH + 20,
+      color: rgb(0.18, 0.12, 0.0),
+      borderColor: rgb(0.6, 0.4, 0.0),
+      borderWidth: 1,
+    });
+    drawText(page, 'Partie B — Non signataire', margin + colW + 12, y - 8, normal, 6.5, rgb(0.75, 0.55, 0.1));
+    drawText(page, partyBStatus.reasonLabel, margin + colW + 12, y - 22, bold, 8, rgb(0.95, 0.72, 0.1));
+    if (partyBStatus.plateNumber) {
+      drawText(page, `Plaque : ${partyBStatus.plateNumber}`, margin + colW + 12, y - 34, normal, 7.5, rgb(0.85, 0.7, 0.4));
+    }
+    drawText(page,
+      `Enregistre : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
+      margin + colW + 12, y - sigH + 4, normal, 6, rgb(0.65, 0.5, 0.2)
+    );
+  } else {
+    // Colonne B normale
+    drawRect(page, margin + colW + 8, y - sigH, colW, sigH + 20, C.white, C.border);
+    drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid);
+  }
 
-  // Embed signatures if available
-  for (const [participant, xOff] of [[A, margin], [B, margin + colW + 8]] as const) {
+  // Embed signatures si disponibles
+  const sigPairs: [any, number][] = [[A, margin]];
+  if (!isUnilateral) sigPairs.push([B, margin + colW + 8]);
+  for (const [participant, xOff] of sigPairs) {
     if (participant?.signature) {
       try {
         const sigBytes = Buffer.from(participant.signature, 'base64');
@@ -380,7 +478,9 @@ export async function generateConstatPDF(
   const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '-';
   const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '-';
   drawText(page, `${L.signedAt} : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
-  drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
+  if (!isUnilateral) {
+    drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
+  }
 
   y -= sigH + 28;
 
@@ -539,11 +639,16 @@ export async function generateConstatPDF(
 
   // ── FOOTER ─────────────────────────────────────────────────
   drawLine(page, margin, 48, width - margin, 48, C.border);
-  drawText(page, 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app', margin, 38, normal, 7, C.mid);
+  const footerLine1 = isUnilateral
+    ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
+    : 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app';
+  drawText(page, footerLine1, margin, 38, normal, 7, C.mid);
   drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - Groupe NEUKOMM`,
     margin, 28, mono, 6.5, C.mid);
-  drawText(page, 'boom.contact by PEP\'s Swiss SA · Document numérique certifié · Valable mondialement',
-    margin, 18, normal, 6.5, C.mid);
+  const footerLine3 = isUnilateral
+    ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`
+    : `boom.contact by PEP's Swiss SA · Document numerique certifie · Valable mondialement`;
+  drawText(page, footerLine3, margin, 18, normal, 6.5, C.mid);
 
   // Red corner accent
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
@@ -551,5 +656,6 @@ export async function generateConstatPDF(
 
   return doc.save();
 }
+
 
 
