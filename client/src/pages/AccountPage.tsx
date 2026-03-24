@@ -8,6 +8,7 @@ interface AccountPageProps {
   token: string;
   onBack: () => void;
   onLogout: () => void;
+  initialTab?: 'garage' | 'history' | 'profile';
 }
 
 type PageTab   = 'garage' | 'history' | 'profile';
@@ -26,8 +27,8 @@ interface VehicleForm {
   insuranceData?: Record<string, any>;
 }
 
-export function AccountPage({ user, token, onBack, onLogout }: AccountPageProps) {
-  const [tab, setTab]                 = useState<PageTab>('garage');
+export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garage' }: AccountPageProps) {
+  const [tab, setTab]                 = useState<PageTab>(initialTab);
   const [vehicleView, setVehicleView] = useState<VehicleView>('list');
   const [form, setForm]               = useState<VehicleForm>({});
   const [scanning, setScanning]       = useState(false);
@@ -325,3 +326,4 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
 const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block' };
 const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
 const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
+
