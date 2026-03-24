@@ -4,10 +4,11 @@ interface Props {
   role: string;
   onSign: (signatureBase64: string) => void;
   otherSigned: boolean;
-  disabled?: boolean; // Bloque la signature si croquis manquant
+  isOtherPedestrian?: boolean;
+  disabled?: boolean;
 }
 
-export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Props) {
+export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = false, disabled = false }: Props) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const [signing, setSigning]   = useState(false);
@@ -130,8 +131,12 @@ export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Pr
         </h3>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 10 }}>
           {[
-            { label: `Conducteur ${role}`,                   done: signed },
-            { label: `Conducteur ${role === 'A' ? 'B' : 'A'}`, done: otherSigned },
+            { label: `Conducteur ${role}`, done: signed, isPrimary: true },
+            {
+              label: isOtherPedestrian ? 'Autre partie' : `Conducteur ${role === 'A' ? 'B' : 'A'}`,
+              done: isOtherPedestrian ? true : otherSigned,
+              noSig: isOtherPedestrian,
+            },
           ].map((p, i) => (
             <div key={i} style={{
               padding: '4px 12px', borderRadius: 20, fontSize: 11, fontFamily: 'monospace',
@@ -139,7 +144,7 @@ export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Pr
               border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
               color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)',
             }}>
-              {p.done ? '✅' : '⏳'} {p.label}
+              {p.done ? (p.noSig ? '🚶' : '✅') : '⏳'} {p.label}{p.noSig ? ' — pas de signature requise' : ''}
             </div>
           ))}
         </div>
@@ -196,7 +201,7 @@ export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Pr
         </div>
       )}
 
-      {signed && !otherSigned && (
+      {signed && !otherSigned && !isOtherPedestrian && (
         <div style={{ padding: 14, borderRadius: 10, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', textAlign: 'center' }}>
           <div style={{ fontSize: 22, marginBottom: 6 }}>⏳</div>
           <div style={{ fontSize: 13, fontWeight: 600, color: '#f59e0b' }}>En attente de la signature de l'autre conducteur…</div>
@@ -204,14 +209,15 @@ export function SignaturePad({ role, onSign, otherSigned, disabled = false }: Pr
         </div>
       )}
 
-      {signed && otherSigned && (
+      {signed && (otherSigned || isOtherPedestrian) && (
         <div style={{ padding: 14, borderRadius: 10, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)', textAlign: 'center' }}>
           <div style={{ fontSize: 36, marginBottom: 6 }}>🎉</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#22c55e' }}>Constat signé par les deux parties !</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#22c55e' }}>Constat signé !</div>
           <div style={{ fontSize: 12, opacity: 0.5, marginTop: 4 }}>Génération du PDF en cours…</div>
         </div>
       )}
     </div>
   );
 }
+
 
