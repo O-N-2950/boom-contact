@@ -165,12 +165,12 @@ export async function signSession(
 
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
-  // allSigned = every participant that exists (has a driver name) has now signed
-  // Piétons, cyclistes et trottinettes n'ont pas besoin de signer
-  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike'];
+  // ── Types ne nécessitant pas de signature ─────────────────
+  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
   const isPedestrianOrNonSigning = (p: any) =>
     NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
     NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
+    NON_SIGNING_TYPES.includes(p?.vehicle?.vehicleType) ||
     p?.isPedestrian === true;
 
   const participants = [
@@ -181,19 +181,36 @@ export async function signSession(
     (session as any).participantE && (role === 'E' ? updated : (session as any).participantE),
   ].filter(Boolean);
 
-  // Un participant "présent" = a des données OU est un piéton/vélo (pas de plaque mais bodyStyle connu)
   const presentParticipants = participants.filter((p: any) =>
     p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate ||
     p?.name || p?.vehicle?.brand || isPedestrianOrNonSigning(p)
   );
 
-  // Les non-conducteurs (piétons, vélos…) ne signent pas — seuls les conducteurs signent
   const signingParticipants = presentParticipants.filter((p: any) => !isPedestrianOrNonSigning(p));
 
+  // Cas accident solo : vehicleCount=1 dans l'accident → 1 seul conducteur suffit
+  const accidentData = (session as any).accident ?? {};
+  const isSolo = accidentData.vehicleCount === 1;
+
+  // Cas partyBStatus : partie adverse déclarée indisponible (fuite, blessé, refus…)
+  const hasPartyBStatus = !!accidentData.partyBStatus;
+
   const allSigned =
-    presentParticipants.length >= 2 &&        // Au moins 2 parties impliquées
-    signingParticipants.length >= 1 &&         // Au moins 1 conducteur doit signer
-    signingParticipants.every((p: any) => !!p?.signature); // Tous les conducteurs ont signé
+    (
+      // Cas normal : ≥2 parties présentes, tous les conducteurs ont signé
+      (presentParticipants.length >= 2 &&
+       signingParticipants.length >= 1 &&
+       signingParticipants.every((p: any) => !!p?.signature))
+    ) ||
+    // Cas accident solo : 1 seul conducteur, a signé
+    (isSolo && signingParticipants.length >= 1 && signingParticipants.every((p: any) => !!p?.signature)) ||
+    // Cas partie B indisponible (fuite, blessé, refus, décédé…)
+    (hasPartyBStatus && signingParticipants.some((p: any) => !!p?.signature)) ||
+    // Cas piéton/vélo seul côté B : 1 conducteur + 1 non-signataire, conducteur a signé
+    (presentParticipants.length >= 2 &&
+     signingParticipants.length === 1 &&
+     presentParticipants.some(isPedestrianOrNonSigning) &&
+     signingParticipants.every((p: any) => !!p?.signature));
 
   const newStatus = allSigned ? 'completed' : 'signing';
 
@@ -221,4 +238,5 @@ export async function savePdfUrl(id: string, url: string): Promise<void> {
 export function getQRUrl(sessionId: string, baseUrl: string): string {
   return `${baseUrl}?session=${sessionId}`;
 }
+
 
