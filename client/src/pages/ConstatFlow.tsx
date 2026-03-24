@@ -43,6 +43,7 @@ import { UnknownCountryLookup } from '../components/EmergencyNumbers';
 import { PostConstatCTA } from '../components/constat/PostConstatCTA';
 import { PedestrianForm } from '../components/constat/PedestrianForm';
 import { PartyUnavailableModal } from '../components/constat/PartyUnavailableModal';
+import { CoherenceScore } from '../components/constat/CoherenceScore';
 import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
@@ -105,6 +106,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   // ── Partie B indisponible ──────────────────────────────────
   const [partyBStatus, setPartyBStatus] = useState<PartyBStatus | null>(null);
   const [showUnavailableModal, setShowUnavailableModal] = useState(false);
+  // ── Données B pour score cohérence ────────────────────────
+  const [sessionBParticipant, setSessionBParticipant] = useState<any>(null);
 
   // WinWin: apply lang param from URL on mount
   useEffect(() => {
@@ -471,6 +474,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                     setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
                     (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
                   }
+                  if (bParticipant) setSessionBParticipant(bParticipant);
                 } catch (e) { /* ignore */ }
                 setStep('sketch');
               }}
@@ -702,6 +706,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 </div>
               </div>
             )}
+            {/* Score de cohérence — visible seulement si B a des données */}
+            {sessionBParticipant && !otherPartyNoSignRequired && (
+              <CoherenceScore
+                sessionId={sessionId || ''}
+                participantA={participantData}
+                participantB={sessionBParticipant}
+                accidentData={accidentData}
+              />
+            )}
             <SignaturePad
               role="A"
               onSign={handleSign}
@@ -788,6 +801,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     </div>
   );
 }
+
 
 
 
