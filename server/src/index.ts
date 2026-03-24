@@ -128,6 +128,26 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'boom.contact', env: process.env.NODE_ENV, ts: new Date().toISOString() });
 });
 
+// ── Blocage bots / scanners (WordPress, PHPMyAdmin, etc.) ─────
+// Ces routes n'existent pas sur boom.contact — on répond 404 immédiatement
+// pour éviter le bruit dans les logs et réduire la charge
+const BOT_PATTERNS = [
+  '/wp-admin', '/wp-login', '/wp-content', '/wordpress',
+  '/phpMyAdmin', '/phpmyadmin', '/pma', '/admin/pma',
+  '/.env', '/config.php', '/setup.php', '/install.php',
+  '/xmlrpc.php', '/wp-cron.php', '/wp-trackback.php',
+  '/shell.php', '/c99.php', '/r57.php', '/eval.php',
+  '/.git', '/.svn', '/.DS_Store',
+];
+app.use((req, _res, next) => {
+  const path = req.path.toLowerCase();
+  if (BOT_PATTERNS.some(p => path.startsWith(p) || path.includes(p))) {
+    _res.status(404).end();
+    return;
+  }
+  next();
+});
+
 // ── Stripe Webhook — raw body ─────────────────────────────────
 app.post('/webhook/stripe',
   express.raw({ type: 'application/json' }),
@@ -242,4 +262,5 @@ start().catch((err) => {
   });
   process.exit(1);
 });
+
 
