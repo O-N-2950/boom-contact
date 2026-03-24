@@ -4,7 +4,7 @@ interface Props {
   role: string;
   onSign: (signatureBase64: string) => void;
   otherSigned: boolean;
-  isOtherPedestrian?: boolean;
+  isOtherPedestrian?: boolean;  // true pour tous les cas sans signature adverse
   disabled?: boolean;
 }
 
@@ -144,7 +144,7 @@ export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = fa
               border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
               color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)',
             }}>
-              {p.done ? (p.noSig ? '🚶' : '✅') : '⏳'} {p.label}{p.noSig ? ' — pas de signature requise' : ''}
+              {p.done ? (p.noSig ? '✓' : '✅') : '⏳'} {p.label}{p.noSig ? ' — sans signature' : ''}
             </div>
           ))}
         </div>
@@ -219,5 +219,6 @@ export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = fa
     </div>
   );
 }
+
 
 
