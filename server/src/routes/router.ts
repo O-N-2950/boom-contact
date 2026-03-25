@@ -788,7 +788,58 @@ export const appRouter = router({
         const { eq } = await import('drizzle-orm');
         const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
         if (!user) return null;
-        return { id: user.id, email: user.email, role: user.role, credits: user.credits };
+        return { id: user.id, email: user.email, role: user.role, credits: user.credits,
+                 firstName: (user as any).firstName || '', lastName: (user as any).lastName || '',
+                 phone: (user as any).phone || '', company: (user as any).company || '',
+                 address: (user as any).address || '' };
+      }),
+
+    // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
+    updateProfile: publicProcedure
+      .input(z.object({
+        firstName: z.string().optional(),
+        lastName:  z.string().optional(),
+        phone:     z.string().optional(),
+        company:   z.string().optional(),
+        address:   z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.authUser) throw new Error('Connexion requise.');
+        const { db } = await import('../db/index.js');
+        const { users } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const updates: Record<string, any> = {};
+        if (input.firstName !== undefined) updates.firstName = input.firstName;
+        if (input.lastName  !== undefined) updates.lastName  = input.lastName;
+        if (input.phone     !== undefined) updates.phone     = input.phone;
+        if (input.company   !== undefined) updates.company   = input.company;
+        if (input.address   !== undefined) updates.address   = input.address;
+        await db.update(users).set(updates).where(eq(users.id, ctx.authUser.sub));
+        return { ok: true };
+      }),
+
+    // POST auth.updateEmail — changer son adresse email
+    updateEmail: publicProcedure
+      .input(z.object({
+        newEmail:    z.string().email(),
+        currentPassword: z.string().min(1),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (!ctx.authUser) throw new Error('Connexion requise.');
+        const { db } = await import('../db/index.js');
+        const { users } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const { verifyPassword } = await import('../services/auth.service.js');
+        const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
+        if (!user) throw new Error('Utilisateur introuvable.');
+        // Vérifier le mot de passe actuel
+        const valid = user.passwordHash && await verifyPassword(input.currentPassword, user.passwordHash);
+        if (!valid) throw new Error('Mot de passe incorrect.');
+        // Vérifier que le nouvel email n'est pas déjà utilisé
+        const existing = await db.query.users.findFirst({ where: eq(users.email, input.newEmail) });
+        if (existing) throw new Error('Cet email est déjà utilisé.');
+        await db.update(users).set({ email: input.newEmail }).where(eq(users.id, ctx.authUser.sub));
+        return { ok: true };
       }),
 
     // POST auth.grantCredits — admin only
@@ -1098,6 +1149,7 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
