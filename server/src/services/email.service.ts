@@ -193,8 +193,6 @@ const TEMPLATES: Record<string, {
     signupBtn: '🚗 Registar o meu veículo',
     footer: 'boom.contact · PEP\'s Swiss SA · Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Suíça',
   },
-};
-
   nl: {
     subject: '✅ Uw ondertekend aanrijdingsformulier — PDF bijgevoegd · boom.contact',
     heading: 'Aanrijdingsformulier voltooid en ondertekend',
