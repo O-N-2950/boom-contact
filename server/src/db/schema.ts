@@ -32,6 +32,11 @@ export const users = pgTable('users', {
   country:          varchar('country', { length: 10 }),
   language:         varchar('language', { length: 10 }),
   lastSeenAt:       timestamp('last_seen_at'),
+  firstName:        text('first_name'),
+  lastName:         text('last_name'),
+  phone:            varchar('phone', { length: 30 }),
+  company:          text('company'),
+  address:          text('address'),
 }, (t) => ({
   emailIdx: index('users_email_idx').on(t.email),
 }));
