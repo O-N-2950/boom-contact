@@ -4,7 +4,6 @@
  * Objectif : devenir l'app constat n°1 par recommandation entre conducteurs
  */
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   onClose?: () => void;
