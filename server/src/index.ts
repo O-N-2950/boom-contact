@@ -342,6 +342,22 @@ setInterval(async () => {
 }, 60 * 60 * 1000); // toutes les heures
 
 
+
+// ── Cron marketing — génération automatique de posts sociaux ──
+// Tous les jours à 7h00 : génère 4 posts (1 par pilier A/B/C/D)
+setInterval(async () => {
+  const now = new Date();
+  if (now.getHours() === 7 && now.getMinutes() < 15) {
+    try {
+      const { generateDailyPosts } = await import('./services/social-generator.service.js');
+      const count = await generateDailyPosts(4);
+      logger.info('[Cron] Posts sociaux générés', { count });
+    } catch (e) {
+      logger.error('[Cron] Erreur génération posts', { error: String(e) });
+    }
+  }
+}, 15 * 60 * 1000); // toutes les 15 min (check heure)
+
 async function start() {
   logger.info('Starting boom.contact server...');
   await runMigrations();
@@ -364,6 +380,7 @@ start().catch((err) => {
   });
   process.exit(1);
 });
+
 
 
 
