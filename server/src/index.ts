@@ -235,39 +235,39 @@ app.get('/sitemap.xml', (_req, res) => {
 
 
 
-// ── Social media — endpoint auto-publish (sécurisé) ─────────
+/* SOCIAL DISABLED — // ── Social media — endpoint auto-publish (sécurisé) ───────── */
 // Déclenché par cron-job.org toutes les 24h à 9h00 Europe/Zurich
-app.post('/social/auto-publish', express.json(), async (req, res) => {
-  const secret = req.body?.secret || req.query.secret;
-  if (secret !== process.env.SOCIAL_SECRET) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  try {
-    const { publishToAllPlatforms } = await import('./services/social.service.js');
-    const results = await publishToAllPlatforms();
-    const ok = Object.values(results).filter((r: any) => r.success).length;
-    logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
-    res.json({ success: true, results, summary: `${ok}/${Object.keys(results).length} plateformes` });
-  } catch (err: any) {
-    logger.error('[SOCIAL] Auto-publish erreur', { error: err.message });
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
+// app.post('/social/auto-publish', express.json(), async (req, res) => {
+//   const secret = req.body?.secret || req.query.secret;
+//   if (secret !== process.env.SOCIAL_SECRET) {
+//     return res.status(401).json({ error: 'Unauthorized' });
+//   }
+//   try {
+//     const { publishToAllPlatforms } = await import('./services/social.service.js');
+//     const results = await publishToAllPlatforms();
+//     const ok = Object.values(results).filter((r: any) => r.success).length;
+//     logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
+//     res.json({ success: true, results, summary: `${ok}/${Object.keys(results).length} plateformes` });
+//   } catch (err: any) {
+//     logger.error('[SOCIAL] Auto-publish erreur', { error: err.message });
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// });
 
-// Endpoint de santé social (sans auth)
-app.get('/social/health', async (_req, res) => {
-  try {
-    const { hasPostedToday } = await import('./services/social.service.js');
-    const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
-    const status: Record<string, boolean> = {};
-    for (const p of platforms) {
-      status[p] = await hasPostedToday(p);
-    }
-    res.json({ ok: true, today: status, ts: new Date().toISOString() });
-  } catch (err: any) {
-    res.json({ ok: false, error: err.message });
-  }
-});
+/* SOCIAL DISABLED — // Endpoint de santé social (sans auth) */
+// app.get('/social/health', async (_req, res) => {
+//   try {
+//     const { hasPostedToday } = await import('./services/social.service.js');
+//     const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
+//     const status: Record<string, boolean> = {};
+//     for (const p of platforms) {
+//       status[p] = await hasPostedToday(p);
+//     }
+//     res.json({ ok: true, today: status, ts: new Date().toISOString() });
+//   } catch (err: any) {
+//     res.json({ ok: false, error: err.message });
+//   }
+// });
 
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
@@ -343,43 +343,43 @@ setInterval(async () => {
 
 
 
-// ── Cron marketing — génération automatique de posts sociaux ──
+/* SOCIAL DISABLED — // ── Cron marketing — génération automatique de posts sociaux ── */
 // Tous les jours à 7h00 : génère 4 posts (1 par pilier A/B/C/D)
-setInterval(async () => {
-  const now = new Date();
-  if (now.getHours() === 7 && now.getMinutes() < 15) {
-    try {
-      const { generateDailyPosts } = await import('./services/social-generator.service.js');
-      const count = await generateDailyPosts(4);
-      logger.info('[Cron] Posts sociaux générés', { count });
-    } catch (e) {
-      logger.error('[Cron] Erreur génération posts', { error: String(e) });
-    }
-  }
-}, 15 * 60 * 1000); // toutes les 15 min (check heure)
+// setInterval(async () => {
+//   const now = new Date();
+//   if (now.getHours() === 7 && now.getMinutes() < 15) {
+//     try {
+//       const { generateDailyPosts } = await import('./services/social-generator.service.js');
+//       const count = await generateDailyPosts(4);
+//       logger.info('[Cron] Posts sociaux générés', { count });
+//     } catch (e) {
+//       logger.error('[Cron] Erreur génération posts', { error: String(e) });
+//     }
+//   }
+// }, 15 * 60 * 1000); // toutes les 15 min (check heure)
 
-async function start() {
-  logger.info('Starting boom.contact server...');
-  await runMigrations();
-  httpServer.listen(PORT, '0.0.0.0', () => {
-    logger.info(`💥 boom.contact running`, {
-      port: PORT,
-      env: process.env.NODE_ENV || 'development',
-      db: process.env.DATABASE_URL ? '✅' : '❌ MISSING',
-      claude: process.env.ANTHROPIC_API_KEY ? '✅' : '❌ MISSING',
-      stripe: process.env.STRIPE_SECRET_KEY ? '✅' : '❌ MISSING',
-      resend: process.env.RESEND_API_KEY ? '✅' : '❌ MISSING',
-    });
-  });
-}
+// async function start() {
+//   logger.info('Starting boom.contact server...');
+//   await runMigrations();
+//   httpServer.listen(PORT, '0.0.0.0', () => {
+//     logger.info(`💥 boom.contact running`, {
+//       port: PORT,
+//       env: process.env.NODE_ENV || 'development',
+//       db: process.env.DATABASE_URL ? '✅' : '❌ MISSING',
+//       claude: process.env.ANTHROPIC_API_KEY ? '✅' : '❌ MISSING',
+//       stripe: process.env.STRIPE_SECRET_KEY ? '✅' : '❌ MISSING',
+//       resend: process.env.RESEND_API_KEY ? '✅' : '❌ MISSING',
+//     });
+//   });
+// }
 
-start().catch((err) => {
-  logger.error('FATAL startup error', {
-    error: err instanceof Error ? err.message : String(err),
-    stack: err instanceof Error ? err.stack?.split('\n').slice(0, 6).join(' | ') : '',
-  });
-  process.exit(1);
-});
+// start().catch((err) => {
+//   logger.error('FATAL startup error', {
+//     error: err instanceof Error ? err.message : String(err),
+//     stack: err instanceof Error ? err.stack?.split('\n').slice(0, 6).join(' | ') : '',
+//   });
+//   process.exit(1);
+// });
 
 
 
