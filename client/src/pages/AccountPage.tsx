@@ -34,11 +34,22 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const [scanning, setScanning]       = useState(false);
   const [saving, setSaving]           = useState(false);
   const [feedback, setFeedback]       = useState('');
+  // ── Profil édition ────────────────────────────────────────
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileForm, setProfileForm] = useState<{
+    firstName: string; lastName: string;
+    phone: string; company: string; address: string;
+  }>({ firstName: '', lastName: '', phone: '', company: '', address: '' });
+  const [editingEmail, setEditingEmail] = useState(false);
+  const [newEmail, setNewEmail]     = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
 
   const vehicleListQ = trpc.vehicle.list.useQuery(undefined);
   const historyQ     = trpc.session.history.useQuery(undefined, { enabled: tab === 'history' });
-  const saveMut      = trpc.vehicle.save.useMutation();
-  const deleteMut    = trpc.vehicle.delete.useMutation();
+  const saveMut        = trpc.vehicle.save.useMutation();
+  const deleteMut      = trpc.vehicle.delete.useMutation();
+  const updateProfileMut = trpc.auth.updateProfile.useMutation();
+  const updateEmailMut   = trpc.auth.updateEmail.useMutation();
 
   const toast = (msg: string) => { setFeedback(msg); setTimeout(() => setFeedback(''), 4000); };
 
@@ -255,23 +266,133 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
         {/* PROFILE */}
         {tab === 'profile' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <InfoCard label="Email" value={user.email} />
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 20 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+            {/* Crédits */}
+            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
               <div style={{ color: '#888', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
               <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{user.credits === 999999 ? '∞' : user.credits}</div>
               <div style={{ color: '#555', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
             </div>
-            <div style={{ background: '#0d1f2a', border: '1px solid #1a3a4a', borderRadius: 14, padding: 20 }}>
-              <div style={{ color: '#60c8f0', fontWeight: 700, fontSize: 15, marginBottom: 8 }}>🎁 Offrir un constat via WhatsApp</div>
-              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.7 }}>
-                Votre enfant a eu un accident ? Un employé a besoin d'aide urgente ?<br />
-                Envoyez-lui un crédit <strong style={{ color: '#fff' }}>en 3 secondes</strong> sur son mobile.
+
+            {/* Email — changement */}
+            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: editingEmail ? 14 : 0 }}>
+                <div>
+                  <div style={{ color: '#666', fontSize: 11, fontWeight: 600, marginBottom: 3 }}>EMAIL</div>
+                  <div style={{ color: '#fff', fontSize: 14 }}>{user.email}</div>
+                </div>
+                <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
+                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#888', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                  {editingEmail ? 'Annuler' : 'Modifier →'}
+                </button>
               </div>
-              <button style={{ ...primaryBtn, marginTop: 14, background: '#25D366', fontSize: 14 }}>
-                📲 Envoyer un crédit par WhatsApp
+              {editingEmail && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <Field label="Nouvel email" placeholder="contact@winwin.swiss" value={newEmail} onChange={setNewEmail} />
+                  <Field label="Mot de passe actuel (confirmation)" placeholder="••••••••" value={emailPassword} onChange={setEmailPassword} />
+                  <button
+                    disabled={!newEmail || !emailPassword}
+                    onClick={async () => {
+                      setSaving(true);
+                      try {
+                        await updateEmailMut.mutateAsync({ newEmail, currentPassword: emailPassword });
+                        setFeedback('✅ Email modifié — reconnecte-toi avec le nouvel email');
+                        setEditingEmail(false);
+                        setTimeout(() => { onLogout(); }, 2500);
+                      } catch(e: any) {
+                        setFeedback('❌ ' + (e.message || 'Erreur'));
+                      } finally { setSaving(false); }
+                    }}
+                    style={{ ...primaryBtn, opacity: (!newEmail || !emailPassword) ? 0.4 : 1 }}>
+                    {saving ? 'Mise à jour...' : '✅ Confirmer le changement d'email'}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Profil — infos personnelles */}
+            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>👤 Informations personnelles</div>
+                {!editingProfile && (
+                  <button onClick={() => {
+                    setProfileForm({
+                      firstName: (user as any).firstName || '',
+                      lastName:  (user as any).lastName  || '',
+                      phone:     (user as any).phone     || '',
+                      company:   (user as any).company   || '',
+                      address:   (user as any).address   || '',
+                    });
+                    setEditingProfile(true);
+                  }}
+                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#888', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                    Modifier →
+                  </button>
+                )}
+              </div>
+              {!editingProfile ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {[
+                    ['Prénom', (user as any).firstName],
+                    ['Nom', (user as any).lastName],
+                    ['Téléphone', (user as any).phone],
+                    ['Société', (user as any).company],
+                    ['Adresse', (user as any).address],
+                  ].map(([label, val]) => val ? (
+                    <div key={label as string}>
+                      <div style={{ color: '#555', fontSize: 11 }}>{label as string}</div>
+                      <div style={{ color: '#ccc', fontSize: 14 }}>{val as string}</div>
+                    </div>
+                  ) : null)}
+                  {!((user as any).firstName || (user as any).phone) && (
+                    <div style={{ color: '#555', fontSize: 13 }}>Aucune information — clique sur Modifier</div>
+                  )}
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <div style={{ flex: 1 }}><Field label="Prénom" placeholder="Olivier" value={profileForm.firstName} onChange={v => setProfileForm(p => ({...p, firstName: v}))} /></div>
+                    <div style={{ flex: 1 }}><Field label="Nom" placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
+                  </div>
+                  <Field label="Téléphone" placeholder="+41 79 123 45 67" value={profileForm.phone} onChange={v => setProfileForm(p => ({...p, phone: v}))} />
+                  <Field label="Société" placeholder="WinWin SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
+                  <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
+                  <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+                    <button onClick={() => setEditingProfile(false)}
+                      style={{ flex: 1, background: 'none', border: '1px solid #2a2a2a', borderRadius: 10, color: '#888', padding: '11px', cursor: 'pointer', fontSize: 13 }}>
+                      Annuler
+                    </button>
+                    <button onClick={async () => {
+                      setSaving(true);
+                      try {
+                        await updateProfileMut.mutateAsync(profileForm);
+                        setFeedback('✅ Profil mis à jour');
+                        setEditingProfile(false);
+                      } catch(e: any) {
+                        setFeedback('❌ ' + (e.message || 'Erreur'));
+                      } finally { setSaving(false); }
+                    }}
+                    disabled={saving}
+                    style={{ ...primaryBtn, flex: 2 }}>
+                      {saving ? 'Sauvegarde...' : '💾 Sauvegarder'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* WhatsApp */}
+            <div style={{ background: '#0d1f2a', border: '1px solid #1a3a4a', borderRadius: 14, padding: 18 }}>
+              <div style={{ color: '#60c8f0', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>🎁 Offrir un constat via WhatsApp</div>
+              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6 }}>
+                Employé, proche, client en difficulté ? Envoyez un crédit en 3 secondes.
+              </div>
+              <button style={{ ...primaryBtn, marginTop: 12, background: '#25D366', fontSize: 14 }}>
+                📲 Envoyer un crédit
               </button>
             </div>
+
           </div>
         )}
       </div>
@@ -326,4 +447,5 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
 const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block' };
 const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
 const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
+
 
