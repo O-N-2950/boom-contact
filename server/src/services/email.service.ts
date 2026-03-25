@@ -348,7 +348,7 @@ const TEMPLATES: Record<string, {
     googleBtn: '⭐ Google yorumu yaz',
     shareTitle: 'Arkadaşlarınızla paylaşın',
     shareText: 'Kaza herkese olabilir. Bu bağlantıyı gönderin — dijital tutanak ücretsiz.',
-    shareBtn: '📲 boom.contact'ı paylaş',
+    shareBtn: "📲 boom.contact'ı paylaş",
     signupTitle: 'Bir sonraki sefere hazır mısınız?',
     signupText: 'Ücretsiz hesap oluşturun ve aracınızı kaydedin. Bir sonraki seferde 10 saniyede doldurulur.',
     signupBtn: '🚗 Aracımı kaydet',
