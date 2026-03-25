@@ -187,6 +187,53 @@ app.use('/trpc', createExpressMiddleware({
   },
 }));
 
+
+// ── SEO — robots.txt + sitemap.xml ───────────────────────────
+// CRITIQUE : ces routes DOIVENT être AVANT express.static
+// sinon le wildcard SPA renvoie le HTML React à la place
+app.get('/robots.txt', (_req, res) => {
+  res.type('text/plain').send(
+`User-agent: *
+Allow: /
+
+Sitemap: https://www.boom.contact/sitemap.xml`
+  );
+});
+
+app.get('/sitemap.xml', (_req, res) => {
+  const now = new Date().toISOString().split('T')[0];
+  res.type('application/xml').send(
+`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.boom.contact/</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.boom.contact/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.boom.contact/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.boom.contact/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.boom.contact/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.boom.contact/"/>
+  </url>
+  <url>
+    <loc>https://www.boom.contact/?pricing=true</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.boom.contact/?privacy=true</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>`
+  );
+});
+
+
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
@@ -282,6 +329,7 @@ start().catch((err) => {
   });
   process.exit(1);
 });
+
 
 
 
