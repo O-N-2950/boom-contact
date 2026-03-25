@@ -1,8 +1,5 @@
 import { initTRPC } from '@trpc/server';
 import type { Context } from '../middleware/context.js';
-const t = initTRPC.context<Context>().create();
-const router = t.router;
-const publicProcedure = t.procedure;
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
@@ -16,6 +13,10 @@ import {
   archivePost,
   seedInitialPosts,
 } from '../services/social-generator.service.js';
+
+const t = initTRPC.context<Context>().create();
+const router = t.router;
+const publicProcedure = t.procedure;
 
 // Middleware admin simplifié (réutilise le même pattern que admin.stats)
 function requireAdmin(ctx: any) {
