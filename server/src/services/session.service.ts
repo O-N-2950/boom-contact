@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db, schema } from '../db';
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
 
-const SESSION_TTL_HOURS = 24;
+const SESSION_TTL_HOURS = 24 * 7; // 7 jours — permet de reprendre un constat après blessure
 
 function makeId(size = 12): string {
   return randomBytes(size).toString('base64url').slice(0, size);
@@ -65,7 +65,8 @@ export async function getSession(id: string): Promise<ConstatSession | null> {
   if (!row) return null;
 
   // Auto-expire check — only expire if not signed/completed
-  if (new Date() > row.expiresAt && row.status !== 'completed' && row.status !== 'signing') {
+  // Sessions signing et completed ne s'expirent jamais automatiquement
+  if (new Date() > row.expiresAt && row.status !== 'completed' && row.status !== 'signing' && row.status !== 'active') {
     await db.update(schema.sessions)
       .set({ status: 'expired' })
       .where(eq(schema.sessions.id, id));
