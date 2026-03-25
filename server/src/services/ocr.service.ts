@@ -111,7 +111,7 @@ interface RawOCRResponse {
 // ─────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────
-const CONFIDENCE_THRESHOLD = 0.65; // Légèrement abaissé pour les documents difficiles
+const CONFIDENCE_THRESHOLD = 0.45; // Seuil bas — on préfère afficher une valeur que rien du tout
 
 function extractValue(field: FieldWithConfidence | undefined): string | undefined {
   if (!field || field.value === null) return undefined;

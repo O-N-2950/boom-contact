@@ -86,14 +86,25 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
   const Field = ({ section: sec, field, label, placeholder, type = 'text', required = false }: {
     section: 'vehicle' | 'driver' | 'insurance';
     field: string; label: string; placeholder?: string; type?: string; required?: boolean;
-  }) => (
+  }) => {
+    // Fix iOS keyboard switching: never use type="number", use inputMode instead
+    const inputType = type === 'number' ? 'text' : type;
+    const inputMode: React.InputHTMLAttributes<HTMLInputElement>['inputMode'] =
+      type === 'number' ? 'numeric' :
+      type === 'tel'    ? 'tel' :
+      type === 'email'  ? 'email' : 'text';
+    return (
     <div style={{ marginBottom: 14 }}>
       <label style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.45,
         textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 6 }}>
         {label}{required && <span style={{ color: 'var(--boom)', marginLeft: 4 }}>*</span>}
       </label>
       <input
-        type={type}
+        type={inputType}
+        inputMode={inputMode}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize={type === 'email' || type === 'number' || field === 'licensePlate' || field === 'policyNumber' || field === 'vin' ? 'none' : 'words'}
         value={(data[sec] as any)?.[field] ?? ''}
         onChange={e => update(sec, field, e.target.value)}
         placeholder={placeholder}
@@ -106,7 +117,8 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
         }}
       />
     </div>
-  );
+    );
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

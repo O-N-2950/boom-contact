@@ -8,11 +8,11 @@ import type { OCRResult } from '../../../../shared/types';
 interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   onComplete: (result: { registration: OCRResult; greenCard?: OCRResult }) => void;
+  onSkip?: () => void; // Passer sans scanner — saisie manuelle dans le formulaire
 }
 
 interface DocPhoto { id: string; base64: string; preview: string; }
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 const MAX_DOCS = 4;
 
 async function compressImage(base64: string, maxPx = 1024, quality = 0.82): Promise<string> {
@@ -56,13 +56,14 @@ function mergeResults(scans: OCRResult[]): { registration: OCRResult; greenCard?
   return { registration, greenCard };
 }
 
-export function OCRScanner({ role, onComplete }: Props) {
+export function OCRScanner({ role, onComplete, onSkip }: Props) {
   const [docs, setDocs]           = useState<DocPhoto[]>([]);
   const [scanning, setScanning]   = useState(false);
   const [error, setError]         = useState<string | null>(null);
   const [result, setResult]       = useState<{ registration: OCRResult; greenCard?: OCRResult } | null>(null);
   const [manualIns, setManualIns] = useState({ company: '', policyNumber: '' });
-  const fileRef = useRef<HTMLInputElement>(null);
+  const fileRef   = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   const batchMut = trpc.ocr.batchScan.useMutation({
     onSuccess: (data: OCRResult[]) => {
@@ -95,6 +96,7 @@ export function OCRScanner({ role, onComplete }: Props) {
     }
     setDocs(p => [...p, ...newDocs]);
     setError(null);
+    // Pas d'auto-scan — c'est l'utilisateur qui décide quand lancer l'analyse
   }, [docs.length]);
 
   const inputStyle: React.CSSProperties = {
@@ -214,15 +216,19 @@ export function OCRScanner({ role, onComplete }: Props) {
   // ── MAIN ─────────────────────────────────────────────────────
   return (
     <div style={{ padding:24 }}>
+      {/* input galerie (sans capture) */}
       <input ref={fileRef} type="file" accept="image/*" multiple
-        capture={isMobile?'environment':undefined}
+        style={{display:'none'}} onChange={handleFile} />
+      {/* input caméra uniquement (avec capture) */}
+      <input ref={cameraRef} type="file" accept="image/*"
+        capture="environment"
         style={{display:'none'}} onChange={handleFile} />
 
-      <div style={{ textAlign:'center', marginBottom:28 }}>
+      <div style={{ textAlign:'center', marginBottom:24 }}>
         <div style={{ fontSize:52, marginBottom:10 }}>📄</div>
         <h2 style={{ fontSize:20, fontWeight:700, marginBottom:8 }}>Photographiez vos documents</h2>
         <p style={{ fontSize:13, opacity:0.55, lineHeight:1.65 }}>
-          Prenez en photo <strong>tous vos documents</strong> en une seule fois.<br/>
+          Permis de circulation + carte verte en une seule analyse.<br/>
           L&apos;application identifie et extrait tout automatiquement.
         </p>
       </div>
@@ -241,24 +247,34 @@ export function OCRScanner({ role, onComplete }: Props) {
         </div>
       )}
 
-      {/* Bouton ajouter */}
+      {/* Boutons ajouter — caméra + galerie séparés */}
       {docs.length < MAX_DOCS && (
-        <button onClick={()=>fileRef.current?.click()}
-          style={{ width:'100%', padding:'18px', borderRadius:12, marginBottom:12,
-            border:`2px dashed ${docs.length===0?'rgba(255,53,0,0.5)':'rgba(255,255,255,0.15)'}`,
-            background:docs.length===0?'rgba(255,53,0,0.06)':'rgba(255,255,255,0.03)',
-            cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:12,
-            touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
-          <span style={{ fontSize:28 }}>{docs.length===0?'📸':'➕'}</span>
-          <div style={{ textAlign:'left' }}>
-            <div style={{ fontWeight:700, fontSize:15, color:'var(--text)' }}>
-              {docs.length===0?(isMobile?'Prendre en photo':'Sélectionner des documents'):'Ajouter un autre document'}
+        <div style={{ display:'flex', gap:10, marginBottom:12 }}>
+          <button onClick={()=>cameraRef.current?.click()}
+            style={{ flex:2, padding:'16px', borderRadius:12,
+              border:`2px solid ${docs.length===0?'rgba(255,53,0,0.5)':'rgba(255,255,255,0.15)'}`,
+              background:docs.length===0?'rgba(255,53,0,0.06)':'rgba(255,255,255,0.03)',
+              cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:10,
+              touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+            <span style={{ fontSize:26 }}>📸</span>
+            <div style={{ textAlign:'left' }}>
+              <div style={{ fontWeight:700, fontSize:14, color:'var(--text)' }}>Photographier</div>
+              <div style={{ fontSize:11, opacity:0.45 }}>Caméra arrière</div>
             </div>
-            <div style={{ fontSize:11, opacity:0.45, marginTop:2 }}>
-              {docs.length===0?'Permis · carte verte · attestation · insurance card':`${docs.length}/${MAX_DOCS} — ajoutez tous vos documents`}
+          </button>
+          <button onClick={()=>fileRef.current?.click()}
+            style={{ flex:1, padding:'16px', borderRadius:12,
+              border:'1.5px solid rgba(255,255,255,0.12)',
+              background:'rgba(255,255,255,0.03)',
+              cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8,
+              touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+            <span style={{ fontSize:22 }}>🖼</span>
+            <div style={{ textAlign:'left' }}>
+              <div style={{ fontWeight:600, fontSize:13, color:'var(--text)' }}>Galerie</div>
+              <div style={{ fontSize:10, opacity:0.4 }}>{docs.length}/{MAX_DOCS}</div>
             </div>
-          </div>
-        </button>
+          </button>
+        </div>
       )}
 
       {/* Guide pays */}
@@ -267,10 +283,10 @@ export function OCRScanner({ role, onComplete }: Props) {
           <div style={{ fontWeight:600, marginBottom:4, opacity:0.8 }}>Quels documents scanner ?</div>
           🇨🇭 Permis de circulation + carte verte<br/>
           🇫🇷 Carte grise + carte verte / attestation<br/>
-          🇩🇪 Zulassung + Grüne Karte / Versicherungsbestätigung<br/>
+          🇩🇪 Zulassung + Grüne Karte<br/>
           🇬🇧 V5C + Certificate of Motor Insurance<br/>
           🇺🇸 🇨🇦 Registration + Insurance ID card<br/>
-          🌍 Tout document d&apos;immatriculation + preuve d&apos;assurance
+          🌍 Immatriculation + preuve d&apos;assurance
         </div>
       )}
 
@@ -287,6 +303,17 @@ export function OCRScanner({ role, onComplete }: Props) {
             fontSize:15, fontWeight:700, marginTop:4,
             touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
           🔍 Analyser {docs.length} document{docs.length>1?'s':''}
+        </button>
+      )}
+
+      {/* Passer sans scanner — saisie manuelle dans le formulaire */}
+      {onSkip && (
+        <button onClick={onSkip}
+          style={{ width:'100%', padding:'13px', borderRadius:10, marginTop:10,
+            border:'1px solid rgba(255,255,255,0.08)', background:'transparent',
+            cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.3)',
+            touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+          Passer — saisie manuelle →
         </button>
       )}
     </div>

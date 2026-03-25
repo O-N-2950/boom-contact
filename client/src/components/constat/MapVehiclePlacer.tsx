@@ -9,6 +9,7 @@ interface VehiclePosition {
 }
 interface Props {
   role: 'A' | 'B' | 'C' | 'D';
+  required?: boolean; // false = afficher bouton "Passer"
   accidentLat?: number;
   accidentLng?: number;
   accidentAddress?: string;
@@ -173,7 +174,7 @@ function drawVehicle(
 }
 
 // ── Composant principal ───────────────────────────────────────
-export function MapVehiclePlacer({ role, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
+export function MapVehiclePlacer({ role, required = true, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
 

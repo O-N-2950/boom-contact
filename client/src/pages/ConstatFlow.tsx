@@ -155,8 +155,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   };
 
   const PREV: Partial<Record<FlowStep, FlowStep>> = {
-    location:'ocr', photos:'location', voice:'photos',
-    qr:'voice', form:'qr', diagram:'form', sketch:'diagram', sign:'sketch',
+    location:'ocr', photos:'location', qr:'photos', voice:'qr',
+    form:'voice', sketch:'form', diagram:'sketch', sign:'diagram',
   };
   const goBack = () => { const p = PREV[step]; if (p) setStep(p); };
   const canGoBack = !!PREV[step] && step !== 'done';
@@ -173,11 +173,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     { id: 'ocr',      icon: '📄', label: t('steps.scan') },
     { id: 'location', icon: '📍', label: t('steps.location') },
     { id: 'photos',   icon: '📸', label: t('steps.photos') },
-    { id: 'voice',    icon: '🎙️', label: 'Vocal' },
     { id: 'qr',       icon: '📱', label: t('steps.qr') },
+    { id: 'voice',    icon: '🎙️', label: 'Vocal' },
     { id: 'form',     icon: '📋', label: t('steps.form') },
-    { id: 'diagram',  icon: '🚗', label: t('steps.damage') },
     { id: 'sketch',   icon: '🗺️', label: t('steps.sketch') },
+    { id: 'diagram',  icon: '🚗', label: t('steps.damage') },
     { id: 'sign',     icon: '✍️', label: t('steps.sign') },
   ];
 
@@ -285,7 +285,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     if (sessionId && photos.length > 0) {
       updateAccidentMutation.mutate({ sessionId, data: { photos } });
     }
-    setStep('qr');
+    setStep('qr'); // QR d'abord, puis vocal après que B rejoint
   };
 
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
@@ -297,7 +297,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         setAccidentData(prev => ({ ...prev, ...accident }));
       }
     }
-    setStep('diagram');
+    setStep('sketch'); // croquis AVANT choc
   };
 
   const handleSketchDone = (base64: string) => {
@@ -312,8 +312,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     if (sessionId) {
       updateMutation.mutate({ sessionId, role: 'A', data: { damagedZones } });
     }
-    // Croquis obligatoire — placement véhicule sur carte avant signature
-    setStep('sketch');
+    setStep('sign'); // diagram est la dernière étape avant signature
   };
 
   const updateMutation = trpc.session.updateParticipant.useMutation({
@@ -387,7 +386,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
       {/* Step indicator */}
       {step !== 'done' && (
-        <StepIndicator steps={STEPS} currentIndex={currentStepIdx} />
+        <StepIndicator
+          steps={STEPS}
+          currentIndex={currentStepIdx}
+          onStepClick={(stepId) => {
+            // Autoriser navigation vers étapes passées uniquement
+            const targetIdx = STEPS.findIndex(s => s.id === stepId);
+            if (targetIdx < currentStepIdx) setStep(stepId as FlowStep);
+          }}
+        />
       )}
 
       {/* Main content */}
@@ -435,7 +442,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="A" onComplete={handleOCRComplete} />
+          <OCRScanner role="A" onComplete={handleOCRComplete} onSkip={() => setStep('location')} />
         )}
 
         {step === 'location' && (
@@ -466,7 +473,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 }
               }}
               onPartnerJoined={async () => {
-                // Charger les données véhicule B depuis la session avant le sketch
+                // Charger les données véhicule B depuis la session
                 try {
                   const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
                   const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
@@ -476,7 +483,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   }
                   if (bParticipant) setSessionBParticipant(bParticipant);
                 } catch (e) { /* ignore */ }
-                setStep('sketch');
+                setStep('voice'); // QR → Vocal → Formulaire → Croquis → Choc → Signature
               }}
             />
             {/* Bouton partie B indisponible — toujours visible */}
@@ -624,7 +631,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'sketch' && (
           <MapVehiclePlacer
-            required={true}
+            required={false}
             role="A"
             accidentLat={accidentData.location?.lat}
             accidentLng={accidentData.location?.lng}
@@ -635,7 +642,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             brand={participantData.vehicle?.brand}
             onComplete={(vehiclePos, mapImageB64) => {
               setSketchImage(mapImageB64);
-              // Envoyer la carte au serveur pour le PDF
               if (sessionId && mapImageB64) {
                 updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64 } });
               }
@@ -643,9 +649,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 ...prev,
                 vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
               }));
-              setStep('sign');
+              setStep('diagram'); // croquis → choc → signature
             }}
-/>
+            onSkip={() => setStep('diagram')}
+          />
         )}
 
         {step === 'diagram' && (
@@ -673,39 +680,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'sign' && (
           <>
-            {!sketchImage && (
-              <div style={{
-                margin: '0 20px 16px',
-                padding: '12px 16px',
-                background: 'rgba(255,160,0,0.12)',
-                border: '1px solid rgba(255,160,0,0.4)',
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-              }}>
-                <span style={{ fontSize: 20 }}>🗺️</span>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: '#F59E0B' }}>
-                    {t('sketch.requiredTitle', 'Croquis requis')}
-                  </div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-                    {t('sketch.requiredMsg', 'Placez votre véhicule sur la carte pour continuer')}
-                  </div>
-                  <button
-                    onClick={() => setStep('sketch')}
-                    style={{
-                      marginTop: 8, padding: '6px 14px',
-                      background: '#F59E0B', color: '#fff',
-                      border: 'none', borderRadius: 6,
-                      fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                    }}
-                  >
-                    {t('sketch.openMap', 'Ouvrir la carte')} →
-                  </button>
-                </div>
-              </div>
-            )}
             {/* Score de cohérence — visible seulement si B a des données */}
             {sessionBParticipant && !otherPartyNoSignRequired && (
               <CoherenceScore
@@ -720,7 +694,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onSign={handleSign}
               otherSigned={otherSigned}
               isOtherPedestrian={otherPartyNoSignRequired}
-              disabled={!sketchImage}
+              disabled={false}
             />
           </>
         )}

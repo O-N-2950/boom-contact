@@ -1,6 +1,7 @@
 // client/src/components/constat/VoiceSketchFlow.tsx
 // Le game changer : Vocal → IA → Questions → Croquis pré-dessiné
 // Flow : record → transcribe → analyze → clarify? → sketch
+// Fallback : saisie manuelle (personnes muettes, micro indisponible)
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { trpc } from '../../trpc';
@@ -16,6 +17,8 @@ type FlowState =
   | 'clarifying'     // Questions de clarification
   | 'sketching'      // Croquis pré-dessiné à valider
   | 'done';
+
+type InputMode = 'voice' | 'text';
 
 
 interface Props {
@@ -54,6 +57,8 @@ async function blobToBase64(blob: Blob): Promise<string> {
 export function VoiceSketchFlow({ role, sessionId, lang, preloadedAnalysis, vehicleAData, vehicleBData, vehicleCData, vehicleDData, onComplete, onSkip }: Props) {
   // Si analyse déjà disponible (après QR) → aller direct au sketch
   const [flowState, setFlowState] = useState<FlowState>(preloadedAnalysis ? 'sketching' : 'intro');
+  const [inputMode, setInputMode] = useState<InputMode>('voice');
+  const [manualText, setManualText] = useState('');
   const [elapsed, setElapsed]     = useState(0);
   const [transcript, setTranscript]   = useState('');
   const [analysis, setAnalysis]       = useState<SceneAnalysis | null>(preloadedAnalysis || null);
@@ -199,45 +204,110 @@ export function VoiceSketchFlow({ role, sessionId, lang, preloadedAnalysis, vehi
   // ── INTRO ─────────────────────────────────────────────────────
   if (flowState === 'intro') return (
     <div style={{ padding:24 }}>
-      <div style={{ textAlign:'center', marginBottom:28 }}>
-        <div style={{ fontSize:64, marginBottom:12 }}>🎙️</div>
-        <h2 style={{ fontSize:22, fontWeight:800, marginBottom:10 }}>
-          Décrivez l&apos;accident vocalement
+      <div style={{ textAlign:'center', marginBottom:20 }}>
+        <div style={{ fontSize:52, marginBottom:10 }}>🎙️</div>
+        <h2 style={{ fontSize:20, fontWeight:800, marginBottom:8 }}>
+          Décrivez l&apos;accident
         </h2>
-        <p style={{ fontSize:14, opacity:0.6, lineHeight:1.7, maxWidth:340, margin:'0 auto' }}>
-          Parlez naturellement dans votre langue. L&apos;IA analyse votre témoignage, pose des questions si nécessaire, et <strong>dessine automatiquement le croquis</strong> de l&apos;accident.
+        <p style={{ fontSize:13, opacity:0.55, lineHeight:1.65, maxWidth:320, margin:'0 auto' }}>
+          Optionnel — le constat suffit, mais votre description aide à générer le croquis automatiquement.
         </p>
       </div>
 
-      {/* Exemples */}
-      <div style={{ marginBottom:20, padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)' }}>
-        <div style={{ fontSize:11, fontWeight:700, opacity:0.4, letterSpacing:1, textTransform:'uppercase', marginBottom:10 }}>Exemples</div>
-        {[
-          { flag:'🇨🇭', text:'"J\'arrivais sur la route principale, le véhicule B a grillé le stop."' },
-          { flag:'🇩🇪', text:'"Ich fuhr geradeaus, Fahrzeug B hat die Vorfahrt missachtet."' },
-          { flag:'🇬🇧', text:'"I was overtaking when vehicle B changed lanes without signalling."' },
-          { flag:'🇷🇺', text:'"Я ехал прямо, машина Б выехала с парковки без предупреждения."' },
-        ].map((ex, i) => (
-          <div key={i} style={{ fontSize:12, opacity:0.55, marginBottom:6, display:'flex', gap:8, alignItems:'flex-start' }}>
-            <span>{ex.flag}</span>
-            <span style={{ fontStyle:'italic' }}>{ex.text}</span>
-          </div>
-        ))}
+      {/* Onglets Vocal / Texte */}
+      <div style={{ display:'flex', marginBottom:20, borderRadius:10, overflow:'hidden', border:'1px solid rgba(255,255,255,0.1)' }}>
+        <button
+          onClick={() => setInputMode('voice')}
+          style={{
+            flex:1, padding:'12px', border:'none', cursor:'pointer', fontSize:13, fontWeight:600,
+            background: inputMode === 'voice' ? `${roleColor}22` : 'transparent',
+            color: inputMode === 'voice' ? roleColor : 'rgba(255,255,255,0.4)',
+            borderRight:'1px solid rgba(255,255,255,0.1)',
+            transition:'all 0.15s',
+          }}>
+          🎙️ Vocal
+        </button>
+        <button
+          onClick={() => setInputMode('text')}
+          style={{
+            flex:1, padding:'12px', border:'none', cursor:'pointer', fontSize:13, fontWeight:600,
+            background: inputMode === 'text' ? `${roleColor}22` : 'transparent',
+            color: inputMode === 'text' ? roleColor : 'rgba(255,255,255,0.4)',
+            transition:'all 0.15s',
+          }}>
+          ⌨️ Saisie manuelle
+        </button>
       </div>
 
-      {error && (
-        <div style={{ marginBottom:14, padding:'10px 14px', borderRadius:8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', color:'#ef4444', fontSize:13 }}>
-          ⚠️ {error}
-        </div>
+      {/* Mode Vocal */}
+      {inputMode === 'voice' && (
+        <>
+          <div style={{ marginBottom:16, padding:'12px 14px', borderRadius:10, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)', fontSize:12, opacity:0.55, lineHeight:1.8 }}>
+            <div style={{ fontWeight:700, opacity:0.8, marginBottom:6 }}>Exemples :</div>
+            {[
+              { flag:'🇨🇭', text:'"J\'arrivais sur la route principale, B a grillé le stop."' },
+              { flag:'🇩🇪', text:'"Ich fuhr geradeaus, Fahrzeug B missachtete die Vorfahrt."' },
+              { flag:'🇬🇧', text:'"I was overtaking when vehicle B changed lanes without signalling."' },
+            ].map((ex, i) => (
+              <div key={i} style={{ display:'flex', gap:8, marginBottom:4 }}>
+                <span>{ex.flag}</span>
+                <span style={{ fontStyle:'italic' }}>{ex.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {error && (
+            <div style={{ marginBottom:12, padding:'10px 14px', borderRadius:8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', color:'#ef4444', fontSize:13 }}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          <button onClick={startRecording} style={btnPrimary}>
+            <span style={{ fontSize:22 }}>🎙️</span>
+            Commencer l&apos;enregistrement
+          </button>
+        </>
       )}
 
-      <button onClick={startRecording} style={btnPrimary}>
-        <span style={{ fontSize:24 }}>🎙️</span>
-        Commencer l&apos;enregistrement
-      </button>
+      {/* Mode Texte — pour personnes muettes ou sans micro */}
+      {inputMode === 'text' && (
+        <>
+          <textarea
+            value={manualText}
+            onChange={e => setManualText(e.target.value)}
+            placeholder="Décrivez l'accident : votre position, ce qui s'est passé, la position de l'autre véhicule...&#10;&#10;Ex: J'arrivais sur la route principale. Le véhicule B venait de la droite et n'a pas marqué le stop."
+            rows={7}
+            style={{
+              width:'100%', padding:'12px 14px', borderRadius:10,
+              border:'1.5px solid rgba(255,255,255,0.12)',
+              background:'rgba(255,255,255,0.04)', color:'var(--text)',
+              fontSize:14, lineHeight:1.6, fontFamily:'inherit', resize:'vertical',
+              outline:'none', boxSizing:'border-box',
+              marginBottom:12,
+            }}
+          />
+          <button
+            onClick={() => {
+              if (!manualText.trim()) return;
+              setTranscript(manualText.trim());
+              setFlowState('analyzing');
+              analyzeMut.mutate({ transcript: manualText.trim(), previousAnswers: {} });
+            }}
+            disabled={!manualText.trim()}
+            style={{ ...btnPrimary, opacity: manualText.trim() ? 1 : 0.4, cursor: manualText.trim() ? 'pointer' : 'not-allowed' }}>
+            🧠 Analyser et générer le croquis →
+          </button>
+        </>
+      )}
 
-      <button onClick={onSkip} style={{ width:'100%', marginTop:10, padding:'13px', borderRadius:10, border:'1px solid rgba(255,255,255,0.08)', background:'transparent', cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.35)', touchAction:'manipulation' }}>
-        Passer — dessiner manuellement
+      {/* Skip — non bloquant */}
+      <button onClick={onSkip} style={{
+        width:'100%', marginTop:10, padding:'13px', borderRadius:10,
+        border:'1px solid rgba(255,255,255,0.08)', background:'transparent',
+        cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.3)',
+        touchAction:'manipulation',
+      }}>
+        Passer cette étape →
       </button>
     </div>
   );

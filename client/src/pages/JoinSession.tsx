@@ -1,6 +1,6 @@
 import { LocationStep } from '../components/constat/LocationStep';
 import { PhotoCapture } from '../components/constat/PhotoCapture';
-import { AccidentSketch } from '../components/constat/AccidentSketch';
+import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
 import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -75,6 +75,7 @@ export function JoinSession() {
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
   const [otherSigned, setOtherSigned] = useState(false);
+  const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
@@ -82,8 +83,8 @@ export function JoinSession() {
   };
 
   const PREV_B: Partial<Record<FlowStep, FlowStep>> = {
-    ocr:'landing', location:'ocr', photos:'location',
-    form:'photos', sketch:'form', diagram:'sketch', sign:'diagram',
+    ocr:'landing', photos:'ocr',
+    form:'photos', voice:'form', sketch:'voice', diagram:'sketch', sign:'diagram',
   };
   const goBack = () => { const p = PREV_B[step]; if (p) setStep(p); };
   const canGoBack = !!PREV_B[step] && step !== 'done' && step !== 'landing';
@@ -97,14 +98,13 @@ export function JoinSession() {
   }, [step, joined, participantData, damagedZones, photos]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
-    { id: 'ocr',      icon: '📄', label: 'Scan' },
-    { id: 'location', icon: '📍', label: 'Lieu' },
-    { id: 'photos',   icon: '📸', label: 'Photos' },
-    { id: 'form',     icon: '📋', label: 'Infos' },
-    { id: 'voice',    icon: '🎙️', label: 'Vocal' },
-    { id: 'sketch',   icon: '✏️', label: 'Croquis' },
-    { id: 'diagram',  icon: '🚗', label: 'Choc' },
-    { id: 'sign',     icon: '✍️', label: 'Sign' },
+    { id: 'ocr',     icon: '📄', label: 'Scan' },
+    { id: 'photos',  icon: '📸', label: 'Photos' },
+    { id: 'form',    icon: '📋', label: 'Infos' },
+    { id: 'voice',   icon: '🎙️', label: 'Vocal' },
+    { id: 'sketch',  icon: '🗺️', label: 'Croquis' },
+    { id: 'diagram', icon: '🚗', label: 'Choc' },
+    { id: 'sign',    icon: '✍️', label: 'Sign' },
   ];
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
 
@@ -181,21 +181,22 @@ export function JoinSession() {
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard?.insurance   ?? result.registration.insurance ?? {},
     }));
-    setStep('location');
+    // Sauter la localisation — B utilise la même que A (déjà dans sessionAccidentData)
+    setStep('photos');
 
     const vB = result.registration?.vehicle as any;
     const bData = {
-      color: vB?.color, type: vB?.vehicleType || 'car',
+      color: vB?.color, type: detectedType || 'car',
       brand: vB?.brand, model: vB?.model,
     };
     (window as any).__boomVehicleB = bData;
 
-    // Sauvegarder dans la session pour que conducteur A puisse récupérer
+    // Sauvegarder dans la session
     if (sessionId) {
-      updateParticipantMutation.mutate({
+      updateMutation.mutate({
         sessionId,
         role: urlRole,
-        data: { vehicle: { ...vB, vehicleData: bData } } as any,
+        data: { vehicle: { ...vB, vehicleType: detectedType, vehicleData: bData } } as any,
       });
     }
   };
@@ -395,7 +396,16 @@ export function JoinSession() {
         </div>
       </div>
 
-      {step !== 'done' && <StepIndicator steps={STEPS} currentIndex={currentStepIdx} />}
+      {step !== 'done' && (
+        <StepIndicator
+          steps={STEPS}
+          currentIndex={currentStepIdx}
+          onStepClick={(stepId) => {
+            const targetIdx = STEPS.findIndex(s => s.id === stepId);
+            if (targetIdx < currentStepIdx) setStep(stepId as FlowStep);
+          }}
+        />
+      )}
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {step === 'location' && (
@@ -415,7 +425,7 @@ export function JoinSession() {
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="B" onComplete={handleOCRComplete} />
+          <OCRScanner role="B" onComplete={handleOCRComplete} onSkip={() => setStep('photos')} />
         )}
 
         {step === 'form' && (
@@ -442,11 +452,28 @@ export function JoinSession() {
         )}
 
         {step === 'sketch' && (
-          <AccidentSketch
-            vehicleTypeB={participantData.vehicle?.vehicleType}
-            sketchImage={sketchImage}
-            onChange={setSketchImage}
-            onContinue={() => handleSketchDoneB(sketchImage)}
+          <MapVehiclePlacer
+            required={false}
+            role="B"
+            accidentLat={sessionAccidentData?.lat}
+            accidentLng={sessionAccidentData?.lng}
+            accidentAddress={sessionAccidentData?.address}
+            accidentCity={sessionAccidentData?.city}
+            vehicleColor={participantData.vehicle?.color}
+            vehicleType={participantData.vehicle?.vehicleType}
+            brand={participantData.vehicle?.brand}
+            existingVehicles={(window as any).__boomVehicleAPos ? [{ role: 'A', pos: (window as any).__boomVehicleAPos }] : []}
+            onComplete={(vehiclePos, mapImageB64) => {
+              setSketchImage(mapImageB64);
+              if (sessionId) {
+                updateMutation.mutate({
+                  sessionId, role: urlRole,
+                  data: { vehicle: { ...participantData.vehicle, mapPosition: vehiclePos } } as any,
+                });
+              }
+              handleSketchDoneB(mapImageB64);
+            }}
+            onSkip={() => handleSketchDoneB('')}
           />
         )}
 

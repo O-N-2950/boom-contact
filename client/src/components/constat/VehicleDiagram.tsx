@@ -65,33 +65,70 @@ export function VehicleDiagram({ role, vehicleType, brand, model, color, selecte
   const [tooltip, setTooltip]   = useState<string | null>(null);
   const roleColor = role === 'A' ? '#FF3500' : '#00E5FF';
 
-  // Identify vehicle from OCR data
-  const identity = identifyVehicle(brand, model, color);
-  const shape    = bodyStyleToShape(identity.bodyStyle);
-  const zones    = getZonesForType(shape);
-  const vbH      = VIEWBOX_HEIGHT[shape] ?? 380;
+  // ── Shape resolution: vehicleType PRIME sur brand/model ───
+  // Si le type de véhicule est connu (OCR ou choix utilisateur),
+  // on force la silhouette correspondante.
+  function vehicleTypeToShape(vt?: string): string | null {
+    if (!vt) return null;
+    switch (vt) {
+      case 'pedestrian':  return 'pedestrian';
+      case 'motorcycle':  return 'motorcycle';
+      case 'scooter':     return 'scooter';
+      case 'moped':       return 'scooter';
+      case 'escooter':    return 'escooter';
+      case 'bicycle':
+      case 'cargo_bike':  return 'bicycle';
+      case 'truck':       return 'truck';
+      case 'van':         return 'van';
+      case 'bus':         return 'bus';
+      case 'tram':
+      case 'train':       return 'tram';
+      case 'quad':        return 'other';
+      case 'car':
+      case 'suv':         return null; // laisser identifyVehicle affiner
+      default:            return null;
+    }
+  }
+
+  const forcedShape = vehicleTypeToShape(vehicleType);
+  const identity    = identifyVehicle(brand, model, color);
+  // Si vehicleType force une silhouette spécifique, l'utiliser — sinon OCR brand/model
+  const shape = (forcedShape as any) ?? bodyStyleToShape(identity.bodyStyle);
+  const zones = getZonesForType(shape as any);
+  const vbH   = VIEWBOX_HEIGHT[shape] ?? 380;
 
   const toggle = (id: string) => {
     onChange(selected.includes(id) ? selected.filter(z => z !== id) : [...selected, id]);
   };
 
-  // Vehicle name display
-  const vehicleName = [brand, model].filter(Boolean).join(' ') || 'Véhicule';
-  const bodyLabel   = identity.bodyStyle !== 'unknown' ? identity.label : '';
+  // Titre adapté au type
+  const isPedestrian = vehicleType === 'pedestrian';
+  const vehicleName = isPedestrian
+    ? 'Piéton / Cycliste'
+    : [brand, model].filter(Boolean).join(' ') || 'Véhicule';
+  const bodyLabel = isPedestrian
+    ? 'Corps humain — zones blessées'
+    : identity.bodyStyle !== 'unknown' ? identity.label : '';
+  const diagramTitle = isPedestrian
+    ? `Blessures — ${role === 'A' ? 'Conducteur' : 'Partie'} ${role}`
+    : `Zones endommagées — ${role === 'A' ? 'Conducteur' : 'Partie'} ${role}`;
+  const diagramHint = isPedestrian
+    ? 'Touchez les zones du corps blessées'
+    : 'Touchez toutes les zones touchées par le choc';
 
   return (
     <div style={{ padding: '20px 16px' }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 14 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
-          Zones endommagées — Conducteur {role}
+          {diagramTitle}
         </h3>
         {/* Vehicle identity badge */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '5px 12px', borderRadius: 20, marginBottom: 4,
           background: `${roleColor}12`, border: `1px solid ${roleColor}35` }}>
-          {/* Color swatch */}
-          {color && (
+          {/* Color swatch — masqué pour piéton */}
+          {color && !isPedestrian && (
             <div style={{
               width: 14, height: 14, borderRadius: '50%',
               background: identity.bodyColor,
@@ -99,18 +136,19 @@ export function VehicleDiagram({ role, vehicleType, brand, model, color, selecte
               flexShrink: 0,
             }}/>
           )}
+          {isPedestrian && <span style={{ fontSize: 14 }}>🚶</span>}
           <span style={{ fontSize: 12, fontWeight: 600, color: roleColor }}>
             {vehicleName}
           </span>
           {bodyLabel && (
             <span style={{ fontSize: 10, opacity: 0.5 }}>· {bodyLabel}</span>
           )}
-          {identity.confidence === 'exact' && (
+          {identity.confidence === 'exact' && !isPedestrian && (
             <span title="Modèle reconnu" style={{ fontSize: 10, color: '#22c55e' }}>✓</span>
           )}
         </div>
         <p style={{ fontSize: 11, opacity: 0.4, lineHeight: 1.5 }}>
-          Touchez toutes les zones touchées par le choc
+          {diagramHint}
         </p>
       </div>
 
