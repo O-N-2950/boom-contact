@@ -1,0 +1,448 @@
+{
+  "common": {
+    "continue": "Nastavi →",
+    "confirm": "Potvrdi →",
+    "cancel": "Odustani",
+    "loading": "Učitavanje…",
+    "saving": "⏳ Spremanje…",
+    "error": "Greška",
+    "retry": "Pokušaj ponovo",
+    "back": "←",
+    "optional": "Neobavezno",
+    "required": "Obavezno",
+    "yes": "Da",
+    "no": "Ne",
+    "unknown": "Nepoznato"
+  },
+  "landing": {
+    "badge": "Première app mondiale",
+    "hero": {
+      "line1": "APRÈS",
+      "line2": "LE BOOM",
+      "line3": "LE",
+      "line4": "CONTACT"
+    },
+    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "cta": {
+      "start": "Pokrenite zapisnik",
+      "pricing": "Voir les tarifs →",
+      "from": "À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT",
+      "free": "GRATUIT · SANS INSCRIPTION · RGPD"
+    },
+    "mockup": {
+      "send": "Envoyer à l'assureur",
+      "done": "Constat finalisé !",
+      "waiting": "Session #8F2K · En attente…",
+      "capture": "📸 Photographier"
+    },
+    "badges": {
+      "languages": "50 langues",
+      "time": "5 min",
+      "encrypted": "Chiffré"
+    },
+    "stats": {
+      "accidents": "constats/an en Europe",
+      "languages": "langues supportées",
+      "time": "pour finaliser"
+    },
+    "how": {
+      "label": "Comment ça marche",
+      "title": "5 étapes.",
+      "title_accent": "5 minutes.",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "Scannez vos documents",
+          "desc": "Photographiez permis de circulation + carte verte. OCR automatique."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "Partagez le QR code",
+          "desc": "L'autre conducteur scanne le QR. Session partagée en temps réel."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Remplissez le formulaire",
+          "desc": "Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Zones de choc",
+          "desc": "Cliquez sur le diagramme 18 zones pour indiquer les dommages."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Signez & envoyez",
+          "desc": "Deux signatures digitales horodatées. PDF certifié instantanément."
+        }
+      ]
+    },
+    "features": {
+      "title": "Tout ce dont vous avez besoin",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "OCR universel",
+          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
+        },
+        {
+          "icon": "📱",
+          "title": "Jusqu'à 5 véhicules",
+          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
+        },
+        {
+          "icon": "📷",
+          "title": "Photos de scène",
+          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
+        },
+        {
+          "icon": "✏️",
+          "title": "Croquis libre",
+          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
+        },
+        {
+          "icon": "🚗",
+          "title": "Schéma de choc",
+          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
+        },
+        {
+          "icon": "✍️",
+          "title": "Signatures multi-parties",
+          "desc": "N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF certifié 150+ pays",
+          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d'assurance."
+        },
+        {
+          "icon": "🚔",
+          "title": "Module Police (bientôt)",
+          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
+        },
+        {
+          "icon": "🌍",
+          "title": "50 langues + RTL",
+          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
+        }
+      ]
+    },
+    "coverage": {
+      "label": "Couverture mondiale",
+      "title": "De la Suisse à la Chine",
+      "more": "+ 30 autres pays · Support RTL intégré"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
+    },
+    "finalCta": {
+      "title": "Prêt en cas d'accident ?",
+      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "button": "Démarrer un constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA / Groupe NEUKOMM",
+      "address": "PEP's Swiss SA · Groupe NEUKOMM · FINMA F01042365\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    }
+  },
+  "steps": {
+    "scan": "Skeniranje",
+    "location": "Lokacija",
+    "photos": "Fotografije",
+    "qr": "QR",
+    "form": "Podaci",
+    "sketch": "Skica",
+    "damage": "Štete",
+    "sign": "Potpis"
+  },
+  "flow": {
+    "header": {
+      "role_a": "VOZAČ A — NOVI ZAPISNIK",
+      "reset_title": "Počni ispočetka"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "Scannez vos documents",
+      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
+      "reg_label": "Permis de circulation / Carte grise",
+      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
+      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+    },
+    "greencard": {
+      "scanned": "✅ Permis de circulation scanné",
+      "compressing": "· Compression…",
+      "title": "Document d'assurance ?",
+      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
+      "scan_btn": "Scanner le document d'assurance",
+      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
+      "skip_btn": "Saisir manuellement les données d'assurance →"
+    },
+    "scanning": {
+      "title": "Analyse en cours…",
+      "subtitle": "Claude Vision lit vos documents"
+    },
+    "review": {
+      "title_pair": "Documents analysés",
+      "title_single": "Permis analysé",
+      "confidence": "Confiance : {{pct}}%",
+      "skipped": "· Carte verte ignorée",
+      "warnings": "⚠️ {{count}} champ à vérifier",
+      "warnings_plural": "⚠️ {{count}} champs à vérifier",
+      "insurance_title": "🛡️ Données d'assurance — saisie manuelle",
+      "company_label": "Compagnie d'assurance *",
+      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
+      "policy_label": "N° de contrat / police *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 Véhicule",
+      "section_driver": "👤 Conducteur",
+      "section_greencard": "🟢 Assurance (carte verte)",
+      "rescan": "🔄 Rescanner",
+      "confirm": "Confirmer →"
+    }
+  },
+  "location": {
+    "vehicle_label": "Votre véhicule",
+    "groups": {
+      "light": "Véhicules légers",
+      "heavy": "Véhicules lourds",
+      "rail": "Transport en commun / rail",
+      "cycles": "Cycles",
+      "other": "Personne / Autre"
+    },
+    "vehicles": {
+      "car": {
+        "label": "Voiture",
+        "sub": "Berline, SUV, break, 4×4, citadine"
+      },
+      "van": {
+        "label": "Fourgon / Utilitaire",
+        "sub": "Camionnette, van, utilitaire léger"
+      },
+      "motorcycle": {
+        "label": "Moto",
+        "sub": "Moto, motocyclette"
+      },
+      "scooter": {
+        "label": "Scooter / Cyclomoteur",
+        "sub": "Scooter, 50cm³"
+      },
+      "moped": {
+        "label": "Vélomoteur",
+        "sub": "2 roues <45km/h, 125cm³"
+      },
+      "escooter": {
+        "label": "Trottinette électrique",
+        "sub": "EDPM, gyroroue, hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Véhicule tout-terrain motorisé"
+      },
+      "truck": {
+        "label": "Camion / Poids lourd",
+        "sub": "Semi-remorque, porteur, benne"
+      },
+      "bus": {
+        "label": "Bus / Autocar",
+        "sub": "Bus urbain, car, minibus"
+      },
+      "construction": {
+        "label": "Engin de chantier",
+        "sub": "Tractopelle, grue, pelleteuse, dumper"
+      },
+      "tractor": {
+        "label": "Tracteur agricole",
+        "sub": "Tracteur, engin agricole"
+      },
+      "tram": {
+        "label": "Tramway",
+        "sub": "Tram, métro léger"
+      },
+      "train": {
+        "label": "Train / Métro",
+        "sub": "Train, RER, métro souterrain"
+      },
+      "bicycle": {
+        "label": "Vélo",
+        "sub": "Vélo classique, VAE, vélo électrique"
+      },
+      "cargo_bike": {
+        "label": "Vélo cargo",
+        "sub": "Bakfiets, triporteur, cargo électrique"
+      },
+      "pedestrian": {
+        "label": "Piéton",
+        "sub": "Personne à pied, rollers, skateboard"
+      },
+      "boat": {
+        "label": "Bateau",
+        "sub": "Embarcation, jet-ski, canot"
+      },
+      "other": {
+        "label": "Autre véhicule",
+        "sub": "Non listé — préciser dans observations"
+      }
+    },
+    "datetime_label": "Date & heure de l'accident",
+    "date_label": "Date",
+    "time_label": "Heure",
+    "datetime_warning": "⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.",
+    "geo_label": "Lieu de l'accident",
+    "gps_captured": "GPS capturé — {{lat}}, {{lng}}",
+    "gps_loading": "Localisation en cours…",
+    "gps_denied": "Accès GPS refusé — saisie manuelle",
+    "gps_missing": "Position GPS non capturée",
+    "gps_saved": "Coordonnées enregistrées dans le document",
+    "address_label": "Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)",
+    "address_placeholder": "Ex: Avenue de la Gare 4, A1 direction Berne km 47…",
+    "city_label": "Ville / Localité",
+    "city_placeholder": "Lausanne, Paris…",
+    "country_label": "Pays",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
+    "injuries_label": "Y a-t-il des blessés ?",
+    "no_injuries": "Non — aucun blessé",
+    "yes_injuries": "Oui — blessure(s)",
+    "injury_details_title": "🚑 Détails des blessures",
+    "severity_label": "Gravité apparente",
+    "severity_minor": "Légère",
+    "severity_moderate": "Modérée",
+    "severity_serious": "Grave",
+    "injury_desc_label": "Description (zone du corps, douleurs, blessures visibles)",
+    "injury_desc_placeholder": "Ex: Douleur cervicale, contusion genou gauche, coupure front…",
+    "ambulance": "🚑 Prise en charge par ambulance / SMUR",
+    "hospitalized": "🏥 Hospitalisation nécessaire ou envisagée",
+    "injury_footer": "En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement. Ces informations seront incluses dans le document final.",
+    "cta_no_vehicle": "Sélectionnez votre type de véhicule",
+    "cta_no_injuries": "Indiquez s'il y a des blessés",
+    "cta_no_location": "Indiquez le lieu de l'accident",
+    "emergency_police": "🚔 Police · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
+    "emergency_voluntary": "Ces appels sont volontaires — la police n'est jamais prévenue automatiquement."
+  },
+  "cgu": {
+    "before_continue": "AVANT DE CONTINUER",
+    "tab_cgu": "CGU",
+    "tab_privacy": "Confidentialité",
+    "cgu_title": "Conditions Générales d'Utilisation",
+    "privacy_title": "Politique de Confidentialité & RGPD",
+    "cgu_version": "Version 1.0 — Mars 2026 · PEP's Swiss SA",
+    "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
+    "email_label": "Votre email (pour recevoir le PDF)",
+    "email_placeholder": "vous@exemple.com",
+    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "required_note": "* Obligatoire pour utiliser le service",
+    "submit": "Continuer →",
+    "error_network": "Erreur réseau. Réessayez.",
+    "cgu_sections": [
+      {
+        "title": "1. Objet",
+        "text": "boom.contact est un service numérique édité par PEP's Swiss SA (ci-après \"PEP's Swiss\"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l'établissement de constats amiables d'accident numériques, utilisables dans le monde entier."
+      },
+      {
+        "title": "2. Acceptation",
+        "text": "L'utilisation du service implique l'acceptation des présentes CGU. Toute utilisation à des fins illicites, frauduleuses ou contraires à l'ordre public est strictement interdite."
+      },
+      {
+        "title": "3. Description du service",
+        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+      },
+      {
+        "title": "4. Tarification",
+        "text": "L'accès au service est payant selon les packages disponibles au moment de l'achat. Les prix sont affichés TTC. Le paiement s'effectue via Stripe, prestataire certifié PCI-DSS. Chaque package correspond à un nombre de crédits permettant d'initier des constats. Les crédits n'ont pas de date d'expiration. Aucun remboursement ne peut être accordé une fois un constat finalisé et le PDF généré."
+      },
+      {
+        "title": "5. Valeur légale",
+        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+      },
+      {
+        "title": "6. Responsabilité",
+        "text": "PEP's Swiss SA ne saurait être tenue responsable : (a) des erreurs de saisie ou d'OCR non corrigées par l'utilisateur ; (b) du refus d'un assureur d'accepter le constat ; (c) de tout litige entre les conducteurs. La responsabilité de PEP's Swiss SA est limitée au montant payé pour le service."
+      },
+      {
+        "title": "7. Propriété intellectuelle",
+        "text": "Le logiciel, les marques, logos et contenus de boom.contact sont la propriété exclusive de PEP's Swiss SA. Toute reproduction sans autorisation est interdite."
+      },
+      {
+        "title": "8. Droit applicable",
+        "text": "Les présentes CGU sont soumises au droit suisse. Tout litige sera soumis à la juridiction exclusive des tribunaux du canton du Jura, Suisse."
+      }
+    ],
+    "privacy_sections": [
+      {
+        "title": "Responsable de traitement",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. Contact DPO : privacy@boom.contact"
+      },
+      {
+        "title": "Données collectées",
+        "text": "Dans le cadre du service : adresse email, nom/prénom, adresse (extraits des documents OCR), plaque d'immatriculation, données du véhicule, coordonnées GPS de l'accident, signatures digitales, données d'assurance (nom de la compagnie, numéro de police). Ces données sont strictement nécessaires à la prestation du service."
+      },
+      {
+        "title": "Base légale",
+        "text": "Traitement nécessaire à l'exécution du contrat (art. 6.1.b RGPD) pour les données du constat. Consentement explicite (art. 6.1.a RGPD) pour toute utilisation commerciale secondaire."
+      },
+      {
+        "title": "Durée de conservation",
+        "text": "Sessions actives : 2 heures. PDFs et données de constat : 30 jours puis suppression automatique. Données comptables (paiements) : 10 ans (obligation légale). Email et consentements : jusqu'à retrait du consentement."
+      },
+      {
+        "title": "Partage des données",
+        "text": "Vos données ne sont JAMAIS vendues à des tiers. Elles peuvent être partagées avec : (a) Stripe Inc. pour le traitement des paiements ; (b) Resend Inc. pour l'envoi des emails transactionnels ; (c) Anthropic Inc. pour l'analyse OCR des documents (données traitées sans conservation selon les CGU Anthropic). Si vous y consentez expressément (case optionnelle ci-dessous), PEP's Swiss SA pourra utiliser votre email pour vous proposer des services complémentaires de ses applications (gestion de sinistres, conseil en assurance, services financiers)."
+      },
+      {
+        "title": "Vos droits",
+        "text": "Accès, rectification, effacement, portabilité, opposition. Demande à : privacy@boom.contact. Réponse sous 30 jours. Droit de recours auprès du PFPDT (Suisse) ou de votre autorité nationale de protection des données."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Choisir un package",
+    "subtitle": "Achetez vos crédits à l'avance — payez une seule fois",
+    "popular_badge": "⭐ Populaire",
+    "economy": "Économie {{pct}}",
+    "credits_label": "Crédits",
+    "per_report": "Par constat",
+    "validity": "Validité",
+    "no_expiry": "Sans limite",
+    "buy_btn": "Acheter — {{symbol}} {{price}}",
+    "redirecting": "Redirection Stripe…",
+    "error_missing_url": "URL Stripe manquante",
+    "trust": {
+      "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
+      "no_expiry": "📄 Crédits sans date d'expiration",
+      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+    },
+    "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
+    "packages": {
+      "single": {
+        "label": "1 constat",
+        "description": "Pour un accident ponctuel"
+      },
+      "pack3": {
+        "label": "3 constats",
+        "description": "Pour la famille"
+      },
+      "pack10": {
+        "label": "10 constats",
+        "description": "Courtiers, flottes d'entreprise"
+      }
+    }
+  },
+  "offline": {
+    "banner": "Hors ligne — {{count}} session(s) en attente",
+    "banner_0": "Vous êtes hors ligne"
+  },
+  "language": {
+    "select": "Langue",
+    "switch_tooltip": "Changer de langue"
+  }
+}
