@@ -1146,6 +1146,22 @@ export const appRouter = router({
       return { ok: true, deleted: input.email };
     }),
 
+  // GET admin.listUsers — lister tous les utilisateurs
+  adminListUsers: publicProcedure
+    .query(async ({ ctx }) => {
+      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      const { db } = await import('../db/index.js');
+      const { users } = await import('../db/schema.js');
+      const all = await db.select({
+        id: users.id,
+        email: users.email,
+        role: users.role,
+        credits: users.credits,
+        createdAt: users.createdAt,
+      }).from(users);
+      return all;
+    }),
+
   adminCleanupSessions: publicProcedure
     .mutation(async ({ ctx }) => {
       if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
