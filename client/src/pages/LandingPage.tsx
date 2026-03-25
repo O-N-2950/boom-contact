@@ -7,6 +7,7 @@ interface Props {
   onPricing?: () => void;
   onGarage?: () => void;
   onAccount?: () => void;
+  onLogout?: () => void;
   authUser?: { email: string; credits: number } | null;
 }
 
@@ -166,7 +167,7 @@ function FeatureCard({ icon, title, desc, delay }: { icon: string; title: string
   );
 }
 
-export function LandingPage({ onStart, onPricing, onGarage, onAccount, authUser }: Props) {
+export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout, authUser }: Props) {
   const { t } = useTranslation();
   const [heroVisible, setHeroVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); }, []);
@@ -229,19 +230,38 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, authUser 
 
             {/* Header compte si connecté */}
             {authUser && (
-              <button onClick={onAccount} style={{
-                width: '100%', marginBottom: 10, padding: '10px 16px',
+              <div style={{
+                width: '100%', marginBottom: 10,
                 borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)',
                 background: 'rgba(255,255,255,0.04)',
-                color: 'var(--text)', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 10, fontSize: 13,
+                display: 'flex', alignItems: 'center', overflow: 'hidden',
               }}>
-                <span style={{ fontSize: 18 }}>👤</span>
-                <span style={{ opacity: 0.7 }}>{authUser.email}</span>
-                <span style={{ marginLeft: 'auto', background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 700 }}>
-                  {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
-                </span>
-              </button>
+                {/* Zone cliquable → compte */}
+                <button onClick={onAccount} style={{
+                  flex: 1, padding: '10px 14px',
+                  background: 'none', border: 'none',
+                  color: 'var(--text)', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 10, fontSize: 13,
+                }}>
+                  <span style={{ fontSize: 16 }}>👤</span>
+                  <span style={{ opacity: 0.7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>{authUser.email}</span>
+                  <span style={{ marginLeft: 'auto', background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
+                    {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
+                  </span>
+                </button>
+                {/* Bouton déconnexion — toujours visible */}
+                <button onClick={onLogout} title="Se déconnecter" style={{
+                  padding: '10px 14px', background: 'none',
+                  border: 'none', borderLeft: '1px solid rgba(255,255,255,0.08)',
+                  color: 'rgba(255,255,255,0.35)', cursor: 'pointer', fontSize: 16,
+                  flexShrink: 0, transition: 'color 0.15s',
+                }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#FF3500')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}
+                >
+                  ↩
+                </button>
+              </div>
             )}
 
             <button onClick={onStart} style={{ width: '100%', padding: '18px 24px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxShadow: '0 8px 32px rgba(255,53,0,0.45)', transition: 'transform 0.15s' }}
@@ -464,6 +484,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, authUser 
     </div>
   );
 }
+
 
 
 
