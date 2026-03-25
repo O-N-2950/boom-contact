@@ -772,15 +772,18 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               sessionId={sessionId!}
               role="A"
               driverEmail={participantData.driver?.email}
-              insurerName={participantData.insurance?.company}
+              insurerName={participantData.insurance?.company || (participantData.insurance as any)?.companyName}
               driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
+              authUser={authUser}
+              authToken={authToken}
+              onLogin={onShowAuth || (() => {})}
+              onBuyPack={onBuyPack || (() => {})}
             />
             <InsuranceAssistance
               insurerA={participantData.insurance?.companyName || (participantData.insurance as any)?.company}
               insurerB={(accidentData as any)?.insurerB}
               countryCode={(accidentData as any)?.location?.country}
             />
-            {/* If country detected from accident location, show live lookup */}
             {(accidentData as any)?.location?.country &&
              !['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','JP','CN','IN','KR','SG','RU','AE','ZA','BR','NZ','MA','TR'].includes((accidentData as any)?.location?.country) && (
               <UnknownCountryLookup
@@ -789,14 +792,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               />
             )}
             <EmergencyNumbers mode="compact" />
-            <PostConstatCTA
-              sessionId={sessionId!}
-              authToken={authToken}
-              authUser={authUser}
-              onLogin={onShowAuth || (() => {})}
-              onAccount={onAccount || (() => {})}
-              onBuyPack={onBuyPack || (() => {})}
-            />
           </>
         )}
       </div>

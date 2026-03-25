@@ -226,7 +226,12 @@ export default function App() {
           onBuyPack={() => setView('pricing')}
         />
       )}
-      {view === 'join'     && <JoinSession />}
+      {view === 'join' && <JoinSession
+        authUser={authUser}
+        authToken={authToken || undefined}
+        onLogin={() => setShowAuthModal(true)}
+        onBuyPack={() => setView('pricing')}
+      />}
       {view === 'agents'   && <AgentDashboard />}
       {view === 'pricing'  && (
         <PricingPage

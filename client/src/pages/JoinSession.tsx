@@ -52,7 +52,14 @@ function ocrCategoryToVehicleType(category?: string): any {
   return null;
 }
 
-export function JoinSession() {
+interface JoinSessionProps {
+  authUser?: { id: string; email: string; role: string; credits: number } | null;
+  authToken?: string;
+  onLogin?: () => void;
+  onBuyPack?: () => void;
+}
+
+export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSessionProps = {}) {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session') || '';
   const urlRole = (params.get('role') || 'B').toUpperCase() as ParticipantRole;
@@ -539,8 +546,12 @@ export function JoinSession() {
             sessionId={sessionId}
             role="B"
             driverEmail={participantData.driver?.email}
-            insurerName={participantData.insurance?.company}
+            insurerName={(participantData.insurance as any)?.company || (participantData.insurance as any)?.companyName}
             driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
+            authUser={authUser}
+            authToken={authToken}
+            onLogin={onLogin || (() => {})}
+            onBuyPack={onBuyPack || (() => {})}
           />
         )}
       </div>
