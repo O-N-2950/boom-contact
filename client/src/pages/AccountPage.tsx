@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ShareBoom } from '../components/ShareBoom';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
@@ -42,6 +43,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   }>({ firstName: '', lastName: '', phone: '', company: '', address: '' });
   const [editingEmail, setEditingEmail] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [newEmail, setNewEmail]     = useState('');
   const [emailPassword, setEmailPassword] = useState('');
@@ -500,16 +502,17 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               )}
             </div>
 
-            {/* WhatsApp */}
-            <div style={{ background: '#0d1f2a', border: '1px solid #1a3a4a', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#60c8f0', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>🎁 Offrir un constat via WhatsApp</div>
-              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6 }}>
-                Employé, proche, client en difficulté ? Envoyez un crédit en 3 secondes.
+            {/* Partage viral */}
+            <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 14, padding: 18 }}>
+              <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Faire connaître boom.contact</div>
+              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
+                Partage l'app à tes proches, collègues et sur les réseaux. Aide-les avant qu'ils en aient besoin.
               </div>
-              <button style={{ ...primaryBtn, marginTop: 12, background: '#25D366', fontSize: 14 }}>
-                📲 Envoyer un crédit
+              <button onClick={() => setShowShare(true)} style={{ ...primaryBtn, fontSize: 14 }}>
+                📤 Partager boom.contact
               </button>
             </div>
+            {showShare && <ShareBoom onClose={() => setShowShare(false)} context="account" />}
 
             {/* Zone dangereuse — Suppression compte */}
             <div style={{ border: '1px solid rgba(239,68,68,0.2)', borderRadius: 14, padding: 18 }}>
