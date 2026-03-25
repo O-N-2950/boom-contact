@@ -118,13 +118,14 @@ export function JoinSession() {
           const acc = data.accident;
           const loc = acc.location || {};
           setSessionAccidentData({
-            date:    acc.date,
-            time:    acc.time,
-            address: loc.address,
-            city:    loc.city,
-            country: loc.country,
-            lat:     loc.lat,
-            lng:     loc.lng,
+            date:       acc.date,
+            time:       acc.time,
+            address:    loc.address,
+            city:       loc.city,
+            country:    loc.country,
+            lat:        loc.lat,
+            lng:        loc.lng,
+            vehicleAPos: acc.vehicleAPos || null, // position véhicule A sur la carte
           });
         }
       },
@@ -461,7 +462,14 @@ export function JoinSession() {
             vehicleColor={participantData.vehicle?.color}
             vehicleType={participantData.vehicle?.vehicleType}
             brand={participantData.vehicle?.brand}
-            existingVehicles={(window as any).__boomVehicleAPos ? [{ role: 'A', pos: (window as any).__boomVehicleAPos }] : []}
+            existingVehicles={
+              // Position de A : depuis window (si même appareil) ou depuis la session
+              (window as any).__boomVehicleAPos
+                ? [{ role: 'A', pos: (window as any).__boomVehicleAPos }]
+                : sessionAccidentData?.vehicleAPos
+                  ? [{ role: 'A', pos: sessionAccidentData.vehicleAPos }]
+                  : []
+            }
             onComplete={(vehiclePos, mapImageB64) => {
               setSketchImage(mapImageB64);
               if (sessionId) {

@@ -157,6 +157,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const PREV: Partial<Record<FlowStep, FlowStep>> = {
     location:'ocr', photos:'location', qr:'photos', voice:'qr',
     form:'voice', sketch:'form', diagram:'sketch', sign:'diagram',
+    pedestrian_form: 'qr',
   };
   const goBack = () => { const p = PREV[step]; if (p) setStep(p); };
   const canGoBack = !!PREV[step] && step !== 'done';

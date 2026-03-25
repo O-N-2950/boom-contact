@@ -101,6 +101,7 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
+          vehicleAPos:      z.record(z.string(), z.any()).optional(), // position véhicule A sur la carte
           vehicleCount:     z.number().optional(),   // 1=solo, 2=standard, 3-5=multi
           partyBStatus:     z.record(z.string(), z.any()).optional(), // fuite/blessé/refus/décédé
           photos:           z.array(z.object({
