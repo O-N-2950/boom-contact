@@ -643,7 +643,7 @@ export async function generateConstatPDF(
     ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
     : 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app';
   drawText(page, footerLine1, margin, 38, normal, 7, C.mid);
-  drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - Groupe NEUKOMM`,
+  drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - CHE-476.484.632`,
     margin, 28, mono, 6.5, C.mid);
   const footerLine3 = isUnilateral
     ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`

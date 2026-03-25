@@ -91,7 +91,7 @@ export async function generateDailyPosts(count = 4): Promise<number> {
 }
 
 async function generateOnePost(platform: string, pillar: string): Promise<GeneratedPost> {
-  const prompt = `Tu es community manager pour boom.contact (constat amiable numerique, PEP's Swiss SA, Groupe NEUKOMM).
+  const prompt = `Tu es community manager pour boom.contact (constat amiable numerique, PEP's Swiss SA, PEP's Swiss SA).
 Produit : OCR 50 langues, QR code, double signature, PDF certifie, 150+ pays, EUR/CHF 4.90, sans installation.
 Ton : tutoiement, direct, parfois humour. BANNI : revolutionnaire, innovant, game-changer.
 

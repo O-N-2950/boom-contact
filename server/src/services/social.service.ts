@@ -105,7 +105,7 @@ export async function generatePostContent(platform: string, pillar?: string): Pr
   const pool = available.length > 0 ? available : filtered;
   const chosen = pool[Math.floor(Math.random() * pool.length)];
 
-  const prompt = `Tu es community manager pour boom.contact — application de constat amiable numérique par PEP's Swiss SA (Groupe NEUKOMM).
+  const prompt = `Tu es community manager pour boom.contact — application de constat amiable numérique par PEP's Swiss SA (PEP's Swiss SA).
 
 PRODUIT :
 - Constat amiable numérique, valable 150+ pays

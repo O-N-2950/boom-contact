@@ -23,10 +23,10 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 
         {/* MENTIONS LÉGALES */}
         <Section title="⚖️ Mentions légales" accent>
-          <Row label="Éditeur" value="PEP's Swiss SA (Groupe NEUKOMM)" />
+          <Row label="Éditeur" value="PEP's Swiss SA" />
           <Row label="Siège social" value="Bellevue 7, 2950 Courgenay, Jura, Suisse" />
           <Row label="Forme juridique" value="Société anonyme de droit suisse" />
-          <Row label="Directeur" value="Groupe NEUKOMM" />
+          <Row label="Directeur" value="Olivier Neukomm" />
           <Row label="Contact" value="contact@boom.contact" />
           <Row label="DPO (données)" value="privacy@boom.contact" />
           <Row label="Hébergement" value="Railway Corp. (EU West — Paris, France)" />
@@ -139,7 +139,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 
         {/* Contact */}
         <div style={{ borderTop: '1px solid #1a1a1a', paddingTop: 20, textAlign: 'center' as const, color: '#444', fontSize: 11, lineHeight: 1.8 }}>
-          boom.contact · PEP's Swiss SA · Groupe NEUKOMM<br />
+          boom.contact · PEP's Swiss SA · CHE-476.484.632<br />
           Bellevue 7, 2950 Courgenay, Jura, Suisse<br />
           <a href="mailto:privacy@boom.contact" style={{ color: '#555' }}>privacy@boom.contact</a>
           {' · '}
