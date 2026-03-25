@@ -1134,10 +1134,11 @@ export const appRouter = router({
       // Ne pas supprimer le compte admin
       if (input.email === 'contact@boom.contact') throw new Error('Impossible de supprimer le compte admin principal.');
 
-      const user = await db.query.users.findFirst({ where: eq(users.email, input.email) });
+      const emailLower = input.email.toLowerCase();
+      const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
       if (!user) throw new Error('Utilisateur introuvable: ' + input.email);
 
-      await db.delete(magicTokens).where(eq(magicTokens.email, input.email));
+      await db.delete(magicTokens).where(eq(magicTokens.email, emailLower));
       await db.delete(vehicles).where(eq(vehicles.userId, user.id));
       await db.delete(users).where(eq(users.id, user.id));
 
