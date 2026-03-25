@@ -148,9 +148,9 @@ export const appRouter = router({
           io.to(`session:${input.sessionId}`).emit('constat-complete', { sessionId: input.sessionId });
 
           // ── Génération PDF + envoi email automatique ─────────────
-          // Fait côté serveur pour garantir la livraison même si le client ferme l'app
           setImmediate(async () => {
             try {
+              const { logger: log } = await import('../logger.js');
               const { db } = await import('../db/index.js');
               const { sessions: sessionsTable } = await import('../db/schema.js');
               const { eq } = await import('drizzle-orm');
@@ -158,7 +158,6 @@ export const appRouter = router({
               const { sendPDFToDriver } = await import('../services/email.service.js');
               const { savePdfUrl } = await import('../services/session.service.js');
 
-              // Récupérer la session fraîche avec toutes les données
               const { getSession } = await import('../services/session.service.js');
               const fullSession = await getSession(input.sessionId);
               if (!fullSession) return;
@@ -195,7 +194,7 @@ export const appRouter = router({
                   insurerName: A?.insurance?.company,
                   language: A?.language || 'fr',
                 });
-                logger.info(`PDF envoyé à conducteur A: ${emailA}`);
+                log.info(`PDF envoyé à conducteur A: ${emailA}`);
               }
 
               // Envoyer à conducteur B (si email disponible et pas piéton)
@@ -216,7 +215,7 @@ export const appRouter = router({
                   insurerName: B?.insurance?.company,
                   language: B?.language || 'fr',
                 });
-                logger.info(`PDF envoyé à conducteur B: ${emailB}`);
+                log.info(`PDF envoyé à conducteur B: ${emailB}`);
               }
 
               // Piéton avec email → envoyer PDF version A aussi
@@ -230,12 +229,12 @@ export const appRouter = router({
                   pdfBase64: pdfB64A,
                   language: B?.language || 'fr',
                 });
-                logger.info(`PDF envoyé au piéton: ${emailB}`);
+                log.info(`PDF envoyé au piéton: ${emailB}`);
               }
 
             } catch (err) {
               // Ne jamais bloquer la réponse — l'envoi email est best-effort
-              logger.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
+              log.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
             }
           });
         }
