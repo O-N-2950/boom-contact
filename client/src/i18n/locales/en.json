@@ -13,10 +13,10 @@
     "required": "Required",
     "yes": "Yes",
     "no": "No",
-    "unknown": "Unknown"
+    "unknown": "Not provided"
   },
   "landing": {
-    "badge": "World's first accident report app",
+    "badge": "World's first app",
     "hero": {
       "line1": "AFTER",
       "line2": "THE BOOM",
@@ -28,13 +28,13 @@
       "start": "Start a report",
       "pricing": "View pricing →",
       "from": "FROM CHF/€ 4.90 · VALID WORLDWIDE",
-      "free": "FREE TO START · NO REGISTRATION · GDPR"
+      "free": "FREE · NO SIGN-UP · GDPR"
     },
     "mockup": {
       "send": "Send to insurer",
-      "done": "Report completed!",
+      "done": "Report finalized!",
       "waiting": "Session #8F2K · Waiting…",
-      "capture": "📸 Take photo"
+      "capture": "📸 Photograph"
     },
     "badges": {
       "languages": "50 languages",
@@ -43,8 +43,8 @@
     },
     "stats": {
       "accidents": "reports/year in Europe",
-      "languages": "languages supported",
-      "time": "to complete"
+      "languages": "supported languages",
+      "time": "to finalize"
     },
     "how": {
       "label": "How it works",
@@ -55,7 +55,7 @@
           "step": "01",
           "icon": "📸",
           "title": "Scan your documents",
-          "desc": "Photograph registration + green card. Automatic OCR."
+          "desc": "Photograph your registration certificate + green card. Automatic OCR."
         },
         {
           "step": "02",
@@ -72,14 +72,14 @@
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Damage zones",
-          "desc": "Click on the 18-zone diagram to indicate damage."
+          "title": "Impact zones",
+          "desc": "Click on the 18-zone diagram to indicate the damage."
         },
         {
           "step": "05",
           "icon": "✍️",
           "title": "Sign & send",
-          "desc": "Two timestamped digital signatures. PDF certified instantly."
+          "desc": "Two timestamped digital signatures. Certified PDF instantly."
         }
       ]
     },
@@ -89,12 +89,12 @@
         {
           "icon": "📸",
           "title": "Universal OCR",
-          "desc": "Claude Vision reads your documents in 50+ languages. Registration, RC Book, 行驶证 — zero manual entry."
+          "desc": "Claude Vision reads your documents in 50+ languages. Registration certificate, RC Book, 行驶证 — zero manual entry."
         },
         {
           "icon": "📱",
           "title": "Up to 5 vehicles",
-          "desc": "3, 4 or 5 vehicle accident? Each driver scans their own QR. One PDF for everyone."
+          "desc": "Accident involving 3, 4 or 5 vehicles? Each driver scans their own QR. A single PDF for everyone."
         },
         {
           "icon": "📷",
@@ -103,28 +103,28 @@
         },
         {
           "icon": "✏️",
-          "title": "Free-hand sketch",
-          "desc": "Draw vehicle positions, direction arrows, infrastructure. PNG export embedded in the PDF."
+          "title": "Freehand sketch",
+          "desc": "Draw the position of vehicles, direction arrows, infrastructure. PNG export embedded in the PDF."
         },
         {
           "icon": "🚗",
-          "title": "Damage diagram",
-          "desc": "700+ models, adapted silhouette, real OCR color. 18 clickable zones for damage."
+          "title": "Impact diagram",
+          "desc": "700+ models, adapted silhouette, real OCR colour. 18 clickable zones for damage."
         },
         {
           "icon": "✍️",
           "title": "Multi-party signatures",
-          "desc": "N simultaneous touch signatures. Legal value in 150+ countries. QR active 24h for police."
+          "desc": "N simultaneous touch signatures. Legal validity in 150+ countries. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "PDF certified 150+ countries",
-          "desc": "Complete digital document: witnesses, third-party damage, observations, sketch, photos. Recognised by all insurers."
+          "title": "PDF certified in 150+ countries",
+          "desc": "Complete digital document: witnesses, third-party damage, observations, sketch, photos. Recognised by all insurance companies."
         },
         {
           "icon": "🚔",
-          "title": "Police Module (soon)",
-          "desc": "Officers join the session via QR. Official digital police report. Dashboard by station/canton."
+          "title": "Police Module (coming soon)",
+          "desc": "Officers join the session via QR. Official digital report. Dashboard by station/canton."
         },
         {
           "icon": "🌍",
@@ -136,20 +136,20 @@
     "coverage": {
       "label": "Global coverage",
       "title": "From Switzerland to China",
-      "more": "+ 30 more countries · Built-in RTL support"
+      "more": "+ 30 other countries · Integrated RTL support"
     },
     "legal": {
       "title": "International standard",
-      "text": "Our digital PDF is recognised by insurance companies in over 50 countries. Better than paper: timestamped, digitally signed, tamper-proof."
+      "text": "Our digital PDF is recognised by insurance companies in more than 50 countries. Superior to the paper report: time-stamped, digitally signed, tamper-proof."
     },
     "finalCta": {
-      "title": "Ready for an accident?",
-      "subtitle": "Keep boom.contact on your home screen. 5 minutes to complete everything.",
+      "title": "Ready in case of an accident?",
+      "subtitle": "Keep boom.contact on your home screen. 5 minutes to finalise everything.",
       "button": "Start a report"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Switzerland"
     }
   },
   "steps": {
@@ -159,7 +159,7 @@
     "qr": "QR",
     "form": "Info",
     "sketch": "Sketch",
-    "damage": "Damage",
+    "damage": "Impact",
     "sign": "Sign"
   },
   "flow": {
@@ -171,36 +171,36 @@
   "ocr": {
     "idle": {
       "title": "Scan your documents",
-      "subtitle": "Start with your vehicle registration.\nAn <strong>insurance document is recommended</strong>.",
-      "reg_label": "Vehicle registration document",
-      "reg_sub": "Logbook, V5C, Carte grise, Zulassung, Permis CH… — <strong>required</strong>",
-      "tip": "💡 <strong>Insurance document recommended.</strong> Green Card (IMIC), Certificate of Motor Insurance, Insurance ID Card — this document contains your insurer and policy number. Without it, you will need to enter them manually."
+      "subtitle": "Start with your registration document.\nThe insurance document is <strong>recommended</strong>.",
+      "reg_label": "Registration document / Vehicle registration certificate",
+      "reg_sub": "Swiss registration, French carte grise, Zulassung DE, V5C GB… — <strong>required</strong>",
+      "tip": "💡 <strong>Insurance document recommended.</strong> Green card (IMIC), certificate of insurance, Insurance ID card — this document contains your insurer and policy number. Without it, you will need to enter them manually."
     },
     "greencard": {
-      "scanned": "✅ Vehicle registration analysed",
+      "scanned": "✅ Registration document scanned",
       "compressing": "· Compressing…",
       "title": "Insurance document?",
-      "subtitle": "Scan your <strong>Green Card (IMIC)</strong>, Certificate of Motor Insurance, Insurance ID Card or equivalent. This document contains your insurer and policy number. It is <strong>recommended</strong> — without it, manual entry is required.",
+      "subtitle": "Scan your <strong>green card (IMIC)</strong>, certificate of insurance, Certificate of Motor Insurance or Insurance ID Card. This document contains your insurer and policy number. It is <strong>recommended</strong> — without it, manual entry will be required.",
       "scan_btn": "Scan insurance document",
-      "scan_sub": "Green card, certificate, insurance ID card…",
+      "scan_sub": "Green card, certificate, insurance card…",
       "skip_btn": "Enter insurance details manually →"
     },
     "scanning": {
-      "title": "Analysing…",
+      "title": "Analysis in progress…",
       "subtitle": "Claude Vision is reading your documents"
     },
     "review": {
-      "title_pair": "Documents analysed",
-      "title_single": "Registration analysed",
+      "title_pair": "Documents analyzed",
+      "title_single": "License analyzed",
       "confidence": "Confidence: {{pct}}%",
       "skipped": "· Green card skipped",
-      "warnings": "⚠️ {{count}} field to check",
-      "warnings_plural": "⚠️ {{count}} fields to check",
-      "insurance_title": "🛡️ Insurance details — manual entry",
+      "warnings": "⚠️ {{count}} field to review",
+      "warnings_plural": "⚠️ {{count}} fields to review",
+      "insurance_title": "🛡️ Insurance data — manual entry",
       "company_label": "Insurance company *",
-      "company_placeholder": "AXA, Zurich, Allianz…",
-      "policy_label": "Policy number *",
-      "policy_placeholder": "UK-2026-12345",
+      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
+      "policy_label": "Contract / policy no. *",
+      "policy_placeholder": "CH-2026-12345",
       "section_vehicle": "🚗 Vehicle",
       "section_driver": "👤 Driver",
       "section_greencard": "🟢 Insurance (green card)",
@@ -217,18 +217,54 @@
       "cycles": "Cycles",
       "other": "Person / Other"
     },
+    "datetime_label": "Date & time of the accident",
+    "date_label": "Date",
+    "time_label": "Time",
+    "datetime_warning": "⚠️ Enter the actual time of the accident, not the current time.",
+    "geo_label": "Accident location",
+    "gps_captured": "GPS captured — {{lat}}, {{lng}}",
+    "gps_loading": "Locating…",
+    "gps_denied": "GPS access denied — manual entry",
+    "gps_missing": "GPS position not captured",
+    "gps_saved": "Coordinates saved in the document",
+    "address_label": "Street / Place / Motorway (e.g. A1 exit 12, Four Roads Junction)",
+    "address_placeholder": "E.g. Station Avenue 4, A1 direction Bern km 47…",
+    "city_label": "City / Town",
+    "city_placeholder": "Lausanne, Paris…",
+    "country_label": "Country",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 <strong>Important:</strong> Enter the <strong>exact location of the accident</strong>, even if you have moved the vehicles to the side. GPS captures your <em>current</em> position — correct it if you have moved.",
+    "injuries_label": "Are there any injuries?",
+    "no_injuries": "No — no injuries",
+    "yes_injuries": "Yes — injury/injuries",
+    "injury_details_title": "🚑 Injury Details",
+    "severity_label": "Apparent severity",
+    "severity_minor": "Minor",
+    "severity_moderate": "Moderate",
+    "severity_serious": "Serious",
+    "injury_desc_label": "Description (body area, pain, visible injuries)",
+    "injury_desc_placeholder": "E.g.: Neck pain, bruise on left knee, cut on forehead…",
+    "ambulance": "🚑 Taken care of by ambulance / SMUR",
+    "hospitalized": "🏥 Hospitalization required or anticipated",
+    "injury_footer": "In case of serious injuries, call 112 (EU) or 144 (CH) immediately. This information will be included in the final document.",
+    "cta_no_vehicle": "Select your vehicle type",
+    "cta_no_injuries": "Indicate whether there are any injuries",
+    "cta_no_location": "Enter the accident location",
+    "emergency_police": "🚔 Police · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Emergency · {{number}} {{label}}",
+    "emergency_voluntary": "These calls are voluntary — the police are never notified automatically.",
     "vehicles": {
       "car": {
         "label": "Car",
         "sub": "Sedan, SUV, estate, 4×4, city car"
       },
       "van": {
-        "label": "Van / Light commercial",
-        "sub": "Minivan, van, light commercial"
+        "label": "Van / Light commercial vehicle",
+        "sub": "Pickup, van, light utility vehicle"
       },
       "motorcycle": {
         "label": "Motorcycle",
-        "sub": "Motorcycle, motorbike"
+        "sub": "Motorbike, motorcycle"
       },
       "scooter": {
         "label": "Scooter / Moped",
@@ -236,19 +272,19 @@
       },
       "moped": {
         "label": "Moped",
-        "sub": "2-wheel <45km/h, 125cc"
+        "sub": "2 wheels <45km/h, 125cc"
       },
       "escooter": {
         "label": "Electric scooter",
-        "sub": "E-scooter, gyroscooter, hoverboard"
+        "sub": "PLEV, unicycle, hoverboard"
       },
       "quad": {
         "label": "Quad / Buggy",
-        "sub": "Off-road motorised vehicle"
+        "sub": "Motorised off-road vehicle"
       },
       "truck": {
-        "label": "Truck / HGV",
-        "sub": "Semi-trailer, lorry, tipper"
+        "label": "Truck / Heavy goods vehicle",
+        "sub": "Semi-trailer, rigid truck, tipper"
       },
       "bus": {
         "label": "Bus / Coach",
@@ -256,31 +292,31 @@
       },
       "construction": {
         "label": "Construction vehicle",
-        "sub": "Digger, crane, excavator, dumper"
+        "sub": "Backhoe loader, crane, excavator, dumper"
       },
       "tractor": {
         "label": "Agricultural tractor",
-        "sub": "Tractor, agricultural equipment"
+        "sub": "Tractor, agricultural machinery"
       },
       "tram": {
         "label": "Tram",
-        "sub": "Tram, light metro"
+        "sub": "Tram, light rail"
       },
       "train": {
         "label": "Train / Metro",
-        "sub": "Train, metro, underground"
+        "sub": "Train, commuter rail, underground metro"
       },
       "bicycle": {
         "label": "Bicycle",
-        "sub": "Classic bike, e-bike, electric bicycle"
+        "sub": "Standard bike, e-bike, electric bicycle"
       },
       "cargo_bike": {
         "label": "Cargo bike",
-        "sub": "Bakfiets, tricycle, electric cargo"
+        "sub": "Bakfiets, tricycle, electric cargo bike"
       },
       "pedestrian": {
         "label": "Pedestrian",
-        "sub": "On foot, rollerblades, skateboard"
+        "sub": "Person on foot, rollerblades, skateboard"
       },
       "boat": {
         "label": "Boat",
@@ -290,43 +326,7 @@
         "label": "Other vehicle",
         "sub": "Not listed — specify in observations"
       }
-    },
-    "datetime_label": "Date & time of accident",
-    "date_label": "Date",
-    "time_label": "Time",
-    "datetime_warning": "⚠️ Enter the actual time of the accident, not the current time.",
-    "geo_label": "Accident location",
-    "gps_captured": "GPS captured — {{lat}}, {{lng}}",
-    "gps_loading": "Locating…",
-    "gps_denied": "GPS access denied — enter manually",
-    "gps_missing": "GPS position not captured",
-    "gps_saved": "Coordinates recorded in the document",
-    "address_label": "Street / Area / Motorway (e.g. M25 junction 5, Crossroads)",
-    "address_placeholder": "e.g. 4 Station Road, M25 junction 5…",
-    "city_label": "Town / City",
-    "city_placeholder": "London, Paris…",
-    "country_label": "Country",
-    "country_placeholder": "GB, FR…",
-    "location_tip": "💡 <strong>Important:</strong> Enter the <strong>exact accident location</strong>, even if you moved the vehicles to the side. GPS captures your <em>current</em> position — correct it if you moved.",
-    "injuries_label": "Are there any injuries?",
-    "no_injuries": "No — no injuries",
-    "yes_injuries": "Yes — injury/injuries",
-    "injury_details_title": "🚑 Injury details",
-    "severity_label": "Apparent severity",
-    "severity_minor": "Minor",
-    "severity_moderate": "Moderate",
-    "severity_serious": "Serious",
-    "injury_desc_label": "Description (body area, pain, visible injuries)",
-    "injury_desc_placeholder": "e.g. Neck pain, left knee bruise, forehead cut…",
-    "ambulance": "🚑 Treated by ambulance / paramedics",
-    "hospitalized": "🏥 Hospitalisation required or expected",
-    "injury_footer": "For serious injuries, call 112 (EU) or 999 (UK) immediately. This information will be included in the final document.",
-    "cta_no_vehicle": "Select your vehicle type",
-    "cta_no_injuries": "Indicate whether there are injuries",
-    "cta_no_location": "Enter the accident location",
-    "emergency_police": "🚔 Police · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Emergency · {{number}} {{label}}",
-    "emergency_voluntary": "These calls are voluntary — police are never notified automatically."
+    }
   },
   "cgu": {
     "before_continue": "BEFORE CONTINUING",
@@ -406,27 +406,27 @@
   },
   "pricing": {
     "title": "Choose a package",
-    "subtitle": "Buy your credits upfront — pay once",
+    "subtitle": "Buy your credits in advance — pay once",
     "popular_badge": "⭐ Popular",
-    "economy": "Save {{pct}}",
+    "economy": "Economy {{pct}}",
     "credits_label": "Credits",
     "per_report": "Per report",
     "validity": "Validity",
     "no_expiry": "No expiry",
     "buy_btn": "Buy — {{symbol}} {{price}}",
     "redirecting": "Redirecting to Stripe…",
-    "error_missing_url": "Missing Stripe URL",
+    "error_missing_url": "Stripe URL missing",
     "trust": {
       "stripe": "🔒 Secure payment via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Credits with no expiry date",
+      "no_expiry": "📄 Credits with no expiration date",
       "worldwide": "🌍 Certified digital document · valid in 150+ countries",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Switzerland"
     },
-    "legal": "By purchasing, you accept boom.contact's Terms & Conditions.\nNo refund once the PDF has been generated.",
+    "legal": "By purchasing, you agree to boom.contact's Terms of Use.\nRefunds are not possible after the PDF has been generated.",
     "packages": {
       "single": {
         "label": "1 report",
-        "description": "For a one-off accident"
+        "description": "For a one-time accident"
       },
       "pack3": {
         "label": "3 reports",
@@ -434,7 +434,7 @@
       },
       "pack10": {
         "label": "10 reports",
-        "description": "Brokers, company fleets"
+        "description": "Brokers, corporate fleets"
       }
     }
   },

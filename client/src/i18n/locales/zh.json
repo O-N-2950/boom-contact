@@ -3,6 +3,7 @@
     "continue": "继续 →",
     "confirm": "确认 →",
     "cancel": "取消",
+    "rescan": "🔄 重新扫描",
     "loading": "加载中…",
     "saving": "⏳ 保存中…",
     "error": "错误",
@@ -12,139 +13,139 @@
     "required": "必填",
     "yes": "是",
     "no": "否",
-    "unknown": "未知"
+    "unknown": "未填写"
   },
   "landing": {
-    "badge": "Première app mondiale",
+    "badge": "全球首款应用",
     "hero": {
-      "line1": "APRÈS",
-      "line2": "LE BOOM",
-      "line3": "LE",
-      "line4": "CONTACT"
+      "line1": "事故",
+      "line2": "之后",
+      "line3": "来",
+      "line4": "联系"
     },
-    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "subtitle": "5分钟完成电子事故报告。通用OCR，共享QR码，即时全球PDF。",
     "cta": {
-      "start": "开始报告",
-      "pricing": "Voir les tarifs →",
-      "from": "À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT",
-      "free": "GRATUIT · SANS INSCRIPTION · RGPD"
+      "start": "开始填写事故报告",
+      "pricing": "查看价格 →",
+      "from": "起价 CHF/€ 4.90 · 全球有效",
+      "free": "免费 · 无需注册 · RGPD"
     },
     "mockup": {
-      "send": "Envoyer à l'assureur",
-      "done": "Constat finalisé !",
-      "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "send": "发送给保险公司",
+      "done": "事故报告已完成！",
+      "waiting": "会话 #8F2K · 等待中…",
+      "capture": "📸 拍照"
     },
     "badges": {
-      "languages": "50 langues",
-      "time": "5 min",
-      "encrypted": "Chiffré"
+      "languages": "50种语言",
+      "time": "5分钟",
+      "encrypted": "加密"
     },
     "stats": {
-      "accidents": "constats/an en Europe",
-      "languages": "langues supportées",
-      "time": "pour finaliser"
+      "accidents": "件事故报告/年（欧洲）",
+      "languages": "种支持语言",
+      "time": "完成所需时间"
     },
     "how": {
-      "label": "Comment ça marche",
-      "title": "5 étapes.",
-      "title_accent": "5 minutes.",
+      "label": "使用流程",
+      "title": "5个步骤。",
+      "title_accent": "5分钟。",
       "steps": [
         {
           "step": "01",
           "icon": "📸",
-          "title": "Scannez vos documents",
-          "desc": "Photographiez permis de circulation + carte verte. OCR automatique."
+          "title": "扫描您的证件",
+          "desc": "拍摄行驶证和绿卡保险证。自动OCR识别。"
         },
         {
           "step": "02",
           "icon": "📱",
-          "title": "Partagez le QR code",
-          "desc": "L'autre conducteur scanne le QR. Session partagée en temps réel."
+          "title": "分享QR码",
+          "desc": "另一位驾驶员扫描QR码。实时共享会话。"
         },
         {
           "step": "03",
           "icon": "📋",
-          "title": "Remplissez le formulaire",
-          "desc": "Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances."
+          "title": "填写表格",
+          "desc": "由OCR预填的通用表格。核实并勾选事故情况。"
         },
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Zones de choc",
-          "desc": "Cliquez sur le diagramme 18 zones pour indiquer les dommages."
+          "title": "碰撞区域",
+          "desc": "点击18区域图示标注受损部位。"
         },
         {
           "step": "05",
           "icon": "✍️",
-          "title": "Signez & envoyez",
-          "desc": "Deux signatures digitales horodatées. PDF certifié instantanément."
+          "title": "签署并发送",
+          "desc": "两个带时间戳的数字签名。即时生成认证PDF。"
         }
       ]
     },
     "features": {
-      "title": "Tout ce dont vous avez besoin",
+      "title": "您所需的一切",
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universel",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
+          "title": "通用OCR",
+          "desc": "Claude Vision 可识别50+种语言的文件。行驶证、RC Book、行驶证 — 零手动输入。"
         },
         {
           "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
+          "title": "最多5辆车",
+          "desc": "3、4或5辆车的事故？每位驾驶员扫描自己的QR码。所有人共用一份PDF。"
         },
         {
           "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
+          "title": "现场照片",
+          "desc": "5个类别：现场、A方损伤、B方损伤、伤情、文件。压缩后包含于PDF中。"
         },
         {
           "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
+          "title": "自由草图",
+          "desc": "绘制车辆位置、行驶方向箭头及基础设施。PNG导出并集成于PDF中。"
         },
         {
           "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
+          "title": "碰撞示意图",
+          "desc": "700+种模型，适配车辆轮廓，OCR识别真实颜色。18个可点击损伤区域。"
         },
         {
           "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police."
+          "title": "多方签名",
+          "desc": "同时支持N个触控签名。在150+个国家具有法律效力。QR码24小时有效供警方使用。"
         },
         {
           "icon": "📄",
-          "title": "PDF certifié 150+ pays",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d'assurance."
+          "title": "150+国认证PDF",
+          "desc": "完整数字文件：证人、第三方损伤、备注、草图、照片。获所有保险公司认可。"
         },
         {
           "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
+          "title": "警察模块（即将推出）",
+          "desc": "警员通过QR码加入会话。官方数字事故报告。按站点/辖区管理的仪表板。"
         },
         {
           "icon": "🌍",
-          "title": "50 langues + RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
+          "title": "50种语言 + RTL",
+          "desc": "覆盖50亿使用者。阿拉伯语、希伯来语、波斯语、乌尔都语原生RTL支持。紧急情况地理定位。"
         }
       ]
     },
     "coverage": {
-      "label": "Couverture mondiale",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
+      "label": "全球覆盖",
+      "title": "从瑞士到中国",
+      "more": "+ 30个其他国家 · 内置RTL支持"
     },
     "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
+      "title": "国际标准",
+      "text": "我们的数字PDF获50多个国家保险公司认可。优于纸质事故报告：带时间戳、数字签名、不可篡改。"
     },
     "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
+      "title": "发生事故时已准备好了吗？",
+      "subtitle": "将 boom.contact 保存到主屏幕。5分钟完成所有流程。",
+      "button": "开始填写事故报告"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
@@ -155,177 +156,177 @@
     "scan": "扫描",
     "location": "地点",
     "photos": "照片",
-    "qr": "QR码",
+    "qr": "QR",
     "form": "信息",
     "sketch": "草图",
-    "damage": "损伤",
+    "damage": "碰撞",
     "sign": "签名"
   },
   "flow": {
     "header": {
-      "role_a": "驾驶员A — 新事故报告",
+      "role_a": "驾驶员 A — 新事故声明",
       "reset_title": "重新开始"
     }
   },
   "ocr": {
     "idle": {
-      "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
-      "reg_label": "Permis de circulation / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+      "title": "扫描您的文件",
+      "subtitle": "请从行驶证开始。\n保险文件<strong>推荐提供</strong>。",
+      "reg_label": "行驶证 / 车辆登记证",
+      "reg_sub": "瑞士行驶证、法国车辆登记证、德国Zulassung、英国V5C… — <strong>必填</strong>",
+      "tip": "💡 <strong>推荐提供保险文件。</strong>绿卡（IMIC）、保险证明、Insurance ID card — 该文件包含您的保险公司和保单号码。若未提供，您需要手动输入。"
     },
     "greencard": {
-      "scanned": "✅ Permis de circulation scanné",
-      "compressing": "· Compression…",
-      "title": "Document d'assurance ?",
-      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
-      "scan_btn": "Scanner le document d'assurance",
-      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
-      "skip_btn": "Saisir manuellement les données d'assurance →"
+      "scanned": "✅ 行驶证已扫描",
+      "compressing": "· 压缩中…",
+      "title": "保险文件？",
+      "subtitle": "请扫描您的<strong>绿卡（IMIC）</strong>、保险证明、Certificate of Motor Insurance 或 Insurance ID Card。该文件包含您的保险公司和保单号码。<strong>推荐提供</strong> — 若未提供，需手动输入。",
+      "scan_btn": "扫描保险文件",
+      "scan_sub": "绿卡、保险证明、certificate、insurance card…",
+      "skip_btn": "手动输入保险信息 →"
     },
     "scanning": {
-      "title": "Analyse en cours…",
-      "subtitle": "Claude Vision lit vos documents"
+      "title": "分析中…",
+      "subtitle": "Claude Vision 正在读取您的文件"
     },
     "review": {
-      "title_pair": "Documents analysés",
-      "title_single": "Permis analysé",
-      "confidence": "Confiance : {{pct}}%",
-      "skipped": "· Carte verte ignorée",
-      "warnings": "⚠️ {{count}} champ à vérifier",
-      "warnings_plural": "⚠️ {{count}} champs à vérifier",
-      "insurance_title": "🛡️ Données d'assurance — saisie manuelle",
-      "company_label": "Compagnie d'assurance *",
-      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
-      "policy_label": "N° de contrat / police *",
+      "title_pair": "已分析文件",
+      "title_single": "已分析驾照",
+      "confidence": "可信度：{{pct}}%",
+      "skipped": "· 绿卡已跳过",
+      "warnings": "⚠️ {{count}} 个字段需要核查",
+      "warnings_plural": "⚠️ {{count}} 个字段需要核查",
+      "insurance_title": "🛡️ 保险数据 — 手动输入",
+      "company_label": "保险公司 *",
+      "company_placeholder": "Zurich、AXA、Helvetia、Mobilière…",
+      "policy_label": "合同／保单编号 *",
       "policy_placeholder": "CH-2026-12345",
-      "section_vehicle": "🚗 Véhicule",
-      "section_driver": "👤 Conducteur",
-      "section_greencard": "🟢 Assurance (carte verte)",
-      "rescan": "🔄 Rescanner",
-      "confirm": "Confirmer →"
+      "section_vehicle": "🚗 车辆",
+      "section_driver": "👤 驾驶员",
+      "section_greencard": "🟢 保险（绿卡）",
+      "rescan": "🔄 重新扫描",
+      "confirm": "确认 →"
     }
   },
   "location": {
-    "vehicle_label": "Votre véhicule",
+    "vehicle_label": "您的车辆",
     "groups": {
-      "light": "Véhicules légers",
-      "heavy": "Véhicules lourds",
-      "rail": "Transport en commun / rail",
-      "cycles": "Cycles",
-      "other": "Personne / Autre"
+      "light": "轻型车辆",
+      "heavy": "重型车辆",
+      "rail": "公共交通／铁路",
+      "cycles": "自行车",
+      "other": "行人／其他"
     },
+    "datetime_label": "事故日期和时间",
+    "date_label": "日期",
+    "time_label": "时间",
+    "datetime_warning": "⚠️ 请填写事故发生的实际时间，而非当前时间。",
+    "geo_label": "事故地点",
+    "gps_captured": "GPS 已捕获 — {{lat}}, {{lng}}",
+    "gps_loading": "正在获取位置…",
+    "gps_denied": "GPS 访问被拒绝 — 请手动输入",
+    "gps_missing": "未捕获 GPS 位置",
+    "gps_saved": "坐标已保存至文档",
+    "address_label": "街道 / 地点 / 高速公路（例：A1 出口 12，四路交叉口）",
+    "address_placeholder": "例：车站大道 4 号，A1 方向伯尔尼 km 47……",
+    "city_label": "城市 / 地区",
+    "city_placeholder": "洛桑，巴黎……",
+    "country_label": "国家",
+    "country_placeholder": "CH，FR……",
+    "location_tip": "💡 <strong>重要提示：</strong>请填写<strong>事故发生的确切地点</strong>，即使您已将车辆移到路边。GPS 获取的是您<em>当前</em>位置——如果您已移动，请手动修正。",
+    "injuries_label": "是否有人员受伤？",
+    "no_injuries": "否——无人受伤",
+    "yes_injuries": "是——有人员受伤",
+    "injury_details_title": "🚑 伤情详情",
+    "severity_label": "表观严重程度",
+    "severity_minor": "轻微",
+    "severity_moderate": "中度",
+    "severity_serious": "严重",
+    "injury_desc_label": "描述（身体部位、疼痛、可见伤情）",
+    "injury_desc_placeholder": "例如：颈部疼痛、左膝挫伤、额头割伤……",
+    "ambulance": "🚑 由救护车 / SMUR 接诊",
+    "hospitalized": "🏥 需要或考虑住院治疗",
+    "injury_footer": "如有重伤人员，请立即拨打 112（欧盟）或 144（瑞士）。这些信息将包含在最终文件中。",
+    "cta_no_vehicle": "请选择您的车辆类型",
+    "cta_no_injuries": "请说明是否有人员受伤",
+    "cta_no_location": "请填写事故发生地点",
+    "emergency_police": "🚔 警察 · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 急救 · {{number}} {{label}}",
+    "emergency_voluntary": "拨打这些电话完全自愿——警方不会被自动通知。",
     "vehicles": {
       "car": {
-        "label": "Voiture",
-        "sub": "Berline, SUV, break, 4×4, citadine"
+        "label": "轿车",
+        "sub": "轿车、SUV、旅行车、四驱车、城市小型车"
       },
       "van": {
-        "label": "Fourgon / Utilitaire",
-        "sub": "Camionnette, van, utilitaire léger"
+        "label": "厢式车／商用车",
+        "sub": "小货车、面包车、轻型商用车"
       },
       "motorcycle": {
-        "label": "Moto",
-        "sub": "Moto, motocyclette"
+        "label": "摩托车",
+        "sub": "摩托车、机车"
       },
       "scooter": {
-        "label": "Scooter / Cyclomoteur",
-        "sub": "Scooter, 50cm³"
+        "label": "踏板车／轻便摩托车",
+        "sub": "踏板车、50cm³"
       },
       "moped": {
-        "label": "Vélomoteur",
-        "sub": "2 roues <45km/h, 125cm³"
+        "label": "轻便两轮车",
+        "sub": "两轮车 <45km/h、125cm³"
       },
       "escooter": {
-        "label": "Trottinette électrique",
-        "sub": "EDPM, gyroroue, hoverboard"
+        "label": "电动滑板车",
+        "sub": "EDPM、电动独轮车、悬浮滑板"
       },
       "quad": {
-        "label": "Quad / Buggy",
-        "sub": "Véhicule tout-terrain motorisé"
+        "label": "四轮越野车／沙滩车",
+        "sub": "机动全地形车"
       },
       "truck": {
-        "label": "Camion / Poids lourd",
-        "sub": "Semi-remorque, porteur, benne"
+        "label": "卡车／重型车辆",
+        "sub": "半挂车、载货车、自卸车"
       },
       "bus": {
-        "label": "Bus / Autocar",
-        "sub": "Bus urbain, car, minibus"
+        "label": "公共汽车／长途客车",
+        "sub": "城市公交、长途客车、小型巴士"
       },
       "construction": {
-        "label": "Engin de chantier",
-        "sub": "Tractopelle, grue, pelleteuse, dumper"
+        "label": "工程机械",
+        "sub": "挖掘装载机、起重机、挖掘机、自卸车"
       },
       "tractor": {
-        "label": "Tracteur agricole",
-        "sub": "Tracteur, engin agricole"
+        "label": "农用拖拉机",
+        "sub": "拖拉机、农业机械"
       },
       "tram": {
-        "label": "Tramway",
-        "sub": "Tram, métro léger"
+        "label": "有轨电车",
+        "sub": "电车、轻轨"
       },
       "train": {
-        "label": "Train / Métro",
-        "sub": "Train, RER, métro souterrain"
+        "label": "火车／地铁",
+        "sub": "火车、城郊铁路、地下地铁"
       },
       "bicycle": {
-        "label": "Vélo",
-        "sub": "Vélo classique, VAE, vélo électrique"
+        "label": "自行车",
+        "sub": "普通自行车、电助力自行车、电动自行车"
       },
       "cargo_bike": {
-        "label": "Vélo cargo",
-        "sub": "Bakfiets, triporteur, cargo électrique"
+        "label": "货运自行车",
+        "sub": "荷兰货运自行车、三轮货车、电动货运车"
       },
       "pedestrian": {
-        "label": "Piéton",
-        "sub": "Personne à pied, rollers, skateboard"
+        "label": "行人",
+        "sub": "步行者、轮滑、滑板"
       },
       "boat": {
-        "label": "Bateau",
-        "sub": "Embarcation, jet-ski, canot"
+        "label": "船只",
+        "sub": "船艇、水上摩托、小艇"
       },
       "other": {
-        "label": "Autre véhicule",
-        "sub": "Non listé — préciser dans observations"
+        "label": "其他车辆",
+        "sub": "未列出 — 请在备注中说明"
       }
-    },
-    "datetime_label": "Date & heure de l'accident",
-    "date_label": "Date",
-    "time_label": "Heure",
-    "datetime_warning": "⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.",
-    "geo_label": "Lieu de l'accident",
-    "gps_captured": "GPS capturé — {{lat}}, {{lng}}",
-    "gps_loading": "Localisation en cours…",
-    "gps_denied": "Accès GPS refusé — saisie manuelle",
-    "gps_missing": "Position GPS non capturée",
-    "gps_saved": "Coordonnées enregistrées dans le document",
-    "address_label": "Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)",
-    "address_placeholder": "Ex: Avenue de la Gare 4, A1 direction Berne km 47…",
-    "city_label": "Ville / Localité",
-    "city_placeholder": "Lausanne, Paris…",
-    "country_label": "Pays",
-    "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
-    "injuries_label": "Y a-t-il des blessés ?",
-    "no_injuries": "Non — aucun blessé",
-    "yes_injuries": "Oui — blessure(s)",
-    "injury_details_title": "🚑 Détails des blessures",
-    "severity_label": "Gravité apparente",
-    "severity_minor": "Légère",
-    "severity_moderate": "Modérée",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Description (zone du corps, douleurs, blessures visibles)",
-    "injury_desc_placeholder": "Ex: Douleur cervicale, contusion genou gauche, coupure front…",
-    "ambulance": "🚑 Prise en charge par ambulance / SMUR",
-    "hospitalized": "🏥 Hospitalisation nécessaire ou envisagée",
-    "injury_footer": "En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement. Ces informations seront incluses dans le document final.",
-    "cta_no_vehicle": "Sélectionnez votre type de véhicule",
-    "cta_no_injuries": "Indiquez s'il y a des blessés",
-    "cta_no_location": "Indiquez le lieu de l'accident",
-    "emergency_police": "🚔 Police · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
-    "emergency_voluntary": "Ces appels sont volontaires — la police n'est jamais prévenue automatiquement."
+    }
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -404,45 +405,45 @@
     ]
   },
   "pricing": {
-    "title": "Choisir un package",
-    "subtitle": "Achetez vos crédits à l'avance — payez une seule fois",
-    "popular_badge": "⭐ Populaire",
-    "economy": "Économie {{pct}}",
-    "credits_label": "Crédits",
-    "per_report": "Par constat",
-    "validity": "Validité",
-    "no_expiry": "Sans limite",
-    "buy_btn": "Acheter — {{symbol}} {{price}}",
-    "redirecting": "Redirection Stripe…",
-    "error_missing_url": "URL Stripe manquante",
+    "title": "选择套餐",
+    "subtitle": "提前购买积分 — 一次性付款",
+    "popular_badge": "⭐ 热门",
+    "economy": "节省 {{pct}}",
+    "credits_label": "积分",
+    "per_report": "每份报告",
+    "validity": "有效期",
+    "no_expiry": "无限期",
+    "buy_btn": "购买 — {{symbol}} {{price}}",
+    "redirecting": "正在跳转至 Stripe…",
+    "error_missing_url": "缺少 Stripe 链接",
     "trust": {
-      "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Crédits sans date d'expiration",
-      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
-      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+      "stripe": "🔒 通过 Stripe 安全支付（PCI-DSS）",
+      "no_expiry": "📄 积分无过期日期",
+      "worldwide": "🌍 经认证的数字文件 · 在 150 多个国家有效",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, 瑞士"
     },
-    "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
+    "legal": "购买即表示您接受 boom.contact 的使用条款。\nPDF 生成后不可退款。",
     "packages": {
       "single": {
-        "label": "1 constat",
-        "description": "Pour un accident ponctuel"
+        "label": "1 份报告",
+        "description": "适用于偶发性事故"
       },
       "pack3": {
-        "label": "3 constats",
-        "description": "Pour la famille"
+        "label": "3 份报告",
+        "description": "适合家庭使用"
       },
       "pack10": {
-        "label": "10 constats",
-        "description": "Courtiers, flottes d'entreprise"
+        "label": "10 份报告",
+        "description": "经纪人、企业车队"
       }
     }
   },
   "offline": {
-    "banner": "Hors ligne — {{count}} session(s) en attente",
-    "banner_0": "Vous êtes hors ligne"
+    "banner": "离线 — 等待中 {{count}} 个会话",
+    "banner_0": "您当前处于离线状态"
   },
   "language": {
-    "select": "Langue",
-    "switch_tooltip": "Changer de langue"
+    "select": "语言",
+    "switch_tooltip": "切换语言"
   }
 }

@@ -3,148 +3,129 @@
     "continue": "متابعة →",
     "confirm": "تأكيد →",
     "cancel": "إلغاء",
+    "rescan": "🔄 إعادة المسح",
     "loading": "جارٍ التحميل…",
     "saving": "⏳ جارٍ الحفظ…",
     "error": "خطأ",
     "retry": "إعادة المحاولة",
-    "back": "→",
+    "back": "←",
     "optional": "اختياري",
-    "required": "مطلوب",
+    "required": "إلزامي",
     "yes": "نعم",
     "no": "لا",
     "unknown": "غير محدد"
   },
   "landing": {
-    "badge": "Première app mondiale",
+    "badge": "أول تطبيق عالمي",
     "hero": {
-      "line1": "APRÈS",
-      "line2": "LE BOOM",
-      "line3": "LE",
-      "line4": "CONTACT"
+      "line1": "بعد",
+      "line2": "الحادثة",
+      "line3": "يأتي",
+      "line4": "التواصل"
     },
-    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "subtitle": "تقرير رقمي في 5 دقائق. OCR عالمي، QR code مشترك، PDF فوري على مستوى العالم.",
     "cta": {
-      "start": "بدء التقرير",
-      "pricing": "Voir les tarifs →",
-      "from": "À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT",
-      "free": "GRATUIT · SANS INSCRIPTION · RGPD"
+      "start": "بدء تقرير الحادثة",
+      "pricing": "عرض الأسعار →",
+      "from": "ابتداءً من CHF/€ 4.90 · صالح عالمياً",
+      "free": "مجاني · بدون تسجيل · RGPD"
     },
     "mockup": {
-      "send": "Envoyer à l'assureur",
-      "done": "Constat finalisé !",
-      "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "send": "إرسال إلى شركة التأمين",
+      "done": "تقرير الحادث مكتمل!",
+      "waiting": "الجلسة #8F2K · في انتظار…",
+      "capture": "📸 التقاط صورة"
     },
     "badges": {
-      "languages": "50 langues",
-      "time": "5 min",
-      "encrypted": "Chiffré"
+      "languages": "50 لغة",
+      "time": "5 دقائق",
+      "encrypted": "مشفّر"
     },
     "stats": {
-      "accidents": "constats/an en Europe",
-      "languages": "langues supportées",
-      "time": "pour finaliser"
+      "accidents": "تقارير حوادث/سنة في أوروبا",
+      "languages": "لغة مدعومة",
+      "time": "للإنهاء"
     },
     "how": {
-      "label": "Comment ça marche",
-      "title": "5 étapes.",
-      "title_accent": "5 minutes.",
+      "label": "كيف يعمل",
+      "title": "5 خطوات.",
+      "title_accent": "5 دقائق.",
       "steps": [
         {
           "step": "01",
           "icon": "📸",
-          "title": "Scannez vos documents",
-          "desc": "Photographiez permis de circulation + carte verte. OCR automatique."
+          "title": "امسح مستنداتك ضوئياً",
+          "desc": "صوّر رخصة تسيير السيارة + بطاقة التأمين الخضراء. تعرف تلقائي على النصوص OCR."
         },
         {
           "step": "02",
           "icon": "📱",
-          "title": "Partagez le QR code",
-          "desc": "L'autre conducteur scanne le QR. Session partagée en temps réel."
+          "title": "شارك رمز QR",
+          "desc": "يقوم السائق الآخر بمسح رمز QR. جلسة مشتركة في الوقت الفعلي."
         },
         {
           "step": "03",
           "icon": "📋",
-          "title": "Remplissez le formulaire",
-          "desc": "Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances."
+          "title": "املأ النموذج",
+          "desc": "نموذج شامل مُعبَّأ مسبقاً بواسطة OCR. تحقق وضع علامة على الملابسات."
         },
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Zones de choc",
-          "desc": "Cliquez sur le diagramme 18 zones pour indiquer les dommages."
+          "title": "مناطق الاصطدام",
+          "desc": "انقر على مخطط 18 منطقة للإشارة إلى الأضرار."
         },
         {
           "step": "05",
           "icon": "✍️",
-          "title": "Signez & envoyez",
-          "desc": "Deux signatures digitales horodatées. PDF certifié instantanément."
+          "title": "وقّع وأرسل",
+          "desc": "توقيعان رقميان مختومان بالوقت. PDF معتمد فوراً."
         }
       ]
     },
     "features": {
-      "title": "Tout ce dont vous avez besoin",
+      "title": "كل ما تحتاجه",
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universel",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
+          "title": "OCR شامل",
+          "desc": "يقرأ Claude Vision مستنداتك بأكثر من 50 لغة. بطاقة رمادية، RC Book، 行驶证 — صفر إدخال يدوي."
         },
         {
           "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
+          "title": "حتى 5 مركبات",
+          "desc": "حادث بـ 3 أو 4 أو 5 مركبات؟ يمسح كل سائق QR الخاص به. ملف PDF واحد للجميع."
         },
         {
           "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
+          "title": "صور الحادث",
+          "desc": "5 فئات: الموقع، أضرار A، أضرار B، الإصابات، المستندات. مضغوطة ومدرجة في ملف PDF."
         },
         {
           "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
+          "title": "رسم حر",
+          "desc": "ارسم موضع المركبات وأسهم الاتجاه والبنية التحتية. تصدير PNG مدمج في ملف PDF."
         },
         {
           "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF certifié 150+ pays",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d'assurance."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "50 langues + RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
+          "title": "مخطط الاصطدام",
+          "desc": "أكثر من 700 نموذج، صورة ظلية ملائمة، لون حقيقي عبر OCR. 18 منطقة قابلة للنقر للأضرار."
         }
       ]
     },
     "coverage": {
-      "label": "Couverture mondiale",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
+      "label": "تغطية عالمية",
+      "title": "من سويسرا إلى الصين",
+      "more": "+ 30 دولة أخرى · دعم RTL مدمج"
     },
     "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
+      "title": "معيار دولي",
+      "text": "ملف PDF الرقمي الخاص بنا معترف به من قبل شركات التأمين في أكثر من 50 دولة. يتفوق على التقرير الورقي: مؤرخ بالتوقيت، موقّع رقمياً، غير قابل للتلاعب."
     },
     "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
+      "title": "هل أنت مستعد في حالة وقوع حادث؟",
+      "subtitle": "احتفظ بـ boom.contact على شاشتك الرئيسية. 5 دقائق لإتمام كل شيء.",
+      "button": "بدء تقرير الحادث"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
@@ -154,178 +135,178 @@
   "steps": {
     "scan": "مسح",
     "location": "الموقع",
-    "photos": "صور",
-    "qr": "رمز QR",
-    "form": "بيانات",
+    "photos": "الصور",
+    "qr": "QR",
+    "form": "المعلومات",
     "sketch": "رسم",
-    "damage": "أضرار",
+    "damage": "الضرر",
     "sign": "توقيع"
   },
   "flow": {
     "header": {
-      "role_a": "السائق أ — تقرير جديد",
-      "reset_title": "إعادة البدء"
+      "role_a": "السائق A — تقرير جديد",
+      "reset_title": "البدء من جديد"
     }
   },
   "ocr": {
     "idle": {
-      "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
-      "reg_label": "Permis de circulation / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+      "title": "امسح مستنداتك ضوئياً",
+      "subtitle": "ابدأ برخصة تسيير المركبة.\nوثيقة التأمين <strong>موصى بها</strong>.",
+      "reg_label": "رخصة تسيير المركبة / البطاقة الرمادية",
+      "reg_sub": "رخصة CH، البطاقة الرمادية FR، Zulassung DE، V5C GB… — <strong>إلزامي</strong>",
+      "tip": "💡 <strong>وثيقة التأمين موصى بها.</strong> البطاقة الخضراء (IMIC)، شهادة التأمين، بطاقة هوية التأمين — تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. بدونها، ستحتاج إلى إدخالها يدوياً."
     },
     "greencard": {
-      "scanned": "✅ Permis de circulation scanné",
-      "compressing": "· Compression…",
-      "title": "Document d'assurance ?",
-      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
-      "scan_btn": "Scanner le document d'assurance",
-      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
-      "skip_btn": "Saisir manuellement les données d'assurance →"
+      "scanned": "✅ تم مسح رخصة تسيير المركبة ضوئياً",
+      "compressing": "· جارٍ الضغط…",
+      "title": "وثيقة التأمين؟",
+      "subtitle": "امسح <strong>بطاقتك الخضراء (IMIC)</strong>، شهادة التأمين، Certificate of Motor Insurance أو Insurance ID Card ضوئياً. تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. إنها <strong>موصى بها</strong> — بدونها يلزم الإدخال اليدوي.",
+      "scan_btn": "مسح وثيقة التأمين ضوئياً",
+      "scan_sub": "البطاقة الخضراء، شهادة التأمين، certificate، بطاقة التأمين…",
+      "skip_btn": "إدخال بيانات التأمين يدوياً ←"
     },
     "scanning": {
-      "title": "Analyse en cours…",
-      "subtitle": "Claude Vision lit vos documents"
+      "title": "جارٍ التحليل…",
+      "subtitle": "Claude Vision يقرأ مستنداتك"
     },
     "review": {
-      "title_pair": "Documents analysés",
-      "title_single": "Permis analysé",
-      "confidence": "Confiance : {{pct}}%",
-      "skipped": "· Carte verte ignorée",
-      "warnings": "⚠️ {{count}} champ à vérifier",
-      "warnings_plural": "⚠️ {{count}} champs à vérifier",
-      "insurance_title": "🛡️ Données d'assurance — saisie manuelle",
-      "company_label": "Compagnie d'assurance *",
-      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
-      "policy_label": "N° de contrat / police *",
+      "title_pair": "تم تحليل المستندات",
+      "title_single": "تم تحليل الرخصة",
+      "confidence": "الثقة: {{pct}}%",
+      "skipped": "· تم تخطي البطاقة الخضراء",
+      "warnings": "⚠️ {{count}} حقل يستلزم المراجعة",
+      "warnings_plural": "⚠️ {{count}} حقول تستلزم المراجعة",
+      "insurance_title": "🛡️ بيانات التأمين — إدخال يدوي",
+      "company_label": "شركة التأمين *",
+      "company_placeholder": "Zurich، AXA، Helvetia، Mobilière…",
+      "policy_label": "رقم العقد / الوثيقة *",
       "policy_placeholder": "CH-2026-12345",
-      "section_vehicle": "🚗 Véhicule",
-      "section_driver": "👤 Conducteur",
-      "section_greencard": "🟢 Assurance (carte verte)",
-      "rescan": "🔄 Rescanner",
-      "confirm": "Confirmer →"
+      "section_vehicle": "🚗 المركبة",
+      "section_driver": "👤 السائق",
+      "section_greencard": "🟢 التأمين (البطاقة الخضراء)",
+      "rescan": "🔄 إعادة المسح الضوئي",
+      "confirm": "تأكيد ←"
     }
   },
   "location": {
-    "vehicle_label": "Votre véhicule",
+    "vehicle_label": "مركبتك",
     "groups": {
-      "light": "Véhicules légers",
-      "heavy": "Véhicules lourds",
-      "rail": "Transport en commun / rail",
-      "cycles": "Cycles",
-      "other": "Personne / Autre"
+      "light": "المركبات الخفيفة",
+      "heavy": "المركبات الثقيلة",
+      "rail": "النقل العام / السكك الحديدية",
+      "cycles": "الدراجات",
+      "other": "شخص / أخرى"
     },
+    "datetime_label": "تاريخ ووقت الحادث",
+    "date_label": "التاريخ",
+    "time_label": "الوقت",
+    "datetime_warning": "⚠️ أدخل الوقت الفعلي للحادث، وليس الوقت الحالي.",
+    "geo_label": "موقع الحادث",
+    "gps_captured": "تم التقاط GPS — {{lat}}، {{lng}}",
+    "gps_loading": "جارٍ تحديد الموقع…",
+    "gps_denied": "تم رفض الوصول إلى GPS — الإدخال اليدوي",
+    "gps_missing": "لم يتم التقاط إحداثيات GPS",
+    "gps_saved": "تم حفظ الإحداثيات في المستند",
+    "address_label": "شارع / موقع / طريق سريع (مثال: A1 مخرج 12، تقاطع الطرق الأربعة)",
+    "address_placeholder": "مثال: شارع المحطة 4، A1 اتجاه برن كم 47…",
+    "city_label": "المدينة / المنطقة",
+    "city_placeholder": "لوزان، باريس…",
+    "country_label": "البلد",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 <strong>هام :</strong> حدد موقع <strong>الحادث بدقة</strong>، حتى لو قمت بتحريك المركبات جانبًا. يلتقط GPS موقعك <em>الحالي</em> — قم بالتصحيح إذا كنت قد تحركت.",
+    "injuries_label": "هل يوجد مصابون؟",
+    "no_injuries": "لا — لا يوجد مصابون",
+    "yes_injuries": "نعم — يوجد إصابة (إصابات)",
+    "injury_details_title": "🚑 تفاصيل الإصابات",
+    "severity_label": "الخطورة الظاهرة",
+    "severity_minor": "خفيفة",
+    "severity_moderate": "متوسطة",
+    "severity_serious": "خطيرة",
+    "injury_desc_label": "الوصف (منطقة الجسم، الآلام، الإصابات المرئية)",
+    "injury_desc_placeholder": "مثال: ألم في الرقبة، كدمة في الركبة اليسرى، جرح في الجبهة…",
+    "ambulance": "🚑 الاستجابة عبر سيارة إسعاف / وحدة طبية متنقلة",
+    "hospitalized": "🏥 الدخول إلى المستشفى ضروري أو مطلوب",
+    "injury_footer": "في حالة وجود مصابين خطيرين، اتصل بالرقم 112 (الاتحاد الأوروبي) أو 144 (سويسرا) فوراً. ستُدرج هذه المعلومات في الوثيقة النهائية.",
+    "cta_no_vehicle": "اختر نوع مركبتك",
+    "cta_no_injuries": "حدد ما إذا كان هناك مصابون",
+    "cta_no_location": "حدد موقع الحادث",
+    "emergency_police": "🚔 الشرطة · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 الطوارئ · {{number}} {{label}}",
+    "emergency_voluntary": "هذه الاتصالات طوعية — لا يتم إخطار الشرطة تلقائياً أبداً.",
     "vehicles": {
       "car": {
-        "label": "Voiture",
-        "sub": "Berline, SUV, break, 4×4, citadine"
+        "label": "سيارة",
+        "sub": "سيدان، SUV، عربة، دفع رباعي، سيارة المدينة"
       },
       "van": {
-        "label": "Fourgon / Utilitaire",
-        "sub": "Camionnette, van, utilitaire léger"
+        "label": "شاحنة صغيرة / مركبة متعددة الاستخدامات",
+        "sub": "شاحنة صغيرة، فان، مركبة خفيفة"
       },
       "motorcycle": {
-        "label": "Moto",
-        "sub": "Moto, motocyclette"
+        "label": "دراجة نارية",
+        "sub": "دراجة نارية، موتوسيكل"
       },
       "scooter": {
-        "label": "Scooter / Cyclomoteur",
-        "sub": "Scooter, 50cm³"
+        "label": "سكوتر / دراجة بخارية صغيرة",
+        "sub": "سكوتر، 50 سم³"
       },
       "moped": {
-        "label": "Vélomoteur",
-        "sub": "2 roues <45km/h, 125cm³"
+        "label": "دراجة بخارية خفيفة",
+        "sub": "عجلتان <45 كم/س، 125 سم³"
       },
       "escooter": {
-        "label": "Trottinette électrique",
-        "sub": "EDPM, gyroroue, hoverboard"
+        "label": "سكوتر كهربائي",
+        "sub": "EDPM، جيروويل، هوفربورد"
       },
       "quad": {
-        "label": "Quad / Buggy",
-        "sub": "Véhicule tout-terrain motorisé"
+        "label": "رباعي الدفع / باغي",
+        "sub": "مركبة برية آلية"
       },
       "truck": {
-        "label": "Camion / Poids lourd",
-        "sub": "Semi-remorque, porteur, benne"
+        "label": "شاحنة / مركبة ثقيلة",
+        "sub": "شاحنة مقطورة، ناقلة، قلابة"
       },
       "bus": {
-        "label": "Bus / Autocar",
-        "sub": "Bus urbain, car, minibus"
+        "label": "حافلة / حافلة سياحية",
+        "sub": "حافلة حضرية، حافلة، ميني باص"
       },
       "construction": {
-        "label": "Engin de chantier",
-        "sub": "Tractopelle, grue, pelleteuse, dumper"
+        "label": "آلة بناء",
+        "sub": "حفارة أمامية خلفية، رافعة، حفارة، دمبر"
       },
       "tractor": {
-        "label": "Tracteur agricole",
-        "sub": "Tracteur, engin agricole"
+        "label": "جرار زراعي",
+        "sub": "جرار، آلة زراعية"
       },
       "tram": {
-        "label": "Tramway",
-        "sub": "Tram, métro léger"
+        "label": "ترام",
+        "sub": "ترام، مترو خفيف"
       },
       "train": {
-        "label": "Train / Métro",
-        "sub": "Train, RER, métro souterrain"
+        "label": "قطار / مترو",
+        "sub": "قطار، RER، مترو تحت الأرض"
       },
       "bicycle": {
-        "label": "Vélo",
-        "sub": "Vélo classique, VAE, vélo électrique"
+        "label": "دراجة هوائية",
+        "sub": "دراجة كلاسيكية، VAE، دراجة كهربائية"
       },
       "cargo_bike": {
-        "label": "Vélo cargo",
-        "sub": "Bakfiets, triporteur, cargo électrique"
+        "label": "دراجة شحن",
+        "sub": "Bakfiets، ثلاثية العجلات، شحن كهربائي"
       },
       "pedestrian": {
-        "label": "Piéton",
-        "sub": "Personne à pied, rollers, skateboard"
+        "label": "راجل",
+        "sub": "شخص يمشي، رولرز، سكيتبورد"
       },
       "boat": {
-        "label": "Bateau",
-        "sub": "Embarcation, jet-ski, canot"
+        "label": "قارب",
+        "sub": "مركب، جت سكي، زورق"
       },
       "other": {
-        "label": "Autre véhicule",
-        "sub": "Non listé — préciser dans observations"
+        "label": "مركبة أخرى",
+        "sub": "غير مدرج — يُحدد في الملاحظات"
       }
-    },
-    "datetime_label": "Date & heure de l'accident",
-    "date_label": "Date",
-    "time_label": "Heure",
-    "datetime_warning": "⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.",
-    "geo_label": "Lieu de l'accident",
-    "gps_captured": "GPS capturé — {{lat}}, {{lng}}",
-    "gps_loading": "Localisation en cours…",
-    "gps_denied": "Accès GPS refusé — saisie manuelle",
-    "gps_missing": "Position GPS non capturée",
-    "gps_saved": "Coordonnées enregistrées dans le document",
-    "address_label": "Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)",
-    "address_placeholder": "Ex: Avenue de la Gare 4, A1 direction Berne km 47…",
-    "city_label": "Ville / Localité",
-    "city_placeholder": "Lausanne, Paris…",
-    "country_label": "Pays",
-    "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
-    "injuries_label": "Y a-t-il des blessés ?",
-    "no_injuries": "Non — aucun blessé",
-    "yes_injuries": "Oui — blessure(s)",
-    "injury_details_title": "🚑 Détails des blessures",
-    "severity_label": "Gravité apparente",
-    "severity_minor": "Légère",
-    "severity_moderate": "Modérée",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Description (zone du corps, douleurs, blessures visibles)",
-    "injury_desc_placeholder": "Ex: Douleur cervicale, contusion genou gauche, coupure front…",
-    "ambulance": "🚑 Prise en charge par ambulance / SMUR",
-    "hospitalized": "🏥 Hospitalisation nécessaire ou envisagée",
-    "injury_footer": "En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement. Ces informations seront incluses dans le document final.",
-    "cta_no_vehicle": "Sélectionnez votre type de véhicule",
-    "cta_no_injuries": "Indiquez s'il y a des blessés",
-    "cta_no_location": "Indiquez le lieu de l'accident",
-    "emergency_police": "🚔 Police · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
-    "emergency_voluntary": "Ces appels sont volontaires — la police n'est jamais prévenue automatiquement."
+    }
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -404,45 +385,45 @@
     ]
   },
   "pricing": {
-    "title": "Choisir un package",
-    "subtitle": "Achetez vos crédits à l'avance — payez une seule fois",
-    "popular_badge": "⭐ Populaire",
-    "economy": "Économie {{pct}}",
-    "credits_label": "Crédits",
-    "per_report": "Par constat",
-    "validity": "Validité",
-    "no_expiry": "Sans limite",
-    "buy_btn": "Acheter — {{symbol}} {{price}}",
-    "redirecting": "Redirection Stripe…",
-    "error_missing_url": "URL Stripe manquante",
+    "title": "اختر باقة",
+    "subtitle": "اشترِ رصيدك مسبقاً — ادفع مرة واحدة فقط",
+    "popular_badge": "⭐ الأكثر شيوعاً",
+    "economy": "توفير {{pct}}",
+    "credits_label": "الرصيد",
+    "per_report": "لكل تقرير",
+    "validity": "الصلاحية",
+    "no_expiry": "بدون حد زمني",
+    "buy_btn": "شراء — {{symbol}} {{price}}",
+    "redirecting": "جارٍ التحويل إلى Stripe…",
+    "error_missing_url": "رابط Stripe مفقود",
     "trust": {
-      "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Crédits sans date d'expiration",
-      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
-      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+      "stripe": "🔒 دفع آمن عبر Stripe (PCI-DSS)",
+      "no_expiry": "📄 رصيد بدون تاريخ انتهاء صلاحية",
+      "worldwide": "🌍 وثيقة رقمية معتمدة · صالحة في أكثر من 150 دولة",
+      "company": "🏛️ PEP's Swiss SA — كورجيني، جورا، سويسرا"
     },
-    "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
+    "legal": "بالشراء، فإنك توافق على شروط الاستخدام الخاصة بـ boom.contact.\nلا يمكن استرداد المبلغ بعد إنشاء PDF.",
     "packages": {
       "single": {
-        "label": "1 constat",
-        "description": "Pour un accident ponctuel"
+        "label": "تقرير واحد",
+        "description": "لحادث عرضي واحد"
       },
       "pack3": {
-        "label": "3 constats",
-        "description": "Pour la famille"
+        "label": "3 تقارير",
+        "description": "للاستخدام العائلي"
       },
       "pack10": {
-        "label": "10 constats",
-        "description": "Courtiers, flottes d'entreprise"
+        "label": "10 تقارير",
+        "description": "للوسطاء وأساطيل الشركات"
       }
     }
   },
   "offline": {
-    "banner": "Hors ligne — {{count}} session(s) en attente",
-    "banner_0": "Vous êtes hors ligne"
+    "banner": "غير متصل — {{count}} جلسة(جلسات) في الانتظار",
+    "banner_0": "أنت غير متصل بالإنترنت"
   },
   "language": {
-    "select": "Langue",
-    "switch_tooltip": "Changer de langue"
+    "select": "اللغة",
+    "switch_tooltip": "تغيير اللغة"
   }
 }

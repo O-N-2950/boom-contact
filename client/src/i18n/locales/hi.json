@@ -3,13 +3,14 @@
     "continue": "जारी रखें →",
     "confirm": "पुष्टि करें →",
     "cancel": "रद्द करें",
+    "rescan": "🔄 पुनः स्कैन करें",
     "loading": "लोड हो रहा है…",
     "saving": "⏳ सहेजा जा रहा है…",
     "error": "त्रुटि",
-    "retry": "पुनः प्रयास",
+    "retry": "पुनः प्रयास करें",
     "back": "←",
     "optional": "वैकल्पिक",
-    "required": "आवश्यक",
+    "required": "अनिवार्य",
     "yes": "हाँ",
     "no": "नहीं",
     "unknown": "अज्ञात"
@@ -30,20 +31,20 @@
       "free": "GRATUIT · SANS INSCRIPTION · RGPD"
     },
     "mockup": {
-      "send": "Envoyer à l'assureur",
-      "done": "Constat finalisé !",
-      "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "send": "बीमाकर्ता को भेजें",
+      "done": "रिपोर्ट पूर्ण!",
+      "waiting": "Session #8F2K · प्रतीक्षारत…",
+      "capture": "📸 फ़ोटो लें"
     },
     "badges": {
-      "languages": "50 langues",
-      "time": "5 min",
-      "encrypted": "Chiffré"
+      "languages": "50 भाषाएँ",
+      "time": "5 मिनट",
+      "encrypted": "एन्क्रिप्टेड"
     },
     "stats": {
-      "accidents": "constats/an en Europe",
-      "languages": "langues supportées",
-      "time": "pour finaliser"
+      "accidents": "दुर्घटना रिपोर्ट/वर्ष यूरोप में",
+      "languages": "समर्थित भाषाएँ",
+      "time": "पूर्ण करने के लिए"
     },
     "how": {
       "label": "Comment ça marche",
@@ -164,168 +165,152 @@
   "flow": {
     "header": {
       "role_a": "चालक A — नई रिपोर्ट",
-      "reset_title": "फिर से शुरू करें"
+      "reset_title": "पुनः प्रारंभ करें"
     }
   },
   "ocr": {
     "idle": {
-      "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
-      "reg_label": "Permis de circulation / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+      "title": "अपने दस्तावेज़ स्कैन करें",
+      "subtitle": "अपने पंजीकरण प्रमाण पत्र से शुरू करें।\nबीमा दस्तावेज़ <strong>अनुशंसित</strong> है।",
+      "reg_label": "पंजीकरण प्रमाण पत्र / ग्रे कार्ड",
+      "reg_sub": "CH परमिट, FR ग्रे कार्ड, DE Zulassung, GB V5C… — <strong>अनिवार्य</strong>",
+      "tip": "💡 <strong>बीमा दस्तावेज़ अनुशंसित है।</strong> ग्रीन कार्ड (IMIC), प्रमाण पत्र, Insurance ID card — इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। इसके बिना, आपको उन्हें मैन्युअल रूप से दर्ज करना होगा।"
     },
     "greencard": {
-      "scanned": "✅ Permis de circulation scanné",
-      "compressing": "· Compression…",
-      "title": "Document d'assurance ?",
-      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
-      "scan_btn": "Scanner le document d'assurance",
-      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
-      "skip_btn": "Saisir manuellement les données d'assurance →"
+      "scanned": "✅ पंजीकरण प्रमाण पत्र स्कैन हो गया",
+      "compressing": "· संपीड़न हो रहा है…",
+      "title": "बीमा दस्तावेज़?",
+      "subtitle": "अपना <strong>ग्रीन कार्ड (IMIC)</strong>, बीमा प्रमाण पत्र, Certificate of Motor Insurance या Insurance ID Card स्कैन करें। इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। यह <strong>अनुशंसित</strong> है — इसके बिना मैन्युअल प्रविष्टि आवश्यक है।",
+      "scan_btn": "बीमा दस्तावेज़ स्कैन करें",
+      "scan_sub": "ग्रीन कार्ड, प्रमाण पत्र, certificate, insurance card…",
+      "skip_btn": "बीमा डेटा मैन्युअल रूप से दर्ज करें →"
     },
     "scanning": {
-      "title": "Analyse en cours…",
-      "subtitle": "Claude Vision lit vos documents"
+      "title": "विश्लेषण जारी है…",
+      "subtitle": "Claude Vision आपके दस्तावेज़ पढ़ रहा है"
     },
     "review": {
-      "title_pair": "Documents analysés",
-      "title_single": "Permis analysé",
-      "confidence": "Confiance : {{pct}}%",
-      "skipped": "· Carte verte ignorée",
-      "warnings": "⚠️ {{count}} champ à vérifier",
-      "warnings_plural": "⚠️ {{count}} champs à vérifier",
-      "insurance_title": "🛡️ Données d'assurance — saisie manuelle",
-      "company_label": "Compagnie d'assurance *",
+      "title_pair": "दस्तावेज़ विश्लेषित",
+      "title_single": "परमिट विश्लेषित",
+      "confidence": "विश्वसनीयता: {{pct}}%",
+      "skipped": "· ग्रीन कार्ड छोड़ा गया",
+      "warnings": "⚠️ {{count}} फ़ील्ड जाँचनी है",
+      "warnings_plural": "⚠️ {{count}} फ़ील्ड जाँचनी हैं",
+      "insurance_title": "🛡️ बीमा डेटा — मैन्युअल प्रविष्टि",
+      "company_label": "बीमा कंपनी *",
       "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
-      "policy_label": "N° de contrat / police *",
+      "policy_label": "अनुबंध / पॉलिसी नं. *",
       "policy_placeholder": "CH-2026-12345",
-      "section_vehicle": "🚗 Véhicule",
-      "section_driver": "👤 Conducteur",
-      "section_greencard": "🟢 Assurance (carte verte)",
-      "rescan": "🔄 Rescanner",
-      "confirm": "Confirmer →"
+      "section_vehicle": "🚗 वाहन",
+      "section_driver": "👤 चालक",
+      "section_greencard": "🟢 बीमा (ग्रीन कार्ड)",
+      "rescan": "🔄 पुनः स्कैन करें",
+      "confirm": "पुष्टि करें →"
     }
   },
   "location": {
-    "vehicle_label": "Votre véhicule",
+    "vehicle_label": "आपका वाहन",
     "groups": {
-      "light": "Véhicules légers",
-      "heavy": "Véhicules lourds",
-      "rail": "Transport en commun / rail",
-      "cycles": "Cycles",
-      "other": "Personne / Autre"
+      "light": "हल्के वाहन",
+      "heavy": "भारी वाहन",
+      "rail": "सार्वजनिक परिवहन / रेल",
+      "cycles": "साइकिल",
+      "other": "व्यक्ति / अन्य"
     },
+    "datetime_label": "दुर्घटना की तारीख और समय",
+    "date_label": "तारीख",
+    "time_label": "समय",
+    "datetime_warning": "⚠️ दुर्घटना का वास्तविक समय दर्ज करें, वर्तमान समय नहीं।",
+    "geo_label": "दुर्घटना का स्थान",
+    "gps_captured": "GPS कैप्चर किया गया — {{lat}}, {{lng}}",
+    "gps_loading": "स्थान खोजा जा रहा है…",
+    "gps_denied": "GPS एक्सेस अस्वीकृत — मैन्युअल प्रविष्टि करें",
+    "gps_missing": "GPS स्थान कैप्चर नहीं हुआ",
+    "gps_saved": "दस्तावेज़ में निर्देशांक सहेजे गए",
+    "address_label": "सड़क / स्थान / राजमार्ग (उदा: A1 निकास 12, चार रास्तों का चौराहा)",
+    "address_placeholder": "उदा: एवेन्यू दे ला गार 4, A1 बर्न की दिशा में किमी 47…",
+    "city_label": "शहर / इलाका",
+    "city_placeholder": "लॉज़ेन, पेरिस…",
+    "country_label": "देश",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 <strong>महत्वपूर्ण :</strong> <strong>दुर्घटना का सटीक स्थान</strong> बताएं, भले ही आपने वाहनों को किनारे कर दिया हो। GPS आपकी <em>वर्तमान</em> स्थिति दर्ज करता है — यदि आप हट गए हों तो सुधारें।",
+    "injuries_label": "क्या कोई घायल है?",
+    "no_injuries": "नहीं — कोई घायल नहीं",
+    "yes_injuries": "हाँ — चोट(ें)",
     "vehicles": {
       "car": {
-        "label": "Voiture",
-        "sub": "Berline, SUV, break, 4×4, citadine"
+        "label": "कार",
+        "sub": "सेडान, SUV, स्टेशन वैगन, 4×4, हैचबैक"
       },
       "van": {
-        "label": "Fourgon / Utilitaire",
-        "sub": "Camionnette, van, utilitaire léger"
+        "label": "वैन / उपयोगिता वाहन",
+        "sub": "मिनी ट्रक, वैन, हल्का वाणिज्यिक वाहन"
       },
       "motorcycle": {
-        "label": "Moto",
-        "sub": "Moto, motocyclette"
+        "label": "मोटरसाइकिल",
+        "sub": "मोटर बाइक, मोटरसाइकिल"
       },
       "scooter": {
-        "label": "Scooter / Cyclomoteur",
-        "sub": "Scooter, 50cm³"
+        "label": "स्कूटर / मोपेड",
+        "sub": "स्कूटर, 50cm³"
       },
       "moped": {
-        "label": "Vélomoteur",
-        "sub": "2 roues <45km/h, 125cm³"
+        "label": "वेलोमोटर",
+        "sub": "2 पहिया <45km/h, 125cm³"
       },
       "escooter": {
-        "label": "Trottinette électrique",
-        "sub": "EDPM, gyroroue, hoverboard"
+        "label": "इलेक्ट्रिक स्कूटर",
+        "sub": "EDPM, गायरोव्हील, हoverboard"
       },
       "quad": {
-        "label": "Quad / Buggy",
-        "sub": "Véhicule tout-terrain motorisé"
+        "label": "क्वाड / बग्गी",
+        "sub": "मोटरचालित ऑफ-रोड वाहन"
       },
       "truck": {
-        "label": "Camion / Poids lourd",
-        "sub": "Semi-remorque, porteur, benne"
+        "label": "ट्रक / भारी वाहन",
+        "sub": "सेमी-ट्रेलर, कैरियर, डंपर"
       },
       "bus": {
-        "label": "Bus / Autocar",
-        "sub": "Bus urbain, car, minibus"
+        "label": "बस / कोच",
+        "sub": "शहरी बस, कोच, मिनीबस"
       },
       "construction": {
-        "label": "Engin de chantier",
-        "sub": "Tractopelle, grue, pelleteuse, dumper"
+        "label": "निर्माण उपकरण",
+        "sub": "बैकहो, क्रेन, एक्सकेवेटर, डंपर"
       },
       "tractor": {
-        "label": "Tracteur agricole",
-        "sub": "Tracteur, engin agricole"
+        "label": "कृषि ट्रैक्टर",
+        "sub": "ट्रैक्टर, कृषि उपकरण"
       },
       "tram": {
-        "label": "Tramway",
-        "sub": "Tram, métro léger"
+        "label": "ट्राम",
+        "sub": "ट्राम, लाइट मेट्रो"
       },
       "train": {
-        "label": "Train / Métro",
-        "sub": "Train, RER, métro souterrain"
+        "label": "ट्रेन / मेट्रो",
+        "sub": "ट्रेन, RER, भूमिगत मेट्रो"
       },
       "bicycle": {
-        "label": "Vélo",
-        "sub": "Vélo classique, VAE, vélo électrique"
+        "label": "साइकिल",
+        "sub": "सामान्य साइकिल, VAE, इलेक्ट्रिक साइकिल"
       },
       "cargo_bike": {
-        "label": "Vélo cargo",
-        "sub": "Bakfiets, triporteur, cargo électrique"
+        "label": "कार्गो साइकिल",
+        "sub": "Bakfiets, तिपहिया, इलेक्ट्रिक कार्गो"
       },
       "pedestrian": {
-        "label": "Piéton",
-        "sub": "Personne à pied, rollers, skateboard"
+        "label": "पैदल यात्री",
+        "sub": "पैदल व्यक्ति, रोलर्स, स्केटबोर्ड"
       },
       "boat": {
-        "label": "Bateau",
-        "sub": "Embarcation, jet-ski, canot"
+        "label": "नाव",
+        "sub": "नौका, जेट-स्की, कैनो"
       },
       "other": {
-        "label": "Autre véhicule",
-        "sub": "Non listé — préciser dans observations"
+        "label": "अन्य वाहन",
+        "sub": "सूचीबद्ध नहीं — टिप्पणियों में स्पष्ट करें"
       }
-    },
-    "datetime_label": "Date & heure de l'accident",
-    "date_label": "Date",
-    "time_label": "Heure",
-    "datetime_warning": "⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.",
-    "geo_label": "Lieu de l'accident",
-    "gps_captured": "GPS capturé — {{lat}}, {{lng}}",
-    "gps_loading": "Localisation en cours…",
-    "gps_denied": "Accès GPS refusé — saisie manuelle",
-    "gps_missing": "Position GPS non capturée",
-    "gps_saved": "Coordonnées enregistrées dans le document",
-    "address_label": "Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)",
-    "address_placeholder": "Ex: Avenue de la Gare 4, A1 direction Berne km 47…",
-    "city_label": "Ville / Localité",
-    "city_placeholder": "Lausanne, Paris…",
-    "country_label": "Pays",
-    "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
-    "injuries_label": "Y a-t-il des blessés ?",
-    "no_injuries": "Non — aucun blessé",
-    "yes_injuries": "Oui — blessure(s)",
-    "injury_details_title": "🚑 Détails des blessures",
-    "severity_label": "Gravité apparente",
-    "severity_minor": "Légère",
-    "severity_moderate": "Modérée",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Description (zone du corps, douleurs, blessures visibles)",
-    "injury_desc_placeholder": "Ex: Douleur cervicale, contusion genou gauche, coupure front…",
-    "ambulance": "🚑 Prise en charge par ambulance / SMUR",
-    "hospitalized": "🏥 Hospitalisation nécessaire ou envisagée",
-    "injury_footer": "En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement. Ces informations seront incluses dans le document final.",
-    "cta_no_vehicle": "Sélectionnez votre type de véhicule",
-    "cta_no_injuries": "Indiquez s'il y a des blessés",
-    "cta_no_location": "Indiquez le lieu de l'accident",
-    "emergency_police": "🚔 Police · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
-    "emergency_voluntary": "Ces appels sont volontaires — la police n'est jamais prévenue automatiquement."
+    }
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -404,45 +389,45 @@
     ]
   },
   "pricing": {
-    "title": "Choisir un package",
-    "subtitle": "Achetez vos crédits à l'avance — payez une seule fois",
-    "popular_badge": "⭐ Populaire",
-    "economy": "Économie {{pct}}",
-    "credits_label": "Crédits",
-    "per_report": "Par constat",
-    "validity": "Validité",
-    "no_expiry": "Sans limite",
-    "buy_btn": "Acheter — {{symbol}} {{price}}",
-    "redirecting": "Redirection Stripe…",
-    "error_missing_url": "URL Stripe manquante",
+    "title": "एक पैकेज चुनें",
+    "subtitle": "अपने क्रेडिट पहले से खरीदें — केवल एक बार भुगतान करें",
+    "popular_badge": "⭐ लोकप्रिय",
+    "economy": "बचत {{pct}}",
+    "credits_label": "क्रेडिट",
+    "per_report": "प्रति रिपोर्ट",
+    "validity": "वैधता",
+    "no_expiry": "कोई सीमा नहीं",
+    "buy_btn": "खरीदें — {{symbol}} {{price}}",
+    "redirecting": "Stripe पर पुनर्निर्देशित हो रहे हैं…",
+    "error_missing_url": "Stripe URL अनुपलब्ध",
     "trust": {
-      "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Crédits sans date d'expiration",
-      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
+      "stripe": "🔒 Stripe के माध्यम से सुरक्षित भुगतान (PCI-DSS)",
+      "no_expiry": "📄 क्रेडिट की कोई समाप्ति तिथि नहीं",
+      "worldwide": "🌍 प्रमाणित डिजिटल दस्तावेज़ · 150+ देशों में मान्य",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
     },
-    "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
+    "legal": "खरीदारी करके, आप boom.contact की उपयोग की शर्तें स्वीकार करते हैं।\nPDF बनने के बाद धनवापसी संभव नहीं है।",
     "packages": {
       "single": {
-        "label": "1 constat",
-        "description": "Pour un accident ponctuel"
+        "label": "1 रिपोर्ट",
+        "description": "किसी एक दुर्घटना के लिए"
       },
       "pack3": {
-        "label": "3 constats",
-        "description": "Pour la famille"
+        "label": "3 रिपोर्ट",
+        "description": "परिवार के लिए"
       },
       "pack10": {
-        "label": "10 constats",
-        "description": "Courtiers, flottes d'entreprise"
+        "label": "10 रिपोर्ट",
+        "description": "दलाल, कॉर्पोरेट बेड़े"
       }
     }
   },
   "offline": {
-    "banner": "Hors ligne — {{count}} session(s) en attente",
-    "banner_0": "Vous êtes hors ligne"
+    "banner": "ऑफ़लाइन — {{count}} सत्र प्रतीक्षारत",
+    "banner_0": "आप ऑफ़लाइन हैं"
   },
   "language": {
-    "select": "Langue",
-    "switch_tooltip": "Changer de langue"
+    "select": "भाषा",
+    "switch_tooltip": "भाषा बदलें"
   }
 }

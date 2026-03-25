@@ -8,6 +8,34 @@ import {
 } from './pdf.labels.js';
 import type { ConstatSession } from '../../../shared/types';
 
+// ── Format de date selon le pays ──────────────────────────────
+// ISO input: YYYY-MM-DD → format local
+function formatDateForCountry(isoDate: string, countryCode?: string): string {
+  if (!isoDate) return '';
+  const [y, m, d] = isoDate.split('-');
+  if (!y || !m || !d) return isoDate;
+
+  const country = (countryCode || '').toUpperCase();
+
+  // USA, Canada (anglophone), Philippines
+  if (['US', 'PH'].includes(country)) return `${m}/${d}/${y}`;
+
+  // Chine, Corée, Hongrie, Lituanie, Iran
+  if (['CN', 'KR', 'HU', 'LT', 'IR'].includes(country)) return `${y}.${m}.${d}`;
+
+  // Japon
+  if (country === 'JP') return `${y}/${m}/${d}`;
+
+  // UK, Irlande, Australie, NZ, Inde, Afrique du Sud, Kenya, HK, SG, MY, IN
+  if (['GB', 'IE', 'AU', 'NZ', 'ZA', 'KE', 'TZ', 'HK', 'SG', 'MY', 'IN'].includes(country)) {
+    return `${d}/${m}/${y}`;
+  }
+
+  // Europe continentale (défaut) + Suisse, France, Allemagne, Russie, etc.
+  return `${d}.${m}.${y}`;
+}
+
+
 // ─────────────────────────────────────────────────────────────
 // Colors
 // ─────────────────────────────────────────────────────────────
@@ -155,7 +183,9 @@ export async function generateConstatPDF(
   const sessionText = `Session: ${session.id}`;
   const sessionW = mono.widthOfTextAtSize(sessionText, 7);
   drawText(page, sessionText, width - margin - sessionW, height - 18, mono, 7, C.white);
-  const dateStr = acc.date && acc.time ? `${acc.date} ${acc.time}` : new Date(session.createdAt).toLocaleString('fr-CH');
+  const country = acc.location?.country;
+  const formattedDate = formatDateForCountry(acc.date ?? '', country);
+  const dateStr = acc.date && acc.time ? `${formattedDate} ${acc.time}` : new Date(session.createdAt).toLocaleString('fr-CH');
   const dateW = normal.widthOfTextAtSize(dateStr, 7);
   drawText(page, dateStr, width - margin - dateW, height - 30, normal, 7, rgb(1, 0.85, 0.8));
 
@@ -223,7 +253,7 @@ export async function generateConstatPDF(
 
   const fieldW = (width - margin * 2 - 16) / 4;
 
-  labelValue(page, L.date, acc.date ?? '', margin + 4, y - 12, fieldW, normal, bold);
+  labelValue(page, L.date, formattedDate, margin + 4, y - 12, fieldW, normal, bold);
   labelValue(page, L.time, acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
   labelValue(page, L.country, acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
   labelValue(page, L.injuries, acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);

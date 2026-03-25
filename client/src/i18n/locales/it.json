@@ -3,7 +3,7 @@
     "continue": "Continua →",
     "confirm": "Conferma →",
     "cancel": "Annulla",
-    "rescan": "🔄 Riscannerizza",
+    "rescan": "🔄 Riscansiona",
     "loading": "Caricamento…",
     "saving": "⏳ Salvataggio…",
     "error": "Errore",
@@ -13,26 +13,26 @@
     "required": "Obbligatorio",
     "yes": "Sì",
     "no": "No",
-    "unknown": "Non indicato"
+    "unknown": "Non specificato"
   },
   "landing": {
-    "badge": "Prima app mondiale per incidenti",
+    "badge": "Prima app mondiale",
     "hero": {
       "line1": "DOPO",
       "line2": "IL BOOM",
       "line3": "IL",
-      "line4": "CONTATTO"
+      "line4": "CONTACT"
     },
-    "subtitle": "Constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, PDF mondiale istantaneo.",
+    "subtitle": "Constatazione digitale in 5 minuti. OCR universale, QR code condiviso, PDF mondiale istantaneo.",
     "cta": {
       "start": "Avvia una constatazione",
       "pricing": "Vedi i prezzi →",
-      "from": "DA CHF/€ 4.90 · VALIDO IN TUTTO IL MONDO",
+      "from": "A PARTIRE DA CHF/€ 4.90 · VALIDO IN TUTTO IL MONDO",
       "free": "GRATUITO · SENZA REGISTRAZIONE · GDPR"
     },
     "mockup": {
       "send": "Invia all'assicuratore",
-      "done": "Constatazione completata!",
+      "done": "Constatazione finalizzata!",
       "waiting": "Sessione #8F2K · In attesa…",
       "capture": "📸 Fotografare"
     },
@@ -44,18 +44,18 @@
     "stats": {
       "accidents": "constatazioni/anno in Europa",
       "languages": "lingue supportate",
-      "time": "per completare"
+      "time": "per finalizzare"
     },
     "how": {
       "label": "Come funziona",
-      "title": "5 passaggi.",
+      "title": "5 passi.",
       "title_accent": "5 minuti.",
       "steps": [
         {
           "step": "01",
           "icon": "📸",
-          "title": "Scansiona i documenti",
-          "desc": "Fotografa la carta di circolazione + carta verde. OCR automatico."
+          "title": "Scansiona i tuoi documenti",
+          "desc": "Fotografa il libretto di circolazione + la carta verde. OCR automatico."
         },
         {
           "step": "02",
@@ -67,19 +67,19 @@
           "step": "03",
           "icon": "📋",
           "title": "Compila il modulo",
-          "desc": "Modulo universale precompilato dall'OCR. Verifica e spunta le circostanze."
+          "desc": "Modulo universale precompilato tramite OCR. Verifica e spunta le circostanze."
         },
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Zone di danno",
+          "title": "Zone di urto",
           "desc": "Clicca sul diagramma a 18 zone per indicare i danni."
         },
         {
           "step": "05",
           "icon": "✍️",
           "title": "Firma & invia",
-          "desc": "Due firme digitali con marcatura temporale. PDF certificato all'istante."
+          "desc": "Due firme digitali con marca temporale. PDF certificato istantaneamente."
         }
       ]
     },
@@ -89,7 +89,7 @@
         {
           "icon": "📸",
           "title": "OCR universale",
-          "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — nessuna inserzione manuale."
+          "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — zero inserimento manuale."
         },
         {
           "icon": "📱",
@@ -99,22 +99,22 @@
         {
           "icon": "📷",
           "title": "Foto della scena",
-          "desc": "5 categorie: luogo, danni A, danni B, feriti, documenti. Compresse e incluse nel PDF."
+          "desc": "5 categorie: luogo, danni A, danni B, lesioni, documenti. Compresse e incluse nel PDF."
         },
         {
           "icon": "✏️",
           "title": "Schizzo libero",
-          "desc": "Disegna posizioni dei veicoli, frecce di direzione, infrastrutture. Esportazione PNG integrata nel PDF."
+          "desc": "Disegna la posizione dei veicoli, frecce di direzione, infrastrutture. Export PNG integrato nel PDF."
         },
         {
           "icon": "🚗",
-          "title": "Schema dei danni",
+          "title": "Schema dell'urto",
           "desc": "700+ modelli, sagoma adattata, colore reale OCR. 18 zone cliccabili per i danni."
         },
         {
           "icon": "✍️",
-          "title": "Firme multiple",
-          "desc": "N firme touch simultanee. Valore legale in 150+ paesi. QR attivo 24h per la polizia."
+          "title": "Firme multi-parti",
+          "desc": "N firme tattili simultanee. Valore legale in 150+ paesi. QR attivo 24h per la polizia."
         },
         {
           "icon": "📄",
@@ -124,7 +124,7 @@
         {
           "icon": "🚔",
           "title": "Modulo Polizia (presto)",
-          "desc": "Gli agenti si uniscono alla sessione via QR. Verbale digitale ufficiale. Dashboard per posto/cantone."
+          "desc": "Gli agenti si uniscono alla sessione tramite QR. Verbale ufficiale digitale. Dashboard per posto/cantone."
         },
         {
           "icon": "🌍",
@@ -140,50 +140,50 @@
     },
     "legal": {
       "title": "Standard internazionale",
-      "text": "Il nostro PDF digitale è riconosciuto dalle compagnie assicurative in oltre 50 paesi. Superiore alla carta: con marca temporale, firmato digitalmente, inviolabile."
+      "text": "Il nostro PDF digitale è riconosciuto dalle compagnie assicurative in più di 50 paesi. Superiore al modulo cartaceo: datato, firmato digitalmente, inviolabile."
     },
     "finalCta": {
       "title": "Pronto in caso di incidente?",
-      "subtitle": "Tieni boom.contact sulla schermata principale. 5 minuti per completare tutto.",
+      "subtitle": "Tieni boom.contact sulla tua schermata home. 5 minuti per finalizzare tutto.",
       "button": "Avvia una constatazione"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Svizzera"
     }
   },
   "steps": {
-    "scan": "Scan",
+    "scan": "Scansione",
     "location": "Luogo",
     "photos": "Foto",
     "qr": "QR",
-    "form": "Info",
+    "form": "Infos",
     "sketch": "Schizzo",
-    "damage": "Danni",
+    "damage": "Urto",
     "sign": "Firma"
   },
   "flow": {
     "header": {
-      "role_a": "CONDUCENTE A — NUOVA CONSTATAZIONE",
-      "reset_title": "Ricominciare"
+      "role_a": "CONDUCENTE A — NUOVO VERBALE",
+      "reset_title": "Ricomincia"
     }
   },
   "ocr": {
     "idle": {
-      "title": "Scansiona i documenti",
-      "subtitle": "Inizia con la tua carta di circolazione.\nUn <strong>documento assicurativo è raccomandato</strong>.",
-      "reg_label": "Carta di circolazione / Documento immatricolazione",
-      "reg_sub": "Permis CH, carta di circolazione IT, carte grise FR, V5C GB… — <strong>obbligatorio</strong>",
-      "tip": "💡 <strong>Documento assicurativo raccomandato.</strong> Carta verde (IMIC), attestato assicurazione — questo documento contiene assicuratore e numero polizza. Senza, dovrete inserirli manualmente."
+      "title": "Scansiona i tuoi documenti",
+      "subtitle": "Inizia con il libretto di circolazione.\nIl documento assicurativo è <strong>raccomandato</strong>.",
+      "reg_label": "Libretto di circolazione / Carta di circolazione",
+      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obbligatorio</strong>",
+      "tip": "💡 <strong>Documento assicurativo raccomandato.</strong> Carta verde (IMIC), attestato, Insurance ID card — questo documento contiene il tuo assicuratore e numero di polizza. Senza di esso, dovrai inserirli manualmente."
     },
     "greencard": {
-      "scanned": "✅ Carta di circolazione analizzata",
+      "scanned": "✅ Libretto di circolazione scansionato",
       "compressing": "· Compressione…",
       "title": "Documento assicurativo?",
-      "subtitle": "Scansiona la tua <strong>carta verde (IMIC)</strong>, attestato assicurazione o documento equivalente. Contiene assicuratore e numero polizza. È <strong>raccomandato</strong> — senza, inserimento manuale richiesto.",
-      "scan_btn": "Scansiona documento assicurativo",
-      "scan_sub": "Carta verde, attestato, insurance card…",
-      "skip_btn": "Inserire manualmente dati assicurativi →"
+      "subtitle": "Scansiona la tua <strong>carta verde (IMIC)</strong>, attestato assicurativo, Certificate of Motor Insurance o Insurance ID Card. Questo documento contiene il tuo assicuratore e numero di polizza. È <strong>raccomandato</strong> — senza di esso è richiesta l'inserzione manuale.",
+      "scan_btn": "Scansiona il documento assicurativo",
+      "scan_sub": "Carta verde, attestato, certificate, insurance card…",
+      "skip_btn": "Inserire manualmente i dati assicurativi →"
     },
     "scanning": {
       "title": "Analisi in corso…",
@@ -191,20 +191,20 @@
     },
     "review": {
       "title_pair": "Documenti analizzati",
-      "title_single": "Carta di circolazione analizzata",
-      "confidence": "Confidenza: {{pct}}%",
+      "title_single": "Patente analizzata",
+      "confidence": "Attendibilità: {{pct}}%",
       "skipped": "· Carta verde ignorata",
       "warnings": "⚠️ {{count}} campo da verificare",
       "warnings_plural": "⚠️ {{count}} campi da verificare",
       "insurance_title": "🛡️ Dati assicurativi — inserimento manuale",
       "company_label": "Compagnia assicurativa *",
-      "company_placeholder": "Zurich, AXA, Helvetia, Generali…",
+      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
       "policy_label": "N° di contratto / polizza *",
       "policy_placeholder": "CH-2026-12345",
       "section_vehicle": "🚗 Veicolo",
       "section_driver": "👤 Conducente",
       "section_greencard": "🟢 Assicurazione (carta verde)",
-      "rescan": "🔄 Riscannerizza",
+      "rescan": "🔄 Ripeti scansione",
       "confirm": "Conferma →"
     }
   },
@@ -214,49 +214,85 @@
       "light": "Veicoli leggeri",
       "heavy": "Veicoli pesanti",
       "rail": "Trasporto pubblico / ferrovia",
-      "cycles": "Biciclette",
+      "cycles": "Cicli",
       "other": "Persona / Altro"
     },
+    "datetime_label": "Data & ora dell'incidente",
+    "date_label": "Data",
+    "time_label": "Ora",
+    "datetime_warning": "⚠️ Indica l'ora effettiva dell'incidente, non l'ora attuale.",
+    "geo_label": "Luogo dell'incidente",
+    "gps_captured": "GPS acquisito — {{lat}}, {{lng}}",
+    "gps_loading": "Localizzazione in corso…",
+    "gps_denied": "Accesso GPS negato — inserimento manuale",
+    "gps_missing": "Posizione GPS non acquisita",
+    "gps_saved": "Coordinate salvate nel documento",
+    "address_label": "Via / Località / Autostrada (es: A1 uscita 12, Incrocio delle Quattro Strade)",
+    "address_placeholder": "Es: Viale della Stazione 4, A1 direzione Berna km 47…",
+    "city_label": "Città / Località",
+    "city_placeholder": "Losanna, Milano…",
+    "country_label": "Paese",
+    "country_placeholder": "CH, IT…",
+    "location_tip": "💡 <strong>Importante :</strong> Indica il luogo <strong>esatto dell'incidente</strong>, anche se hai spostato i veicoli sul lato. Il GPS cattura la tua posizione <em>attuale</em> — correggi se ti sei spostato.",
+    "injuries_label": "Ci sono dei feriti?",
+    "no_injuries": "No — nessun ferito",
+    "yes_injuries": "Sì — ferito/i",
+    "injury_details_title": "🚑 Dettagli delle lesioni",
+    "severity_label": "Gravità apparente",
+    "severity_minor": "Lieve",
+    "severity_moderate": "Moderata",
+    "severity_serious": "Grave",
+    "injury_desc_label": "Descrizione (zona del corpo, dolori, lesioni visibili)",
+    "injury_desc_placeholder": "Es: Dolore cervicale, contusione ginocchio sinistro, taglio fronte…",
+    "ambulance": "🚑 Presa in carico da ambulanza / SMUR",
+    "hospitalized": "🏥 Ospedalizzazione necessaria o prevista",
+    "injury_footer": "In caso di feriti gravi, chiama il 112 (EU) o il 144 (CH) immediatamente. Queste informazioni saranno incluse nel documento finale.",
+    "cta_no_vehicle": "Seleziona il tuo tipo di veicolo",
+    "cta_no_injuries": "Indica se ci sono feriti",
+    "cta_no_location": "Indica il luogo dell'incidente",
+    "emergency_police": "🚔 Polizia · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Emergenze · {{number}} {{label}}",
+    "emergency_voluntary": "Queste chiamate sono volontarie — la polizia non viene mai avvisata automaticamente.",
     "vehicles": {
       "car": {
         "label": "Auto",
-        "sub": "Berlina, SUV, station wagon, 4×4, citycar"
+        "sub": "Berlina, SUV, station wagon, 4×4, city car"
       },
       "van": {
-        "label": "Furgone / Commerciale",
+        "label": "Furgone / Veicolo commerciale",
         "sub": "Furgoncino, van, veicolo commerciale leggero"
       },
       "motorcycle": {
         "label": "Moto",
-        "sub": "Motocicletta, moto da enduro"
+        "sub": "Moto, motocicletta"
       },
       "scooter": {
         "label": "Scooter / Ciclomotore",
-        "sub": "Scooter, 50cc"
+        "sub": "Scooter, 50cm³"
       },
       "moped": {
-        "label": "Moped",
-        "sub": "2 ruote <45km/h, 125cc"
+        "label": "Motoleggera",
+        "sub": "2 ruote <45km/h, 125cm³"
       },
       "escooter": {
         "label": "Monopattino elettrico",
-        "sub": "E-scooter, giroscopio, hoverboard"
+        "sub": "EDPM, gyroroue, hoverboard"
       },
       "quad": {
         "label": "Quad / Buggy",
         "sub": "Veicolo fuoristrada motorizzato"
       },
       "truck": {
-        "label": "Camion / Mezzo pesante",
+        "label": "Camion / Veicolo pesante",
         "sub": "Semirimorchio, porteur, ribaltabile"
       },
       "bus": {
-        "label": "Bus / Pullman",
+        "label": "Bus / Autobus",
         "sub": "Bus urbano, pullman, minibus"
       },
       "construction": {
         "label": "Mezzo da cantiere",
-        "sub": "Escavatore, gru, pala meccanica, dumper"
+        "sub": "Escavatore, gru, scavatrice, dumper"
       },
       "tractor": {
         "label": "Trattore agricolo",
@@ -268,19 +304,19 @@
       },
       "train": {
         "label": "Treno / Metro",
-        "sub": "Treno, ferrovia, metropolitana"
+        "sub": "Treno, RER, metropolitana sotterranea"
       },
       "bicycle": {
         "label": "Bicicletta",
-        "sub": "Bici classica, e-bike, bici elettrica"
+        "sub": "Bici classica, VAE, bici elettrica"
       },
       "cargo_bike": {
-        "label": "Cargo bike",
-        "sub": "Bakfiets, triciclo, cargo elettrico"
+        "label": "Bici cargo",
+        "sub": "Bakfiets, triciclo da carico, cargo elettrico"
       },
       "pedestrian": {
         "label": "Pedone",
-        "sub": "A piedi, pattini, skateboard"
+        "sub": "Persona a piedi, pattini, skateboard"
       },
       "boat": {
         "label": "Barca",
@@ -288,45 +324,9 @@
       },
       "other": {
         "label": "Altro veicolo",
-        "sub": "Non elencato — precisare nelle osservazioni"
+        "sub": "Non elencato — specificare nelle osservazioni"
       }
-    },
-    "datetime_label": "Data e ora dell'incidente",
-    "date_label": "Data",
-    "time_label": "Ora",
-    "datetime_warning": "⚠️ Indica l'ora reale dell'incidente, non l'ora attuale.",
-    "geo_label": "Luogo dell'incidente",
-    "gps_captured": "GPS acquisito — {{lat}}, {{lng}}",
-    "gps_loading": "Localizzazione in corso…",
-    "gps_denied": "Accesso GPS negato — inserimento manuale",
-    "gps_missing": "Posizione GPS non acquisita",
-    "gps_saved": "Coordinate registrate nel documento",
-    "address_label": "Via / Località / Autostrada (es. A1 uscita 12, Incrocio)",
-    "address_placeholder": "es. Via della Stazione 4, A1 direzione Milano km 47…",
-    "city_label": "Città / Comune",
-    "city_placeholder": "Milano, Berna…",
-    "country_label": "Paese",
-    "country_placeholder": "IT, CH…",
-    "location_tip": "💡 <strong>Importante:</strong> Indica il luogo <strong>esatto dell'incidente</strong>, anche se hai spostato i veicoli sul lato. Il GPS acquisisce la tua posizione <em>attuale</em> — correggila se ti sei spostato.",
-    "injuries_label": "Ci sono feriti?",
-    "no_injuries": "No — nessun ferito",
-    "yes_injuries": "Sì — ferito/i",
-    "injury_details_title": "🚑 Dettagli lesioni",
-    "severity_label": "Gravità apparente",
-    "severity_minor": "Lieve",
-    "severity_moderate": "Moderata",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Descrizione (parte del corpo, dolori, lesioni visibili)",
-    "injury_desc_placeholder": "es. Dolore cervicale, contusione ginocchio sinistro, taglio fronte…",
-    "ambulance": "🚑 Soccorso da ambulanza / SUEM",
-    "hospitalized": "🏥 Ricovero ospedaliero necessario o previsto",
-    "injury_footer": "In caso di feriti gravi, chiama il 112 (EU) o 118 (IT) immediatamente. Queste informazioni saranno incluse nel documento finale.",
-    "cta_no_vehicle": "Seleziona il tipo di veicolo",
-    "cta_no_injuries": "Indica se ci sono feriti",
-    "cta_no_location": "Indica il luogo dell'incidente",
-    "emergency_police": "🚔 Polizia · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Emergenza · {{number}} {{label}}",
-    "emergency_voluntary": "Queste chiamate sono volontarie — la polizia non viene mai avvisata automaticamente."
+    }
   },
   "cgu": {
     "before_continue": "PRIMA DI CONTINUARE",
@@ -408,21 +408,21 @@
     "title": "Scegli un pacchetto",
     "subtitle": "Acquista i tuoi crediti in anticipo — paghi una sola volta",
     "popular_badge": "⭐ Popolare",
-    "economy": "Risparmia {{pct}}",
+    "economy": "Risparmio {{pct}}",
     "credits_label": "Crediti",
     "per_report": "Per constatazione",
     "validity": "Validità",
     "no_expiry": "Senza scadenza",
     "buy_btn": "Acquista — {{symbol}} {{price}}",
-    "redirecting": "Reindirizzamento a Stripe…",
+    "redirecting": "Reindirizzamento Stripe…",
     "error_missing_url": "URL Stripe mancante",
     "trust": {
-      "stripe": "🔒 Pagamento sicuro via Stripe (PCI-DSS)",
+      "stripe": "🔒 Pagamento sicuro tramite Stripe (PCI-DSS)",
       "no_expiry": "📄 Crediti senza data di scadenza",
       "worldwide": "🌍 Documento digitale certificato · valido in 150+ paesi",
-      "company": "🏛️ PEP's Swiss SA — Courgenay, Giura, Svizzera"
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Svizzera"
     },
-    "legal": "Acquistando, accetti le CGC di boom.contact.\nNessun rimborso dopo la generazione del PDF.",
+    "legal": "Acquistando, accetti i Termini e Condizioni di boom.contact.\nRimborso impossibile dopo la generazione del PDF.",
     "packages": {
       "single": {
         "label": "1 constatazione",
@@ -434,7 +434,7 @@
       },
       "pack10": {
         "label": "10 constatazioni",
-        "description": "Broker, flotte aziendali"
+        "description": "Agenti, flotte aziendali"
       }
     }
   },

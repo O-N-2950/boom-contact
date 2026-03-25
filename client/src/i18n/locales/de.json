@@ -4,8 +4,8 @@
     "confirm": "Bestätigen →",
     "cancel": "Abbrechen",
     "rescan": "🔄 Erneut scannen",
-    "loading": "Wird geladen…",
-    "saving": "⏳ Wird gespeichert…",
+    "loading": "Laden…",
+    "saving": "⏳ Speichern…",
     "error": "Fehler",
     "retry": "Erneut versuchen",
     "back": "←",
@@ -13,27 +13,27 @@
     "required": "Pflichtfeld",
     "yes": "Ja",
     "no": "Nein",
-    "unknown": "Unbekannt"
+    "unknown": "Nicht angegeben"
   },
   "landing": {
-    "badge": "Weltweit erste Unfall-App",
+    "badge": "Erste weltweite App",
     "hero": {
       "line1": "NACH",
       "line2": "DEM BOOM",
       "line3": "DER",
       "line4": "KONTAKT"
     },
-    "subtitle": "Digitaler Unfallbericht in 5 Minuten. Universelles OCR, gemeinsamer QR-Code, weltweites PDF.",
+    "subtitle": "Digitales Unfallprotokoll in 5 Minuten. Universelles OCR, geteilter QR-Code, sofortiges weltweites PDF.",
     "cta": {
-      "start": "Unfallbericht starten",
-      "pricing": "Preise anzeigen →",
+      "start": "Protokoll starten",
+      "pricing": "Preise ansehen →",
       "from": "AB CHF/€ 4.90 · WELTWEIT GÜLTIG",
-      "free": "KOSTENLOS STARTEN · OHNE REGISTRIERUNG · DSGVO"
+      "free": "KOSTENLOS · OHNE REGISTRIERUNG · DSGVO"
     },
     "mockup": {
       "send": "An Versicherung senden",
-      "done": "Bericht abgeschlossen!",
-      "waiting": "Session #8F2K · Warten…",
+      "done": "Protokoll abgeschlossen!",
+      "waiting": "Sitzung #8F2K · Wartend…",
       "capture": "📸 Fotografieren"
     },
     "badges": {
@@ -42,9 +42,9 @@
       "encrypted": "Verschlüsselt"
     },
     "stats": {
-      "accidents": "Berichte/Jahr in Europa",
+      "accidents": "Protokolle/Jahr in Europa",
       "languages": "unterstützte Sprachen",
-      "time": "zum Abschliessen"
+      "time": "zum Abschließen"
     },
     "how": {
       "label": "So funktioniert es",
@@ -55,25 +55,25 @@
           "step": "01",
           "icon": "📸",
           "title": "Dokumente scannen",
-          "desc": "Fahrzeugausweis + grüne Karte fotografieren. Automatisches OCR."
+          "desc": "Fotografieren Sie Fahrzeugausweis + grüne Karte. Automatische OCR."
         },
         {
           "step": "02",
           "icon": "📱",
           "title": "QR-Code teilen",
-          "desc": "Der andere Fahrer scannt den QR-Code. Echtzeit-gemeinsame Sitzung."
+          "desc": "Der andere Fahrer scannt den QR. Echtzeit geteilte Sitzung."
         },
         {
           "step": "03",
           "icon": "📋",
           "title": "Formular ausfüllen",
-          "desc": "Universelles Formular, vom OCR vorausgefüllt. Überprüfen und Umstände ankreuzen."
+          "desc": "Universelles Formular, vorausgefüllt per OCR. Prüfen und Umstände ankreuzen."
         },
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Schadenszonen",
-          "desc": "Auf das 18-Zonen-Diagramm klicken, um Schäden zu markieren."
+          "title": "Aufprallzonen",
+          "desc": "Klicken Sie auf das 18-Zonen-Diagramm, um die Schäden anzugeben."
         },
         {
           "step": "05",
@@ -84,72 +84,72 @@
       ]
     },
     "features": {
-      "title": "Alles was Sie brauchen",
+      "title": "Alles, was Sie brauchen",
       "list": [
         {
           "icon": "📸",
-          "title": "Universelles OCR",
-          "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugausweis, RC Book, 行驶证 — kein manueller Eintrag."
+          "title": "Universelle OCR",
+          "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugschein, RC Book, 行驶证 — null manuelle Eingabe."
         },
         {
           "icon": "📱",
           "title": "Bis zu 5 Fahrzeuge",
-          "desc": "Unfall mit 3, 4 oder 5 Fahrzeugen? Jeder Fahrer scannt seinen eigenen QR-Code. Ein PDF für alle."
+          "desc": "Unfall mit 3, 4 oder 5 Fahrzeugen? Jeder Fahrer scannt seinen eigenen QR. Ein einziges PDF für alle."
         },
         {
           "icon": "📷",
           "title": "Unfallfotos",
-          "desc": "5 Kategorien: Ort, Schäden A, Schäden B, Verletzungen, Dokumente. Komprimiert und im PDF enthalten."
+          "desc": "5 Kategorien: Unfallort, Schäden A, Schäden B, Verletzungen, Dokumente. Komprimiert und im PDF enthalten."
         },
         {
           "icon": "✏️",
           "title": "Freie Skizze",
-          "desc": "Fahrzeugpositionen, Richtungspfeile, Infrastruktur zeichnen. PNG-Export im PDF integriert."
+          "desc": "Zeichnen Sie die Position der Fahrzeuge, Richtungspfeile, Infrastrukturen. PNG-Export integriert im PDF."
         },
         {
           "icon": "🚗",
-          "title": "Schadensdiagramm",
-          "desc": "700+ Modelle, angepasste Silhouette, echte OCR-Farbe. 18 klickbare Zonen für Schäden."
+          "title": "Kollisionsschema",
+          "desc": "700+ Modelle, angepasste Silhouette, reale OCR-Farbe. 18 anklickbare Zonen für Schäden."
         },
         {
           "icon": "✍️",
-          "title": "Mehrfach-Unterschriften",
-          "desc": "N simultane Touch-Unterschriften. Rechtsgültigkeit in 150+ Ländern. QR 24h aktiv für die Polizei."
+          "title": "Mehrparteien-Unterschriften",
+          "desc": "N gleichzeitige Touch-Unterschriften. Rechtsgültigkeit in 150+ Ländern. QR 24h aktiv für die Polizei."
         },
         {
           "icon": "📄",
-          "title": "PDF zertifiziert 150+ Länder",
-          "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Bemerkungen, Skizze, Fotos. Von allen Versicherungen anerkannt."
+          "title": "Zertifiziertes PDF 150+ Länder",
+          "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Anmerkungen, Skizze, Fotos. Von allen Versicherungsgesellschaften anerkannt."
         },
         {
           "icon": "🚔",
           "title": "Polizei-Modul (demnächst)",
-          "desc": "Beamte treten der Sitzung via QR bei. Offizielles digitales Polizeiprotokoll. Dashboard pro Posten/Kanton."
+          "desc": "Beamte treten der Sitzung via QR bei. Offizielles digitales Protokoll. Dashboard pro Posten/Kanton."
         },
         {
           "icon": "🌍",
           "title": "50 Sprachen + RTL",
-          "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Georeferenzierte Notfallnummern."
+          "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Geolocalisierte Notrufe."
         }
       ]
     },
     "coverage": {
       "label": "Weltweite Abdeckung",
-      "title": "Von der Schweiz bis China",
-      "more": "+ 30 weitere Länder · Integrierte RTL-Unterstützung"
+      "title": "Von der Schweiz bis nach China",
+      "more": "+ 30 weitere Länder · Integrierter RTL-Support"
     },
     "legal": {
       "title": "Internationaler Standard",
-      "text": "Unser digitales PDF wird von Versicherungsgesellschaften in über 50 Ländern anerkannt. Besser als Papier: zeitgestempelt, digital signiert, fälschungssicher."
+      "text": "Unser digitales PDF wird von Versicherungsgesellschaften in mehr als 50 Ländern anerkannt. Überlegen gegenüber dem Papierprotokoll: zeitgestempelt, digital signiert, manipulationssicher."
     },
     "finalCta": {
-      "title": "Bereit für einen Unfall?",
-      "subtitle": "Halten Sie boom.contact auf Ihrem Startbildschirm bereit. 5 Minuten für alles.",
-      "button": "Unfallbericht starten"
+      "title": "Bereit für den Ernstfall?",
+      "subtitle": "Behalten Sie boom.contact auf Ihrem Startbildschirm. 5 Minuten, um alles abzuschließen.",
+      "button": "Unfallprotokoll starten"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Schweiz"
     }
   },
   "steps": {
@@ -157,32 +157,32 @@
     "location": "Ort",
     "photos": "Fotos",
     "qr": "QR",
-    "form": "Infos",
+    "form": "Daten",
     "sketch": "Skizze",
     "damage": "Schaden",
-    "sign": "Sign"
+    "sign": "Unterschrift"
   },
   "flow": {
     "header": {
-      "role_a": "FAHRER A — NEUER BERICHT",
-      "reset_title": "Neu starten"
+      "role_a": "FAHRER A — NEUES PROTOKOLL",
+      "reset_title": "Neu beginnen"
     }
   },
   "ocr": {
     "idle": {
-      "title": "Dokumente scannen",
-      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nEin <strong>Versicherungsdokument wird empfohlen</strong>.",
+      "title": "Scannen Sie Ihre Dokumente",
+      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nDas Versicherungsdokument wird <strong>empfohlen</strong>.",
       "reg_label": "Fahrzeugausweis / Zulassungsbescheinigung",
-      "reg_sub": "Fahrzeugausweis CH, Zulassung DE, Carte grise FR, V5C GB… — <strong>Pflichtfeld</strong>",
-      "tip": "💡 <strong>Versicherungsdokument empfohlen.</strong> Grüne Karte (IMIC), Versicherungsbestätigung — dieses Dokument enthält Versicherungsgesellschaft und Policennummer. Ohne dieses müssen Sie die Daten manuell eingeben."
+      "reg_sub": "Ausweis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatorisch</strong>",
+      "tip": "💡 <strong>Versicherungsdokument empfohlen.</strong> Grüne Karte (IMIC), Versicherungsbestätigung, Insurance ID card — dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Ohne dieses Dokument müssen Sie die Angaben manuell eingeben."
     },
     "greencard": {
-      "scanned": "✅ Fahrzeugausweis analysiert",
+      "scanned": "✅ Fahrzeugausweis gescannt",
       "compressing": "· Komprimierung…",
       "title": "Versicherungsdokument?",
-      "subtitle": "Scannen Sie Ihre <strong>Grüne Karte (IMIC)</strong>, Versicherungsbestätigung oder ähnliches. Dieses Dokument enthält Versicherer und Policennummer. Es ist <strong>empfohlen</strong> — ohne manuelle Eingabe erforderlich.",
+      "subtitle": "Scannen Sie Ihre <strong>grüne Karte (IMIC)</strong>, Versicherungsbestätigung, Certificate of Motor Insurance oder Insurance ID Card. Dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Es wird <strong>empfohlen</strong> — ohne es ist eine manuelle Eingabe erforderlich.",
       "scan_btn": "Versicherungsdokument scannen",
-      "scan_sub": "Grüne Karte, Versicherungsbestätigung, Insurance Card…",
+      "scan_sub": "Grüne Karte, Bestätigung, certificate, insurance card…",
       "skip_btn": "Versicherungsdaten manuell eingeben →"
     },
     "scanning": {
@@ -190,16 +190,16 @@
       "subtitle": "Claude Vision liest Ihre Dokumente"
     },
     "review": {
-      "title_pair": "Dokumente analysiert",
-      "title_single": "Fahrzeugausweis analysiert",
-      "confidence": "Konfidenz: {{pct}}%",
+      "title_pair": "Analysierte Dokumente",
+      "title_single": "Analysierter Ausweis",
+      "confidence": "Vertrauen: {{pct}}%",
       "skipped": "· Grüne Karte übersprungen",
       "warnings": "⚠️ {{count}} Feld zu prüfen",
       "warnings_plural": "⚠️ {{count}} Felder zu prüfen",
       "insurance_title": "🛡️ Versicherungsdaten — manuelle Eingabe",
       "company_label": "Versicherungsgesellschaft *",
-      "company_placeholder": "AXA, Zurich, Helvetia, Mobiliar…",
-      "policy_label": "Vertragsnummer / Police *",
+      "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
+      "policy_label": "Vertrags- / Policennummer *",
       "policy_placeholder": "CH-2026-12345",
       "section_vehicle": "🚗 Fahrzeug",
       "section_driver": "👤 Fahrer",
@@ -211,104 +211,30 @@
   "location": {
     "vehicle_label": "Ihr Fahrzeug",
     "groups": {
-      "light": "Leichte Fahrzeuge",
-      "heavy": "Schwere Fahrzeuge",
+      "light": "Leichtfahrzeuge",
+      "heavy": "Schwerfahrzeuge",
       "rail": "Öffentlicher Verkehr / Schiene",
       "cycles": "Fahrräder",
       "other": "Person / Sonstiges"
     },
-    "vehicles": {
-      "car": {
-        "label": "Auto",
-        "sub": "Limousine, SUV, Kombi, 4×4, Kleinwagen"
-      },
-      "van": {
-        "label": "Lieferwagen / Nutzfahrzeug",
-        "sub": "Kleinbus, Van, leichtes Nutzfahrzeug"
-      },
-      "motorcycle": {
-        "label": "Motorrad",
-        "sub": "Motorrad, Motocross"
-      },
-      "scooter": {
-        "label": "Roller / Mofa",
-        "sub": "Roller, 50ccm"
-      },
-      "moped": {
-        "label": "Moped",
-        "sub": "2-Rad <45km/h, 125ccm"
-      },
-      "escooter": {
-        "label": "E-Scooter",
-        "sub": "E-Tretroller, Gyroroller, Hoverboard"
-      },
-      "quad": {
-        "label": "Quad / Buggy",
-        "sub": "Geländefahrzeug motorisiert"
-      },
-      "truck": {
-        "label": "LKW / Schwerlast",
-        "sub": "Sattelzug, Pritschenwagen, Kipper"
-      },
-      "bus": {
-        "label": "Bus / Reisebus",
-        "sub": "Stadtbus, Reisecar, Minibus"
-      },
-      "construction": {
-        "label": "Baufahrzeug",
-        "sub": "Bagger, Kran, Schaufellader, Dumper"
-      },
-      "tractor": {
-        "label": "Landwirtschaftlicher Traktor",
-        "sub": "Traktor, Landmaschine"
-      },
-      "tram": {
-        "label": "Strassenbahn",
-        "sub": "Tram, Stadtbahn"
-      },
-      "train": {
-        "label": "Zug / Metro",
-        "sub": "Zug, S-Bahn, U-Bahn"
-      },
-      "bicycle": {
-        "label": "Fahrrad",
-        "sub": "Klassisches Fahrrad, E-Bike"
-      },
-      "cargo_bike": {
-        "label": "Lastenfahrrad",
-        "sub": "Bakfiets, Dreirad, Elektro-Cargo"
-      },
-      "pedestrian": {
-        "label": "Fussgänger",
-        "sub": "Zu Fuss, Rollschuhe, Skateboard"
-      },
-      "boat": {
-        "label": "Boot",
-        "sub": "Wasserfahrzeug, Jet-Ski, Kanu"
-      },
-      "other": {
-        "label": "Anderes Fahrzeug",
-        "sub": "Nicht aufgeführt — in Bemerkungen präzisieren"
-      }
-    },
     "datetime_label": "Datum & Uhrzeit des Unfalls",
     "date_label": "Datum",
     "time_label": "Uhrzeit",
-    "datetime_warning": "⚠️ Geben Sie die tatsächliche Unfallzeit an, nicht die aktuelle Zeit.",
+    "datetime_warning": "⚠️ Geben Sie die tatsächliche Unfallzeit an, nicht die aktuelle Uhrzeit.",
     "geo_label": "Unfallort",
     "gps_captured": "GPS erfasst — {{lat}}, {{lng}}",
-    "gps_loading": "Ortung läuft…",
-    "gps_denied": "GPS-Zugang verweigert — manuelle Eingabe",
+    "gps_loading": "Standort wird ermittelt…",
+    "gps_denied": "GPS-Zugriff verweigert — manuelle Eingabe",
     "gps_missing": "GPS-Position nicht erfasst",
     "gps_saved": "Koordinaten im Dokument gespeichert",
-    "address_label": "Strasse / Ort / Autobahn (z.B. A1 Ausfahrt 12, Kreuzung)",
+    "address_label": "Strasse / Ortsbezeichnung / Autobahn (z.B. A1 Ausfahrt 12, Kreuzung der Vier-Strassen)",
     "address_placeholder": "z.B. Bahnhofstrasse 4, A1 Richtung Bern km 47…",
-    "city_label": "Ort / Stadt",
-    "city_placeholder": "Zürich, Basel…",
+    "city_label": "Stadt / Ortschaft",
+    "city_placeholder": "Lausanne, Paris…",
     "country_label": "Land",
-    "country_placeholder": "CH, DE…",
-    "location_tip": "💡 <strong>Wichtig:</strong> Geben Sie den <strong>genauen Unfallort</strong> an, auch wenn Sie die Fahrzeuge zur Seite gefahren haben. GPS erfasst Ihre <em>aktuelle</em> Position — korrigieren Sie falls nötig.",
-    "injuries_label": "Gibt es Verletzte?",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 <strong>Wichtig :</strong> Geben Sie den <strong>genauen Unfallort</strong> an, auch wenn Sie die Fahrzeuge auf die Seite gefahren haben. Das GPS erfasst Ihre <em>aktuelle</em> Position — korrigieren Sie diese, falls Sie sich bewegt haben.",
+    "injuries_label": "Gibt es Verletzte ?",
     "no_injuries": "Nein — keine Verletzten",
     "yes_injuries": "Ja — Verletzung(en)",
     "injury_details_title": "🚑 Verletzungsdetails",
@@ -317,16 +243,90 @@
     "severity_moderate": "Mittel",
     "severity_serious": "Schwer",
     "injury_desc_label": "Beschreibung (Körperstelle, Schmerzen, sichtbare Verletzungen)",
-    "injury_desc_placeholder": "z.B. Nackenschmerzen, Prellung linkes Knie, Stirnschnitt…",
-    "ambulance": "🚑 Behandlung durch Rettungsdienst",
-    "hospitalized": "🏥 Krankenhausaufenthalt erforderlich oder geplant",
-    "injury_footer": "Bei schweren Verletzungen sofort 112 (EU) oder 144 (CH) anrufen. Diese Informationen werden in das endgültige Dokument aufgenommen.",
-    "cta_no_vehicle": "Wählen Sie Ihren Fahrzeugtyp",
+    "injury_desc_placeholder": "z.B.: Nackenschmerzen, Prellung linkes Knie, Stirnwunde…",
+    "ambulance": "🚑 Versorgung durch Krankenwagen / Notarzt",
+    "hospitalized": "🏥 Krankenhauseinweisung erforderlich oder geplant",
+    "injury_footer": "Bei schweren Verletzungen rufen Sie sofort 112 (EU) oder 144 (CH) an. Diese Informationen werden im abschließenden Dokument enthalten sein.",
+    "cta_no_vehicle": "Wählen Sie Ihre Fahrzeugart aus",
     "cta_no_injuries": "Geben Sie an, ob es Verletzte gibt",
     "cta_no_location": "Geben Sie den Unfallort an",
     "emergency_police": "🚔 Polizei · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Notruf · {{number}} {{label}}",
-    "emergency_voluntary": "Diese Anrufe sind freiwillig — die Polizei wird nie automatisch benachrichtigt."
+    "emergency_ambulance": "🚑 Notfall · {{number}} {{label}}",
+    "emergency_voluntary": "Diese Anrufe sind freiwillig — die Polizei wird niemals automatisch benachrichtigt.",
+    "vehicles": {
+      "car": {
+        "label": "Auto",
+        "sub": "Limousine, SUV, Kombi, 4×4, Stadtauto"
+      },
+      "van": {
+        "label": "Transporter / Nutzfahrzeug",
+        "sub": "Kleintransporter, Van, leichtes Nutzfahrzeug"
+      },
+      "motorcycle": {
+        "label": "Motorrad",
+        "sub": "Motorrad, Motorradzyklus"
+      },
+      "scooter": {
+        "label": "Roller / Moped",
+        "sub": "Roller, 50cm³"
+      },
+      "moped": {
+        "label": "Moped",
+        "sub": "2 Räder <45km/h, 125cm³"
+      },
+      "escooter": {
+        "label": "E-Scooter",
+        "sub": "EPMF, Einrad, Hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Motorisiertes Geländefahrzeug"
+      },
+      "truck": {
+        "label": "LKW / Schwerlasttransporter",
+        "sub": "Sattelzug, Lastwagen, Kipper"
+      },
+      "bus": {
+        "label": "Bus / Reisebus",
+        "sub": "Stadtbus, Reisebus, Minibus"
+      },
+      "construction": {
+        "label": "Baumaschine",
+        "sub": "Baggerlader, Kran, Bagger, Dumper"
+      },
+      "tractor": {
+        "label": "Landwirtschaftlicher Traktor",
+        "sub": "Traktor, landwirtschaftliche Maschine"
+      },
+      "tram": {
+        "label": "Straßenbahn",
+        "sub": "Tram, Stadtbahn"
+      },
+      "train": {
+        "label": "Zug / U-Bahn",
+        "sub": "Zug, S-Bahn, U-Bahn"
+      },
+      "bicycle": {
+        "label": "Fahrrad",
+        "sub": "Klassisches Fahrrad, Pedelec, E-Bike"
+      },
+      "cargo_bike": {
+        "label": "Lastenrad",
+        "sub": "Bakfiets, Dreirad-Transporter, elektrisches Lastenrad"
+      },
+      "pedestrian": {
+        "label": "Fußgänger",
+        "sub": "Person zu Fuß, Rollschuhe, Skateboard"
+      },
+      "boat": {
+        "label": "Boot",
+        "sub": "Wasserfahrzeug, Jet-Ski, Kanu"
+      },
+      "other": {
+        "label": "Anderes Fahrzeug",
+        "sub": "Nicht aufgeführt — in Bemerkungen angeben"
+      }
+    }
   },
   "cgu": {
     "before_continue": "VOR DEM FORTFAHREN",
@@ -406,35 +406,35 @@
   },
   "pricing": {
     "title": "Paket wählen",
-    "subtitle": "Kaufen Sie Ihr Guthaben im Voraus — einmalige Zahlung",
+    "subtitle": "Kaufen Sie Ihre Credits im Voraus — einmalige Zahlung",
     "popular_badge": "⭐ Beliebt",
-    "economy": "Spare {{pct}}",
-    "credits_label": "Guthaben",
-    "per_report": "Pro Bericht",
+    "economy": "Ersparnis {{pct}}",
+    "credits_label": "Credits",
+    "per_report": "Pro Protokoll",
     "validity": "Gültigkeit",
     "no_expiry": "Unbegrenzt",
     "buy_btn": "Kaufen — {{symbol}} {{price}}",
     "redirecting": "Weiterleitung zu Stripe…",
     "error_missing_url": "Stripe-URL fehlt",
     "trust": {
-      "stripe": "🔒 Sichere Zahlung via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Guthaben ohne Ablaufdatum",
-      "worldwide": "🌍 Zertifiziertes digitales Dokument · in 150+ Ländern gültig",
+      "stripe": "🔒 Sichere Zahlung über Stripe (PCI-DSS)",
+      "no_expiry": "📄 Credits ohne Ablaufdatum",
+      "worldwide": "🌍 Zertifiziertes digitales Dokument · gültig in 150+ Ländern",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Schweiz"
     },
-    "legal": "Mit dem Kauf akzeptieren Sie die AGB von boom.contact.\nKeine Rückerstattung nach PDF-Generierung.",
+    "legal": "Mit dem Kauf akzeptieren Sie die AGB von boom.contact.\nNach der PDF-Generierung ist keine Rückerstattung möglich.",
     "packages": {
       "single": {
-        "label": "1 Bericht",
+        "label": "1 Protokoll",
         "description": "Für einen einmaligen Unfall"
       },
       "pack3": {
-        "label": "3 Berichte",
+        "label": "3 Protokolle",
         "description": "Für die Familie"
       },
       "pack10": {
-        "label": "10 Berichte",
-        "description": "Makler, Firmenflotten"
+        "label": "10 Protokolle",
+        "description": "Makler, Unternehmensflotten"
       }
     }
   },

@@ -15,6 +15,13 @@ export function CGUModal({ onAccept, onClose }: Props) {
   const [tab, setTab] = useState<'cgu' | 'privacy'>('cgu');
   const [error, setError] = useState<string | null>(null);
 
+  // Checkbox marketing PEP's uniquement pour la Suisse
+  const detectedCountry = sessionStorage.getItem('boom_detected_country') || '';
+  const lang = i18n.language?.split('-')[0] || 'fr';
+  const isSwiss = detectedCountry === 'CH'
+    || detectedCountry === 'LI'
+    || (!detectedCountry && ['fr', 'de', 'it'].includes(lang));
+
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
   const canProceed = isValidEmail(email) && consentCGU;
 
@@ -148,7 +155,8 @@ export function CGUModal({ onAccept, onClose }: Props) {
             </div>
           </label>
 
-          {/* Marketing consent (optional) */}
+          {/* Marketing consent (optional) — Suisse uniquement */}
+          {isSwiss && (
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16, cursor: 'pointer' }}>
             <div onClick={() => setConsentMarketing(!consentMarketing)} style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
@@ -167,6 +175,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
               })}
             </div>
           </label>
+          )}
 
           {error && (
             <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, background: 'rgba(239,68,68,0.1)', fontSize: 12, color: '#ef4444' }}>
