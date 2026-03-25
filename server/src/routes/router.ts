@@ -947,7 +947,7 @@ export const appRouter = router({
             id:         makeId(),
             email:      client.email,
             role:       'customer',
-            credits:    999999, // WinWin clients = crédits illimités
+            credits:    0,
             consentCGU: true,
             consentCGUAt: new Date(),
             firstName:  client.firstName,
@@ -961,7 +961,7 @@ export const appRouter = router({
           } as any).returning();
           user = created;
         } else {
-          // Mettre à jour les infos et s'assurer crédits illimités
+          // Mettre à jour les infos — ne pas toucher aux crédits existants
           await db.update(usersTable).set({
             firstName:  client.firstName,
             lastName:   client.lastName,
@@ -971,9 +971,7 @@ export const appRouter = router({
             language:   client.language || user.language,
             lastSeenAt: new Date(),
             winwinId:   client.winwinId,
-            credits:    999999,
           } as any).where(eq(usersTable.email, client.email));
-          user = { ...user, credits: 999999, winwinId: client.winwinId } as any;
         }
 
         // 3. Import véhicules WinWin → garage boom.contact
@@ -1019,10 +1017,10 @@ export const appRouter = router({
           ok: true,
           token,
           user: {
-            id:       user.id,
-            email:    user.email,
-            role:     user.role,
-            credits:  999999,
+            id:        user.id,
+            email:     user.email,
+            role:      user.role,
+            credits:   user.credits,
             firstName: client.firstName,
             lastName:  client.lastName,
           },
