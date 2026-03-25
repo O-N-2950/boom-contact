@@ -491,7 +491,34 @@ export function JoinSession() {
         )}
 
         {step === 'sign' && (
-          <SignaturePad role="B" onSign={handleSign} otherSigned={otherSigned} />
+          <>
+            {/* Résumé avant signature B */}
+            <div style={{ padding: '16px 20px 0' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.35, fontFamily: 'monospace', marginBottom: 12 }}>
+                Vérifiez avant de signer
+              </div>
+              <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
+                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>
+                  {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
+                  {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: '#00E5FF', marginLeft: 8 }}>{(participantData.vehicle as any).licensePlate}</span>}
+                </div>
+                {(participantData.insurance as any)?.company && (
+                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company}</div>
+                )}
+                {participantData.driver?.firstName && (
+                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                )}
+              </div>
+              <button
+                onClick={() => setStep('form')}
+                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+              >
+                ✏️ Corriger mes informations
+              </button>
+            </div>
+            <SignaturePad role="B" onSign={handleSign} otherSigned={otherSigned} />
+          </>
         )}
 
         {step === 'done' && (

@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#FF3500" />
 
+    <!-- Anti-flash : appliquer le thème AVANT que React charge -->
+    <script>
+      (function(){
+        var t = localStorage.getItem('boom-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      })();
+    </script>
+
     <!-- SEO -->
     <title>boom.contact — Constat numérique mondial</title>
     <meta name="description" content="Constat amiable numérique en 5 minutes. OCR 50 langues, QR code, double signature, PDF certifié. Valable dans 150+ pays. Sans installation." />

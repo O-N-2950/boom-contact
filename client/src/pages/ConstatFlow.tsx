@@ -678,6 +678,50 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'sign' && (
           <>
+            {/* ── Résumé de relecture avant signature ── */}
+            <div style={{ padding: '16px 20px 0' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.35, fontFamily: 'monospace', marginBottom: 12 }}>
+                Vérifiez avant de signer
+              </div>
+
+              {/* Véhicule A */}
+              <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
+                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>
+                  {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
+                  {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: 'var(--boom)', marginLeft: 8 }}>{participantData.vehicle.licensePlate}</span>}
+                </div>
+                {participantData.insurance?.company && (
+                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company || (participantData.insurance as any).companyName}</div>
+                )}
+                {participantData.driver?.firstName && (
+                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                )}
+                {damagedZones.length > 0 && (
+                  <div style={{ fontSize: 11, opacity: 0.4, marginTop: 4 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
+                )}
+              </div>
+
+              {/* Accident */}
+              <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4, fontWeight: 600 }}>📍 Accident</div>
+                <div style={{ fontSize: 12, opacity: 0.7 }}>
+                  {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
+                </div>
+                {(accidentData as any).location?.city && (
+                  <div style={{ fontSize: 12, opacity: 0.55 }}>{(accidentData as any).location.city}, {(accidentData as any).location.country || ''}</div>
+                )}
+              </div>
+
+              {/* Bouton corriger */}
+              <button
+                onClick={() => setStep('form')}
+                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+              >
+                ✏️ Corriger mes informations
+              </button>
+            </div>
+
             {/* Score de cohérence — visible seulement si B a des données */}
             {sessionBParticipant && !otherPartyNoSignRequired && (
               <CoherenceScore
@@ -754,7 +798,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           onConfirm={async (status) => {
             setPartyBStatus(status);
             setShowUnavailableModal(false);
-            // Stocker dans la session (accident JSONB)
             if (sessionId) {
               try {
                 await updateAccidentMutation.mutateAsync({
@@ -764,8 +807,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               } catch { /* ignore */ }
             }
             setAccidentData(prev => ({ ...prev, partyBStatus: status } as any));
-            // Passer directement au croquis — pas besoin que B rejoigne
-            setStep('sketch');
+            // B indisponible → A continue seul : vocal puis formulaire puis croquis
+            setStep('voice');
           }}
           onCancel={() => setShowUnavailableModal(false)}
         />
