@@ -1,3 +1,4 @@
+import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import type { Context } from '../middleware/context';
 import { scanDocument, scanDocumentPair } from '../services/ocr.service';
