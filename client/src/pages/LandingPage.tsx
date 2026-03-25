@@ -303,7 +303,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 {t('landing.cta.from')}
               </p>
               {onPricing && (
-                <button onClick={onPricing} style={{ fontSize: 11, opacity: 0.5, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('tarifs');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else if (onPricing) onPricing();
+                  }}
+                  style={{ fontSize: 11, opacity: 0.5, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
                   {t('landing.cta.pricing')}
                 </button>
               )}
