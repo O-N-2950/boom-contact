@@ -1141,7 +1141,7 @@ export const appRouter = router({
       await db.delete(vehicles).where(eq(vehicles.userId, user.id));
       await db.delete(users).where(eq(users.id, user.id));
 
-      logger.info('Admin: compte supprimé', { email: input.email });
+      console.log('[ADMIN] Compte supprimé:', input.email);
       return { ok: true, deleted: input.email };
     }),
 
