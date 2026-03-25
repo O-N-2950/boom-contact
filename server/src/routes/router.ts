@@ -845,7 +845,7 @@ export const appRouter = router({
     // POST auth.grantCredits — admin only
     grantCredits: publicProcedure
       .input(z.object({
-        credits: z.number().min(1).max(1000),
+        credits: z.number().min(1).max(999999),
         recipientEmail: z.string().email().optional(),
         sendEmail: z.boolean().default(false),
       }))
