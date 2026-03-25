@@ -438,6 +438,92 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         </div>
       </div>
 
+
+      {/* ── TARIFS INLINE ─────────────────────────────────────── */}
+      <div id="tarifs" style={{ padding: '52px 20px', background: 'var(--dark)', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: 480, margin: '0 auto' }}>
+
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+            <div style={{ display: 'inline-block', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', borderRadius: 20, padding: '4px 14px', fontSize: 11, fontWeight: 700, color: 'var(--boom)', letterSpacing: 1, marginBottom: 12 }}>
+              TARIFS
+            </div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 26, fontWeight: 700, marginBottom: 8 }}>
+              Simple, transparent, mondial
+            </h2>
+            <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.6 }}>
+              1 crédit = 1 constat complet · Valable dans 150+ pays · Sans abonnement
+            </p>
+          </div>
+
+          {/* 3 packs */}
+          {[
+            { id: 'single', icon: '📄', label: '1 constat',  price: '4.90', currency: 'CHF / EUR', desc: 'Pour un accident ponctuel', badge: null, savings: null },
+            { id: 'pack3',  icon: '👨‍👩‍👧', label: '3 constats', price: '12.90', currency: 'CHF / EUR', desc: 'Pour toute la famille',    badge: '⭐ Populaire', savings: '-12%' },
+            { id: 'pack10', icon: '🚗', label: '10 constats', price: '34.90', currency: 'CHF / EUR', desc: 'Pour flottes et courtiers',  badge: null, savings: '-29%' },
+          ].map((pkg) => (
+            <div
+              key={pkg.id}
+              onClick={onPricing}
+              style={{
+                background: pkg.badge ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)',
+                border: `1.5px solid ${pkg.badge ? 'rgba(255,53,0,0.35)' : 'var(--border)'}`,
+                borderRadius: 16,
+                padding: '18px 20px',
+                marginBottom: 12,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 16,
+                transition: 'all 0.15s',
+                position: 'relative' as const,
+              }}
+            >
+              {/* Badge */}
+              {pkg.badge && (
+                <div style={{ position: 'absolute' as const, top: -10, left: 20, background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 12px', fontSize: 10, fontWeight: 700 }}>
+                  {pkg.badge}
+                </div>
+              )}
+
+              <span style={{ fontSize: 28, flexShrink: 0 }}>{pkg.icon}</span>
+
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                  <span style={{ fontWeight: 700, fontSize: 15, color: 'var(--text)' }}>{pkg.label}</span>
+                  {pkg.savings && (
+                    <span style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', borderRadius: 20, padding: '1px 8px', fontSize: 11, fontWeight: 700 }}>{pkg.savings}</span>
+                  )}
+                </div>
+                <div style={{ fontSize: 12, opacity: 0.45 }}>{pkg.desc}</div>
+              </div>
+
+              <div style={{ textAlign: 'right' as const, flexShrink: 0 }}>
+                <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22, fontWeight: 700, color: pkg.badge ? 'var(--boom)' : 'var(--text)', lineHeight: 1 }}>
+                  {pkg.price}
+                </div>
+                <div style={{ fontSize: 10, opacity: 0.4, marginTop: 2 }}>{pkg.currency}</div>
+              </div>
+            </div>
+          ))}
+
+          {/* Garanties */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const, justifyContent: 'center', marginTop: 20 }}>
+            {['✅ Sans abonnement', '✅ Crédits sans expiration', '✅ PDF certifié', '✅ 150+ pays'].map(g => (
+              <span key={g} style={{ fontSize: 11, opacity: 0.55, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 20, padding: '4px 10px' }}>
+                {g}
+              </span>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <button onClick={onPricing} style={{ width: '100%', marginTop: 24, padding: '15px', borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}>
+            Acheter des crédits →
+          </button>
+
+        </div>
+      </div>
+
       {/* FINAL CTA */}
       <div style={{ padding: '44px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
