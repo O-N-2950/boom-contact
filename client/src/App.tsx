@@ -141,24 +141,30 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('payment') === 'success') {
+      const constatId = params.get('constat');
       window.history.replaceState({}, '', '/');
-      // Refresh credits if user is logged in
-      if (localStorage.getItem('boom_refresh_credits')) {
-        localStorage.removeItem('boom_refresh_credits');
-        // Re-fetch authUser from server to get updated credits
-        const token = localStorage.getItem('boom_user_token');
-        if (token) {
-          fetch('/trpc/auth.me', { headers: { 'Authorization': 'Bearer ' + token } })
-            .then(r => r.json())
-            .then(d => {
-              const user = d?.result?.data;
-              if (user) {
-                localStorage.setItem('boom_user', JSON.stringify(user));
-                setAuthUser(user);
-              }
-            })
-            .catch(() => {});
-        }
+
+      // One-shot sans compte : attendre 2s (webhook) puis retour au constat
+      if (constatId) {
+        setTimeout(() => {
+          window.location.href = `/?session=${constatId}&paid=1`;
+        }, 2000);
+        return;
+      }
+
+      // Compte existant : refresh crédits
+      const token = localStorage.getItem('boom_user_token');
+      if (token) {
+        fetch('/trpc/auth.me', { headers: { 'Authorization': 'Bearer ' + token } })
+          .then(r => r.json())
+          .then(d => {
+            const user = d?.result?.data;
+            if (user) {
+              localStorage.setItem('boom_user', JSON.stringify(user));
+              setAuthUser(user);
+            }
+          })
+          .catch(() => {});
       }
     }
   }, []);

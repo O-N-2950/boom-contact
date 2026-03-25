@@ -14,17 +14,19 @@ interface Props {
 }
 
 export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
-  const [loading, setLoading]         = useState(false);
-  const [pdfBase64, setPdfBase64]     = useState<string | null>(null);
-  const [error, setError]             = useState<string | null>(null);
-  const [email, setEmail]             = useState(driverEmail || '');
+  const [loading, setLoading]           = useState(false);
+  const [pdfBase64, setPdfBase64]       = useState<string | null>(null);
+  const [error, setError]               = useState<string | null>(null);
+  const [email, setEmail]               = useState(driverEmail || '');
   const [sendingEmail, setSendingEmail] = useState(false);
-  const [emailSent, setEmailSent]     = useState(false);
-  const [emailError, setEmailError]   = useState<string | null>(null);
+  const [emailSent, setEmailSent]       = useState(false);
+  const [emailError, setEmailError]     = useState<string | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(!!driverEmail);
-  // Credit gate state
-  const [creditUsed, setCreditUsed]   = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
+  const [creditUsed, setCreditUsed]     = useState(false);
+  const [showPaywall, setShowPaywall]   = useState(false);
+  // One-shot: email saisi sans compte
+  const [oneshotEmail, setOneshotEmail] = useState(driverEmail || '');
+  const [oneshotLoading, setOneshotLoading] = useState(false);
 
   const pdfMutation    = trpc.pdf.generate.useMutation({
     onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); },
@@ -33,10 +35,31 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
   const creditMutation = trpc.payment.useCredit.useMutation({
     onError: (err) => { setError(err.message); setLoading(false); },
   });
+  const checkoutMutation = trpc.payment.createCheckout.useMutation({
+    onSuccess: (data) => {
+      // Redirige vers Stripe Checkout
+      window.location.href = data.url;
+    },
+    onError: (err) => { setError(err.message); setOneshotLoading(false); },
+  });
   const emailMutation  = trpc.email.sendToDriver.useMutation({
     onSuccess: () => { setEmailSent(true); setSendingEmail(false); },
     onError:   (err) => { setEmailError(err.message); setSendingEmail(false); },
   });
+
+  // Paiement one-shot sans compte
+  const payOneShot = () => {
+    if (!oneshotEmail.includes('@')) return;
+    setOneshotLoading(true);
+    setError(null);
+    checkoutMutation.mutate({
+      packageId: 'single',
+      userEmail: oneshotEmail,
+      currency: 'EUR',
+      locale: navigator.language?.split('-')[0] || 'fr',
+      constatSessionId: sessionId, // pour auto-consommer après paiement
+    });
+  };
 
   // Consume 1 credit then generate PDF
   const generateWithCredit = async (): Promise<string | null> => {
@@ -163,24 +186,65 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
           fontSize: 13, color: '#ef4444' }}>⚠️ {error}</div>
       )}
 
-      {/* ── PAYWALL — pas connecté ── */}
+      {/* ── PAYWALL — pas connecté : 2 options ── */}
       {!authUser && (
-        <div style={{ marginBottom: 16, padding: 16, borderRadius: 12,
-          background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
-          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
-            📥 Récupérez votre constat
+        <div style={{ marginBottom: 16 }}>
+          {/* Option 1 : Payer sans compte — one shot */}
+          <div style={{ padding: 16, borderRadius: 12, marginBottom: 10,
+            background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
+            <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>
+              💳 Payer sans créer de compte
+            </div>
+            <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 12, lineHeight: 1.55 }}>
+              1 constat — <strong>CHF 4.90 / €4.90</strong> · Paiement sécurisé Stripe<br/>
+              Votre PDF vous sera envoyé par email après paiement.
+            </div>
+            <input
+              type="email"
+              value={oneshotEmail}
+              onChange={e => setOneshotEmail(e.target.value)}
+              placeholder="votre@email.com"
+              style={{
+                width: '100%', padding: '11px 13px', borderRadius: 8,
+                border: '1.5px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'var(--text)', fontSize: 14, outline: 'none',
+                marginBottom: 10, boxSizing: 'border-box' as const,
+              }}
+            />
+            <button
+              onClick={payOneShot}
+              disabled={oneshotLoading || !oneshotEmail.includes('@')}
+              style={{
+                width: '100%', padding: '14px', borderRadius: 10, border: 'none',
+                background: oneshotEmail.includes('@') ? 'var(--boom)' : 'rgba(255,53,0,0.3)',
+                color: '#fff', cursor: oneshotEmail.includes('@') ? 'pointer' : 'not-allowed',
+                fontSize: 15, fontWeight: 700,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              }}>
+              {oneshotLoading ? '⏳ Redirection…' : '💳 Payer CHF 4.90 →'}
+            </button>
           </div>
-          <div style={{ fontSize: 13, opacity: 0.65, lineHeight: 1.65, marginBottom: 14 }}>
-            Créez un compte gratuit (ou connectez-vous) pour télécharger votre PDF.<br/>
-            1 constat = 1 crédit · à partir de CHF 4.90
+
+          {/* Séparateur */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
+            <span style={{ fontSize: 11, opacity: 0.3 }}>ou</span>
+            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
           </div>
+
+          {/* Option 2 : Se connecter (compte existant) */}
           <button onClick={() => onLogin?.()} style={{
-            width: '100%', padding: '14px', borderRadius: 10, border: 'none',
-            background: 'var(--boom)', color: '#fff', cursor: 'pointer',
-            fontSize: 15, fontWeight: 700,
+            width: '100%', padding: '13px', borderRadius: 10,
+            border: '1.5px solid rgba(255,255,255,0.12)',
+            background: 'transparent', color: 'var(--text)', cursor: 'pointer',
+            fontSize: 14, fontWeight: 500,
           }}>
-            Se connecter / Créer un compte →
+            Se connecter (compte existant) →
           </button>
+          <div style={{ fontSize: 11, opacity: 0.3, textAlign: 'center', marginTop: 8 }}>
+            Pack 3 constats CHF 12.90 · Pack 10 constats CHF 34.90
+          </div>
         </div>
       )}
 

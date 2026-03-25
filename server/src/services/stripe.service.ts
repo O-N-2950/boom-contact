@@ -113,6 +113,7 @@ export async function createCheckoutSession(
   userEmail: string,
   currency: SupportedCurrency = 'EUR',
   locale: string = 'fr',
+  constatSessionId?: string, // pour retour direct au constat après paiement
 ) {
   const pkg = PACKAGES[packageId];
   if (!pkg) throw new Error(`Package inconnu: ${packageId}`);
@@ -151,9 +152,14 @@ export async function createCheckoutSession(
       credits: String(pkg.credits),
       application: 'boom.contact',
       environment: process.env.NODE_ENV || 'production',
+      ...(constatSessionId ? { constatSessionId } : {}),
     },
-    success_url: `${BASE_URL}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url:  `${BASE_URL}?payment=cancelled`,
+    success_url: constatSessionId
+      ? `${BASE_URL}?payment=success&session_id={CHECKOUT_SESSION_ID}&constat=${constatSessionId}`
+      : `${BASE_URL}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: constatSessionId
+      ? `${BASE_URL}?session=${constatSessionId}&payment=cancelled`
+      : `${BASE_URL}?payment=cancelled`,
   });
 
   // Enregistrer le paiement en pending
@@ -227,6 +233,13 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
     });
 
     logger.payment('credits-granted', userEmail, packageId, creditsInt);
+
+    // One-shot : si constatSessionId dans metadata → consommer immédiatement 1 crédit
+    const constatSessionId = session.metadata?.constatSessionId;
+    if (constatSessionId && creditsInt >= 1) {
+      await useCredit(userEmail, constatSessionId);
+      logger.payment('credit-auto-used', userEmail, 'single', 1);
+    }
   }
 }
 

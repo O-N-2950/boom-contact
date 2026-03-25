@@ -387,11 +387,12 @@ export const appRouter = router({
     // Créer une session Stripe Checkout
     createCheckout: publicProcedure
       .input(z.object({
-        packageId:   z.enum(['single', 'pack3', 'pack10']),
-        userEmail:   z.string().email(),
-        currency:    z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
-        locale:      z.string().default('fr'),
-        countryCode: z.string().optional(),
+        packageId:        z.enum(['single', 'pack3', 'pack10']),
+        userEmail:        z.string().email(),
+        currency:         z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
+        locale:           z.string().default('fr'),
+        countryCode:      z.string().optional(),
+        constatSessionId: z.string().optional(), // pour retour direct après paiement one-shot
       }))
       .mutation(async ({ input }) => {
         return createCheckoutSession(
@@ -399,6 +400,7 @@ export const appRouter = router({
           input.userEmail,
           input.currency,
           input.locale,
+          input.constatSessionId,
         );
       }),
 
