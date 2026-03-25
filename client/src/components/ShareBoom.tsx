@@ -8,12 +8,11 @@ import { useState } from 'react';
 interface Props {
   onClose?: () => void;
   context?: 'post_constat' | 'landing' | 'account'; // contexte pour adapter le message
-  conductorName?: string; // pour personnaliser "X t'a partagé boom.contact"
 }
 
 const APP_URL = 'https://www.boom.contact';
 
-export function ShareBoom({ onClose, context = 'landing', conductorName }: Props) {
+export function ShareBoom({ onClose, context = 'landing' }: Props) {
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState('');
 
