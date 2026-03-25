@@ -11,11 +11,11 @@ import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
-import { marketingRouter } from './marketing.router.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { io } from '../index';
+import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 
 const t = initTRPC.context<Context>().create();
 export const router = t.router;
@@ -1227,10 +1227,63 @@ export const appRouter = router({
       return { fixed, total: missing.length };
     }),
 
-  marketing: marketingRouter,
+
+  // ── MARKETING ───────────────────────────────────────────────
+  marketing: router({
+
+    posts: publicProcedure
+      .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
+      .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
+        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        const { db } = await import('../db/index.js');
+        const { schema } = await import('../db/schema.js');
+        const { eq, and } = await import('drizzle-orm');
+        const sp = (schema as any).socialPosts;
+        const conds: any[] = [];
+        if (input.platform) conds.push(eq(sp.platform, input.platform));
+        if (input.status)   conds.push(eq(sp.status, input.status));
+        const posts = await (conds.length > 0
+          ? (db as any).select().from(sp).where(and(...conds)).orderBy(sp.createdAt)
+          : (db as any).select().from(sp).orderBy(sp.createdAt));
+        return { posts: posts.map((p: any) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
+      }),
+
+    generate: publicProcedure
+      .input(z.object({ count: z.number().min(1).max(8).default(4) }))
+      .mutation(async ({ ctx }: { ctx: Context }) => {
+        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        const generated = await generateDailyPosts(4);
+        return { generated };
+      }),
+
+    approve: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
+        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        await approvePost(input.id);
+        return { ok: true };
+      }),
+
+    markPosted: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
+        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        await markPosted(input.id);
+        return { ok: true };
+      }),
+
+    archive: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
+        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        await archivePost(input.id);
+        return { ok: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
