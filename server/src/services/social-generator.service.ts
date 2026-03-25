@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { db } from '../db/index.js';
-import { schema } from '../db/schema.js';
+import { socialPosts } from '../db/schema.js';
 import { eq, and, gte, count } from 'drizzle-orm';
 import { logger } from '../logger.js';
 
@@ -36,8 +36,8 @@ export async function generateDailyPosts(count = 4): Promise<number> {
 
   // Vérifie combien de posts pending il y a déjà
   const pending = await db.select({ c: count() })
-    .from(schema.socialPosts as any)
-    .where(eq((schema.socialPosts as any).status, 'pending'));
+    .from(socialPosts as any)
+    .where(eq((socialPosts as any).status, 'pending'));
   const pendingCount = Number((pending[0] as any)?.c ?? 0);
 
   if (pendingCount >= 20) {
@@ -70,7 +70,7 @@ export async function generateDailyPosts(count = 4): Promise<number> {
   for (const job of jobs) {
     try {
       const post = await generateOnePost(job.platform, job.pillar);
-      await (db as any).insert(schema.socialPosts).values({
+      await (db as any).insert(socialPosts).values({
         platform:     post.platform,
         pillar:       post.pillar,
         text:         post.text,
@@ -120,30 +120,30 @@ Genere UN SEUL post. JSON UNIQUEMENT :
 export async function getPendingPosts(platform?: string) {
   const where = platform
     ? and(
-        eq((schema.socialPosts as any).status, 'pending'),
-        eq((schema.socialPosts as any).platform, platform)
+        eq((socialPosts as any).status, 'pending'),
+        eq((socialPosts as any).platform, platform)
       )
-    : eq((schema.socialPosts as any).status, 'pending');
+    : eq((socialPosts as any).status, 'pending');
 
-  return (db as any).select().from(schema.socialPosts).where(where).orderBy((schema.socialPosts as any).createdAt);
+  return (db as any).select().from(socialPosts).where(where).orderBy((socialPosts as any).createdAt);
 }
 
 export async function approvePost(id: number) {
-  return (db as any).update(schema.socialPosts)
+  return (db as any).update(socialPosts)
     .set({ status: 'approved' })
-    .where(eq((schema.socialPosts as any).id, id));
+    .where(eq((socialPosts as any).id, id));
 }
 
 export async function markPosted(id: number) {
-  return (db as any).update(schema.socialPosts)
+  return (db as any).update(socialPosts)
     .set({ status: 'posted', postedAt: new Date() })
-    .where(eq((schema.socialPosts as any).id, id));
+    .where(eq((socialPosts as any).id, id));
 }
 
 export async function archivePost(id: number) {
-  return (db as any).update(schema.socialPosts)
+  return (db as any).update(socialPosts)
     .set({ status: 'archived' })
-    .where(eq((schema.socialPosts as any).id, id));
+    .where(eq((socialPosts as any).id, id));
 }
 
 // Seed initial : importe les 60 posts de la session 14
@@ -151,7 +151,7 @@ export async function seedInitialPosts(posts: GeneratedPost[]) {
   let inserted = 0;
   for (const p of posts) {
     try {
-      await (db as any).insert(schema.socialPosts).values({
+      await (db as any).insert(socialPosts).values({
         platform:    p.platform,
         pillar:      p.pillar,
         text:        p.text,
@@ -166,3 +166,4 @@ export async function seedInitialPosts(posts: GeneratedPost[]) {
   logger.info('[SocialGen] Seed OK', { inserted });
   return inserted;
 }
+
