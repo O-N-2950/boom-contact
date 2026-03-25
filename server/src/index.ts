@@ -234,6 +234,41 @@ app.get('/sitemap.xml', (_req, res) => {
 });
 
 
+
+// ── Social media — endpoint auto-publish (sécurisé) ─────────
+// Déclenché par cron-job.org toutes les 24h à 9h00 Europe/Zurich
+app.post('/social/auto-publish', express.json(), async (req, res) => {
+  const secret = req.body?.secret || req.query.secret;
+  if (secret !== process.env.SOCIAL_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  try {
+    const { publishToAllPlatforms } = await import('./services/social.service.js');
+    const results = await publishToAllPlatforms();
+    const ok = Object.values(results).filter((r: any) => r.success).length;
+    logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
+    res.json({ success: true, results, summary: `${ok}/${Object.keys(results).length} plateformes` });
+  } catch (err: any) {
+    logger.error('[SOCIAL] Auto-publish erreur', { error: err.message });
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Endpoint de santé social (sans auth)
+app.get('/social/health', async (_req, res) => {
+  try {
+    const { hasPostedToday } = await import('./services/social.service.js');
+    const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
+    const status: Record<string, boolean> = {};
+    for (const p of platforms) {
+      status[p] = await hasPostedToday(p);
+    }
+    res.json({ ok: true, today: status, ts: new Date().toISOString() });
+  } catch (err: any) {
+    res.json({ ok: false, error: err.message });
+  }
+});
+
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
