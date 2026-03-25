@@ -21,7 +21,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 # IMPORTANT: COPY tout en une fois AVANT npm install
 # Garantit que chaque deploy reconstruit avec le code frais
-# cache-bust: 2026-03-24-session15-nocache
+# cache-bust: 2026-03-25-session16-rebuild
 COPY . .
 
 RUN npm install --no-fund --no-audit
