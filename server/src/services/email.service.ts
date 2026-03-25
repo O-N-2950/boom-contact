@@ -40,67 +40,158 @@ const TEMPLATES: Record<string, {
   step2: string;
   step3: string;
   deadline: string;
+  feedbackTitle: string;
+  feedbackQ: string;
+  feedbackGood: string;
+  feedbackBad: string;
+  googleTitle: string;
+  googleText: string;
+  googleBtn: string;
+  shareTitle: string;
+  shareText: string;
+  shareBtn: string;
+  signupTitle: string;
+  signupText: string;
+  signupBtn: string;
   footer: string;
 }> = {
   fr: {
-    subject: 'Votre constat amiable numérique — boom.contact',
-    heading: 'Votre constat est prêt',
-    intro: 'Votre constat amiable numérique a été finalisé et signé par les deux parties.',
-    step1: '📄 Téléchargez le PDF ci-joint',
-    step2: '📞 Contactez votre assureur',
-    step3: '📤 Transmettez-leur ce document',
-    deadline: '⏰ Délai légal : 5 jours ouvrables en France, 8 jours en Suisse',
-    footer: 'Constat numérique certifié boom.contact — valable mondialement.',
+    subject: '✅ Votre constat signé — PDF ci-joint · boom.contact',
+    heading: 'Constat finalisé & signé',
+    intro: 'Les deux conducteurs ont signé. Votre constat numérique certifié est joint à cet email en PDF.',
+    step1: 'Ouvrez le PDF ci-joint et vérifiez les informations',
+    step2: 'Contactez <strong>votre propre assureur</strong> pour déclarer le sinistre',
+    step3: 'Transmettez-leur ce PDF — délai : <strong>5 jours (FR) · 8 jours (CH)</strong>',
+    deadline: '⏰ Ne tardez pas — votre assureur doit être contacté rapidement après l\'accident.',
+    feedbackTitle: 'Votre expérience compte',
+    feedbackQ: 'Comment s\'est passé votre constat ?',
+    feedbackGood: '😊 Très bien',
+    feedbackBad: '😕 À améliorer',
+    googleTitle: 'Aidez-nous à grandir',
+    googleText: 'Si boom.contact vous a simplifié la vie, un avis Google prend 30 secondes et aide d\'autres conducteurs à nous trouver.',
+    googleBtn: '⭐ Laisser un avis Google',
+    shareTitle: 'Partagez avec vos proches',
+    shareText: 'Un accident peut arriver à n\'importe qui. Envoyez ce lien à vos proches — le constat numérique est gratuit à faire.',
+    shareBtn: '📲 Partager boom.contact',
+    signupTitle: 'Prêt pour la prochaine fois ?',
+    signupText: 'Créez un compte gratuit et enregistrez votre véhicule. La prochaine fois, votre constat sera pré-rempli en 10 secondes.',
+    signupBtn: '🚗 Enregistrer mon véhicule',
+    footer: 'boom.contact · PEP\'s Swiss SA · Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Suisse<br>Constat numérique certifié · Valable dans 150+ pays · Conforme RGPD',
   },
   de: {
-    subject: 'Ihr digitaler Unfallbericht — boom.contact',
-    heading: 'Ihr Unfallbericht ist fertig',
-    intro: 'Ihr digitaler Unfallbericht wurde von beiden Parteien unterzeichnet.',
-    step1: '📄 Laden Sie das beigefügte PDF herunter',
-    step2: '📞 Kontaktieren Sie Ihre Versicherung',
-    step3: '📤 Übermitteln Sie dieses Dokument',
-    deadline: '⏰ Gesetzliche Frist: 8 Tage in der Schweiz',
-    footer: 'Zertifiziertes digitales Unfallprotokoll boom.contact — weltweit gültig.',
+    subject: '✅ Ihr unterzeichneter Unfallbericht — PDF anbei · boom.contact',
+    heading: 'Unfallbericht abgeschlossen & unterzeichnet',
+    intro: 'Beide Fahrer haben unterschrieben. Ihr zertifizierter digitaler Unfallbericht ist als PDF beigefügt.',
+    step1: 'Öffnen Sie das beigefügte PDF und prüfen Sie die Angaben',
+    step2: 'Kontaktieren Sie <strong>Ihre eigene Versicherung</strong> zur Schadenmeldung',
+    step3: 'Übermitteln Sie dieses PDF — Frist: <strong>8 Tage (CH)</strong>',
+    deadline: '⏰ Handeln Sie schnell — Ihre Versicherung muss zeitnah kontaktiert werden.',
+    feedbackTitle: 'Ihre Erfahrung zählt',
+    feedbackQ: 'Wie war Ihr Erlebnis mit boom.contact?',
+    feedbackGood: '😊 Sehr gut',
+    feedbackBad: '😕 Verbesserungswürdig',
+    googleTitle: 'Helfen Sie uns zu wachsen',
+    googleText: 'Falls boom.contact Ihnen geholfen hat, dauert eine Google-Bewertung nur 30 Sekunden.',
+    googleBtn: '⭐ Google-Bewertung schreiben',
+    shareTitle: 'Teilen Sie mit Freunden',
+    shareText: 'Ein Unfall kann jeden treffen. Senden Sie diesen Link Ihren Liebsten — das digitale Protokoll ist kostenlos.',
+    shareBtn: '📲 boom.contact teilen',
+    signupTitle: 'Bereit für nächstes Mal?',
+    signupText: 'Erstellen Sie ein kostenloses Konto und registrieren Sie Ihr Fahrzeug. Beim nächsten Mal in 10 Sekunden vorausgefüllt.',
+    signupBtn: '🚗 Fahrzeug registrieren',
+    footer: 'boom.contact · PEP\'s Swiss SA · Gruppe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Schweiz',
   },
   it: {
-    subject: 'Il vostro modulo di constatazione — boom.contact',
-    heading: 'Il vostro modulo è pronto',
-    intro: 'Il vostro modulo di constatazione amichevole è stato firmato da entrambe le parti.',
-    step1: '📄 Scaricate il PDF allegato',
-    step2: '📞 Contattate la vostra assicurazione',
-    step3: '📤 Trasmettete questo documento',
-    deadline: '⏰ Termine legale: entro 8 giorni',
-    footer: 'Constatazione digitale certificata boom.contact — valida in tutto il mondo.',
+    subject: '✅ Il vostro modulo firmato — PDF allegato · boom.contact',
+    heading: 'Constatazione completata e firmata',
+    intro: 'Entrambi i conducenti hanno firmato. Il vostro modulo digitale certificato è allegato in PDF.',
+    step1: 'Aprite il PDF allegato e verificate le informazioni',
+    step2: 'Contattate <strong>la vostra assicurazione</strong> per dichiarare il sinistro',
+    step3: 'Inviate loro questo PDF — termine: <strong>8 giorni</strong>',
+    deadline: '⏰ Non aspettate — contattate la vostra assicurazione il prima possibile.',
+    feedbackTitle: 'La vostra esperienza conta',
+    feedbackQ: 'Com\'è stata la vostra esperienza?',
+    feedbackGood: '😊 Ottima',
+    feedbackBad: '😕 Da migliorare',
+    googleTitle: 'Aiutateci a crescere',
+    googleText: 'Se boom.contact vi ha semplificato la vita, una recensione Google richiede solo 30 secondi.',
+    googleBtn: '⭐ Lascia una recensione Google',
+    shareTitle: 'Condividete con i vostri cari',
+    shareText: 'Un incidente può capitare a tutti. Inviate questo link — il modulo digitale è gratuito.',
+    shareBtn: '📲 Condividi boom.contact',
+    signupTitle: 'Pronti per la prossima volta?',
+    signupText: 'Create un account gratuito e registrate il vostro veicolo. La prossima volta in 10 secondi.',
+    signupBtn: '🚗 Registra il mio veicolo',
+    footer: 'boom.contact · PEP\'s Swiss SA · Gruppo NEUKOMM · Bellevue 7, 2950 Courgenay, Giura, Svizzera',
   },
   en: {
-    subject: 'Your accident statement — boom.contact',
-    heading: 'Your accident statement is ready',
-    intro: 'Your digital accident statement has been completed and signed by both parties.',
-    step1: '📄 Download the attached PDF',
-    step2: '📞 Contact your insurance company',
-    step3: '📤 Submit this document to them',
-    deadline: '⏰ Legal deadline: typically 5-10 working days depending on your country',
-    footer: 'Certified digital accident report boom.contact — valid worldwide.',
+    subject: '✅ Your signed accident report — PDF attached · boom.contact',
+    heading: 'Accident report completed & signed',
+    intro: 'Both drivers have signed. Your certified digital accident report is attached as a PDF.',
+    step1: 'Open the attached PDF and verify the information',
+    step2: 'Contact <strong>your own insurance company</strong> to file the claim',
+    step3: 'Send them this PDF — deadline: <strong>5–10 working days</strong>',
+    deadline: '⏰ Don\'t wait — contact your insurer as soon as possible after the accident.',
+    feedbackTitle: 'Your experience matters',
+    feedbackQ: 'How was your experience with boom.contact?',
+    feedbackGood: '😊 Great',
+    feedbackBad: '😕 Needs improvement',
+    googleTitle: 'Help us grow',
+    googleText: 'If boom.contact made your life easier, a Google review takes just 30 seconds and helps other drivers find us.',
+    googleBtn: '⭐ Leave a Google review',
+    shareTitle: 'Share with friends & family',
+    shareText: 'Accidents happen to everyone. Send this link to your loved ones — the digital report is free to complete.',
+    shareBtn: '📲 Share boom.contact',
+    signupTitle: 'Ready for next time?',
+    signupText: 'Create a free account and save your vehicle. Next time, your report will be pre-filled in 10 seconds.',
+    signupBtn: '🚗 Save my vehicle',
+    footer: 'boom.contact · PEP\'s Swiss SA · Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Switzerland',
   },
   es: {
-    subject: 'Su declaración de accidente — boom.contact',
-    heading: 'Su declaración está lista',
-    intro: 'Su declaración amistosa de accidente ha sido firmada por ambas partes.',
-    step1: '📄 Descargue el PDF adjunto',
-    step2: '📞 Contacte a su aseguradora',
-    step3: '📤 Envíeles este documento',
-    deadline: '⏰ Plazo legal: generalmente 7 días hábiles',
-    footer: 'Parte de accidente digital certificado boom.contact — válido en todo el mundo.',
+    subject: '✅ Su declaración firmada — PDF adjunto · boom.contact',
+    heading: 'Declaración completada y firmada',
+    intro: 'Ambos conductores han firmado. Su declaración digital certificada está adjunta en PDF.',
+    step1: 'Abra el PDF adjunto y verifique la información',
+    step2: 'Contacte <strong>a su propia aseguradora</strong> para declarar el siniestro',
+    step3: 'Envíeles este PDF — plazo: <strong>7 días hábiles</strong>',
+    deadline: '⏰ No espere — contacte a su aseguradora lo antes posible.',
+    feedbackTitle: 'Su experiencia importa',
+    feedbackQ: '¿Cómo fue su experiencia con boom.contact?',
+    feedbackGood: '😊 Muy bien',
+    feedbackBad: '😕 Mejorable',
+    googleTitle: 'Ayúdenos a crecer',
+    googleText: 'Si boom.contact le facilitó las cosas, una reseña en Google tarda solo 30 segundos.',
+    googleBtn: '⭐ Dejar reseña en Google',
+    shareTitle: 'Comparta con sus seres queridos',
+    shareText: 'Los accidentes le pueden pasar a cualquiera. Envíe este enlace — el parte digital es gratuito.',
+    shareBtn: '📲 Compartir boom.contact',
+    signupTitle: '¿Listo para la próxima vez?',
+    signupText: 'Cree una cuenta gratuita y registre su vehículo. La próxima vez, pre-rellenado en 10 segundos.',
+    signupBtn: '🚗 Registrar mi vehículo',
+    footer: 'boom.contact · PEP\'s Swiss SA · Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Suiza',
   },
   pt: {
-    subject: 'A sua declaração de acidente — boom.contact',
-    heading: 'A sua declaração está pronta',
-    intro: 'A sua declaração amigável de acidente foi assinada por ambas as partes.',
-    step1: '📄 Descarregue o PDF em anexo',
-    step2: '📞 Contacte a sua seguradora',
-    step3: '📤 Envie-lhes este documento',
-    deadline: '⏰ Prazo legal: geralmente 8 dias úteis',
-    footer: 'Relatório digital de acidente certificado boom.contact — válido em todo o mundo.',
+    subject: '✅ A sua declaração assinada — PDF em anexo · boom.contact',
+    heading: 'Declaração concluída e assinada',
+    intro: 'Ambos os condutores assinaram. A sua declaração digital certificada está anexada em PDF.',
+    step1: 'Abra o PDF em anexo e verifique as informações',
+    step2: 'Contacte <strong>a sua seguradora</strong> para declarar o sinistro',
+    step3: 'Envie-lhes este PDF — prazo: <strong>8 dias úteis</strong>',
+    deadline: '⏰ Não espere — contacte a sua seguradora o mais rapidamente possível.',
+    feedbackTitle: 'A sua experiência é importante',
+    feedbackQ: 'Como foi a sua experiência com boom.contact?',
+    feedbackGood: '😊 Muito boa',
+    feedbackBad: '😕 A melhorar',
+    googleTitle: 'Ajude-nos a crescer',
+    googleText: 'Se boom.contact lhe facilitou a vida, uma avaliação no Google demora apenas 30 segundos.',
+    googleBtn: '⭐ Deixar avaliação no Google',
+    shareTitle: 'Partilhe com os seus amigos',
+    shareText: 'Os acidentes podem acontecer a qualquer pessoa. Envie este link — o relatório digital é gratuito.',
+    shareBtn: '📲 Partilhar boom.contact',
+    signupTitle: 'Pronto para a próxima vez?',
+    signupText: 'Crie uma conta gratuita e registe o seu veículo. Na próxima vez, preenchido em 10 segundos.',
+    signupBtn: '🚗 Registar o meu veículo',
+    footer: 'boom.contact · PEP\'s Swiss SA · Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Jura, Suíça',
   },
 };
 
@@ -111,77 +202,153 @@ function getTemplate(lang?: string) {
 
 function buildEmailHTML(params: SendPDFToDriverParams): string {
   const t = getTemplate(params.language);
-  const roleLabel = params.role === 'A' ? 'Conducteur A' : 'Conducteur B';
+  const BASE = 'https://www.boom.contact';
+  const GOOGLE_REVIEW = 'https://g.page/r/boom-contact/review'; // à personnaliser avec la vraie URL Google
+  const shareUrl = encodeURIComponent(BASE);
+  const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en 5 min, valable dans 150 pays');
+  const isRegistered = !!params.driverEmail; // s'ils ont un email, peut-être pas encore de compte
 
   const insurerSection = params.insurerName ? `
-    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;margin:16px 0;">
-      <div style="font-weight:700;color:#166534;margin-bottom:6px;">🟢 Votre assureur identifié</div>
-      <div style="font-size:15px;font-weight:600;">${params.insurerName}</div>
-      ${params.insurerPhone ? `<div style="margin-top:4px;color:#166534;">📞 ${params.insurerPhone}</div>` : ''}
-      <div style="margin-top:8px;font-size:12px;color:#666;">
-        Contactez directement votre assureur pour déclarer le sinistre. 
-        Les coordonnées exactes (email sinistres, portail) se trouvent sur votre police ou leur site web.
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:16px;margin:0 0 20px;">
+      <div style="font-weight:700;color:#166534;font-size:13px;margin-bottom:6px;">🟢 Votre assureur identifié par OCR</div>
+      <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${params.insurerName}</div>
+      <div style="font-size:12px;color:#555;line-height:1.5;">
+        Contactez directement votre assureur. Coordonnées sur votre police ou leur site web.
       </div>
     </div>
   ` : '';
 
   return `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f4f4f5;font-family:'Helvetica Neue',Arial,sans-serif;">
-  <div style="max-width:560px;margin:32px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-    
-    <!-- Header -->
-    <div style="background:#06060C;padding:28px 28px 24px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:40px;height:40px;background:#FF3500;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">💥</div>
-        <div>
-          <div style="color:#FF3500;font-size:18px;font-weight:700;letter-spacing:0.5px;">boom.contact</div>
-          <div style="color:rgba(255,255,255,0.4);font-size:11px;letter-spacing:1px;text-transform:uppercase;">${roleLabel}</div>
-        </div>
-      </div>
-    </div>
+<html lang="${params.language || 'fr'}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>${t.subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="max-width:580px;margin:0 auto;padding:24px 16px 48px;">
 
-    <!-- Body -->
-    <div style="padding:28px;">
-      <h1 style="margin:0 0 8px;font-size:22px;color:#111;">${t.heading}</h1>
-      <p style="margin:0 0 20px;color:#555;line-height:1.65;font-size:15px;">${t.intro}</p>
+  <!-- ═══ HEADER ═══ -->
+  <div style="background:#06060C;border-radius:16px 16px 0 0;padding:28px 32px 24px;">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td>
+        <div style="background:#FF3500;border-radius:10px;width:44px;height:44px;text-align:center;line-height:44px;font-size:22px;display:inline-block;vertical-align:middle;">💥</div>
+        <span style="vertical-align:middle;margin-left:12px;color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span>
+      </td>
+      <td align="right">
+        <span style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">SESSION ${params.sessionId}</span>
+      </td>
+    </tr></table>
 
-      <!-- Session badge -->
-      <div style="background:#fafafa;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
-        <div style="font-size:11px;color:#999;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Référence</div>
-        <div style="font-size:16px;font-weight:700;font-family:monospace;color:#FF3500;">${params.sessionId}</div>
-      </div>
-
-      ${insurerSection}
-
-      <!-- Steps -->
-      <div style="background:#fff8f7;border:1px solid #fde8e4;border-radius:10px;padding:18px;margin-bottom:20px;">
-        <div style="font-weight:700;font-size:14px;color:#FF3500;margin-bottom:12px;">Prochaines étapes</div>
-        ${[t.step1, t.step2, t.step3].map((s, i) => `
-          <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:${i < 2 ? '10px' : '0'};">
-            <div style="width:22px;height:22px;background:#FF3500;border-radius:50%;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">${i + 1}</div>
-            <div style="font-size:14px;color:#333;">${s}</div>
-          </div>
-        `).join('')}
-      </div>
-
-      <!-- Deadline warning -->
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;margin-bottom:20px;">
-        <div style="font-size:13px;color:#92400e;">${t.deadline}</div>
-      </div>
-
-      <p style="font-size:12px;color:#999;line-height:1.6;">${t.footer}</p>
-    </div>
-
-    <!-- Footer -->
-    <div style="border-top:1px solid #f0f0f0;padding:16px 28px;background:#fafafa;">
-      <div style="font-size:11px;color:#aaa;line-height:1.6;">
-        boom.contact · PEP's Swiss SA · Groupe NEUKOMM<br>
-        Bellevue 7, 2950 Courgenay, Jura, Suisse · CHE-XXX.XXX.XXX
-      </div>
+    <!-- Green success banner -->
+    <div style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:16px;margin-top:20px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:6px;">✅</div>
+      <div style="color:#4ade80;font-size:18px;font-weight:700;">${t.heading}</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-top:4px;">${t.intro}</div>
     </div>
   </div>
+
+  <!-- ═══ BODY ═══ -->
+  <div style="background:#ffffff;padding:28px 32px;">
+
+    <!-- PDF attached notice -->
+    <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:6px;">📎</div>
+      <div style="font-weight:700;font-size:15px;color:#111;">Le PDF est joint à cet email</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;">constat-${params.sessionId}.pdf</div>
+    </div>
+
+    ${insurerSection}
+
+    <!-- Next steps -->
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">PROCHAINES ÉTAPES</div>
+      ${[t.step1, t.step2, t.step3].map((step, i) => `
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+        <div style="min-width:28px;height:28px;background:#FF3500;border-radius:50%;color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:28px;flex-shrink:0;">${i + 1}</div>
+        <div style="font-size:14px;color:#333;line-height:1.55;padding-top:5px;">${step}</div>
+      </div>`).join('')}
+    </div>
+
+    <!-- Deadline -->
+    <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:28px;">
+      <div style="font-size:13px;color:#92400e;line-height:1.5;">${t.deadline}</div>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+
+    <!-- ═══ FEEDBACK ═══ -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:6px;">${t.feedbackTitle}</div>
+      <div style="font-size:14px;color:#666;margin-bottom:16px;">${t.feedbackQ}</div>
+      <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
+        <td style="padding:0 6px;">
+          <a href="${BASE}/?feedback=good&session=${params.sessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#166534;font-weight:600;">${t.feedbackGood}</a>
+        </td>
+        <td style="padding:0 6px;">
+          <a href="${BASE}/?feedback=bad&session=${params.sessionId}" style="display:inline-block;background:#fef2f2;border:2px solid #fca5a5;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#991b1b;font-weight:600;">${t.feedbackBad}</a>
+        </td>
+      </tr></table>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+
+    <!-- ═══ GOOGLE REVIEW ═══ -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:32px;margin-bottom:8px;">⭐</div>
+      <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.googleTitle}</div>
+      <div style="font-size:13px;color:#666;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.googleText}</div>
+      <a href="${GOOGLE_REVIEW}" style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.googleBtn}</a>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+
+    <!-- ═══ SHARE ═══ -->
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:32px;margin-bottom:8px;">📲</div>
+      <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.shareTitle}</div>
+      <div style="font-size:13px;color:#666;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.shareText}</div>
+      <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
+        <td style="padding:0 4px;">
+          <a href="https://wa.me/?text=${shareText}%20${shareUrl}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">WhatsApp</a>
+        </td>
+        <td style="padding:0 4px;">
+          <a href="https://t.me/share/url?url=${shareUrl}&text=${shareText}" style="display:inline-block;background:#0088CC;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Telegram</a>
+        </td>
+        <td style="padding:0 4px;">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" style="display:inline-block;background:#1877F2;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Facebook</a>
+        </td>
+        <td style="padding:0 4px;">
+          <a href="sms:?body=${shareText}%20${shareUrl}" style="display:inline-block;background:#34C759;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">SMS</a>
+        </td>
+      </tr></table>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+
+    <!-- ═══ SIGNUP / SAVE VEHICLE ═══ -->
+    <div style="background:#06060C;border-radius:12px;padding:24px;text-align:center;margin-bottom:8px;">
+      <div style="font-size:28px;margin-bottom:8px;">🚗</div>
+      <div style="color:#fff;font-size:15px;font-weight:700;margin-bottom:6px;">${t.signupTitle}</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-bottom:18px;line-height:1.55;">${t.signupText}</div>
+      <a href="${BASE}/?action=signup" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.signupBtn} →</a>
+    </div>
+
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
+    <div style="font-size:11px;color:#aaa;line-height:1.8;text-align:center;">
+      ${t.footer}
+    </div>
+  </div>
+
+</div>
 </body>
 </html>`;
 }
