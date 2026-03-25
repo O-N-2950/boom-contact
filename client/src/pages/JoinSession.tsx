@@ -408,13 +408,7 @@ export function JoinSession() {
       )}
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
-        {step === 'location' && (
-          <LocationStep
-            onComplete={handleLocationComplete}
-            initialVehicleType={participantData.vehicle?.vehicleType as any}
-            initialAccidentData={sessionAccidentData}
-          />
-        )}
+        {/* Location supprimée pour B — utilise automatiquement celle de A */}
 
         {step === 'photos' && (
           <PhotoCapture

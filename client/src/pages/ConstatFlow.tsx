@@ -537,7 +537,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               📋 Non — je remplis ses coordonnées
             </button>
             <button
-              onClick={() => { setPedestrianHasPhone(false); setStep('sketch'); }}
+              onClick={() => { setPedestrianHasPhone(false); setStep('voice'); }}
               style={{
                 width: '100%', padding: '14px', borderRadius: 14,
                 border: '1px solid rgba(255,255,255,0.07)',
@@ -562,7 +562,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
                 if (bParticipant) setPedestrianData(bParticipant);
               } catch (e) { /* ignore */ }
-              setStep('sketch');
+              setStep('voice'); // piéton rejoint → vocal → formulaire → croquis → choc
             }}
           />
         )}
@@ -596,9 +596,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   });
                 } catch (e) { /* ignore — on continue quand même */ }
               }
-              setStep('sketch');
+              setStep('voice'); // piéton saisi → vocal → formulaire → croquis
             }}
-            onSkip={() => setStep('sketch')}
+            onSkip={() => setStep('voice')}
           />
         )}
 
@@ -613,19 +613,17 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             lang={participantData.language}
             onComplete={(data) => {
               setVoiceAnalysis(data.analysis);
-              // Stocker le nombre de véhicules détecté par l'IA
               const count = data.analysis?.vehicleCount || 2;
               setVehicleCount(count as 2|3|4);
-              // Pré-remplir circonstances
               if (data.analysis?.circumstances?.length > 0) {
                 setParticipantData(prev => ({
                   ...prev,
                   circumstances: data.analysis.circumstances,
                 }));
               }
-              // Aller vers QR — attendre les autres conducteurs
-              setStep('qr');
+              setStep('form'); // vocal → formulaire → croquis → choc → signature
             }}
+            onSkip={() => setStep('form')} // non bloquant — passer directement au formulaire
           />
         )}
 
