@@ -503,7 +503,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       </div>
     </div>
 
-      {showShare && <ShareBoom onClose={() => setShowShare(false)} context="landing" />}  );
+      {showShare && <ShareBoom onClose={() => setShowShare(false)} context="landing" />}
+    </div>
+  );
 }
 
 
