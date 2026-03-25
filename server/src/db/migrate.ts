@@ -185,7 +185,17 @@ export async function runMigrations() {
         credits = 999999
       WHERE users.email = 'contact@boom.contact';
     `);
-    logger.info('✅ Admin user upserted (role=admin, credits=999999)');
+
+    // WinWin admin — crédits illimités
+    await db.execute(`
+      INSERT INTO users (id, email, role, credits, consent_cgu, consent_cgu_at, created_at)
+      VALUES ('admin_winwin_01', 'info@winwin.swiss', 'admin', 999999, TRUE, NOW(), NOW())
+      ON CONFLICT (email) DO UPDATE SET
+        role    = 'admin',
+        credits = 999999
+      WHERE users.email = 'info@winwin.swiss';
+    `);
+    logger.info('✅ Admin users upserted (contact@boom.contact + info@winwin.swiss)');
 
 
     // ── Block 7 : Profil utilisateur étendu — Session 15 ────────────────
