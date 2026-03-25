@@ -1122,6 +1122,29 @@ export const appRouter = router({
 
 
   // ── ADMIN MAINTENANCE ──────────────────────────────────────────
+  // POST admin.deleteUser — supprimer un compte utilisateur par email (admin only)
+  adminDeleteUser: publicProcedure
+    .input(z.object({ email: z.string().email() }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      const { db } = await import('../db/index.js');
+      const { users, vehicles, magicTokens } = await import('../db/schema.js');
+      const { eq } = await import('drizzle-orm');
+
+      // Ne pas supprimer le compte admin
+      if (input.email === 'contact@boom.contact') throw new Error('Impossible de supprimer le compte admin principal.');
+
+      const user = await db.query.users.findFirst({ where: eq(users.email, input.email) });
+      if (!user) throw new Error('Utilisateur introuvable: ' + input.email);
+
+      await db.delete(magicTokens).where(eq(magicTokens.email, input.email));
+      await db.delete(vehicles).where(eq(vehicles.userId, user.id));
+      await db.delete(users).where(eq(users.id, user.id));
+
+      logger.info('Admin: compte supprimé', { email: input.email });
+      return { ok: true, deleted: input.email };
+    }),
+
   adminCleanupSessions: publicProcedure
     .mutation(async ({ ctx }) => {
       if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
