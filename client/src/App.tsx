@@ -213,6 +213,7 @@ export default function App() {
         onPricing={goToPricing}
         onGarage={goToGarage}
         onAccount={() => authUser ? setView('account') : setShowAuthModal(true)}
+        onLogout={handleLogout}
         authUser={authUser}
       />}
       {view === 'constat' && (
@@ -311,6 +312,7 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
 
 
 
