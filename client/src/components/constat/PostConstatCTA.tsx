@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ShareBoom } from '../ShareBoom';
 import { trpc } from '../../trpc';
 
 interface PostConstatCTAProps {
@@ -19,6 +20,7 @@ export function PostConstatCTA({
   onBuyPack,
 }: PostConstatCTAProps) {
   const [waLinkCopied, setWaLinkCopied] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const [giftResult, setGiftResult]     = useState('');
 
   const grantMut = trpc.auth.grantCredits.useMutation();
@@ -58,6 +60,16 @@ export function PostConstatCTA({
         <button onClick={onLogin} style={primaryBtnStyle}>
           Créer mon compte gratuit →
         </button>
+        <button onClick={() => setShowShare(true)} style={{
+          width: '100%', marginTop: 8, padding: '12px',
+          borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
+          background: 'transparent', color: 'rgba(240,237,232,0.6)',
+          cursor: 'pointer', fontSize: 13, fontWeight: 600,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        }}>
+          <span>📤</span> Partager à mes proches
+        </button>
+        {showShare && <ShareBoom onClose={() => setShowShare(false)} context="post_constat" />}
 
         {/* Rappel garage — juste après inscription */}
         <div style={{
@@ -186,6 +198,23 @@ export function PostConstatCTA({
         </div>
         {giftResult && <div style={{ color: '#4ade80', fontSize: 12, marginTop: 8 }}>{giftResult}</div>}
       </div>
+
+      {/* Partage viral — après constat */}
+      <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 12, padding: 14, marginBottom: 12 }}>
+        <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Partage boom.contact</div>
+        <div style={{ color: '#888', fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>
+          Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.
+        </div>
+        <button onClick={() => setShowShare(true)} style={{
+          width: '100%', padding: '11px', borderRadius: 10,
+          border: 'none', background: 'var(--boom)',
+          color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        }}>
+          <span style={{ fontSize: 18 }}>📤</span> Partager à mes proches
+        </button>
+      </div>
+      {showShare && <ShareBoom onClose={() => setShowShare(false)} context="post_constat" />}
 
       {/* Garage */}
       <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: 14, marginBottom: 12 }}>
