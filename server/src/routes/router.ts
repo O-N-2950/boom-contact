@@ -842,6 +842,29 @@ export const appRouter = router({
         return { ok: true };
       }),
 
+    // POST auth.deleteAccount — suppression définitive compte + données
+    deleteAccount: publicProcedure
+      .input(z.object({}))
+      .mutation(async ({ ctx }) => {
+        if (!ctx.authUser) throw new Error('Connexion requise.');
+        const { db } = await import('../db/index.js');
+        const { users, vehicles, magicTokens } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const userId = ctx.authUser.sub;
+        const userEmail = ctx.authUser.email;
+
+        // Bloquer suppression du compte admin
+        if (ctx.authUser.role === 'admin') throw new Error('Impossible de supprimer un compte admin.');
+
+        // Supprimer dans l'ordre : tokens → véhicules → user
+        await db.delete(magicTokens).where(eq(magicTokens.email, userEmail));
+        await db.delete(vehicles).where(eq(vehicles.userId, userId));
+        await db.delete(users).where(eq(users.id, userId));
+
+        logger.info('Compte supprimé', { userId, email: userEmail });
+        return { ok: true };
+      }),
+
     // POST auth.grantCredits — admin only
     grantCredits: publicProcedure
       .input(z.object({
@@ -1149,6 +1172,7 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
