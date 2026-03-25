@@ -1147,6 +1147,24 @@ export const appRouter = router({
     }),
 
   // GET admin.listUsers — lister tous les utilisateurs
+  // POST admin.setCredits — créditer directement un compte (admin only)
+  adminSetCredits: publicProcedure
+    .input(z.object({
+      email: z.string().email(),
+      credits: z.number().min(0).max(999999),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      const { db } = await import('../db/index.js');
+      const { users } = await import('../db/schema.js');
+      const { eq } = await import('drizzle-orm');
+      const emailLower = input.email.toLowerCase();
+      const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
+      if (!user) throw new Error('Utilisateur introuvable: ' + input.email);
+      await db.update(users).set({ credits: input.credits }).where(eq(users.id, user.id));
+      return { ok: true, email: emailLower, credits: input.credits };
+    }),
+
   adminListUsers: publicProcedure
     .query(async ({ ctx }) => {
       if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
