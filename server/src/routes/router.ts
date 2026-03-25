@@ -1236,9 +1236,8 @@ export const appRouter = router({
       .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
         if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
         const { db } = await import('../db/index.js');
-        const { schema } = await import('../db/schema.js');
+        const { socialPosts: sp } = await import('../db/schema.js');
         const { eq, and } = await import('drizzle-orm');
-        const sp = (schema as any).socialPosts;
         const conds: any[] = [];
         if (input.platform) conds.push(eq(sp.platform, input.platform));
         if (input.status)   conds.push(eq(sp.status, input.status));
