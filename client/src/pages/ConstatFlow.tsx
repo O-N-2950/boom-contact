@@ -366,6 +366,12 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             {t('flow.header.role_a')}
           </div>
         </div>
+        {/* Indicateur sauvegarde automatique */}
+        {step !== 'ocr' && step !== 'done' && sessionId && (
+          <div style={{ fontSize: 9, opacity: 0.3, fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: 3 }}>
+            <span style={{ color: '#22c55e' }}>●</span> AUTO
+          </div>
+        )}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
           {canGoBack && (
             <button onClick={goBack} style={{
@@ -640,14 +646,16 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             brand={participantData.vehicle?.brand}
             onComplete={(vehiclePos, mapImageB64) => {
               setSketchImage(mapImageB64);
+              // Stocker la position de A pour que B la voie sur sa carte
+              (window as any).__boomVehicleAPos = vehiclePos;
               if (sessionId && mapImageB64) {
-                updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64 } });
+                updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
               }
               setParticipantData(prev => ({
                 ...prev,
                 vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
               }));
-              setStep('diagram'); // croquis → choc → signature
+              setStep('diagram');
             }}
             onSkip={() => setStep('diagram')}
           />

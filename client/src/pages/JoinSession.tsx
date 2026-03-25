@@ -306,8 +306,13 @@ export function JoinSession() {
       </div>
 
       {error && (
-        <div style={{ marginBottom: 14, padding: 12, borderRadius: 8, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', fontSize: 13, color: '#ef4444' }}>
-          ⚠️ {error}
+        <div style={{ marginBottom: 14, padding: 16, borderRadius: 10, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', fontSize: 13, color: '#ef4444' }}>
+          <div style={{ fontWeight: 700, marginBottom: 6 }}>⚠️ {error}</div>
+          {(error.includes('introuvable') || error.includes('expir') || error.includes('not found')) && (
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
+              Le lien QR n'est valable que 7 jours. Demandez au Conducteur A de vous envoyer un nouveau QR code.
+            </div>
+          )}
         </div>
       )}
 

@@ -1,6 +1,6 @@
 import { ColorPicker } from '../ColorPicker';
 import { VoiceRecorder } from './VoiceRecorder';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ParticipantData, AccidentData, ParticipantRole } from '../../../../shared/types';
 
 interface Props {
@@ -39,13 +39,28 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
   const [section, setSection] = useState<Section>('vehicle');
   const [data, setData] = useState<Partial<ParticipantData>>({
     role,
-    vehicle: prefilled?.vehicle ?? {},
-    driver: prefilled?.driver ?? {},
-    insurance: prefilled?.insurance ?? {},
+    vehicle:      prefilled?.vehicle      ?? {},
+    driver:       prefilled?.driver       ?? {},
+    insurance:    prefilled?.insurance    ?? {},
     damagedZones: prefilled?.damagedZones ?? [],
-    circumstances: prefilled?.circumstances ?? [],
-    language: prefilled?.language ?? 'fr',
+    circumstances:prefilled?.circumstances ?? [],
+    language:     prefilled?.language     ?? 'fr',
   });
+
+  // Resynchroniser si prefilled change (retour depuis "Corriger" après OCR ou après signature)
+  const prevPrefilled = useRef(prefilled);
+  useEffect(() => {
+    if (prefilled && prefilled !== prevPrefilled.current) {
+      prevPrefilled.current = prefilled;
+      setData(prev => ({
+        ...prev,
+        vehicle:      { ...( prefilled.vehicle      ?? {}), ...(Object.fromEntries(Object.entries(prev.vehicle      ?? {}).filter(([,v]) => v))) },
+        driver:       { ...( prefilled.driver        ?? {}), ...(Object.fromEntries(Object.entries(prev.driver       ?? {}).filter(([,v]) => v))) },
+        insurance:    { ...( prefilled.insurance     ?? {}), ...(Object.fromEntries(Object.entries(prev.insurance    ?? {}).filter(([,v]) => v))) },
+        circumstances:prev.circumstances?.length ? prev.circumstances : (prefilled.circumstances ?? []),
+      }));
+    }
+  }, [prefilled]);
 
   // Champs accident complémentaires (partagés — section 13-14)
   const [accDate, setAccDate]           = useState(accidentData?.date ?? '');
