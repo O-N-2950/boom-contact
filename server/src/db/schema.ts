@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index, serial } from 'drizzle-orm/pg-core';
 
 // ── Sessions — constats en cours ─────────────────────────────
 export const sessions = pgTable('sessions', {
