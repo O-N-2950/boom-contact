@@ -483,12 +483,11 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           ))}
         </div>
       </div>
-    </div>
-
       {showShare && <ShareBoom onClose={() => setShowShare(false)} context="landing" />}
     </div>
   );
 }
+
 
 
 
