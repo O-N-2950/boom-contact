@@ -99,7 +99,7 @@ export async function loginWithPassword(email: string, password: string): Promis
   await db.update(users).set({ lastSeenAt: new Date() }).where(eq(users.id, user.id));
   const token = signJWT({ sub: user.id, email: user.email, role: user.role || 'customer' });
   logger.info('User login', { email });
-  return { token, user: { id: user.id, email: user.email, role: user.role, credits: user.credits } };
+  return { token, user: { id: user.id, email: user.email, role: user.role, credits: user.credits, firstName: user.firstName, lastName: user.lastName, phone: user.phone, address: user.address } };
 }
 
 // ── Magic link ────────────────────────────────────────────────
@@ -143,7 +143,7 @@ export async function verifyMagicToken(token: string): Promise<{ token: string; 
 
   const jwtToken = signJWT({ sub: user!.id, email: user!.email, role: user!.role || 'customer' });
   logger.info('Magic token verified', { email });
-  return { token: jwtToken, user: { id: user!.id, email: user!.email, role: user!.role, credits: user!.credits } };
+  return { token: jwtToken, user: { id: user!.id, email: user!.email, role: user!.role, credits: user!.credits, firstName: user!.firstName, lastName: user!.lastName, phone: user!.phone, address: user!.address } };
 }
 
 // ── Gift credits link ─────────────────────────────────────────

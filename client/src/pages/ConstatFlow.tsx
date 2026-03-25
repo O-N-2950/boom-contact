@@ -69,7 +69,7 @@ function loadState() {
 interface ConstatFlowProps {
   initialSessionId?: string;
   authToken?: string;
-  authUser?: { id: string; email: string; role: string; credits: number } | null;
+  authUser?: { id: string; email: string; role: string; credits: number; firstName?: string; lastName?: string; phone?: string; address?: string } | null;
   onShowAuth?: () => void;
   onAccount?: () => void;
   onBuyPack?: () => void;
@@ -88,7 +88,25 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [qrUrl, setQrUrl] = useState<string>(saved?.qrUrl || '');
   const [accidentData, setAccidentData] = useState<Partial<AccidentData>>(saved?.accidentData || {});
   const [vehicleType, setVehicleType] = useState<VehicleType | null>(saved?.vehicleType || null);
-  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(saved?.participantData || { role: 'A' });
+  const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(() => {
+    const base = saved?.participantData || { role: 'A' };
+    // Pré-remplir les infos conducteur depuis le profil connecté
+    if (authUser && !base.driver?.firstName) {
+      const [addrStreet, ...addrRest] = (authUser.address || '').split(',').map((s: string) => s.trim());
+      return {
+        ...base,
+        driver: {
+          ...(base.driver || {}),
+          email:     authUser.email     || base.driver?.email     || '',
+          firstName: authUser.firstName || base.driver?.firstName || '',
+          lastName:  authUser.lastName  || base.driver?.lastName  || '',
+          phone:     authUser.phone     || base.driver?.phone     || '',
+          address:   addrStreet         || base.driver?.address   || '',
+        },
+      };
+    }
+    return base;
+  });
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
