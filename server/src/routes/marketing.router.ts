@@ -1,4 +1,8 @@
-import { router, publicProcedure } from '../middleware/trpc.js';
+import { initTRPC } from '@trpc/server';
+import type { Context } from '../middleware/context.js';
+const t = initTRPC.context<Context>().create();
+const router = t.router;
+const publicProcedure = t.procedure;
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/index.js';
