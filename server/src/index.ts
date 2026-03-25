@@ -358,30 +358,25 @@ setInterval(async () => {
 //   }
 // }, 15 * 60 * 1000); // toutes les 15 min (check heure)
 
-// async function start() {
-//   logger.info('Starting boom.contact server...');
-//   await runMigrations();
-//   httpServer.listen(PORT, '0.0.0.0', () => {
-//     logger.info(`💥 boom.contact running`, {
-//       port: PORT,
-//       env: process.env.NODE_ENV || 'development',
-//       db: process.env.DATABASE_URL ? '✅' : '❌ MISSING',
-//       claude: process.env.ANTHROPIC_API_KEY ? '✅' : '❌ MISSING',
-//       stripe: process.env.STRIPE_SECRET_KEY ? '✅' : '❌ MISSING',
-//       resend: process.env.RESEND_API_KEY ? '✅' : '❌ MISSING',
-//     });
-//   });
-// }
+async function start() {
+  logger.info('Starting boom.contact server...');
+  await runMigrations();
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    logger.info(`💥 boom.contact running`, {
+      port: PORT,
+      env: process.env.NODE_ENV || 'development',
+      db: process.env.DATABASE_URL ? '✅' : '❌ MISSING',
+      claude: process.env.ANTHROPIC_API_KEY ? '✅' : '❌ MISSING',
+      stripe: process.env.STRIPE_SECRET_KEY ? '✅' : '❌ MISSING',
+      resend: process.env.RESEND_API_KEY ? '✅' : '❌ MISSING',
+    });
+  });
+}
 
-// start().catch((err) => {
-//   logger.error('FATAL startup error', {
-//     error: err instanceof Error ? err.message : String(err),
-//     stack: err instanceof Error ? err.stack?.split('\n').slice(0, 6).join(' | ') : '',
-//   });
-//   process.exit(1);
-// });
-
-
-
-
-
+start().catch((err) => {
+  logger.error('FATAL startup error', {
+    error: err instanceof Error ? err.message : String(err),
+    stack: err instanceof Error ? err.stack?.split('\n').slice(0, 6).join(' | ') : '',
+  });
+  process.exit(1);
+});
