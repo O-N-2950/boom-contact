@@ -79,11 +79,15 @@ export function VehicleDiagram({ role, vehicleType, brand, model, color, selecte
       case 'bicycle':
       case 'cargo_bike':  return 'bicycle';
       case 'truck':       return 'truck';
+      case 'tractor':
+      case 'construction':return 'truck';   // silhouette camion — le plus proche
       case 'van':         return 'van';
       case 'bus':         return 'bus';
       case 'tram':
       case 'train':       return 'tram';
-      case 'quad':        return 'other';
+      case 'quad':
+      case 'boat':
+      case 'other':       return 'other';
       case 'car':
       case 'suv':         return null; // laisser identifyVehicle affiner
       default:            return null;
@@ -101,19 +105,29 @@ export function VehicleDiagram({ role, vehicleType, brand, model, color, selecte
     onChange(selected.includes(id) ? selected.filter(z => z !== id) : [...selected, id]);
   };
 
-  // Titre adapté au type
+  // Titre et hint adaptés au type
   const isPedestrian = vehicleType === 'pedestrian';
+  const isBicycle    = vehicleType === 'bicycle' || vehicleType === 'cargo_bike';
+  const isMoto       = vehicleType === 'motorcycle' || vehicleType === 'scooter' || vehicleType === 'moped' || vehicleType === 'escooter';
+
   const vehicleName = isPedestrian
-    ? 'Piéton / Cycliste'
+    ? 'Piéton'
+    : isBicycle ? 'Cycliste'
     : [brand, model].filter(Boolean).join(' ') || 'Véhicule';
+
   const bodyLabel = isPedestrian
     ? 'Corps humain — zones blessées'
+    : isBicycle ? 'Vélo — zones endommagées'
     : identity.bodyStyle !== 'unknown' ? identity.label : '';
+
   const diagramTitle = isPedestrian
-    ? `Blessures — ${role === 'A' ? 'Conducteur' : 'Partie'} ${role}`
+    ? `Blessures corporelles — ${role === 'A' ? 'Conducteur' : 'Partie'} ${role}`
     : `Zones endommagées — ${role === 'A' ? 'Conducteur' : 'Partie'} ${role}`;
+
   const diagramHint = isPedestrian
     ? 'Touchez les zones du corps blessées'
+    : isBicycle ? 'Touchez les zones endommagées sur le vélo'
+    : isMoto ? 'Touchez les zones touchées sur la moto / scooter'
     : 'Touchez toutes les zones touchées par le choc';
 
   return (
