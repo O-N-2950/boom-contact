@@ -444,24 +444,6 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <img src="/logo.png" alt="boom.contact" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
           <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 28, marginBottom: 10 }}>{t('landing.finalCta.title')}</h2>
           <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 280, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
-          {/* Bouton partage viral */}
-          <button
-            onClick={() => setShowShare(true)}
-            style={{
-              marginBottom: 16,
-              padding: '12px 24px',
-              borderRadius: 12,
-              border: '1.5px solid rgba(255,255,255,0.15)',
-              background: 'rgba(255,255,255,0.05)',
-              color: 'rgba(240,237,232,0.8)',
-              cursor: 'pointer', fontSize: 14, fontWeight: 600,
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-            }}
-          >
-            <span style={{ fontSize: 18 }}>📤</span>
-            Partager boom.contact à tes proches
-          </button>
-          <br />
           <button onClick={onStart} style={{ padding: '16px 32px', fontSize: 15, fontWeight: 700, borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
             {t('landing.finalCta.button')} <span style={{ fontSize: 16 }}>→</span>
           </button>
