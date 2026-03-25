@@ -158,3 +158,22 @@ export const vehicles = pgTable('vehicles', {
 }, (t) => ({
   userIdx: index('vehicles_user_idx').on(t.userId),
 }));
+
+
+// ── Social posts (générateur marketing automatique) ──────────
+export const socialPosts = pgTable('social_posts', {
+  id:          serial('id').primaryKey(),
+  platform:    varchar('platform', { length: 20 }).notNull(), // TikTok | Instagram | Facebook | LinkedIn
+  pillar:      varchar('pillar', { length: 1 }).notNull(),    // A | B | C | D
+  text:        text('text').notNull(),
+  hashtags:    text('hashtags').notNull(),                    // JSON array
+  staging:     text('staging'),
+  status:      varchar('status', { length: 20 }).notNull().default('pending'), // pending | approved | posted | archived
+  postedAt:    timestamp('posted_at'),
+  scheduledFor: timestamp('scheduled_for'),
+  generatedBy: varchar('generated_by', { length: 20 }).default('claude'),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  platformIdx: index('social_posts_platform_idx').on(t.platform),
+  statusIdx:   index('social_posts_status_idx').on(t.status),
+}));
