@@ -1,4 +1,3 @@
-import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import type { Context } from '../middleware/context';
 import { scanDocument, scanDocumentPair } from '../services/ocr.service';
@@ -12,6 +11,7 @@ import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
+import { marketingRouter } from './marketing.router.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
@@ -1209,9 +1209,11 @@ export const appRouter = router({
       return { fixed, total: missing.length };
     }),
 
+  marketing: marketingRouter,
 });
 
 export type AppRouter = typeof appRouter;
+
 
 
 
