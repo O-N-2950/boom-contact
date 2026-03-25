@@ -200,6 +200,20 @@ export async function runMigrations() {
       END $$;
     `);
 
+
+    // ── Block 8 : Social media posts — Session 15+ ───────────────
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS social_posts (
+        id          SERIAL PRIMARY KEY,
+        platform    VARCHAR(20) NOT NULL,
+        pillar      VARCHAR(1) NOT NULL,
+        text        TEXT NOT NULL,
+        status      VARCHAR(20) NOT NULL DEFAULT 'pending',
+        posted_at   TIMESTAMP,
+        created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
