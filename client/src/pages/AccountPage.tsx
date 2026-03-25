@@ -41,11 +41,17 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     phone: string; company: string; address: string;
   }>({ firstName: '', lastName: '', phone: '', company: '', address: '' });
   const [editingEmail, setEditingEmail] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [newEmail, setNewEmail]     = useState('');
   const [emailPassword, setEmailPassword] = useState('');
 
+  // Données fraîches depuis la DB (crédits, profil à jour)
+  const meQ          = trpc.auth.me.useQuery(undefined);
+  const freshUser    = meQ.data || user;
   const vehicleListQ = trpc.vehicle.list.useQuery(undefined);
   const historyQ     = trpc.session.history.useQuery(undefined, { enabled: tab === 'history' });
+  const deleteAccountMut = trpc.auth.deleteAccount.useMutation();
   const saveMut        = trpc.vehicle.save.useMutation();
   const deleteMut      = trpc.vehicle.delete.useMutation();
   const updateProfileMut = trpc.auth.updateProfile.useMutation();
@@ -93,6 +99,118 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     try { await deleteMut.mutateAsync({ id }); await vehicleListQ.refetch(); }
     catch (e: any) { toast('Erreur : ' + e.message); }
   };
+
+  // ── Modal suppression compte ────────────────────────────────
+  if (showDeleteModal) {
+    const emailToConfirm = freshUser.email || user.email;
+    return (
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 1000,
+        background: 'rgba(6,6,12,0.97)',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: 24,
+      }}>
+        <div style={{
+          width: '100%', maxWidth: 420,
+          background: '#0d0d18',
+          border: '1.5px solid rgba(239,68,68,0.35)',
+          borderRadius: 20, padding: 28,
+        }}>
+          {/* Icône warning */}
+          <div style={{ textAlign: 'center', fontSize: 48, marginBottom: 16 }}>⚠️</div>
+
+          <div style={{ color: '#ef4444', fontWeight: 900, fontSize: 20, textAlign: 'center', marginBottom: 8 }}>
+            Suppression définitive
+          </div>
+
+          <div style={{ color: '#aaa', fontSize: 14, lineHeight: 1.7, marginBottom: 20, textAlign: 'center' }}>
+            Tu es sur le point de supprimer le compte<br />
+            <strong style={{ color: '#fff' }}>{emailToConfirm}</strong>
+          </div>
+
+          {/* Ce qui sera supprimé */}
+          <div style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 12, padding: 16, marginBottom: 20 }}>
+            <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 12, marginBottom: 10 }}>CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
+            {[
+              '🗑️ Ton compte et tes identifiants',
+              '🚗 Tous tes véhicules enregistrés',
+              '📋 Tout ton historique de constats',
+              '💳 Tous tes crédits restants',
+            ].map((item, i) => (
+              <div key={i} style={{ color: '#ccc', fontSize: 13, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+                {item}
+              </div>
+            ))}
+            <div style={{ color: '#ef4444', fontSize: 12, marginTop: 10, fontWeight: 600 }}>
+              ⚠️ Cette action est irréversible. Aucune récupération possible.
+            </div>
+          </div>
+
+          {/* Confirmation par saisie email */}
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>
+              Pour confirmer, saisis ton adresse email :
+            </div>
+            <input
+              value={deleteConfirmText}
+              onChange={e => setDeleteConfirmText(e.target.value)}
+              placeholder={emailToConfirm}
+              autoCapitalize="none"
+              autoCorrect="off"
+              style={{
+                width: '100%', padding: '12px 14px',
+                background: '#1a1a2e', border: '1px solid #2a2a3e',
+                borderRadius: 10, color: '#fff', fontSize: 14,
+                boxSizing: 'border-box',
+                outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none',
+              }}
+            />
+          </div>
+
+          {/* Boutons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <button
+              disabled={deleteConfirmText !== emailToConfirm || saving}
+              onClick={async () => {
+                setSaving(true);
+                try {
+                  await deleteAccountMut.mutateAsync({});
+                  onLogout();
+                } catch(e: any) {
+                  setFeedback('❌ ' + (e.message || 'Erreur'));
+                  setShowDeleteModal(false);
+                } finally { setSaving(false); }
+              }}
+              style={{
+                width: '100%', padding: '14px',
+                borderRadius: 12, border: 'none',
+                background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)',
+                color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.3)',
+                cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed',
+                fontSize: 15, fontWeight: 700,
+                transition: 'all 0.2s',
+              }}
+            >
+              {saving ? 'Suppression...' : '🗑️ Supprimer définitivement'}
+            </button>
+            <button
+              onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
+              style={{
+                width: '100%', padding: '13px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'transparent', color: '#888',
+                cursor: 'pointer', fontSize: 14, fontWeight: 600,
+              }}
+            >
+              Annuler — garder mon compte
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ── OCR Scan overlay ─────────────────────────────────────────
   if (scanning) {
@@ -179,9 +297,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* Profile card */}
         <div style={{ background: '#111', border: '1px solid #222', borderRadius: 16, padding: 20, marginBottom: 20 }}>
           <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>💥 boom.contact</div>
-          <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{user.email}</div>
+          <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{freshUser.email}</div>
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
-            <StatBadge value={user.credits === 999999 ? '∞' : user.credits} label="crédits" highlight />
+            <StatBadge value={freshUser.credits === 999999 ? '∞' : freshUser.credits} label="crédits" highlight />
             <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
             <StatBadge value={history.length || '—'} label="constats" />
           </div>
@@ -271,7 +389,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {/* Crédits */}
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
               <div style={{ color: '#888', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
-              <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{user.credits === 999999 ? '∞' : user.credits}</div>
+              <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
               <div style={{ color: '#555', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
             </div>
 
@@ -280,7 +398,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: editingEmail ? 14 : 0 }}>
                 <div>
                   <div style={{ color: '#666', fontSize: 11, fontWeight: 600, marginBottom: 3 }}>EMAIL</div>
-                  <div style={{ color: '#fff', fontSize: 14 }}>{user.email}</div>
+                  <div style={{ color: '#fff', fontSize: 14 }}>{freshUser.email || user.email}</div>
                 </div>
                 <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
                   style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#888', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
@@ -393,6 +511,25 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               </button>
             </div>
 
+            {/* Zone dangereuse — Suppression compte */}
+            <div style={{ border: '1px solid rgba(239,68,68,0.2)', borderRadius: 14, padding: 18 }}>
+              <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 13, marginBottom: 6 }}>⚠️ Zone dangereuse</div>
+              <div style={{ color: '#666', fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
+                Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.
+              </div>
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                style={{
+                  width: '100%', padding: '11px', borderRadius: 10,
+                  border: '1px solid rgba(239,68,68,0.3)',
+                  background: 'rgba(239,68,68,0.06)',
+                  color: '#ef4444', cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                }}
+              >
+                🗑️ Supprimer mon compte
+              </button>
+            </div>
+
           </div>
         )}
       </div>
@@ -447,5 +584,6 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
 const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block' };
 const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
 const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
+
 
 
