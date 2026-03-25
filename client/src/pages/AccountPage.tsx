@@ -305,7 +305,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                       } finally { setSaving(false); }
                     }}
                     style={{ ...primaryBtn, opacity: (!newEmail || !emailPassword) ? 0.4 : 1 }}>
-                    {saving ? 'Mise à jour...' : '✅ Confirmer le changement d'email'}
+                    {saving ? 'Mise à jour...' : "✅ Confirmer le changement d'email"}
                   </button>
                 </div>
               )}
