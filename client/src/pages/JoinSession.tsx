@@ -359,6 +359,35 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
       </div>
 
+      {/* Email — pour recevoir le PDF automatiquement */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7 }}>
+          📧 Votre email <span style={{ opacity: 0.45, fontWeight: 400 }}>(pour recevoir le PDF)</span>
+        </div>
+        <input
+          type="email"
+          inputMode="email"
+          autoCapitalize="none"
+          autoComplete="email"
+          value={participantData.driver?.email || ''}
+          onChange={e => setParticipantData(prev => ({
+            ...prev,
+            driver: { ...(prev.driver || {}), email: e.target.value } as any,
+          }))}
+          placeholder="votre@email.com"
+          style={{
+            width: '100%', padding: '13px 14px', borderRadius: 10,
+            border: '1.5px solid rgba(255,255,255,0.12)',
+            background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
+            fontSize: 15, outline: 'none', boxSizing: 'border-box' as const,
+            fontFamily: 'inherit',
+          }}
+        />
+        <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6 }}>
+          Optionnel — le PDF vous sera envoyé automatiquement après signature
+        </div>
+      </div>
+
       <button onClick={join} disabled={joining || !sessionId} style={{
         width: '100%', padding: '18px', borderRadius: 12, border: 'none',
         background: joining || !sessionId ? 'rgba(255,53,0,0.4)' : 'var(--boom)',

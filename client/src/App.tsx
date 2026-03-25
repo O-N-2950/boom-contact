@@ -19,6 +19,7 @@ import { CookieBanner } from './components/CookieBanner';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
+import { BugReport } from './components/BugReport';
 
 type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
 
@@ -320,6 +321,7 @@ export default function App() {
       )}
       <CookieBanner />
     </div>
+      <BugReport />
     </ErrorBoundary>
   );
 }

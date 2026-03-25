@@ -375,6 +375,34 @@ export const appRouter = router({
         if (!result.ok) throw new Error(result.error || 'Email send failed');
         return { ok: true, messageId: result.messageId };
       }),
+
+    // Bug report — envoyé à contact@boom.contact
+    bugReport: publicProcedure
+      .input(z.object({
+        message:  z.string().min(5).max(2000),
+        userEmail: z.string().email().optional(),
+        page:     z.string().optional(),
+        userAgent: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { Resend } = await import('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: 'boom.contact <contact@boom.contact>',
+          to:   'contact@boom.contact',
+          subject: `🐛 Bug report — boom.contact`,
+          html: `<h2>Bug Report</h2>
+            <p><strong>De :</strong> ${input.userEmail || 'Anonyme'}</p>
+            <p><strong>Page :</strong> ${input.page || 'Inconnue'}</p>
+            <p><strong>User-Agent :</strong> ${input.userAgent || 'Inconnu'}</p>
+            <hr>
+            <p><strong>Message :</strong></p>
+            <p style="white-space:pre-wrap;">${input.message}</p>
+            <hr>
+            <p style="color:#999;font-size:12px;">boom.contact Bug Report · ${new Date().toISOString()}</p>`,
+        });
+        return { ok: true };
+      }),
   }),
 
   // ── PAYMENT — packages Stripe ─────────────────────────────
