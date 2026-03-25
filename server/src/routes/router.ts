@@ -995,6 +995,7 @@ export const appRouter = router({
                 licenseData:   {},
                 insuranceData: {
                   company:      wv.insurerName || null,
+                  companyName:  wv.insurerName || null,  // alias pour compatibilité ConstatFlow
                   policyNumber: wv.policyNumber || null,
                   validUntil:   wv.policyValidUntil || null,
                   source:       'winwin',

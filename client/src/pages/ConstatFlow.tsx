@@ -158,7 +158,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         ...(v.licenseData || {}),
       },
       insurance: v.insuranceData && Object.keys(v.insuranceData).length > 0
-        ? { companyName: v.insuranceData.companyName, policyNumber: v.insuranceData.policyNumber, ...v.insuranceData }
+        ? {
+            ...v.insuranceData,
+            // Normaliser : 'company' est le champ utilisé par ConstatForm
+            company:      v.insuranceData.company || v.insuranceData.companyName || '',
+            companyName:  v.insuranceData.company || v.insuranceData.companyName || '',
+            policyNumber: v.insuranceData.policyNumber || '',
+          }
         : undefined,
     };
     setParticipantData(newData);
