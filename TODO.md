@@ -1,140 +1,122 @@
 # boom.contact — TODO.md
-> Mise à jour : 24 Mars 2026 — Fin Session 13
+> Mise à jour : 26 Mars 2026 — Session 16
 
 ---
 
-## ✅ FAIT — Sessions 1-12 (voir SUIVI.md pour détails)
+## ✅ FAIT — Sessions 1–15 (voir SUIVI.md pour détails)
 
 - [x] Infrastructure Railway + PostgreSQL + tRPC v11
-- [x] Flow constat complet A+B (10 étapes)
-- [x] OCR Claude Vision 50 langues
-- [x] Stripe live CHF+EUR — 3 packages (1/3/10 crédits)
-- [x] PDF multilingue 12 langues
-- [x] i18n FR/DE/IT/EN
-- [x] MapVehiclePlacer — carte OSM + satellite ESRI
+- [x] Flow constat complet A+B (OCR→Lieu→Photos→QR→Vocal→Form→Croquis→Choc→Résumé→Sign)
+- [x] OCR Claude Vision 50+ langues
+- [x] Stripe live 8 devises — 3 packages (1/3/10 crédits)
+- [x] PDF multilingue, carte OSM intégrée
+- [x] PWA offline-first
 - [x] Mode piéton/solo/objet
 - [x] Transcription vocale Whisper-1
-- [x] WinWin intégration partenaire CH
-- [x] LandingPage section WinWin
-- [x] Chrome headless Puppeteer sur Railway Alpine
-- [x] Carte OSM server-side (Cairo + node-canvas + Nominatim)
-- [x] 16 types de véhicules
-- [x] MapVehiclePlacer OBLIGATOIRE avant signature
-- [x] PDF avec vraie carte OSM + véhicules Chrome
+- [x] Auth : JWT + Magic Links + scrypt + WinWin SSO
+- [x] Garage véhicules (CRUD + OCR)
+- [x] Admin dashboard (KPIs, revenus, coûts IA)
+- [x] Numéros urgence 60+ pays + AI fallback
+- [x] Insurance lookup 100+ assureurs + AI fallback
+- [x] RGPD : CGU + Privacy page + Cookie banner
+- [x] Réseaux sociaux : Facebook / TikTok / Instagram
 
 ---
 
-## ✅ FAIT — Session 13 (24 Mars 2026)
+## ✅ FAIT — Session 16 (26 Mars 2026)
 
-### Fix & Auth
-- [x] Fix WinWin directUrl `/constat/:id` — détection path + prop initialSessionId
-- [x] Auth Magic Links (email 15min) + mot de passe (scrypt)
-- [x] JWT 30j — auth.me, login, register
-- [x] Compte admin contact@boom.contact / Cristal4you11++ (role=admin, credits=∞)
-- [x] grantCredits → lien WhatsApp one-click
-- [x] claimGift — réclamer crédits offerts
-- [x] ?magic=TOKEN et ?gift=TOKEN dans App.tsx
+### Langues
+- [x] 43 langues dans l'app (+ 18 nouvelles : hi/id/ms/th/vi/he/fa/bg/sr/sl/et/lv/lt/sq/mk/bs/ka/az)
+- [x] Traductions complètes (landing+location+pricing+ocr) pour EN/DE/IT/ES/PT/AR/ZH/HI via API Claude
+- [x] Templates email complets pour 13 langues
 
-### Garage véhicules
-- [x] Table `vehicles` en DB
-- [x] CRUD garage (list/save/delete) avec ownership check
-- [x] Scan OCR permis + carte verte → sauvegardé dans garage
-- [x] ConstatFlow — "Utiliser mon véhicule" → skip OCR
-- [x] AccountPage — Garage + Historique + Profil (3 onglets)
-- [x] session.history par email
+### Email
+- [x] Template HTML complet : feedback / Google review / partage / inscription
+- [x] Clé Resend corrigée dans Railway
+- [x] Fix logger dans setImmediate (envoi auto après double signature)
+- [x] Email B saisi au landing JoinSession (avant de rejoindre)
+- [x] Délais légaux → formulation générique (plus de "5j FR / 8j CH")
+- [x] CHE-476.484.632 dans tous les footers
+- [x] Suppression "Groupe NEUKOMM" dans 49 fichiers
 
-### Admin Dashboard
-- [x] Route admin.stats — sessions, revenus, users, coûts IA
-- [x] Route admin.users — liste paginée
-- [x] AdminDashboard.tsx — KPIs + sessions live + revenus + coûts IA
-- [x] Accès via /?admin=true (connecté admin)
-- [x] Auto-refresh 30s
+### Paiement
+- [x] One-shot sans compte : email + Stripe direct, retour auto au constat après paiement
+- [x] constatSessionId dans success_url → auto-consume crédit webhook
 
-### Numéros d'urgence
-- [x] EmergencyNumbers.tsx — 25 pays DB locale
-- [x] Bouton 🆘 flottant dans le flow constat
-- [x] Section compacte dans step done (police/ambulance/pompiers)
-- [x] Page complète /?urgences=true — filtrable, searchable, tap-to-call
-- [x] emmental versicherung dépannage : 031 790 24 24 ✅ (vérifié source officielle)
-- [x] SIMPEGO : +41 58 521 11 11 ✅
-- [x] ACS nouveau numéro : 044 283 33 77 ✅
-- [x] Russie, Inde NHAI 1033, Australie corrigé (RACQ 13 1905, RACV 13 11 11, RAC 13 17 03)
+### PDF
+- [x] formatDateForCountry() — DD.MM.YYYY EU / DD/MM/YYYY UK / MM/DD/YYYY US / etc.
 
-### Insurance lookup intelligent
-- [x] insurance-assistance.service.ts — DB 100+ assureurs mondiaux
-- [x] Fallback IA Claude web_search si assureur inconnu
-- [x] emergency.insuranceLookup — pour conducteurs A et B simultanément
-- [x] emergency.singleLookup — recherche manuelle
-- [x] InsuranceAssistance.tsx — affiché dans step done
-- [x] InsuranceSearchWidget dans page urgences
+### WinWin SSO
+- [x] winwin.service.ts — verify / garage / magic-link
+- [x] auth.winwinLogin tRPC — upsert user + import véhicules + JWT
+- [x] Bouton "Connexion WinWin" dans AuthModal (mis en avant)
+- [x] Pré-remplissage profil complet : nom/prénom/email/tél/adresse
+- [x] Pré-remplissage véhicule + assureur + n° police
+- [x] WINWIN_SECRET dans Railway
+- [x] Clients WinWin payants comme les autres (credits=0)
+- [x] info@winwin.swiss → admin 999999 crédits (compte interne)
+- [x] Test réel : 3 véhicules importés, login OK
 
-### Emergency country lookup
-- [x] emergency-numbers.service.ts — DB 60+ pays
-- [x] Fallback IA Claude web_search pour pays inconnus
-- [x] emergency.countryLookup route tRPC
-- [x] UnknownCountryLookup component
-- [x] CountryEmergencySearch — recherche n'importe quel pays
-
-### PostConstatCTA (conversion)
-- [x] PostConstatCTA.tsx — 3 modes (anonyme / connecté sans crédits / avec crédits)
-- [x] Scénarios marketing : enfant, employé, ami étranger
-- [x] WhatsApp gift one-click
-- [x] CTA garage + recharge crédits
-
-### Stripe international
-- [x] Multi-devises CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY
-- [x] Détection auto devise par IP
-- [x] Grille tarifaire internationale
-- [x] Factures PDF automatiques (Stripe invoice_creation)
-- [x] Badge crédits sur PricingPage si connecté
-- [x] Rafraîchissement crédits après retour paiement
-- [x] Stripe Tax conditionnel (STRIPE_TAX_ENABLED=true)
-
-### RGPD / CGU / Privacy
-- [x] CookieBanner.tsx — RGPD/nLPD compliant, 2 choix
-- [x] PrivacyPage.tsx — mentions légales + tableau RGPD art.13 + sous-traitants + cookies
-- [x] /?privacy=true route
-- [x] Footer LandingPage avec 6 liens légaux
-- [x] CGU existantes 4 langues (depuis session précédente)
-
-### Réseaux sociaux (manuel)
-- [x] Facebook Page boom.contact — créée, bannière Gemini, post lancement
-- [x] TikTok @boomcontact — créé, post publié
-- [x] Instagram @boom.contact — créé, bio, lien www.boom.contact
-- [x] LinkedIn — post publié depuis PEP's Swiss SA (page séparée à créer depuis ordi)
+### UX / Qualité
+- [x] 🐛 BugReport flottant sur toutes les pages → email.bugReport → contact@boom.contact
+- [x] Checkbox marketing → visible uniquement si pays CH/LI ou langue FR/DE/IT
+- [x] auth.service retourne firstName/lastName/phone/address dans tous les logins
+- [x] ConstatFlow pré-remplit depuis authUser au démarrage
 
 ---
 
-## 🔴 SESSION 14 — PRIORITÉ HAUTE
+## 🔴 PRIORITÉ IMMÉDIATE
+
+- [ ] **URL Google Business** → remplacer `https://g.page/r/boom-contact/review` dans email.service.ts par la vraie URL Google My Business
+- [ ] **Test terrain réel** → 2 téléphones iOS+Android, constat complet A→Z, vérifier PDF et emails reçus
+
+---
+
+## 🟠 AVANT LANCEMENT PUBLIC
 
 ### PoliceFlow (pilote Canton Jura)
 - [ ] police.boom.contact subdomain Railway
-- [ ] PoliceFlow.tsx — 4 sections (résumé, conducteurs, médias, annotations)
-- [ ] PDF rapport d'intervention CH modulaire
-- [ ] Auth police login + JWT 8h
-- [ ] Audit trail RGPD consultations agents
-- [ ] Hébergement Infomaniak (si contrat cantonal signé)
-
-### Réseaux sociaux automatiques
-- [ ] Posts automatiques journaliers (scheduler cron)
-- [ ] Contenu auto-généré Claude — conseils sécurité, tips constat, stats pays
-- [ ] LinkedIn Page boom.contact séparée (depuis ordi)
-- [ ] Meta Business Suite — publier FB + IG simultanément
+- [ ] PoliceFlow.tsx — 4 sections (résumé incident, conducteurs, médias, annotations)
+- [ ] Auth police : JWT 8h, droits par poste/juridiction
+- [ ] PDF rapport d'intervention CH modulaire par pays (CH/FR/BE/LU)
+- [ ] Audit trail RGPD consultations agents (5 ans)
+- [ ] Script onboarding pilote Jura
+- [ ] Hébergement Infomaniak si contrat cantonal signé
 
 ### Qualité produit
-- [ ] Champs CEA manquants (dates validité assurance, permis, date naissance, adresse preneur)
-- [ ] 50 silhouettes véhicules niveau 2 (hatchback, SUV small/large, pick-up...)
+- [ ] Vérifier signatures dans PDF (vraies signatures manuscrites)
+- [ ] Champs CEA manquants (date validité assurance, date naissance, adresse preneur)
 - [ ] Tests iOS + Android réels (2 téléphones)
-- [ ] Dark mode (prefers-color-scheme)
 - [ ] Cron nettoyage sessions > 7 jours
 - [ ] Score cohérence IA (contradictions A vs B avant signature)
-- [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
+- [ ] Dark mode (prefers-color-scheme)
 
-### B2B Assureurs (M12+)
-- [ ] API webhook assureurs (AXA, Baloise, Helvetia, Mobilière)
+### CGU multilingues
+- [ ] CGU en anglais (EN) — vérification juridique requise avant publication
+- [ ] CGU en allemand (DE) — idem
+
+---
+
+## 🟢 MOYEN TERME (M3–M12)
+
+### B2G — Police internationale
+- [ ] Templates PDF FR (LRPPN-compatible), BE (zones locales), LU (trilingue)
+- [ ] i18n PoliceFlow DE/FR/IT/EN
+- [ ] Polices municipales France (2-3 villes pilote)
+- [ ] Zone police wallonne Belgique
+- [ ] Police Grand-Ducale Luxembourg
+- [ ] TISPOL — présentation conférence annuelle (31 polices européennes)
+
+### B2B — Assureurs CH
+- [ ] API webhook sinistre (AXA, Baloise, Helvetia, Mobilière)
 - [ ] Export structuré sinistre
 - [ ] White-label assureur
 - [ ] Licence données agrégées anonymisées
+
+### Infrastructure
+- [ ] Migration Railway → Infomaniak CH (déclenché par 1er contrat cantonal)
+- [ ] Multi-tenant par canton/pays (si 5+ cantons)
+- [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
 
 ---
 
@@ -142,19 +124,16 @@
 
 | Composant | État |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
+| Frontend | React 18 + Vite + TypeScript + **43 langues** |
 | Backend | Express + tRPC v11 + Socket.io |
-| Base de données | PostgreSQL (Drizzle ORM) — 8 tables |
-| OCR | Claude Vision (Sonnet) — 50 langues |
-| PDF | pdf-lib server-side + Puppeteer Chrome headless |
-| Carte | OSM tiles server-side (Cairo + node-canvas) + GPS conducteur |
-| Email | Resend — contact@boom.contact, DKIM actif |
-| Paiement | Stripe live CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY |
-| Auth | JWT 30j + Magic Links + bcrypt/scrypt |
-| Garage | Véhicules + assurance par utilisateur |
-| Urgences | DB 60+ pays + AI fallback mondial |
-| Insurance | DB 100+ assureurs + AI fallback mondial |
-| RGPD | Cookie banner + Privacy page + CGU 4 langues |
-| Hébergement | Railway Europe West |
-| Domaine | www.boom.contact — DNS + SSL actifs |
-| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ LinkedIn (partiel) |
+| DB | PostgreSQL — 10 tables (users + winwin_id, vehicles, sessions...) |
+| OCR | Claude Vision (Sonnet) — 50+ langues |
+| PDF | pdf-lib — format date par pays, carte OSM |
+| Email | Resend — template HTML 43 langues, PDF auto après signature |
+| Paiement | Stripe live 8 devises — one-shot + avec compte |
+| Auth | JWT + Magic Links + WinWin SSO |
+| WinWin | ✅ Login + profil + véhicules + assureur pré-remplis |
+| Langues | ✅ 43 langues, RTL AR/HE/FA |
+| Bugs | ✅ 🐛 Bouton flottant sur toutes les pages |
+| Marketing | Checkbox CH uniquement ✅ |
+| Légal | CHE-476.484.632 ✅, pas de NEUKOMM ✅, délais génériques ✅ |
