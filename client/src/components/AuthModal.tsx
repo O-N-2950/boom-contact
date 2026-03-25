@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { trpc } from '../trpc';
 
-type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent';
+type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent' | 'winwin';
 
 interface AuthModalProps {
   onAuth: (token: string, user: any) => void;
@@ -21,6 +21,20 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   const magicVerMut  = trpc.auth.magicLinkVerify.useMutation();
   const loginMut     = trpc.auth.login.useMutation();
   const registerMut  = trpc.auth.register.useMutation();
+  const winwinMut    = trpc.auth.winwinLogin.useMutation();
+
+  const handleWinWinLogin = async () => {
+    if (!email || !password) return;
+    setLoading(true); setError('');
+    try {
+      const res = await winwinMut.mutateAsync({ email, password });
+      localStorage.setItem('boom_user_token', res.token);
+      localStorage.setItem('boom_user', JSON.stringify(res.user));
+      onAuth(res.token, res.user);
+    } catch (e: any) {
+      setError('Email ou mot de passe WinWin incorrect.');
+    } finally { setLoading(false); }
+  };
 
   const handleMagicRequest = async () => {
     if (!email) return;
@@ -81,6 +95,20 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: choose */}
         {mode === 'choose' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* WinWin SSO — mis en avant */}
+            <button onClick={() => setMode('winwin')} style={{
+              ...btnStyle('#0057A8'), border: '2px solid #0057A8',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            }}>
+              <span style={{ fontSize: 18 }}>🔵</span>
+              <span>Connexion WinWin</span>
+              <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 4 }}>— vos véhicules importés automatiquement</span>
+            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '2px 0' }}>
+              <div style={{ flex: 1, height: 1, background: '#222' }}/>
+              <span style={{ fontSize: 11, color: '#444' }}>ou</span>
+              <div style={{ flex: 1, height: 1, background: '#222' }}/>
+            </div>
             <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
               📧 Connexion par lien email (recommandé)
             </button>
@@ -97,6 +125,36 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <p style={{ color: '#555', fontSize: 11, textAlign: 'center', margin: 0 }}>
               Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.
             </p>
+          </div>
+        )}
+
+        {/* MODE: WinWin SSO */}
+        {mode === 'winwin' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ background: 'rgba(0,87,168,0.12)', border: '1px solid rgba(0,87,168,0.3)', borderRadius: 10, padding: '12px 14px', marginBottom: 4 }}>
+              <div style={{ fontWeight: 700, fontSize: 13, color: '#60a5fa', marginBottom: 4 }}>🔵 Connexion WinWin</div>
+              <div style={{ fontSize: 12, color: '#aaa', lineHeight: 1.5 }}>
+                Utilisez vos identifiants WinWin. Vos véhicules assurés seront importés automatiquement dans votre garage boom.contact.
+              </div>
+            </div>
+            <input
+              type="email" placeholder="Email WinWin" value={email}
+              onChange={e => setEmail(e.target.value)}
+              style={inputStyle}
+            />
+            <input
+              type="password" placeholder="Mot de passe WinWin" value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleWinWinLogin()}
+              style={inputStyle}
+            />
+            {error && <div style={{ color: '#ef4444', fontSize: 12 }}>{error}</div>}
+            <button onClick={handleWinWinLogin} disabled={loading || !email || !password} style={btnStyle('#0057A8')}>
+              {loading ? '⏳ Connexion…' : '🔵 Se connecter avec WinWin →'}
+            </button>
+            <button onClick={() => { setMode('choose'); setError(''); }} style={{ ...btnStyle('transparent'), color: '#666', fontSize: 13 }}>
+              ← Retour
+            </button>
           </div>
         )}
 

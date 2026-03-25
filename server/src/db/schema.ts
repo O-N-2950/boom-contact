@@ -37,6 +37,7 @@ export const users = pgTable('users', {
   phone:            varchar('phone', { length: 30 }),
   company:          text('company'),
   address:          text('address'),
+  winwinId:         varchar('winwin_id', { length: 30 }), // ex: "WW-9"
 }, (t) => ({
   emailIdx: index('users_email_idx').on(t.email),
 }));

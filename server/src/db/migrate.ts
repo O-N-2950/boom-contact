@@ -224,6 +224,14 @@ export async function runMigrations() {
       );
     `);
 
+    // ── Block 9 : WinWin integration — winwin_id column ──────────────────
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS winwin_id VARCHAR(30);
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {

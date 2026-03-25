@@ -15,6 +15,7 @@ import { renderSketch } from '../services/sketch-renderer.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
+import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink } from '../services/winwin.service.js';
 import { io } from '../index';
 import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 
@@ -919,6 +920,125 @@ export const appRouter = router({
   // One-time use route to set the admin password hash
   // Call: POST /trpc/auth.adminBootstrap with { secret, password }
   // Remove ADMIN_BOOTSTRAP_SECRET env var after use
+
+    // ── WinWin SSO ──────────────────────────────────────────────
+    // Login avec email+password WinWin → retourne JWT boom.contact
+    winwinLogin: publicProcedure
+      .input(z.object({
+        email:    z.string().email(),
+        password: z.string().min(1),
+      }))
+      .mutation(async ({ input }) => {
+        // 1. Vérifier identité auprès de WinWin
+        const client = await verifyWinWin(input.email, input.password);
+        if (!client) throw new Error('Identifiants WinWin incorrects');
+
+        // 2. Upsert user boom.contact
+        const { db } = await import('../db/index.js');
+        const { users: usersTable } = await import('../db/schema.js');
+        const { eq } = await import('drizzle-orm');
+        const makeId = () => Math.random().toString(36).slice(2, 22);
+
+        let [user] = await db.select().from(usersTable)
+          .where(eq(usersTable.email, client.email)).limit(1);
+
+        if (!user) {
+          const [created] = await db.insert(usersTable).values({
+            id:         makeId(),
+            email:      client.email,
+            role:       'customer',
+            credits:    999999, // WinWin clients = crédits illimités
+            consentCGU: true,
+            consentCGUAt: new Date(),
+            firstName:  client.firstName,
+            lastName:   client.lastName,
+            phone:      client.phone || null,
+            address:    [client.address, client.postalCode, client.city].filter(Boolean).join(', ') || null,
+            country:    client.country || 'CH',
+            language:   client.language || 'fr',
+            lastSeenAt: new Date(),
+            winwinId:   client.winwinId,
+          } as any).returning();
+          user = created;
+        } else {
+          // Mettre à jour les infos et s'assurer crédits illimités
+          await db.update(usersTable).set({
+            firstName:  client.firstName,
+            lastName:   client.lastName,
+            phone:      client.phone || user.phone,
+            address:    [client.address, client.postalCode, client.city].filter(Boolean).join(', ') || user.address,
+            country:    client.country || user.country,
+            language:   client.language || user.language,
+            lastSeenAt: new Date(),
+            winwinId:   client.winwinId,
+            credits:    999999,
+          } as any).where(eq(usersTable.email, client.email));
+          user = { ...user, credits: 999999, winwinId: client.winwinId } as any;
+        }
+
+        // 3. Import véhicules WinWin → garage boom.contact
+        const wvehicles = await getWinWinVehicles(client.winwinId);
+        if (wvehicles.length > 0) {
+          const { vehicles: vehiclesTable } = await import('../db/schema.js');
+          for (const wv of wvehicles) {
+            // Upsert par plaque
+            const [existing] = await db.select().from(vehiclesTable)
+              .where(eq(vehiclesTable.plate, wv.plate)).limit(1);
+            if (!existing) {
+              await db.insert(vehiclesTable).values({
+                id:     makeId(),
+                userId: user.id,
+                plate:  wv.plate,
+                make:   wv.make,
+                model:  wv.model,
+                year:   wv.year || null,
+                color:  wv.color || null,
+                category: wv.category || null,
+                licenseData:   {},
+                insuranceData: {
+                  company:      wv.insurerName || null,
+                  policyNumber: wv.policyNumber || null,
+                  validUntil:   wv.policyValidUntil || null,
+                  source:       'winwin',
+                },
+              } as any);
+            }
+          }
+        }
+
+        // 4. Générer JWT boom.contact
+        const jwt = await import('jsonwebtoken');
+        const JWT_SECRET = process.env.JWT_SECRET || 'boom-dev-secret-change-in-prod';
+        const token = jwt.default.sign(
+          { userId: user.id, email: user.email, role: user.role },
+          JWT_SECRET,
+          { expiresIn: '30d' }
+        );
+
+        return {
+          ok: true,
+          token,
+          user: {
+            id:       user.id,
+            email:    user.email,
+            role:     user.role,
+            credits:  999999,
+            firstName: client.firstName,
+            lastName:  client.lastName,
+          },
+          vehiclesImported: wvehicles.length,
+        };
+      }),
+
+    // Récupérer véhicules WinWin (pour refresh depuis l'app)
+    winwinVehicles: publicProcedure
+      .input(z.object({ winwinId: z.string() }))
+      .query(async ({ input }) => {
+        const vehicles = await getWinWinVehicles(input.winwinId);
+        return { ok: true, vehicles };
+      }),
+
+
   adminBootstrap: publicProcedure
     .input(z.object({ secret: z.string(), password: z.string().min(6) }))
     .mutation(async ({ input }) => {
