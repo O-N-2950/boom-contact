@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 interface Props {
   onStart: () => void;
