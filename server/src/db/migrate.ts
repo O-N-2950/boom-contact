@@ -187,6 +187,19 @@ export async function runMigrations() {
     `);
     logger.info('✅ Admin user upserted (role=admin, credits=999999)');
 
+
+    // ── Block 7 : Profil utilisateur étendu — Session 15 ────────────────
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS first_name TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS last_name TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(30);
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS company TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
