@@ -18,7 +18,13 @@ function Root() {
 
   const [trpcClientInstance] = useState(() =>
     trpc.createClient({
-      links: [httpBatchLink({ url: '/trpc' })],
+      links: [httpBatchLink({
+        url: '/trpc',
+        headers: () => {
+          const token = localStorage.getItem('boom_user_token');
+          return token ? { Authorization: `Bearer ${token}` } : {};
+        },
+      })],
     })
   );
 
