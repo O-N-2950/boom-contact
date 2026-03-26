@@ -1,0 +1,344 @@
+{
+  "common": {
+    "continue": "Sii wad →",
+    "confirm": "Xaqiiji →",
+    "cancel": "Jooji",
+    "rescan": "🔄 Dib u scan",
+    "loading": "Waa la raraya…",
+    "saving": "⏳ Waa la kaydiyaa…",
+    "error": "Khalad",
+    "retry": "Dib u isku day",
+    "back": "←",
+    "optional": "Ikhtiyaari",
+    "required": "Waajib",
+    "yes": "Haa",
+    "no": "Maya",
+    "unknown": "Aan la garanayn"
+  },
+  "landing": {
+    "badge": "Abka ugu horreeya adduunka",
+    "hero": {
+      "line1": "DABADEED",
+      "line2": "SHIL",
+      "line3": "WARBIXIN",
+      "line4": "DEGDEG"
+    },
+    "subtitle": "Warbixin dhijitaal ah oo 5 daqiiqo gudahood. OCR caalami, QR code la wadaago, PDF adduunka si degdeg.",
+    "cta": {
+      "start": "Bilow warbixin",
+      "pricing": "Arag qiimaha →",
+      "from": "CHF/€ 4.90 laga bilaabo · Caalami la aqbali karo",
+      "free": "BILAASH · DIWAANGELIN MAJIRTO · RGPD"
+    },
+    "mockup": {
+      "send": "U dir shirkadda caymiska",
+      "done": "Warbixinta waa dhamaatay!",
+      "waiting": "Xulashada #8F2K · Sugaya…",
+      "capture": "📸 Sawir ka qaad"
+    },
+    "badges": {
+      "languages": "50 luqadood",
+      "time": "5 daqiiqo",
+      "encrypted": "Sir ah"
+    },
+    "stats": {
+      "accidents": "warbixin/sanadkii Yurub",
+      "languages": "luqadood la taageero",
+      "time": "si loo dhammaystiro"
+    },
+    "how": {
+      "label": "Sidee u shaqeeyaa",
+      "title": "5 tallaabo.",
+      "title_accent": "5 daqiiqo.",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "Scan dukumiintadaada",
+          "desc": "Sawir ka qaad ruqsaddaada iyo kaardhka caymiska. OCR si toos ah u shaqeeyaa."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "La wadaag QR code",
+          "desc": "Darawalka kale scan QR garees. Xulasho waqtiga dhabta ah oo la wadaago."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Buuxi foomka",
+          "desc": "Foomka caalamiga ah ee OCR uga buuxinaya. Xaqiiji oo tilmaan xaaladaha."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Goobaha xadeynta",
+          "desc": "Riix 18-zone ee sawirka si aad u tilmaanto xadeynta."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Saxeex oo dir",
+          "desc": "Laba saxeex dhijitaal ah. PDF xaqiijisan si degdeg ah."
+        }
+      ]
+    },
+    "features": {
+      "title": "Waxa aad u baahan tahay oo dhan",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "OCR caalami",
+          "desc": "Claude Vision waxay aqrisaa dukumiintadaada 50+ luqadood. Gelin gacmeed majirto."
+        },
+        {
+          "icon": "📱",
+          "title": "Ilaa 5 baabuur",
+          "desc": "Shil oo leh 3, 4 ama 5 darawal? Darawalka kastaa scan gareeya QR-kiisa."
+        },
+        {
+          "icon": "📷",
+          "title": "Sawirrada goobta",
+          "desc": "5 qeybood: goob, xadeyn A, xadeyn B, dhaawac, dukumiinto. Oo dhan PDF waxaa lagu dara."
+        },
+        {
+          "icon": "✏️",
+          "title": "Sawir xor ah",
+          "desc": "Sawir meesha baabuurta, fallaadhooyinka xagga. PNG waxaa PDF lagu dara."
+        },
+        {
+          "icon": "🚗",
+          "title": "Sawirka xadeynta",
+          "desc": "700+ nooc. 18 zone oo la riixin karo xadeynta."
+        },
+        {
+          "icon": "✍️",
+          "title": "Saxeexyo badan",
+          "desc": "N saxeex dhijitaal ah. Sharci ahaan waxtareed 150+ wadan."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF 150+ wadan",
+          "desc": "Dukumiint dhijitaal ah oo buuxda. Shirkadaha caymiska oo dhan way aqbalaan."
+        },
+        {
+          "icon": "🚔",
+          "title": "Qaybta Booliska (dhawaan)",
+          "desc": "Booliska QR iyagoo xulashada ku biiraya. Warbixin booliska dhijitaal."
+        },
+        {
+          "icon": "🌍",
+          "title": "50 luqadood + RTL",
+          "desc": "5 bilyan oo hadla. Carabi, Cibraani, Faarisi RTL. Lambarka degdegga caalamiga."
+        }
+      ]
+    },
+    "coverage": {
+      "label": "Daah-furis adduunka oo dhan",
+      "title": "Iswiisirka ilaa Shiinaha",
+      "more": "+ 30 wadan oo kale · Taageero RTL"
+    },
+    "legal": {
+      "title": "Heerka caalamiga ah",
+      "text": "PDF dhijitaalka ah ee boom.contact waxaa aqbalay shirkadaha caymiska 50+ wadan."
+    },
+    "finalCta": {
+      "title": "Ma diyaar u tahay shil?",
+      "subtitle": "boom.contact dhig shaashadaada. 5 daqiiqo oo dhammaystira.",
+      "button": "Bilow warbixin"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    }
+  },
+  "steps": {
+    "scan": "Scan",
+    "location": "Goob",
+    "photos": "Sawirro",
+    "qr": "QR",
+    "form": "Macluumaad",
+    "sketch": "Sawir",
+    "damage": "Xadeyn",
+    "sign": "Saxeex"
+  },
+  "flow": {
+    "header": {
+      "role_a": "DARAWAL A — WARBIXIN CUSUB",
+      "reset_title": "Dib u bilow"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "Scan dukumiintadaada",
+      "subtitle": "Ka bilow ruqsaddaada.\nDukumiinta caymiska <strong>lagu talinayaa</strong>.",
+      "reg_label": "Ruqsadda darawalnimada / Carte grise",
+      "reg_sub": "Ruqsad CH, carte grise FR — <strong>waajib</strong>",
+      "tip": "💡 <strong>Dukumiinta caymiska lagu talinayaa.</strong> Kaarka cagaaran, shahaadada — waxaa ku jira shirkadda iyo lambarka polisiiga."
+    },
+    "greencard": {
+      "scanned": "✅ Ruqsadda scan la gareeya",
+      "compressing": "· Waa la raraya…",
+      "title": "Dukumiinta caymiska?",
+      "subtitle": "Scan <strong>kaarka cagaaran (IMIC)</strong> ama shahaadada caymiska.",
+      "scan_btn": "Scan dukumiinta caymiska",
+      "scan_sub": "Kaarka cagaaran, shahaado, kaardhka…",
+      "skip_btn": "Macluumaadka caymiska gacanta ku buuxi →"
+    },
+    "scanning": {
+      "title": "Falanqeynaya…",
+      "subtitle": "Claude Vision waxay aqrisaa dukumiintadaada"
+    },
+    "review": {
+      "title_pair": "Dukumiintada la falanqeeyay",
+      "title_single": "Ruqsadda la falanqeeyay",
+      "confidence": "Kalsooni: {{pct}}%",
+      "skipped": "· Kaarka cagaaran la gudbay",
+      "warnings": "⚠️ {{count}} garoon xaqiiji",
+      "warnings_plural": "⚠️ {{count}} garoon xaqiiji",
+      "insurance_title": "🛡️ Macluumaadka caymiska — gacanta",
+      "company_label": "Shirkadda caymiska *",
+      "company_placeholder": "Zurich, AXA, Helvetia…",
+      "policy_label": "Lambarka polisiiga *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 Baabuurka",
+      "section_driver": "👤 Darawalka",
+      "section_greencard": "🟢 Caymis (kaarka cagaaran)",
+      "rescan": "🔄 Dib u scan",
+      "confirm": "Xaqiiji →"
+    }
+  },
+  "location": {
+    "vehicle_label": "Baabuurkaaga",
+    "groups": {
+      "light": "Gaadiidka fudud",
+      "heavy": "Gaadiidka culus",
+      "rail": "Gaadiidka dadweynaha",
+      "cycles": "Baaskiilada",
+      "other": "Qof / Kale"
+    },
+    "vehicles": {
+      "car": { "label": "Baabuur", "sub": "Sedan, SUV, hatchback" },
+      "van": { "label": "Van / Utility", "sub": "Van, van yar" },
+      "motorcycle": { "label": "Mootoorka", "sub": "Mootoor" },
+      "scooter": { "label": "Scooter", "sub": "Scooter, 50cc" },
+      "moped": { "label": "Moped", "sub": "2 gaadiid <45km/h" },
+      "escooter": { "label": "Scooter korontada", "sub": "EDPM, hoverboard" },
+      "quad": { "label": "Quad / Buggy", "sub": "Gaadiidka dhulka" },
+      "truck": { "label": "Gaari weyn", "sub": "Gaari culus, semi" },
+      "bus": { "label": "Bas", "sub": "Bas, minibus" },
+      "construction": { "label": "Mishiinka dhismaha", "sub": "Crane, bulldozer" },
+      "tractor": { "label": "Tiraaktar", "sub": "Tiraaktar beeraha" },
+      "tram": { "label": "Taramka", "sub": "Taram" },
+      "train": { "label": "Tareenka", "sub": "Tareen, metro" },
+      "bicycle": { "label": "Baaskiil", "sub": "Baaskiil, korontada" },
+      "cargo_bike": { "label": "Baaskiilka xamuulka", "sub": "Cargo bike" },
+      "pedestrian": { "label": "Socod-maashiinta", "sub": "Qof lugaha" },
+      "boat": { "label": "Doon", "sub": "Doon, jet-ski" },
+      "other": { "label": "Gaadiid kale", "sub": "Liiska ma jiro" }
+    },
+    "datetime_label": "Taariikhda iyo saacadda shilka",
+    "date_label": "Taariikhda",
+    "time_label": "Saacadda",
+    "datetime_warning": "⚠️ Geli saacadda dhabta ah ee shilka, ma aha saacadda hadda.",
+    "geo_label": "Goobta shilka",
+    "gps_captured": "GPS la qabtay — {{lat}}, {{lng}}",
+    "gps_loading": "Goobta la raadiyaa…",
+    "gps_denied": "GPS la diidey — gacanta ku geli",
+    "gps_missing": "GPS la helin",
+    "gps_saved": "Coordinates dukumiinta ku kaydiyay",
+    "address_label": "Wadada / Gaadidka weyn",
+    "address_placeholder": "Tusaale: Hauptstrasse 5, A1 km 47…",
+    "city_label": "Magaalada",
+    "city_placeholder": "Muqdisho, Berne…",
+    "country_label": "Wadanka",
+    "country_placeholder": "SO, CH…",
+    "location_tip": "💡 <strong>Muhiim:</strong> Geli goobta saxda ah ee shilka.",
+    "injuries_label": "Ma jiraan dhaawacyo?",
+    "no_injuries": "Maya — dhaawac malaha",
+    "yes_injuries": "Haa — dhaawac jira",
+    "injury_details_title": "🚑 Faahfaahinta dhaawacyada",
+    "severity_label": "Xooggga dhaawaca",
+    "severity_minor": "Fudud",
+    "severity_moderate": "Dhexdhexaad",
+    "severity_serious": "Culus",
+    "injury_desc_label": "Sharaxaad (qayb jidh, xanuun, dhaawac la arko)",
+    "injury_desc_placeholder": "Tusaale: Xanuun luqunta, dhaawac jilbaha…",
+    "ambulance": "🚑 Ambulansyada qaadeen",
+    "hospitalized": "🏥 Isbitaalka loo baahan yahay",
+    "injury_footer": "Dhaawac culus hadduu jiro wac 112 (EU) ama 144 (CH).",
+    "cta_no_vehicle": "Dooro nooca gaadiidkaaga",
+    "cta_no_injuries": "Xaqiiji haddii dhaawac jiro",
+    "cta_no_location": "Geli goobta shilka",
+    "emergency_police": "🚔 Booliska · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Xaalufka · {{number}} {{label}}",
+    "emergency_voluntary": "Wacidahan ikhtiyaari ayay yihiin — booliska si toos ah laguma soo ogeysiin."
+  },
+  "cgu": {
+    "before_continue": "KA HOR SII WADEYNTA",
+    "tab_cgu": "Shuruudaha Isticmaalka",
+    "tab_privacy": "Sirta",
+    "cgu_title": "Shuruudaha Isticmaalka",
+    "privacy_title": "Siyaasadda Sirta",
+    "cgu_version": "Nooca 1.0 — Maarso 2026 · PEP's Swiss SA",
+    "privacy_version": "RGPD UE 2016/679 waafaqsan · Maarso 2026",
+    "email_label": "Emailkaaga (si aad PDF u hesho)",
+    "email_placeholder": "adiga@tusaale.com",
+    "consent_cgu": "Waxaan aqbalayaa <cgu>Shuruudaha</cgu> iyo <privacy>Siyaasadda Sirta</privacy>",
+    "consent_marketing": "Waxaan u oggolaanayaa PEP's Swiss SA inay emailkayga u isticmaalaan adeegyada dheeraadka. <opt>Ikhtiyaari — waqtiga kasta la joojin karaa.</opt>",
+    "required_note": "* Isticmaalka ayaa u baahan",
+    "submit": "Sii wad →",
+    "error_network": "Khalad network. Dib u isku day.",
+    "cgu_sections": [
+      { "title": "1. Ujeeddada", "text": "boom.contact waa adeeg dhijitaal ah oo ay samaysay PEP's Swiss SA. Waxay kaalmeysaa diyaarinta warbixinta shilka dhijitaalka caalamiga ah." },
+      { "title": "2. Aqbalitaanka", "text": "Isticmaalka adeegga waxaa micnihiisu yahay aqbalitaanka shuruudaha. Isticmaal sharci darro ah waa mamnuuc." },
+      { "title": "3. Adeegyada", "text": "boom.contact waxay bixisaa: (a) OCR; (b) Session QR; (c) Saxeexyo dhijitaal; (d) PDF email. Darawalku mas'uul u yahay inuu shirkadda caymiskiisa u soo warbixiyo." },
+      { "title": "4. Qiimaha", "text": "Adeegga waxaa lagu iibinayaa xidmooyin. Lacag bixinta Stripe (PCI-DSS). Credits-ku waxay leeyihiin taariikhda dhamaadka." },
+      { "title": "5. Qiimaha sharci", "text": "PDF-ka boom.contact waxaa aqbalay shirkadaha caymiska. PEP's Swiss SA kuma dammaanad qaabanayso aqbalitaanka dhammaan wadamada." },
+      { "title": "6. Mas'uuliyadda", "text": "PEP's Swiss SA kama qaadato mas'uuliyadda khaladaadka OCR ama diidmada caymis. Mas'uuliyadda waxay ku xaddidan tahay lacagta la bixiyay." },
+      { "title": "7. Milkiilaha", "text": "Software, calaamadaha, waxyaabaha boom.contact waa hantida PEP's Swiss SA." },
+      { "title": "8. Sharciga", "text": "Sharciga Swiss ayaa dhaqan gala. Muran Maxkamadda Jura ayaa xaliya." }
+    ],
+    "privacy_sections": [
+      { "title": "Mas'uulka xogta", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
+      { "title": "Xogta la uruuriyay", "text": "Email, magac, ciwaanka, lambarka gaarka, GPS, saxeexa dhijitaalka, macluumaadka caymiska." },
+      { "title": "Aasaaska sharci", "text": "Fulinta heshiiska (Art. 6.1.b RGPD) xogta warbixinta. Ogolaanshaha isticmaalka ganacsiga." },
+      { "title": "Mudada kaydinta", "text": "Sessions: 2 saacadood. PDF iyo xog: 30 maalmood ka dibna la tirtiraa. Xogta lacag bixinta: 10 sano." },
+      { "title": "La wadaagida xogta", "text": "Xogta kuma iibsan partida saddexaad. Stripe, Resend, Anthropic adeegyada kaliya ayay u isticmaalaan." },
+      { "title": "Xuquuqdaada", "text": "Fiirin, wax ka beddel, tirtir, wareejin. U qor privacy@boom.contact." }
+    ]
+  },
+  "pricing": {
+    "title": "Dooro xidmada",
+    "subtitle": "Hore u iibso credits — hal mar ku bixin",
+    "popular_badge": "⭐ Caanka ah",
+    "economy": "Badbaadin {{pct}}",
+    "credits_label": "Credits",
+    "per_report": "Warbixin walba",
+    "validity": "Waqtiga",
+    "no_expiry": "Taariikhda dhammaadka malaha",
+    "buy_btn": "Iibso — {{symbol}} {{price}}",
+    "redirecting": "Stripe ayaa la socda…",
+    "error_missing_url": "URL Stripe maqan",
+    "trust": {
+      "stripe": "🔒 Lacag bixin ammaan ah oo Stripe (PCI-DSS)",
+      "no_expiry": "📄 Credits taariikhda dhammaadka malaha",
+      "worldwide": "🌍 Dukumiint dhijitaal · 150+ wadan oo aqbalay",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+    },
+    "legal": "Iibsashada, waxaad aqbalaysaa shuruudaha boom.contact.\nSoo noqod ma jirto PDF la sameeyay kaddib.",
+    "packages": {
+      "single": { "label": "1 warbixin", "description": "Shil hal mar" },
+      "pack3": { "label": "3 warbixin", "description": "Qoyska" },
+      "pack10": { "label": "10 warbixin", "description": "Agents, shirkadaha" }
+    }
+  },
+  "offline": {
+    "banner": "Offline — {{count}} session sugaya",
+    "banner_0": "Offline ayaad tahay"
+  },
+  "language": {
+    "select": "Luuqadda",
+    "switch_tooltip": "Bedel luuqadda"
+  }
+}
