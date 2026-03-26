@@ -197,7 +197,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         {/* Nav */}
         <nav style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="/logo.png" alt="boom.contact" style={{ width: 44, height: 44, objectFit: 'contain' }} />
+            <img src="/logo.png" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
@@ -553,7 +553,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>{t('landing.footer.copyright')}</span>
         </div>
         <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8 }}>
-          {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
+          {t('landing.footer.address').split('
+').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
         </div>
         {/* Legal links */}
         <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap' as const, gap: 12 }}>
@@ -580,8 +581,3 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
     </div>
   );
 }
-
-
-
-
-
