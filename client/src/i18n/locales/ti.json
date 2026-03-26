@@ -1,0 +1,344 @@
+{
+  "common": {
+    "continue": "ቀጽል →",
+    "confirm": "ኣረጋግጽ →",
+    "cancel": "ሰርዝ",
+    "rescan": "🔄 ደጊምካ ስካን",
+    "loading": "ይጸናሕ…",
+    "saving": "⏳ ይዕቀብ…",
+    "error": "ጌጋ",
+    "retry": "ደጊምካ ፈትን",
+    "back": "←",
+    "optional": "ዘይግደድ",
+    "required": "ግዴታ",
+    "yes": "እወ",
+    "no": "ኣይፋል",
+    "unknown": "ዘይፍለጥ"
+  },
+  "landing": {
+    "badge": "ቀዳማይ ዓለምለኻዊ ኣፕ",
+    "hero": {
+      "line1": "ድሕሪ",
+      "line2": "ናይ ሓደጋ",
+      "line3": "ብኅብረት",
+      "line4": "ምቅርራብ"
+    },
+    "subtitle": "ዲጂታላዊ ናይ ሓደጋ ሪፖርት ኣብ 5 ደቒቕ። ሓፈሻዊ OCR፣ ብ QR ዝጋራ ሰሽን፣ ኣፍቲ ዓለምለኻዊ PDF።",
+    "cta": {
+      "start": "ሪፖርት ጀምር",
+      "pricing": "ዋጋታት ርአ →",
+      "from": "ካብ CHF/€ 4.90 · ዓለምለኻዊ ቅቡልነት",
+      "free": "ብነፃ · ምዝገባ ኣየድልን · RGPD"
+    },
+    "mockup": {
+      "send": "ናብ ብቕዓት ምልኣኽ",
+      "done": "ሪፖርት ተፈጺሙ!",
+      "waiting": "ሰሽን #8F2K · ይጽበ…",
+      "capture": "📸 ስእሊ ኣልዕል"
+    },
+    "badges": {
+      "languages": "50 ቋንቋታት",
+      "time": "5 ደቒቕ",
+      "encrypted": "ምስጢራዊ"
+    },
+    "stats": {
+      "accidents": "ሪፖርታት/ዓመት ኣብ ኤውሮጳ",
+      "languages": "ዝድገፉ ቋንቋታት",
+      "time": "ንምዕጻው"
+    },
+    "how": {
+      "label": "ከመይ ይሰርሕ",
+      "title": "5 ስጉምቲ።",
+      "title_accent": "5 ደቒቕ።",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "ሰነዳትካ ስካን ግበር",
+          "desc": "ናይ ምዝዋር ፍቓድን ወረቐት ኢንሹራንስን ፎቶ ኣንሳ። OCR ብቐጥታ ይሰርሕ።"
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "QR ኮድ ሽምዓ",
+          "desc": "ካልኣዩ ሾፌር QR ይስካን። ሰሽን ኣብ ሓቀኛ ግዜ ይጋረ።"
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "ቅጥዒ ምልእ",
+          "desc": "ሓፈሻዊ ቅጥዒ ብ OCR ቅሩብ ኣሎ። ኣረጋግጽ ኩነታት ምልክት ግበረሎም።"
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "ናይ ምትሕንካፍ ኩነታት",
+          "desc": "ኣብ 18-ዞን ናይ ሕቡእ ስእሊ ጠውቕ ን ጉድኣት ምልክት ግበር።"
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "ፍረምን ስዳኽን",
+          "desc": "ክልተ ናይ ዲጂታል ፊርማ። PDF ቀጥታ ምስክር ኮይኑ ይወጽእ።"
+        }
+      ]
+    },
+    "features": {
+      "title": "ዘድልይ ኩሉ ኣብዚ",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "ሓፈሻዊ OCR",
+          "desc": "Claude Vision ሰነዳትካ ብ 50+ ቋንቋ ይኣምቦ። ዜሮ ኢድ ምእታው።"
+        },
+        {
+          "icon": "📱",
+          "title": "ክሳብ 5 ዓንቀጻት",
+          "desc": "ሓደጋ ምስ 3፣ 4 ወይ 5 ዓንቀጻት? ነፍሲ ወከፍ ሾፌር ናቱ QR ይስካን።"
+        },
+        {
+          "icon": "📷",
+          "title": "ናይ ቦታ ስእልታት",
+          "desc": "5 ምድባት: ቦታ፣ ጉድኣት A፣ ጉድኣት B፣ ቑስሊ፣ ሰነዳት። ናብ PDF ይጽምበሩ።"
+        },
+        {
+          "icon": "✏️",
+          "title": "ናጻ ስኬጅ",
+          "desc": "ቦታ ዓንቀጻት፣ ምልክታት ኣቅጣጫ ስኬጅ ግበር። PNG ኣብ PDF ይኣቱ።"
+        },
+        {
+          "icon": "🚗",
+          "title": "ናይ ምትሕንካፍ ስኬማ",
+          "desc": "700+ ሞዴላት። 18 ኩርናዓት ጠውቕ ን ጉድኣት ምልክት።"
+        },
+        {
+          "icon": "✍️",
+          "title": "ብዙሕ ፊርማ",
+          "desc": "N ናይ ሓቀኛ ፊርማ ኣብ ሓደ ግዜ። ሕጋዊ ቅቡልነት ኣብ 150+ ሃገራት።"
+        },
+        {
+          "icon": "📄",
+          "title": "PDF ናይ 150+ ሃገራት",
+          "desc": "ምሉእ ዲጂታላዊ ሰነድ። ብኩሉ ኩባንያታት ኢንሹራንስ ቅቡል።"
+        },
+        {
+          "icon": "🚔",
+          "title": "ናይ ፖሊስ ሞዱል (ቀልጢፉ)",
+          "desc": "ፖሊስ ብ QR ናብ ሰሽን ይጽምበሩ። ናይ ዲጂታል ናይ ፖሊስ ሪፖርት።"
+        },
+        {
+          "icon": "🌍",
+          "title": "50 ቋንቋታት + RTL",
+          "desc": "5 ቢሊዮን ተዛረብቲ። ዓረብ፣ ዕብራይ፣ ፋርሲ ብ RTL። ዓለምለኻዊ ቁጽሪ ህጹጽ ዕርዳ።"
+        }
+      ]
+    },
+    "coverage": {
+      "label": "ዓለምለኻዊ ሽፋን",
+      "title": "ካብ ሽወደን ክሳብ ቻይና",
+      "more": "+ 30 ካልኦት ሃገራት · RTL ዳርጋ"
+    },
+    "legal": {
+      "title": "ዓለምለኻዊ መስፈርቲ",
+      "text": "ናይ boom.contact ዲጂታላዊ PDF ብኩባንያታት ኢንሹራንስ ኣብ 50+ ሃገራት ቅቡል እዩ።"
+    },
+    "finalCta": {
+      "title": "ን ሓደጋ ቅሩብ ዲኻ?",
+      "subtitle": "boom.contact ኣብ ናትካ ስክሪን ሓዞ። 5 ደቒቕ ን ኩሉ።",
+      "button": "ሪፖርት ጀምር"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suísa"
+    }
+  },
+  "steps": {
+    "scan": "ስካን",
+    "location": "ቦታ",
+    "photos": "ስእልታት",
+    "qr": "QR",
+    "form": "ሓበሬታ",
+    "sketch": "ስኬጅ",
+    "damage": "ጉድኣት",
+    "sign": "ፊርማ"
+  },
+  "flow": {
+    "header": {
+      "role_a": "ሾፌር A — ሓዲሽ ሪፖርት",
+      "reset_title": "ካብ ጅምሮ ጀምር"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "ሰነዳትካ ስካን ግበር",
+      "subtitle": "ካብ ናይ ምዝዋር ፍቓድ ጀምር።\nሰነድ ኢንሹራንስ <strong>ይምረጽ</strong>።",
+      "reg_label": "ናይ ምዝዋር ፍቓድ / ካርቴ ግሪዝ",
+      "reg_sub": "ፍቓድ CH፣ ካርቴ ግሪዝ FR፣ ዙሊሱንግ DE — <strong>ግዴታ</strong>",
+      "tip": "💡 <strong>ሰነድ ኢንሹራንስ ይምረጽ።</strong> ካርቴ ቨርት፣ ናይ ኢንሹራንስ ምስክር — እዚ ሰነድ ኩባንያ ኢንሹራንስን ቁጽሪ ፖሊሲን ይሓዝ።"
+    },
+    "greencard": {
+      "scanned": "✅ ናይ ምዝዋር ፍቓድ ስካን ተጌሩ",
+      "compressing": "· ይጸናሕ…",
+      "title": "ሰነድ ኢንሹራንስ?",
+      "subtitle": "ናይ <strong>ካርቴ ቨርት (IMIC)</strong> ወይ ናይ ኢንሹራንስ ምስክር ስካን ግበር።",
+      "scan_btn": "ሰነድ ኢንሹራንስ ስካን ግበር",
+      "scan_sub": "ካርቴ ቨርት፣ ምስክር፣ ናይ ኢንሹራንስ ካርድ…",
+      "skip_btn": "ናይ ኢንሹራንስ ሓበሬታ ብኢድ ምልእ →"
+    },
+    "scanning": {
+      "title": "ይምርምር…",
+      "subtitle": "Claude Vision ሰነዳትካ ይኣምቦ"
+    },
+    "review": {
+      "title_pair": "ሰነዳት ተምርሚሮም",
+      "title_single": "ፍቓድ ተምርሚሩ",
+      "confidence": "ምቅምሞ: {{pct}}%",
+      "skipped": "· ካርቴ ቨርት ዝተሓለፈ",
+      "warnings": "⚠️ {{count}} ሜዳ ንምርምር",
+      "warnings_plural": "⚠️ {{count}} ሜዳታት ንምርምር",
+      "insurance_title": "🛡️ ናይ ኢንሹራንስ ሓበሬታ — ብኢድ",
+      "company_label": "ኩባንያ ኢንሹራንስ *",
+      "company_placeholder": "Zurich, AXA, Helvetia…",
+      "policy_label": "ቁጽሪ ፖሊሲ *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 ዓንቀጽ",
+      "section_driver": "👤 ሾፌር",
+      "section_greencard": "🟢 ኢንሹራንስ (ካርቴ ቨርት)",
+      "rescan": "🔄 ደጊምካ ስካን",
+      "confirm": "ኣረጋግጽ →"
+    }
+  },
+  "location": {
+    "vehicle_label": "ናትካ ዓንቀጽ",
+    "groups": {
+      "light": "ቀለልቲ ዓንቀጻት",
+      "heavy": "ከቢዳት ዓንቀጻት",
+      "rail": "ሓፋሽ መጓዓዝያ",
+      "cycles": "ሳይክላት",
+      "other": "ሰብ / ካልእ"
+    },
+    "vehicles": {
+      "car": { "label": "መኪና", "sub": "ሰዳን፣ SUV፣ ከባቢ" },
+      "van": { "label": "ቫን / ናይ ስራሕ ዓንቀጽ", "sub": "ቫን፣ ናይ ስራሕ ዓንቀጽ" },
+      "motorcycle": { "label": "ሞቶ", "sub": "ሞቶሳይክል" },
+      "scooter": { "label": "ስኩተር", "sub": "ስኩተር፣ 50cm³" },
+      "moped": { "label": "ሞፔድ", "sub": "2 ዕርፊ <45km/h" },
+      "escooter": { "label": "ናይ ኤሌክትሪክ ስኩተር", "sub": "EDPM፣ ሆቨርቦርድ" },
+      "quad": { "label": "ኳድ / ባጊ", "sub": "ናይ ባቢ ዓንቀጽ" },
+      "truck": { "label": "ካሚዮን", "sub": "ዓቢ ካሚዮን፣ ሴሚ" },
+      "bus": { "label": "ባስ", "sub": "ባስ፣ ሚኒ-ባስ" },
+      "construction": { "label": "ናይ ህንጸት መሳርሒ", "sub": "ክሬን፣ ቡልዶዘር" },
+      "tractor": { "label": "ትራክተር", "sub": "ናይ ሕርሻ ትራክተር" },
+      "tram": { "label": "ትራም", "sub": "ትራም" },
+      "train": { "label": "ባቡር", "sub": "ባቡር፣ ሜትሮ" },
+      "bicycle": { "label": "ሳይክል", "sub": "ሳይክል፣ ናይ ኤሌክትሪክ ሳይክል" },
+      "cargo_bike": { "label": "ናይ ጽዕነት ሳይክል", "sub": "ካርጎ ሳይክል" },
+      "pedestrian": { "label": "ሰጓሚ", "sub": "ሰብ ብእግሩ" },
+      "boat": { "label": "ሓሞ", "sub": "ሓሞ፣ ጀት-ስኪ" },
+      "other": { "label": "ካልእ ዓንቀጽ", "sub": "ዘይተዘርዘረ" }
+    },
+    "datetime_label": "ዕለትን ሰዓትን ሓደጋ",
+    "date_label": "ዕለት",
+    "time_label": "ሰዓት",
+    "datetime_warning": "⚠️ ሓቀኛ ሰዓት ሓደጋ ኣስፍር፣ ሕጂ ዘሎ ሰዓት ኣይኮነን።",
+    "geo_label": "ቦታ ሓደጋ",
+    "gps_captured": "GPS ተሓዚዙ — {{lat}}, {{lng}}",
+    "gps_loading": "ቦታ ይምርምር…",
+    "gps_denied": "GPS ተኸልኪሉ — ብኢድ ምልእ",
+    "gps_missing": "GPS ኣይተሓዘዘን",
+    "gps_saved": "ኮኦርዲናት ኣብ ሰነድ ተሓዚዙ",
+    "address_label": "ጎደና / ናይ ኣውቶሞቢል መንገዲ",
+    "address_placeholder": "ንምሳሌ: Avenue de la Gare 4…",
+    "city_label": "ከተማ",
+    "city_placeholder": "Berne, Zurich…",
+    "country_label": "ሃገር",
+    "country_placeholder": "CH, ER…",
+    "location_tip": "💡 <strong>ኣገዳሲ:</strong> ሓቀኛ ቦታ ሓደጋ ምልክት ግበር።",
+    "injuries_label": "ቑስሊ ኣሎ ዶ?",
+    "no_injuries": "ኣይፋሉ — ቑስሊ የለን",
+    "yes_injuries": "እወ — ቑስሊ ኣሎ",
+    "injury_details_title": "🚑 ዝርዝር ቑስሊ",
+    "severity_label": "ጾር ቑስሊ",
+    "severity_minor": "ቀሊል",
+    "severity_moderate": "ማእከላይ",
+    "severity_serious": "ከቢድ",
+    "injury_desc_label": "መግለጺ (ናይ ሰብነት ክፋል፣ ቃንዛ፣ ዝረኤ ቑስሊ)",
+    "injury_desc_placeholder": "ንምሳሌ: ቃንዛ ኣናት፣ ምቑሳል ብርኪ…",
+    "ambulance": "🚑 ብኣምቡላንስ ዝተሓዝ",
+    "hospitalized": "🏥 ሆስፒታል ምእታው ዘድሊ",
+    "injury_footer": "ን ከቢድ ቑስሊ 112 (EU) ወይ 144 (CH) ደውል።",
+    "cta_no_vehicle": "ዓይነት ዓንቀጽካ ምረጽ",
+    "cta_no_injuries": "ቑስሊ ኣሎ ዶ ኣረጋግጽ",
+    "cta_no_location": "ቦታ ሓደጋ ምልክት ግበር",
+    "emergency_police": "🚔 ፖሊስ · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 ህጹጽ ዕርዳ · {{number}} {{label}}",
+    "emergency_voluntary": "እዞም ጻዕርታት ናይ ምርጫ እዮም — ፖሊስ ብቐጥታ ኣይፍለጥን።"
+  },
+  "cgu": {
+    "before_continue": "ቅድሚ ምቕጻልካ",
+    "tab_cgu": "ናይ ኣጠቓቕማ ኩነታት",
+    "tab_privacy": "ምስጢርነት",
+    "cgu_title": "ናይ ኣጠቓቕማ ኩነታት",
+    "privacy_title": "ናይ ምስጢርነት ፖሊሲ",
+    "cgu_version": "ቅጂ 1.0 — መጋቢት 2026 · PEP's Swiss SA",
+    "privacy_version": "RGPD UE 2016/679 ምሉእ · መጋቢት 2026",
+    "email_label": "ኢሜይልካ (ን PDF ምቕባል)",
+    "email_placeholder": "ኢሜይልካ@ኣብነት.com",
+    "consent_cgu": "ናይ <cgu>ኣጠቓቕማ ኩነታት</cgu>ን <privacy>ናይ ምስጢርነት ፖሊሲ</privacy>ን እቕበሎ",
+    "consent_marketing": "PEP's Swiss SA ኢሜይለይ ን ዝያዳ ኣገልግሎታት ክጥቀመሉ ይፈቕደሉ። <opt>ናይ ምርጫ — ብዝኾነ ግዜ ይስረዝ።</opt>",
+    "required_note": "* ን ኣጠቓቕማ ኣድላዪ",
+    "submit": "ቀጽል →",
+    "error_network": "ናይ ኔትወርክ ጌጋ። ደጊምካ ፈትን።",
+    "cgu_sections": [
+      { "title": "1. ዕላማ", "text": "boom.contact ናይ PEP's Swiss SA ዲጂታላዊ ኣገልግሎት እዩ። ዓለምለኻዊ ናይ ሓደጋ ሪፖርት ንምቅርራብ ይሕግዝ።" },
+      { "title": "2. ቅቡልነት", "text": "ናይ ኣጠቓቕማ ኩነታት ምቕባል ን ኣጠቓቕማ ኣድላዪ እዩ። ዘይሕጋዊ ኣጠቓቕማ ተኸልኪሉ እዩ።" },
+      { "title": "3. ኣገልግሎታት", "text": "boom.contact ይሕብር: (a) OCR ናይ ሰነዳት; (b) QR ናይ ሓቀኛ ሰሽን; (c) ዲጂታላዊ ፊርማ; (d) PDF ናይ ኢሜይል ምምጻእ። ሾፌር ናብ ናቱ ኢንሹራንስ ናይ ምሕባር ሕጋዊ ግዴታ ናቱ እዩ።" },
+      { "title": "4. ዋጋ", "text": "ኣገልግሎት ብ ፓኬጃት ይሽጥ። ክፍሊት ብ Stripe (PCI-DSS) ይፍጸም። ክሬዲት ናይ ምውዳእ ዕለት የብሎምን።" },
+      { "title": "5. ሕጋዊ ቅቡልነት", "text": "ናይ boom.contact PDF ብኩባንያታት ኢንሹራንስ ቅቡል እዩ። PEP's Swiss SA ኣብ ኩሉ ሃገር ቅቡልነት ኣየረጋግጽን።" },
+      { "title": "6. ሓላፍነት", "text": "PEP's Swiss SA ን ጌጋ OCR ወይ ናይ ኢንሹራንስ ኩባንያ ምንፋግ ሓላፍነት ኣይወስድን። ሓላፍነት ን ዝተኸፈለ ዋጋ ጥራይ ይሕደን።" },
+      { "title": "7. ናይ ባዕልኻ ንብረት", "text": "ሶፍትዌር፣ ምልክታት፣ ትሕዝቶ ናይ boom.contact ናይ PEP's Swiss SA ዋንነት እዩ።" },
+      { "title": "8. ናይ ሕጊ ስርዓት", "text": "ናይ ሽወደን ሕጊ ይምልከት። ምስሕሃር ኣብ ቤት ፍርዲ ዙሪክ ይፍጸም።" }
+    ],
+    "privacy_sections": [
+      { "title": "ሓላፊ ሓበሬታ", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suísa. privacy@boom.contact" },
+      { "title": "ዝእከብ ሓበሬታ", "text": "ኢሜይል፣ ስም፣ ቦታ፣ ቁጽሪ ሰሌዳ፣ GPS ቦታ ሓደጋ፣ ናይ ዲጂታል ፊርማ፣ ናይ ኢንሹራንስ ሓበሬታ።" },
+      { "title": "ናይ ሕጊ መሰረት", "text": "ናይ ውዕል ምፍጻም (Art. 6.1.b RGPD) ን ናይ ሓደጋ ሓበሬታ። ናይ ምርጫ ፍቓድ ን ናይ ሽያጭ ኣጠቓቕማ።" },
+      { "title": "ናይ ምሓዝ ግዜ", "text": "ሰሽናት: 2 ሰዓት። PDFን ሓበሬታን: 30 ቀናት ድሕሪኡ ይሕሰም። ናይ ክፍሊት ሓበሬታ: 10 ዓመት (ሕጋዊ)।" },
+      { "title": "ምምቕቓል ሓበሬታ", "text": "ሓበሬታ ን ሳልሳይ ወገን ኣይሽጥን። Stripe, Resend, Anthropic ጥራይ ናይ ኣገልግሎት ዕላማ ይጥቀሙ።" },
+      { "title": "መሰላትካ", "text": "ምርአ፣ ምቕያር፣ ምስረዝ፣ ምምጻእ። ናብ privacy@boom.contact ተጽሓፍ።" }
+    ]
+  },
+  "pricing": {
+    "title": "ፓኬጅ ምረጽ",
+    "subtitle": "ክሬዲት ብቅድሚ ዕድጊ — ሓንሳእ ጥራይ ከፍል",
+    "popular_badge": "⭐ ፍቱው",
+    "economy": "ቁጠባ {{pct}}",
+    "credits_label": "ክሬዲት",
+    "per_report": "ን ሓደ ሪፖርት",
+    "validity": "ቅቡልነት",
+    "no_expiry": "ናይ ምውዳእ ዕለት የብሉን",
+    "buy_btn": "ዕደጊ — {{symbol}} {{price}}",
+    "redirecting": "ናብ Stripe ይሰጋገር…",
+    "error_missing_url": "ናይ Stripe URL ጎዲሉ",
+    "trust": {
+      "stripe": "🔒 ብ Stripe ዝተሓለወ ክፍሊት (PCI-DSS)",
+      "no_expiry": "📄 ክሬዲት ናይ ምውዳእ ዕለት የብሉን",
+      "worldwide": "🌍 ዲጂታላዊ ሰነድ · ኣብ 150+ ሃገራት ቅቡል",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suísa"
+    },
+    "legal": "ብምዕዳጊ ናይ boom.contact ኩነታት ትቕበሎ።\nPDF ድሕሪ ምምጻእ ኣይምለስን።",
+    "packages": {
+      "single": { "label": "1 ሪፖርት", "description": "ን ሓደ ሓደጋ" },
+      "pack3": { "label": "3 ሪፖርታት", "description": "ን ስድራቤት" },
+      "pack10": { "label": "10 ሪፖርታት", "description": "ኤጀንቲ፣ ኩባንያ" }
+    }
+  },
+  "offline": {
+    "banner": "ኦፍ-ላይን — {{count}} ሰሽን ይጽበ",
+    "banner_0": "ኦፍ-ላይን ኢኻ"
+  },
+  "language": {
+    "select": "ቋንቋ",
+    "switch_tooltip": "ቋንቋ ቀይር"
+  }
+}
