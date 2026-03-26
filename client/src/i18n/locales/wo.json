@@ -1,0 +1,344 @@
+{
+  "common": {
+    "continue": "Jëfandikoo →",
+    "confirm": "Dëggal →",
+    "cancel": "Soppiku",
+    "rescan": "🔄 Scan ci kanam",
+    "loading": "Di yóbbu…",
+    "saving": "⏳ Di dëkk…",
+    "error": "Njëg",
+    "retry": "Jëf ci kanam",
+    "back": "←",
+    "optional": "Ku bëgg",
+    "required": "Waajib",
+    "yes": "Waaw",
+    "no": "Déet",
+    "unknown": "Xamul"
+  },
+  "landing": {
+    "badge": "Application bu njëkk ci aduna",
+    "hero": {
+      "line1": "NGIR",
+      "line2": "ACCIDENT",
+      "line3": "YI",
+      "line4": "DÉGLU"
+    },
+    "subtitle": "Rapport numérique ci 5 minit. OCR bu dëkk, QR code, PDF mondial.",
+    "cta": {
+      "start": "Tambali rapport",
+      "pricing": "Xool njëgël →",
+      "from": "CI 4.90 CHF/€ · Dëkk ci aduna yépp",
+      "free": "YOMB · ENREGISTREMENT AMUL · RGPD"
+    },
+    "mockup": {
+      "send": "Yónn ci assurance",
+      "done": "Rapport yëgël!",
+      "waiting": "Session #8F2K · Di xaar…",
+      "capture": "📸 Jël foto"
+    },
+    "badges": {
+      "languages": "Làkk 50",
+      "time": "5 minit",
+      "encrypted": "Bëgg séq"
+    },
+    "stats": {
+      "accidents": "rapport/at ci Euroop",
+      "languages": "làkk yi dëkk",
+      "time": "ngir jeex"
+    },
+    "how": {
+      "label": "Naka dafa def",
+      "title": "5 njëkk.",
+      "title_accent": "5 minit.",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "Scan sa dokkumentey",
+          "desc": "Jël foto sa permis ak sa carte verte. OCR dafa def ci kanam."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "Fàttale QR code",
+          "desc": "Shofëru bu ñëpp dafay scan QR. Session buñu jar, bu xam-xam."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Bëgg formulaire",
+          "desc": "Formulaire buñuy dëkk ak OCR. Seeteel ak sër ci xam-xam."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Zones yu xantre",
+          "desc": "Dësal ci schéma 18 zones ngir sért dommages."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Signeel ak yónn",
+          "desc": "Signatiir yu ñaar yu numérik. PDF bi dafay jëm ci kanam."
+        }
+      ]
+    },
+    "features": {
+      "title": "Li la soxor yépp",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "OCR bu dëkk",
+          "desc": "Claude Vision dafay jàng sa dokkumentey ci làkk 50+. Xam ñu bëgg."
+        },
+        {
+          "icon": "📱",
+          "title": "Ci kenne 5 wotëru",
+          "desc": "Accident ak 3, 4 walla 5 shofër? Kañ kañ dafay scan QR bu xam."
+        },
+        {
+          "icon": "📷",
+          "title": "Foto yu bopp",
+          "desc": "5 catégorie: bopp, dommages A, dommages B, blessures, dokkumentey."
+        },
+        {
+          "icon": "✏️",
+          "title": "Croquis bu yomb",
+          "desc": "Desinal position wotëru yi, flèche. PNG bi dëkk ci PDF."
+        },
+        {
+          "icon": "🚗",
+          "title": "Schéma yu xantre",
+          "desc": "Modélu 700+. Zones 18 ngir sért dommages."
+        },
+        {
+          "icon": "✍️",
+          "title": "Signatiir yu bari",
+          "desc": "N signatiir yu numérik. Dëkk ci dëkk ci réew 150+."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF bu dëkk ci réew 150+",
+          "desc": "Dokkument numérik bu dëkk. Assurance yépp ko nangu."
+        },
+        {
+          "icon": "🚔",
+          "title": "Module Police (jëm ci kanam)",
+          "desc": "Politaafu dëkk ci session ak QR. Rapport officiel numérik."
+        },
+        {
+          "icon": "🌍",
+          "title": "Làkk 50 + RTL",
+          "desc": "Kile 5 miliyaar yu wax. Arabe, Hébreu, Farsi ci RTL. Numéru d'urgence."
+        }
+      ]
+    },
+    "coverage": {
+      "label": "Dëkk ci aduna yépp",
+      "title": "Ci Suisse ci Siin",
+      "more": "+ Réew 30 ñëpp · RTL dëkk"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "PDF numérik bu boom.contact nangu ko assurance yi ci réew 50+."
+    },
+    "finalCta": {
+      "title": "Xam na ka ci accident?",
+      "subtitle": "Dëkkal boom.contact ci sa écran. 5 minit ngir yépp jeex.",
+      "button": "Tambali rapport"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    }
+  },
+  "steps": {
+    "scan": "Scan",
+    "location": "Bopp",
+    "photos": "Foto",
+    "qr": "QR",
+    "form": "Xibaar",
+    "sketch": "Croquis",
+    "damage": "Dommages",
+    "sign": "Sign"
+  },
+  "flow": {
+    "header": {
+      "role_a": "SHOFËR A — RAPPORT BU YEES",
+      "reset_title": "Tambali ci kanam"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "Scan sa dokkumentey",
+      "subtitle": "Tambali ak sa permis.\nDokkument assurance <strong>dëkk na</strong>.",
+      "reg_label": "Permis / Carte grise",
+      "reg_sub": "Permis CH, carte grise FR — <strong>waajib</strong>",
+      "tip": "💡 <strong>Dokkument assurance dëkk na.</strong> Carte verte, attestation — li la assurance ak numéro police."
+    },
+    "greencard": {
+      "scanned": "✅ Permis scanné",
+      "compressing": "· Di yóbbu…",
+      "title": "Dokkument assurance?",
+      "subtitle": "Scan <strong>carte verte (IMIC)</strong> walla dokkument assurance.",
+      "scan_btn": "Scan dokkument assurance",
+      "scan_sub": "Carte verte, attestation, carte…",
+      "skip_btn": "Bind ci loxo xibaar assurance →"
+    },
+    "scanning": {
+      "title": "Di analyse…",
+      "subtitle": "Claude Vision di jàng sa dokkumentey"
+    },
+    "review": {
+      "title_pair": "Dokkumentey analysé",
+      "title_single": "Permis analysé",
+      "confidence": "Xam: {{pct}}%",
+      "skipped": "· Carte verte soppi",
+      "warnings": "⚠️ {{count}} champ vérifier",
+      "warnings_plural": "⚠️ {{count}} champ yu vérifier",
+      "insurance_title": "🛡️ Xibaar assurance — ci loxo",
+      "company_label": "Compagnie assurance *",
+      "company_placeholder": "Zurich, AXA, Helvetia…",
+      "policy_label": "Numéro police *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 Wotëru",
+      "section_driver": "👤 Shofër",
+      "section_greencard": "🟢 Assurance (carte verte)",
+      "rescan": "🔄 Scan ci kanam",
+      "confirm": "Dëggal →"
+    }
+  },
+  "location": {
+    "vehicle_label": "Sa wotëru",
+    "groups": {
+      "light": "Wotëru yu yomb",
+      "heavy": "Wotëru yu dëkk",
+      "rail": "Transport bu dëkk",
+      "cycles": "Vélo",
+      "other": "Nit / Yenn"
+    },
+    "vehicles": {
+      "car": { "label": "Wotëru", "sub": "Berline, SUV, citadine" },
+      "van": { "label": "Fourgon / Utilitaire", "sub": "Van, utilitaire" },
+      "motorcycle": { "label": "Moto", "sub": "Moto, motocyclette" },
+      "scooter": { "label": "Scooter", "sub": "Scooter, 50cm³" },
+      "moped": { "label": "Vélomoteur", "sub": "2 roue <45km/h" },
+      "escooter": { "label": "Trottinette électrique", "sub": "EDPM, gyroroue" },
+      "quad": { "label": "Quad / Buggy", "sub": "Véhicule tout-terrain" },
+      "truck": { "label": "Camion", "sub": "Camion lourd, semi" },
+      "bus": { "label": "Bus", "sub": "Bus, minibus" },
+      "construction": { "label": "Engin chantier", "sub": "Grue, bulldozer" },
+      "tractor": { "label": "Tracteur", "sub": "Tracteur agricole" },
+      "tram": { "label": "Tramway", "sub": "Tram" },
+      "train": { "label": "Train", "sub": "Train, métro" },
+      "bicycle": { "label": "Vélo", "sub": "Vélo, VAE" },
+      "cargo_bike": { "label": "Vélo cargo", "sub": "Cargo vélo" },
+      "pedestrian": { "label": "Piéton", "sub": "Nit bu dem ak tank" },
+      "boat": { "label": "Batoo", "sub": "Batoo, jet-ski" },
+      "other": { "label": "Wotëru bu bees", "sub": "Xamul" }
+    },
+    "datetime_label": "Bés ak waxt accident",
+    "date_label": "Bés",
+    "time_label": "Waxt",
+    "datetime_warning": "⚠️ Bind waxt bu dëgg bu accident, du waxt bi mu tax.",
+    "geo_label": "Bopp accident",
+    "gps_captured": "GPS yëg — {{lat}}, {{lng}}",
+    "gps_loading": "Di xaar bopp…",
+    "gps_denied": "GPS ampul — bind ci loxo",
+    "gps_missing": "GPS yëgul",
+    "gps_saved": "Coordonnées dëkk ci dokkument",
+    "address_label": "Rue / Route / Autoroute",
+    "address_placeholder": "Ex: Avenue de la Gare 4, A1 km 47…",
+    "city_label": "Dëkk",
+    "city_placeholder": "Dakar, Paris…",
+    "country_label": "Réew",
+    "country_placeholder": "SN, FR…",
+    "location_tip": "💡 <strong>Dëkk na:</strong> Bopp bu dëgg bu accident.",
+    "injuries_label": "Am na blessé?",
+    "no_injuries": "Déet — blessé amul",
+    "yes_injuries": "Waaw — blessé am",
+    "injury_details_title": "🚑 Detail blessures",
+    "severity_label": "Dëkk blessure",
+    "severity_minor": "Yomb",
+    "severity_moderate": "Diggu",
+    "severity_serious": "Dëkk",
+    "injury_desc_label": "Description (yëgël ci nit, douleur, blessure yi xam)",
+    "injury_desc_placeholder": "Ex: Douleur cou, blessure genou…",
+    "ambulance": "🚑 Ambulance jël ko",
+    "hospitalized": "🏥 Hôpital dëkk na",
+    "injury_footer": "Bu blessé yu dëkk am, wax 112 (EU) walla 144 (CH).",
+    "cta_no_vehicle": "Tann sa wotëru",
+    "cta_no_injuries": "Wax blessé am walla amul",
+    "cta_no_location": "Wax bopp accident",
+    "emergency_police": "🚔 Police · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
+    "emergency_voluntary": "Wax yi dañu soxor — police dul xëy ci kanam."
+  },
+  "cgu": {
+    "before_continue": "KANAM JËFANDIKOO",
+    "tab_cgu": "CGU",
+    "tab_privacy": "Confidentialité",
+    "cgu_title": "Règlement Jëfandikoo",
+    "privacy_title": "Politique Confidentialité",
+    "cgu_version": "Version 1.0 — Mars 2026 · PEP's Swiss SA",
+    "privacy_version": "RGPD UE 2016/679 · Mars 2026",
+    "email_label": "Sa email (ngir PDF yëg)",
+    "email_placeholder": "yow@exemple.com",
+    "consent_cgu": "Ma nangu <cgu>CGU</cgu> ak <privacy>Politique confidentialité</privacy>",
+    "consent_marketing": "Ma nangu PEP's Swiss SA jëfandikoo email bou ndanka. <opt>Ku bëgg — soppal ci kañ kañ.</opt>",
+    "required_note": "* Waajib ngir jëfandikoo",
+    "submit": "Jëfandikoo →",
+    "error_network": "Njëg réseau. Jef ci kanam.",
+    "cgu_sections": [
+      { "title": "1. Xam-xam", "text": "boom.contact mooy service numérik bu PEP's Swiss SA. Dëkk ci aduna ngir rapport numérik." },
+      { "title": "2. Nangu", "text": "Jëfandikoo service bi dañuy nangu règlement yi. Jëfandikoo bu xawtaan ampul." },
+      { "title": "3. Service", "text": "boom.contact jox na: (a) OCR; (b) Session QR; (c) Signatiir numérik; (d) PDF email. Shofër dafa waajib wax ci assurance bu xam." },
+      { "title": "4. Njëgël", "text": "Service bi dañuy jaay ci paquet. Fanaan ci Stripe (PCI-DSS). Crédit amul date expiration." },
+      { "title": "5. Dëkk ci dëkk", "text": "PDF bu boom.contact nangu ko assurance yi. PEP's Swiss SA xamul nangu ci réew yépp." },
+      { "title": "6. Jamoniku", "text": "PEP's Swiss SA amul jamoniku ci njëg OCR. Jamoniku ci prix bi lañu fay rekk." },
+      { "title": "7. Propriété", "text": "Software, marques, contenu bu boom.contact mooy PEP's Swiss SA." },
+      { "title": "8. Droit", "text": "Droit suisse dëkk na. Litiges ci tribunal bu Jura." }
+    ],
+    "privacy_sections": [
+      { "title": "Jamoniku data", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
+      { "title": "Data yi dañu yóbbu", "text": "Email, tur, adresse, plaque, GPS, signatiir, xibaar assurance." },
+      { "title": "Fondement juridique", "text": "Exécution contrat (Art. 6.1.b RGPD). Consentement ngir utilisation commerciale." },
+      { "title": "Dëkk bi", "text": "Session: 2 waxt. PDF: fan 30 ci kanam. Données paiement: at 10." },
+      { "title": "Fàttale data", "text": "Data jaay ñu tiers amul. Stripe, Resend, Anthropic jëfandikoo ne waajib rekk." },
+      { "title": "Sa droit", "text": "Xool, soppal, sér, yóbbu. Bind privacy@boom.contact." }
+    ]
+  },
+  "pricing": {
+    "title": "Tann paquet",
+    "subtitle": "Soggeel crédit — fay waxtu dëgg",
+    "popular_badge": "⭐ Bu gëna dëkk",
+    "economy": "Économie {{pct}}",
+    "credits_label": "Crédit",
+    "per_report": "Ci rapport",
+    "validity": "Dëkk",
+    "no_expiry": "Expiration amul",
+    "buy_btn": "Soggeel — {{symbol}} {{price}}",
+    "redirecting": "Di dem Stripe…",
+    "error_missing_url": "URL Stripe gëmul",
+    "trust": {
+      "stripe": "🔒 Fanaan bu bëgg séq ci Stripe (PCI-DSS)",
+      "no_expiry": "📄 Crédit expiration amul",
+      "worldwide": "🌍 Dokkument numérik · dëkk ci réew 150+",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+    },
+    "legal": "Soggeel bi, dañu nangu CGU bu boom.contact.\nRemboursement amul PDF yëg.",
+    "packages": {
+      "single": { "label": "Rapport 1", "description": "Ci accident bu dëgg" },
+      "pack3": { "label": "Rapport 3", "description": "Ngir mbokk" },
+      "pack10": { "label": "Rapport 10", "description": "Courtiers, flottes" }
+    }
+  },
+  "offline": {
+    "banner": "Offline — {{count}} session di xaar",
+    "banner_0": "Offline nga"
+  },
+  "language": {
+    "select": "Làkk",
+    "switch_tooltip": "Soppal làkk"
+  }
+}
