@@ -1,0 +1,344 @@
+{
+  "common": {
+    "continue": "ቀጥል →",
+    "confirm": "አረጋግጥ →",
+    "cancel": "ሰርዝ",
+    "rescan": "🔄 እንደገና ስካን",
+    "loading": "በመጫን ላይ…",
+    "saving": "⏳ በማስቀመጥ ላይ…",
+    "error": "ስህተት",
+    "retry": "እንደገና ሞክር",
+    "back": "←",
+    "optional": "አማራጭ",
+    "required": "አስፈላጊ",
+    "yes": "አዎ",
+    "no": "አይደለም",
+    "unknown": "ያልታወቀ"
+  },
+  "landing": {
+    "badge": "የዓለም ቀዳሚ ኤፕ",
+    "hero": {
+      "line1": "አደጋ",
+      "line2": "ከደረሰ",
+      "line3": "ፈጣን",
+      "line4": "ሪፖርት"
+    },
+    "subtitle": "በ5 ደቂቃ ዲጂታል የአደጋ ሪፖርት። ሁለንተናዊ OCR፣ QR ኮድ፣ ዓለም አቀፍ PDF።",
+    "cta": {
+      "start": "ሪፖርት ጀምር",
+      "pricing": "ዋጋዎችን ይመልከቱ →",
+      "from": "ከ CHF/€ 4.90 · ዓለም አቀፍ ተቀባይነት",
+      "free": "ነፃ · ምዝገባ አያስፈልግም · RGPD"
+    },
+    "mockup": {
+      "send": "ወደ ኢንሹራንስ ኩባንያ ላክ",
+      "done": "ሪፖርቱ ተጠናቋል!",
+      "waiting": "ሴሽን #8F2K · በመጠበቅ ላይ…",
+      "capture": "📸 ፎቶ አንሳ"
+    },
+    "badges": {
+      "languages": "50 ቋንቋዎች",
+      "time": "5 ደቂቃ",
+      "encrypted": "ምስጢራዊ"
+    },
+    "stats": {
+      "accidents": "ሪፖርቶች/ዓመት በአውሮፓ",
+      "languages": "የሚደገፉ ቋንቋዎች",
+      "time": "ለማጠናቀቅ"
+    },
+    "how": {
+      "label": "እንዴት ይሰራል",
+      "title": "5 ደረጃዎች።",
+      "title_accent": "5 ደቂቃ።",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "ሰነዶቻችሁን ስካን አድርጉ",
+          "desc": "የሞተር ፍቃድና የኢንሹራንስ ካርድ ፎቶ አንሱ። OCR ራሱ ይሰራል።"
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "QR ኮዱን አካፍሉ",
+          "desc": "ሌላው ሹፌር QR ይቃኛል። ሴሽን በቀጥታ ይጋራሉ።"
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "ቅጹን ሙሉ",
+          "desc": "ቅጹ በ OCR ቀድሞ ተሞልቷል። አረጋግጡ እና ሁኔታዎቹን ምልክት አድርጉ።"
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "የጉዳት ዞኖች",
+          "desc": "ጉዳቶቹን ለማመልከት 18-ዞን ሥዕልን ጫኑ።"
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "ፈርሙ እና ላኩ",
+          "desc": "ሁለት ዲጂታል ፊርማዎች። PDF ወዲያውኑ ይፈጠራል።"
+        }
+      ]
+    },
+    "features": {
+      "title": "ሁሉም የሚያስፈልጉ ነገሮች",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "ሁለንተናዊ OCR",
+          "desc": "Claude Vision ሰነዶቻቹን በ50+ ቋንቋ ያነባል። ምንም የእጅ ግቤት አያስፈልግም።"
+        },
+        {
+          "icon": "📱",
+          "title": "እስከ 5 ተሽከርካሪዎች",
+          "desc": "ከ3፣ 4 ወይም 5 ሹፌሮች ጋር አደጋ? እያንዳንዱ ሹፌር የሚፈለጉን QR ይቃኛል።"
+        },
+        {
+          "icon": "📷",
+          "title": "የቦታ ፎቶዎች",
+          "desc": "5 ምድቦች: ቦታ፣ ጉዳት A፣ ጉዳት B፣ ቁስለት፣ ሰነዶች። ሁሉም ወደ PDF ይጨምራሉ።"
+        },
+        {
+          "icon": "✏️",
+          "title": "ነፃ ስኬች",
+          "desc": "የተሽከርካሪዎቹን ቦታ፣ የአቅጣጫ ምልክቶች ሳሉ። PNG ወደ PDF ይጨምራሉ።"
+        },
+        {
+          "icon": "🚗",
+          "title": "የጉዳት ሥዕል",
+          "desc": "700+ ሞዴሎች። 18 ዞኖች ጉዳቱን ለማመልከት።"
+        },
+        {
+          "icon": "✍️",
+          "title": "ብዙ ፊርማዎች",
+          "desc": "N ዲጂታል ፊርማዎች አንድ ጊዜ። ሕጋዊ ዋጋ ከ150+ አገሮች።"
+        },
+        {
+          "icon": "📄",
+          "title": "ከ150+ አገሮች ተቀባይ PDF",
+          "desc": "ሙሉ ዲጂታል ሰነድ። በሁሉም ኢንሹራንስ ኩባንያዎች ተቀባይነት አለው።"
+        },
+        {
+          "icon": "🚔",
+          "title": "የፖሊስ ሞጁል (በቅርቡ)",
+          "desc": "ፖሊሶች QR በኩል ሴሽን ይቀላቀላሉ። ዲጂታል ሪፖርት።"
+        },
+        {
+          "icon": "🌍",
+          "title": "50 ቋንቋዎች + RTL",
+          "desc": "5 ቢሊዮን ተናጋሪዎች። አረብኛ፣ ዕብራይስጥ፣ ፋርሲ ከ RTL ጋር። ዓለም አቀፍ ድንገተኛ ቁጥሮች።"
+        }
+      ]
+    },
+    "coverage": {
+      "label": "ዓለም አቀፍ ሽፋን",
+      "title": "ከስዊዘርላንድ እስከ ቻይና",
+      "more": "+ 30 ሌሎች አገሮች · RTL ድጋፍ"
+    },
+    "legal": {
+      "title": "ዓለም አቀፍ ደረጃ",
+      "text": "የ boom.contact ዲጂታል PDF በ50+ አገሮች ኢንሹራንስ ኩባንያዎች ተቀባይነት አለው።"
+    },
+    "finalCta": {
+      "title": "ለአደጋ ዝግጁ ነህ?",
+      "subtitle": "boom.contact ወደ ማያ ገጽህ አስቀምጠው። 5 ደቂቃ ሁሉን ለማጠናቀቅ።",
+      "button": "ሪፖርት ጀምር"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    }
+  },
+  "steps": {
+    "scan": "ስካን",
+    "location": "ቦታ",
+    "photos": "ፎቶዎች",
+    "qr": "QR",
+    "form": "መረጃ",
+    "sketch": "ስኬች",
+    "damage": "ጉዳት",
+    "sign": "ፊርማ"
+  },
+  "flow": {
+    "header": {
+      "role_a": "ሹፌር A — አዲስ ሪፖርት",
+      "reset_title": "ከጅምሩ ጀምር"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "ሰነዶቻችሁን ስካን አድርጉ",
+      "subtitle": "ከሞተር ፍቃዱ ጀምሩ።\nየኢንሹራንስ ሰነድ <strong>ይመከራል</strong>።",
+      "reg_label": "የሞተር ፍቃድ / ካርቴ ግሪዝ",
+      "reg_sub": "ፍቃድ CH፣ ካርቴ ግሪዝ FR — <strong>አስፈላጊ</strong>",
+      "tip": "💡 <strong>የኢንሹራንስ ሰነድ ይመከራል።</strong> ካርቴ ቨርቴ፣ የኢንሹራንስ ምስክርነት — ይህ ሰነድ ኩባንያና ፖሊሲ ቁጥር ይዟል።"
+    },
+    "greencard": {
+      "scanned": "✅ የሞተር ፍቃድ ስካን ተደርጓል",
+      "compressing": "· በመጫን ላይ…",
+      "title": "የኢንሹራንስ ሰነድ?",
+      "subtitle": "የ<strong>ካርቴ ቨርቴ (IMIC)</strong> ወይም ሌላ የኢንሹራንስ ሰነድ ስካን አድርጉ።",
+      "scan_btn": "የኢንሹራንስ ሰነድ ስካን አድርጉ",
+      "scan_sub": "ካርቴ ቨርቴ፣ ምስክርነት፣ ካርድ…",
+      "skip_btn": "የኢንሹራንስ መረጃ በእጅ ሙሉ →"
+    },
+    "scanning": {
+      "title": "በመተንተን ላይ…",
+      "subtitle": "Claude Vision ሰነዶቻችሁን ያነባሉ"
+    },
+    "review": {
+      "title_pair": "ሰነዶቹ ተተንትነዋል",
+      "title_single": "ፍቃዱ ተተንትኗል",
+      "confidence": "ትክክለኛነት: {{pct}}%",
+      "skipped": "· ካርቴ ቨርቴ ተዟሯል",
+      "warnings": "⚠️ {{count}} መስክ ለማረጋገጥ",
+      "warnings_plural": "⚠️ {{count}} መስኮች ለማረጋገጥ",
+      "insurance_title": "🛡️ የኢንሹራንስ መረጃ — በእጅ",
+      "company_label": "ኢንሹራንስ ኩባንያ *",
+      "company_placeholder": "Zurich, AXA, Helvetia…",
+      "policy_label": "ፖሊሲ ቁጥር *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 ተሽከርካሪ",
+      "section_driver": "👤 ሹፌር",
+      "section_greencard": "🟢 ኢንሹራንስ (ካርቴ ቨርቴ)",
+      "rescan": "🔄 እንደገና ስካን",
+      "confirm": "አረጋግጥ →"
+    }
+  },
+  "location": {
+    "vehicle_label": "ተሽከርካሪዎ",
+    "groups": {
+      "light": "ቀለል ያሉ ተሽከርካሪዎች",
+      "heavy": "ከባድ ተሽከርካሪዎች",
+      "rail": "የህዝብ ትራንስፖርት",
+      "cycles": "ብስክሌቶች",
+      "other": "ሰው / ሌላ"
+    },
+    "vehicles": {
+      "car": { "label": "መኪና", "sub": "ሰዳን፣ SUV፣ ሃቻባክ" },
+      "van": { "label": "ቫን / ጭነት", "sub": "ቫን፣ ሚኒ-ካሚዮን" },
+      "motorcycle": { "label": "ሞተርሳይክል", "sub": "ሞተርሳይክል" },
+      "scooter": { "label": "ስኩተር", "sub": "ስኩተር፣ 50cm³" },
+      "moped": { "label": "ሞፔድ", "sub": "2 ጎማ <45km/h" },
+      "escooter": { "label": "ኤሌክትሪክ ስኩተር", "sub": "EDPM፣ ሆቨርቦርድ" },
+      "quad": { "label": "ኳድ / ቡጊ", "sub": "የሜዳ ተሽከርካሪ" },
+      "truck": { "label": "ካሚዮን", "sub": "ካሚዮን፣ ሴሚ" },
+      "bus": { "label": "ባስ", "sub": "ባስ፣ ሚኒ-ባስ" },
+      "construction": { "label": "የግንባታ ማሽን", "sub": "ክሬን፣ ቡልዶዘር" },
+      "tractor": { "label": "ትራክተር", "sub": "የእርሻ ትራክተር" },
+      "tram": { "label": "ትራም", "sub": "ትራም" },
+      "train": { "label": "ባቡር", "sub": "ባቡር፣ ሜትሮ" },
+      "bicycle": { "label": "ብስክሌት", "sub": "ብስክሌት፣ ኤሌክትሪክ ብስክሌት" },
+      "cargo_bike": { "label": "ጭነት ብስክሌት", "sub": "ካርጎ ብስክሌት" },
+      "pedestrian": { "label": "እግረኛ", "sub": "ሰው በእግሩ" },
+      "boat": { "label": "ጀልባ", "sub": "ጀልባ፣ ጀት-ስኪ" },
+      "other": { "label": "ሌላ ተሽከርካሪ", "sub": "ያልተዘረዘረ" }
+    },
+    "datetime_label": "የአደጋ ቀንና ሰዓት",
+    "date_label": "ቀን",
+    "time_label": "ሰዓት",
+    "datetime_warning": "⚠️ ትክክለኛ የአደጋ ሰዓት ያስገቡ፣ አሁን ያለውን ሰዓት አይደለም።",
+    "geo_label": "የአደጋ ቦታ",
+    "gps_captured": "GPS ተይዟል — {{lat}}, {{lng}}",
+    "gps_loading": "ቦታ በማስላት ላይ…",
+    "gps_denied": "GPS ተከልክሏል — በእጅ ያስገቡ",
+    "gps_missing": "GPS አልተቀበለም",
+    "gps_saved": "መጋጠሚያዎቹ ተቀምጠዋል",
+    "address_label": "ጎዳና / ሃይዌይ",
+    "address_placeholder": "ለምሳሌ: Ringstrasse 5, A1 km 47…",
+    "city_label": "ከተማ",
+    "city_placeholder": "አዲስ አበባ፣ Berne…",
+    "country_label": "አገር",
+    "country_placeholder": "ET, CH…",
+    "location_tip": "💡 <strong>አስፈላጊ:</strong> ትክክለኛ የአደጋ ቦታ ያስገቡ።",
+    "injuries_label": "ቁስለቶች አሉ?",
+    "no_injuries": "አይደለም — ቁስለት የለም",
+    "yes_injuries": "አዎ — ቁስለት አለ",
+    "injury_details_title": "🚑 የቁስለት ዝርዝር",
+    "severity_label": "የቁስለት ክብደት",
+    "severity_minor": "ቀላል",
+    "severity_moderate": "መካከለኛ",
+    "severity_serious": "ከባድ",
+    "injury_desc_label": "መግለጫ (የሰውነት ክፍል፣ ህመም፣ የሚታዩ ቁስሎች)",
+    "injury_desc_placeholder": "ለምሳሌ: የአንገት ህመም፣ የጉልበት ቁስለት…",
+    "ambulance": "🚑 በአምቡላንስ ተወስዷል",
+    "hospitalized": "🏥 ሆስፒታል መግባት ያስፈልጋል",
+    "injury_footer": "ከባድ ቁስለት ካለ 112 (EU) ወይም 144 (CH) ደውሉ።",
+    "cta_no_vehicle": "የተሽከርካሪ አይነት ይምረጡ",
+    "cta_no_injuries": "ቁስለት ስለ መኖሩ ያረጋግጡ",
+    "cta_no_location": "የአደጋ ቦታ ያስገቡ",
+    "emergency_police": "🚔 ፖሊስ · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 ድንገተኛ · {{number}} {{label}}",
+    "emergency_voluntary": "እነዚህ ጥሪዎች ፈቃደኛ ናቸው — ፖሊስ በቀጥታ አይታወቅም።"
+  },
+  "cgu": {
+    "before_continue": "ከመቀጠልዎ በፊት",
+    "tab_cgu": "የአጠቃቀም ሁኔታዎች",
+    "tab_privacy": "ምስጢራዊነት",
+    "cgu_title": "የአጠቃቀም ሁኔታዎች",
+    "privacy_title": "የምስጢራዊነት ፖሊሲ",
+    "cgu_version": "ስሪት 1.0 — መጋቢት 2026 · PEP's Swiss SA",
+    "privacy_version": "RGPD UE 2016/679 ተኳሃኝ · መጋቢት 2026",
+    "email_label": "ኢሜይልዎ (PDF ለመቀበል)",
+    "email_placeholder": "እርስዎ@ምሳሌ.com",
+    "consent_cgu": "የ<cgu>አጠቃቀም ሁኔታዎች</cgu>ን እና <privacy>የምስጢራዊነት ፖሊሲ</privacy>ን እቀበላለሁ",
+    "consent_marketing": "PEP's Swiss SA ኢሜይሌን ለሌሎች አገልግሎቶች እንዲጠቀምበት ፈቃድ እሰጣለሁ። <opt>አማራጭ — ማንኛውም ጊዜ ሊሰረዝ ይችላል።</opt>",
+    "required_note": "* ለአጠቃቀም አስፈላጊ",
+    "submit": "ቀጥል →",
+    "error_network": "የኔትወርክ ስህተት። እንደገና ሞክር።",
+    "cgu_sections": [
+      { "title": "1. ዓላማ", "text": "boom.contact የ PEP's Swiss SA ዲጂታል አገልግሎት ነው። ዓለም አቀፍ ዲጂታል የአደጋ ሪፖርት ለማዘጋጀት ይረዳል።" },
+      { "title": "2. ተቀባይነት", "text": "አገልግሎቱን መጠቀም የሁኔታዎቹን መቀበልን ያካትታል። ሕገ-ወጥ አጠቃቀም ክልክል ነው።" },
+      { "title": "3. አገልግሎቶች", "text": "boom.contact ያቀርባል: (a) OCR; (b) QR ሴሽን; (c) ዲጂታል ፊርማ; (d) PDF ኢሜይል። ሹፌሩ ለራሱ ኢንሹራንስ ሪፖርት የማድረግ ሕጋዊ ግዴታ አለበት።" },
+      { "title": "4. ዋጋ", "text": "አገልግሎቱ በፓኬጆች ይሸጣል። ክፍያ በ Stripe (PCI-DSS) ይፈጸማል። ክሬዲቶች ማብቂያ ቀን የላቸውም።" },
+      { "title": "5. ሕጋዊ ዋጋ", "text": "የ boom.contact PDF በኢንሹራንስ ኩባንያዎች ዘንድ ተቀባይነት አለው። PEP's Swiss SA በሁሉም አገሮች ተቀባይነትን አያረጋግጥም።" },
+      { "title": "6. ኃላፊነት", "text": "PEP's Swiss SA ለ OCR ስህተቶች ወይም ኢንሹራንስ ኩባንያ ውድቅ ኃላፊነት አልወስድም። ኃላፊነቱ ለተከፈለው ዋጋ ብቻ ነው።" },
+      { "title": "7. ምሁራዊ ንብረት", "text": "ሶፍትዌር፣ ምልክቶች፣ ይዘቶች የ PEP's Swiss SA ናቸው።" },
+      { "title": "8. ተፈጻሚ ህግ", "text": "የስዊስ ህግ ተፈጻሚ ነው። ክርክሮች በ Jura ፍርድ ቤት ይፈታሉ።" }
+    ],
+    "privacy_sections": [
+      { "title": "የዳታ ሃላፊ", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
+      { "title": "የሚሰበሰቡ ዳታዎች", "text": "ኢሜይል፣ ስም፣ አድራሻ፣ የሰሌዳ ቁጥር፣ GPS ቦታ፣ ዲጂታል ፊርማ፣ የኢንሹራንስ መረጃ።" },
+      { "title": "ህጋዊ መሰረት", "text": "የውል አፈጻጸም (Art. 6.1.b RGPD) ለሪፖርት ዳታ። ፈቃደኛ ፍቃድ ለሽያጭ ዓላማ።" },
+      { "title": "የማቆያ ጊዜ", "text": "ሴሽኖች: 2 ሰዓት። PDF እና ዳታ: 30 ቀናት ከዚያ ይሰረዛሉ። የክፍያ ዳታ: 10 ዓመት።" },
+      { "title": "የዳታ ማጋራት", "text": "ዳታ ለሶስተኛ ወገን አይሸጥም። Stripe, Resend, Anthropic ለአገልግሎት ዓላማ ብቻ ይጠቀሙታል።" },
+      { "title": "መብቶቻቸው", "text": "ማየት፣ ማስተካከል፣ መሰረዝ፣ ማውጣት። ወደ privacy@boom.contact ይፃፉ።" }
+    ]
+  },
+  "pricing": {
+    "title": "ፓኬጅ ይምረጡ",
+    "subtitle": "ቀድሞ ክሬዲት ይግዙ — አንድ ጊዜ ብቻ ይክፈሉ",
+    "popular_badge": "⭐ ታዋቂ",
+    "economy": "ቁጠባ {{pct}}",
+    "credits_label": "ክሬዲቶች",
+    "per_report": "ለ ሪፖርት",
+    "validity": "ተቀባይነት",
+    "no_expiry": "ያለ ማብቂያ ቀን",
+    "buy_btn": "ይግዙ — {{symbol}} {{price}}",
+    "redirecting": "ወደ Stripe በመሄድ ላይ…",
+    "error_missing_url": "የ Stripe URL ጠፍቷል",
+    "trust": {
+      "stripe": "🔒 ደህንነቱ የተጠበቀ ክፍያ በ Stripe (PCI-DSS)",
+      "no_expiry": "📄 ክሬዲቶች ያለ ማብቂያ ቀን",
+      "worldwide": "🌍 ዲጂታል ሰነድ · በ150+ አገሮች ተቀባይነት",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+    },
+    "legal": "በመግዛት የ boom.contact ሁኔታዎቹን ትቀበላሃለህ።\nPDF ከተፈጠረ በኋላ ተመላሽ አይሆንም።",
+    "packages": {
+      "single": { "label": "1 ሪፖርት", "description": "ለ አንድ አደጋ" },
+      "pack3": { "label": "3 ሪፖርቶች", "description": "ለቤተሰብ" },
+      "pack10": { "label": "10 ሪፖርቶች", "description": "ኤጀንቶች፣ ኩባንያ" }
+    }
+  },
+  "offline": {
+    "banner": "ኦፍ-ላይን — {{count}} ሴሽን(ዎች) በጥበቃ ላይ",
+    "banner_0": "ኦፍ-ላይን ነህ"
+  },
+  "language": {
+    "select": "ቋንቋ",
+    "switch_tooltip": "ቋንቋ ቀይር"
+  }
+}
