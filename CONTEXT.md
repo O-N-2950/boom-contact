@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
-> ⚠️ Les clés réelles sont dans les fichiers du projet Claude
+> ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 26 Mars 2026 — Session 16
+> Dernière mise à jour : 26 Mars 2026 — Session 14
 
 ---
 
@@ -14,36 +14,38 @@
 | **Railway SERVICE_ID** | 4c024cbf-fb0a-4652-85bc-8c7cdedf62e2 |
 | **Railway ENV_ID** | e0247449-5574-4959-974e-c4b636da7419 |
 | **URL prod** | https://www.boom.contact |
-| **Entité légale** | PEP's Swiss SA · CHE-476.484.632 |
-| **Adresse** | Bellevue 7, 2950 Courgenay, Jura, Suisse |
-| **WinWin API** | https://www.winwin.swiss |
-| **WinWin SECRET** | voir Railway env WINWIN_SECRET |
+| **Entité légale** | PEP's Swiss SA / Groupe NEUKOMM |
+| **Railway TOKEN** | voir projet Claude `Token_Railway_boom.contact` |
+| **GitHub TOKEN** | ghp_****_voir_projet_Claude_github_skill |
+| **Anthropic API KEY** | voir projet Claude `Key_Anthropic_` |
+| **OpenAI API KEY** | voir projet Claude `Open_ai_key_pour_reconnaissance_vocales` (Whisper-1) |
 
 ---
 
-## Comptes admin
+## Compte admin boom.contact
 
-| Email | Password | Role | Crédits |
-|---|---|---|---|
-| contact@boom.contact | Cristal4you11++ | admin | 999999 |
-| info@winwin.swiss | Cristal4you11++ | admin | 999999 |
-
-Accès dashboard : https://www.boom.contact/?admin=true
+| | |
+|---|---|
+| **Email** | contact@boom.contact |
+| **Password** | Cristal4you11++ |
+| **Role** | admin |
+| **Credits** | 999999 (∞) |
+| **Accès dashboard** | https://www.boom.contact/?admin=true |
 
 ---
 
-## Règles absolues
+## Règles absolues (non négociables)
 
-1. Vérifier logs Railway AVANT et APRÈS tout push
-2. Railway API : User-Agent `railway-cli/3.0.0` requis
-3. Jamais "Groupe NEUKOMM" — uniquement `PEP's Swiss SA · CHE-476.484.632`
-4. tRPC format : input direct sans wrapper `{"json":...}`
-5. Police jamais notifiée automatiquement
-6. Valider syntaxe TSX avant push
-7. Apostrophes typographiques dans strings TS → utiliser doubles guillemets
-8. Checkbox marketing PEP's → CH/LI uniquement (isSwiss flag)
-9. Délais légaux → jamais codés en dur, toujours formulation générique
-10. Clients WinWin → payants comme tout le monde (credits=0 à la création)
+1. **Toujours vérifier les logs Railway AVANT et APRÈS tout push** — `deployments(first:1)` + `buildLogs`
+2. **Vérifier le bundle prod** après chaque déploiement SUCCESS (health + routes SEO)
+3. **Railway API** : User-Agent `railway-cli/3.0.0` requis pour contourner Cloudflare
+4. **NE PAS écrire "Groupe NEO"** — toujours `Groupe NEUKOMM` / `PEP's Swiss SA`
+5. **tRPC format** : input direct sans wrapper `{"json":...}` → `?input={"sessionId":"xxx"}`
+6. **Police jamais notifiée automatiquement**
+7. **Valider la syntaxe TSX avant push** — pas d'itération en prod sur des erreurs de syntaxe
+8. **Tutoiement partout** sur les réseaux sociaux et dans les textes marketing
+9. **SEO SPA** : robots.txt + sitemap.xml = routes Express AVANT express.static (jamais fichiers dans /public)
+10. **Schema imports** : toujours importer les tables directement `{ sessions }` depuis `'../db/schema.js'` — pas `{ schema }` qui n'existe pas comme named export
 
 ---
 
@@ -51,120 +53,212 @@ Accès dashboard : https://www.boom.contact/?admin=true
 
 | Composant | Détail |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript + i18n 43 langues |
+| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
 | Backend | Express + tRPC v11 + Socket.io |
-| DB | PostgreSQL (Drizzle ORM) — 10 tables dont winwin_id |
-| OCR | Claude Vision (Sonnet) — 50+ langues |
-| Vocal | OpenAI Whisper-1 — 99 langues |
-| PDF | pdf-lib server-side — format date par pays |
-| Email | Resend — template HTML complet 43 langues |
-| Paiement | Stripe live — 8 devises, one-shot sans compte |
-| Auth | JWT 30j + Magic Links + scrypt + WinWin SSO |
-| Hébergement | Railway Europe West |
+| Base de données | PostgreSQL (Drizzle ORM) — sessions, participants, signatures, users, payments, credit_txns, vehicles, magic_tokens, police_stations, police_users, police_annotations, **social_posts** |
+| OCR | Claude Vision (Anthropic Sonnet) — 50+ langues |
+| Analyse accident | Claude Sonnet — transcript vocal → scénario structuré |
+| Transcription vocale | OpenAI Whisper-1 — 99 langues, $0.006/min |
+| PDF | pdf-lib server-side — 12 langues, JPEG+PNG auto-detect |
+| Email | Resend — contact@boom.contact, DKIM actif, domaine vérifié |
+| Paiement | Stripe live — CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY, webhook, factures PDF auto |
+| Auth | JWT 30j + Magic Links 15min + scrypt passwords |
+| Hébergement | Railway Europe West — déploiement auto depuis GitHub |
+| Domaine | www.boom.contact — DNS + SSL actifs |
+| PWA | Service Worker actif, IndexedDB, Background Sync, offline-first |
+| Carte | OpenStreetMap (plan) + ESRI World Imagery (satellite) — sans clé |
+| Géocodage | Nominatim OSM — fallback si lat/lng absent |
+| **Marketing** | **Générateur Claude automatique — cron 7h daily, 4 posts/jour, table social_posts** |
 
 ---
 
-## 43 Langues
+## Architecture tRPC — Routes disponibles
 
-App (complet) : fr de it en es pt nl pl cs sk hu ro sv da nb fi tr ru uk ar(RTL) he(RTL) fa(RTL) zh ja ko hi th vi id ms el hr bg sr sl bs mk sq et lv lt ka az
-
-Emails (templates complets) : fr de it en es pt nl pl ru ar zh ja tr
-
-Fallback : fr pour toutes les autres
-
----
-
-## Format date PDF par pays
-
-- Europe continentale (défaut) : DD.MM.YYYY
-- UK/Irlande/Australie/Inde : DD/MM/YYYY
-- USA : MM/DD/YYYY
-- Japon : YYYY/MM/DD
-- Chine/Corée/Hongrie : YYYY.MM.DD
-
----
-
-## Intégration WinWin SSO
-
-Endpoints WinWin :
-- POST /api/boom/auth/verify → email+password
-- POST /api/boom/auth/magic-link → token 72h
-- POST /api/boom/auth/garage → { winwinId } → véhicules
-
-Flux : login WinWin → upsert user (credits=0) → import véhicules+assureur → JWT boom → pré-remplissage complet du constat (nom/prénom/email/tél/adresse/véhicule/assureur/n°police)
-
-Compte test : info@winwin.swiss / Cristal4you11++ → winwinId: WW-9
-Véhicules test : JU 50810 (Nissan Juke), JU 59269 (Skoda Octavia x2)
-
----
-
-## Email template post-signature
-
-1. Header + badge "Constat signé"
-2. PDF en pièce jointe
-3. Assureur OCR si disponible
-4. 3 étapes (vérifier, contacter assureur, transmettre sous délai contractuel)
-5. Feedback 😊/😕
-6. Avis Google → URL À REMPLACER par vraie fiche Google Business
-7. Partage WhatsApp/Telegram/Facebook/SMS
-8. CTA inscription/garage
+```
+session.create         POST  → { sessionId, qrUrl, status }
+session.get            GET   → session complète
+session.updateAccident POST  → { ok: true }
+session.updateParticipant POST → { ok: true }
+session.join           POST  → session active
+session.sign           POST  → { ok, bothSigned }
+session.history        GET   → sessions par ownerEmail (auth requise)
+pdf.generate           POST  → { pdfBase64 }
+ocr.scan               POST  → résultat OCR
+voice.transcribe       POST  → { transcript }
+payment.packages       GET   → 3 packages
+payment.createCheckout POST  → { url }
+payment.currencies     GET   → grille tarifaire internationale
+auth.register          POST  → { id, token }
+auth.login             POST  → { token, user }
+auth.magicLinkRequest  POST  → { ok }
+auth.magicLinkVerify   POST  → { token, user }
+auth.me                GET   → user courant (JWT)
+auth.grantCredits      POST  → { giftUrl, waUrl } (admin)
+auth.claimGift         POST  → { credits }
+auth.adminBootstrap    POST  → { ok } (protégé ADMIN_BOOTSTRAP_SECRET)
+vehicle.list           GET   → véhicules du compte
+vehicle.save           POST  → { id }
+vehicle.delete         POST  → { ok }
+admin.stats            GET   → dashboard complet (admin)
+admin.users            GET   → liste utilisateurs (admin)
+emergency.countryLookup GET  → police/ambulance/dépannage par pays (DB + AI)
+emergency.insuranceLookup POST → assistance A+B depuis OCR (DB + AI)
+emergency.singleLookup POST  → recherche assureur manuel (DB + AI)
+police.*               ...   → module police (auth séparée)
+winwin.createSession   POST  → { sessionId, directUrl }
+marketing.posts        GET   → liste posts sociaux (admin) — filtre platform/status
+marketing.generate     POST  → déclenche génération manuelle (admin)
+marketing.approve      POST  → approuve un post (admin)
+marketing.markPosted   POST  → marque comme publié (admin)
+marketing.archive      POST  → archive un post (admin)
+```
 
 ---
 
-## Monétisation
+## Etat des fonctionnalités (26 Mars 2026)
 
-| Package | CHF | EUR | GBP | USD | Marge nette |
-|---|---|---|---|---|---|
-| 1 constat | 4.90 | 4.90 | 3.90 | 4.90 | ~93% |
-| 3 constats | 12.90 | 12.90 | 9.90 | 12.90 | ~96% |
-| 10 constats | 34.90 | 34.90 | 27.90 | 34.90 | ~97% |
+### ✅ En production et fonctionnel
 
-Stripe : 1.5% + €0.25 fixe par package. Crédits sans expiration.
-Devise auto-détectée par IP. Pas de PPP (protection anti-VPN naturelle).
+| Fonctionnalité | Notes |
+|---|---|
+| Scan OCR multi-documents | Permis CH/FR/DE/GB + carte verte + 50 langues |
+| Géolocalisation IP → langue | 180+ pays |
+| Flow constat complet A+B | SCAN→LIEU→PHOTOS→VOCAL→QR→CROQUIS→INFOS→CHOC→SIGN |
+| Session temps réel | Socket.io, QR code |
+| Transcription vocale | Whisper-1, 99 langues |
+| Analyse IA accident | Claude Sonnet → scénario + responsabilité |
+| Signature numérique | Canvas HTML5 |
+| Génération PDF | pdf-lib, 12 langues, carte OSM intégrée |
+| Stripe international | 8 devises, factures PDF auto, webhook |
+| i18n | FR / DE / IT / EN complet |
+| PWA offline-first | Service Worker, IndexedDB, Background Sync |
+| Mode piéton/solo | Bypass QR si pas de 2e conducteur |
+| Carte OSM + satellite | MapVehiclePlacer — conducteur positionne son véhicule |
+| Auth complet | Magic links + password + JWT 30j |
+| Garage véhicules | CRUD + OCR scan + assurance par véhicule |
+| Admin dashboard | Stats temps réel, revenus, coûts IA |
+| Numéros d'urgence | 60+ pays DB + AI fallback mondial |
+| Insurance lookup | 100+ assureurs DB + AI fallback mondial |
+| PostConstatCTA | Conversion post-constat — 3 modes |
+| Cookie banner | RGPD/nLPD compliant |
+| Privacy page | Mentions légales + sous-traitants + droits |
+| WinWin | directUrl /constat/:id opérationnel |
+| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ |
+| **SEO** | **robots.txt ✅ sitemap.xml ✅ — routes Express dédiées** |
+| **Générateur marketing** | **social-generator.service.ts + cron 7h + table social_posts** |
+| **60 posts réseaux sociaux** | **Kit Session 14 — 15×TikTok 15×IG 15×FB 15×LI — 4 piliers** |
+
+### ❌ Pas encore fait
+
+| Fonctionnalité | Priorité |
+|---|---|
+| PoliceFlow (police.boom.contact) | 🔴 CRITIQUE — pilote Jura |
+| PDF rapport police CH | 🔴 CRITIQUE |
+| Seed des 60 posts Session 14 en DB | 🟠 — script à lancer 1 fois |
+| Dashboard marketing admin (UI) | 🟠 — routes tRPC OK, UI manquante |
+| LinkedIn Page boom.contact séparée | 🟠 |
+| Score cohérence IA (A vs B) | 🟠 |
+| 50 silhouettes véhicules niveau 2 | 🟡 |
+| Dark mode | 🟡 |
+| Champs CEA manquants | 🟠 |
 
 ---
 
-## Variables Railway
+## Structure fichiers clés
+
+```
+client/src/
+  pages/
+    ConstatFlow.tsx         — Flow principal conducteur A
+    JoinSession.tsx         — Flow conducteur B
+    PricingPage.tsx         — Tarifs multi-devises
+    AccountPage.tsx         — Garage + Historique + Profil
+    AdminDashboard.tsx      — Dashboard admin
+    PrivacyPage.tsx         — Mentions légales RGPD
+    PoliceFlow.tsx          — Module police (en cours)
+  components/
+    AuthModal.tsx           — Login/register/magic link
+    CookieBanner.tsx        — RGPD cookie consent
+    EmergencyNumbers.tsx    — Urgences mondiales + insurance search
+    constat/
+      InsuranceAssistance.tsx — Lookup assureur A+B post-constat
+      PostConstatCTA.tsx      — CTA conversion après constat
+      MapVehiclePlacer.tsx
+      OCRScanner.tsx
+      VoiceRecorder.tsx
+
+server/src/
+  routes/router.ts          — Toutes les routes tRPC (incl. marketing.*)
+  services/
+    auth.service.ts
+    vehicle.service.ts
+    insurance-assistance.service.ts
+    emergency-numbers.service.ts
+    stripe.service.ts
+    session.service.ts
+    pdf.service.ts
+    ocr.service.ts
+    voice.service.ts
+    police.service.ts
+    social-generator.service.ts  — ← NOUVEAU Session 14
+```
+
+---
+
+## Variables Railway (prod)
 
 | Variable | Status |
 |---|---|
 | DATABASE_URL | ✅ |
 | ANTHROPIC_API_KEY | ✅ |
-| OPENAI_API_KEY | ✅ |
+| OPENAI_API_KEY | ✅ (Whisper) |
 | STRIPE_SECRET_KEY | ✅ |
 | STRIPE_PUBLISHABLE_KEY | ✅ |
 | STRIPE_WEBHOOK_SECRET | ✅ |
 | VITE_STRIPE_PUBLISHABLE_KEY | ✅ |
-| RESEND_API_KEY | ✅ re_Tt9pArj4_... |
+| RESEND_API_KEY | ✅ |
 | JWT_SECRET | ✅ |
-| WINWIN_SECRET | ✅ ww_boom_8945ff3e... |
+| WINWIN_PARTNER_KEY | ✅ |
 
 ---
 
-## Fichiers clés modifiés (Session 16)
+## Monétisation
 
-- server/src/services/winwin.service.ts — NOUVEAU
-- server/src/services/auth.service.ts — retourne profil complet (firstName/lastName/phone/address)
-- server/src/services/pdf.service.ts — formatDateForCountry()
-- server/src/services/email.service.ts — 43 langues, no NEUKOMM, CHE-476, délais génériques
-- server/src/db/schema.ts — users.winwin_id
-- server/src/db/migrate.ts — Block 9 winwin_id
-- server/src/routes/router.ts — auth.winwinLogin, auth.winwinVehicles, email.bugReport
-- client/src/components/AuthModal.tsx — bouton WinWin SSO
-- client/src/components/CGUModal.tsx — checkbox marketing CH uniquement
-- client/src/components/BugReport.tsx — NOUVEAU 🐛
-- client/src/pages/ConstatFlow.tsx — pré-remplissage profil authUser
-- client/src/pages/JoinSession.tsx — email B saisi au landing
-- client/src/i18n/index.ts — 43 langues
-- client/src/i18n/locales/*.json — 21 nouveaux fichiers
+| Package | CHF | EUR | GBP | AUD | USD | CAD | SGD | JPY |
+|---|---|---|---|---|---|---|---|---|
+| 1 constat | 4.90 | 4.90 | 3.90 | 7.90 | 4.90 | 6.90 | 6.90 | ¥750 |
+| 3 constats ⭐ | 12.90 | 12.90 | 9.90 | 19.90 | 12.90 | 17.90 | 17.90 | ¥1900 |
+| 10 constats | 34.90 | 34.90 | 27.90 | 54.90 | 34.90 | 47.90 | 47.90 | ¥5200 |
 
 ---
 
-## Roadmap
+## Réseaux sociaux
 
-| Phase | Période | Objectif |
+| Plateforme | Compte | Status |
 |---|---|---|
-| Pilote | M1–M3 | PoliceFlow + PDF rapport CH → Canton Jura |
-| Validation | M3–M6 | Polices FR + Belgique → premiers revenus B2G |
-| Europe | M6–M12 | Luxembourg + TISPOL 31 polices |
-| Scale | M12+ | Assureurs CH, migration Infomaniak |
+| Facebook | Page Boom.contact | ✅ Actif |
+| TikTok | @boomcontact | ✅ Actif |
+| Instagram | @boom.contact | ✅ Actif |
+| LinkedIn | Via PEP's Swiss SA | ⚠️ Page séparée à créer depuis ordi |
+
+## Stratégie contenu réseaux sociaux (Session 14)
+
+**4 piliers :**
+- A = Douleur/stress (scénarios accidents réels)
+- B = Démo produit (comment ça marche)
+- C = Éducation (droits, erreurs communes)
+- D = Preuve sociale (stats, témoignages)
+
+**Fréquence cible :** 1 post/jour minimum — cron 7h génère 4 posts quotidiens en DB
+**Workflow :** pending → approved (admin valide) → posted (admin coche après publication)
+**Kit Session 14 :** 60 posts prêts — fichier HTML interactif livré (filtres + copie 1 clic)
+
+---
+
+## Roadmap pilote Jura
+
+1. **M1-M3** : PoliceFlow + police.boom.contact + PDF rapport CH → démo Canton Jura
+2. **M3-M6** : Polices municipales FR + zone wallonne BE → premiers revenus B2G
+3. **M6** : Police Grand-Ducale LU
+4. **M6-M12** : TISPOL (31 polices européennes)
+5. **M12+** : Multi-tenant, assureurs CH (AXA, Baloise, Helvetia)
