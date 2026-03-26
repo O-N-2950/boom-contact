@@ -1,122 +1,87 @@
 # boom.contact — TODO.md
-> Mise à jour : 26 Mars 2026 — Session 16
+> Mise à jour : 26 Mars 2026 — Fin Session 14
 
 ---
 
-## ✅ FAIT — Sessions 1–15 (voir SUIVI.md pour détails)
+## ✅ FAIT — Sessions 1-13 (voir SUIVI.md pour détails)
 
 - [x] Infrastructure Railway + PostgreSQL + tRPC v11
-- [x] Flow constat complet A+B (OCR→Lieu→Photos→QR→Vocal→Form→Croquis→Choc→Résumé→Sign)
-- [x] OCR Claude Vision 50+ langues
-- [x] Stripe live 8 devises — 3 packages (1/3/10 crédits)
-- [x] PDF multilingue, carte OSM intégrée
-- [x] PWA offline-first
+- [x] Flow constat complet A+B (10 étapes)
+- [x] OCR Claude Vision 50 langues
+- [x] Stripe live CHF+EUR+GBP+AUD+USD+CAD+SGD+JPY — 3 packages
+- [x] PDF multilingue 12 langues + carte OSM + Puppeteer
+- [x] i18n FR/DE/IT/EN
+- [x] MapVehiclePlacer obligatoire avant signature
 - [x] Mode piéton/solo/objet
 - [x] Transcription vocale Whisper-1
-- [x] Auth : JWT + Magic Links + scrypt + WinWin SSO
-- [x] Garage véhicules (CRUD + OCR)
-- [x] Admin dashboard (KPIs, revenus, coûts IA)
+- [x] WinWin intégration partenaire CH
+- [x] Auth Magic Links + mot de passe + JWT 30j
+- [x] Garage véhicules CRUD + OCR
+- [x] Admin Dashboard (stats, users, revenus, coûts IA)
 - [x] Numéros urgence 60+ pays + AI fallback
 - [x] Insurance lookup 100+ assureurs + AI fallback
-- [x] RGPD : CGU + Privacy page + Cookie banner
-- [x] Réseaux sociaux : Facebook / TikTok / Instagram
+- [x] PostConstatCTA — 3 modes conversion
+- [x] Stripe international multi-devises + factures PDF
+- [x] RGPD : Cookie banner + Privacy page + CGU 4 langues
+- [x] Réseaux sociaux : Facebook ✅ TikTok ✅ Instagram ✅
 
 ---
 
-## ✅ FAIT — Session 16 (26 Mars 2026)
+## ✅ FAIT — Session 14 (26 Mars 2026)
 
-### Langues
-- [x] 43 langues dans l'app (+ 18 nouvelles : hi/id/ms/th/vi/he/fa/bg/sr/sl/et/lv/lt/sq/mk/bs/ka/az)
-- [x] Traductions complètes (landing+location+pricing+ocr) pour EN/DE/IT/ES/PT/AR/ZH/HI via API Claude
-- [x] Templates email complets pour 13 langues
+### SEO critique
+- [x] robots.txt — route Express AVANT express.static (corrige bug SPA)
+- [x] sitemap.xml — multilingue hreflang FR/DE/IT/EN, route Express dédiée
+- [x] LandingPage.tsx — fix syntax error TSX ligne 488 (ShareBoom orphan div)
+- [x] Build SUCCESS vérifié — health + robots.txt + sitemap.xml testés en prod
 
-### Email
-- [x] Template HTML complet : feedback / Google review / partage / inscription
-- [x] Clé Resend corrigée dans Railway
-- [x] Fix logger dans setImmediate (envoi auto après double signature)
-- [x] Email B saisi au landing JoinSession (avant de rejoindre)
-- [x] Délais légaux → formulation générique (plus de "5j FR / 8j CH")
-- [x] CHE-476.484.632 dans tous les footers
-- [x] Suppression "Groupe NEUKOMM" dans 49 fichiers
+### Générateur marketing automatique
+- [x] `server/src/db/schema.ts` — table `social_posts` (platform, pillar, text, hashtags, staging, status, postedAt)
+- [x] `server/src/services/social-generator.service.ts` — génération Claude Sonnet, CRUD posts
+- [x] Routes tRPC `marketing.*` inlinées dans appRouter (posts/generate/approve/markPosted/archive)
+- [x] Cron quotidien 7h — génère 4 posts/jour par rotation plateforme/pilier
+- [x] Import schema corrigé — tables importées directement depuis `../db/schema.js`
 
-### Paiement
-- [x] One-shot sans compte : email + Stripe direct, retour auto au constat après paiement
-- [x] constatSessionId dans success_url → auto-consume crédit webhook
-
-### PDF
-- [x] formatDateForCountry() — DD.MM.YYYY EU / DD/MM/YYYY UK / MM/DD/YYYY US / etc.
-
-### WinWin SSO
-- [x] winwin.service.ts — verify / garage / magic-link
-- [x] auth.winwinLogin tRPC — upsert user + import véhicules + JWT
-- [x] Bouton "Connexion WinWin" dans AuthModal (mis en avant)
-- [x] Pré-remplissage profil complet : nom/prénom/email/tél/adresse
-- [x] Pré-remplissage véhicule + assureur + n° police
-- [x] WINWIN_SECRET dans Railway
-- [x] Clients WinWin payants comme les autres (credits=0)
-- [x] info@winwin.swiss → admin 999999 crédits (compte interne)
-- [x] Test réel : 3 véhicules importés, login OK
-
-### UX / Qualité
-- [x] 🐛 BugReport flottant sur toutes les pages → email.bugReport → contact@boom.contact
-- [x] Checkbox marketing → visible uniquement si pays CH/LI ou langue FR/DE/IT
-- [x] auth.service retourne firstName/lastName/phone/address dans tous les logins
-- [x] ConstatFlow pré-remplit depuis authUser au démarrage
+### Kit contenu réseaux sociaux
+- [x] 60 posts générés par Claude — 15 TikTok + 15 Instagram + 15 Facebook + 15 LinkedIn
+- [x] 4 piliers équilibrés (A=douleur B=démo C=éducation D=preuve) — 3-4 posts par pilier par plateforme
+- [x] Humanizer appliqué — ton direct, tutoiement, vrais chiffres, 0 bullet TikTok/IG
+- [x] Outil HTML interactif — filtres plateforme + pilier + copie 1 clic + note mise en scène
 
 ---
 
-## 🔴 PRIORITÉ IMMÉDIATE
+## 🔴 SESSION 15 — PRIORITÉ HAUTE
 
-- [ ] **URL Google Business** → remplacer `https://g.page/r/boom-contact/review` dans email.service.ts par la vraie URL Google My Business
-- [ ] **Test terrain réel** → 2 téléphones iOS+Android, constat complet A→Z, vérifier PDF et emails reçus
+### Seed posts en DB (5 min)
+- [ ] Script one-shot : insérer les 60 posts Session 14 via `marketing.seed` tRPC
+- [ ] Vérifier via `marketing.posts` que les 60 posts apparaissent en statut `pending`
 
----
+### Dashboard marketing admin (UI)
+- [ ] Onglet "Marketing" dans AdminDashboard.tsx
+- [ ] Liste des posts pending avec aperçu texte + plateforme + pilier
+- [ ] Boutons : ✅ Approuver / 📤 Marquer publié / 🗄 Archiver
+- [ ] Filtre par plateforme et statut
+- [ ] Bouton "Générer 4 nouveaux posts" (appel `marketing.generate`)
+- [ ] Compteurs : pending / approved / posted cette semaine
 
-## 🟠 AVANT LANCEMENT PUBLIC
-
-### PoliceFlow (pilote Canton Jura)
+### PoliceFlow (pilote Canton Jura) — 🔴 CRITIQUE
 - [ ] police.boom.contact subdomain Railway
-- [ ] PoliceFlow.tsx — 4 sections (résumé incident, conducteurs, médias, annotations)
-- [ ] Auth police : JWT 8h, droits par poste/juridiction
-- [ ] PDF rapport d'intervention CH modulaire par pays (CH/FR/BE/LU)
-- [ ] Audit trail RGPD consultations agents (5 ans)
-- [ ] Script onboarding pilote Jura
-- [ ] Hébergement Infomaniak si contrat cantonal signé
+- [ ] PoliceFlow.tsx — 4 sections (résumé, conducteurs, médias, annotations)
+- [ ] PDF rapport d'intervention CH modulaire
+- [ ] Auth police login + JWT 8h
+- [ ] Audit trail RGPD consultations agents
 
 ### Qualité produit
-- [ ] Vérifier signatures dans PDF (vraies signatures manuscrites)
-- [ ] Champs CEA manquants (date validité assurance, date naissance, adresse preneur)
-- [ ] Tests iOS + Android réels (2 téléphones)
-- [ ] Cron nettoyage sessions > 7 jours
-- [ ] Score cohérence IA (contradictions A vs B avant signature)
+- [ ] Champs CEA manquants (dates validité assurance, permis, date naissance, adresse preneur)
+- [ ] 50 silhouettes véhicules niveau 2 (hatchback, SUV small/large, pick-up...)
+- [ ] Tests iOS + Android réels
 - [ ] Dark mode (prefers-color-scheme)
-
-### CGU multilingues
-- [ ] CGU en anglais (EN) — vérification juridique requise avant publication
-- [ ] CGU en allemand (DE) — idem
-
----
-
-## 🟢 MOYEN TERME (M3–M12)
-
-### B2G — Police internationale
-- [ ] Templates PDF FR (LRPPN-compatible), BE (zones locales), LU (trilingue)
-- [ ] i18n PoliceFlow DE/FR/IT/EN
-- [ ] Polices municipales France (2-3 villes pilote)
-- [ ] Zone police wallonne Belgique
-- [ ] Police Grand-Ducale Luxembourg
-- [ ] TISPOL — présentation conférence annuelle (31 polices européennes)
-
-### B2B — Assureurs CH
-- [ ] API webhook sinistre (AXA, Baloise, Helvetia, Mobilière)
-- [ ] Export structuré sinistre
-- [ ] White-label assureur
-- [ ] Licence données agrégées anonymisées
-
-### Infrastructure
-- [ ] Migration Railway → Infomaniak CH (déclenché par 1er contrat cantonal)
-- [ ] Multi-tenant par canton/pays (si 5+ cantons)
+- [ ] Score cohérence IA (contradictions A vs B avant signature)
 - [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
+
+### LinkedIn
+- [ ] Créer Page boom.contact séparée depuis ordi
+- [ ] Lier avec PEP's Swiss SA comme organisation mère
 
 ---
 
@@ -124,16 +89,16 @@
 
 | Composant | État |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript + **43 langues** |
+| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
 | Backend | Express + tRPC v11 + Socket.io |
-| DB | PostgreSQL — 10 tables (users + winwin_id, vehicles, sessions...) |
-| OCR | Claude Vision (Sonnet) — 50+ langues |
-| PDF | pdf-lib — format date par pays, carte OSM |
-| Email | Resend — template HTML 43 langues, PDF auto après signature |
-| Paiement | Stripe live 8 devises — one-shot + avec compte |
-| Auth | JWT + Magic Links + WinWin SSO |
-| WinWin | ✅ Login + profil + véhicules + assureur pré-remplis |
-| Langues | ✅ 43 langues, RTL AR/HE/FA |
-| Bugs | ✅ 🐛 Bouton flottant sur toutes les pages |
-| Marketing | Checkbox CH uniquement ✅ |
-| Légal | CHE-476.484.632 ✅, pas de NEUKOMM ✅, délais génériques ✅ |
+| Base de données | PostgreSQL — 10 tables (+ social_posts Session 14) |
+| OCR | Claude Vision (Sonnet) — 50 langues |
+| PDF | pdf-lib server-side + Puppeteer Chrome headless |
+| Carte | OSM tiles server-side + GPS conducteur |
+| Email | Resend — DKIM actif |
+| Paiement | Stripe live 8 devises |
+| Auth | JWT 30j + Magic Links + scrypt |
+| Hébergement | Railway Europe West — SUCCESS |
+| SEO | robots.txt ✅ sitemap.xml ✅ og:image ✅ |
+| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ LinkedIn (partiel) |
+| **Générateur marketing** | **Cron 7h ✅ — 60 posts prêts — UI admin à faire** |
