@@ -1,4 +1,4 @@
-// boom.contact — i18n setup — 43 langues
+// boom.contact — i18n setup — 50 langues
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -46,62 +46,78 @@ import mk from './locales/mk.json';
 import bs from './locales/bs.json';
 import ka from './locales/ka.json';
 import az from './locales/az.json';
+// Session 15 — milestone 50 langues
+import ti from './locales/ti.json';
+import am from './locales/am.json';
+import wo from './locales/wo.json';
+import ur from './locales/ur.json';
+import bn from './locales/bn.json';
+import so from './locales/so.json';
+import tl from './locales/tl.json';
 
 export const SUPPORTED_LANGS = [
   'fr','de','it','en',
   'es','pt','nl','pl','cs','sk','hu','ro',
   'sv','da','nb','fi','tr','ru','uk',
-  'ar','he','fa',
-  'zh','ja','ko','hi','th','vi','id','ms',
+  'ar','he','fa','ur',
+  'zh','ja','ko','hi','th','vi','id','ms','bn','tl',
   'el','hr','bg','sr','sl','bs','mk','sq',
   'et','lv','lt','ka','az',
+  'ti','am','wo','so',
 ] as const;
 export type SupportedLang = typeof SUPPORTED_LANGS[number];
 
 export const LANG_META: Record<SupportedLang, { label: string; flag: string; dir: 'ltr' | 'rtl' }> = {
-  fr: { label: 'Français',        flag: '🇫🇷', dir: 'ltr' },
-  de: { label: 'Deutsch',         flag: '🇩🇪', dir: 'ltr' },
-  it: { label: 'Italiano',        flag: '🇮🇹', dir: 'ltr' },
-  en: { label: 'English',         flag: '🇬🇧', dir: 'ltr' },
-  es: { label: 'Español',         flag: '🇪🇸', dir: 'ltr' },
-  pt: { label: 'Português',       flag: '🇵🇹', dir: 'ltr' },
-  nl: { label: 'Nederlands',      flag: '🇳🇱', dir: 'ltr' },
-  pl: { label: 'Polski',          flag: '🇵🇱', dir: 'ltr' },
-  cs: { label: 'Čeština',         flag: '🇨🇿', dir: 'ltr' },
-  sk: { label: 'Slovenčina',      flag: '🇸🇰', dir: 'ltr' },
-  hu: { label: 'Magyar',          flag: '🇭🇺', dir: 'ltr' },
-  ro: { label: 'Română',          flag: '🇷🇴', dir: 'ltr' },
-  sv: { label: 'Svenska',         flag: '🇸🇪', dir: 'ltr' },
-  da: { label: 'Dansk',           flag: '🇩🇰', dir: 'ltr' },
-  nb: { label: 'Norsk',           flag: '🇳🇴', dir: 'ltr' },
-  fi: { label: 'Suomi',           flag: '🇫🇮', dir: 'ltr' },
-  tr: { label: 'Türkçe',          flag: '🇹🇷', dir: 'ltr' },
-  ru: { label: 'Русский',         flag: '🇷🇺', dir: 'ltr' },
-  uk: { label: 'Українська',      flag: '🇺🇦', dir: 'ltr' },
-  ar: { label: 'العربية',         flag: '🇸🇦', dir: 'rtl' },
-  he: { label: 'עברית',           flag: '🇮🇱', dir: 'rtl' },
-  fa: { label: 'فارسی',           flag: '🇮🇷', dir: 'rtl' },
-  zh: { label: '中文',             flag: '🇨🇳', dir: 'ltr' },
-  ja: { label: '日本語',           flag: '🇯🇵', dir: 'ltr' },
-  ko: { label: '한국어',           flag: '🇰🇷', dir: 'ltr' },
-  hi: { label: 'हिन्दी',           flag: '🇮🇳', dir: 'ltr' },
-  th: { label: 'ภาษาไทย',         flag: '🇹🇭', dir: 'ltr' },
-  vi: { label: 'Tiếng Việt',      flag: '🇻🇳', dir: 'ltr' },
-  id: { label: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
-  ms: { label: 'Bahasa Melayu',   flag: '🇲🇾', dir: 'ltr' },
-  el: { label: 'Ελληνικά',        flag: '🇬🇷', dir: 'ltr' },
-  hr: { label: 'Hrvatski',        flag: '🇭🇷', dir: 'ltr' },
-  bg: { label: 'Български',       flag: '🇧🇬', dir: 'ltr' },
-  sr: { label: 'Srpski',          flag: '🇷🇸', dir: 'ltr' },
-  sl: { label: 'Slovenščina',     flag: '🇸🇮', dir: 'ltr' },
-  bs: { label: 'Bosanski',        flag: '🇧🇦', dir: 'ltr' },
-  mk: { label: 'Македонски',      flag: '🇲🇰', dir: 'ltr' },
-  sq: { label: 'Shqip',           flag: '🇦🇱', dir: 'ltr' },
-  et: { label: 'Eesti',           flag: '🇪🇪', dir: 'ltr' },
-  lv: { label: 'Latviešu',        flag: '🇱🇻', dir: 'ltr' },
-  lt: { label: 'Lietuvių',        flag: '🇱🇹', dir: 'ltr' },
-  ka: { label: 'ქართული',         flag: '🇬🇪', dir: 'ltr' },
-  az: { label: 'Azərbaycan',      flag: '🇦🇿', dir: 'ltr' },
+  fr: { label: 'Français',          flag: '🇫🇷', dir: 'ltr' },
+  de: { label: 'Deutsch',           flag: '🇩🇪', dir: 'ltr' },
+  it: { label: 'Italiano',          flag: '🇮🇹', dir: 'ltr' },
+  en: { label: 'English',           flag: '🇬🇧', dir: 'ltr' },
+  es: { label: 'Español',           flag: '🇪🇸', dir: 'ltr' },
+  pt: { label: 'Português',         flag: '🇵🇹', dir: 'ltr' },
+  nl: { label: 'Nederlands',        flag: '🇳🇱', dir: 'ltr' },
+  pl: { label: 'Polski',            flag: '🇵🇱', dir: 'ltr' },
+  cs: { label: 'Čeština',           flag: '🇨🇿', dir: 'ltr' },
+  sk: { label: 'Slovenčina',        flag: '🇸🇰', dir: 'ltr' },
+  hu: { label: 'Magyar',            flag: '🇭🇺', dir: 'ltr' },
+  ro: { label: 'Română',            flag: '🇷🇴', dir: 'ltr' },
+  sv: { label: 'Svenska',           flag: '🇸🇪', dir: 'ltr' },
+  da: { label: 'Dansk',             flag: '🇩🇰', dir: 'ltr' },
+  nb: { label: 'Norsk',             flag: '🇳🇴', dir: 'ltr' },
+  fi: { label: 'Suomi',             flag: '🇫🇮', dir: 'ltr' },
+  tr: { label: 'Türkçe',            flag: '🇹🇷', dir: 'ltr' },
+  ru: { label: 'Русский',           flag: '🇷🇺', dir: 'ltr' },
+  uk: { label: 'Українська',        flag: '🇺🇦', dir: 'ltr' },
+  ar: { label: 'العربية',           flag: '🇸🇦', dir: 'rtl' },
+  he: { label: 'עברית',             flag: '🇮🇱', dir: 'rtl' },
+  fa: { label: 'فارسی',             flag: '🇮🇷', dir: 'rtl' },
+  ur: { label: 'اردو',              flag: '🇵🇰', dir: 'rtl' },
+  zh: { label: '中文',               flag: '🇨🇳', dir: 'ltr' },
+  ja: { label: '日本語',             flag: '🇯🇵', dir: 'ltr' },
+  ko: { label: '한국어',             flag: '🇰🇷', dir: 'ltr' },
+  hi: { label: 'हिन्दी',             flag: '🇮🇳', dir: 'ltr' },
+  th: { label: 'ภาษาไทย',           flag: '🇹🇭', dir: 'ltr' },
+  vi: { label: 'Tiếng Việt',        flag: '🇻🇳', dir: 'ltr' },
+  id: { label: 'Bahasa Indonesia',  flag: '🇮🇩', dir: 'ltr' },
+  ms: { label: 'Bahasa Melayu',     flag: '🇲🇾', dir: 'ltr' },
+  bn: { label: 'বাংলা',             flag: '🇧🇩', dir: 'ltr' },
+  tl: { label: 'Filipino',          flag: '🇵🇭', dir: 'ltr' },
+  el: { label: 'Ελληνικά',          flag: '🇬🇷', dir: 'ltr' },
+  hr: { label: 'Hrvatski',          flag: '🇭🇷', dir: 'ltr' },
+  bg: { label: 'Български',         flag: '🇧🇬', dir: 'ltr' },
+  sr: { label: 'Srpski',            flag: '🇷🇸', dir: 'ltr' },
+  sl: { label: 'Slovenščina',       flag: '🇸🇮', dir: 'ltr' },
+  bs: { label: 'Bosanski',          flag: '🇧🇦', dir: 'ltr' },
+  mk: { label: 'Македонски',        flag: '🇲🇰', dir: 'ltr' },
+  sq: { label: 'Shqip',             flag: '🇦🇱', dir: 'ltr' },
+  et: { label: 'Eesti',             flag: '🇪🇪', dir: 'ltr' },
+  lv: { label: 'Latviešu',          flag: '🇱🇻', dir: 'ltr' },
+  lt: { label: 'Lietuvių',          flag: '🇱🇹', dir: 'ltr' },
+  ka: { label: 'ქართული',           flag: '🇬🇪', dir: 'ltr' },
+  az: { label: 'Azərbaycan',        flag: '🇦🇿', dir: 'ltr' },
+  ti: { label: 'ትግርኛ',              flag: '🇪🇷', dir: 'ltr' },
+  am: { label: 'አማርኛ',              flag: '🇪🇹', dir: 'ltr' },
+  wo: { label: 'Wolof',             flag: '🇸🇳', dir: 'ltr' },
+  so: { label: 'Soomaali',          flag: '🇸🇴', dir: 'ltr' },
 };
 
 export const RTL_LANGS: string[] = ['ar', 'he', 'fa', 'ur'];
@@ -116,15 +132,17 @@ i18n
       cs:{translation:cs}, sk:{translation:sk}, hu:{translation:hu}, ro:{translation:ro},
       sv:{translation:sv}, da:{translation:da}, nb:{translation:nb}, fi:{translation:fi},
       tr:{translation:tr}, ru:{translation:ru}, uk:{translation:uk},
-      ar:{translation:ar}, he:{translation:he}, fa:{translation:fa},
+      ar:{translation:ar}, he:{translation:he}, fa:{translation:fa}, ur:{translation:ur},
       zh:{translation:zh}, ja:{translation:ja}, ko:{translation:ko},
       hi:{translation:hi}, th:{translation:th}, vi:{translation:vi},
-      id:{translation:id}, ms:{translation:ms},
+      id:{translation:id}, ms:{translation:ms}, bn:{translation:bn}, tl:{translation:tl},
       el:{translation:el}, hr:{translation:hr}, bg:{translation:bg},
       sr:{translation:sr}, sl:{translation:sl}, bs:{translation:bs},
       mk:{translation:mk}, sq:{translation:sq},
       et:{translation:et}, lv:{translation:lv}, lt:{translation:lt},
       ka:{translation:ka}, az:{translation:az},
+      ti:{translation:ti}, am:{translation:am}, wo:{translation:wo},
+      so:{translation:so},
     },
     fallbackLng: 'fr',
     supportedLngs: SUPPORTED_LANGS as unknown as string[],
@@ -151,5 +169,5 @@ export function applyLang(lang: SupportedLang) {
   localStorage.setItem('boom_lang', lang);
 }
 
-export const TOTAL_LANGUAGES = 43;
+export const TOTAL_LANGUAGES = 50;
 export { detectBestLanguage, getLangOrder, langFromCountry } from './geo-lang';
