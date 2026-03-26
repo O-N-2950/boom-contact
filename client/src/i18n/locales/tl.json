@@ -1,0 +1,344 @@
+{
+  "common": {
+    "continue": "Ituloy →",
+    "confirm": "Kumpirmahin →",
+    "cancel": "Kanselahin",
+    "rescan": "🔄 I-scan ulit",
+    "loading": "Naglo-load…",
+    "saving": "⏳ Sine-save…",
+    "error": "May error",
+    "retry": "Subukan ulit",
+    "back": "←",
+    "optional": "Opsyonal",
+    "required": "Kailangan",
+    "yes": "Oo",
+    "no": "Hindi",
+    "unknown": "Hindi alam"
+  },
+  "landing": {
+    "badge": "Unang app sa buong mundo",
+    "hero": {
+      "line1": "MATAPOS",
+      "line2": "ANG AKSIDENTE",
+      "line3": "MABILIS",
+      "line4": "NA ULAT"
+    },
+    "subtitle": "Digital na ulat ng aksidente sa loob ng 5 minuto. Universal OCR, QR code, mabilis na PDF para sa buong mundo.",
+    "cta": {
+      "start": "Magsimula ng ulat",
+      "pricing": "Tingnan ang presyo →",
+      "from": "Mula CHF/€ 4.90 · Tanggap sa buong mundo",
+      "free": "LIBRE · WALANG PAGPAPAREHISTRO · RGPD"
+    },
+    "mockup": {
+      "send": "Ipadala sa insurance",
+      "done": "Tapos na ang ulat!",
+      "waiting": "Session #8F2K · Naghihintay…",
+      "capture": "📸 Kumuha ng larawan"
+    },
+    "badges": {
+      "languages": "50 wika",
+      "time": "5 minuto",
+      "encrypted": "Naka-encrypt"
+    },
+    "stats": {
+      "accidents": "ulat/taon sa Europa",
+      "languages": "wikang sinusuportahan",
+      "time": "para matapos"
+    },
+    "how": {
+      "label": "Paano ito gumagana",
+      "title": "5 hakbang.",
+      "title_accent": "5 minuto.",
+      "steps": [
+        {
+          "step": "01",
+          "icon": "📸",
+          "title": "I-scan ang iyong mga dokumento",
+          "desc": "Kumuha ng larawan ng lisensya at insurance card. Awtomatiko ang OCR."
+        },
+        {
+          "step": "02",
+          "icon": "📱",
+          "title": "Ibahagi ang QR code",
+          "desc": "I-scan ng ibang driver ang QR. Real-time na shared session."
+        },
+        {
+          "step": "03",
+          "icon": "📋",
+          "title": "Punan ang form",
+          "desc": "Universal na form na pre-filled ng OCR. I-verify at markahan ang mga sitwasyon."
+        },
+        {
+          "step": "04",
+          "icon": "🚗",
+          "title": "Mga lugar ng pinsala",
+          "desc": "I-click ang 18-zone na diagram para markahan ang mga pinsala."
+        },
+        {
+          "step": "05",
+          "icon": "✍️",
+          "title": "Pumirma at magpadala",
+          "desc": "Dalawang digital na lagda. Agad na certified PDF."
+        }
+      ]
+    },
+    "features": {
+      "title": "Lahat ng kailangan mo dito",
+      "list": [
+        {
+          "icon": "📸",
+          "title": "Universal OCR",
+          "desc": "Binabasa ng Claude Vision ang iyong mga dokumento sa 50+ wika. Walang manual na pagpasok."
+        },
+        {
+          "icon": "📱",
+          "title": "Hanggang 5 sasakyan",
+          "desc": "Aksidente sa 3, 4 o 5 driver? Bawat driver nag-scan ng sariling QR."
+        },
+        {
+          "icon": "📷",
+          "title": "Mga larawan ng eksena",
+          "desc": "5 kategorya: lugar, pinsala A, pinsala B, sugat, dokumento. Lahat kasama sa PDF."
+        },
+        {
+          "icon": "✏️",
+          "title": "Libreng sketch",
+          "desc": "Iguhit ang posisyon ng mga sasakyan, mga arrow ng direksyon. PNG kasama sa PDF."
+        },
+        {
+          "icon": "🚗",
+          "title": "Diagram ng pinsala",
+          "desc": "700+ modelo. 18 clickable na zone para sa mga pinsala."
+        },
+        {
+          "icon": "✍️",
+          "title": "Maramihang lagda",
+          "desc": "N digital na lagda. Legal na halaga sa 150+ bansa."
+        },
+        {
+          "icon": "📄",
+          "title": "PDF para sa 150+ bansa",
+          "desc": "Kumpleto na digital na dokumento. Tinatanggap ng lahat ng insurance company."
+        },
+        {
+          "icon": "🚔",
+          "title": "Pulis na module (malapit na)",
+          "desc": "Ang mga pulis ay sumasali sa session sa pamamagitan ng QR. Digital na ulat ng pulis."
+        },
+        {
+          "icon": "🌍",
+          "title": "50 wika + RTL",
+          "desc": "5 bilyon na nagsasalita. Arabe, Hebreo, Farsi na may RTL. Emergency numbers sa buong mundo."
+        }
+      ]
+    },
+    "coverage": {
+      "label": "Pandaigdigang saklaw",
+      "title": "Mula Switzerland hanggang Tsina",
+      "more": "+ 30 pang bansa · RTL support"
+    },
+    "legal": {
+      "title": "International na pamantayan",
+      "text": "Ang digital PDF ng boom.contact ay tinatanggap ng mga insurance company sa 50+ bansa."
+    },
+    "finalCta": {
+      "title": "Handa ka ba sa aksidente?",
+      "subtitle": "Ilagay ang boom.contact sa iyong screen. 5 minuto para matapos lahat.",
+      "button": "Magsimula ng ulat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    }
+  },
+  "steps": {
+    "scan": "Scan",
+    "location": "Lugar",
+    "photos": "Larawan",
+    "qr": "QR",
+    "form": "Impormasyon",
+    "sketch": "Sketch",
+    "damage": "Pinsala",
+    "sign": "Lagda"
+  },
+  "flow": {
+    "header": {
+      "role_a": "DRIVER A — BAGONG ULAT",
+      "reset_title": "Magsimula muli"
+    }
+  },
+  "ocr": {
+    "idle": {
+      "title": "I-scan ang iyong mga dokumento",
+      "subtitle": "Magsimula sa iyong lisensya.\nDokumento ng insurance ay <strong>inirerekomenda</strong>.",
+      "reg_label": "Lisensya / Carte grise",
+      "reg_sub": "Lisensya CH, carte grise FR — <strong>kailangan</strong>",
+      "tip": "💡 <strong>Inirerekomenda ang insurance na dokumento.</strong> Green card, sertipiko — naglalaman ito ng company at numero ng polisya."
+    },
+    "greencard": {
+      "scanned": "✅ Na-scan na ang lisensya",
+      "compressing": "· Naglo-load…",
+      "title": "Dokumento ng insurance?",
+      "subtitle": "I-scan ang <strong>green card (IMIC)</strong> o sertipiko ng insurance.",
+      "scan_btn": "I-scan ang dokumento ng insurance",
+      "scan_sub": "Green card, sertipiko, card…",
+      "skip_btn": "Mano-manong ilagay ang impormasyon ng insurance →"
+    },
+    "scanning": {
+      "title": "Sinusuri…",
+      "subtitle": "Binabasa ng Claude Vision ang iyong mga dokumento"
+    },
+    "review": {
+      "title_pair": "Nasuri na ang mga dokumento",
+      "title_single": "Nasuri na ang lisensya",
+      "confidence": "Katumpakan: {{pct}}%",
+      "skipped": "· Nilaktawan ang green card",
+      "warnings": "⚠️ {{count}} field na i-verify",
+      "warnings_plural": "⚠️ {{count}} mga field na i-verify",
+      "insurance_title": "🛡️ Impormasyon ng insurance — mano-mano",
+      "company_label": "Insurance company *",
+      "company_placeholder": "Zurich, AXA, Helvetia…",
+      "policy_label": "Numero ng polisya *",
+      "policy_placeholder": "CH-2026-12345",
+      "section_vehicle": "🚗 Sasakyan",
+      "section_driver": "👤 Driver",
+      "section_greencard": "🟢 Insurance (green card)",
+      "rescan": "🔄 I-scan ulit",
+      "confirm": "Kumpirmahin →"
+    }
+  },
+  "location": {
+    "vehicle_label": "Iyong sasakyan",
+    "groups": {
+      "light": "Magagaang sasakyan",
+      "heavy": "Mabibigat na sasakyan",
+      "rail": "Pampublikong transportasyon",
+      "cycles": "Bisikleta",
+      "other": "Tao / Iba pa"
+    },
+    "vehicles": {
+      "car": { "label": "Kotse", "sub": "Sedan, SUV, hatchback" },
+      "van": { "label": "Van / Utility", "sub": "Van, mini-truck" },
+      "motorcycle": { "label": "Motorsiklo", "sub": "Motorsiklo" },
+      "scooter": { "label": "Scooter", "sub": "Scooter, 50cc" },
+      "moped": { "label": "Moped", "sub": "2 gulong <45km/h" },
+      "escooter": { "label": "Electric scooter", "sub": "EDPM, hoverboard" },
+      "quad": { "label": "Quad / Buggy", "sub": "Off-road na sasakyan" },
+      "truck": { "label": "Trak", "sub": "Malaking trak, semi" },
+      "bus": { "label": "Bus", "sub": "Bus, minibus" },
+      "construction": { "label": "Makinarya ng konstruksyon", "sub": "Crane, bulldozer" },
+      "tractor": { "label": "Traktor", "sub": "Traktor sa bukid" },
+      "tram": { "label": "Tram", "sub": "Tram" },
+      "train": { "label": "Tren", "sub": "Tren, metro" },
+      "bicycle": { "label": "Bisikleta", "sub": "Bisikleta, e-bike" },
+      "cargo_bike": { "label": "Cargo bike", "sub": "Cargo bicycle" },
+      "pedestrian": { "label": "Taong naglalakad", "sub": "Tao sa paa" },
+      "boat": { "label": "Bangka", "sub": "Bangka, jet-ski" },
+      "other": { "label": "Iba pang sasakyan", "sub": "Hindi nakalista" }
+    },
+    "datetime_label": "Petsa at oras ng aksidente",
+    "date_label": "Petsa",
+    "time_label": "Oras",
+    "datetime_warning": "⚠️ Ilagay ang tunay na oras ng aksidente, hindi ang kasalukuyang oras.",
+    "geo_label": "Lugar ng aksidente",
+    "gps_captured": "Nakuha na ang GPS — {{lat}}, {{lng}}",
+    "gps_loading": "Hinahanap ang lokasyon…",
+    "gps_denied": "Tinanggihan ang GPS — mano-manong ilagay",
+    "gps_missing": "Hindi nakuha ang GPS",
+    "gps_saved": "Naka-save na ang coordinates sa dokumento",
+    "address_label": "Kalsada / Highway",
+    "address_placeholder": "Hal.: Rizal Ave 5, A1 km 47…",
+    "city_label": "Lungsod",
+    "city_placeholder": "Manila, Berne…",
+    "country_label": "Bansa",
+    "country_placeholder": "PH, CH…",
+    "location_tip": "💡 <strong>Mahalaga:</strong> Ilagay ang tunay na lugar ng aksidente.",
+    "injuries_label": "May nasugatan?",
+    "no_injuries": "Hindi — walang nasugatan",
+    "yes_injuries": "Oo — may nasugatan",
+    "injury_details_title": "🚑 Detalye ng sugat",
+    "severity_label": "Kalubhaan ng sugat",
+    "severity_minor": "Banayad",
+    "severity_moderate": "Katamtaman",
+    "severity_serious": "Malubha",
+    "injury_desc_label": "Paglalarawan (bahagi ng katawan, sakit, nakikitang sugat)",
+    "injury_desc_placeholder": "Hal.: Sakit sa leeg, sugat sa tuhod…",
+    "ambulance": "🚑 Kinuha ng ambulansya",
+    "hospitalized": "🏥 Kailangan ng ospitalisasyon",
+    "injury_footer": "Para sa malubhang sugat, tumawag sa 112 (EU) o 144 (CH).",
+    "cta_no_vehicle": "Piliin ang uri ng sasakyan",
+    "cta_no_injuries": "Tukuyin kung may nasugatan",
+    "cta_no_location": "Ilagay ang lugar ng aksidente",
+    "emergency_police": "🚔 Pulis · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Emergency · {{number}} {{label}}",
+    "emergency_voluntary": "Ang mga tawag na ito ay boluntaryo — hindi awtomatikong inaabisuhan ang pulis."
+  },
+  "cgu": {
+    "before_continue": "BAGO MAGPATULOY",
+    "tab_cgu": "Mga Tuntunin ng Paggamit",
+    "tab_privacy": "Privacy",
+    "cgu_title": "Mga Tuntunin ng Paggamit",
+    "privacy_title": "Patakaran sa Privacy",
+    "cgu_version": "Bersyon 1.0 — Marso 2026 · PEP's Swiss SA",
+    "privacy_version": "Sumusunod sa RGPD UE 2016/679 · Marso 2026",
+    "email_label": "Ang iyong email (para matanggap ang PDF)",
+    "email_placeholder": "ikaw@halimbawa.com",
+    "consent_cgu": "Tinatanggap ko ang <cgu>Mga Tuntunin</cgu> at <privacy>Patakaran sa Privacy</privacy>",
+    "consent_marketing": "Pinapayagan ko ang PEP's Swiss SA na gamitin ang aking email para sa karagdagang serbisyo. <opt>Opsyonal — maaaring bawiin anumang oras.</opt>",
+    "required_note": "* Kailangan para sa paggamit",
+    "submit": "Ituloy →",
+    "error_network": "May error sa network. Subukan ulit.",
+    "cgu_sections": [
+      { "title": "1. Layunin", "text": "Ang boom.contact ay isang digital na serbisyo ng PEP's Swiss SA. Tumutulong ito sa paghahanda ng digital na ulat ng aksidente sa buong mundo." },
+      { "title": "2. Pagtanggap", "text": "Ang paggamit ng serbisyo ay nangangahulugang pagtanggap sa mga tuntunin. Ang ilegal na paggamit ay ipinagbabawal." },
+      { "title": "3. Mga Serbisyo", "text": "Nagbibigay ang boom.contact ng: (a) OCR; (b) QR session; (c) Digital na lagda; (d) PDF email. Responsibilidad ng driver na abisuhan ang kanyang insurance." },
+      { "title": "4. Presyo", "text": "Ang serbisyo ay ibinebenta sa mga pakete. Bayad sa pamamagitan ng Stripe (PCI-DSS). Ang mga credit ay walang petsa ng pag-expire." },
+      { "title": "5. Legal na halaga", "text": "Tinatanggap ng mga insurance company ang PDF ng boom.contact. Hindi ginagarantiyahan ng PEP's Swiss SA ang pagtanggap sa lahat ng bansa." },
+      { "title": "6. Responsibilidad", "text": "Hindi responsable ang PEP's Swiss SA sa mga error ng OCR o pagtanggi ng insurance. Limitado ang responsibilidad sa halagang binayaran." },
+      { "title": "7. Intellectual na Ari-arian", "text": "Ang software, mga tatak, nilalaman ng boom.contact ay pag-aari ng PEP's Swiss SA." },
+      { "title": "8. Naaangkop na Batas", "text": "Ang batas ng Switzerland ang naaangkop. Ang mga hindi pagkakaunawaan ay ireresolba sa korte ng Jura." }
+    ],
+    "privacy_sections": [
+      { "title": "Responsable sa Data", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
+      { "title": "Nakolektang Data", "text": "Email, pangalan, address, plate number, GPS, digital na lagda, impormasyon ng insurance." },
+      { "title": "Legal na Batayan", "text": "Pagtupad sa kontrata (Art. 6.1.b RGPD) para sa data ng ulat. Pahintulot para sa komersyal na paggamit." },
+      { "title": "Panahon ng Pag-iimbak", "text": "Mga session: 2 oras. PDF at data: 30 araw pagkatapos ay tinatanggal. Data ng bayad: 10 taon." },
+      { "title": "Pagbabahagi ng Data", "text": "Ang data ay hindi ibinebenta. Ginagamit lamang ng Stripe, Resend, Anthropic para sa serbisyo." },
+      { "title": "Iyong mga Karapatan", "text": "Tingnan, baguhin, burahin, ilipat. Sumulat sa privacy@boom.contact." }
+    ]
+  },
+  "pricing": {
+    "title": "Pumili ng pakete",
+    "subtitle": "Bumili ng credits nang maaga — bayad nang isang beses",
+    "popular_badge": "⭐ Popular",
+    "economy": "Tipid {{pct}}",
+    "credits_label": "Mga credit",
+    "per_report": "Bawat ulat",
+    "validity": "Bisa",
+    "no_expiry": "Walang petsa ng pag-expire",
+    "buy_btn": "Bilhin — {{symbol}} {{price}}",
+    "redirecting": "Papunta sa Stripe…",
+    "error_missing_url": "Nawawala ang Stripe URL",
+    "trust": {
+      "stripe": "🔒 Ligtas na bayad sa pamamagitan ng Stripe (PCI-DSS)",
+      "no_expiry": "📄 Mga credit na walang petsa ng pag-expire",
+      "worldwide": "🌍 Digital na dokumento · Tinatanggap sa 150+ bansa",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+    },
+    "legal": "Sa pagbili, tinatanggap mo ang mga tuntunin ng boom.contact.\nWalang refund pagkatapos makuha ang PDF.",
+    "packages": {
+      "single": { "label": "1 ulat", "description": "Para sa isang aksidente" },
+      "pack3": { "label": "3 ulat", "description": "Para sa pamilya" },
+      "pack10": { "label": "10 ulat", "description": "Mga ahente, kumpanya" }
+    }
+  },
+  "offline": {
+    "banner": "Offline — {{count}} session na naghihintay",
+    "banner_0": "Offline ka ngayon"
+  },
+  "language": {
+    "select": "Wika",
+    "switch_tooltip": "Palitan ang wika"
+  }
+}
