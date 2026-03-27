@@ -15,7 +15,7 @@ import { renderSketch } from '../services/sketch-renderer.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
-import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink } from '../services/winwin.service.js';
+import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink, checkWinWinEmail } from '../services/winwin.service.js';
 import { io } from '../index';
 import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 
@@ -729,6 +729,32 @@ export const appRouter = router({
           directUrl: `${CLIENT_URL}/constat/${session.id}?lang=${input.language}&prefilled=true`,
           message: `Session créée. Véhicule ${input.vehicle.plaque || ''} pré-chargé.`,
         };
+      }),
+    // POST winwin.checkEmail — vérifie si un email est client WinWin (conducteur B, one-shot)
+    checkEmail: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const result = await checkWinWinEmail(input.email);
+        return result;
+      }),
+
+    // POST winwin.loginForDriverB — login par mot de passe conducteur B WinWin
+    loginForDriverB: publicProcedure
+      .input(z.object({ email: z.string().email(), password: z.string().min(1) }))
+      .mutation(async ({ input }) => {
+        const client = await verifyWinWin(input.email, input.password);
+        if (!client) throw new Error('Email ou mot de passe incorrect');
+        const vehicles = await getWinWinVehicles(client.winwinId);
+        return { client, vehicles };
+      }),
+
+    // POST winwin.requestMagicLinkForDriverB — envoie magic link WinWin au conducteur B
+    requestMagicLinkForDriverB: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const result = await requestWinWinMagicLink(input.email);
+        if (!result) throw new Error('Email non trouvé ou erreur WinWin');
+        return { ok: true };
       }),
 
   }),
