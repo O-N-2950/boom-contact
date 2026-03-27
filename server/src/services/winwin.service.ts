@@ -133,3 +133,35 @@ export async function requestWinWinMagicLink(
     return null;
   }
 }
+
+// ── Vérifier si un email est client WinWin ───────────────────
+// Retourne true si l'email existe dans WinWin (sans credentials)
+export async function checkWinWinEmail(
+  email: string
+): Promise<{ exists: boolean; firstName?: string }> {
+  if (!WINWIN_SECRET || !email) return { exists: false };
+
+  try {
+    const res = await fetch(`${WINWIN_BASE}/api/boom/auth/check-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${WINWIN_SECRET}`,
+      },
+      body: JSON.stringify({ email }),
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!res.ok) return { exists: false };
+    const data = await res.json();
+    if (!data.ok) return { exists: false };
+
+    logger.info('WinWin check-email hit', { email });
+    return { exists: true, firstName: data.firstName };
+
+  } catch {
+    // WinWin indisponible ou endpoint pas encore déployé → silencieux
+    return { exists: false };
+  }
+}
+
