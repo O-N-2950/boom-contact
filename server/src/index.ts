@@ -1,6 +1,7 @@
 // ── Logger MUST be first — before any other import ──────────
 import './logger.js';
 import { logger } from './logger.js';
+import { startupCheck, startMonitoring, runHealthCheck, getMonitorStatus } from './monitoring/neo-monitor.js';
 
 import express from 'express';
 import cors from 'cors';
@@ -126,6 +127,18 @@ app.use((req, res, next) => {
 // ── Health check ─────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'boom.contact', env: process.env.NODE_ENV, ts: new Date().toISOString() });
+});
+
+// ── Monitor routes ─────────────────────────────────────────
+app.get('/api/monitor/status', (_req, res) => res.json(getMonitorStatus()));
+app.post('/api/monitor/client-error', (req, res) => {
+  const { type, message, url } = req.body || {};
+  logger.warn('[CLIENT-ERROR]', { type, message: message?.slice(0, 200), url });
+  res.json({ ok: true });
+});
+app.get('/api/monitor/health', async (_req, res) => {
+  const result = await runHealthCheck();
+  res.status(result.status === 'ok' ? 200 : 503).json(result);
 });
 
 // ── Blocage bots / scanners (WordPress, PHPMyAdmin, etc.) ─────
@@ -361,6 +374,8 @@ setInterval(async () => {
 async function start() {
   logger.info('Starting boom.contact server...');
   await runMigrations();
+  await startupCheck();
+  startMonitoring(5);
   httpServer.listen(PORT, '0.0.0.0', () => {
     logger.info(`💥 boom.contact running`, {
       port: PORT,
