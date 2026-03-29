@@ -459,7 +459,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       {winwinStatus === 'found' && winwinMode === null && (
         <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
           <div style={{ fontSize: 13, fontWeight: 700, color: '#FFB300', marginBottom: 4 }}>
-            🏆 Client WIN WIN Finance{winwinFirstName ?  : ''}
+            🏆 Client WIN WIN Finance{winwinFirstName ? ` — Bonjour ${winwinFirstName} !` : ''}
           </div>
           <div style={{ fontSize: 12, opacity: 0.55, marginBottom: 14, lineHeight: 1.5 }}>
             Connectez-vous pour charger votre véhicule assuré automatiquement.
@@ -546,7 +546,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
               <button key={i} onClick={() => applyWinWinVehicle(v)}
                 style={{ padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,255,255,0.03)', cursor: 'pointer', textAlign: 'left' as const, color: 'var(--text)' }}>
                 <div style={{ fontWeight: 700, fontSize: 14 }}>{v.plate} — {v.make} {v.model}</div>
-                <div style={{ fontSize: 11, opacity: 0.5, marginTop: 3 }}>{v.color || ''}  {v.insurerName ?  : ''}  {v.label ?  : '' }</div>
+                <div style={{ fontSize: 11, opacity: 0.5, marginTop: 3 }}>{v.color || ''}{v.insurerName ? ` · ${v.insurerName}` : ''}{v.label ? ` · ${v.label}` : ''}</div>
               </button>
             ))}
           </div>
