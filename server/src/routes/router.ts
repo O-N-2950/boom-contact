@@ -15,7 +15,7 @@ import { renderSketch } from '../services/sketch-renderer.service.js';
 import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
-import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink, checkWinWinEmail } from '../services/winwin.service.js';
+import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink, checkWinWinEmail, verifyWinWinToken } from '../services/winwin.service.js';
 import { io } from '../index';
 import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 
@@ -749,12 +749,26 @@ export const appRouter = router({
       }),
 
     // POST winwin.requestMagicLinkForDriverB — envoie magic link WinWin au conducteur B
+    // Le lien dans l'email pointe vers boom.contact (jamais vers winwin.swiss)
     requestMagicLinkForDriverB: publicProcedure
-      .input(z.object({ email: z.string().email() }))
+      .input(z.object({ email: z.string().email(), sessionId: z.string().optional() }))
       .mutation(async ({ input }) => {
-        const result = await requestWinWinMagicLink(input.email);
+        const CLIENT_URL_ENV = process.env.CLIENT_URL || 'https://www.boom.contact';
+        const redirectUrl = input.sessionId
+          ? `${CLIENT_URL_ENV}/?ww_token=TOKEN&session=${input.sessionId}`
+          : `${CLIENT_URL_ENV}/?ww_token=TOKEN`;
+        const result = await requestWinWinMagicLink(input.email, redirectUrl);
         if (!result) throw new Error('Email non trouvé ou erreur WinWin');
         return { ok: true };
+      }),
+
+    // POST winwin.verifyToken — vérifie le ww_token reçu dans l'URL après magic link
+    verifyToken: publicProcedure
+      .input(z.object({ token: z.string().min(6) }))
+      .mutation(async ({ input }) => {
+        const result = await verifyWinWinToken(input.token);
+        if (!result) throw new Error('Token invalide ou expiré');
+        return { client: result.client, vehicles: result.vehicles };
       }),
 
   }),
