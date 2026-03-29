@@ -84,6 +84,27 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [otherSigned, setOtherSigned] = useState(false);
   const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
+  // ── WinWin Driver B ──────────────────────────────────────────
+  const [winwinStatus, setWinwinStatus] = useState<null|'checking'|'found'|'none'>(() => {
+    // Véhicules déjà chargés par magic link (retour depuis email)
+    const wv = localStorage.getItem('boom_ww_vehicles');
+    return (wv && JSON.parse(wv).length > 0) ? 'found' : null;
+  });
+  const [winwinFirstName, setWinwinFirstName] = useState<string>(() => {
+    try { return JSON.parse(localStorage.getItem('boom_ww_client') || '{}').firstName || ''; } catch { return ''; }
+  });
+  const [winwinMode, setWinwinMode] = useState<null|'magic'|'password'|'vehicles'|'scan'>(() => {
+    const wv = localStorage.getItem('boom_ww_vehicles');
+    return (wv && JSON.parse(wv).length > 0) ? 'vehicles' : null;
+  });
+  const [winwinPassword, setWinwinPassword] = useState('');
+  const [winwinMagicSent, setWinwinMagicSent] = useState(false);
+  const [winwinVehicles, setWinwinVehicles] = useState<any[]>(() => {
+    try { return JSON.parse(localStorage.getItem('boom_ww_vehicles') || '[]'); } catch { return []; }
+  });
+  const [winwinError, setWinwinError] = useState<string|null>(null);
+  const [winwinLoading, setWinwinLoading] = useState(false);
+
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
     if (s === 'done') localStorage.removeItem(STORAGE_KEY);
@@ -150,6 +171,51 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       setJoining(false);
     },
   });
+
+  const winwinCheckMut = trpc.winwin.checkEmail.useMutation({
+    onSuccess: (data: any) => {
+      if (data.exists) { setWinwinStatus('found'); setWinwinFirstName(data.firstName || ''); }
+      else setWinwinStatus('none');
+    },
+    onError: () => setWinwinStatus('none'),
+  });
+  const winwinLoginMut = trpc.winwin.loginForDriverB.useMutation({
+    onSuccess: (data: any) => {
+      setWinwinVehicles(data.vehicles || []);
+      setWinwinMode('vehicles');
+      setWinwinLoading(false);
+      setWinwinError(null);
+    },
+    onError: (err: any) => { setWinwinError(err.message || 'Mot de passe incorrect'); setWinwinLoading(false); },
+  });
+  const winwinMagicMut = trpc.winwin.requestMagicLinkForDriverB.useMutation({
+    onSuccess: () => { setWinwinMagicSent(true); setWinwinLoading(false); },
+    onError: (err: any) => { setWinwinError(err.message || 'Erreur envoi email'); setWinwinLoading(false); },
+  });
+
+  // Debounce email → check WinWin silencieusement (600ms)
+  useEffect(() => {
+    const email = participantData.driver?.email || '';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setWinwinStatus(null); setWinwinMode(null); return; }
+    // Ne pas re-checker si magic link a déjà chargé les véhicules
+    if (winwinMode === 'vehicles') return;
+    setWinwinStatus('checking');
+    const t = setTimeout(() => winwinCheckMut.mutate({ email }), 600);
+    return () => clearTimeout(t);
+  }, [participantData.driver?.email]);
+
+  // Appliquer un véhicule WinWin → pré-remplit + skip OCR
+  const applyWinWinVehicle = (v: any) => {
+    localStorage.removeItem('boom_ww_vehicles');
+    localStorage.removeItem('boom_ww_client');
+    const vehicleData = { licensePlate: v.plate, make: v.make, model: v.model, color: v.color, year: v.year, vehicleType: 'car' };
+    const insuranceData = { companyName: v.insurerName, policyNumber: v.policyNumber, brokerName: 'WIN WIN Finance Group', brokerEmail: 'sinistre@winwin.swiss', brokerPhone: '+41 32 466 11 00' };
+    setParticipantData(prev => ({ ...prev, vehicle: vehicleData as any, insurance: insuranceData as any }));
+    if (sessionId) updateMutation.mutate({ sessionId, role: urlRole, data: { vehicle: vehicleData, insurance: insuranceData } as any });
+    setWinwinMode(null);
+    setWinwinStatus(null);
+    setTimeout(() => setStep('photos'), 100);
+  };
 
   const handleLangChange = (lang: string) => {
     setSelectedLang(lang);
@@ -359,10 +425,12 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
       </div>
 
-      {/* Email — pour recevoir le PDF automatiquement */}
+      {/* Email + détection WinWin silencieuse */}
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7 }}>
-          📧 Votre email <span style={{ opacity: 0.45, fontWeight: 400 }}>(pour recevoir le PDF)</span>
+        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
+          📧 Votre email
+          <span style={{ opacity: 0.45, fontWeight: 400 }}>(pour recevoir le PDF)</span>
+          {winwinStatus === 'checking' && <span style={{ fontSize: 9, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>●●●</span>}
         </div>
         <input
           type="email"
@@ -370,23 +438,124 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           autoCapitalize="none"
           autoComplete="email"
           value={participantData.driver?.email || ''}
-          onChange={e => setParticipantData(prev => ({
-            ...prev,
-            driver: { ...(prev.driver || {}), email: e.target.value } as any,
-          }))}
+          onChange={e => {
+            setParticipantData(prev => ({ ...prev, driver: { ...(prev.driver || {}), email: e.target.value } as any }));
+            setWinwinMode(null); setWinwinVehicles([]); setWinwinMagicSent(false); setWinwinError(null);
+          }}
           placeholder="votre@email.com"
           style={{
             width: '100%', padding: '13px 14px', borderRadius: 10,
-            border: '1.5px solid rgba(255,255,255,0.12)',
+            border: winwinStatus === 'found' ? '1.5px solid rgba(255,179,0,0.45)' : '1.5px solid rgba(255,255,255,0.12)',
             background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
-            fontSize: 15, outline: 'none', boxSizing: 'border-box' as const,
-            fontFamily: 'inherit',
+            fontSize: 15, outline: 'none', boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
         />
         <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6 }}>
           Optionnel — le PDF vous sera envoyé automatiquement après signature
         </div>
       </div>
+
+      {/* ── WinWin détecté : choix connexion ── */}
+      {winwinStatus === 'found' && winwinMode === null && (
+        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#FFB300', marginBottom: 4 }}>
+            🏆 Client WIN WIN Finance{winwinFirstName ?  : ''}
+          </div>
+          <div style={{ fontSize: 12, opacity: 0.55, marginBottom: 14, lineHeight: 1.5 }}>
+            Connectez-vous pour charger votre véhicule assuré automatiquement.
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <button onClick={() => {
+              setWinwinMode('magic'); setWinwinError(null); setWinwinMagicSent(false); setWinwinLoading(true);
+              winwinMagicMut.mutate({ email: participantData.driver?.email || '', sessionId });
+            }} style={{ padding: '12px', borderRadius: 10, border: 'none', background: '#FFB300', color: '#000', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+              ✉️ Recevoir un lien de connexion par email
+            </button>
+            <button onClick={() => { setWinwinMode('password'); setWinwinError(null); }}
+              style={{ padding: '12px', borderRadius: 10, border: '1px solid rgba(255,179,0,0.4)', background: 'transparent', color: '#FFB300', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
+              🔑 Se connecter avec un mot de passe
+            </button>
+            <button onClick={() => { setWinwinMode('scan'); setWinwinStatus('none'); }}
+              style={{ padding: '10px', borderRadius: 10, border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.35)', fontSize: 13, cursor: 'pointer' }}>
+              Scanner mes documents →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Mode magic link ── */}
+      {winwinMode === 'magic' && (
+        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
+          {winwinLoading && !winwinMagicSent && (
+            <div style={{ fontSize: 13, opacity: 0.6, textAlign: 'center' }}>⏳ Envoi en cours…</div>
+          )}
+          {winwinMagicSent && (
+            <>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#FFB300', marginBottom: 6 }}>✅ Email envoyé !</div>
+              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.6 }}>
+                Vérifiez votre boîte mail et cliquez sur le lien — vous reviendrez automatiquement ici.<br/>
+                <span style={{ opacity: 0.4 }}>Vous ne quittez pas boom.contact.</span>
+              </div>
+            </>
+          )}
+          {winwinError && <div style={{ fontSize: 12, color: '#ef4444', marginTop: 8 }}>⚠️ {winwinError}</div>}
+          <button onClick={() => { setWinwinMode(null); setWinwinMagicSent(false); }}
+            style={{ marginTop: 12, fontSize: 12, opacity: 0.4, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>
+            ← Retour
+          </button>
+        </div>
+      )}
+
+      {/* ── Mode mot de passe ── */}
+      {winwinMode === 'password' && (
+        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
+          <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7 }}>🔑 Mot de passe WIN WIN</div>
+          <input
+            type="password"
+            value={winwinPassword}
+            onChange={e => setWinwinPassword(e.target.value)}
+            placeholder="Votre mot de passe WIN WIN"
+            autoComplete="current-password"
+            style={{ width: '100%', padding: '12px 14px', borderRadius: 10, border: '1.5px solid rgba(255,179,0,0.3)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 15, outline: 'none', boxSizing: 'border-box' as const, fontFamily: 'inherit', marginBottom: 10 }}
+          />
+          {winwinError && <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 8 }}>⚠️ {winwinError}</div>}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={() => {
+              setWinwinLoading(true); setWinwinError(null);
+              winwinLoginMut.mutate({ email: participantData.driver?.email || '', password: winwinPassword });
+            }} disabled={winwinLoading || !winwinPassword}
+              style={{ flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: winwinLoading ? 'rgba(255,179,0,0.4)' : '#FFB300', color: '#000', fontWeight: 700, fontSize: 14, cursor: winwinLoading ? 'not-allowed' : 'pointer' }}>
+              {winwinLoading ? '⏳ Vérification…' : 'Connexion →'}
+            </button>
+            <button onClick={() => { setWinwinMode(null); setWinwinPassword(''); setWinwinError(null); }}
+              style={{ padding: '12px 16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontSize: 13, cursor: 'pointer' }}>
+              ←
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Sélection véhicule WinWin ── */}
+      {winwinMode === 'vehicles' && winwinVehicles.length > 0 && (
+        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#FFB300', marginBottom: 12 }}>
+            🚗 Choisissez votre véhicule concerné
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {winwinVehicles.map((v: any, i: number) => (
+              <button key={i} onClick={() => applyWinWinVehicle(v)}
+                style={{ padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,255,255,0.03)', cursor: 'pointer', textAlign: 'left' as const, color: 'var(--text)' }}>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>{v.plate} — {v.make} {v.model}</div>
+                <div style={{ fontSize: 11, opacity: 0.5, marginTop: 3 }}>{v.color || ''}  {v.insurerName ?  : ''}  {v.label ?  : '' }</div>
+              </button>
+            ))}
+          </div>
+          <button onClick={() => { setWinwinMode('scan'); setWinwinStatus('none'); localStorage.removeItem('boom_ww_vehicles'); localStorage.removeItem('boom_ww_client'); }}
+            style={{ marginTop: 10, fontSize: 12, opacity: 0.35, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>
+            Scanner mes documents à la place →
+          </button>
+        </div>
+      )}
 
       <button onClick={join} disabled={joining || !sessionId} style={{
         width: '100%', padding: '18px', borderRadius: 12, border: 'none',
