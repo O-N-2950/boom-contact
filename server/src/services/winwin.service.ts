@@ -107,18 +107,22 @@ export async function getWinWinVehicles(
 
 // ── Générer un magic link WinWin ──────────────────────────────
 export async function requestWinWinMagicLink(
-  email: string
+  email: string,
+  redirectUrl?: string
 ): Promise<{ token: string; expiresAt: string } | null> {
   if (!WINWIN_SECRET) return null;
 
   try {
+    const body: Record<string, string> = { email };
+    if (redirectUrl) body.redirect_url = redirectUrl;
+
     const res = await fetch(`${WINWIN_BASE}/api/boom/auth/magic-link`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${WINWIN_SECRET}`,
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify(body),
       signal: AbortSignal.timeout(8000),
     });
 
@@ -162,6 +166,37 @@ export async function checkWinWinEmail(
   } catch {
     // WinWin indisponible ou endpoint pas encore déployé → silencieux
     return { exists: false };
+  }
+}
+
+// ── Vérifier un token WinWin magic link (retour depuis email) ─
+export async function verifyWinWinToken(
+  token: string
+): Promise<{ client: WinWinClient; vehicles: any[] } | null> {
+  if (!WINWIN_SECRET || !token) return null;
+
+  try {
+    const res = await fetch(`${WINWIN_BASE}/api/boom/auth/verify-magic`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${WINWIN_SECRET}`,
+      },
+      body: JSON.stringify({ token }),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.ok || !data.client) return null;
+
+    const vehicles = await getWinWinVehicles(data.client.winwinId);
+    logger.info('WinWin token verified', { winwinId: data.client.winwinId });
+    return { client: data.client as WinWinClient, vehicles };
+
+  } catch (err) {
+    logger.error('WinWin verify-magic error', { error: String(err) });
+    return null;
   }
 }
 
