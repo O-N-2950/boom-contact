@@ -553,8 +553,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <span style={{ fontSize: 10, opacity: 0.25, fontFamily: 'DM Mono, monospace' }}>{t('landing.footer.copyright')}</span>
         </div>
         <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8 }}>
-          {t('landing.footer.address').split('
-').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
+          {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
         </div>
         {/* Legal links */}
         <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap' as const, gap: 12 }}>
