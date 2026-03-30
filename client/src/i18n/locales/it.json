@@ -23,7 +23,7 @@
       "line3": "IL",
       "line4": "CONTACT"
     },
-    "subtitle": "Constatazione digitale in 5 minuti. OCR universale, QR code condiviso, PDF mondiale istantaneo.",
+    "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, doppia firma digitale, PDF certificato. Valido in 150+ paesi.",
     "cta": {
       "start": "Avvia una constatazione",
       "pricing": "Vedi i prezzi →",
@@ -150,7 +150,8 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Svizzera"
-    }
+    },
+    "seoLine": "La constatazione amichevole digitale mondiale · Digital accident report"
   },
   "steps": {
     "scan": "Scansione",

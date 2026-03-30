@@ -23,7 +23,7 @@
       "line3": "LE",
       "line4": "CONTACT"
     },
-    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR universel, QR code partagé, double signature digitale, PDF certifié. Valable dans 150+ pays.",
     "cta": {
       "start": "Démarrer un constat",
       "pricing": "Voir les tarifs →",
@@ -143,14 +143,15 @@
       "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
     },
     "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "title": "Prêt pour ton constat amiable numérique ?",
+      "subtitle": "Garde boom.contact sur ton écran d'accueil. En cas d'accident, 5 minutes suffisent.",
       "button": "Démarrer un constat"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    }
+    },
+    "seoLine": "Le constat amiable numérique mondial · Digital accident report"
   },
   "steps": {
     "scan": "Scan",

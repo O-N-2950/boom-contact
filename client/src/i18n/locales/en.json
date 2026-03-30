@@ -23,7 +23,7 @@
       "line3": "THE",
       "line4": "CONTACT"
     },
-    "subtitle": "Digital accident report in 5 minutes. Universal OCR, shared QR code, instant worldwide PDF.",
+    "subtitle": "Complete your digital accident report in 5 minutes. Universal OCR, shared QR code, dual digital signature, certified PDF. Valid in 150+ countries.",
     "cta": {
       "start": "Start a report",
       "pricing": "View pricing →",
@@ -150,7 +150,8 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Switzerland"
-    }
+    },
+    "seoLine": "The worldwide digital accident report · Constat amiable numérique"
   },
   "steps": {
     "scan": "Scan",

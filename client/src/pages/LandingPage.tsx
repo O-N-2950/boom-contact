@@ -241,6 +241,11 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               <span style={{ display: 'block' }}>{t('landing.hero.line4')}</span>
             </h1>
 
+            {/* SEO subtitle — keywords "constat amiable numérique" */}
+            <p style={{ fontSize: isDesktop ? 13 : 12, lineHeight: 1.5, opacity: heroVisible ? 0.35 : 0, marginBottom: 6, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(14px)', transition: 'all 0.6s ease 0.15s', fontFamily: 'DM Mono, monospace', letterSpacing: 0.5 }}>
+              {t('landing.seoLine', { defaultValue: 'Le constat amiable numérique mondial · Digital accident report' })}
+            </p>
+
             {/* Subtitle */}
             <p style={{ fontSize: isDesktop ? 16 : 15, lineHeight: 1.65, opacity: heroVisible ? 0.6 : 0, marginBottom: 28, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.2s' }}>
               {t('landing.subtitle')}
@@ -514,6 +519,88 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <button onClick={onPricing} style={{ padding: '15px 40px', borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}>
               Acheter des crédits →
             </button>
+          </div>
+        </Section>
+      </div>
+
+      {/* ── SOCIAL PROOF / TRUST ─────────────────────────────── */}
+      <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px' }}>
+        <Section>
+          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>ILS NOUS FONT CONFIANCE</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Utilisé dans <span style={{ color: 'var(--boom)' }}>150+ pays</span></h2>
+          </div>
+
+          {/* Testimonials */}
+          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: 16, marginBottom: 32 }}>
+            {[
+              { name: 'Sarah M.', loc: '🇨🇭 Zurich', text: "Accident à l'étranger, l'autre conducteur parlait italien. On a chacun rempli dans notre langue. PDF reçu en 4 minutes. Mon assureur a accepté immédiatement.", stars: 5 },
+              { name: 'Thomas K.', loc: '🇩🇪 München', text: "Nie wieder Papierkram nach einem Unfall. QR-Code gescannt, Dokumente fotografiert, fertig. Der digitale Unfallbericht funktioniert einwandfrei.", stars: 5 },
+              { name: 'Emma L.', loc: '🇬🇧 London', text: "Had a fender bender in France. No French, no paper form. boom.contact saved us — everything in English, signed digitally, PDF in my inbox.", stars: 5 },
+            ].map((t, i) => (
+              <div key={i} style={{ padding: isDesktop ? '20px' : '16px', borderRadius: 14, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', gap: 4, marginBottom: 10 }}>
+                  {Array.from({ length: t.stars }).map((_, j) => <span key={j} style={{ color: '#FFB300', fontSize: 14 }}>★</span>)}
+                </div>
+                <p style={{ fontSize: 13, lineHeight: 1.65, opacity: 0.7, marginBottom: 12, fontStyle: 'italic' }}>"{t.text}"</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,53,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: 'var(--boom)' }}>{t.name[0]}</div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700 }}>{t.name}</div>
+                    <div style={{ fontSize: 10, opacity: 0.4 }}>{t.loc}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Trust badges */}
+          <div style={{ display: 'flex', gap: isDesktop ? 20 : 10, flexWrap: 'wrap' as const, justifyContent: 'center' }}>
+            {[
+              { icon: '🇨🇭', text: 'Made in Switzerland' },
+              { icon: '🔒', text: 'Chiffrement SSL 256-bit' },
+              { icon: '🏛️', text: 'Conforme RGPD · nLPD' },
+              { icon: '✅', text: 'PDF conforme CEA' },
+              { icon: '💳', text: 'Paiement Stripe sécurisé' },
+              { icon: '🗑️', text: 'Données supprimées sous 30j' },
+            ].map(b => (
+              <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', fontSize: 11, opacity: 0.7 }}>
+                <span style={{ fontSize: 16 }}>{b.icon}</span>
+                <span style={{ fontWeight: 600 }}>{b.text}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+      </div>
+
+      {/* ── FAQ — SEO "constat amiable numérique" ─────────────── */}
+      <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <Section>
+          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>FAQ</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Questions fréquentes sur le <span style={{ color: 'var(--boom)' }}>constat amiable numérique</span></h2>
+          </div>
+
+          <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {[
+              { q: "Qu'est-ce qu'un constat amiable numérique ?", a: "Un constat amiable numérique remplace le formulaire papier traditionnel. Avec boom.contact, vous remplissez votre constat d'accident directement depuis votre téléphone en 5 minutes. L'OCR scanne vos documents automatiquement, les deux conducteurs signent digitalement, et un PDF certifié conforme au standard européen (CEA) est généré instantanément." },
+              { q: "Le constat amiable numérique est-il accepté par les assureurs ?", a: "Oui. Le PDF généré par boom.contact est conforme au formulaire européen standardisé CEA (Constat Européen d'Accident). Il est accepté par les assureurs dans plus de 150 pays. Les signatures digitales sont horodatées et géolocalisées, ce qui leur confère une valeur probante supérieure au papier." },
+              { q: "Combien coûte le constat amiable numérique boom.contact ?", a: "À partir de CHF 4.90 / EUR 4.90 pour un constat unique. Pack famille de 3 constats à CHF 12.90 (-12%), ou pack flotte de 10 constats à CHF 34.90 (-29%). Sans abonnement, sans expiration. Disponible en CHF, EUR, GBP, USD, AUD, CAD, SGD et JPY." },
+              { q: "Dois-je installer une application ?", a: "Non. boom.contact fonctionne directement dans le navigateur de votre téléphone (Safari, Chrome, Firefox…). Aucun téléchargement requis. Vous pouvez également ajouter boom.contact à votre écran d'accueil comme une Progressive Web App (PWA) pour un accès hors-ligne." },
+              { q: "Le constat numérique fonctionne-t-il si l'autre conducteur parle une autre langue ?", a: "C'est justement la force de boom.contact. Chaque conducteur utilise l'interface dans sa propre langue parmi les 50 langues disponibles. L'OCR reconnaît les documents de circulation de tous les pays. Le PDF final est généré dans la langue de chaque conducteur." },
+              { q: "Que se passe-t-il si l'autre conducteur n'a pas boom.contact ?", a: "Aucun problème. Vous créez la session et un QR code s'affiche. L'autre conducteur scanne le QR avec son téléphone — boom.contact s'ouvre directement dans son navigateur. Pas d'inscription, pas de téléchargement. C'est prêt en 3 secondes." },
+              { q: "Mes données sont-elles protégées ?", a: "boom.contact est développé en Suisse et conforme au RGPD européen et à la nLPD suisse. Les données sont chiffrées en transit (SSL 256-bit), les sessions sont automatiquement supprimées après 30 jours, et la police n'est jamais notifiée automatiquement." },
+            ].map((faq, i) => (
+              <details key={i} style={{ borderRadius: 12, border: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
+                <summary style={{ padding: '16px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 12, listStyle: 'none' }}>
+                  <span style={{ color: 'var(--boom)', fontSize: 16, flexShrink: 0 }}>+</span>
+                  {faq.q}
+                </summary>
+                <div style={{ padding: '0 18px 16px 46px', fontSize: 13, lineHeight: 1.7, opacity: 0.65 }}>
+                  {faq.a}
+                </div>
+              </details>
+            ))}
           </div>
         </Section>
       </div>

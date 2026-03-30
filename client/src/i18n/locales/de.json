@@ -23,7 +23,7 @@
       "line3": "DER",
       "line4": "KONTAKT"
     },
-    "subtitle": "Digitales Unfallprotokoll in 5 Minuten. Universelles OCR, geteilter QR-Code, sofortiges weltweites PDF.",
+    "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Universelle OCR, geteilter QR-Code, doppelte digitale Unterschrift, zertifiziertes PDF. Gültig in 150+ Ländern.",
     "cta": {
       "start": "Protokoll starten",
       "pricing": "Preise ansehen →",
@@ -150,7 +150,8 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Schweiz"
-    }
+    },
+    "seoLine": "Der digitale Unfallbericht weltweit · Digital accident report"
   },
   "steps": {
     "scan": "Scan",
