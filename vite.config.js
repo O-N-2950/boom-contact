@@ -18,6 +18,9 @@ export default defineConfig({
       '/socket.io': { target: 'http://localhost:3000', ws: true }
     }
   },
+  define: {
+    '__VITE_GA4_ID__': JSON.stringify(process.env.VITE_GA4_ID || ''),
+  },
   build: {
     outDir: path.resolve(__dirname, 'dist/client'),
     emptyOutDir: true
