@@ -3,6 +3,7 @@ import './logger.js';
 import { logger } from './logger.js';
 import { startupCheck, startMonitoring, runHealthCheck, getMonitorStatus } from './monitoring/neo-monitor.js';
 import { initSentry, captureException } from './analytics.js';
+import { initSentry, captureException } from './analytics.js';
 
 import express from 'express';
 import cors from 'cors';
@@ -15,6 +16,9 @@ import { fileURLToPath } from 'url';
 import { runMigrations } from './db/migrate.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Init Sentry ASAP
+initSentry().catch(() => {});
 
 const app = express();
 const httpServer = createServer(app);
