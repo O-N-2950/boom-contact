@@ -202,6 +202,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Google Analytics 4 — measurement ID is public, not a secret -->
+    <!-- Set VITE_GA4_ID in Railway → Vite injects at build time -->
+    <script>
+      // GA4 lazy init — only on prod
+      if (location.hostname === 'www.boom.contact' || location.hostname === 'boom.contact') {
+        var GA4_ID = '__VITE_GA4_ID__';
+        if (GA4_ID && GA4_ID !== '__VITE_GA4_ID__') {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', GA4_ID, { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure' });
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
