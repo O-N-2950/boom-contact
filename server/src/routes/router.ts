@@ -18,6 +18,7 @@ import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js
 import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink, checkWinWinEmail, verifyWinWinToken } from '../services/winwin.service.js';
 import { io } from '../index';
 import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
+import { trackRapportCree, trackPdfGenere, trackPaiementEffectue } from '../analytics.js';
 
 const t = initTRPC.context<Context>().create();
 export const router = t.router;
