@@ -205,6 +205,18 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
 
     const creditsInt = parseInt(credits, 10);
 
+    // Analytics — paiement_effectué (server-side, authoritative)
+    try {
+      const { trackPaiementEffectue } = await import('../analytics.js');
+      await trackPaiementEffectue({
+        email: userEmail,
+        packageId: packageId || 'unknown',
+        amount: (session.amount_total || 0) / 100,
+        currency: (session.currency || 'eur').toUpperCase(),
+        stripeSessionId: session.id,
+      });
+    } catch {}
+
     // Marquer paiement comme complété
     await db.update(schema.payments)
       .set({ status: 'paid', paidAt: new Date() })
