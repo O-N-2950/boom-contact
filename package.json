@@ -42,7 +42,10 @@
     "tsx": "^4.7.0",
     "zod": "^3.22.0",
     "puppeteer-core": "^22.0.0",
-    "canvas": "^2.11.2"
+    "canvas": "^2.11.2",
+    "@sentry/node": "^8.0.0",
+    "@sentry/react": "^8.0.0",
+    "posthog-js": "^1.220.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
