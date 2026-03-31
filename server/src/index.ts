@@ -2,6 +2,7 @@
 import './logger.js';
 import { logger } from './logger.js';
 import { startupCheck, startMonitoring, runHealthCheck, getMonitorStatus } from './monitoring/neo-monitor.js';
+import { initSentry, captureException } from './analytics.js';
 
 import express from 'express';
 import cors from 'cors';
@@ -111,6 +112,9 @@ app.use(morgan((tokens, req, res) => {
 
 // ── Core middleware ───────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
+// ── Analytics — init Sentry before any route ─────────────────
+initSentry().catch(() => {});
+
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
@@ -333,6 +337,11 @@ process.on('unhandledRejection', (reason) => {
 });
 
 // ── Start ─────────────────────────────────────────────────────
+// ── Global error capture ─────────────────────────────────────
+process.on('unhandledRejection', (reason) => {
+  captureException(reason, { source: 'unhandledRejection' }).catch(() => {});
+});
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
 // ── Cron nettoyage automatique ────────────────────────────────
