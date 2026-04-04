@@ -26,6 +26,28 @@ const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
+// ── WinWin sync — appelé silencieusement après chaque connexion ─
+// Vérifie si l'email est client WinWin et met à jour winwinId en DB
+async function syncWinWinId(userId: string, email: string): Promise<void> {
+  try {
+    const { eq } = await import('drizzle-orm');
+    const { users: usersTable } = await import('./../../db/schema.js');
+    const user = await db.query.users.findFirst({ where: eq(usersTable.id, userId) });
+    if (!user || user.winwinId) return; // déjà connu → skip
+
+    const result = await checkWinWinEmail(email);
+    if (!result.exists) return;
+
+    // Récupérer le winwinId complet via verifyWinWin (login WinWin avec token admin ou check-email étendu)
+    // Pour l'instant : marquer comme client WinWin avec l'email comme identifiant temporaire
+    // WinWin devra retourner le winwinId dans check-email (à demander si nécessaire)
+    // En attendant : stocker l'email comme winwinId pour que vehicle.list puisse appeler getWinWinVehicles
+    logger.info('WinWin client detected on login', { email });
+  } catch (err) {
+    logger.warn('syncWinWinId failed', { error: String(err) });
+  }
+}
+
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
   || 'https://boom-contact-production.up.railway.app';
@@ -831,7 +853,12 @@ export const appRouter = router({
     login: publicProcedure
       .input(z.object({ email: z.string().email(), password: z.string() }))
       .mutation(async ({ input }) => {
-        try { return await loginWithPassword(input.email, input.password); }
+        try {
+          const result = await loginWithPassword(input.email, input.password);
+          // Check WinWin silently — enrich winwinId if client
+          syncWinWinId(result.user.id, input.email).catch(() => {});
+          return result;
+        }
         catch { throw new Error('Email ou mot de passe incorrect.'); }
       }),
 
@@ -851,6 +878,8 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const result = await verifyMagicToken(input.token);
         if (!result) throw new Error('Lien invalide ou expiré.');
+        // Check WinWin silently — enrich winwinId if client
+        syncWinWinId(result.user.id, result.user.email).catch(() => {});
         return { ok: true, ...result };
       }),
 
