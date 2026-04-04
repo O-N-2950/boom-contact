@@ -334,13 +334,22 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               <div key={v.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <div>
-                    <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                      <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
+                      {v.source === 'winwin' && (
+                        <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1, padding: '2px 7px', borderRadius: 8, background: 'rgba(49,118,166,0.2)', border: '1px solid rgba(49,118,166,0.4)', color: '#3176A6', whiteSpace: 'nowrap' }}>WIN WIN</div>
+                      )}
+                    </div>
                     {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
                     <div style={{ color: '#555', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                    {v.source === 'winwin' && (v.insuranceData as any)?.companyName && (
+                      <div style={{ color: '#3176A6', fontSize: 11, marginTop: 2, opacity: 0.8 }}>🛡️ {(v.insuranceData as any).companyName}</div>
+                    )}
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={() => startEdit(v)} style={iconBtn}>✏️</button>
-                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn}>🗑️</button>
+                    {v.source !== 'winwin' && <button onClick={() => startEdit(v)} style={iconBtn}>✏️</button>}
+                    {v.source !== 'winwin' && <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn}>🗑️</button>}
+                    {v.source === 'winwin' && <div style={{ fontSize: 11, opacity: 0.4, padding: '4px 8px' }}>via WW</div>}
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
