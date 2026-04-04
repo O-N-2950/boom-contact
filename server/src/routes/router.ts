@@ -1159,8 +1159,11 @@ export const appRouter = router({
           const { eq } = await import('drizzle-orm');
           const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
           if (user?.winwinId) {
-            const { getWinWinVehicles } = await import('../services/winwin.service.js');
-            const wwVehicles = await getWinWinVehicles(user.winwinId);
+            const { getWinWinVehicles, getWinWinVehiclesByEmail } = await import('../services/winwin.service.js');
+            // Handle both real winwinId and email-fallback marker
+            const wwVehicles = user.winwinId.startsWith('ww-email:')
+              ? await getWinWinVehiclesByEmail(user.winwinId.replace('ww-email:', ''))
+              : await getWinWinVehicles(user.winwinId);
             // Map WinWin vehicles to garage format — mark them as winwin source
             const mapped = wwVehicles.map((v: any) => ({
               id:           `ww-${v.plate?.replace(/\s/g, '') || Math.random()}`,
