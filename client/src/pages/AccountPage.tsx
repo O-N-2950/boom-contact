@@ -293,7 +293,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
       <div style={{ maxWidth: 500, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <button onClick={onBack} style={backBtn}>← Retour</button>
-          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: 13 }}>Déconnexion</button>
+          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>Déconnexion</button>
         </div>
 
         {/* Profile card */}
@@ -593,7 +593,7 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
   );
 }
 
-const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14, padding: '4px 0', marginBottom: 16, display: 'block' };
+const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '4px 0', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 };
 const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
 const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
 
