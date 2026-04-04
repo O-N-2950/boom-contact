@@ -1106,12 +1106,55 @@ export const appRouter = router({
   // ── VEHICLES — garage personnel ──────────────────────────────
   vehicle: router({
 
-    // GET vehicle.list
+    // GET vehicle.list — local vehicles + WinWin vehicles if user is a WinWin client
     list: publicProcedure
       .query(async ({ ctx }) => {
         if (!ctx.authUser) return [];
         const { listVehicles } = await import('../services/vehicle.service.js');
-        return listVehicles(ctx.authUser.sub);
+        const localVehicles = await listVehicles(ctx.authUser.sub);
+
+        // Enrich with WinWin vehicles if user has a winwinId
+        try {
+          const { users } = await import('../db/schema.js');
+          const { eq } = await import('drizzle-orm');
+          const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
+          if (user?.winwinId) {
+            const { getWinWinVehicles } = await import('../services/winwin.service.js');
+            const wwVehicles = await getWinWinVehicles(user.winwinId);
+            // Map WinWin vehicles to garage format — mark them as winwin source
+            const mapped = wwVehicles.map((v: any) => ({
+              id:           `ww-${v.plate?.replace(/\s/g, '') || Math.random()}`,
+              userId:       ctx.authUser!.sub,
+              plate:        v.plate,
+              make:         v.make,
+              model:        v.model,
+              color:        v.color,
+              year:         v.year,
+              nickname:     v.label ? `${v.make} ${v.model}${v.label ? ` (${v.label})` : ''}` : null,
+              category:     v.category || null,
+              source:       'winwin',  // flag for UI
+              insuranceData: {
+                companyName:  v.insurerName,
+                policyNumber: v.policyNumber,
+                brokerName:   'WIN WIN Finance Group',
+                brokerEmail:  'sinistre@winwin.swiss',
+                brokerPhone:  '+41 32 466 11 00',
+              },
+              licenseData:  {},
+              createdAt:    new Date(),
+              updatedAt:    new Date(),
+            }));
+            // Merge — WinWin vehicles first, deduplicate by plate
+            const localPlates = new Set(localVehicles.map((v: any) => v.plate?.toUpperCase()).filter(Boolean));
+            const newWW = mapped.filter((v: any) => !v.plate || !localPlates.has(v.plate.toUpperCase()));
+            return [...newWW, ...localVehicles];
+          }
+        } catch (err) {
+          // WinWin unavailable — return local vehicles only, never crash
+          logger.warn('WinWin vehicles fetch failed in vehicle.list', { error: String(err) });
+        }
+
+        return localVehicles;
       }),
 
     // POST vehicle.save — create or update
