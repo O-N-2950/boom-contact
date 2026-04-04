@@ -11,6 +11,14 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
+  // WinWin SSO visible uniquement pour les utilisateurs en Suisse (détection géo)
+  const isSwiss = (() => {
+    const country = sessionStorage.getItem('boom_detected_country') || '';
+    // Also check if user previously logged in as WinWin (localStorage hint)
+    const hasWW = localStorage.getItem('boom_ww_client') || localStorage.getItem('boom_ww_vehicles');
+    return country === 'CH' || country === 'LI' || !!hasWW;
+  })();
+
   const [mode, setMode]       = useState<AuthMode>('choose');
   const [email, setEmail]     = useState('');
   const [password, setPassword] = useState('');
@@ -95,20 +103,24 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: choose */}
         {mode === 'choose' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* WinWin SSO — mis en avant */}
-            <button onClick={() => setMode('winwin')} style={{
-              ...btnStyle('#0057A8'), border: '2px solid #0057A8',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-            }}>
-              <span style={{ fontSize: 18 }}>🔵</span>
-              <span>Connexion WinWin</span>
-              <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 4 }}>— vos véhicules importés automatiquement</span>
-            </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '2px 0' }}>
-              <div style={{ flex: 1, height: 1, background: '#222' }}/>
-              <span style={{ fontSize: 11, color: '#444' }}>ou</span>
-              <div style={{ flex: 1, height: 1, background: '#222' }}/>
-            </div>
+            {/* WinWin SSO — Suisse et Liechtenstein uniquement */}
+            {isSwiss && (
+              <>
+                <button onClick={() => setMode('winwin')} style={{
+                  ...btnStyle('#0057A8'), border: '2px solid #0057A8',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                }}>
+                  <span style={{ fontSize: 18 }}>🔵</span>
+                  <span>Connexion WinWin</span>
+                  <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 4 }}>— vos véhicules importés automatiquement</span>
+                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '2px 0' }}>
+                  <div style={{ flex: 1, height: 1, background: '#222' }}/>
+                  <span style={{ fontSize: 11, color: '#444' }}>ou</span>
+                  <div style={{ flex: 1, height: 1, background: '#222' }}/>
+                </div>
+              </>
+            )}
             <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
               📧 Connexion par lien email (recommandé)
             </button>
