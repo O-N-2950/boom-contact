@@ -27,22 +27,31 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 // ── WinWin sync — appelé silencieusement après chaque connexion ─
-// Vérifie si l'email est client WinWin et met à jour winwinId en DB
+// Vérifie si l'email est client WinWin et enregistre winwinId en DB
 async function syncWinWinId(userId: string, email: string): Promise<void> {
   try {
     const { eq } = await import('drizzle-orm');
-    const { users: usersTable } = await import('./../../db/schema.js');
+    const { users: usersTable } = await import('../db/schema.js');
     const user = await db.query.users.findFirst({ where: eq(usersTable.id, userId) });
     if (!user || user.winwinId) return; // déjà connu → skip
 
     const result = await checkWinWinEmail(email);
     if (!result.exists) return;
 
-    // Récupérer le winwinId complet via verifyWinWin (login WinWin avec token admin ou check-email étendu)
-    // Pour l'instant : marquer comme client WinWin avec l'email comme identifiant temporaire
-    // WinWin devra retourner le winwinId dans check-email (à demander si nécessaire)
-    // En attendant : stocker l'email comme winwinId pour que vehicle.list puisse appeler getWinWinVehicles
-    logger.info('WinWin client detected on login', { email });
+    if (result.winwinId) {
+      // WinWin retourne l'ID → l'enregistrer directement
+      await db.update(usersTable)
+        .set({ winwinId: result.winwinId })
+        .where(eq(usersTable.id, userId));
+      logger.info('WinWin client linked on login', { email, winwinId: result.winwinId });
+    } else {
+      // WinWin ne retourne pas encore l'ID → utiliser l'email comme clé temporaire
+      // vehicle.list appellera getWinWinVehicles(email) dans ce cas
+      await db.update(usersTable)
+        .set({ winwinId: `ww-email:${email}` }) // marqueur spécial
+        .where(eq(usersTable.id, userId));
+      logger.info('WinWin client detected (no ID yet)', { email });
+    }
   } catch (err) {
     logger.warn('syncWinWinId failed', { error: String(err) });
   }
