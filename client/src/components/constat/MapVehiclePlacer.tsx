@@ -10,6 +10,7 @@ interface VehiclePosition {
 interface Props {
   role: 'A' | 'B' | 'C' | 'D';
   required?: boolean; // false = afficher bouton "Passer"
+  sessionId?: string; // pour polling temps réel des autres véhicules
   accidentLat?: number;
   accidentLng?: number;
   accidentAddress?: string;
@@ -174,7 +175,7 @@ function drawVehicle(
 }
 
 // ── Composant principal ───────────────────────────────────────
-export function MapVehiclePlacer({ role, required = true, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
+export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
 
@@ -193,6 +194,45 @@ export function MapVehiclePlacer({ role, required = true, accidentLat, accidentL
   const [confirmed, setConfirmed] = useState(false);
 
   const roleColors: Record<string, string> = { A:'#1a44cc', B:'#cc3300', C:'#228833', D:'#9933cc' };
+
+  // ── Live positions des autres véhicules (polling 3s) ─────────
+  const [livePositions, setLivePositions] = useState<{ role: string; pos: VehiclePosition }[]>(existingVehicles);
+
+  useEffect(() => {
+    if (!sessionId) return;
+    const fetchPositions = async () => {
+      try {
+        const res = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const session = data?.result?.data;
+        if (!session) return;
+        const positions: { role: string; pos: VehiclePosition }[] = [];
+        const parts: Record<string, any> = {
+          A: session.participantA,
+          B: session.participantB,
+          C: session.participantC,
+          D: session.participantD,
+        };
+        for (const [r, p] of Object.entries(parts)) {
+          if (r === role) continue; // skip own vehicle
+          const pos = (p as any)?.vehicle?.mapPosition;
+          if (pos?.x !== undefined && pos?.lat !== undefined) {
+            positions.push({ role: r, pos });
+          }
+        }
+        // Also check vehicleAPos in accident
+        const vehicleAPos = session.accident?.vehicleAPos;
+        if (vehicleAPos && role !== 'A' && !positions.find(p => p.role === 'A')) {
+          positions.push({ role: 'A', pos: vehicleAPos });
+        }
+        setLivePositions(positions);
+      } catch {}
+    };
+    fetchPositions();
+    const interval = setInterval(fetchPositions, 3000);
+    return () => clearInterval(interval);
+  }, [sessionId, role]);
   const roleColor = roleColors[role] || '#444';
   const bodyColor = parseColor(vehicleColor);
 
@@ -268,7 +308,7 @@ export function MapVehiclePlacer({ role, required = true, accidentLat, accidentL
     }
 
     // Véhicules existants
-    for (const ev of existingVehicles) {
+    for (const ev of livePositions) {
       drawVehicle(ctx, ev.pos.x, ev.pos.y, ev.pos.angle, '#888', ev.role, roleColors[ev.role]||'#444', false, 28, 13);
     }
 
@@ -297,7 +337,7 @@ export function MapVehiclePlacer({ role, required = true, accidentLat, accidentL
     ctx.fillRect(0, 0, satellite ? 195 : 205, 14);
     ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '8px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText(satellite ? '© Esri, Maxar, Earthstar Geographics' : '© OpenStreetMap contributors', 4, 10);
-  }, [position, angle, bodyColor, role, roleColor, existingVehicles, step, tilesLoaded, centerLat, centerLng, satellite]);
+  }, [position, angle, bodyColor, role, roleColor, livePositions, step, tilesLoaded, centerLat, centerLng, satellite]);
 
   useEffect(() => { render(); }, [render]);
 
