@@ -662,6 +662,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <MapVehiclePlacer
             required={false}
             role="A"
+            sessionId={sessionId}
             accidentLat={accidentData.location?.lat}
             accidentLng={accidentData.location?.lng}
             accidentAddress={accidentData.location?.address}
