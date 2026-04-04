@@ -11,12 +11,14 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
-  // WinWin SSO visible uniquement pour les utilisateurs en Suisse (détection géo)
+  // WinWin SSO — visible sauf si on sait avec certitude que l'utilisateur n'est pas en CH/LI
+  // La géo-détection est async : si pays inconnu → afficher par défaut (évite faux négatif)
   const isSwiss = (() => {
     const country = sessionStorage.getItem('boom_detected_country') || '';
-    // Also check if user previously logged in as WinWin (localStorage hint)
     const hasWW = localStorage.getItem('boom_ww_client') || localStorage.getItem('boom_ww_vehicles');
-    return country === 'CH' || country === 'LI' || !!hasWW;
+    // Afficher si : pays CH/LI, pays inconnu (pas encore détecté), ou déjà client WinWin
+    const knownNonSwiss = country.length > 0 && country !== 'CH' && country !== 'LI';
+    return !knownNonSwiss || !!hasWW;
   })();
 
   const [mode, setMode]       = useState<AuthMode>('choose');
