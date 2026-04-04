@@ -142,7 +142,7 @@ export async function requestWinWinMagicLink(
 // Retourne true si l'email existe dans WinWin (sans credentials)
 export async function checkWinWinEmail(
   email: string
-): Promise<{ exists: boolean; firstName?: string }> {
+): Promise<{ exists: boolean; firstName?: string; winwinId?: string }> {
   if (!WINWIN_SECRET || !email) return { exists: false };
 
   try {
@@ -160,11 +160,14 @@ export async function checkWinWinEmail(
     const data = await res.json();
     if (!data.ok) return { exists: false };
 
-    logger.info('WinWin check-email hit', { email });
-    return { exists: true, firstName: data.firstName };
+    logger.info('WinWin check-email hit', { email, winwinId: data.winwinId || data.clientId });
+    return {
+      exists: true,
+      firstName: data.firstName,
+      winwinId: data.winwinId || data.clientId || data.id, // accept any field name WinWin sends
+    };
 
   } catch {
-    // WinWin indisponible ou endpoint pas encore déployé → silencieux
     return { exists: false };
   }
 }
