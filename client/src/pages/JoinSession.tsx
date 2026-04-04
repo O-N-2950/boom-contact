@@ -660,6 +660,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <MapVehiclePlacer
             required={false}
             role="B"
+            sessionId={sessionId}
             accidentLat={sessionAccidentData?.lat}
             accidentLng={sessionAccidentData?.lng}
             accidentAddress={sessionAccidentData?.address}
