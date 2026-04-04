@@ -19,6 +19,8 @@ import { verifyWinWin, getWinWinVehicles, requestWinWinMagicLink, checkWinWinEma
 import { io } from '../index';
 import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 import { trackRapportCree, trackPdfGenere, trackPaiementEffectue } from '../analytics.js';
+import { db } from '../db/index.js';
+import { logger } from '../logger.js';
 
 const t = initTRPC.context<Context>().create();
 export const router = t.router;
