@@ -203,3 +203,39 @@ export async function verifyWinWinToken(
   }
 }
 
+// ── Récupérer véhicules WinWin par email (fallback quand winwinId absent) ─
+export async function getWinWinVehiclesByEmail(
+  email: string
+): Promise<WinWinVehicle[]> {
+  if (!WINWIN_SECRET || !email) return [];
+
+  try {
+    const res = await fetch(`${WINWIN_BASE}/api/boom/auth/garage-by-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${WINWIN_SECRET}`,
+      },
+      body: JSON.stringify({ email }),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!res.ok) {
+      // Fallback: check-email retourne peut-être le winwinId maintenant
+      const checkRes = await checkWinWinEmail(email);
+      if (checkRes.winwinId) return getWinWinVehicles(checkRes.winwinId);
+      return [];
+    }
+
+    const data = await res.json();
+    if (!data.ok || !Array.isArray(data.vehicles)) return [];
+
+    logger.info('WinWin garage-by-email success', { email, count: data.vehicles.length });
+    return data.vehicles as WinWinVehicle[];
+
+  } catch (err) {
+    logger.error('WinWin garage-by-email error', { error: String(err) });
+    return [];
+  }
+}
+
