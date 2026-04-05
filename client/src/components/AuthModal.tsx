@@ -1,50 +1,25 @@
 import { useState } from 'react';
 import { trpc } from '../trpc';
 
-type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent' | 'winwin';
+type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent';
 
 interface AuthModalProps {
   onAuth: (token: string, user: any) => void;
-  onSkip: () => void;              // Continuer sans compte
+  onSkip: () => void;
   title?: string;
   subtitle?: string;
 }
 
 export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
-  // WinWin SSO — visible sauf si on sait avec certitude que l'utilisateur n'est pas en CH/LI
-  // La géo-détection est async : si pays inconnu → afficher par défaut (évite faux négatif)
-  const isSwiss = (() => {
-    const country = sessionStorage.getItem('boom_detected_country') || '';
-    const hasWW = localStorage.getItem('boom_ww_client') || localStorage.getItem('boom_ww_vehicles');
-    // Afficher si : pays CH/LI, pays inconnu (pas encore détecté), ou déjà client WinWin
-    const knownNonSwiss = country.length > 0 && country !== 'CH' && country !== 'LI';
-    return !knownNonSwiss || !!hasWW;
-  })();
-
-  const [mode, setMode]       = useState<AuthMode>('choose');
-  const [email, setEmail]     = useState('');
+  const [mode, setMode]         = useState<AuthMode>('choose');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError]     = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError]       = useState('');
+  const [loading, setLoading]   = useState(false);
 
   const magicReqMut  = trpc.auth.magicLinkRequest.useMutation();
-  const magicVerMut  = trpc.auth.magicLinkVerify.useMutation();
   const loginMut     = trpc.auth.login.useMutation();
   const registerMut  = trpc.auth.register.useMutation();
-  const winwinMut    = trpc.auth.winwinLogin.useMutation();
-
-  const handleWinWinLogin = async () => {
-    if (!email || !password) return;
-    setLoading(true); setError('');
-    try {
-      const res = await winwinMut.mutateAsync({ email, password });
-      localStorage.setItem('boom_user_token', res.token);
-      localStorage.setItem('boom_user', JSON.stringify(res.user));
-      onAuth(res.token, res.user);
-    } catch (e: any) {
-      setError('Email ou mot de passe WinWin incorrect.');
-    } finally { setLoading(false); }
-  };
 
   const handleMagicRequest = async () => {
     if (!email) return;
@@ -79,7 +54,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user', JSON.stringify({ id: res.id, email, role: 'customer', credits: 0 }));
       onAuth(res.token, { id: res.id, email, role: 'customer', credits: 0 });
     } catch (e: any) {
-      setError(e.message || 'Erreur lors de l\'inscription.');
+      setError(e.message || "Erreur lors de l'inscription.");
     } finally { setLoading(false); }
   };
 
@@ -92,7 +67,6 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         background: '#111', border: '1px solid #222', borderRadius: 20,
         padding: 32, width: '100%', maxWidth: 420, position: 'relative',
       }}>
-        {/* Header */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
             {title || '💥 boom.contact'}
@@ -105,24 +79,6 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: choose */}
         {mode === 'choose' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* WinWin SSO — Suisse et Liechtenstein uniquement */}
-            {isSwiss && (
-              <>
-                <button onClick={() => setMode('winwin')} style={{
-                  ...btnStyle('#0057A8'), border: '2px solid #0057A8',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                }}>
-                  <span style={{ fontSize: 18 }}>🔵</span>
-                  <span>Connexion WinWin</span>
-                  <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 4 }}>— vos véhicules importés automatiquement</span>
-                </button>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '2px 0' }}>
-                  <div style={{ flex: 1, height: 1, background: '#222' }}/>
-                  <span style={{ fontSize: 11, color: '#444' }}>ou</span>
-                  <div style={{ flex: 1, height: 1, background: '#222' }}/>
-                </div>
-              </>
-            )}
             <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
               📧 Connexion par lien email (recommandé)
             </button>
@@ -139,36 +95,6 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <p style={{ color: '#555', fontSize: 11, textAlign: 'center', margin: 0 }}>
               Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.
             </p>
-          </div>
-        )}
-
-        {/* MODE: WinWin SSO */}
-        {mode === 'winwin' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ background: 'rgba(0,87,168,0.12)', border: '1px solid rgba(0,87,168,0.3)', borderRadius: 10, padding: '12px 14px', marginBottom: 4 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: '#60a5fa', marginBottom: 4 }}>🔵 Connexion WinWin</div>
-              <div style={{ fontSize: 12, color: '#aaa', lineHeight: 1.5 }}>
-                Utilisez vos identifiants WinWin. Vos véhicules assurés seront importés automatiquement dans votre garage boom.contact.
-              </div>
-            </div>
-            <input
-              type="email" placeholder="Email WinWin" value={email}
-              onChange={e => setEmail(e.target.value)}
-              style={inputStyle}
-            />
-            <input
-              type="password" placeholder="Mot de passe WinWin" value={password}
-              onChange={e => setPassword(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleWinWinLogin()}
-              style={inputStyle}
-            />
-            {error && <div style={{ color: '#ef4444', fontSize: 12 }}>{error}</div>}
-            <button onClick={handleWinWinLogin} disabled={loading || !email || !password} style={btnStyle('#0057A8')}>
-              {loading ? '⏳ Connexion…' : '🔵 Se connecter avec WinWin →'}
-            </button>
-            <button onClick={() => { setMode('choose'); setError(''); }} style={{ ...btnStyle('transparent'), color: '#666', fontSize: 13 }}>
-              ← Retour
-            </button>
           </div>
         )}
 
@@ -268,7 +194,6 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   );
 }
 
-// ── Styles ────────────────────────────────────────────────────
 const inputStyle: React.CSSProperties = {
   background: '#1a1a1a', border: '1px solid #333', borderRadius: 10,
   color: '#fff', padding: '12px 14px', fontSize: 15, width: '100%',
