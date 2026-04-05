@@ -663,7 +663,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             sessionId={sessionId}
             accidentLat={sessionAccidentData?.lat}
             accidentLng={sessionAccidentData?.lng}
-            accidentAddress={sessionAccidentData?.address}
+            accidentAddress={sessionAccidentData?.address || sessionAccidentData?.city}
             accidentCity={sessionAccidentData?.city}
             vehicleColor={participantData.vehicle?.color}
             vehicleType={participantData.vehicle?.vehicleType}
