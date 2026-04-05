@@ -1,5 +1,5 @@
 import { renderSketch } from './sketch-renderer.service.js';
-import { fetchAccidentMap, geocodeAddress } from './osm-map.service.js';
+import { fetchAccidentMap, fetchAccidentMapWithVehicles, geocodeAddress } from './osm-map.service.js';
 import { logger } from '../logger.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import {
@@ -560,16 +560,37 @@ export async function generateConstatPDF(
         vehicleBModel:    B.vehicle?.model,
         vehicleBPlate:    B.vehicle?.licensePlate,
         mapImageBase64:   await (async () => {
-          // Priorité 1: sketchImage du client (carte OSM déjà capturée)
-          if (acc.sketchImage && acc.sketchImage.length > 1000) {
-            // Extraire base64 pur si c'est un data URL
-            const raw = acc.sketchImage.replace(/^data:image\/[^;]+;base64,/, '');
-            return raw;
-          }
-          // Priorité 2: fetcher la carte OSM depuis les coordonnées GPS
+          // Priorité 1 : carte OSM générée côté serveur avec LES DEUX véhicules
           const loc = acc.location as any;
           const lat = loc?.lat || loc?.latitude;
           const lng = loc?.lng || loc?.longitude || loc?.lon;
+          if (lat && lng) {
+            const vehicleAPos = (acc as any).vehicleAPos;
+            const vehicleBPos = A?.vehicle?.mapPosition || B?.vehicle?.mapPosition;
+            const markers: import('./osm-map.service.js').VehicleMarker[] = [];
+            if (vehicleAPos?.lat && vehicleAPos?.lng) {
+              markers.push({ lat: vehicleAPos.lat, lng: vehicleAPos.lng, angle: vehicleAPos.angle || 0, label: 'A', color: '#1a44cc' });
+            }
+            if (vehicleBPos?.lat && vehicleBPos?.lng) {
+              markers.push({ lat: vehicleBPos.lat, lng: vehicleBPos.lng, angle: vehicleBPos.angle || 0, label: 'B', color: '#cc3300' });
+            }
+            if (markers.length > 0) {
+              try {
+                const centerLat = markers.length >= 2
+                  ? (markers[0].lat + markers[1].lat) / 2
+                  : markers[0].lat;
+                const centerLng = markers.length >= 2
+                  ? (markers[0].lng + markers[1].lng) / 2
+                  : markers[0].lng;
+                return await fetchAccidentMapWithVehicles(centerLat, centerLng, markers);
+              } catch {}
+            }
+          }
+          // Priorité 2: sketchImage du client (fallback si pas de coordonnées GPS)
+          if (acc.sketchImage && acc.sketchImage.length > 1000) {
+            return acc.sketchImage.replace(/^data:image\/[^;]+;base64,/, '');
+          }
+          // Priorité 3: fetcher la carte OSM simple depuis les coordonnées GPS
           if (lat && lng) {
             try {
               logger.info(`[pdf] Fetch carte OSM: ${lat},${lng}`);
@@ -606,7 +627,7 @@ export async function generateConstatPDF(
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
       drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
-      drawText(sketchPage, `Carte positionnée par le conducteur A  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+      drawText(sketchPage, `Position des véhicules A & B  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
       drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light);
       const sketchBytes = Buffer.from(finalSketchBase64!, 'base64');
       // Auto-detect JPEG (FF D8 FF) ou PNG (89 50 4E 47)
