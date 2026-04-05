@@ -229,34 +229,64 @@ export function VoiceSketchFlow({ role, sessionId, lang, onComplete, onSkip }: P
   );
 
   // ── DONE ───────────────────────────────────────────────────────
-  if (flowState === 'done') return (
-    <div style={{ padding: 24 }}>
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <div style={{ fontSize: 40, marginBottom: 8 }}>✅</div>
-        <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>Description enregistrée</h2>
-        <p style={{ fontSize: 13, opacity: 0.5 }}>Votre déclaration sera incluse dans le constat PDF</p>
-      </div>
+  if (flowState === 'done') {
+    const currentText = transcript || manualText;
+    return (
+      <div style={{ padding: 24 }}>
+        <div style={{ textAlign: 'center', marginBottom: 20 }}>
+          <div style={{ fontSize: 40, marginBottom: 8 }}>✅</div>
+          <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>Description enregistrée</h2>
+          <p style={{ fontSize: 13, opacity: 0.5 }}>Votre déclaration sera incluse dans le constat PDF</p>
+        </div>
 
-      {/* Transcript display */}
-      <div style={{
-        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 12, padding: 16, marginBottom: 20, fontSize: 14,
-        fontStyle: 'italic', lineHeight: 1.65, color: 'rgba(255,255,255,0.8)',
-      }}>
-        &ldquo;{transcript || manualText}&rdquo;
-      </div>
+        {/* Transcript — éditable */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 12, opacity: 0.45, letterSpacing: 1, textTransform: 'uppercase' as const }}>Votre déclaration</span>
+            <button
+              onClick={() => setInputMode(inputMode === 'text' ? 'voice' : 'text')}
+              style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 6, padding: '3px 10px', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>
+              ✏️ Modifier
+            </button>
+          </div>
+          {inputMode === 'text' ? (
+            <textarea
+              value={manualText || transcript}
+              onChange={e => { setManualText(e.target.value); setTranscript(e.target.value); }}
+              rows={6}
+              style={{
+                width: '100%', background: 'rgba(255,255,255,0.06)',
+                border: `1px solid ${roleColor}66`, borderRadius: 10,
+                color: '#fff', fontSize: 14, padding: 14, lineHeight: 1.65,
+                resize: 'vertical' as const, outline: 'none', fontFamily: 'inherit',
+                boxSizing: 'border-box' as const,
+              }}
+              placeholder="Corrigez votre déclaration si nécessaire..."
+              autoFocus
+            />
+          ) : (
+            <div style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: 12, padding: 16, fontSize: 14,
+              fontStyle: 'italic', lineHeight: 1.65, color: 'rgba(255,255,255,0.8)',
+            }}>
+              &ldquo;{currentText}&rdquo;
+            </div>
+          )}
+        </div>
 
-      <div style={{ display: 'flex', gap: 10 }}>
-        <button onClick={() => { setTranscript(''); setManualText(''); setFlowState('intro'); }}
-          style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 14 }}>
-          Recommencer
-        </button>
-        <button onClick={handleConfirm} style={{ ...btnPrimary, flex: 2 }}>
-          Continuer →
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button onClick={() => { setTranscript(''); setManualText(''); setFlowState('intro'); setInputMode('voice'); }}
+            style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 14 }}>
+            Recommencer
+          </button>
+          <button onClick={handleConfirm} style={{ ...btnPrimary, flex: 2 }}>
+            Continuer →
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   return null;
 }
