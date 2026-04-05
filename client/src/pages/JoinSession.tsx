@@ -367,7 +367,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
       </div>
 
-      {/* Email + détection WinWin silencieuse */}
+      {/* Email conducteur B */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
           📧 Votre email
@@ -387,7 +387,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           placeholder="votre@email.com"
           style={{
             width: '100%', padding: '13px 14px', borderRadius: 10,
-            border: winwinStatus === 'found' ? '1.5px solid rgba(255,179,0,0.45)' : '1.5px solid rgba(255,255,255,0.12)',
+            border: '1.5px solid rgba(255,255,255,0.12)',
             background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
             fontSize: 15, outline: 'none', boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
@@ -396,108 +396,6 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           Optionnel — le PDF vous sera envoyé automatiquement après signature
         </div>
       </div>
-
-      {/* ── WinWin détecté : choix connexion ── */}
-      {winwinStatus === 'found' && winwinMode === null && (
-        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#FFB300', marginBottom: 4 }}>
-            🏆 Client WIN WIN Finance{winwinFirstName ? ` — Bonjour ${winwinFirstName} !` : ''}
-          </div>
-          <div style={{ fontSize: 12, opacity: 0.55, marginBottom: 14, lineHeight: 1.5 }}>
-            Connectez-vous pour charger votre véhicule assuré automatiquement.
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <button onClick={() => {
-              setWinwinMode('magic'); setWinwinError(null); setWinwinMagicSent(false); setWinwinLoading(true);
-              winwinMagicMut.mutate({ email: participantData.driver?.email || '', sessionId });
-            }} style={{ padding: '12px', borderRadius: 10, border: 'none', background: '#FFB300', color: '#000', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
-              ✉️ Recevoir un lien de connexion par email
-            </button>
-            <button onClick={() => { setWinwinMode('password'); setWinwinError(null); }}
-              style={{ padding: '12px', borderRadius: 10, border: '1px solid rgba(255,179,0,0.4)', background: 'transparent', color: '#FFB300', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
-              🔑 Se connecter avec un mot de passe
-            </button>
-            <button onClick={() => { setWinwinMode('scan'); setWinwinStatus('none'); }}
-              style={{ padding: '10px', borderRadius: 10, border: 'none', background: 'transparent', color: 'rgba(255,255,255,0.35)', fontSize: 13, cursor: 'pointer' }}>
-              Scanner mes documents →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── Mode magic link ── */}
-      {winwinMode === 'magic' && (
-        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
-          {winwinLoading && !winwinMagicSent && (
-            <div style={{ fontSize: 13, opacity: 0.6, textAlign: 'center' }}>⏳ Envoi en cours…</div>
-          )}
-          {winwinMagicSent && (
-            <>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#FFB300', marginBottom: 6 }}>✅ Email envoyé !</div>
-              <div style={{ fontSize: 12, opacity: 0.6, lineHeight: 1.6 }}>
-                Vérifiez votre boîte mail et cliquez sur le lien — vous reviendrez automatiquement ici.<br/>
-                <span style={{ opacity: 0.4 }}>Vous ne quittez pas boom.contact.</span>
-              </div>
-            </>
-          )}
-          {winwinError && <div style={{ fontSize: 12, color: '#ef4444', marginTop: 8 }}>⚠️ {winwinError}</div>}
-          <button onClick={() => { setWinwinMode(null); setWinwinMagicSent(false); }}
-            style={{ marginTop: 12, fontSize: 12, opacity: 0.4, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>
-            ← Retour
-          </button>
-        </div>
-      )}
-
-      {/* ── Mode mot de passe ── */}
-      {winwinMode === 'password' && (
-        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
-          <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7 }}>🔑 Mot de passe WIN WIN</div>
-          <input
-            type="password"
-            value={winwinPassword}
-            onChange={e => setWinwinPassword(e.target.value)}
-            placeholder="Votre mot de passe WIN WIN"
-            autoComplete="current-password"
-            style={{ width: '100%', padding: '12px 14px', borderRadius: 10, border: '1.5px solid rgba(255,179,0,0.3)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 15, outline: 'none', boxSizing: 'border-box' as const, fontFamily: 'inherit', marginBottom: 10 }}
-          />
-          {winwinError && <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 8 }}>⚠️ {winwinError}</div>}
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={() => {
-              setWinwinLoading(true); setWinwinError(null);
-              winwinLoginMut.mutate({ email: participantData.driver?.email || '', password: winwinPassword });
-            }} disabled={winwinLoading || !winwinPassword}
-              style={{ flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: winwinLoading ? 'rgba(255,179,0,0.4)' : '#FFB300', color: '#000', fontWeight: 700, fontSize: 14, cursor: winwinLoading ? 'not-allowed' : 'pointer' }}>
-              {winwinLoading ? '⏳ Vérification…' : 'Connexion →'}
-            </button>
-            <button onClick={() => { setWinwinMode(null); setWinwinPassword(''); setWinwinError(null); }}
-              style={{ padding: '12px 16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontSize: 13, cursor: 'pointer' }}>
-              ←
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── Sélection véhicule WinWin ── */}
-      {winwinMode === 'vehicles' && winwinVehicles.length > 0 && (
-        <div style={{ marginBottom: 20, padding: 16, borderRadius: 12, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.3)' }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#FFB300', marginBottom: 12 }}>
-            🚗 Choisissez votre véhicule concerné
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {winwinVehicles.map((v: any, i: number) => (
-              <button key={i} onClick={() => applyWinWinVehicle(v)}
-                style={{ padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,255,255,0.03)', cursor: 'pointer', textAlign: 'left' as const, color: 'var(--text)' }}>
-                <div style={{ fontWeight: 700, fontSize: 14 }}>{v.plate} — {v.make} {v.model}</div>
-                <div style={{ fontSize: 11, opacity: 0.5, marginTop: 3 }}>{v.color || ''}{v.insurerName ? ` · ${v.insurerName}` : ''}{v.label ? ` · ${v.label}` : ''}</div>
-              </button>
-            ))}
-          </div>
-          <button onClick={() => { setWinwinMode('scan'); setWinwinStatus('none'); localStorage.removeItem('boom_ww_vehicles'); localStorage.removeItem('boom_ww_client'); }}
-            style={{ marginTop: 10, fontSize: 12, opacity: 0.35, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>
-            Scanner mes documents à la place →
-          </button>
-        </div>
-      )}
 
       <button onClick={join} disabled={joining || !sessionId} style={{
         width: '100%', padding: '18px', borderRadius: 12, border: 'none',
