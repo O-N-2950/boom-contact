@@ -84,26 +84,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [otherSigned, setOtherSigned] = useState(false);
   const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
-  // ── WinWin Driver B ──────────────────────────────────────────
-  const [winwinStatus, setWinwinStatus] = useState<null|'checking'|'found'|'none'>(() => {
-    // Véhicules déjà chargés par magic link (retour depuis email)
-    const wv = localStorage.getItem('boom_ww_vehicles');
-    return (wv && JSON.parse(wv).length > 0) ? 'found' : null;
-  });
-  const [winwinFirstName, setWinwinFirstName] = useState<string>(() => {
-    try { return JSON.parse(localStorage.getItem('boom_ww_client') || '{}').firstName || ''; } catch { return ''; }
-  });
-  const [winwinMode, setWinwinMode] = useState<null|'magic'|'password'|'vehicles'|'scan'>(() => {
-    const wv = localStorage.getItem('boom_ww_vehicles');
-    return (wv && JSON.parse(wv).length > 0) ? 'vehicles' : null;
-  });
-  const [winwinPassword, setWinwinPassword] = useState('');
-  const [winwinMagicSent, setWinwinMagicSent] = useState(false);
-  const [winwinVehicles, setWinwinVehicles] = useState<any[]>(() => {
-    try { return JSON.parse(localStorage.getItem('boom_ww_vehicles') || '[]'); } catch { return []; }
-  });
-  const [winwinError, setWinwinError] = useState<string|null>(null);
-  const [winwinLoading, setWinwinLoading] = useState(false);
+
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
@@ -172,50 +153,11 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     },
   });
 
-  const winwinCheckMut = trpc.winwin.checkEmail.useMutation({
-    onSuccess: (data: any) => {
-      if (data.exists) { setWinwinStatus('found'); setWinwinFirstName(data.firstName || ''); }
-      else setWinwinStatus('none');
-    },
-    onError: () => setWinwinStatus('none'),
-  });
-  const winwinLoginMut = trpc.winwin.loginForDriverB.useMutation({
-    onSuccess: (data: any) => {
-      setWinwinVehicles(data.vehicles || []);
-      setWinwinMode('vehicles');
-      setWinwinLoading(false);
-      setWinwinError(null);
-    },
-    onError: (err: any) => { setWinwinError(err.message || 'Mot de passe incorrect'); setWinwinLoading(false); },
-  });
-  const winwinMagicMut = trpc.winwin.requestMagicLinkForDriverB.useMutation({
-    onSuccess: () => { setWinwinMagicSent(true); setWinwinLoading(false); },
-    onError: (err: any) => { setWinwinError(err.message || 'Erreur envoi email'); setWinwinLoading(false); },
-  });
 
-  // Debounce email → check WinWin silencieusement (600ms)
-  useEffect(() => {
-    const email = participantData.driver?.email || '';
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setWinwinStatus(null); setWinwinMode(null); return; }
-    // Ne pas re-checker si magic link a déjà chargé les véhicules
-    if (winwinMode === 'vehicles') return;
-    setWinwinStatus('checking');
-    const t = setTimeout(() => winwinCheckMut.mutate({ email }), 600);
-    return () => clearTimeout(t);
-  }, [participantData.driver?.email]);
 
-  // Appliquer un véhicule WinWin → pré-remplit + skip OCR
-  const applyWinWinVehicle = (v: any) => {
-    localStorage.removeItem('boom_ww_vehicles');
-    localStorage.removeItem('boom_ww_client');
-    const vehicleData = { licensePlate: v.plate, make: v.make, model: v.model, color: v.color, year: v.year, vehicleType: 'car' };
-    const insuranceData = { companyName: v.insurerName, policyNumber: v.policyNumber, brokerName: 'WIN WIN Finance Group', brokerEmail: 'sinistre@winwin.swiss', brokerPhone: '+41 32 466 11 00' };
-    setParticipantData(prev => ({ ...prev, vehicle: vehicleData as any, insurance: insuranceData as any }));
-    if (sessionId) updateMutation.mutate({ sessionId, role: urlRole, data: { vehicle: vehicleData, insurance: insuranceData } as any });
-    setWinwinMode(null);
-    setWinwinStatus(null);
-    setTimeout(() => setStep('photos'), 100);
-  };
+
+
+
 
   const handleLangChange = (lang: string) => {
     setSelectedLang(lang);
