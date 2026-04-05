@@ -198,6 +198,17 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
   // ── Live positions des autres véhicules (polling 3s) ─────────
   const [livePositions, setLivePositions] = useState<{ role: string; pos: VehiclePosition }[]>(existingVehicles);
 
+  // If waiting for coords (driver B case), use A's position from live polling as center
+  useEffect(() => {
+    if (geoStatus !== 'waiting' && geoStatus !== 'loading') return;
+    const aPos = livePositions.find(p => p.role === 'A');
+    if (aPos?.pos?.lat && aPos?.pos?.lng) {
+      setCenterLat(aPos.pos.lat);
+      setCenterLng(aPos.pos.lng);
+      setGeoStatus('ok');
+    }
+  }, [livePositions, geoStatus]);
+
   useEffect(() => {
     if (!sessionId) return;
     const fetchPositions = async () => {
@@ -242,7 +253,11 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
       setCenterLat(accidentLat); setCenterLng(accidentLng); setGeoStatus('ok'); return;
     }
     const parts = [accidentAddress, accidentCity, accidentCountry].filter(Boolean).join(', ');
-    if (!parts) { setGeoStatus('error'); return; }
+    if (!parts) {
+      // No address either — wait for session polling to provide coords (for driver B)
+      setGeoStatus('waiting');
+      return;
+    }
 
     fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(parts)}&format=json&limit=1`, {
       headers: { 'User-Agent': 'boom.contact/1.0 accident-report' }
