@@ -372,7 +372,6 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
           📧 Votre email
           <span style={{ opacity: 0.45, fontWeight: 400 }}>(pour recevoir le PDF)</span>
-          {winwinStatus === 'checking' && <span style={{ fontSize: 9, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>●●●</span>}
         </div>
         <input
           type="email"
@@ -382,7 +381,6 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           value={participantData.driver?.email || ''}
           onChange={e => {
             setParticipantData(prev => ({ ...prev, driver: { ...(prev.driver || {}), email: e.target.value } as any }));
-            setWinwinMode(null); setWinwinVehicles([]); setWinwinMagicSent(false); setWinwinError(null);
           }}
           placeholder="votre@email.com"
           style={{
