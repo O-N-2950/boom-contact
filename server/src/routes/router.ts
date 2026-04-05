@@ -26,36 +26,6 @@ const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-// ── WinWin sync — appelé silencieusement après chaque connexion ─
-// Vérifie si l'email est client WinWin et enregistre winwinId en DB
-async function syncWinWinId(userId: string, email: string): Promise<void> {
-  try {
-    const { eq } = await import('drizzle-orm');
-    const { users: usersTable } = await import('../db/schema.js');
-    const user = await db.query.users.findFirst({ where: eq(usersTable.id, userId) });
-    if (!user || user.winwinId) return; // déjà connu → skip
-
-    const result = await checkWinWinEmail(email);
-    if (!result.exists) return;
-
-    if (result.winwinId) {
-      // WinWin retourne l'ID → l'enregistrer directement
-      await db.update(usersTable)
-        .set({ winwinId: result.winwinId })
-        .where(eq(usersTable.id, userId));
-      logger.info('WinWin client linked on login', { email, winwinId: result.winwinId });
-    } else {
-      // WinWin ne retourne pas encore l'ID → utiliser l'email comme clé temporaire
-      // vehicle.list appellera getWinWinVehicles(email) dans ce cas
-      await db.update(usersTable)
-        .set({ winwinId: `ww-email:${email}` }) // marqueur spécial
-        .where(eq(usersTable.id, userId));
-      logger.info('WinWin client detected (no ID yet)', { email });
-    }
-  } catch (err) {
-    logger.warn('syncWinWinId failed', { error: String(err) });
-  }
-}
 
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
@@ -864,8 +834,6 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         try {
           const result = await loginWithPassword(input.email, input.password);
-          // Check WinWin silently — enrich winwinId if client
-          syncWinWinId(result.user.id, input.email).catch(() => {});
           return result;
         }
         catch { throw new Error('Email ou mot de passe incorrect.'); }
@@ -887,8 +855,6 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const result = await verifyMagicToken(input.token);
         if (!result) throw new Error('Lien invalide ou expiré.');
-        // Check WinWin silently — enrich winwinId if client
-        syncWinWinId(result.user.id, result.user.email).catch(() => {});
         return { ok: true, ...result };
       }),
 
@@ -1146,58 +1112,12 @@ export const appRouter = router({
   // ── VEHICLES — garage personnel ──────────────────────────────
   vehicle: router({
 
-    // GET vehicle.list — local vehicles + WinWin vehicles if user is a WinWin client
+    // GET vehicle.list
     list: publicProcedure
       .query(async ({ ctx }) => {
         if (!ctx.authUser) return [];
         const { listVehicles } = await import('../services/vehicle.service.js');
-        const localVehicles = await listVehicles(ctx.authUser.sub);
-
-        // Enrich with WinWin vehicles if user has a winwinId
-        try {
-          const { users } = await import('../db/schema.js');
-          const { eq } = await import('drizzle-orm');
-          const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
-          if (user?.winwinId) {
-            const { getWinWinVehicles, getWinWinVehiclesByEmail } = await import('../services/winwin.service.js');
-            // Handle both real winwinId and email-fallback marker
-            const wwVehicles = user.winwinId.startsWith('ww-email:')
-              ? await getWinWinVehiclesByEmail(user.winwinId.replace('ww-email:', ''))
-              : await getWinWinVehicles(user.winwinId);
-            // Map WinWin vehicles to garage format — mark them as winwin source
-            const mapped = wwVehicles.map((v: any) => ({
-              id:           `ww-${v.plate?.replace(/\s/g, '') || Math.random()}`,
-              userId:       ctx.authUser!.sub,
-              plate:        v.plate,
-              make:         v.make,
-              model:        v.model,
-              color:        v.color,
-              year:         v.year,
-              nickname:     v.label ? `${v.make} ${v.model}${v.label ? ` (${v.label})` : ''}` : null,
-              category:     v.category || null,
-              source:       'winwin',  // flag for UI
-              insuranceData: {
-                companyName:  v.insurerName,
-                policyNumber: v.policyNumber,
-                brokerName:   'WIN WIN Finance Group',
-                brokerEmail:  'sinistre@winwin.swiss',
-                brokerPhone:  '+41 32 466 11 00',
-              },
-              licenseData:  {},
-              createdAt:    new Date(),
-              updatedAt:    new Date(),
-            }));
-            // Merge — WinWin vehicles first, deduplicate by plate
-            const localPlates = new Set(localVehicles.map((v: any) => v.plate?.toUpperCase()).filter(Boolean));
-            const newWW = mapped.filter((v: any) => !v.plate || !localPlates.has(v.plate.toUpperCase()));
-            return [...newWW, ...localVehicles];
-          }
-        } catch (err) {
-          // WinWin unavailable — return local vehicles only, never crash
-          logger.warn('WinWin vehicles fetch failed in vehicle.list', { error: String(err) });
-        }
-
-        return localVehicles;
+        return listVehicles(ctx.authUser.sub);
       }),
 
     // POST vehicle.save — create or update
