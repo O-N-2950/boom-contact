@@ -42,7 +42,6 @@ function getInitialView(): AppView {
   if (params.get('urgences') === 'true') return 'emergency';
   if (params.get('privacy') === 'true') return 'privacy';
   // Magic link / gift link handled inline after mount
-  if (params.get('ww_token') && params.get('session')) return 'join'; // WinWin magic link retour
   if (params.get('session'))         return 'join';
   if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
@@ -70,7 +69,6 @@ export default function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();
-  const wwVerifyMut     = trpc.winwin.verifyToken.useMutation();
   const claimGiftMut    = trpc.auth.claimGift.useMutation();
 
   // Handle ?magic= and ?gift= on mount
@@ -89,25 +87,6 @@ export default function App() {
           setView('account');
         },
         onError: () => alert('Lien de connexion invalide ou expiré.'),
-      });
-    }
-    // WinWin magic link retour — conducteur B revient sur boom.contact
-    const wwToken = params.get('ww_token');
-    const wwSession = params.get('session');
-    if (wwToken) {
-      window.history.replaceState({}, '', wwSession ? `/?session=${wwSession}` : '/');
-      wwVerifyMut.mutate({ token: wwToken }, {
-        onSuccess: (res: any) => {
-          // Stocker les véhicules WinWin en localStorage pour JoinSession
-          localStorage.setItem('boom_ww_vehicles', JSON.stringify(res.vehicles || []));
-          localStorage.setItem('boom_ww_client', JSON.stringify(res.client || {}));
-          // Rester sur la vue join (session est dans l'URL)
-          if (wwSession) setView('join');
-        },
-        onError: () => {
-          // Token invalide → flow normal, l'utilisateur scanera ses docs
-          if (wwSession) setView('join');
-        },
       });
     }
 
