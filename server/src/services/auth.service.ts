@@ -5,13 +5,23 @@ import { users, magicTokens } from '../db/schema.js';
 import { eq, and, gt, isNull } from 'drizzle-orm';
 import { logger } from '../logger.js';
 
-const JWT_SECRET  = process.env.JWT_SECRET || 'boom-dev-secret-change-in-prod';
+// JWT_SECRET must be set in Railway env — crash at boot if missing
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set. Server cannot start.');
+  process.exit(1);
+}
 const JWT_EXPIRES = '30d';
 const MAGIC_TTL   = 15 * 60 * 1000;  // 15 min
 const GIFT_TTL    = 7  * 24 * 60 * 60 * 1000; // 7 days
 
-const ADMIN_EMAIL    = 'contact@boom.contact';
-const ADMIN_PASSWORD = 'Cristal4you11++';
+// Admin credentials from environment — never hardcoded
+const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'contact@boom.contact';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  console.error('FATAL: ADMIN_PASSWORD environment variable is not set.');
+  process.exit(1);
+}
 
 // ── Nano ID (alphanum 20 chars) ───────────────────────────────
 function nanoid(len = 20): string {
