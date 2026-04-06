@@ -1391,7 +1391,7 @@ export const appRouter = router({
     posts: publicProcedure
       .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
       .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
         const { db } = await import('../db/index.js');
         const { socialPosts: sp } = await import('../db/schema.js');
         const { eq, and } = await import('drizzle-orm');
@@ -1407,7 +1407,7 @@ export const appRouter = router({
     generate: publicProcedure
       .input(z.object({ count: z.number().min(1).max(8).default(4) }))
       .mutation(async ({ ctx }: { ctx: Context }) => {
-        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
         const generated = await generateDailyPosts(4);
         return { generated };
       }),
@@ -1415,7 +1415,7 @@ export const appRouter = router({
     approve: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
         await approvePost(input.id);
         return { ok: true };
       }),
@@ -1423,7 +1423,7 @@ export const appRouter = router({
     markPosted: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
         await markPosted(input.id);
         return { ok: true };
       }),
@@ -1431,7 +1431,7 @@ export const appRouter = router({
     archive: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.user || ctx.user.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
         await archivePost(input.id);
         return { ok: true };
       }),
