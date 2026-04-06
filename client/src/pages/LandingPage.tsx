@@ -420,59 +420,6 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
         </Section>
       </div>
-
-      {/* ── WIN WIN ───────────────────────────────────────────── */}
-      <div style={{ padding: isDesktop ? '72px 48px' : '44px 24px', background: 'linear-gradient(160deg, #0A1628 0%, #0F2439 100%)', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', right: -30, top: '50%', transform: 'translateY(-50%)', fontSize: 200, opacity: 0.04, userSelect: 'none', pointerEvents: 'none' }}>🇨🇭</div>
-        <Section style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr', gap: isDesktop ? 60 : 0, alignItems: 'center' }}>
-            <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 100, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' as const, opacity: 0.7, marginBottom: 20 }}>
-                🇨🇭 Suisse · Switzerland · Schweiz
-              </div>
-              <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 'clamp(22px, 6vw, 28px)', lineHeight: 1.1, marginBottom: 10 }}>
-                Clients <span style={{ color: '#3176A6' }}>WIN WIN</span> ?<br/>
-                <span style={{ color: 'var(--boom)' }}>Aucun scan requis.</span>
-              </h2>
-              <p style={{ fontSize: 13, opacity: 0.55, lineHeight: 1.65, marginBottom: 28, maxWidth: 400 }}>
-                Si votre véhicule est assuré via{' '}
-                <strong style={{ color: 'rgba(255,255,255,0.85)' }}>WIN WIN Finance Group</strong>,
-                vos données sont automatiquement pré-chargées. Pas de permis à photographier, pas de carte verte à sortir.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {[
-                  { icon: '⚡', text: 'Constat démarré en 10 secondes depuis le portail WIN WIN' },
-                  { icon: '📋', text: 'Plaque, marque, assureur et N° de police déjà remplis' },
-                  { icon: '🤝', text: 'Courtier WIN WIN automatiquement informé du sinistre' },
-                ].map(({ icon, text }, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
-                    <span style={{ fontSize: 12, opacity: 0.75, lineHeight: 1.4 }}>{text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div style={{ marginTop: isDesktop ? 0 : 32 }}>
-              <div style={{ padding: isDesktop ? '28px' : '16px', borderRadius: 16, background: 'rgba(49,118,166,0.1)', border: '1.5px solid rgba(49,118,166,0.25)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
-                  <div style={{ width: 52, height: 52, borderRadius: 12, background: 'rgba(49,118,166,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>🤝</div>
-                  <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, marginBottom: 2, color: '#3176A6' }}>Partenaire officiel boom.contact</div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>WIN WIN Finance Group Sàrl</div>
-                    <a href="https://winwin.swiss" target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>winwin.swiss →</a>
-                  </div>
-                </div>
-                {isDesktop && (
-                  <div style={{ fontSize: 12, opacity: 0.5, lineHeight: 1.7, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
-                    Clients WIN WIN : connectez-vous via le portail WinWin pour démarrer un constat pré-rempli instantanément, ou identifiez-vous directement dans boom.contact en tant que conducteur B.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </Section>
-      </div>
-
       {/* ── TARIFS ────────────────────────────────────────────── */}
       <div id="tarifs" style={{ padding: isDesktop ? '72px 48px' : '52px 20px', background: 'var(--dark)', borderTop: '1px solid var(--border)' }}>
         <Section>
