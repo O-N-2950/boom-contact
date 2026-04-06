@@ -92,6 +92,11 @@ export async function transcribeAudio(
         });
       });
 
+      // 45s timeout for Whisper API
+      req.setTimeout(45000, () => {
+        req.destroy();
+        reject(new Error('Whisper API timeout after 45s'));
+      });
       req.on('error', reject);
       form.pipe(req);
     });
