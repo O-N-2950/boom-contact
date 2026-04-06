@@ -28,16 +28,10 @@ const USER_TOKEN_KEY = 'boom_user_token';
 const USER_DATA_KEY  = 'boom_user';
 const CGU_KEY   = 'boom_cgu_accepted';
 
-function getWinWinSessionId(): string | null {
-  // Detect /constat/:id path (WinWin directUrl pattern)
-  const match = window.location.pathname.match(/^\/constat\/([a-zA-Z0-9_-]+)$/);
-  return match ? match[1] : null;
-}
+
 
 function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
-  // WinWin directUrl: /constat/:sessionId?lang=fr&prefilled=true
-  if (getWinWinSessionId()) return 'constat';
   if (params.get('admin') === 'true') return 'admin';
   if (params.get('urgences') === 'true') return 'emergency';
   if (params.get('privacy') === 'true') return 'privacy';
@@ -251,7 +245,7 @@ export default function App() {
       />}
       {view === 'constat' && (
         <ConstatFlow
-          initialSessionId={getWinWinSessionId() || undefined}
+          initialSessionId={undefined}
           authToken={authToken || undefined}
           authUser={authUser}
           onShowAuth={() => setShowAuthModal(true)}
