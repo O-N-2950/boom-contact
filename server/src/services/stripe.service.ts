@@ -40,7 +40,7 @@ export const PACKAGES = {
     prices: {
       CHF: 490,  EUR: 490,  GBP: 390,
       AUD: 790,  USD: 490,  CAD: 690,
-      SGD: 690,  JPY: 75000, // centimes sauf JPY en yen (pas de décimales)
+      SGD: 690,  JPY: 750, // JPY = zero-decimal currency, amount in yen directly
     },
   },
   pack3: {
@@ -53,7 +53,7 @@ export const PACKAGES = {
     prices: {
       CHF: 1290, EUR: 1290, GBP:  990,
       AUD: 1990, USD: 1290, CAD: 1790,
-      SGD: 1790, JPY: 190000,
+      SGD: 1790, JPY: 1900,
     },
   },
   pack10: {
@@ -66,7 +66,7 @@ export const PACKAGES = {
     prices: {
       CHF: 3490, EUR: 3490, GBP: 2790,
       AUD: 5490, USD: 3490, CAD: 4790,
-      SGD: 4790, JPY: 520000,
+      SGD: 4790, JPY: 5200,
     },
   },
 } as const;
