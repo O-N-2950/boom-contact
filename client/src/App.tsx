@@ -42,13 +42,14 @@ function getInitialView(): AppView {
   if (params.get('urgences') === 'true') return 'emergency';
   if (params.get('privacy') === 'true') return 'privacy';
   // Magic link / gift link handled inline after mount
-  if (params.get('session'))         return 'join';
-  if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
-  if (params.get('pricing') === 'true') return 'pricing';
+  // Police flow MUST be checked before generic session check
   if (params.get('session') && params.get('role') === 'police') {
     const token = params.get('token') || localStorage.getItem('boom_police_token');
     if (token) return 'police_flow';
   }
+  if (params.get('session'))         return 'join';
+  if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
+  if (params.get('pricing') === 'true') return 'pricing';
   if (params.get('police') === 'true' || window.location.pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
     return token ? 'police_dashboard' : 'police_login';
@@ -90,11 +91,17 @@ export default function App() {
       });
     }
 
-    if (giftToken && authUser?.email) {
+    if (giftToken) {
       window.history.replaceState({}, '', '/');
-      claimGiftMut.mutate({ token: giftToken, email: authUser.email }, {
-        onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
-      });
+      if (authUser?.email) {
+        claimGiftMut.mutate({ token: giftToken, email: authUser.email }, {
+          onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
+        });
+      } else {
+        // Store gift token and open auth modal — claim after login
+        localStorage.setItem('boom_pending_gift', giftToken);
+        setShowAuthModal(true);
+      }
     }
   }, []);
 
@@ -104,13 +111,31 @@ export default function App() {
     setAuthToken(token);
     setAuthUser(user);
     setShowAuthModal(false);
-    // Redirection post-login selon pendingAction
+  };
+
+  // Handle post-login redirect based on pendingAction (runs after authUser is set)
+  useEffect(() => {
+    if (!authUser) return;
+    // Claim pending gift if any
+    const pendingGift = localStorage.getItem('boom_pending_gift');
+    if (pendingGift) {
+      localStorage.removeItem('boom_pending_gift');
+      claimGiftMut.mutate({ token: pendingGift, email: authUser.email }, {
+        onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
+      });
+    }
     if (pendingAction === 'garage') {
       setAccountInitialTab('garage');
       setView('account');
       setPendingAction(null);
+    } else if (pendingAction === 'constat') {
+      setView('constat');
+      setPendingAction(null);
+    } else if (pendingAction === 'pricing') {
+      setView('pricing');
+      setPendingAction(null);
     }
-  };
+  }, [authUser]);
 
   const handleLogout = () => {
     localStorage.removeItem(USER_TOKEN_KEY);
