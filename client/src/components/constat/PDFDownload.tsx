@@ -15,6 +15,7 @@ interface Props {
 
 export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
   const [loading, setLoading]           = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [pdfBase64, setPdfBase64]       = useState<string | null>(null);
   const [error, setError]               = useState<string | null>(null);
   const [email, setEmail]               = useState(driverEmail || '');
@@ -29,8 +30,8 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
   const [oneshotLoading, setOneshotLoading] = useState(false);
 
   const pdfMutation    = trpc.pdf.generate.useMutation({
-    onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); },
-    onError:   (err)  => { setError(err.message); setLoading(false); },
+    onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); setIsGenerating(false); },
+    onError:   (err)  => { setError(err.message); setLoading(false); setIsGenerating(false); },
   });
   const creditMutation = trpc.payment.useCredit.useMutation({
     onError: (err) => { setError(err.message); setLoading(false); },
@@ -64,6 +65,8 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
   // Consume 1 credit then generate PDF
   const generateWithCredit = async (): Promise<string | null> => {
     if (pdfBase64) return pdfBase64; // already generated
+    if (isGenerating) return null;   // prevent double-click
+    setIsGenerating(true);
     setLoading(true);
     setError(null);
 
@@ -74,6 +77,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
         setCreditUsed(true);
       } catch {
         setLoading(false);
+        setIsGenerating(false);
         return null;
       }
     }
@@ -381,8 +385,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
           ⏰ À transmettre à votre assureur
         </div>
         <div style={{ fontSize: 12, opacity: 0.65, lineHeight: 1.65 }}>
-          Délai habituel : 5 jours en France, 8 jours en Suisse.<br/>
-          Transmettez le PDF à <strong>votre propre assureur</strong>.
+          Transmettez ce document à <strong>votre propre assureur</strong> dans les délais prévus par votre contrat.
         </div>
       </div>
 
