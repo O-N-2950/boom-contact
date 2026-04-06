@@ -571,10 +571,10 @@ export async function generateConstatPDF(
             const vehicleBPos = (B as any)?.vehicle?.mapPosition ?? null;
             const markers: import('./osm-map.service.js').VehicleMarker[] = [];
             if (vehicleAPos?.lat && vehicleAPos?.lng) {
-              markers.push({ lat: vehicleAPos.lat, lng: vehicleAPos.lng, angle: vehicleAPos.angle || 0, label: 'A', color: '#1a44cc' });
+              markers.push({ lat: vehicleAPos.lat, lng: vehicleAPos.lng, angle: vehicleAPos.angle || 0, label: 'A', color: '#1a44cc', vehicleType: A?.vehicle?.vehicleType as string });
             }
             if (vehicleBPos?.lat && vehicleBPos?.lng) {
-              markers.push({ lat: vehicleBPos.lat, lng: vehicleBPos.lng, angle: vehicleBPos.angle || 0, label: 'B', color: '#cc3300' });
+              markers.push({ lat: vehicleBPos.lat, lng: vehicleBPos.lng, angle: vehicleBPos.angle || 0, label: 'B', color: '#cc3300', vehicleType: (B as any)?.vehicle?.vehicleType as string });
             }
             if (markers.length > 0) {
               try {
