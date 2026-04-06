@@ -302,8 +302,9 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           </div>
 
           <div style={{ marginTop: 8, padding: '10px 12px', borderRadius: 8, background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-            <div style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.6 }}
-              dangerouslySetInnerHTML={{ __html: t('location.location_tip') }} />
+            <div style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.6 }}>
+              {t('location.location_tip')}
+            </div>
           </div>
         </div>
       )}
