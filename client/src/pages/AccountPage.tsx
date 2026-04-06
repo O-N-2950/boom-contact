@@ -411,7 +411,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               </div>
               {editingEmail && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <Field label="Nouvel email" placeholder="contact@winwin.swiss" value={newEmail} onChange={setNewEmail} />
+                  <Field label="Nouvel email" placeholder="contact@example.com" value={newEmail} onChange={setNewEmail} />
                   <Field label="Mot de passe actuel (confirmation)" placeholder="••••••••" value={emailPassword} onChange={setEmailPassword} />
                   <button
                     disabled={!newEmail || !emailPassword}
@@ -478,7 +478,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     <div style={{ flex: 1 }}><Field label="Nom" placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
                   </div>
                   <Field label="Téléphone" placeholder="+41 79 123 45 67" value={profileForm.phone} onChange={v => setProfileForm(p => ({...p, phone: v}))} />
-                  <Field label="Société" placeholder="WinWin SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
+                  <Field label="Société" placeholder="Acme SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
                   <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
                   <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
                     <button onClick={() => setEditingProfile(false)}
