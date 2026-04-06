@@ -76,7 +76,6 @@ interface ConstatFlowProps {
 
 export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth, onAccount, onBuyPack }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
-  // If WinWin initialSessionId, ignore localStorage (fresh prefilled session)
   const saved = initialSessionId ? null : loadState();
 
   const [step, setStepRaw] = useState<FlowStep>(() => {
@@ -126,7 +125,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   // ── Données B pour score cohérence ────────────────────────
   const [sessionBParticipant, setSessionBParticipant] = useState<any>(null);
 
-  // WinWin: apply lang param from URL on mount
   useEffect(() => {
     if (!initialSessionId) return;
     const params = new URLSearchParams(window.location.search);
