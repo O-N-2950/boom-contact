@@ -217,6 +217,16 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
       });
     } catch {}
 
+    // Idempotency check — skip if already processed
+    const [existingPayment] = await db.select()
+      .from(schema.payments)
+      .where(eq(schema.payments.stripeSessionId, session.id))
+      .limit(1);
+    if (existingPayment?.status === 'paid') {
+      logger.info('Webhook already processed, skipping', { stripeSessionId: session.id });
+      return;
+    }
+
     // Marquer paiement comme complété
     await db.update(schema.payments)
       .set({ status: 'paid', paidAt: new Date() })
