@@ -91,6 +91,32 @@ export const io = new SocketServer(httpServer, {
       },
     }));
 
+    // Rate limiting on auth endpoints (brute force protection)
+    app.use('/trpc/auth.login', rateLimit({
+      windowMs: 15 * 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit auth.login', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' });
+      },
+    }));
+    app.use('/trpc/auth.register', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit auth.register', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de créations de compte. Réessayez dans 1 heure.' });
+      },
+    }));
+    app.use('/trpc/auth.magicLinkRequest', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit magicLink', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de demandes de lien. Réessayez dans 1 heure.' });
+      },
+    }));
+
     logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min)');
   } catch (e) { logger.warn('Rate limit not available', { error: String(e) }); }
 })();
