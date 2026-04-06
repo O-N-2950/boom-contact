@@ -565,8 +565,10 @@ export async function generateConstatPDF(
           const lat = loc?.lat || loc?.latitude;
           const lng = loc?.lng || loc?.longitude || loc?.lon;
           if (lat && lng) {
+            // vehicleAPos toujours dans acc (sauvegardé par ConstatFlow)
+            // vehicleBPos dans B.vehicle.mapPosition (sauvegardé par JoinSession)
             const vehicleAPos = (acc as any).vehicleAPos;
-            const vehicleBPos = A?.vehicle?.mapPosition || B?.vehicle?.mapPosition;
+            const vehicleBPos = (B as any)?.vehicle?.mapPosition ?? null;
             const markers: import('./osm-map.service.js').VehicleMarker[] = [];
             if (vehicleAPos?.lat && vehicleAPos?.lng) {
               markers.push({ lat: vehicleAPos.lat, lng: vehicleAPos.lng, angle: vehicleAPos.angle || 0, label: 'A', color: '#1a44cc' });
