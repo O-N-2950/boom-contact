@@ -218,7 +218,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
         const data = await res.json();
         const session = data?.result?.data;
         if (!session) return;
-        const positions: { role: string; pos: VehiclePosition }[] = [];
+        const positions: { role: string; pos: VehiclePosition; vehicleType?: string }[] = [];
         const parts: Record<string, any> = {
           A: session.participantA,
           B: session.participantB,
@@ -229,7 +229,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
           if (r === role) continue; // skip own vehicle
           const pos = (p as any)?.vehicle?.mapPosition;
           if (pos?.x !== undefined && pos?.lat !== undefined) {
-            positions.push({ role: r, pos });
+            positions.push({ role: r, pos, vehicleType: (p as any)?.vehicle?.vehicleType });
           }
         }
         // Also check vehicleAPos in accident
@@ -324,11 +324,11 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
 
     // Véhicules existants
     for (const ev of livePositions) {
-      drawVehicle(ctx, ev.pos.x, ev.pos.y, ev.pos.angle, '#888', ev.role, roleColors[ev.role]||'#444', false, 28, 13);
+      drawVehicle(ctx, ev.pos.x, ev.pos.y, ev.pos.angle, '#888', ev.role, roleColors[ev.role]||'#444', false, undefined, undefined, (ev as any).vehicleType);
     }
 
     // Véhicule courant
-    drawVehicle(ctx, position.x, position.y, angle, bodyColor, role, roleColor, true, 34, 16);
+    drawVehicle(ctx, position.x, position.y, angle, bodyColor, role, roleColor, true, undefined, undefined, vehicleType);
 
     // Croix GPS (point d'accident)
     const gpx = CANVAS_W/2, gpy = CANVAS_H/2;
