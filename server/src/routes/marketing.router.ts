@@ -20,7 +20,8 @@ const publicProcedure = t.procedure;
 
 // Middleware admin simplifié (réutilise le même pattern que admin.stats)
 function requireAdmin(ctx: any) {
-  if (!ctx.user || ctx.user.role !== 'admin') {
+  // Context sets authUser (not user) — see middleware/context.ts
+  if (!ctx.authUser || ctx.authUser.role !== 'admin') {
     throw new Error('UNAUTHORIZED');
   }
 }
