@@ -24,7 +24,6 @@ function ocrCategoryToVehicleType(category?: string): VehicleType | null {
 
 
 import { PhotoCapture } from '../components/constat/PhotoCapture';
-import { AccidentSketch } from '../components/constat/AccidentSketch';
 import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
 import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
 import { useState, useEffect } from 'react';
