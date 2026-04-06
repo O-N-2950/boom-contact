@@ -127,13 +127,20 @@ export async function updateParticipant(
 // ─────────────────────────────────────────────────────────────
 export async function updateAccident(
   id: string,
-  data: Partial<AccidentData>,
+  data: Partial<AccidentData> & { vehicleCount?: number },
 ): Promise<ConstatSession | null> {
   const session = await getSession(id);
   if (!session) return null;
 
+  // vehicleCount is a top-level column — must be updated separately from accident JSONB
+  const { vehicleCount, ...accidentData } = data as any;
+  const updatePayload: any = { accident: { ...session.accident, ...accidentData } };
+  if (vehicleCount !== undefined) {
+    updatePayload.vehicleCount = vehicleCount;
+  }
+
   const [row] = await db.update(schema.sessions)
-    .set({ accident: { ...session.accident, ...data } })
+    .set(updatePayload)
     .where(eq(schema.sessions.id, id))
     .returning();
 
