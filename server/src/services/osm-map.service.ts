@@ -107,43 +107,84 @@ function latlngToPixel(
   };
 }
 
+// ── Emoji par type de véhicule ──────────────────────────────
+function getMarkerEmoji(vehicleType?: string): string {
+  switch (vehicleType) {
+    case 'motorcycle': case 'scooter': case 'moped': return '🏍';
+    case 'escooter':   return '🛴';
+    case 'bicycle': case 'cargo_bike': return '🚲';
+    case 'pedestrian': return '🚶';
+    case 'truck':      return '🚛';
+    case 'van':        return '🚐';
+    case 'bus':        return '🚌';
+    case 'tram':       return '🚋';
+    case 'quad':       return '🏎';
+    default:           return '🚗';
+  }
+}
+
 // ── Dessiner un marqueur véhicule sur canvas ──────────────────
 function drawVehicleMarker(
   ctx: any,
   x: number, y: number, angle: number,
-  color: string, label: string
+  color: string, label: string,
+  vehicleType?: string
 ) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate((angle * Math.PI) / 180);
+  const isPedOrCycle = ['pedestrian','escooter','bicycle','cargo_bike'].includes(vehicleType || '');
+  const emoji = getMarkerEmoji(vehicleType);
 
-  // Corps du véhicule
+  if (isPedOrCycle) {
+    // Cercle coloré + emoji pour piéton/trottinette/vélo
+    ctx.fillStyle = color + 'CC';
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(emoji, x, y + 1);
+  } else {
+    // Silhouette vue du dessus pour voitures/motos/camions
+    const isLarge = ['truck','bus','tram'].includes(vehicleType || '');
+    const isMoto  = ['motorcycle','scooter','moped'].includes(vehicleType || '');
+    const length = isLarge ? 54 : isMoto ? 26 : 38;
+    const width  = isLarge ? 22 : isMoto ? 10 : 18;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate((angle * Math.PI) / 180);
+
+    ctx.fillStyle = color;
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(-length/2, -width/2, length, width, 4);
+    ctx.fill(); ctx.stroke();
+
+    // Toit
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    if (!isMoto) ctx.fillRect(-length/4, -width/2.5, length/2, width/1.25);
+
+    // Pare-brise
+    ctx.fillStyle = 'rgba(200,230,245,0.7)';
+    ctx.fillRect(length/4, -width/3, length/6, width * 0.66);
+
+    ctx.restore();
+  }
+
+  // Badge rôle — toujours visible, pas de rotation
   ctx.fillStyle = color;
   ctx.strokeStyle = '#fff';
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.roundRect(-14, -22, 28, 44, 5);
-  ctx.fill();
-  ctx.stroke();
-
-  // Pare-brise (rectangle blanc en haut)
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.fillRect(-9, -20, 18, 12);
-
-  ctx.restore();
-
-  // Label (A ou B) — pas de rotation
+  ctx.arc(x + 16, y - 16, 11, 0, Math.PI * 2);
+  ctx.fill(); ctx.stroke();
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 13px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  // Halo noir pour lisibilité
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 3;
-  ctx.strokeText(label, x, y);
-  ctx.fillText(label, x, y);
-  ctx.textAlign = 'start';
-  ctx.textBaseline = 'alphabetic';
+  ctx.font = 'bold 11px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(label, x + 16, y - 16);
+  ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
 }
 
 // ── Carte OSM avec marqueurs véhicules ───────────────────────
@@ -151,8 +192,9 @@ export interface VehicleMarker {
   lat: number;
   lng: number;
   angle?: number;
-  label: string;   // 'A' | 'B' | 'C' ...
-  color: string;   // hex
+  label: string;       // 'A' | 'B' | 'C' ...
+  color: string;       // hex
+  vehicleType?: string; // car, motorcycle, escooter, bicycle, pedestrian, truck, van, bus...
 }
 
 export async function fetchAccidentMapWithVehicles(
