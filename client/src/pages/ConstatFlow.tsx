@@ -207,7 +207,6 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   useEffect(() => {
     if (step === 'qr' && !sessionId) createSession();
-    // WinWin: session already exists, just build the QR URL
     if (step === 'qr' && sessionId && !qrUrl) {
       setQrUrl(`${window.location.origin}/?session=${sessionId}`);
     }
