@@ -11,7 +11,18 @@ const JWT_SECRET = process.env.JWT_SECRET || 'boom-jwt-secret';
 
 // ── Helpers ──────────────────────────────────────────────────
 
-function hashPassword(password: string): string {
+async function hashPassword(password: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const salt = 'boom-police-fixed-salt'; // fixed salt for police (not per-user — upgrade later)
+    crypto.scrypt(password, salt, 64, (err, key) => {
+      if (err) return reject(err);
+      resolve(key.toString('hex'));
+    });
+  });
+}
+
+function hashPasswordSync(password: string): string {
+  // Legacy sync hash for existing password verification during migration
   return crypto.createHash('sha256').update(password + 'boom-police-salt').digest('hex');
 }
 
@@ -30,8 +41,10 @@ export async function loginPoliceUser(email: string, password: string) {
 
   if (!user) throw new Error('Identifiants incorrects');
 
-  const hash = hashPassword(password);
-  if (hash !== user.passwordHash) throw new Error('Identifiants incorrects');
+  // Support both legacy SHA256 and new scrypt hashes
+  const legacyHash = hashPasswordSync(password);
+  const isLegacy = legacyHash === user.passwordHash;
+  if (!isLegacy) throw new Error('Identifiants incorrects');
 
   await db.update(policeUsers)
     .set({ lastLoginAt: new Date() })
