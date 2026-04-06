@@ -7,7 +7,7 @@ import { eq, and, desc, gte } from 'drizzle-orm';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'boom-jwt-secret';
+const JWT_SECRET = process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET not set'); })();
 
 // ── Helpers ──────────────────────────────────────────────────
 
