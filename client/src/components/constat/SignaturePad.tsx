@@ -181,7 +181,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         />
         {isEmpty && !signed && (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-            <span style={{ fontSize: 13, opacity: 0.2, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
+            <span style={{ fontSize: 13, opacity: 0.65, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
           </div>
         )}
         {signed && (
@@ -206,7 +206,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         <div style={{ padding: 14, borderRadius: 10, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', textAlign: 'center' }}>
           <div style={{ fontSize: 22, marginBottom: 6 }}>⏳</div>
           <div style={{ fontSize: 13, fontWeight: 600, color: '#f59e0b' }}>En attente de la signature de l'autre conducteur…</div>
-          <div style={{ fontSize: 11, opacity: 0.4, marginTop: 4 }}>Le PDF sera généré dès que les deux parties auront signé.</div>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>Le PDF sera généré dès que les deux parties auront signé.</div>
         </div>
       )}
 
@@ -214,7 +214,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         <div style={{ padding: 14, borderRadius: 10, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)', textAlign: 'center' }}>
           <div style={{ fontSize: 36, marginBottom: 6 }}>🎉</div>
           <div style={{ fontSize: 15, fontWeight: 700, color: '#22c55e' }}>Constat signé !</div>
-          <div style={{ fontSize: 12, opacity: 0.5, marginTop: 4 }}>Génération du PDF en cours…</div>
+          <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4 }}>Génération du PDF en cours…</div>
         </div>
       )}
     </div>

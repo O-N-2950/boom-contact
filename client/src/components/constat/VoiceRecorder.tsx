@@ -156,7 +156,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>{roleLabel} — Déclaration</div>
-          <div style={{ fontSize: 11, opacity: 0.4 }}>Version des faits selon {roleLabel.toLowerCase()}</div>
+          <div style={{ fontSize: 11, opacity: 0.7 }}>Version des faits selon {roleLabel.toLowerCase()}</div>
         </div>
         {state === 'done' && (
           <button onClick={reset} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', touchAction: 'manipulation' }}>
@@ -170,14 +170,14 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         {/* IDLE */}
         {state === 'idle' && (
           <>
-            <p style={{ fontSize: 13, opacity: 0.55, marginBottom: 16, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, opacity: 0.75, marginBottom: 16, lineHeight: 1.6 }}>
               Expliquez brièvement comment s&apos;est produit l&apos;accident selon vous. Parlez naturellement dans votre langue — l&apos;application transcrit automatiquement.
             </p>
             <button onClick={startRecording}
               style={{ width: '100%', padding: '16px', borderRadius: 12, border: 'none', background: `linear-gradient(135deg, ${roleColor}cc, ${roleColor})`, color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as any }}>
               <span style={{ fontSize: 22 }}>🎙️</span> Enregistrer ma déclaration
             </button>
-            <div style={{ marginTop: 10, fontSize: 11, opacity: 0.3, textAlign: 'center' }}>
+            <div style={{ marginTop: 10, fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
               Max 3 minutes · 99 langues · Consentement: l&apos;enregistrement sera transcrit et intégré au PDF
             </div>
           </>
@@ -195,7 +195,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
                 <div style={{ position: 'absolute', top: -4, right: -4, width: 16, height: 16, borderRadius: '50%', background: '#ef4444', animation: 'blink 1s ease infinite' }} />
               </div>
               <div style={{ marginTop: 12, fontSize: 16, fontWeight: 700, color: '#ef4444' }}>{formatTime(elapsed)}</div>
-              <div style={{ fontSize: 12, opacity: 0.5 }}>Enregistrement en cours…</div>
+              <div style={{ fontSize: 12, opacity: 0.75 }}>Enregistrement en cours…</div>
             </div>
 
             {/* Barre de progression */}
@@ -225,7 +225,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
             <div style={{ textAlign: 'center', marginBottom: 16 }}>
               <div style={{ fontSize: 48, marginBottom: 8 }}>✅</div>
               <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Enregistrement terminé</div>
-              <div style={{ fontSize: 13, opacity: 0.5 }}>{formatTime(elapsed)} enregistré</div>
+              <div style={{ fontSize: 13, opacity: 0.75 }}>{formatTime(elapsed)} enregistré</div>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={reset}
@@ -245,7 +245,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
           <div style={{ textAlign: 'center', padding: '20px 0' }}>
             <div style={{ fontSize: 40, marginBottom: 12, display: 'inline-block', animation: 'spin 1.5s linear infinite' }}>🔄</div>
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Transcription en cours…</div>
-            <div style={{ fontSize: 12, opacity: 0.4 }}>OpenAI Whisper · Détection automatique de la langue</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>OpenAI Whisper · Détection automatique de la langue</div>
             <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
           </div>
         )}
@@ -269,12 +269,15 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
             ) : (
               <div
                 onClick={() => setIsEditing(true)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsEditing(true); } }}
+                role="button"
+                tabIndex={0}
                 style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 14, lineHeight: 1.7, cursor: 'text', minHeight: 80, color: 'var(--text)' }}
               >
                 {transcript}
               </div>
             )}
-            <div style={{ fontSize: 11, opacity: 0.3, marginTop: 6, textAlign: 'right' }}>
+            <div style={{ fontSize: 11, opacity: 0.65, marginTop: 6, textAlign: 'right' }}>
               Tapez pour modifier · Intégré au PDF du constat
             </div>
           </>

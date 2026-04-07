@@ -46,7 +46,7 @@ const MEASURE_TYPES = [
 
 // ── Styles communs ────────────────────────────────────────────
 const S = {
-  label: { fontSize: 10, opacity: 0.5, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', marginBottom: 4 },
+  label: { fontSize: 10, opacity: 0.75, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', marginBottom: 4 },
   value: { fontSize: 14, fontWeight: 600, color: 'var(--text)' },
   card: { padding: '14px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 10 },
   sectionHeader: (color = '#1e3a5f') => ({
@@ -63,7 +63,7 @@ function FieldBox({ label, value }: { label: string; value?: string | null }) {
   return (
     <div style={S.fieldBox}>
       <div style={S.label}>{label}</div>
-      <div style={S.value}>{value || <span style={{ opacity: 0.3 }}>—</span>}</div>
+      <div style={S.value}>{value || <span style={{ opacity: 0.7 }}>—</span>}</div>
     </div>
   );
 }
@@ -138,12 +138,12 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
       <div style={S.sectionHeader(color)}>{label}</div>
       <div style={S.sectionBody}>
         {isEmpty ? (
-          <div style={{ padding: 12, textAlign: 'center', opacity: 0.4, fontSize: 13 }}>
+          <div style={{ padding: 12, textAlign: 'center', opacity: 0.7, fontSize: 13 }}>
             Conducteur non encore enregistre
           </div>
         ) : (
           <>
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, marginBottom: 8 }}>IDENTITE</div>
+            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 8 }}>IDENTITE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Nom" value={d.lastName} />
               <FieldBox label="Prenom" value={d.firstName} />
@@ -154,7 +154,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
             </div>
             <FieldBox label="Adresse" value={d.address} />
 
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, margin: '12px 0 8px' }}>VEHICULE</div>
+            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>VEHICULE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Plaque" value={v.plate} />
               <FieldBox label="Marque / Modele" value={[v.brand, v.model].filter(Boolean).join(' ')} />
@@ -164,7 +164,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
               <FieldBox label="Type" value={v.vehicleType} />
             </div>
 
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, margin: '12px 0 8px' }}>ASSURANCE</div>
+            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ASSURANCE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Assureur" value={i.company} />
               <FieldBox label="N\u00b0 police" value={i.policyNumber} />
@@ -172,7 +172,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.damagedZones?.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
+                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                   {participant.damagedZones.map((z: string) => (
                     <span key={z} style={{ padding: '3px 8px', borderRadius: 4, background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)', fontSize: 11, color: '#ff6633' }}>{z}</span>
@@ -183,7 +183,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.circumstances?.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
+                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                   {participant.circumstances.map((c: string, i: number) => (
                     <div key={i} style={{ fontSize: 12, padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>• {c}</div>
@@ -230,12 +230,12 @@ function MediaSection({ session }: { session: any }) {
       <div style={S.sectionHeader()}>3. Photos et croquis</div>
       <div style={S.sectionBody}>
         {photos.length === 0 && !sketchImage ? (
-          <div style={{ textAlign: 'center', padding: 20, opacity: 0.4 }}>Aucun media enregistre</div>
+          <div style={{ textAlign: 'center', padding: 20, opacity: 0.7 }}>Aucun media enregistre</div>
         ) : (
           <>
             {photos.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, marginBottom: 10 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 10 }}>
                   PHOTOS ({photos.length})
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
@@ -258,7 +258,7 @@ function MediaSection({ session }: { session: any }) {
 
             {sketchImage && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.5, letterSpacing: 1, marginBottom: 10 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 10 }}>
                   CROQUIS
                 </div>
                 <div style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', marginBottom: 8 }}>
@@ -400,6 +400,7 @@ function AnnotationsSection({
             <select
               value={inf.party}
               onChange={e => { const n = [...ann.infractions]; n[i].party = e.target.value as any; setAnn(a => ({ ...a, infractions: n })); }}
+              aria-label="Partie concernée par l'infraction"
               style={selectStyle}
             >
               <option value="A">Partie A</option>
@@ -438,6 +439,7 @@ function AnnotationsSection({
         {ann.measures.map((m, i) => (
           <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px 32px', gap: 6, marginBottom: 8, alignItems: 'center' }}>
             <select
+              aria-label="Type de mesure"
               value={m.type}
               onChange={e => { const n = [...ann.measures]; n[i].type = e.target.value; setAnn(a => ({ ...a, measures: n })); }}
               style={selectStyle}
@@ -452,6 +454,7 @@ function AnnotationsSection({
               style={inputStyle}
             />
             <select
+              aria-label="Partie concernée par la mesure"
               value={m.party}
               onChange={e => { const n = [...ann.measures]; n[i].party = e.target.value as any; setAnn(a => ({ ...a, measures: n })); }}
               style={selectStyle}
@@ -600,7 +603,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
           <img src="/logo.webp" alt="boom.contact" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: '#e8eaf0' }}>Module Police</div>
-            <div style={{ fontSize: 10, opacity: 0.5, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+            <div style={{ fontSize: 10, opacity: 0.75, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
               {agent.station?.name?.toUpperCase() || 'POSTE'} {agent.station?.canton ? `· ${agent.station.canton}` : ''}
             </div>
           </div>
@@ -667,7 +670,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       {/* Content */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px', maxWidth: 900, width: '100%', margin: '0 auto' }}>
         {isLoading && (
-          <div style={{ textAlign: 'center', padding: 60, opacity: 0.5 }}>
+          <div style={{ textAlign: 'center', padding: 60, opacity: 0.75 }}>
             Chargement de la session...
           </div>
         )}
@@ -698,7 +701,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Bandeau confidentiel */}
-      <div style={{ padding: '6px', textAlign: 'center', background: '#0d1b35', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 10, opacity: 0.4, letterSpacing: 1 }}>
+      <div style={{ padding: '6px', textAlign: 'center', background: '#0d1b35', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 10, opacity: 0.7, letterSpacing: 1 }}>
         DOCUMENT OFFICIEL — USAGE INTERNE EXCLUSIVEMENT — boom.contact Module Police
       </div>
     </div>

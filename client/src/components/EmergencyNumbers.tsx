@@ -565,6 +565,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{ background: '#111', border: '1px solid #222', borderRadius: 10, color: '#fff', padding: '10px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const, marginBottom: 12 }}
+          aria-label="Rechercher un numéro d'urgence"
         />
 
         {/* Type filter */}

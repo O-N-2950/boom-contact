@@ -99,9 +99,11 @@ export function InsuranceSearchWidget() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSearch()}
+          aria-label="Nom de l'assurance"
           style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
         />
         <select value={country} onChange={e => setCountry(e.target.value)}
+          aria-label="Sélectionner le pays"
           style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#ccc', padding: '9px 10px', fontSize: 13 }}>
           {['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','NZ','JP','CN','IN','KR','SG','RU','AE','ZA','BR'].map(c => (
             <option key={c} value={c}>{c}</option>

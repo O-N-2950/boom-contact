@@ -3,6 +3,7 @@
 // Géocodage automatique si lat/lng absent (Nominatim OSM)
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { io as socketIO, Socket } from 'socket.io-client';
 
 interface VehiclePosition {
   x: number; y: number; angle: number; lat: number; lng: number;
@@ -195,10 +196,11 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
 
   const roleColors: Record<string, string> = { A:'#1a44cc', B:'#cc3300', C:'#228833', D:'#9933cc' };
 
-  // ── Live positions des autres véhicules (polling 3s) ─────────
+  // ── Live positions des autres véhicules (Socket.io) ─────────
   const [livePositions, setLivePositions] = useState<{ role: string; pos: VehiclePosition }[]>(existingVehicles);
+  const socketRef = useRef<Socket | null>(null);
 
-  // If waiting for coords (driver B case), use A's position from live polling as center
+  // If waiting for coords (driver B case), use A's position from socket as center
   useEffect(() => {
     if (geoStatus !== 'waiting' && geoStatus !== 'loading') return;
     const aPos = livePositions.find(p => p.role === 'A');
@@ -211,6 +213,8 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
 
   useEffect(() => {
     if (!sessionId) return;
+
+    // Initial fetch for current state
     const fetchPositions = async () => {
       try {
         const res = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`, { signal: AbortSignal.timeout(5000) });
@@ -238,11 +242,49 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
           positions.push({ role: 'A', pos: vehicleAPos });
         }
         setLivePositions(positions);
-      } catch (e) { console.warn('[MapVehiclePlacer] Failed to fetch positions', e); }
+      } catch (e) { console.warn('[MapVehiclePlacer] Failed to fetch initial positions', e); }
     };
     fetchPositions();
-    const interval = setInterval(fetchPositions, 3000);
-    return () => clearInterval(interval);
+
+    // Connect to Socket.io and join session room
+    const socket = socketIO(window.location.origin, { reconnection: true });
+    socketRef.current = socket;
+
+    socket.on('connect', () => {
+      socket.emit('join-session', sessionId);
+    });
+
+    // Listen for data updates (participant vehicle position changes)
+    socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: any }) => {
+      if (updatedRole === role) return; // skip own updates
+      const pos = data?.vehicle?.mapPosition;
+      if (pos?.x !== undefined && pos?.lat !== undefined) {
+        setLivePositions(prev => {
+          const updated = prev.filter(p => p.role !== updatedRole);
+          return [...updated, { role: updatedRole, pos, vehicleType: data?.vehicle?.vehicleType }];
+        });
+      }
+    });
+
+    // Listen for accident updates (vehicleAPos changes)
+    socket.on('accident-updated', (data: any) => {
+      const vehicleAPos = data?.vehicleAPos;
+      if (vehicleAPos && role !== 'A') {
+        setLivePositions(prev => {
+          const updated = prev.filter(p => p.role !== 'A');
+          return [...updated, { role: 'A', pos: vehicleAPos }];
+        });
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      socket.off('data-updated');
+      socket.off('accident-updated');
+      socket.off('connect');
+      socket.disconnect();
+      socketRef.current = null;
+    };
   }, [sessionId, role]);
   const roleColor = roleColors[role] || '#444';
   const bodyColor = parseColor(vehicleColor);
@@ -399,7 +441,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
     <div style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
       <div style={{ fontSize: 36, marginBottom: 12, animation: 'spin 1s linear infinite', display:'inline-block' }}>🌍</div>
       <div style={{ fontWeight: 700 }}>Localisation de l'accident…</div>
-      <div style={{ fontSize: 12, opacity: 0.5, marginTop: 6 }}>Géocodage de l'adresse</div>
+      <div style={{ fontSize: 12, opacity: 0.75, marginTop: 6 }}>Géocodage de l'adresse</div>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
@@ -427,7 +469,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
         </div>
         <div>
           <div style={{ fontWeight:700, fontSize:14 }}>{roleLabel} — Positionner mon véhicule</div>
-          <div style={{ fontSize:11, opacity:0.45 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
+          <div style={{ fontSize:11, opacity:0.7 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
         </div>
         {/* Toggle plan / satellite */}
         <button

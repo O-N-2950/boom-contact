@@ -63,13 +63,13 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
           <span style={{ fontSize: 24 }}>🚔</span>
           <div>
             <div style={{ fontWeight: 800, fontSize: 16 }}>Module Police</div>
-            <div style={{ fontSize: 12, opacity: 0.4 }}>{user.station?.name || 'boom.contact'} {user.station?.canton ? `· ${user.station.canton}` : ''}</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>{user.station?.name || 'boom.contact'} {user.station?.canton ? `· ${user.station.canton}` : ''}</div>
           </div>
         </div>
         <div style={{ display:'flex', alignItems:'center', gap: 12 }}>
           <div style={{ textAlign:'right' }}>
             <div style={{ fontSize: 13, fontWeight: 600 }}>{user.firstName} {user.lastName}</div>
-            {user.badgeNumber && <div style={{ fontSize: 11, opacity: 0.4 }}>Badge {user.badgeNumber}</div>}
+            {user.badgeNumber && <div style={{ fontSize: 11, opacity: 0.7 }}>Badge {user.badgeNumber}</div>}
           </div>
           <button onClick={onLogout} style={{ padding:'7px 14px', borderRadius: 8, border:'1px solid rgba(255,255,255,0.1)', background:'transparent', color:'rgba(240,237,232,0.5)', cursor:'pointer', fontSize: 12 }}>
             Déconnexion
@@ -90,7 +90,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
               <div key={stat.label} style={{ background:'rgba(255,255,255,0.04)', borderRadius: 12, border:'1px solid rgba(255,255,255,0.07)', padding:'16px', textAlign:'center' }}>
                 <div style={{ fontSize: 28, marginBottom: 6 }}>{stat.icon}</div>
                 <div style={{ fontSize: 28, fontWeight: 800, color: stat.color }}>{stat.value}</div>
-                <div style={{ fontSize: 11, opacity: 0.45, marginTop: 2 }}>{stat.label}</div>
+                <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -104,6 +104,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
             onChange={e => setSearchId(e.target.value)}
             placeholder="Rechercher par ID, lieu…"
             style={{ flex: 1, padding:'11px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.05)', color:'#fff', fontSize: 14 }}
+            aria-label="Rechercher une session"
           />
           <button onClick={() => refetch()} style={{ padding:'11px 16px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'rgba(240,237,232,0.6)', cursor:'pointer', fontSize: 13 }}>
             🔄
@@ -112,7 +113,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
 
         {/* Sessions list */}
         {isLoading && (
-          <div style={{ textAlign:'center', padding: 40, opacity: 0.4 }}>Chargement des sessions…</div>
+          <div style={{ textAlign:'center', padding: 40, opacity: 0.7 }}>Chargement des sessions…</div>
         )}
 
         {error && (
@@ -122,7 +123,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
         )}
 
         {filtered.length === 0 && !isLoading && (
-          <div style={{ textAlign:'center', padding: 48, opacity: 0.3 }}>
+          <div style={{ textAlign:'center', padding: 48, opacity: 0.7 }}>
             <div style={{ fontSize: 40, marginBottom: 10 }}>📭</div>
             <div>Aucune session active dans les dernières 24h</div>
           </div>
@@ -130,7 +131,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
 
         <div style={{ display:'flex', flexDirection:'column', gap: 10 }}>
           {filtered.map((s: Session) => (
-            <div key={s.id}
+            <button role="button" tabIndex={0} key={s.id}
               onClick={() => onViewSession(s.id)}
               style={{ background:'rgba(255,255,255,0.04)', borderRadius: 12, border: s.hasInjuries ? '1px solid rgba(239,68,68,0.4)' : '1px solid rgba(255,255,255,0.07)', padding:'14px 16px', cursor:'pointer', display:'flex', alignItems:'center', gap: 14 }}
             >
@@ -141,7 +142,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
                   <span style={{ fontSize: 11, color: statusColor(s.status), background: `${statusColor(s.status)}20`, padding:'2px 7px', borderRadius: 20 }}>{statusLabel(s.status)}</span>
                   {s.hasInjuries && <span style={{ fontSize: 11, color:'#ef4444', background:'rgba(239,68,68,0.1)', padding:'2px 7px', borderRadius: 20 }}>⚠️ Blessures</span>}
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.45 }}>
+                <div style={{ fontSize: 12, opacity: 0.7 }}>
                   {s.vehicleCount} véhicule{s.vehicleCount > 1 ? 's' : ''} · {s.location || 'Localisation non renseignée'} · {timeAgo(s.createdAt)}
                 </div>
               </div>

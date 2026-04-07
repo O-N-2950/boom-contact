@@ -138,7 +138,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
         <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>
           Décrivez l&apos;accident
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.55, lineHeight: 1.65, maxWidth: 320, margin: '0 auto' }}>
+        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.65, maxWidth: 320, margin: '0 auto' }}>
           Optionnel — décrivez ce qui s&apos;est passé avec vos propres mots.
           Votre déclaration sera enregistrée dans le constat.
         </p>
@@ -210,7 +210,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
       <div style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, color: roleColor }}>
         {fmt(elapsed)}
       </div>
-      <div style={{ fontSize: 13, opacity: 0.5, marginBottom: 32 }}>Enregistrement en cours…</div>
+      <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 32 }}>Enregistrement en cours…</div>
       <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 16, marginBottom: 24, fontSize: 13, opacity: 0.6, lineHeight: 1.6, textAlign: 'left' }}>
         💡 Décrivez : la direction de chaque véhicule, le point d&apos;impact, les circonstances. Parlez calmement.
       </div>
@@ -226,7 +226,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
     <div style={{ padding: 24, textAlign: 'center' }}>
       <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
       <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Transcription en cours…</div>
-      <div style={{ fontSize: 13, opacity: 0.5 }}>Votre enregistrement est traité</div>
+      <div style={{ fontSize: 13, opacity: 0.75 }}>Votre enregistrement est traité</div>
     </div>
   );
 
@@ -238,13 +238,13 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>✅</div>
           <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>Description enregistrée</h2>
-          <p style={{ fontSize: 13, opacity: 0.5 }}>Votre déclaration sera incluse dans le constat PDF</p>
+          <p style={{ fontSize: 13, opacity: 0.75 }}>Votre déclaration sera incluse dans le constat PDF</p>
         </div>
 
         {/* Transcript — éditable */}
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, opacity: 0.45, letterSpacing: 1, textTransform: 'uppercase' as const }}>Votre déclaration</span>
+            <span style={{ fontSize: 12, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase' as const }}>Votre déclaration</span>
             <button
               onClick={() => setInputMode(inputMode === 'text' ? 'voice' : 'text')}
               style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 6, padding: '3px 10px', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>

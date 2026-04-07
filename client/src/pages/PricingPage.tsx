@@ -131,7 +131,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '8px 0', display: 'flex', alignItems: 'center', gap: 6, touchAction: 'manipulation' }}>← Retour←</button>
         <div>
           <div style={{ fontWeight: 800, fontSize: 18 }}>Acheter des constats</div>
-          <div style={{ fontSize: 11, opacity: 0.4 }}>Crédits sans expiration · Partageables par WhatsApp</div>
+          <div style={{ fontSize: 11, opacity: 0.7 }}>Crédits sans expiration · Partageables par WhatsApp</div>
         </div>
       </div>
 

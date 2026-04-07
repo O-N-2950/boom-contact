@@ -22,6 +22,7 @@ export const sessions = pgTable('sessions', {
   statusIdx:     index('sessions_status_idx').on(t.status),
   createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),
   ownerEmailIdx: index('sessions_owner_email_idx').on(t.ownerEmail),
+  statusCreatedIdx: index('sessions_status_created_idx').on(t.status, t.createdAt),
 }));
 
 // ── Users — comptes avec crédits ─────────────────────────────

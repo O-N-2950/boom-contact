@@ -285,10 +285,10 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         <img src="/logo.webp" alt="boom.contact" style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
         <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 32, letterSpacing: '-0.5px', marginBottom: 8 }}>
           <span style={{ color: 'var(--boom)' }}>boom</span>
-          <span style={{ opacity: 0.3 }}>.</span>
+          <span style={{ opacity: 0.7 }}>.</span>
           <span>contact</span>
         </h1>
-        <p style={{ fontSize: 14, opacity: 0.55, lineHeight: 1.65 }}>
+        <p style={{ fontSize: 14, opacity: 0.75, lineHeight: 1.65 }}>
           Vous avez été invité à rejoindre un constat d'accident partagé.
         </p>
       </div>
@@ -296,7 +296,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       {/* Session badge */}
       {sessionId && (
         <div style={{ padding: '16px 20px', borderRadius: 12, background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)', textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.4, fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', marginBottom: 6 }}>Session</div>
+          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', marginBottom: 6 }}>Session</div>
           <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: 2, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
         </div>
       )}
@@ -335,7 +335,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
       {/* Sélecteur de langue — chaque conducteur choisit sa propre langue */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, opacity: 0.4, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: 10, textAlign: 'center' }}>
+        <div style={{ fontSize: 11, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: 10, textAlign: 'center' }}>
           Votre langue / Your language / Ihre Sprache / La tua lingua
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
@@ -372,7 +372,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
           📧 Votre email
-          <span style={{ opacity: 0.45, fontWeight: 400 }}>(pour recevoir le PDF)</span>
+          <span style={{ opacity: 0.7, fontWeight: 400 }}>(pour recevoir le PDF)</span>
         </div>
         <input
           type="email"
@@ -384,6 +384,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             setParticipantData(prev => ({ ...prev, driver: { ...(prev.driver || {}), email: e.target.value } as any }));
           }}
           placeholder="votre@email.com"
+          aria-label="Votre adresse email"
           style={{
             width: '100%', padding: '13px 14px', borderRadius: 10,
             border: '1.5px solid rgba(255,255,255,0.12)',
@@ -391,7 +392,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             fontSize: 15, boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
         />
-        <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6 }}>
+        <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>
           Optionnel — le PDF vous sera envoyé automatiquement après signature
         </div>
       </div>
@@ -413,7 +414,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
       </button>
 
-      <p style={{ textAlign: 'center', marginTop: 10, fontSize: 11, opacity: 0.3, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
+      <p style={{ textAlign: 'center', marginTop: 10, fontSize: 11, opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
         GRATUIT · SANS INSCRIPTION · CHIFFRÉ
       </p>
     </div>
@@ -429,7 +430,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
-          <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+          <div style={{ fontSize: 10, opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
             CONDUCTEUR {urlRole} · SESSION {sessionId}
           </div>
         </div>
@@ -554,20 +555,20 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <>
             {/* Résumé avant signature B */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.35, fontFamily: 'monospace', marginBottom: 12 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.7, fontFamily: 'monospace', marginBottom: 12 }}>
                 Vérifiez avant de signer
               </div>
               <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
-                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
+                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
                 <div style={{ fontSize: 13, fontWeight: 700 }}>
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
                   {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: '#00E5FF', marginLeft: 8 }}>{(participantData.vehicle as any).licensePlate}</span>}
                 </div>
                 {(participantData.insurance as any)?.company && (
-                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
               </div>
               <button

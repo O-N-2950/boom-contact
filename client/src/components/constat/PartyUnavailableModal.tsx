@@ -187,7 +187,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 16 }}>Partie B indisponible</div>
-              <div style={{ fontSize: 11, opacity: 0.4, marginTop: 2 }}>
+              <div style={{ fontSize: 11, opacity: 0.65, marginTop: 2 }}>
                 {step === 'reason' && 'Sélectionnez la raison'}
                 {step === 'plate' && 'Photo de la plaque'}
                 {step === 'details' && 'Informations complémentaires'}
@@ -218,7 +218,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
           {/* ── STEP 1 : RAISON ── */}
           {step === 'reason' && (
             <div>
-              <div style={{ fontSize: 13, opacity: 0.45, marginBottom: 14, lineHeight: 1.5 }}>
+              <div style={{ fontSize: 13, opacity: 0.7, marginBottom: 14, lineHeight: 1.5 }}>
                 Le constat sera établi en <strong style={{ color: 'var(--boom)' }}>déclaration unilatérale de sinistre</strong> — document légalement reconnu par les assurances dans toute l'Europe.
               </div>
               {REASONS.map(r => {
@@ -238,7 +238,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                       <div style={{ fontSize: 14, fontWeight: 700, color: isSelected ? c.text : 'var(--text)' }}>
                         {r.label}
                       </div>
-                      <div style={{ fontSize: 12, opacity: 0.45, marginTop: 2 }}>{r.sub}</div>
+                      <div style={{ fontSize: 12, opacity: 0.7, marginTop: 2 }}>{r.sub}</div>
                     </div>
                     {isSelected && <span style={{ fontSize: 16, color: c.text }}>✓</span>}
                   </button>
@@ -269,7 +269,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               {selected.suggestPolice && !policeAlertDismissed && (
                 <div style={{
                   padding: '14px 16px', borderRadius: 12, marginBottom: 18,
-                  background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.4)',
+                  background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.3)',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                     <span style={{ fontSize: 22, flexShrink: 0 }}>🚨</span>
@@ -312,7 +312,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
                   {selected.plateMandatory ? '📸 Photo de la plaque *' : '📸 Photo de la plaque (recommandée)'}
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.4, marginBottom: 12 }}>
+                <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 12 }}>
                   La photo est enregistrée dans le dossier et transmise à votre assurance
                 </div>
 
@@ -359,7 +359,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
                 {/* Numéro plaque */}
                 <div style={{ marginTop: 12 }}>
-                  <label style={{ fontSize: 11, opacity: 0.45, marginBottom: 5, display: 'block', letterSpacing: 0.5, fontFamily: 'monospace' }}>
+                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5, fontFamily: 'monospace' }}>
                     NUMÉRO DE PLAQUE {plateNumber ? '✓ lu automatiquement' : '(saisissez si non lisible)'}
                   </label>
                   <input
@@ -378,7 +378,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
                 {/* Description véhicule */}
                 <div style={{ marginTop: 12 }}>
-                  <label style={{ fontSize: 11, opacity: 0.45, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
                     DESCRIPTION DU VÉHICULE B (optionnel)
                   </label>
                   <input
@@ -433,7 +433,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               {/* Référence police */}
               {selected.suggestPolice && (
                 <div style={{ marginBottom: 14 }}>
-                  <label style={{ fontSize: 11, opacity: 0.45, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
                     RÉFÉRENCE DU RAPPORT DE POLICE (si disponible)
                   </label>
                   <input
@@ -448,7 +448,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
               {/* Notes libres */}
               <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 11, opacity: 0.45, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
                   OBSERVATIONS (optionnel)
                 </label>
                 <textarea
@@ -481,7 +481,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 {plateNumber && <div>Plaque : <strong style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{plateNumber}</strong></div>}
                 {vehicleDesc && <div>Véhicule : {vehicleDesc}</div>}
                 {policeRef && <div>Réf. police : {policeRef}</div>}
-                <div style={{ marginTop: 6, opacity: 0.5 }}>
+                <div style={{ marginTop: 6, opacity: 0.75 }}>
                   Enregistré le {new Date().toLocaleString('fr-CH')}
                 </div>
               </div>

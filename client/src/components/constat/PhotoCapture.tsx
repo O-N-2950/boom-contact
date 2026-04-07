@@ -98,14 +98,14 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
         <h2 style={{ fontWeight: 800, fontSize: 20, marginBottom: 6 }}>
           📸 Photos de la scène
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.5 }}>
           Documentez l'accident en photos. {MAX_PHOTOS - photos.length} photo{MAX_PHOTOS - photos.length !== 1 ? 's' : ''} restante{MAX_PHOTOS - photos.length !== 1 ? 's' : ''}.
         </p>
       </div>
 
       {/* Category selector */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.4, letterSpacing: 1, marginBottom: 10, textTransform: 'uppercase' }}>
+        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1, marginBottom: 10, textTransform: 'uppercase' }}>
           Catégorie
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -124,7 +124,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
               <span style={{ fontSize: 22, flexShrink: 0 }}>{cat.icon}</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 13, fontWeight: 700 }}>{cat.label}</div>
-                <div style={{ fontSize: 11, opacity: 0.4 }}>{cat.sub}</div>
+                <div style={{ fontSize: 11, opacity: 0.7 }}>{cat.sub}</div>
               </div>
               {catCount(cat.id) > 0 && (
                 <span style={{
@@ -145,6 +145,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        aria-label="Prendre une photo de dégâts"
         capture="environment"
         style={{ display: 'none' }}
         onChange={handleCapture}
@@ -177,7 +178,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
       {/* Photo gallery */}
       {photos.length > 0 && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.4, letterSpacing: 1, marginBottom: 12, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1, marginBottom: 12, textTransform: 'uppercase' }}>
             Photos prises ({photos.length}/{MAX_PHOTOS})
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -210,6 +211,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
                           onChange={e => setCaptionValue(e.target.value)}
                           onKeyDown={e => { if (e.key === 'Enter') saveCaption(photo.id); if (e.key === 'Escape') setEditingCaption(null); }}
                           placeholder="Légende..."
+                          aria-label="Légende de la photo"
                           style={{ flex: 1, background: 'rgba(240,237,232,0.08)', border: 'none', borderRadius: 6, padding: '4px 8px', fontSize: 11, color: 'inherit', outline: '1px solid var(--boom)' }}
                         />
                         <button onClick={() => saveCaption(photo.id)} style={{ background: 'var(--boom)', border: 'none', color: '#fff', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', fontSize: 11 }} aria-label="Sauvegarder la légende">✓</button>
@@ -217,7 +219,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
                     ) : (
                       <button
                         onClick={() => { setEditingCaption(photo.id); setCaptionValue(photo.caption || ''); }}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', opacity: 0.5, fontSize: 11, padding: 0, textAlign: 'left', width: '100%' }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', opacity: 0.75, fontSize: 11, padding: 0, textAlign: 'left', width: '100%' }}
                       >
                         {photo.caption || '+ Légende'}
                       </button>
@@ -246,7 +248,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
           : `Continuer avec ${photos.length} photo${photos.length > 1 ? 's' : ''} →`}
       </button>
 
-      <p style={{ fontSize: 12, opacity: 0.3, textAlign: 'center', marginTop: 8 }}>
+      <p style={{ fontSize: 12, opacity: 0.7, textAlign: 'center', marginTop: 8 }}>
         {photos.length === 0
           ? 'Photos facultatives — fortement conseillées pour votre dossier'
           : 'Vous pouvez ajouter d\'autres photos ou continuer'}
