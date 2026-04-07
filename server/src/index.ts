@@ -41,7 +41,32 @@ export const io = new SocketServer(httpServer, {
 (async () => {
   try {
     const helmet = (await import('helmet')).default;
-    app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
+    app.use(helmet({
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", 'https://js.stripe.com', 'https://www.googletagmanager.com'],
+          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          imgSrc: ["'self'", 'data:', 'blob:', 'https://tile.openstreetmap.org', 'https://*.tile.openstreetmap.org',
+                   'https://a.tile.openstreetmap.org', 'https://b.tile.openstreetmap.org', 'https://c.tile.openstreetmap.org',
+                   'https://server.arcgisonline.com', 'https://api.qrserver.com'],
+          connectSrc: ["'self'", 'https://api.stripe.com', 'https://api.anthropic.com',
+                       'https://nominatim.openstreetmap.org', 'https://ip-api.io',
+                       'https://eu.i.posthog.com', 'https://app.posthog.com',
+                       'https://sentry.io', 'wss:'],
+          frameSrc: ["'self'", 'https://js.stripe.com'],
+          objectSrc: ["'none'"],
+          upgradeInsecureRequests: [],
+        },
+      },
+    }));
+    // HSTS — force HTTPS for 1 year
+    app.use((_req: any, res: any, next: any) => {
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+      next();
+    });
     logger.info('🛡️  Helmet active');
   } catch (e) { logger.warn('Helmet not available', { error: String(e) }); }
 })();
