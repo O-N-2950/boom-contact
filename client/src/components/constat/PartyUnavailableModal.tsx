@@ -93,23 +93,16 @@ const URGENCY_COLORS = {
 };
 
 async function ocrPlate(b64: string, mediaType: string): Promise<string> {
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+  // Route via tRPC backend — no direct API calls from browser
+  const res = await fetch('/trpc/ocr.scanDocument', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 200,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } },
-          { type: 'text', text: 'Lis la plaque d\'immatriculation sur cette photo. Réponds UNIQUEMENT avec le numéro de plaque, sans explication. Si tu ne peux pas lire la plaque, réponds "ILLISIBLE".' },
-        ],
-      }],
-    }),
+    signal: AbortSignal.timeout(15000),
+    body: JSON.stringify({ json: { imageBase64: b64, mimeType: mediaType } }),
   });
-  const data = await resp.json();
-  return data.content?.[0]?.text?.trim() || 'ILLISIBLE';
+  if (!res.ok) throw new Error(`OCR error ${res.status}`);
+  const data = await res.json();
+  return data?.result?.data?.vehicle?.licensePlate?.value || '';
 }
 
 export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
