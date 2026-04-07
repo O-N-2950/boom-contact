@@ -375,13 +375,13 @@ function AgentChat({ agent, onBack }: { agent: AgentDef; onBack: () => void }) {
         signal: AbortSignal.timeout(30000),
         body: JSON.stringify({ json: {
           systemPrompt: agent.systemPrompt,
-          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
+          messages: newMessages.map((m: any) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
         }}),
       });
       if (!res.ok) throw new Error(`Erreur serveur ${res.status}`);
       const data = await res.json();
       const fullText = data?.result?.data?.text || 'Pas de réponse';
-      setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
+      setMessages((prev: any) => [...prev, { role: 'assistant', content: fullText }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: 'assistant', content: `❌ Erreur: ${err instanceof Error ? err.message : 'Inconnu'}. Vérifiez que ANTHROPIC_API_KEY est configurée.` }]);
     } finally {
