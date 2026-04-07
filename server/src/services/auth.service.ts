@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { users, magicTokens } from '../db/schema.js';
 import { eq, and, gt, isNull } from 'drizzle-orm';
@@ -30,18 +31,16 @@ function nanoid(len = 20): string {
   return Array.from(bytes).map(b => chars[b % chars.length]).join('');
 }
 
-// ── Password hashing (Node crypto.scrypt) ─────────────────────
-export async function hashPassword(plain: string): Promise<string> {
-  const salt = crypto.randomBytes(16).toString('hex');
-  return new Promise((resolve, reject) => {
-    crypto.scrypt(plain, salt, 64, (err, key) => {
-      if (err) return reject(err);
-      resolve(`${salt}:${key.toString('hex')}`);
-    });
-  });
+// ── Password hashing (bcrypt) ─────────────────────────────────
+const BCRYPT_ROUNDS = 12;
+
+/** Check if a stored hash is in the legacy scrypt format (salt:hash) vs bcrypt ($2b$...) */
+function isLegacyScryptHash(stored: string): boolean {
+  return !stored.startsWith('$2b$') && !stored.startsWith('$2a$') && stored.includes(':');
 }
 
-export async function verifyPassword(plain: string, stored: string): Promise<boolean> {
+/** Verify a password against a legacy scrypt hash */
+async function verifyLegacyScrypt(plain: string, stored: string): Promise<boolean> {
   const [salt, hash] = stored.split(':');
   if (!salt || !hash) return false;
   return new Promise((resolve, reject) => {
@@ -54,6 +53,19 @@ export async function verifyPassword(plain: string, stored: string): Promise<boo
       }
     });
   });
+}
+
+export async function hashPassword(plain: string): Promise<string> {
+  return bcrypt.hash(plain, BCRYPT_ROUNDS);
+}
+
+export async function verifyPassword(plain: string, stored: string): Promise<boolean> {
+  // Bcrypt hash → use bcrypt
+  if (!isLegacyScryptHash(stored)) {
+    return bcrypt.compare(plain, stored);
+  }
+  // Legacy scrypt hash → verify with old algo
+  return verifyLegacyScrypt(plain, stored);
 }
 
 // ── JWT ───────────────────────────────────────────────────────
@@ -105,6 +117,13 @@ export async function loginWithPassword(email: string, password: string): Promis
 
   const ok = await verifyPassword(password, user.passwordHash);
   if (!ok) throw new Error('INVALID_CREDENTIALS');
+
+  // ── Progressive migration: re-hash legacy scrypt → bcrypt on successful login
+  if (isLegacyScryptHash(user.passwordHash)) {
+    const newHash = await hashPassword(password);
+    await db.update(users).set({ passwordHash: newHash }).where(eq(users.id, user.id));
+    logger.info('Password migrated to bcrypt', { email });
+  }
 
   await db.update(users).set({ lastSeenAt: new Date() }).where(eq(users.id, user.id));
   const token = signJWT({ sub: user.id, email: user.email, role: user.role || 'customer' });
