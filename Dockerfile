@@ -31,6 +31,11 @@ RUN rm -f vite.config.ts
 
 RUN npm run build
 
+# Security: don't run as root in production
+# Ensure node user can access all app files
+RUN chown -R node:node /app
+USER node
+
 EXPOSE 3000
 
 CMD ["node_modules/.bin/tsx", "server/src/index.ts"]
