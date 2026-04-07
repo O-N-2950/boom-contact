@@ -15,7 +15,13 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm install
-      - run: npm run build
-      - name: ✅ Build passed
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Type check
+        run: npm run typecheck
+      - name: Build (client + server)
+        run: npm run build
+      - name: ✅ All checks passed
         run: echo "Ready for Railway deploy"

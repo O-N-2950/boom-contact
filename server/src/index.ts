@@ -557,6 +557,25 @@ async function start() {
   });
 }
 
+// ── Graceful shutdown ────────────────────────────────────────
+function gracefulShutdown(signal: string) {
+  logger.info(`${signal} received — shutting down gracefully...`);
+  httpServer.close(() => {
+    logger.info('HTTP server closed');
+    io.close(() => {
+      logger.info('Socket.io closed');
+      process.exit(0);
+    });
+  });
+  // Force exit after 10s if graceful shutdown hangs
+  setTimeout(() => {
+    logger.error('Forced shutdown after timeout');
+    process.exit(1);
+  }, 10_000).unref();
+}
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
 start().catch((err) => {
   logger.error('FATAL startup error', {
     error: err instanceof Error ? err.message : String(err),

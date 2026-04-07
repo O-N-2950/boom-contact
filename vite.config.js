@@ -20,6 +20,18 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(__dirname, 'dist/client'),
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'vendor';
+          }
+          if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
+            return 'i18n';
+          }
+        },
+      },
+    },
   }
 });

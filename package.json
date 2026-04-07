@@ -5,8 +5,9 @@
   "description": "💥 boom.contact — Constat amiable numérique mondial",
   "scripts": {
     "dev": "concurrently \"tsx watch server/src/index.ts\" \"vite\"",
-    "build": "vite build",
-    "start": "tsx server/src/index.ts",
+    "build": "vite build && npm run build:server",
+    "build:server": "node build-server.mjs",
+    "start": "node dist/server/index.js",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "build:client": "vite build",

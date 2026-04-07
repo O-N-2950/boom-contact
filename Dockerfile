@@ -1,6 +1,6 @@
 # boom.contact — Dockerfile (multistage build)
-# Stage 1: Builder — install deps + build
-# Stage 2: Production — minimal image
+# Stage 1: Builder — install deps + build client + compile server
+# Stage 2: Production — minimal image with compiled JS only
 
 # ── Stage 1: Builder ─────────────────────────────────────────
 FROM node:20.19-alpine AS builder
@@ -20,6 +20,7 @@ RUN npm ci --no-fund --no-audit
 COPY . .
 RUN rm -f vite.config.ts
 RUN mkdir -p server/src/assets
+# Build client (Vite) + server (tsc)
 RUN npm run build
 
 # ── Stage 2: Production ──────────────────────────────────────
@@ -39,13 +40,14 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     NODE_ENV=production \
     FORCE_COLOR=1
 
-# Copy built artifacts and production deps
+# Copy only production deps
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --no-fund --no-audit --ignore-scripts
+
+# Copy built artifacts only (no source TypeScript needed)
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/server ./server
-COPY --from=builder /app/shared ./shared
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
+COPY --from=builder /app/build-server.mjs ./build-server.mjs
 
 # Security: don't run as root in production
 RUN chown -R node:node /app
@@ -53,4 +55,10 @@ USER node
 
 EXPOSE 3000
 
-CMD ["node_modules/.bin/tsx", "server/src/index.ts"]
+# Healthcheck — ensures container is healthy
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+
+# Use compiled JS directly — no tsx in production
+# Graceful shutdown: Node handles SIGTERM natively with server.close()
+CMD ["node", "dist/server/index.js"]
