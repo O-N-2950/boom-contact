@@ -368,42 +368,19 @@ function AgentChat({ agent, onBack }: { agent: AgentDef; onBack: () => void }) {
     setStreamingText('');
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      // Route via tRPC backend — no direct API calls from browser
+      const res = await fetch('/trpc/agent.chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: agent.systemPrompt,
-          stream: true,
+        signal: AbortSignal.timeout(30000),
+        body: JSON.stringify({ json: {
+          systemPrompt: agent.systemPrompt,
           messages: newMessages.map(m => ({ role: m.role, content: m.content })),
-        }),
+        }}),
       });
-
-      if (!response.ok) throw new Error(`API error ${response.status}`);
-
-      const reader = response.body!.getReader();
-      const decoder = new TextDecoder();
-      let fullText = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(l => l.startsWith('data: '));
-        for (const line of lines) {
-          const data = line.slice(6);
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
-              fullText += parsed.delta.text;
-              setStreamingText(fullText);
-            }
-          } catch {}
-        }
-      }
-
+      if (!res.ok) throw new Error(`Erreur serveur ${res.status}`);
+      const data = await res.json();
+      const fullText = data?.result?.data?.text || 'Pas de réponse';
       setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: 'assistant', content: `❌ Erreur: ${err instanceof Error ? err.message : 'Inconnu'}. Vérifiez que ANTHROPIC_API_KEY est configurée.` }]);
