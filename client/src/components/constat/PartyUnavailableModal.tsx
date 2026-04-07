@@ -93,12 +93,16 @@ const URGENCY_COLORS = {
 };
 
 async function ocrPlate(b64: string, mediaType: string): Promise<string> {
-  // Route via tRPC backend — no direct API calls from browser
-  const res = await fetch('/trpc/ocr.scanDocument', {
+  // Route via tRPC backend — ocr.scan endpoint
+  const res = await fetch('/trpc/ocr.scan', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     signal: AbortSignal.timeout(15000),
-    body: JSON.stringify({ json: { imageBase64: b64, mimeType: mediaType } }),
+    body: JSON.stringify({ json: {
+      imageBase64: b64,
+      mediaType: (mediaType as 'image/jpeg' | 'image/png' | 'image/webp') || 'image/jpeg',
+      documentType: 'auto',
+    }}),
   });
   if (!res.ok) throw new Error(`OCR error ${res.status}`);
   const data = await res.json();
