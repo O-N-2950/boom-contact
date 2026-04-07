@@ -176,7 +176,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <div style={{ fontSize: 12, fontWeight: 700, color: ROLE_COLORS[activeQR], marginBottom: 10, letterSpacing: 1, textTransform: 'uppercase' }}>{ROLE_LABELS[activeQR]}</div>
         <div style={{ display: 'flex', justifyContent: 'center', padding: 16, background: '#06060C', borderRadius: 20, border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22`, minHeight: 180 }}>
           {qrDataUrls[activeQR]
-            ? <img src={qrDataUrls[activeQR]} alt={`QR ${activeQR}`} style={{ width: 200, height: 200, borderRadius: 8 }} />
+            ? <img src={qrDataUrls[activeQR]} alt="Code QR pour inviter le conducteur B à rejoindre la session de constat" style={{ width: 200, height: 200, borderRadius: 8 }} />
             : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 200, height: 200 }}><div style={{ fontSize: 11, fontFamily: 'monospace', opacity: 0.4 }}>Génération…</div></div>
           }
         </div>

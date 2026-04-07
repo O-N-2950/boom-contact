@@ -877,8 +877,8 @@ export const appRouter = router({
         color:        z.string().optional(),
         year:         z.string().optional(),
         category:     z.string().optional(),
-        licenseData:  z.record(z.any()).optional(),
-        insuranceData:z.record(z.any()).optional(),
+        licenseData:  z.record(z.string(), z.any()).optional(),
+        insuranceData:z.record(z.string(), z.any()).optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         if (!ctx.authUser) throw new Error('Connexion requise.');
