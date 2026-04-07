@@ -6,10 +6,7 @@ import { logger } from '../logger.js';
 import { db } from '../db/index.js';
 import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
-
-const CLIENT_URL = process.env.CLIENT_URL
-  || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
-  || 'https://boom-contact-production.up.railway.app';
+import { CLIENT_URL } from '../constants.js';
 
 export const authRouter = router({
 
@@ -20,8 +17,8 @@ export const authRouter = router({
       try {
         const result = await registerUser(input.email, input.password);
         return { ok: true, ...result };
-      } catch (err: any) {
-        if (err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
         throw err;
       }
     }),

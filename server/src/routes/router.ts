@@ -18,6 +18,7 @@ import { logger } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions as sessionsTable } from '../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
+import { CLIENT_URL } from '../constants.js';
 
 // Import sub-routers
 import { authRouter } from './auth.router.js';
@@ -28,10 +29,6 @@ import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCle
 
 // Import shared tRPC utilities
 import { router, publicProcedure, protectedProcedure, TRPCError, escapeHtml } from './trpc.js';
-
-const CLIENT_URL = process.env.CLIENT_URL
-  || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
-  || 'https://boom-contact-production.up.railway.app';
 
 /**
  * Main tRPC Router

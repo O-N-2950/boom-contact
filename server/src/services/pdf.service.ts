@@ -115,62 +115,43 @@ function labelValue(
 }
 
 // ─────────────────────────────────────────────────────────────
-// Main export
+// PDF context shared across sub-functions
 // ─────────────────────────────────────────────────────────────
-// Génère le PDF pour un conducteur spécifique
-// role 'A' → PDF dans la langue du conducteur A + langue du pays accident si différente
-// role 'B' → PDF dans la langue du conducteur B + langue du pays accident si différente
-export async function generateConstatPDF(
-  session: ConstatSession,
-  forRole: 'A' | 'B' = 'A'
-): Promise<Uint8Array> {
-  const doc = await PDFDocument.create();
+interface PartyBStatus {
+  reason: string; reasonLabel: string;
+  plateNumber?: string; platePhoto?: string;
+  vehicleDescription?: string; policeReportRef?: string;
+  notes?: string; recordedAt: string;
+}
 
-  // ── Détection mode unilatéral ────────────────────────────
-  const acc = session.accident;
-  const partyBStatus = (acc as any)?.partyBStatus as {
-    reason: string; reasonLabel: string;
-    plateNumber?: string; platePhoto?: string;
-    vehicleDescription?: string; policeReportRef?: string;
-    notes?: string; recordedAt: string;
-  } | undefined;
-  const isUnilateral = !!partyBStatus;
+interface PdfContext {
+  doc: PDFDocument;
+  page: PDFPage;
+  bold: PDFFont;
+  normal: PDFFont;
+  mono: PDFFont;
+  session: ConstatSession;
+  A: ConstatSession['participantA'];
+  B: ConstatSession['participantB'];
+  L: PdfLabels;
+  acc: ConstatSession['accident'];
+  margin: number;
+  colW: number;
+  width: number;
+  height: number;
+  isUnilateral: boolean;
+  partyBStatus: PartyBStatus | undefined;
+  formattedDate: string;
+  y: number;
+}
 
-  const docTitle = isUnilateral
-    ? 'Declaration Unilaterale de Sinistre — boom.contact'
-    : 'Constat Amiable — boom.contact';
-  doc.setTitle(docTitle);
-  doc.setAuthor('boom.contact by PEP\'s Swiss SA');
-  doc.setSubject(`Constat #${session.id}`);
-  doc.setCreator('boom.contact');
-  doc.setCreationDate(new Date());
+// ── Sub-function: Header ────────────────────────────────────
+function buildHeader(ctx: PdfContext): void {
+  const { page, bold, normal, mono, margin, width, height, isUnilateral, L, session, acc, formattedDate } = ctx;
 
-  const page = doc.addPage([595, 842]); // A4
-  const { width, height } = page.getSize();
-
-  const bold   = await doc.embedFont(StandardFonts.HelveticaBold);
-  const normal = await doc.embedFont(StandardFonts.Helvetica);
-  const mono   = await doc.embedFont(StandardFonts.Courier);
-
-  const A = session.participantA;
-  const B = session.participantB;
-
-  // ── Détermination des langues ───────────────────────────────
-  const { langA, langB, langAccident } = determineLangs(A, B, acc);
-  const driverLang: PdfLang = forRole === 'A' ? langA : langB;
-  const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
-
-  const margin = 28;
-  const colW = (width - margin * 2 - 8) / 2;
-
-  let y = height - margin;
-
-  // ── HEADER ─────────────────────────────────────────────────
-  // Bande header — rouge standard ou orange ambre si unilatéral
   const headerColor = isUnilateral ? rgb(0.6, 0.35, 0.0) : C.boom;
   page.drawRectangle({ x: 0, y: height - 52, width, height: 52, color: headerColor });
 
-  // Logo / title
   drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white);
   const pdfTitle = isUnilateral ? 'Declaration Unilaterale de Sinistre' : L.title;
   const pdfSubtitle = isUnilateral
@@ -179,203 +160,169 @@ export async function generateConstatPDF(
   drawText(page, pdfTitle, margin, height - 34, normal, 9, rgb(1, 0.9, 0.7));
   drawText(page, pdfSubtitle, margin, height - 44, normal, 6.5, rgb(1, 0.85, 0.6));
 
-  // Session info top right
   const sessionText = `Session: ${session.id}`;
   const sessionW = mono.widthOfTextAtSize(sessionText, 7);
   drawText(page, sessionText, width - margin - sessionW, height - 18, mono, 7, C.white);
-  const country = acc.location?.country;
-  const formattedDate = formatDateForCountry(acc.date ?? '', country);
   const dateStr = acc.date && acc.time ? `${formattedDate} ${acc.time}` : new Date(session.createdAt).toLocaleString('fr-CH');
   const dateW = normal.widthOfTextAtSize(dateStr, 7);
   drawText(page, dateStr, width - margin - dateW, height - 30, normal, 7, rgb(1, 0.85, 0.8));
 
-  y = height - 64;
+  ctx.y = height - 64;
+}
 
-  // ── BANNIÈRE DÉCLARATION UNILATÉRALE ───────────────────────
-  if (isUnilateral && partyBStatus) {
-    // Fond ambre
-    page.drawRectangle({
-      x: margin, y: y - 62, width: width - margin * 2, height: 62,
-      color: rgb(0.18, 0.12, 0.0),
-      borderColor: rgb(0.6, 0.4, 0.0),
-      borderWidth: 1,
-    });
+// ── Sub-function: Unilateral banner ─────────────────────────
+async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
+  const { doc, page, bold, normal, margin, width, isUnilateral, partyBStatus } = ctx;
+  if (!isUnilateral || !partyBStatus) return;
+  let y = ctx.y;
 
-    drawText(page, 'DECLARATION UNILATERALE DE SINISTRE', margin + 8, y - 12, bold, 9, rgb(0.95, 0.72, 0.1));
-    drawText(page,
-      `Raison : ${partyBStatus.reasonLabel}  |  Enregistre le : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
-      margin + 8, y - 24, normal, 7.5, rgb(0.9, 0.75, 0.4)
-    );
+  page.drawRectangle({
+    x: margin, y: y - 62, width: width - margin * 2, height: 62,
+    color: rgb(0.18, 0.12, 0.0),
+    borderColor: rgb(0.6, 0.4, 0.0),
+    borderWidth: 1,
+  });
 
-    if (partyBStatus.plateNumber) {
-      drawText(page, `Plaque partie B : ${partyBStatus.plateNumber}`, margin + 8, y - 36, bold, 8, rgb(0.95, 0.72, 0.1));
-    }
-    if (partyBStatus.vehicleDescription) {
-      drawText(page, `Vehicule B : ${partyBStatus.vehicleDescription}`, margin + 8, y - 46, normal, 7, rgb(0.85, 0.7, 0.4));
-    }
-    if (partyBStatus.policeReportRef) {
-      drawText(page, `Ref. police : ${partyBStatus.policeReportRef}`, margin + 240, y - 36, normal, 7, rgb(0.85, 0.7, 0.4));
-    }
-    if (partyBStatus.notes) {
-      const notesShort = partyBStatus.notes.length > 80 ? partyBStatus.notes.slice(0, 80) + '...' : partyBStatus.notes;
-      drawText(page, `Observations : ${notesShort}`, margin + 8, y - 56, normal, 6.5, rgb(0.75, 0.62, 0.35));
-    }
+  drawText(page, 'DECLARATION UNILATERALE DE SINISTRE', margin + 8, y - 12, bold, 9, rgb(0.95, 0.72, 0.1));
+  drawText(page,
+    `Raison : ${partyBStatus.reasonLabel}  |  Enregistre le : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
+    margin + 8, y - 24, normal, 7.5, rgb(0.9, 0.75, 0.4)
+  );
 
-    // Embed photo plaque si disponible
-    if (partyBStatus.platePhoto) {
-      try {
-        const plateBytes = Buffer.from(partyBStatus.platePhoto, 'base64');
-        let plateImg;
-        try { plateImg = await doc.embedJpg(plateBytes); } catch { plateImg = await doc.embedPng(plateBytes); }
-        const plateH = 52;
-        const plateW = Math.min(90, plateImg.width * plateH / plateImg.height);
-        page.drawImage(plateImg, {
-          x: width - margin - plateW - 4,
-          y: y - 60,
-          width: plateW,
-          height: plateH,
-        });
-        page.drawRectangle({
-          x: width - margin - plateW - 4, y: y - 60,
-          width: plateW, height: plateH,
-          borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 0.5,
-          color: undefined as any,
-        });
-      } catch { /* photo embed failed */ }
-    }
-
-    y -= 72;
+  if (partyBStatus.plateNumber) {
+    drawText(page, `Plaque partie B : ${partyBStatus.plateNumber}`, margin + 8, y - 36, bold, 8, rgb(0.95, 0.72, 0.1));
+  }
+  if (partyBStatus.vehicleDescription) {
+    drawText(page, `Vehicule B : ${partyBStatus.vehicleDescription}`, margin + 8, y - 46, normal, 7, rgb(0.85, 0.7, 0.4));
+  }
+  if (partyBStatus.policeReportRef) {
+    drawText(page, `Ref. police : ${partyBStatus.policeReportRef}`, margin + 240, y - 36, normal, 7, rgb(0.85, 0.7, 0.4));
+  }
+  if (partyBStatus.notes) {
+    const notesShort = partyBStatus.notes.length > 80 ? partyBStatus.notes.slice(0, 80) + '...' : partyBStatus.notes;
+    drawText(page, `Observations : ${notesShort}`, margin + 8, y - 56, normal, 6.5, rgb(0.75, 0.62, 0.35));
   }
 
-  // ── ACCIDENT SECTION ───────────────────────────────────────
+  if (partyBStatus.platePhoto) {
+    try {
+      const plateBytes = Buffer.from(partyBStatus.platePhoto, 'base64');
+      let plateImg;
+      try { plateImg = await doc.embedJpg(plateBytes); } catch { plateImg = await doc.embedPng(plateBytes); }
+      const plateH = 52;
+      const plateW = Math.min(90, plateImg.width * plateH / plateImg.height);
+      page.drawImage(plateImg, {
+        x: width - margin - plateW - 4, y: y - 60,
+        width: plateW, height: plateH,
+      });
+      page.drawRectangle({
+        x: width - margin - plateW - 4, y: y - 60,
+        width: plateW, height: plateH,
+        borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 0.5,
+        color: undefined as any,
+      });
+    } catch { /* photo embed failed */ }
+  }
+
+  ctx.y = y - 72;
+}
+
+// ── Sub-function: Vehicle + Driver + Insurance sections ─────
+function buildPartySection(ctx: PdfContext): void {
+  const { page, bold, normal, A, B, L, margin, width, colW } = ctx;
+  let y = ctx.y;
+
+  // Accident info
   drawRect(page, margin, y - 38, width - margin * 2, 42, C.section, C.border);
   drawText(page, L.s1, margin + 6, y - 10, bold, 8, C.boom);
 
   const fieldW = (width - margin * 2 - 16) / 4;
-
-  labelValue(page, L.date, formattedDate, margin + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, L.time, acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, L.country, acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
-  labelValue(page, L.injuries, acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);
-
+  labelValue(page, L.date, ctx.formattedDate, margin + 4, y - 12, fieldW, normal, bold);
+  labelValue(page, L.time, ctx.acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
+  labelValue(page, L.country, ctx.acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
+  labelValue(page, L.injuries, ctx.acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);
   y -= 42;
 
-  // Location full width
+  // Location
   drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
   drawText(page, L.location, margin + 4, y - 8, normal, 6, C.mid);
-  const locationStr = [acc.location?.address, acc.location?.city, acc.location?.country].filter(Boolean).join(', ');
+  const locationStr = [ctx.acc.location?.address, ctx.acc.location?.city, ctx.acc.location?.country].filter(Boolean).join(', ');
   drawText(page, locationStr || '-', margin + 6, y - 18, bold, 9, C.black);
   y -= 28;
 
-  // ── VEHICLES HEADER ────────────────────────────────────────
+  // Vehicle headers
   y -= 6;
-  // Column A header
   page.drawRectangle({ x: margin, y: y - 22, width: colW, height: 22, color: C.black });
   drawText(page, L.vehicleA, margin + 6, y - 8, bold, 8, C.white);
   drawText(page, `${L.driver} : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '-',
     margin + 6, y - 17, normal, 7, C.light);
-
-  // Column B header
   page.drawRectangle({ x: margin + colW + 8, y: y - 22, width: colW, height: 22, color: C.dark });
   drawText(page, L.vehicleB, margin + colW + 14, y - 8, bold, 8, C.white);
   drawText(page, `${L.driver} : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '-',
     margin + colW + 14, y - 17, normal, 7, C.light);
   y -= 28;
 
-  // ── VEHICLE DATA (side by side) ────────────────────────────
+  // Vehicle data side-by-side helper
   const drawSideBySide = (labelA: string, valA: string, labelB: string, valB: string, rowH = 26) => {
     labelValue(page, labelA, valA, margin, y, colW, normal, bold);
     labelValue(page, labelB, valB, margin + colW + 8, y, colW, normal, bold);
     y -= rowH;
   };
 
-  drawSideBySide(
-    L.plate, A?.vehicle?.licensePlate ?? '',
-    L.plate, B?.vehicle?.licensePlate ?? ''
-  );
-  drawSideBySide(
-    L.brand, `${A?.vehicle?.brand ?? ''} ${A?.vehicle?.model ?? ''}`.trim(),
-    L.brand, `${B?.vehicle?.brand ?? ''} ${B?.vehicle?.model ?? ''}`.trim()
-  );
-  drawSideBySide(
-    'YEAR / COLOUR / JAHR / ANNO', `${A?.vehicle?.year ?? ''} ${A?.vehicle?.color ?? ''}`.trim(),
-    'YEAR / COLOUR / JAHR / ANNO', `${B?.vehicle?.year ?? ''} ${B?.vehicle?.color ?? ''}`.trim()
-  );
-
+  drawSideBySide(L.plate, A?.vehicle?.licensePlate ?? '', L.plate, B?.vehicle?.licensePlate ?? '');
+  drawSideBySide(L.brand, `${A?.vehicle?.brand ?? ''} ${A?.vehicle?.model ?? ''}`.trim(), L.brand, `${B?.vehicle?.brand ?? ''} ${B?.vehicle?.model ?? ''}`.trim());
+  drawSideBySide('YEAR / COLOUR / JAHR / ANNO', `${A?.vehicle?.year ?? ''} ${A?.vehicle?.color ?? ''}`.trim(), 'YEAR / COLOUR / JAHR / ANNO', `${B?.vehicle?.year ?? ''} ${B?.vehicle?.color ?? ''}`.trim());
   y -= 4;
 
-  // ── DRIVER DATA ────────────────────────────────────────────
+  // Driver data
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
   drawText(page, L.s2, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
-
-  drawSideBySide(
-    L.name, `${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim(),
-    L.name, `${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim()
-  );
-  drawSideBySide(
-    L.address, `${A?.driver?.address ?? ''} ${A?.driver?.city ?? ''}`.trim(),
-    L.address, `${B?.driver?.address ?? ''} ${B?.driver?.city ?? ''}`.trim()
-  );
-  drawSideBySide(
-    'TEL', A?.driver?.phone ?? '',
-    'TEL', B?.driver?.phone ?? ''
-  );
-  drawSideBySide(
-    'N° PERMIS DE CONDUIRE', A?.driver?.licenseNumber ?? '',
-    'N° PERMIS DE CONDUIRE', B?.driver?.licenseNumber ?? ''
-  );
-
+  drawSideBySide(L.name, `${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim(), L.name, `${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim());
+  drawSideBySide(L.address, `${A?.driver?.address ?? ''} ${A?.driver?.city ?? ''}`.trim(), L.address, `${B?.driver?.address ?? ''} ${B?.driver?.city ?? ''}`.trim());
+  drawSideBySide('TEL', A?.driver?.phone ?? '', 'TEL', B?.driver?.phone ?? '');
+  drawSideBySide('N° PERMIS DE CONDUIRE', A?.driver?.licenseNumber ?? '', 'N° PERMIS DE CONDUIRE', B?.driver?.licenseNumber ?? '');
   y -= 4;
 
-  // ── INSURANCE DATA ─────────────────────────────────────────
+  // Insurance data
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
   drawText(page, L.s3, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
-
-  drawSideBySide(
-    L.insurer, A?.insurance?.company ?? '',
-    L.insurer, B?.insurance?.company ?? ''
-  );
-  drawSideBySide(
-    'N° DE POLICE', A?.insurance?.policyNumber ?? '',
-    'N° DE POLICE', B?.insurance?.policyNumber ?? ''
-  );
-  drawSideBySide(
-    'N° CARTE VERTE', A?.insurance?.greenCardNumber ?? '',
-    'N° CARTE VERTE', B?.insurance?.greenCardNumber ?? ''
-  );
-
+  drawSideBySide(L.insurer, A?.insurance?.company ?? '', L.insurer, B?.insurance?.company ?? '');
+  drawSideBySide('N° DE POLICE', A?.insurance?.policyNumber ?? '', 'N° DE POLICE', B?.insurance?.policyNumber ?? '');
+  drawSideBySide('N° CARTE VERTE', A?.insurance?.greenCardNumber ?? '', 'N° CARTE VERTE', B?.insurance?.greenCardNumber ?? '');
   y -= 4;
 
-  // ── CIRCUMSTANCES ──────────────────────────────────────────
+  ctx.y = y;
+}
+
+// ── Sub-function: Circumstances, zones, witnesses, fault, description
+function buildDetailsSection(ctx: PdfContext): void {
+  const { page, bold, normal, mono, A, B, L, acc, margin, width, colW } = ctx;
+  let y = ctx.y;
+
+  // Circumstances
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
   drawText(page, L.s4, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
-
   const circA = A?.circumstances ?? [];
   const circB = B?.circumstances ?? [];
   const allCirc = Array.from(new Set([...circA, ...circB]));
-
-  const circCols = 2;
-  const circItems = allCirc.slice(0, 8); // show first 8 in page
+  const circItems = allCirc.slice(0, 8);
   circItems.forEach((id, i) => {
-    const col = i % circCols;
-    const row = Math.floor(i / circCols);
-    const cx = margin + col * ((width - margin * 2) / circCols);
+    const col = i % 2;
+    const row = Math.floor(i / 2);
+    const cx = margin + col * ((width - margin * 2) / 2);
     const cy = y - row * 14;
     const inA = circA.includes(id);
     const inB = circB.includes(id);
     drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${L.circ[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
   });
+  y -= Math.ceil(circItems.length / 2) * 14 + 8;
 
-  y -= Math.ceil(circItems.length / circCols) * 14 + 8;
-
-  // ── DAMAGED ZONES ─────────────────────────────────────────
+  // Damaged zones
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
   drawText(page, L.s5, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
-
   const zonesA = (A?.damagedZones ?? []).join(', ') || '-';
   const zonesB = (B?.damagedZones ?? []).join(', ') || '-';
   drawRect(page, margin, y - 22, colW, 26, C.white, C.border);
@@ -386,7 +333,7 @@ export async function generateConstatPDF(
   drawText(page, zonesB, margin + colW + 12, y - 18, bold, 8, C.black);
   y -= 30;
 
-  // ── WITNESSES ─────────────────────────────────────────────
+  // Witnesses
   if (acc.witnesses) {
     page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
     drawText(page, L.witnesses, margin + 4, y - 9, bold, 7.5, C.boom);
@@ -406,7 +353,7 @@ export async function generateConstatPDF(
     y -= 34;
   }
 
-  // ── THIRD PARTY DAMAGE ────────────────────────────────────
+  // Third party damage
   if (acc.thirdPartyDamage !== undefined) {
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
     drawText(page, L.thirdParty, margin + 4, y - 8, normal, 6, C.mid);
@@ -414,13 +361,10 @@ export async function generateConstatPDF(
     y -= 30;
   }
 
-  // ── FAULT DECLARATION ──────────────────────────────────────
+  // Fault declaration
   if (acc.faultDeclaration) {
     const faultMap: Record<string, string> = {
-      A: L.fault_A,
-      B: L.fault_B,
-      shared: L.fault_shared,
-      unknown: L.fault_unknown,
+      A: L.fault_A, B: L.fault_B, shared: L.fault_shared, unknown: L.fault_unknown,
     };
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
     drawText(page, L.s6, margin + 4, y - 8, bold, 7, C.boom);
@@ -428,11 +372,10 @@ export async function generateConstatPDF(
     y -= 30;
   }
 
-  // ── DESCRIPTION ────────────────────────────────────────────
+  // Description
   if (acc.description) {
     drawRect(page, margin, y - 36, width - margin * 2, 40, C.white, C.border);
     drawText(page, L.s7, margin + 4, y - 8, bold, 7, C.boom);
-    // Wrap text
     const words = acc.description.split(' ');
     let line = '';
     let lineY = y - 18;
@@ -440,53 +383,49 @@ export async function generateConstatPDF(
       const test = line ? `${line} ${word}` : word;
       if (normal.widthOfTextAtSize(test, 8) > width - margin * 2 - 12) {
         drawText(page, line, margin + 4, lineY, normal, 8, C.black);
-        line = word;
-        lineY -= 11;
-      } else {
-        line = test;
-      }
+        line = word; lineY -= 11;
+      } else { line = test; }
     }
     if (line) drawText(page, line, margin + 4, lineY, normal, 8, C.black);
     y -= 44;
   }
 
-  // ── SIGNATURES ─────────────────────────────────────────────
+  ctx.y = y;
+}
+
+// ── Sub-function: Signatures ────────────────────────────────
+async function buildSignatureSection(ctx: PdfContext): Promise<void> {
+  const { doc, page, bold, normal, A, B, L, margin, colW, isUnilateral, partyBStatus } = ctx;
+  let y = ctx.y;
+
   y -= 6;
-  page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
+  page.drawRectangle({ x: margin, y: y - 14, width: ctx.width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
   drawText(page, L.s8, margin + 4, y - 9, bold, 7.5, C.boom);
   y -= 18;
 
   const sigH = 60;
 
-  // Colonne A — toujours présente
   drawRect(page, margin, y - sigH, colW, sigH + 20, C.white, C.border);
   drawText(page, L.sigA, margin + 4, y - 8, normal, 6.5, C.mid);
 
   if (isUnilateral && partyBStatus) {
-    // Colonne B — remplacée par encadré "Non signé — raison"
     page.drawRectangle({
       x: margin + colW + 8, y: y - sigH, width: colW, height: sigH + 20,
-      color: rgb(0.18, 0.12, 0.0),
-      borderColor: rgb(0.6, 0.4, 0.0),
-      borderWidth: 1,
+      color: rgb(0.18, 0.12, 0.0), borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 1,
     });
     drawText(page, 'Partie B — Non signataire', margin + colW + 12, y - 8, normal, 6.5, rgb(0.75, 0.55, 0.1));
     drawText(page, partyBStatus.reasonLabel, margin + colW + 12, y - 22, bold, 8, rgb(0.95, 0.72, 0.1));
     if (partyBStatus.plateNumber) {
       drawText(page, `Plaque : ${partyBStatus.plateNumber}`, margin + colW + 12, y - 34, normal, 7.5, rgb(0.85, 0.7, 0.4));
     }
-    drawText(page,
-      `Enregistre : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
-      margin + colW + 12, y - sigH + 4, normal, 6, rgb(0.65, 0.5, 0.2)
-    );
+    drawText(page, `Enregistre : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`, margin + colW + 12, y - sigH + 4, normal, 6, rgb(0.65, 0.5, 0.2));
   } else {
-    // Colonne B normale
     drawRect(page, margin + colW + 8, y - sigH, colW, sigH + 20, C.white, C.border);
     drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid);
   }
 
-  // Embed signatures si disponibles
-  const sigPairs: [any, number][] = [[A, margin]];
+  // Embed signatures
+  const sigPairs: [typeof A, number][] = [[A, margin]];
   if (!isUnilateral) sigPairs.push([B, margin + colW + 8]);
   for (const [participant, xOff] of sigPairs) {
     if (participant?.signature) {
@@ -494,17 +433,11 @@ export async function generateConstatPDF(
         const sigBytes = Buffer.from(participant.signature, 'base64');
         const sigImg = await doc.embedPng(sigBytes);
         const sigDims = sigImg.scale(Math.min(1, (colW - 10) / sigImg.width, (sigH - 6) / sigImg.height));
-        page.drawImage(sigImg, {
-          x: xOff + 4,
-          y: y - sigH + 2,
-          width: sigDims.width,
-          height: sigDims.height,
-        });
+        page.drawImage(sigImg, { x: xOff + 4, y: y - sigH + 2, width: sigDims.width, height: sigDims.height });
       } catch { /* signature image failed to embed */ }
     }
   }
 
-  // Signed/date fields
   const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '-';
   const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '-';
   drawText(page, `${L.signedAt} : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
@@ -512,19 +445,21 @@ export async function generateConstatPDF(
     drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
   }
 
-  y -= sigH + 28;
+  ctx.y = y - sigH - 28;
+}
 
-  // ── SKETCH (Section 13) — Puppeteer Chrome + sketch-engine ─
-  // Générer le rendu Puppeteer si les données de session sont disponibles
+// ── Sub-function: Sketch page ───────────────────────────────
+async function buildSketchSection(ctx: PdfContext): Promise<void> {
+  const { doc, session, A, B, L, acc, margin, mono, bold, normal } = ctx;
+
   let finalSketchBase64 = acc.sketchImage || null;
   try {
     const hasParticipants = A && B;
     if (hasParticipants) {
-      // Déterminer le scénario depuis les circonstances
       const circA = A.circumstances || [];
       const circB = B.circumstances || [];
       const allCirc = [...circA, ...circB];
-      
+
       const scenario = allCirc.some(c => ['c6','c7'].includes(c)) ? 'roundabout'
         : allCirc.some(c => ['c13'].includes(c)) ? 'parking_reverse'
         : allCirc.some(c => ['c4','c5'].includes(c)) ? 'parking_forward'
@@ -533,40 +468,29 @@ export async function generateConstatPDF(
         : 'intersection_cross';
 
       const trafficSide = ['AU','GB','JP','IN','ZA','NZ','IE','MT','CY','TH','MY','ID','SG','HK','MO','KE','TZ','UG','ZW','ZM'].includes(acc.location?.country || '') ? 'left' : 'right';
-
-      const dirA = circA.includes('c12') ? 'west' : circA.includes('c11') ? 'east' : 'east';
+      const dirA = circA.includes('c12') ? 'west' : 'east';
       const dirB = 'west';
 
       logger.info('[pdf] Rendu sketch Puppeteer...');
       const puppeteerPng = await renderSketch({
-        scenario,
-        trafficSide,
-        vehicleAType:     (A.vehicle?.vehicleType || 'car') as string,
-        vehicleAColor:    A.vehicle?.color || 'bleu',
+        scenario, trafficSide,
+        vehicleAType: (A.vehicle?.vehicleType || 'car') as string,
+        vehicleAColor: A.vehicle?.color || 'bleu',
         vehicleADirection: dirA,
         vehicleAImpactZone: (A.damagedZones?.[0] || 'front').replace('-','_'),
-        vehicleAMoving:   true,
-        vehicleAReversing: circA.includes('c13'),
-        vehicleABrand:    A.vehicle?.brand,
-        vehicleAModel:    A.vehicle?.model,
-        vehicleAPlate:    A.vehicle?.licensePlate,
-        vehicleBType:     (B.vehicle?.vehicleType || 'car') as string,
-        vehicleBColor:    B.vehicle?.color || 'rouge',
+        vehicleAMoving: true, vehicleAReversing: circA.includes('c13'),
+        vehicleABrand: A.vehicle?.brand, vehicleAModel: A.vehicle?.model, vehicleAPlate: A.vehicle?.licensePlate,
+        vehicleBType: (B.vehicle?.vehicleType || 'car') as string,
+        vehicleBColor: B.vehicle?.color || 'rouge',
         vehicleBDirection: dirB,
         vehicleBImpactZone: (B.damagedZones?.[0] || 'rear').replace('-','_'),
-        vehicleBMoving:   true,
-        vehicleBReversing: circB.includes('c13'),
-        vehicleBBrand:    B.vehicle?.brand,
-        vehicleBModel:    B.vehicle?.model,
-        vehicleBPlate:    B.vehicle?.licensePlate,
-        mapImageBase64:   await (async () => {
-          // Priorité 1 : carte OSM générée côté serveur avec LES DEUX véhicules
+        vehicleBMoving: true, vehicleBReversing: circB.includes('c13'),
+        vehicleBBrand: B.vehicle?.brand, vehicleBModel: B.vehicle?.model, vehicleBPlate: B.vehicle?.licensePlate,
+        mapImageBase64: await (async () => {
           const loc = acc.location as any;
           const lat = loc?.lat || loc?.latitude;
           const lng = loc?.lng || loc?.longitude || loc?.lon;
           if (lat && lng) {
-            // vehicleAPos toujours dans acc (sauvegardé par ConstatFlow)
-            // vehicleBPos dans B.vehicle.mapPosition (sauvegardé par JoinSession)
             const vehicleAPos = (acc as any).vehicleAPos;
             const vehicleBPos = (B as any)?.vehicle?.mapPosition ?? null;
             const markers: import('./osm-map.service.js').VehicleMarker[] = [];
@@ -578,21 +502,15 @@ export async function generateConstatPDF(
             }
             if (markers.length > 0) {
               try {
-                const centerLat = markers.length >= 2
-                  ? (markers[0].lat + markers[1].lat) / 2
-                  : markers[0].lat;
-                const centerLng = markers.length >= 2
-                  ? (markers[0].lng + markers[1].lng) / 2
-                  : markers[0].lng;
+                const centerLat = markers.length >= 2 ? (markers[0].lat + markers[1].lat) / 2 : markers[0].lat;
+                const centerLng = markers.length >= 2 ? (markers[0].lng + markers[1].lng) / 2 : markers[0].lng;
                 return await fetchAccidentMapWithVehicles(centerLat, centerLng, markers);
               } catch {}
             }
           }
-          // Priorité 2: sketchImage du client (fallback si pas de coordonnées GPS)
           if (acc.sketchImage && acc.sketchImage.length > 1000) {
             return acc.sketchImage.replace(/^data:image\/[^;]+;base64,/, '');
           }
-          // Priorité 3: fetcher la carte OSM simple depuis les coordonnées GPS
           if (lat && lng) {
             try {
               logger.info(`[pdf] Fetch carte OSM: ${lat},${lng}`);
@@ -602,15 +520,12 @@ export async function generateConstatPDF(
               logger.warn('[pdf] OSM fetch failed:', msg);
             }
           }
-          // Priorité 3: géocoder l'adresse
           const addr = [loc?.address, loc?.city, loc?.country].filter(Boolean).join(', ');
           if (addr) {
             try {
               logger.info(`[pdf] Géocodage: ${addr}`);
               const coords = await geocodeAddress(addr);
-              if (coords) {
-                return await fetchAccidentMap(coords.lat, coords.lng, 900, 650, 18);
-              }
+              if (coords) return await fetchAccidentMap(coords.lat, coords.lng, 900, 650, 18);
             } catch (e: unknown) {
               const msg = e instanceof Error ? e.message : String(e);
               logger.warn('[pdf] Geocode/OSM failed:', msg);
@@ -618,8 +533,7 @@ export async function generateConstatPDF(
           }
           return undefined;
         })(),
-        width: 900,
-        height: 650,
+        width: 900, height: 650,
       });
       finalSketchBase64 = puppeteerPng;
       logger.info('[pdf] ✅ Sketch Puppeteer rendu');
@@ -627,77 +541,73 @@ export async function generateConstatPDF(
   } catch (sketchErr: unknown) {
     const msg = sketchErr instanceof Error ? sketchErr.message : String(sketchErr);
     logger.warn('[pdf] Sketch Puppeteer fallback:', msg);
-    // Garder sketchImage original si dispo
   }
 
   if (finalSketchBase64) {
     try {
-      // New page for sketch / carte
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
       drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
       drawText(sketchPage, `Position des véhicules A & B  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
       drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light);
-      const sketchBytes = Buffer.from(finalSketchBase64!, 'base64');
-      // Auto-detect JPEG (FF D8 FF) ou PNG (89 50 4E 47)
+      const sketchBytes = Buffer.from(finalSketchBase64, 'base64');
       const isJpeg = sketchBytes[0] === 0xFF && sketchBytes[1] === 0xD8;
       const sketchImg = isJpeg ? await doc.embedJpg(sketchBytes) : await doc.embedPng(sketchBytes);
       const maxW = 595 - margin * 2;
       const maxH = 700;
       const scale = Math.min(maxW / sketchImg.width, maxH / sketchImg.height, 1);
       sketchPage.drawImage(sketchImg, {
-        x: margin,
-        y: 820 - 10 - sketchImg.height * scale,
-        width: sketchImg.width * scale,
-        height: sketchImg.height * scale,
+        x: margin, y: 820 - 10 - sketchImg.height * scale,
+        width: sketchImg.width * scale, height: sketchImg.height * scale,
       });
       drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid);
     } catch { /* sketch embed failed */ }
   }
+}
 
-  // ── PHOTOS (Section scene) ─────────────────────────────────
-  if (acc.photos && acc.photos.length > 0) {
-    try {
-      const photoPage = doc.addPage([595, 842]);
-      photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-      drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom);
-      drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+// ── Sub-function: Photos page ───────────────────────────────
+async function buildPhotosSection(ctx: PdfContext): Promise<void> {
+  const { doc, session, acc, L, margin, bold, mono, normal } = ctx;
 
-      const cols = 2;
-      const photoW = (595 - margin * 2 - 10) / cols;
-      const photoH = 180;
-      let px = margin;
-      let py = 795;
+  if (!acc.photos || acc.photos.length === 0) return;
+  try {
+    const photoPage = doc.addPage([595, 842]);
+    photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
+    drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom);
+    drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid);
 
-      for (let i = 0; i < acc.photos.length; i++) {
-        const photo = acc.photos[i];
-        try {
-          const imgBytes = Buffer.from(photo.base64, 'base64');
-          const img = await doc.embedJpg(imgBytes);
-          const scale = Math.min(photoW / img.width, photoH / img.height, 1);
-          const iw = img.width * scale;
-          const ih = img.height * scale;
-          photoPage.drawImage(img, { x: px + (photoW - iw) / 2, y: py - photoH + (photoH - ih), width: iw, height: ih });
-          // Caption
-          const catLabel = photo.category.toUpperCase();
-          drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom);
-          if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black);
-          // Border
-          photoPage.drawRectangle({ x: px, y: py - photoH, width: photoW, height: photoH, borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5, color: undefined as any });
-        } catch { /* photo embed failed */ }
+    const cols = 2;
+    const photoW = (595 - margin * 2 - 10) / cols;
+    const photoH = 180;
+    let px = margin;
+    let py = 795;
 
-        if (i % cols === cols - 1) {
-          px = margin;
-          py -= photoH + 30;
-        } else {
-          px += photoW + 10;
-        }
-      }
-      drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid);
-    } catch { /* photos page failed */ }
-  }
+    for (let i = 0; i < acc.photos.length; i++) {
+      const photo = acc.photos[i];
+      try {
+        const imgBytes = Buffer.from(photo.base64, 'base64');
+        const img = await doc.embedJpg(imgBytes);
+        const scale = Math.min(photoW / img.width, photoH / img.height, 1);
+        const iw = img.width * scale;
+        const ih = img.height * scale;
+        photoPage.drawImage(img, { x: px + (photoW - iw) / 2, y: py - photoH + (photoH - ih), width: iw, height: ih });
+        const catLabel = photo.category.toUpperCase();
+        drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom);
+        if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black);
+        photoPage.drawRectangle({ x: px, y: py - photoH, width: photoW, height: photoH, borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5, color: undefined as any });
+      } catch { /* photo embed failed */ }
 
-  // ── FOOTER ─────────────────────────────────────────────────
+      if (i % cols === cols - 1) { px = margin; py -= photoH + 30; }
+      else { px += photoW + 10; }
+    }
+    drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid);
+  } catch { /* photos page failed */ }
+}
+
+// ── Sub-function: Footer ────────────────────────────────────
+function buildFooter(ctx: PdfContext): void {
+  const { page, normal, mono, session, margin, width, isUnilateral } = ctx;
+
   drawLine(page, margin, 48, width - margin, 48, C.border);
   const footerLine1 = isUnilateral
     ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
@@ -709,13 +619,66 @@ export async function generateConstatPDF(
     ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`
     : `boom.contact by PEP's Swiss SA · Document numerique certifie · Valable mondialement`;
   drawText(page, footerLine3, margin, 18, normal, 6.5, C.mid);
-
-  // Red corner accent
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
-  // emoji removed (WinAnsi incompatible)
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main export
+// ─────────────────────────────────────────────────────────────
+export async function generateConstatPDF(
+  session: ConstatSession,
+  forRole: 'A' | 'B' = 'A'
+): Promise<Uint8Array> {
+  const doc = await PDFDocument.create();
+
+  const acc = session.accident;
+  const partyBStatus = (acc as any)?.partyBStatus as PartyBStatus | undefined;
+  const isUnilateral = !!partyBStatus;
+
+  const docTitle = isUnilateral
+    ? 'Declaration Unilaterale de Sinistre — boom.contact'
+    : 'Constat Amiable — boom.contact';
+  doc.setTitle(docTitle);
+  doc.setAuthor('boom.contact by PEP\'s Swiss SA');
+  doc.setSubject(`Constat #${session.id}`);
+  doc.setCreator('boom.contact');
+  doc.setCreationDate(new Date());
+
+  const page = doc.addPage([595, 842]);
+  const { width, height } = page.getSize();
+
+  const bold   = await doc.embedFont(StandardFonts.HelveticaBold);
+  const normal = await doc.embedFont(StandardFonts.Helvetica);
+  const mono   = await doc.embedFont(StandardFonts.Courier);
+
+  const A = session.participantA;
+  const B = session.participantB;
+
+  const { langA, langB, langAccident } = determineLangs(A, B, acc);
+  const driverLang: PdfLang = forRole === 'A' ? langA : langB;
+  const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
+
+  const margin = 28;
+  const colW = (width - margin * 2 - 8) / 2;
+  const country = acc.location?.country;
+  const formattedDate = formatDateForCountry(acc.date ?? '', country);
+
+  const ctx: PdfContext = {
+    doc, page, bold, normal, mono, session, A, B, L, acc, margin, colW,
+    width, height, isUnilateral, partyBStatus, formattedDate,
+    y: height - margin,
+  };
+
+  // ── Build PDF sections ─────────────────────────────────────
+  buildHeader(ctx);
+  await buildUnilateralBanner(ctx);
+  buildPartySection(ctx);
+  buildDetailsSection(ctx);
+  await buildSignatureSection(ctx);
+  await buildSketchSection(ctx);
+  await buildPhotosSection(ctx);
+  buildFooter(ctx);
 
   return doc.save();
 }
-
-
 

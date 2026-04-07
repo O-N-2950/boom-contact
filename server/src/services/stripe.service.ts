@@ -2,7 +2,7 @@ import { logger } from '../logger.js';
 import Stripe from 'stripe';
 import { db, schema } from '../db/index.js';
 import { eq, gt, and, sql } from 'drizzle-orm';
-import { randomBytes } from 'crypto';
+import { makeId } from '../constants.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
@@ -84,10 +84,6 @@ export function formatPrice(amountCents: number, currency: SupportedCurrency): s
   const amount = (amountCents / 100).toFixed(2);
   const symbols: Record<string, string> = { CHF:'CHF ', EUR:'€', GBP:'£', AUD:'A$', USD:'$', CAD:'C$', SGD:'S$' };
   return `${symbols[currency] || ''}${amount}`;
-}
-
-function makeId(size = 12) {
-  return randomBytes(size).toString('base64url').slice(0, size);
 }
 
 // ── Upsert user ───────────────────────────────────────────────

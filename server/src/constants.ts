@@ -1,6 +1,8 @@
 // server/src/constants.ts
 // Centralized constants — avoid magic numbers in code
 
+import { randomBytes } from 'crypto';
+
 // File size limits
 export const MAX_IMAGE_BASE64_SIZE = 10_000_000; // ~7.5MB
 export const MAX_SIGNATURE_SIZE = 10_000_000;
@@ -32,3 +34,14 @@ export const ADMIN_MAX_CREDITS = 999999;
 // Police dashboard
 export const POLICE_DASHBOARD_SESSION_LIMIT = 50;
 export const POLICE_DASHBOARD_HOURS = 24;
+
+// Vehicle types that do not require signatures
+export const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
+
+// Client URL for redirects and links
+export const CLIENT_URL = process.env.CLIENT_URL || '';
+
+// ID generator — uses crypto.randomBytes for cryptographically secure random IDs
+export function makeId(size = 12): string {
+  return randomBytes(size).toString('base64url').slice(0, size);
+}

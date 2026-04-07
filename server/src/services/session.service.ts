@@ -3,14 +3,9 @@ import { randomBytes } from 'crypto';
 import { eq } from 'drizzle-orm';
 import { db, schema } from '../db';
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
+import { makeId, NON_SIGNING_TYPES } from '../constants.js';
 
 const SESSION_TTL_HOURS = 24 * 7; // 7 jours — permet de reprendre un constat après blessure
-
-// makeId uses crypto.randomBytes (cryptographically secure PRNG) to generate session IDs.
-// This ensures session IDs are unpredictable and cannot be enumerated by attackers.
-function makeId(size = 12): string {
-  return randomBytes(size).toString('base64url').slice(0, size);
-}
 
 function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession & { tokenA?: string; tokenB?: string } {
   return {
@@ -227,7 +222,6 @@ export async function signSession(
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
   // ── Types ne nécessitant pas de signature ─────────────────
-  const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
   const isPedestrianOrNonSigning = (p: any) =>
     NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
     NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
