@@ -161,7 +161,9 @@ export async function seedInitialPosts(posts: GeneratedPost[]) {
         generatedBy: 'session14',
       });
       inserted++;
-    } catch {}
+    } catch (e) {
+      logger.warn('[SocialGen] Seed insert failed', { error: String(e) });
+    }
   }
   logger.info('[SocialGen] Seed OK', { inserted });
   return inserted;

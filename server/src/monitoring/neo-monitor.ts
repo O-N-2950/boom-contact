@@ -100,7 +100,9 @@ async function reportToCockpit(status: string, failures: string[]) {
       }),
       signal: AbortSignal.timeout(5000),
     });
-  } catch { /* non-critique */ }
+  } catch (e) {
+    logger.debug('[NEO-MONITOR] Cockpit report failed (non-critique)', { error: String(e) });
+  }
 }
 
 // ── Health check principal ────────────────────────────────────

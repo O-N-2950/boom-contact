@@ -5,6 +5,7 @@ import { db } from '../db/index.js';
 import { users, magicTokens } from '../db/schema.js';
 import { eq, and, gt, isNull } from 'drizzle-orm';
 import { logger } from '../logger.js';
+import { BCRYPT_ROUNDS, MAGIC_LINK_TTL_MS, GIFT_LINK_TTL_MS, JWT_EXPIRES_DAYS } from '../constants.js';
 
 // JWT_SECRET must be set in Railway env — crash at boot if missing
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -12,9 +13,9 @@ if (!JWT_SECRET) {
   console.error('FATAL: JWT_SECRET environment variable is not set. Server cannot start.');
   process.exit(1);
 }
-const JWT_EXPIRES = '7d';
-const MAGIC_TTL   = 15 * 60 * 1000;  // 15 min
-const GIFT_TTL    = 7  * 24 * 60 * 60 * 1000; // 7 days
+const JWT_EXPIRES = `${JWT_EXPIRES_DAYS}d`;
+const MAGIC_TTL   = MAGIC_LINK_TTL_MS;
+const GIFT_TTL    = GIFT_LINK_TTL_MS;
 
 // Admin credentials from environment — never hardcoded
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'contact@boom.contact';
@@ -32,7 +33,6 @@ function nanoid(len = 20): string {
 }
 
 // ── Password hashing (bcrypt) ─────────────────────────────────
-const BCRYPT_ROUNDS = 12;
 
 /** Check if a stored hash is in the legacy scrypt format (salt:hash) vs bcrypt ($2b$...) */
 function isLegacyScryptHash(stored: string): boolean {

@@ -63,7 +63,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
           errorCorrectionLevel: 'M',
         });
         setQrDataUrls(prev => ({ ...prev, [role]: url }));
-      } catch { /* fallback */ }
+      } catch (e) { console.warn('[QRSession] QR generation failed', e); }
     });
   }, [vehicleCount, sessionId]);
 
@@ -234,7 +234,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
                 await navigator.clipboard.writeText(witnessUrl);
                 alert('Lien témoin copié !');
               }
-            } catch { /* ignore */ }
+            } catch (e) { console.warn('[QRSession] Share/clipboard failed', e); }
           }}
           style={{
             padding: '8px 14px', borderRadius: 8, border: '1px solid rgba(168,85,247,0.3)',

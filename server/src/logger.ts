@@ -21,7 +21,10 @@ function forceUnbuffered() {
     // Also set encoding to prevent any encoding-related buffering
     process.stdout.setDefaultEncoding('utf8');
     process.stderr.setDefaultEncoding('utf8');
-  } catch {}
+  } catch (e) {
+    // Can't use logger here (circular), fallback to raw stderr
+    process.stderr.write(`[WARN] forceUnbuffered failed: ${e}\n`);
+  }
 }
 
 forceUnbuffered();

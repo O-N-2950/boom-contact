@@ -17,7 +17,7 @@ Promise.all([
   initSentryFrontend(),
   initPostHog(),
   initGA4(),
-]).catch(() => {});
+]).catch((e) => console.warn('[Analytics] Init failed', e));
 import { detectBestLanguage, applyLang } from './i18n';
 
 function Root() {

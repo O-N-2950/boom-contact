@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index, serial } from 'drizzle-orm/pg-core';
+import type { AccidentData, ParticipantData } from '../../../shared/types/index.js';
 
 // ── Sessions — constats en cours ─────────────────────────────
 export const sessions = pgTable('sessions', {
@@ -6,12 +7,12 @@ export const sessions = pgTable('sessions', {
   status:       varchar('status', { length: 20 }).notNull().default('waiting'),
   createdAt:    timestamp('created_at').notNull().defaultNow(),
   expiresAt:    timestamp('expires_at').notNull(),
-  accident:     jsonb('accident').notNull().default({}),
-  participantA: jsonb('participant_a').notNull().default({}),
-  participantB: jsonb('participant_b'),
-  participantC: jsonb('participant_c'),
-  participantD: jsonb('participant_d'),
-  participantE: jsonb('participant_e'),
+  accident:     jsonb('accident').$type<Partial<AccidentData>>().notNull().default({}),
+  participantA: jsonb('participant_a').$type<Partial<ParticipantData>>().notNull().default({}),
+  participantB: jsonb('participant_b').$type<Partial<ParticipantData>>(),
+  participantC: jsonb('participant_c').$type<Partial<ParticipantData>>(),
+  participantD: jsonb('participant_d').$type<Partial<ParticipantData>>(),
+  participantE: jsonb('participant_e').$type<Partial<ParticipantData>>(),
   vehicleCount: integer('vehicle_count').notNull().default(2),
   pdfUrl:       text('pdf_url'),
   ownerEmail:   text('owner_email'),

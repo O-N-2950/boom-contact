@@ -238,7 +238,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
           positions.push({ role: 'A', pos: vehicleAPos });
         }
         setLivePositions(positions);
-      } catch {}
+      } catch (e) { console.warn('[MapVehiclePlacer] Failed to fetch positions', e); }
     };
     fetchPositions();
     const interval = setInterval(fetchPositions, 3000);

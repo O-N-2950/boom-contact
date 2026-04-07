@@ -220,7 +220,7 @@ async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
         borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 0.5,
         color: undefined as any,
       });
-    } catch { /* photo embed failed */ }
+    } catch (e) { logger.warn('[PDF] Plate photo embed failed', { error: String(e) }); }
   }
 
   ctx.y = y - 72;
@@ -434,7 +434,7 @@ async function buildSignatureSection(ctx: PdfContext): Promise<void> {
         const sigImg = await doc.embedPng(sigBytes);
         const sigDims = sigImg.scale(Math.min(1, (colW - 10) / sigImg.width, (sigH - 6) / sigImg.height));
         page.drawImage(sigImg, { x: xOff + 4, y: y - sigH + 2, width: sigDims.width, height: sigDims.height });
-      } catch { /* signature image failed to embed */ }
+      } catch (e) { logger.warn('[PDF] Signature embed failed', { error: String(e) }); }
     }
   }
 
@@ -505,7 +505,7 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
                 const centerLat = markers.length >= 2 ? (markers[0].lat + markers[1].lat) / 2 : markers[0].lat;
                 const centerLng = markers.length >= 2 ? (markers[0].lng + markers[1].lng) / 2 : markers[0].lng;
                 return await fetchAccidentMapWithVehicles(centerLat, centerLng, markers);
-              } catch {}
+              } catch (e) { logger.warn('[PDF] Map with vehicles failed', { error: String(e) }); }
             }
           }
           if (acc.sketchImage && acc.sketchImage.length > 1000) {
@@ -561,7 +561,7 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
         width: sketchImg.width * scale, height: sketchImg.height * scale,
       });
       drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid);
-    } catch { /* sketch embed failed */ }
+    } catch (e) { logger.warn('[PDF] Sketch embed failed', { error: String(e) }); }
   }
 }
 
@@ -595,13 +595,13 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
         drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom);
         if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black);
         photoPage.drawRectangle({ x: px, y: py - photoH, width: photoW, height: photoH, borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5, color: undefined as any });
-      } catch { /* photo embed failed */ }
+      } catch (e) { logger.warn('[PDF] Photo embed failed', { index: i, error: String(e) }); }
 
       if (i % cols === cols - 1) { px = margin; py -= photoH + 30; }
       else { px += photoW + 10; }
     }
     drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid);
-  } catch { /* photos page failed */ }
+  } catch (e) { logger.warn('[PDF] Photos page failed', { error: String(e) }); }
 }
 
 // ── Sub-function: Footer ────────────────────────────────────

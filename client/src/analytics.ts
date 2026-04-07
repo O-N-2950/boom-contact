@@ -19,7 +19,9 @@ export async function initSentryFrontend() {
       replaysOnErrorSampleRate: 0.1,
       integrations: [],
     });
-  } catch {}
+  } catch (e) {
+    console.warn('[Analytics] Sentry init failed', e);
+  }
 }
 
 // ── PostHog Frontend ──────────────────────────────────────────
@@ -39,15 +41,17 @@ export async function initPostHog() {
       disable_session_recording: true,
     });
     _ph = posthog;
-  } catch {}
+  } catch (e) {
+    console.warn('[Analytics] PostHog init failed', e);
+  }
 }
 
 export function phCapture(event: string, props: Record<string, unknown> = {}) {
-  try { _ph?.capture(event, props); } catch {}
+  try { _ph?.capture(event, props); } catch (e) { console.warn('[Analytics] PostHog capture failed', e); }
 }
 
 export function phIdentify(email: string, props: Record<string, unknown> = {}) {
-  try { _ph?.identify(email, props); } catch {}
+  try { _ph?.identify(email, props); } catch (e) { console.warn('[Analytics] PostHog identify failed', e); }
 }
 
 // ── GA4 ──────────────────────────────────────────────────────
@@ -64,14 +68,16 @@ export async function initGA4() {
     (window as any).gtag = gtag;
     gtag('js', new Date());
     gtag('config', id, { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure' });
-  } catch {}
+  } catch (e) {
+    console.warn('[Analytics] GA4 init failed', e);
+  }
 }
 
 function gtag(...args: unknown[]) {
   try {
     const w = window as any;
     if (typeof w.gtag === 'function') w.gtag(...args);
-  } catch {}
+  } catch (e) { console.warn('[Analytics] gtag call failed', e); }
 }
 
 export function ga4Event(name: string, params: Record<string, unknown> = {}) {

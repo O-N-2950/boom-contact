@@ -7,12 +7,11 @@ import { eq, and, desc, gte } from 'drizzle-orm';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { BCRYPT_ROUNDS, POLICE_DASHBOARD_HOURS } from '../constants.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET not set'); })();
 
 // ── Helpers ──────────────────────────────────────────────────
-
-const BCRYPT_ROUNDS = 12;
 
 async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, BCRYPT_ROUNDS);
@@ -150,7 +149,7 @@ export function verifyPoliceToken(token: string) {
 // ── Dashboard ────────────────────────────────────────────────
 
 export async function getPoliceDashboard(stationId: string) {
-  const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const since = new Date(Date.now() - POLICE_DASHBOARD_HOURS * 60 * 60 * 1000);
 
   const activeSessions = await db
     .select({

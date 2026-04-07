@@ -37,7 +37,9 @@ export async function captureException(err: unknown, context?: Record<string, un
       if (context) scope.setExtras(context);
       Sentry.captureException(err);
     });
-  } catch {}
+  } catch (e) {
+    logger.warn('[Analytics] captureException failed', { error: String(e) });
+  }
 }
 
 // ── PostHog Backend ───────────────────────────────────────────
@@ -67,8 +69,9 @@ async function phCapture(distinctId: string, event: string, properties: Record<s
       body,
       signal: AbortSignal.timeout(3000),
     });
-  } catch {
-    // Silent — analytics must never break the app
+  } catch (e) {
+    // Analytics must never break the app — but log for debugging
+    logger.debug('[Analytics] PostHog capture failed', { error: String(e) });
   }
 }
 
