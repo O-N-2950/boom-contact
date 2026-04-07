@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.git
+node_modules
+*.md
+.vscode
+.github
+tests
+.prettierrc
+eslint.config.js
+.dockerignore

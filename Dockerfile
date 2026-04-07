@@ -1,38 +1,53 @@
-# boom.contact — Dockerfile Session 15
-# node:20.19-alpine + Chromium (Puppeteer) + Cairo (canvas OSM)
-FROM node:20.19-alpine
+# boom.contact — Dockerfile (multistage build)
+# Stage 1: Builder — install deps + build
+# Stage 2: Production — minimal image
+
+# ── Stage 1: Builder ─────────────────────────────────────────
+FROM node:20.19-alpine AS builder
 
 WORKDIR /app
 
-# Chromium pour Puppeteer headless
+# System deps for canvas (Cairo) and Puppeteer (Chromium)
 RUN apk add --no-cache \
     chromium nss freetype harfbuzz ca-certificates \
-    ttf-freefont font-noto font-noto-cjk
-
-# Cairo/Canvas pour rendu OSM tiles server-side
-RUN apk add --no-cache \
+    ttf-freefont font-noto font-noto-cjk \
     cairo-dev pango-dev libjpeg-turbo-dev giflib-dev \
     python3 make g++ pkgconfig
+
+COPY package.json package-lock.json ./
+RUN npm ci --no-fund --no-audit
+
+COPY . .
+RUN rm -f vite.config.ts
+RUN mkdir -p server/src/assets
+RUN npm run build
+
+# ── Stage 2: Production ──────────────────────────────────────
+FROM node:20.19-alpine AS production
+
+WORKDIR /app
+
+# Runtime deps only (no build tools)
+RUN apk add --no-cache \
+    chromium nss freetype harfbuzz ca-certificates \
+    ttf-freefont font-noto font-noto-cjk \
+    cairo pango libjpeg-turbo giflib
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     NODE_OPTIONS="--no-warnings" \
+    NODE_ENV=production \
     FORCE_COLOR=1
 
-# IMPORTANT: COPY tout en une fois AVANT npm install
-# Garantit que chaque deploy reconstruit avec le code frais
-# cache-bust: 2026-03-25-session16-rebuild
-COPY . .
-
-RUN npm install --no-fund --no-audit
-
-RUN mkdir -p server/src/assets
-RUN rm -f vite.config.ts
-
-RUN npm run build
+# Copy built artifacts and production deps
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/server ./server
+COPY --from=builder /app/shared ./shared
+COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 
 # Security: don't run as root in production
-# Ensure node user can access all app files
 RUN chown -R node:node /app
 USER node
 
