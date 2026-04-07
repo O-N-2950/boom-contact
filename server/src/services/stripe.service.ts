@@ -1,7 +1,7 @@
 import { logger } from '../logger.js';
 import Stripe from 'stripe';
 import { db, schema } from '../db/index.js';
-import { eq } from 'drizzle-orm';
+import { eq, gt, and, sql } from 'drizzle-orm';
 import { randomBytes } from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
@@ -267,12 +267,13 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
 
 // ── Utiliser un crédit pour un constat ────────────────────────
 export async function useCredit(userEmail: string, sessionId: string): Promise<boolean> {
-  const [user] = await db.select().from(schema.users).where(eq(schema.users.email, userEmail)).limit(1);
-  if (!user || user.credits < 1) return false;
+  // Atomic decrement: prevents race condition by doing SELECT+UPDATE in one query
+  const result = await db.update(schema.users)
+    .set({ credits: sql`${schema.users.credits} - 1` })
+    .where(and(eq(schema.users.email, userEmail), gt(schema.users.credits, 0)))
+    .returning({ credits: schema.users.credits });
 
-  await db.update(schema.users)
-    .set({ credits: user.credits - 1 })
-    .where(eq(schema.users.email, userEmail));
+  if (!result.length) return false;
 
   await db.insert(schema.creditTxns).values({
     id: makeId(),
