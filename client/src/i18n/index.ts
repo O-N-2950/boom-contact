@@ -3,57 +3,74 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
+// Core locales loaded synchronously (fr, en, de, it = Swiss + English)
 import fr from './locales/fr.json';
 import en from './locales/en.json';
 import de from './locales/de.json';
 import it from './locales/it.json';
-import es from './locales/es.json';
-import pt from './locales/pt.json';
-import nl from './locales/nl.json';
-import pl from './locales/pl.json';
-import cs from './locales/cs.json';
-import sk from './locales/sk.json';
-import hu from './locales/hu.json';
-import ro from './locales/ro.json';
-import sv from './locales/sv.json';
-import da from './locales/da.json';
-import nb from './locales/nb.json';
-import fi from './locales/fi.json';
-import tr from './locales/tr.json';
-import ru from './locales/ru.json';
-import uk from './locales/uk.json';
-import ar from './locales/ar.json';
-import zh from './locales/zh.json';
-import ja from './locales/ja.json';
-import ko from './locales/ko.json';
-import el from './locales/el.json';
-import hr from './locales/hr.json';
-import hi from './locales/hi.json';
-import id from './locales/id.json';
-import ms from './locales/ms.json';
-import th from './locales/th.json';
-import vi from './locales/vi.json';
-import he from './locales/he.json';
-import fa from './locales/fa.json';
-import bg from './locales/bg.json';
-import sr from './locales/sr.json';
-import sl from './locales/sl.json';
-import et from './locales/et.json';
-import lv from './locales/lv.json';
-import lt from './locales/lt.json';
-import sq from './locales/sq.json';
-import mk from './locales/mk.json';
-import bs from './locales/bs.json';
-import ka from './locales/ka.json';
-import az from './locales/az.json';
-// Session 15 — milestone 50 langues
-import ti from './locales/ti.json';
-import am from './locales/am.json';
-import wo from './locales/wo.json';
-import ur from './locales/ur.json';
-import bn from './locales/bn.json';
-import so from './locales/so.json';
-import tl from './locales/tl.json';
+
+// All other locales are lazy-loaded on demand
+const LAZY_LOCALE_LOADERS: Record<string, () => Promise<{ default: Record<string, string> }>> = {
+  es: () => import('./locales/es.json'),
+  pt: () => import('./locales/pt.json'),
+  nl: () => import('./locales/nl.json'),
+  pl: () => import('./locales/pl.json'),
+  cs: () => import('./locales/cs.json'),
+  sk: () => import('./locales/sk.json'),
+  hu: () => import('./locales/hu.json'),
+  ro: () => import('./locales/ro.json'),
+  sv: () => import('./locales/sv.json'),
+  da: () => import('./locales/da.json'),
+  nb: () => import('./locales/nb.json'),
+  fi: () => import('./locales/fi.json'),
+  tr: () => import('./locales/tr.json'),
+  ru: () => import('./locales/ru.json'),
+  uk: () => import('./locales/uk.json'),
+  ar: () => import('./locales/ar.json'),
+  zh: () => import('./locales/zh.json'),
+  ja: () => import('./locales/ja.json'),
+  ko: () => import('./locales/ko.json'),
+  el: () => import('./locales/el.json'),
+  hr: () => import('./locales/hr.json'),
+  hi: () => import('./locales/hi.json'),
+  id: () => import('./locales/id.json'),
+  ms: () => import('./locales/ms.json'),
+  th: () => import('./locales/th.json'),
+  vi: () => import('./locales/vi.json'),
+  he: () => import('./locales/he.json'),
+  fa: () => import('./locales/fa.json'),
+  bg: () => import('./locales/bg.json'),
+  sr: () => import('./locales/sr.json'),
+  sl: () => import('./locales/sl.json'),
+  et: () => import('./locales/et.json'),
+  lv: () => import('./locales/lv.json'),
+  lt: () => import('./locales/lt.json'),
+  sq: () => import('./locales/sq.json'),
+  mk: () => import('./locales/mk.json'),
+  bs: () => import('./locales/bs.json'),
+  ka: () => import('./locales/ka.json'),
+  az: () => import('./locales/az.json'),
+  ti: () => import('./locales/ti.json'),
+  am: () => import('./locales/am.json'),
+  wo: () => import('./locales/wo.json'),
+  ur: () => import('./locales/ur.json'),
+  bn: () => import('./locales/bn.json'),
+  so: () => import('./locales/so.json'),
+  tl: () => import('./locales/tl.json'),
+};
+
+/** Lazy-load a locale and add it to i18next */
+async function loadLocale(lang: string): Promise<void> {
+  if (i18n.hasResourceBundle(lang, 'translation')) return;
+  const loader = LAZY_LOCALE_LOADERS[lang];
+  if (!loader) return;
+  try {
+    const mod = await loader();
+    i18n.addResourceBundle(lang, 'translation', mod.default, true, true);
+  } catch {
+    // Fallback to fr if locale fails to load
+  }
+}
 
 export const SUPPORTED_LANGS = [
   'fr','de','it','en',
@@ -128,21 +145,6 @@ i18n
   .init({
     resources: {
       fr:{translation:fr}, en:{translation:en}, de:{translation:de}, it:{translation:it},
-      es:{translation:es}, pt:{translation:pt}, nl:{translation:nl}, pl:{translation:pl},
-      cs:{translation:cs}, sk:{translation:sk}, hu:{translation:hu}, ro:{translation:ro},
-      sv:{translation:sv}, da:{translation:da}, nb:{translation:nb}, fi:{translation:fi},
-      tr:{translation:tr}, ru:{translation:ru}, uk:{translation:uk},
-      ar:{translation:ar}, he:{translation:he}, fa:{translation:fa}, ur:{translation:ur},
-      zh:{translation:zh}, ja:{translation:ja}, ko:{translation:ko},
-      hi:{translation:hi}, th:{translation:th}, vi:{translation:vi},
-      id:{translation:id}, ms:{translation:ms}, bn:{translation:bn}, tl:{translation:tl},
-      el:{translation:el}, hr:{translation:hr}, bg:{translation:bg},
-      sr:{translation:sr}, sl:{translation:sl}, bs:{translation:bs},
-      mk:{translation:mk}, sq:{translation:sq},
-      et:{translation:et}, lv:{translation:lv}, lt:{translation:lt},
-      ka:{translation:ka}, az:{translation:az},
-      ti:{translation:ti}, am:{translation:am}, wo:{translation:wo},
-      so:{translation:so},
     },
     fallbackLng: 'fr',
     supportedLngs: SUPPORTED_LANGS as unknown as string[],
@@ -155,6 +157,12 @@ i18n
     parseMissingKeyHandler: (key) => `[${key}]`,
   });
 
+// Eagerly load the detected language if not a core locale
+const detectedLang = i18n.language;
+if (detectedLang && !['fr', 'en', 'de', 'it'].includes(detectedLang)) {
+  loadLocale(detectedLang);
+}
+
 export default i18n;
 
 export function applyDir(lang: string) {
@@ -163,7 +171,8 @@ export function applyDir(lang: string) {
   document.documentElement.setAttribute('lang', lang);
 }
 
-export function applyLang(lang: SupportedLang) {
+export async function applyLang(lang: SupportedLang) {
+  await loadLocale(lang);
   i18n.changeLanguage(lang);
   applyDir(lang);
   localStorage.setItem('boom_lang', lang);

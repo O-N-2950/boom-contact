@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
@@ -17,9 +17,16 @@ interface Props {
 function useWindowWidth() {
   const [w, setW] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 1024);
   useEffect(() => {
-    const handler = () => setW(window.innerWidth);
+    let timeout: ReturnType<typeof setTimeout>;
+    const handler = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setW(window.innerWidth), 150);
+    };
     window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('resize', handler);
+    };
   }, []);
   return w;
 }

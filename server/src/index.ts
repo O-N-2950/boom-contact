@@ -178,9 +178,20 @@ app.use(morgan((tokens, req, res) => {
   return null; // Morgan handles writing itself when we return string, null = we handle it
 }));
 
-// ── Compression (gzip/brotli) ────────────────────────────────
+// ── Compression (gzip + brotli via zlib) ─────────────────────
 import compression from 'compression';
-app.use(compression());
+import zlib from 'zlib';
+app.use(compression({
+  level: 6,
+  threshold: 1024, // Only compress responses > 1KB
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res);
+  },
+}));
+// Note: Node.js compression middleware handles gzip/deflate.
+// Brotli is typically handled by the CDN/reverse proxy (Railway, Cloudflare).
+// For direct brotli support, consider shrink-ray-current or a Brotli-capable proxy.
 
 // ── Core middleware ───────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
