@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { LandingPage } from './pages/LandingPage';
 import { ConstatFlow } from './pages/ConstatFlow';
 import { JoinSession } from './pages/JoinSession';
-import { AgentDashboard } from './pages/AgentDashboard';
 import { PricingPage } from './pages/PricingPage';
 import { CGUModal } from './components/CGUModal';
 import { PoliceLogin } from './pages/PoliceLogin';
@@ -21,7 +20,7 @@ import { applyDir } from './i18n';
 import { trpc } from './trpc';
 import { BugReport } from './components/BugReport';
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'agents' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -42,7 +41,6 @@ function getInitialView(): AppView {
     if (token) return 'police_flow';
   }
   if (params.get('session'))         return 'join';
-  if (params.get('agents') === 'true' || window.location.hash === '#agents') return 'agents';
   if (params.get('pricing') === 'true') return 'pricing';
   if (params.get('police') === 'true' || window.location.pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
@@ -259,7 +257,6 @@ export default function App() {
         onLogin={() => setShowAuthModal(true)}
         onBuyPack={() => setView('pricing')}
       />}
-      {view === 'agents'   && <AgentDashboard />}
       {view === 'pricing'  && (
         <PricingPage
           userEmail={userEmail}
