@@ -110,6 +110,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               type="email" placeholder="votre@email.com" value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleMagicRequest()}
+              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Adresse email"
               aria-describedby={error ? "error-magic" : undefined}
               style={inputStyle}
@@ -147,6 +149,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
+              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Adresse email"
               aria-describedby={error ? "error-password" : undefined}
               style={inputStyle}
@@ -155,6 +159,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               type="password" placeholder="Mot de passe" value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Mot de passe"
               style={inputStyle}
             />
@@ -178,6 +184,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
+              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Adresse email"
               aria-describedby={error ? "error-register" : undefined}
               style={inputStyle}
@@ -186,6 +194,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               type="password" placeholder="Mot de passe (min. 6 caractères)" value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleRegister()}
+              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Mot de passe"
               style={inputStyle}
             />
@@ -207,7 +217,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 const inputStyle: React.CSSProperties = {
   background: '#1a1a1a', border: '1px solid #333', borderRadius: 10,
   color: '#fff', padding: '12px 14px', fontSize: 15, width: '100%',
-  boxSizing: 'border-box', outline: 'none',
+  boxSizing: 'border-box',
+  transition: 'border-color 0.15s, outline 0.15s',
 };
 
 function btnStyle(bg: string): React.CSSProperties {

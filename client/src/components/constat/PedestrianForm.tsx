@@ -116,7 +116,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
     width: '100%', padding: '13px 14px', borderRadius: 10,
     border: '1.5px solid rgba(240,237,232,0.12)',
     background: 'rgba(255,255,255,0.04)',
-    color: 'var(--text)', fontSize: 15, outline: 'none',
+    color: 'var(--text)', fontSize: 15,
     boxSizing: 'border-box',
   };
   const lbl: React.CSSProperties = {

@@ -357,7 +357,7 @@ function AnnotationsSection({
     width: '100%', padding: '8px 10px', borderRadius: 6,
     border: '1px solid rgba(255,255,255,0.12)',
     background: 'rgba(255,255,255,0.05)',
-    color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
+    color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
     fontFamily: 'inherit',
   };
 

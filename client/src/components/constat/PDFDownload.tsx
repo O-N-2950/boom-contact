@@ -212,7 +212,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
                 width: '100%', padding: '11px 13px', borderRadius: 8,
                 border: '1.5px solid rgba(255,255,255,0.12)',
                 background: 'rgba(255,255,255,0.05)',
-                color: 'var(--text)', fontSize: 14, outline: 'none',
+                color: 'var(--text)', fontSize: 14,
                 marginBottom: 10, boxSizing: 'border-box' as const,
               }}
             />
@@ -326,7 +326,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
                     style={{ width: '100%', padding: '11px 13px', borderRadius: 8,
                       border: '1.5px solid rgba(255,255,255,0.1)',
                       background: 'rgba(255,255,255,0.05)',
-                      color: 'var(--text)', fontSize: 14, outline: 'none',
+                      color: 'var(--text)', fontSize: 14,
                       marginBottom: 8, boxSizing: 'border-box' as const }}
                     onKeyDown={e => e.key === 'Enter' && sendEmail()}
                   />

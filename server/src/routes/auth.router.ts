@@ -1,8 +1,11 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
-import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
+import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { logger } from '../logger.js';
+import { db } from '../db/index.js';
+import { users, vehicles, magicTokens } from '../db/schema.js';
+import { eq } from 'drizzle-orm';
 
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
@@ -61,9 +64,6 @@ export const authRouter = router({
   me: publicProcedure
     .query(async ({ ctx }) => {
       if (!ctx.authUser) return null;
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
       const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
       if (!user) return null;
       return { id: user.id, email: user.email, role: user.role, credits: user.credits,
@@ -82,9 +82,6 @@ export const authRouter = router({
       address:   z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
       const updates: Record<string, any> = {};
       if (input.firstName !== undefined) updates.firstName = input.firstName;
       if (input.lastName  !== undefined) updates.lastName  = input.lastName;
@@ -102,10 +99,6 @@ export const authRouter = router({
       currentPassword: z.string().min(1),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
-      const { verifyPassword } = await import('../services/auth.service.js');
       const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
       if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable.' });
       // Vérifier le mot de passe actuel
@@ -122,9 +115,6 @@ export const authRouter = router({
   deleteAccount: protectedProcedure
     .input(z.object({}))
     .mutation(async ({ ctx }) => {
-      const { db } = await import('../db/index.js');
-      const { users, vehicles, magicTokens } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
       const userId = ctx.authUser.sub;
       const userEmail = ctx.authUser.email;
 
@@ -163,10 +153,6 @@ export const authRouter = router({
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
       if (!expected || input.secret !== expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
-      const { hashPassword } = await import('../services/auth.service.js');
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
 
       // Check if an admin already exists — disable endpoint after first setup
       const existingAdmin = await db.query.users.findFirst({ where: eq(users.role, 'admin') });

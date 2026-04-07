@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { trpc } from '../trpc';
 
 export function BugReport() {
@@ -6,6 +7,7 @@ export function BugReport() {
   const [text, setText]       = useState('');
   const [sent, setSent]       = useState(false);
   const [email, setEmail]     = useState('');
+  const dialogRef = useFocusTrap<HTMLDivElement>(() => setOpen(false));
 
   const sendMut = trpc.email.bugReport.useMutation({
     onSuccess: () => { setSent(true); setOpen(false); },
@@ -32,13 +34,13 @@ export function BugReport() {
           boxShadow:'0 4px 20px rgba(0,0,0,0.4)', display:'flex', alignItems:'center', gap:8,
         }}>
           ✅ Merci !
-          <button onClick={() => setSent(false)} style={{ background:'none', border:'none', color:'#22c55e', cursor:'pointer', fontSize:14 }}>✕</button>
+          <button onClick={() => setSent(false)} aria-label="Fermer le message" style={{ background:'none', border:'none', color:'#22c55e', cursor:'pointer', fontSize:14 }}>✕</button>
         </div>
       )}
 
       {/* Bouton flottant discret */}
       {!sent && (
-        <button onClick={() => setOpen(o => !o)} title="Signaler un problème"
+        <button onClick={() => setOpen(o => !o)} aria-label="Signaler un problème"
           style={{
             position:'fixed', bottom:76, right:16, zIndex:600,
             background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.1)',
@@ -53,7 +55,7 @@ export function BugReport() {
       )}
 
       {open && (
-        <div style={{
+        <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" style={{
           position:'fixed', bottom:112, right:16, zIndex:700,
           background:'#06060C', border:'1px solid rgba(255,255,255,0.12)',
           borderRadius:14, padding:16, width:272,
@@ -61,7 +63,7 @@ export function BugReport() {
         }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
             <div style={{ fontWeight:700, fontSize:13 }}>🐛 Signaler un problème</div>
-            <button onClick={() => setOpen(false)} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:16 }}>✕</button>
+            <button onClick={() => setOpen(false)} aria-label="Fermer le formulaire" style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:16 }}>✕</button>
           </div>
           <textarea value={text} onChange={e => setText(e.target.value)}
             placeholder="Décrivez ce qui ne fonctionne pas…"
@@ -72,9 +74,11 @@ export function BugReport() {
               border:'1px solid rgba(255,255,255,0.1)',
               background:'rgba(255,255,255,0.04)', color:'var(--text)',
               fontSize:13, lineHeight:1.5, resize:'none',
-              fontFamily:'inherit', outline:'none',
+              fontFamily:'inherit',
               boxSizing:'border-box' as const, marginBottom:8,
             }}
+            onFocus={(e) => e.currentTarget.style.outline = '2px solid var(--boom)'}
+            onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="Votre email (optionnel)"
@@ -83,9 +87,11 @@ export function BugReport() {
               width:'100%', padding:'9px 10px', borderRadius:8,
               border:'1px solid rgba(255,255,255,0.08)',
               background:'rgba(255,255,255,0.04)', color:'var(--text)',
-              fontSize:13, outline:'none', fontFamily:'inherit',
+              fontSize:13, fontFamily:'inherit',
               boxSizing:'border-box' as const, marginBottom:10,
             }}
+            onFocus={(e) => e.currentTarget.style.outline = '2px solid var(--boom)'}
+            onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
           <button onClick={submit} disabled={!text.trim() || sendMut.isPending}
             style={{

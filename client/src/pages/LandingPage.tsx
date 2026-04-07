@@ -444,7 +444,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               { id: 'pack3',  icon: '👨‍👩‍👧', label: '3 constats', price: '12.90', currency: 'CHF / EUR', desc: 'Pour toute la famille',    badge: '⭐ Populaire', savings: '-12%' },
               { id: 'pack10', icon: '🚗', label: '10 constats', price: '34.90', currency: 'CHF / EUR', desc: 'Pour flottes et courtiers', badge: null, savings: '-29%' },
             ].map((pkg) => (
-              <div key={pkg.id} onClick={onPricing} style={{ background: pkg.badge ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)', border: `1.5px solid ${pkg.badge ? 'rgba(255,53,0,0.35)' : 'var(--border)'}`, borderRadius: 16, padding: isDesktop ? '24px 20px' : '18px 20px', cursor: 'pointer', display: 'flex', flexDirection: isDesktop ? 'column' : 'row', alignItems: isDesktop ? 'flex-start' : 'center', gap: isDesktop ? 10 : 16, transition: 'all 0.15s', position: 'relative' as const }}
+              <button key={pkg.id} onClick={onPricing} aria-label={`Acheter ${pkg.label}`} style={{ background: pkg.badge ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)', border: `1.5px solid ${pkg.badge ? 'rgba(255,53,0,0.35)' : 'var(--border)'}`, borderRadius: 16, padding: isDesktop ? '24px 20px' : '18px 20px', cursor: 'pointer', display: 'flex', flexDirection: isDesktop ? 'column' : 'row', alignItems: isDesktop ? 'flex-start' : 'center', gap: isDesktop ? 10 : 16, transition: 'all 0.15s', position: 'relative' as const, border: 'none' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
                 {pkg.badge && (
@@ -462,7 +462,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                   <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22, fontWeight: 700, color: pkg.badge ? 'var(--boom)' : 'var(--text)', lineHeight: 1 }}>{pkg.price}</div>
                   <div style={{ fontSize: 10, opacity: 0.4, marginTop: 2 }}>{pkg.currency}</div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
 

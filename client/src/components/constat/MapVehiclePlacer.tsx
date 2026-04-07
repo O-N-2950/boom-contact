@@ -455,6 +455,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
         )}
         <canvas
           ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
+          aria-label="Placement du véhicule sur le schéma"
           style={{ width:'100%', display:'block', cursor:dragging?'grabbing':'grab', touchAction:'none' }}
           onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
           onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}

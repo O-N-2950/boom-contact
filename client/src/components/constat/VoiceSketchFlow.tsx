@@ -181,7 +181,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
             style={{
               width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
               borderRadius: 12, color: '#fff', fontSize: 14, padding: 14,
-              boxSizing: 'border-box' as const, resize: 'vertical', lineHeight: 1.6, outline: 'none',
+              boxSizing: 'border-box' as const, resize: 'vertical', lineHeight: 1.6,
               fontFamily: 'inherit', marginBottom: 16,
             }}
           />
@@ -261,7 +261,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
                 width: '100%', background: 'rgba(255,255,255,0.06)',
                 border: `1px solid ${roleColor}66`, borderRadius: 10,
                 color: '#fff', fontSize: 14, padding: 14, lineHeight: 1.65,
-                resize: 'vertical' as const, outline: 'none', fontFamily: 'inherit',
+                resize: 'vertical' as const, fontFamily: 'inherit',
                 boxSizing: 'border-box' as const,
               }}
               placeholder="Corrigez votre déclaration si nécessaire..."

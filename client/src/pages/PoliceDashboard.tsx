@@ -103,7 +103,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
             value={searchId}
             onChange={e => setSearchId(e.target.value)}
             placeholder="Rechercher par ID, lieu…"
-            style={{ flex: 1, padding:'11px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.05)', color:'#fff', fontSize: 14, outline:'none' }}
+            style={{ flex: 1, padding:'11px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.05)', color:'#fff', fontSize: 14 }}
           />
           <button onClick={() => refetch()} style={{ padding:'11px 16px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'rgba(240,237,232,0.6)', cursor:'pointer', fontSize: 13 }}>
             🔄

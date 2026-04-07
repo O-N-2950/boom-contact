@@ -1,5 +1,6 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
+import { RouteAnnouncer } from './components/RouteAnnouncer';
 import React, { useState, useEffect, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { applyDir } from './i18n';
@@ -64,6 +65,7 @@ function getInitialView(): AppView {
 export default function App() {
   const { i18n } = useTranslation();
   const [view, setView] = useState<AppView>(getInitialView);
+  const [routeAnnouncement, setRouteAnnouncement] = useState('');
   const [accountInitialTab, setAccountInitialTab] = useState<'garage'|'history'|'profile'>('garage');
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
   const [authUser, setAuthUser] = useState<any>(() => {
@@ -168,6 +170,25 @@ export default function App() {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
+  // Announce view changes to screen readers
+  useEffect(() => {
+    const viewLabels: Record<AppView, string> = {
+      landing: 'Page d\'accueil',
+      cgu: 'Conditions d\'utilisation',
+      pricing: 'Tarification',
+      constat: 'Création de constat',
+      join: 'Rejoindre une session',
+      account: 'Compte utilisateur',
+      admin: 'Tableau de bord administrateur',
+      emergency: 'Numéros d\'urgence',
+      privacy: 'Politique de confidentialité',
+      police_login: 'Connexion police',
+      police_dashboard: 'Tableau de bord police',
+      police_flow: 'Flux police',
+    };
+    setRouteAnnouncement(`Navigation vers ${viewLabels[view]}`);
+  }, [view]);
+
   // Check post-payment success
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -243,6 +264,7 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+    <RouteAnnouncer message={routeAnnouncement} />
     <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded">
       Skip to content
     </a>

@@ -134,7 +134,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
     width: '100%', padding: '11px 13px', borderRadius: 8,
     border: '1.5px solid rgba(255,255,255,0.1)',
     background: 'rgba(255,255,255,0.05)',
-    color: 'var(--text)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
+    color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
   };
 
   return (
@@ -365,7 +365,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
               <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
               <textarea aria-label="Description des blessures" value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
                 placeholder={t('location.injury_desc_placeholder')} rows={3}
-                style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
+                style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />
             </div>
 

@@ -125,6 +125,7 @@ export function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }:
           </span>
           <button
             onClick={() => onChange('')}
+            aria-label="Effacer la couleur"
             style={{ marginLeft: 'auto', background: 'none', border: 'none',
               color: 'rgba(240,237,232,0.35)', cursor: 'pointer', fontSize: 14 }}
           >✕</button>
@@ -143,11 +144,11 @@ export function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }:
             width: '100%', padding: '10px 13px', borderRadius: 8,
             border: '1.5px solid rgba(255,255,255,0.08)',
             background: 'rgba(255,255,255,0.04)',
-            color: 'var(--text)', fontSize: 13, outline: 'none',
+            color: 'var(--text)', fontSize: 13,
             boxSizing: 'border-box', fontFamily: 'inherit',
           }}
-          onFocus={e => (e.target.style.borderColor = 'rgba(255,53,0,0.5)')}
-          onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+          onFocus={e => { e.target.style.borderColor = 'rgba(255,53,0,0.5)'; e.target.style.outline = '2px solid var(--boom)'; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.outline = 'none'; }}
         />
       </div>
     </div>

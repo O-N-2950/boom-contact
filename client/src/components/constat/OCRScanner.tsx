@@ -102,7 +102,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
   const inputStyle: React.CSSProperties = {
     width:'100%', padding:'10px 12px', borderRadius:8,
     border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.05)',
-    color:'var(--text)', fontSize:14, boxSizing:'border-box', fontFamily:'inherit', outline:'none',
+    color:'var(--text)', fontSize:14, boxSizing:'border-box', fontFamily:'inherit',
   };
 
   const btnStyle = (primary?: boolean): React.CSSProperties => ({

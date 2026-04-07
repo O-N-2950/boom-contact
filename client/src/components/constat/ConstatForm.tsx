@@ -131,7 +131,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
           width: '100%', padding: '12px 14px', borderRadius: 8,
           border: `1.5px solid ${(data[sec] as any)?.[field] ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`,
           background: 'rgba(255,255,255,0.04)', color: 'var(--text)',
-          fontSize: 14, outline: 'none', fontFamily: 'inherit',
+          fontSize: 14, fontFamily: 'inherit',
           transition: 'border-color 0.2s',
         }}
       />
@@ -245,10 +245,10 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
               <div style={{ display: 'flex', gap: 8 }}>
                 <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
-                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14 }} />
                 <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
                   aria-label="Heure de l'accident"
-                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14 }} />
               </div>
             </div>
 
@@ -259,7 +259,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
                 placeholder="Décrivez les dommages visibles sur votre véhicule..."
                 aria-label="Dégâts apparents"
                 rows={3}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>
 
             {/* Dégâts matériels à des tiers */}
@@ -282,7 +282,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
                 placeholder="Nom, prénom, téléphone de chaque témoin..."
                 aria-label="Informations sur les témoins"
                 rows={3}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>
 
             {/* Déclaration vocale */}
@@ -313,7 +313,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
               <textarea aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>
 
             {/* Preneur d'assurance différent du conducteur */}
@@ -325,7 +325,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
                     placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
                     value={(data.insurance as any)?.[field] ?? ''}
                     onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
-                    style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box' }}
                   />
                 </div>
               ))}

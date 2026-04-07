@@ -58,7 +58,7 @@ export function PoliceLogin({ onLogin }: Props) {
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="agent@police-jura.ch"
               aria-describedby={error ? "police-error" : undefined}
-              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box', outline:'none' }}
+              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
             />
           </div>
 
@@ -73,7 +73,7 @@ export function PoliceLogin({ onLogin }: Props) {
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="••••••••"
-              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box', outline:'none' }}
+              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
             />
           </div>
 

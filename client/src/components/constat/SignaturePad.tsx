@@ -164,6 +164,7 @@ export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = fa
       >
         <canvas
           ref={canvasRef}
+          aria-label="Zone de signature"
           style={{
             display: 'block',
             touchAction: 'none',

@@ -5,6 +5,7 @@
  * Produit une "Déclaration unilatérale de sinistre" légalement reconnue
  */
 import { useState, useRef } from 'react';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 
 export type PartyBReason =
   | 'injured_unconscious'  // Blessé grave / inconscient
@@ -120,6 +121,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
   const [notes, setNotes] = useState('');
   const [policeAlertDismissed, setPoliceAlertDismissed] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const modalRef = useFocusTrap<HTMLDivElement>(onCancel);
 
   const handlePhotoCapture = async (file: File) => {
     setOcrLoading(true);
@@ -158,7 +160,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
     width: '100%', padding: '12px 14px', borderRadius: 10,
     border: '1.5px solid rgba(240,237,232,0.12)',
     background: 'rgba(255,255,255,0.04)',
-    color: 'var(--text)', fontSize: 14, outline: 'none',
+    color: 'var(--text)', fontSize: 14,
     boxSizing: 'border-box',
   };
 
@@ -168,7 +170,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
       background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
     }}>
-      <div style={{
+      <div ref={modalRef} role="dialog" aria-label="Partie B indisponible" aria-modal="true" style={{
         width: '100%', maxWidth: 480, background: '#0A0A16',
         border: '1px solid rgba(255,255,255,0.1)',
         borderRadius: '20px 20px 0 0', maxHeight: '92svh',
@@ -191,7 +193,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 {step === 'details' && 'Informations complémentaires'}
               </div>
             </div>
-            <button onClick={onCancel} style={{
+            <button onClick={onCancel} aria-label="Annuler" style={{
               background: 'rgba(255,255,255,0.06)', border: 'none',
               color: 'rgba(240,237,232,0.5)', cursor: 'pointer',
               borderRadius: 8, padding: '6px 12px', fontSize: 12,
@@ -296,7 +298,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => setPoliceAlertDismissed(true)} style={{
+                  <button onClick={() => setPoliceAlertDismissed(true)} aria-label="Confirmer que j'ai contacté les secours" style={{
                     marginTop: 10, background: 'none', border: 'none',
                     color: 'rgba(255,255,255,0.35)', cursor: 'pointer', fontSize: 12,
                   }}>
@@ -322,6 +324,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                       style={{ width: '100%', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}
                     />
                     <button onClick={() => { setPlatePhoto(null); setPlateNumber(''); fileRef.current?.click(); }}
+                      aria-label="Reprendre la photo"
                       style={{
                         position: 'absolute', top: 8, right: 8,
                         padding: '4px 10px', borderRadius: 6,

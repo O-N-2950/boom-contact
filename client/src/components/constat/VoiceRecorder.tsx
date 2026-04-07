@@ -264,7 +264,7 @@ export function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
                 onBlur={() => { setIsEditing(false); onComplete?.(transcript, audioBase64); }}
                 autoFocus
                 rows={5}
-                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: `1px solid ${roleColor}66`, background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 14, outline: 'none', boxSizing: 'border-box', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.6 }}
+                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: `1px solid ${roleColor}66`, background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.6 }}
               />
             ) : (
               <div

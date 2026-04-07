@@ -4,6 +4,7 @@
  * Objectif : devenir l'app constat n°1 par recommandation entre conducteurs
  */
 import { useState } from 'react';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   onClose?: () => void;
@@ -15,6 +16,7 @@ const APP_URL = 'https://www.boom.contact';
 export function ShareBoom({ onClose, context = 'landing' }: Props) {
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState('');
+  const dialogRef = useFocusTrap<HTMLDivElement>(onClose);
 
   // Messages adaptés au contexte
   const messages = {
@@ -99,7 +101,7 @@ export function ShareBoom({ onClose, context = 'landing' }: Props) {
   ];
 
   return (
-    <div style={{
+    <div ref={dialogRef} role="dialog" aria-label="Partager boom.contact" aria-modal="true" style={{
       position: 'fixed', inset: 0, zIndex: 900,
       background: 'rgba(6,6,12,0.95)',
       display: 'flex', flexDirection: 'column',
@@ -117,7 +119,7 @@ export function ShareBoom({ onClose, context = 'landing' }: Props) {
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} style={{
+          <button onClick={onClose} aria-label="Fermer le partage" style={{
             background: 'rgba(255,255,255,0.08)', border: 'none',
             borderRadius: 20, width: 36, height: 36,
             color: '#888', cursor: 'pointer', fontSize: 18, flexShrink: 0,

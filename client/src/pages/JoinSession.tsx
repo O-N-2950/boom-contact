@@ -388,7 +388,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             width: '100%', padding: '13px 14px', borderRadius: 10,
             border: '1.5px solid rgba(255,255,255,0.12)',
             background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
-            fontSize: 15, outline: 'none', boxSizing: 'border-box' as const, fontFamily: 'inherit',
+            fontSize: 15, boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
         />
         <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6 }}>

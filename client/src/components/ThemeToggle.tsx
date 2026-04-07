@@ -36,6 +36,7 @@ export function ThemeToggle({ style }: Props) {
   return (
     <button
       onClick={toggle}
+      aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
       title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
       style={{
         background: 'none',

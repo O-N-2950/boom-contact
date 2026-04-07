@@ -3,6 +3,9 @@ import type { Context } from '../middleware/context.js';
 import { router, protectedProcedure, TRPCError } from './trpc.js';
 import { generateDailyPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 import { logger } from '../logger.js';
+import { db, schema } from '../db/index.js';
+import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
+import { desc, gte, eq, count, sum, sql, isNull, and, inArray } from 'drizzle-orm';
 
 export const adminRouter = router({
 
@@ -11,9 +14,6 @@ export const adminRouter = router({
     .query(async ({ ctx }) => {
       if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
 
-      const { db } = await import('../db/index.js');
-      const { sessions, users, payments, creditTxns } = await import('../db/schema.js');
-      const { desc, gte, eq, count, sum, sql } = await import('drizzle-orm');
 
       const now = new Date();
       const since24h = new Date(now.getTime() - 24 * 3600 * 1000);
@@ -107,9 +107,6 @@ export const adminRouter = router({
     .input(z.object({ limit: z.number().default(50) }))
     .query(async ({ ctx, input }) => {
       if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { desc } = await import('drizzle-orm');
       return db.query.users.findMany({
         orderBy: [desc(users.createdAt)],
         limit: input.limit,
@@ -125,9 +122,6 @@ export const adminDeleteUser = protectedProcedure
   .input(z.object({ email: z.string().email() }))
   .mutation(async ({ ctx, input }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const { db } = await import('../db/index.js');
-    const { users, vehicles, magicTokens } = await import('../db/schema.js');
-    const { eq } = await import('drizzle-orm');
 
     // Ne pas supprimer le compte admin
     if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
@@ -152,9 +146,6 @@ export const adminSetCredits = protectedProcedure
   }))
   .mutation(async ({ ctx, input }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const { db } = await import('../db/index.js');
-    const { users } = await import('../db/schema.js');
-    const { eq } = await import('drizzle-orm');
     const emailLower = input.email.toLowerCase();
     const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
@@ -170,9 +161,6 @@ export const adminListUsers = protectedProcedure
   }).default({ limit: 100, offset: 0 }))
   .query(async ({ ctx, input }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const { db } = await import('../db/index.js');
-    const { users } = await import('../db/schema.js');
-    const { desc } = await import('drizzle-orm');
     const all = await db.select({
       id: users.id,
       email: users.email,
@@ -186,9 +174,6 @@ export const adminListUsers = protectedProcedure
 export const adminCleanupSessions = protectedProcedure
   .mutation(async ({ ctx }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const { db } = await import('../db/index.js');
-    const { sessions } = await import('../db/schema.js');
-    const { eq } = await import('drizzle-orm');
     const signing = await db.query.sessions.findMany({ where: eq(sessions.status, 'signing') });
     let fixed = 0;
     const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
@@ -213,9 +198,6 @@ export const adminCleanupSessions = protectedProcedure
 export const adminFixOwnerEmails = protectedProcedure
   .mutation(async ({ ctx }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const { db } = await import('../db/index.js');
-    const { sessions } = await import('../db/schema.js');
-    const { eq, isNull, and } = await import('drizzle-orm');
     const missing = await db.query.sessions.findMany({
       where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
     });
@@ -238,15 +220,12 @@ export const marketingRouter = router({
     .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
     .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
       if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { socialPosts: sp } = await import('../db/schema.js');
-      const { eq, and } = await import('drizzle-orm');
       const conds: any[] = [];
-      if (input.platform) conds.push(eq(sp.platform, input.platform));
-      if (input.status)   conds.push(eq(sp.status, input.status));
+      if (input.platform) conds.push(eq(socialPosts.platform, input.platform));
+      if (input.status)   conds.push(eq(socialPosts.status, input.status));
       const posts = await (conds.length > 0
-        ? (db as any).select().from(sp).where(and(...conds)).orderBy(sp.createdAt)
-        : (db as any).select().from(sp).orderBy(sp.createdAt));
+        ? (db as any).select().from(socialPosts).where(and(...conds)).orderBy(socialPosts.createdAt)
+        : (db as any).select().from(socialPosts).orderBy(socialPosts.createdAt));
       return { posts: posts.map((p: any) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
     }),
 

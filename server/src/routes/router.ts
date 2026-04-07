@@ -11,8 +11,13 @@ import { sendPDFToDriver } from '../services/email.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
+import { getInsuranceAssistance } from '../services/insurance-assistance.service.js';
+import { getCountryEmergencyNumbers } from '../services/emergency-numbers.service.js';
 import { io } from '../index';
 import { logger } from '../logger.js';
+import { db, schema } from '../db/index.js';
+import { sessions as sessionsTable } from '../db/schema.js';
+import { eq, desc } from 'drizzle-orm';
 
 // Import sub-routers
 import { authRouter } from './auth.router.js';
@@ -242,14 +247,6 @@ export const appRouter = router({
           // ── Auto PDF + email ─────────────────────────────
           setImmediate(async () => {
             try {
-              const { logger: log } = await import('../logger.js');
-              const { db } = await import('../db/index.js');
-              const { sessions: sessionsTable } = await import('../db/schema.js');
-              const { eq } = await import('drizzle-orm');
-              const { generateConstatPDF } = await import('../services/pdf.service.js');
-              const { sendPDFToDriver } = await import('../services/email.service.js');
-
-              const { getSession } = await import('../services/session.service.js');
               const fullSession = await getSession(input.sessionId);
               if (!fullSession) return;
 
@@ -334,12 +331,9 @@ export const appRouter = router({
     // GET session.history — sessions where owner_email = logged-in user
     history: protectedProcedure
       .query(async ({ ctx }) => {
-        const { db } = await import('../db/index.js');
-        const { sessions } = await import('../db/schema.js');
-        const { eq, desc } = await import('drizzle-orm');
         return db.query.sessions.findMany({
-          where: eq(sessions.ownerEmail, ctx.authUser.email),
-          orderBy: [desc(sessions.createdAt)],
+          where: eq(sessionsTable.ownerEmail, ctx.authUser.email),
+          orderBy: [desc(sessionsTable.createdAt)],
           limit: 50,
         });
       }),
@@ -567,8 +561,6 @@ export const appRouter = router({
         countryCode: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
-
         const [resultA, resultB] = await Promise.all([
           input.insurerA ? getInsuranceAssistance(input.insurerA, input.countryCode) : Promise.resolve(null),
           input.insurerB ? getInsuranceAssistance(input.insurerB, input.countryCode) : Promise.resolve(null),
@@ -583,7 +575,6 @@ export const appRouter = router({
         countryName: z.string().optional(),
       }))
       .query(async ({ input }) => {
-        const { getCountryEmergencyNumbers } = await import('../services/emergency-numbers.service.js');
         return getCountryEmergencyNumbers(input.countryCode, input.countryName);
       }),
 
@@ -593,7 +584,6 @@ export const appRouter = router({
         country: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
         return getInsuranceAssistance(input.insurer, input.country);
       }),
   }),
