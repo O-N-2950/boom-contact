@@ -6,7 +6,7 @@ import App from './App';
 import { trpc } from './trpc';
 import './i18n'; // ← i18next init (must be before App)
 import './index.css';
-import { initSentryFrontend, initPostHog } from './analytics';
+import { initSentryFrontend, initPostHog, initGA4 } from './analytics';
 import { initTheme } from './components/ThemeToggle';
 
 // Appliquer le thème sauvegardé AVANT le premier render — évite le flash
@@ -16,6 +16,7 @@ initTheme();
 Promise.all([
   initSentryFrontend(),
   initPostHog(),
+  initGA4(),
 ]).catch(() => {});
 import { detectBestLanguage, applyLang } from './i18n';
 

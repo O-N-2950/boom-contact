@@ -50,8 +50,23 @@ export function phIdentify(email: string, props: Record<string, unknown> = {}) {
   try { _ph?.identify(email, props); } catch {}
 }
 
-// ── GA4 Helper ────────────────────────────────────────────────
-// gtag loaded via index.html script tag
+// ── GA4 ──────────────────────────────────────────────────────
+export async function initGA4() {
+  const id = import.meta.env.VITE_GA4_ID;
+  if (!id || !IS_PROD) return;
+  try {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(s);
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    function gtag(...args: unknown[]) { (window as any).dataLayer.push(args); }
+    (window as any).gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', id, { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure' });
+  } catch {}
+}
+
 function gtag(...args: unknown[]) {
   try {
     const w = window as any;

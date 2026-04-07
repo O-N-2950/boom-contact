@@ -3,7 +3,6 @@ import './logger.js';
 import { logger } from './logger.js';
 import { startupCheck, startMonitoring, runHealthCheck, getMonitorStatus } from './monitoring/neo-monitor.js';
 import { initSentry, captureException } from './analytics.js';
-import { initSentry, captureException } from './analytics.js';
 
 import express from 'express';
 import cors from 'cors';
@@ -17,7 +16,7 @@ import { runMigrations } from './db/migrate.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Init Sentry ASAP
+// Init Sentry ASAP (called once here, not duplicated below)
 initSentry().catch(() => {});
 
 const app = express();
@@ -55,7 +54,10 @@ export const io = new SocketServer(httpServer, {
           connectSrc: ["'self'", 'https://api.stripe.com', 'https://api.anthropic.com',
                        'https://nominatim.openstreetmap.org', 'https://ip-api.io',
                        'https://eu.i.posthog.com', 'https://app.posthog.com',
-                       'https://sentry.io', 'wss:'],
+                       'https://sentry.io', 'https://*.sentry.io',
+                       'https://www.google-analytics.com', 'https://www.googletagmanager.com',
+                       'https://region1.google-analytics.com',
+                       'wss:'],
           frameSrc: ["'self'", 'https://js.stripe.com'],
           objectSrc: ["'none'"],
           upgradeInsecureRequests: [],
@@ -167,8 +169,6 @@ app.use(morgan((tokens, req, res) => {
 
 // ── Core middleware ───────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
-// ── Analytics — init Sentry before any route ─────────────────
-initSentry().catch(() => {});
 
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
@@ -382,6 +382,7 @@ process.on('uncaughtException', (err) => {
     error: err.message,
     stack: err.stack?.split('\n').slice(0, 8).join(' | '),
   });
+  captureException(err, { source: 'uncaughtException' }).catch(() => {});
   process.exit(1);
 });
 
@@ -389,11 +390,6 @@ process.on('unhandledRejection', (reason) => {
   const msg = reason instanceof Error ? reason.message : String(reason);
   const stack = reason instanceof Error ? reason.stack?.split('\n').slice(0, 5).join(' | ') : '';
   logger.error('UNHANDLED REJECTION', { reason: msg, stack });
-});
-
-// ── Start ─────────────────────────────────────────────────────
-// ── Global error capture ─────────────────────────────────────
-process.on('unhandledRejection', (reason) => {
   captureException(reason, { source: 'unhandledRejection' }).catch(() => {});
 });
 
