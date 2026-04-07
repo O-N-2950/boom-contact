@@ -190,7 +190,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       step, sessionId, qrUrl, participantData, damagedZones, photos, sketchImage,
       vehicleCount, voiceAnalysis, voiceTranscript, ts: Date.now(),
     }));
-  }, [step, sessionId, qrUrl, participantData, damagedZones, photos]);
+  }, [step, sessionId, qrUrl, participantData, damagedZones, photos, vehicleCount, voiceAnalysis, voiceTranscript]);
 
   // Steps with translated labels
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
