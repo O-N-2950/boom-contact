@@ -81,6 +81,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
+  const [voiceTranscript, setVoiceTranscript] = useState<string>(saved?.voiceTranscript || '');
   const [otherSigned, setOtherSigned] = useState(false);
   const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
@@ -102,9 +103,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   useEffect(() => {
     if (step === 'done' || step === 'landing') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, joined, participantData, damagedZones, photos, sketchImage, ts: Date.now(),
+      step, sessionId, joined, participantData, damagedZones, photos, sketchImage, voiceTranscript, ts: Date.now(),
     }));
-  }, [step, joined, participantData, damagedZones, photos]);
+  }, [step, joined, participantData, damagedZones, photos, voiceTranscript]);
 
   const STEPS: { id: FlowStep; icon: string; label: string }[] = [
     { id: 'ocr',     icon: '📄', label: 'Scan' },
