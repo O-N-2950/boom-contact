@@ -90,7 +90,13 @@ export const marketingRouter = router({
 
   // POST /trpc/marketing.seed — seed les 60 posts initiaux (une fois)
   seed: publicProcedure
-    .input(z.object({ posts: z.array(z.any()) }))
+    .input(z.object({ posts: z.array(z.object({
+      platform: z.string(),
+      pillar:   z.string(),
+      text:     z.string(),
+      hashtags: z.array(z.string()),
+      staging:  z.string().optional(),
+    })) }))
     .mutation(async ({ ctx, input }) => {
       requireAdmin(ctx);
       const inserted = await seedInitialPosts(input.posts);
