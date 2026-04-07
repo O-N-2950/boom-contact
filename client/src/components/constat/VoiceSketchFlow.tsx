@@ -36,12 +36,12 @@ async function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-export function VoiceSketchFlow({ role, sessionId, lang, onComplete, onSkip }: Props) {
-  const [flowState, setFlowState] = useState<FlowState>('intro');
+export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '', onComplete, onSkip }: Props) {
+  const [flowState, setFlowState] = useState<FlowState>(initialTranscript ? 'done' : 'intro');
   const [inputMode, setInputMode] = useState<InputMode>('voice');
   const [manualText, setManualText] = useState('');
   const [elapsed, setElapsed] = useState(0);
-  const [transcript, setTranscript] = useState('');
+  const [transcript, setTranscript] = useState(initialTranscript);
   const [error, setError] = useState('');
 
   const mediaRecRef = useRef<MediaRecorder | null>(null);
