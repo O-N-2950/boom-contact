@@ -198,7 +198,7 @@ export const appRouter = router({
                   insurerName: A?.insurance?.company,
                   language: A?.language || 'fr',
                 });
-                log.info(`PDF envoyé à conducteur A: ${emailA}`);
+                logger.info(`PDF envoyé à conducteur A: ${emailA}`);
               }
 
               // Envoyer à conducteur B (si email disponible et pas piéton)
@@ -219,7 +219,7 @@ export const appRouter = router({
                   insurerName: B?.insurance?.company,
                   language: B?.language || 'fr',
                 });
-                log.info(`PDF envoyé à conducteur B: ${emailB}`);
+                logger.info(`PDF envoyé à conducteur B: ${emailB}`);
               }
 
               // Piéton avec email → envoyer PDF version A aussi
@@ -233,12 +233,12 @@ export const appRouter = router({
                   pdfBase64: pdfB64A,
                   language: B?.language || 'fr',
                 });
-                log.info(`PDF envoyé au piéton: ${emailB}`);
+                logger.info(`PDF envoyé au piéton: ${emailB}`);
               }
 
             } catch (err) {
               // Ne jamais bloquer la réponse — l'envoi email est best-effort
-              log.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
+              logger.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
             }
           });
         }
