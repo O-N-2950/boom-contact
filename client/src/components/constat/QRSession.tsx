@@ -85,7 +85,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
       <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--boom)', marginBottom: 8 }}>
         {vehicleCount > 2 ? `${joinedRoles.size} conducteur${joinedRoles.size > 1 ? 's' : ''} ont rejoint !` : "L'autre conducteur a rejoint !"}
       </h3>
-      <p style={{ fontSize: 14, opacity: 0.5 }}>Connexion établie. Passage au formulaire…</p>
+      <p style={{ fontSize: 14, opacity: 0.75 }}>Connexion établie. Passage au formulaire…</p>
       <style>{`@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}`}</style>
     </div>
   );
@@ -96,7 +96,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
     <div style={{ padding: 20 }}>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Partagez le constat</h2>
-        <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.6 }}>Chaque conducteur scanne son QR pour rejoindre.</p>
+        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.6 }}>Chaque conducteur scanne son QR pour rejoindre.</p>
       </div>
 
       {/* Vehicle count */}
@@ -104,7 +104,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 700 }}>Véhicules impliqués</div>
-            <div style={{ fontSize: 11, opacity: 0.4, marginTop: 2 }}>Ajoutez si nécessaire (max {MAX_VEHICLES})</div>
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>Ajoutez si nécessaire (max {MAX_VEHICLES})</div>
           </div>
 
             {/* Type de partie adverse */}
@@ -177,10 +177,10 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <div style={{ display: 'flex', justifyContent: 'center', padding: 16, background: '#06060C', borderRadius: 20, border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22`, minHeight: 180 }}>
           {qrDataUrls[activeQR]
             ? <img src={qrDataUrls[activeQR]} alt="Code QR pour inviter le conducteur B à rejoindre la session de constat" style={{ width: 200, height: 200, borderRadius: 8 }} />
-            : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 200, height: 200 }}><div style={{ fontSize: 11, fontFamily: 'monospace', opacity: 0.4 }}>Génération…</div></div>
+            : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 200, height: 200 }}><div style={{ fontSize: 11, fontFamily: 'monospace', opacity: 0.7 }}>Génération…</div></div>
           }
         </div>
-        <div style={{ marginTop: 8, fontSize: 11, fontFamily: 'monospace', opacity: 0.3 }}>SESSION {sessionId} · {activeQR}</div>
+        <div style={{ marginTop: 8, fontSize: 11, fontFamily: 'monospace', opacity: 0.7 }}>SESSION {sessionId} · {activeQR}</div>
       </div>
 
       {/* Actions */}
@@ -209,7 +209,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s ease-in-out infinite', flexShrink: 0 }} />
         <div>
           <div style={{ fontSize: 13, fontWeight: 600 }}>En attente — {joinedRoles.size}/{vehicleCount - 1} rejoint{joinedRoles.size > 1 ? 's' : ''}</div>
-          <div style={{ fontSize: 11, opacity: 0.4, marginTop: 2 }}>Actualisation automatique toutes les 2s.</div>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>Actualisation automatique toutes les 2s.</div>
         </div>
         <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}`}</style>
       </div>
@@ -219,9 +219,9 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
           <span style={{ fontSize: 16 }}>👁️</span>
           <span style={{ fontSize: 12, fontWeight: 700, color: '#a855f7' }}>Témoin officiel</span>
-          <span style={{ fontSize: 10, opacity: 0.4, marginLeft: 'auto' }}>Optionnel</span>
+          <span style={{ fontSize: 10, opacity: 0.7, marginLeft: 'auto' }}>Optionnel</span>
         </div>
-        <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 8, lineHeight: 1.5 }}>
+        <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 8, lineHeight: 1.5 }}>
           Un témoin peut rejoindre le constat pour enregistrer sa déclaration. Son témoignage est joint au PDF.
         </div>
         <button

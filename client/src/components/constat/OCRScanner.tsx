@@ -140,7 +140,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
           <div style={{ width:44, height:44, borderRadius:10, background:'rgba(34,197,94,0.15)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22 }}>✅</div>
           <div>
             <div style={{ fontWeight:700, fontSize:16 }}>{docs.length} document{docs.length>1?'s':''} analysé{docs.length>1?'s':''}</div>
-            <div style={{ fontSize:12, opacity:0.5 }}>Confiance : {Math.round((reg.confidence||0)*100)}%</div>
+            <div style={{ fontSize:12, opacity:0.75 }}>Confiance : {Math.round((reg.confidence||0)*100)}%</div>
           </div>
           <button onClick={() => { setResult(null); setDocs([]); setManualIns({company:'',policyNumber:''}); }}
             style={{ marginLeft:'auto', padding:'6px 10px', borderRadius:6, border:'1px solid rgba(255,255,255,0.1)', background:'transparent', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:12 }}>
@@ -151,11 +151,11 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
         {/* Véhicule */}
         {reg.vehicle && Object.values(reg.vehicle).some(Boolean) && (
           <div style={{ marginBottom:14 }}>
-            <div style={{ fontSize:10, letterSpacing:2, opacity:0.4, textTransform:'uppercase', marginBottom:7, fontFamily:'monospace' }}>🚗 Véhicule</div>
+            <div style={{ fontSize:10, letterSpacing:2, opacity:0.7, textTransform:'uppercase', marginBottom:7, fontFamily:'monospace' }}>🚗 Véhicule</div>
             <div style={{ borderRadius:10, border:'1px solid rgba(240,237,232,0.08)', overflow:'hidden' }}>
               {Object.entries(reg.vehicle).filter(([k,v]) => v && k!=='vehicleType' && k!=='category').map(([key,value],i,arr) => (
                 <div key={key} style={{ padding:'9px 14px', display:'flex', justifyContent:'space-between', borderBottom:i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background:i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
-                  <span style={{ fontSize:12, opacity:0.5 }}>{key==='licensePlate'?'Plaque':key==='vin'?'VIN':key}</span>
+                  <span style={{ fontSize:12, opacity:0.75 }}>{key==='licensePlate'?'Plaque':key==='vin'?'VIN':key}</span>
                   <span style={{ fontSize:13, fontWeight:600 }}>{String(value)}</span>
                 </div>
               ))}
@@ -166,11 +166,11 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
         {/* Conducteur */}
         {reg.driver && Object.values(reg.driver).some(Boolean) && (
           <div style={{ marginBottom:14 }}>
-            <div style={{ fontSize:10, letterSpacing:2, opacity:0.4, textTransform:'uppercase', marginBottom:7, fontFamily:'monospace' }}>👤 Conducteur</div>
+            <div style={{ fontSize:10, letterSpacing:2, opacity:0.7, textTransform:'uppercase', marginBottom:7, fontFamily:'monospace' }}>👤 Conducteur</div>
             <div style={{ borderRadius:10, border:'1px solid rgba(240,237,232,0.08)', overflow:'hidden' }}>
               {Object.entries(reg.driver).filter(([,v])=>v).map(([key,value],i,arr) => (
                 <div key={key} style={{ padding:'9px 14px', display:'flex', justifyContent:'space-between', borderBottom:i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background:i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
-                  <span style={{ fontSize:12, opacity:0.5 }}>{key==='firstName'?'Prénom':key==='lastName'?'Nom':key}</span>
+                  <span style={{ fontSize:12, opacity:0.75 }}>{key==='firstName'?'Prénom':key==='lastName'?'Nom':key}</span>
                   <span style={{ fontSize:13, fontWeight:600, maxWidth:'55%', textAlign:'right' }}>{String(value)}</span>
                 </div>
               ))}
@@ -184,11 +184,11 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
             {hasIns ? '✅ Assurance' : '⚠️ Assurance — compléter manuellement'}
           </div>
           <div style={{ marginBottom:8 }}>
-            <label style={{ fontSize:11, opacity:0.5, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>Compagnie</label>
+            <label style={{ fontSize:11, opacity:0.75, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>Compagnie</label>
             <input type="text" aria-label="Compagnie d'assurance" value={company} onChange={e=>setManualIns(p=>({...p,company:e.target.value}))} placeholder="AXA, Zurich, Allianz, emmental…" style={inputStyle} />
           </div>
           <div>
-            <label style={{ fontSize:11, opacity:0.5, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>
+            <label style={{ fontSize:11, opacity:0.75, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>
               N° de police{!policyNumber&&<span style={{color:'#f59e0b',marginLeft:8}}>(saisie manuelle)</span>}
             </label>
             <input type="text" aria-label="Numéro de police" value={policyNumber} onChange={e=>setManualIns(p=>({...p,policyNumber:e.target.value}))} placeholder="50194120 / FR-2026-XXXXX…" style={inputStyle} />
@@ -208,7 +208,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
     <div style={{ padding:40, textAlign:'center' }}>
       <div style={{ fontSize:52, marginBottom:20, display:'inline-block', animation:'spin 1.2s linear infinite' }}>🔍</div>
       <div style={{ fontWeight:700, fontSize:17, marginBottom:8 }}>Analyse en cours…</div>
-      <div style={{ fontSize:13, opacity:0.5 }}>{docs.length} document{docs.length>1?'s':''} · identification automatique</div>
+      <div style={{ fontSize:13, opacity:0.75 }}>{docs.length} document{docs.length>1?'s':''} · identification automatique</div>
       <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
     </div>
   );
@@ -218,16 +218,18 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
     <div style={{ padding:24 }}>
       {/* input galerie (sans capture) */}
       <input ref={fileRef} type="file" accept="image/*" multiple
+        aria-label="Télécharger des documents depuis la galerie"
         style={{display:'none'}} onChange={handleFile} />
       {/* input caméra uniquement (avec capture) */}
       <input ref={cameraRef} type="file" accept="image/*"
+        aria-label="Photographier un document"
         capture="environment"
         style={{display:'none'}} onChange={handleFile} />
 
       <div style={{ textAlign:'center', marginBottom:24 }}>
         <div style={{ fontSize:52, marginBottom:10 }}>📄</div>
         <h2 style={{ fontSize:20, fontWeight:700, marginBottom:8 }}>Photographiez vos documents</h2>
-        <p style={{ fontSize:13, opacity:0.55, lineHeight:1.65 }}>
+        <p style={{ fontSize:13, opacity:0.75, lineHeight:1.65 }}>
           Permis de circulation + carte verte en une seule analyse.<br/>
           L&apos;application identifie et extrait tout automatiquement.
         </p>
@@ -259,7 +261,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
             <span style={{ fontSize:26 }}>📸</span>
             <div style={{ textAlign:'left' }}>
               <div style={{ fontWeight:700, fontSize:14, color:'var(--text)' }}>Photographier</div>
-              <div style={{ fontSize:11, opacity:0.45 }}>Caméra arrière</div>
+              <div style={{ fontSize:11, opacity:0.7 }}>Caméra arrière</div>
             </div>
           </button>
           <button onClick={()=>fileRef.current?.click()}
@@ -271,7 +273,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
             <span style={{ fontSize:22 }}>🖼</span>
             <div style={{ textAlign:'left' }}>
               <div style={{ fontWeight:600, fontSize:13, color:'var(--text)' }}>Galerie</div>
-              <div style={{ fontSize:10, opacity:0.4 }}>{docs.length}/{MAX_DOCS}</div>
+              <div style={{ fontSize:10, opacity:0.7 }}>{docs.length}/{MAX_DOCS}</div>
             </div>
           </button>
         </div>

@@ -111,7 +111,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
     const fieldId = `${sec}-${field}`;
     return (
     <div style={{ marginBottom: 14 }}>
-      <label htmlFor={fieldId} style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.45,
+      <label htmlFor={fieldId} style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.7,
         textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 6 }}>
         {label}{required && <span style={{ color: 'var(--boom)', marginLeft: 4 }}>*</span>}
       </label>
@@ -207,7 +207,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
         </>}
 
         {section === 'circumstances' && <>
-          <p style={{ fontSize: 13, opacity: 0.5, marginBottom: 16, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, opacity: 0.75, marginBottom: 16, lineHeight: 1.6 }}>
             Cochez toutes les cases qui décrivent la situation de votre véhicule <strong>({role})</strong> au moment du choc.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -229,19 +229,19 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
               );
             })}
           </div>
-          <div style={{ marginTop: 16, fontSize: 11, opacity: 0.35, textAlign: 'center' }}>
+          <div style={{ marginTop: 16, fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
             {data.circumstances?.length ?? 0} case{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''} cochée{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''}
           </div>
         </>}
         {section === 'complement' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-            <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.6 }}>
               Informations complémentaires du constat — sections 11, 13 et 14.
             </p>
 
             {/* Date/heure éditable */}
             <div>
-              <label htmlFor="acc-date" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Date et heure de l'accident</label>
+              <label htmlFor="acc-date" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Date et heure de l'accident</label>
               <div style={{ display: 'flex', gap: 8 }}>
                 <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
@@ -254,7 +254,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Dégâts apparents section 11 */}
             <div>
-              <label htmlFor="visible-damage" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Dégâts apparents (section 11)</label>
+              <label htmlFor="visible-damage" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Dégâts apparents (section 11)</label>
               <textarea id="visible-damage" value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
                 placeholder="Décrivez les dommages visibles sur votre véhicule..."
                 aria-label="Dégâts apparents"
@@ -264,7 +264,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Dégâts matériels à des tiers */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts matériels à des tiers (autres que A et B)</div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts matériels à des tiers (autres que A et B)</div>
               <div style={{ display: 'flex', gap: 8 }}>
                 {[{ val: false, label: '✅ Non', color: 'rgba(34,197,94,0.6)' }, { val: true, label: '⚠️ Oui', color: 'rgba(255,179,0,0.6)' }].map(opt => (
                   <button key={String(opt.val)} onClick={() => setThirdParty(opt.val)}
@@ -277,7 +277,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Témoins */}
             <div>
-              <label htmlFor="witnesses" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Témoins</label>
+              <label htmlFor="witnesses" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Témoins</label>
               <textarea id="witnesses" value={witnesses} onChange={e => setWitnesses(e.target.value)}
                 placeholder="Nom, prénom, téléphone de chaque témoin..."
                 aria-label="Informations sur les témoins"
@@ -288,7 +288,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
             {/* Déclaration vocale */}
             {sessionId && (
               <div>
-                <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 10 }}>
+                <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 10 }}>
                   🎙️ Déclaration vocale (optionnel)
                 </div>
                 <VoiceRecorder
@@ -309,7 +309,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Observations libres section 14 */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</div>
               <textarea aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
@@ -318,11 +318,12 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Preneur d'assurance différent du conducteur */}
             <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 12 }}>Preneur d'assurance (si différent du conducteur)</div>
+              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 12 }}>Preneur d'assurance (si différent du conducteur)</div>
               {(['insuranceHolder', 'insuranceHolderAddress'] as const).map(field => (
                 <div key={field} style={{ marginBottom: 10 }}>
                   <input
                     placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
+                    aria-label={field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}
                     value={(data.insurance as any)?.[field] ?? ''}
                     onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
                     style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box' }}

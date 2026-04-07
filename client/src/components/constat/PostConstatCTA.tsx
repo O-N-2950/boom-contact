@@ -41,7 +41,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       <div style={containerStyle}>
         {/* Accroche émotionnelle */}
         <div style={headerStyle}>
-          <div style={emojiStyle}>⚡</div>
+          <div style={emojiStyle} aria-label="Boost d'efficacité">⚡</div>
           <div>
             <div style={titleStyle}>La prochaine fois : 0 saisie</div>
             <div style={subtitleStyle}>Vos véhicules mémorisés une fois pour toujours</div>
@@ -82,11 +82,11 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
             <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(240,237,232,0.9)' }}>
               Ensuite, enregistre ton véhicule
             </div>
-            <div style={{ fontSize: 11, opacity: 0.45, marginTop: 2 }}>
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>
               Scan permis de circuler + carte verte · 30 sec · plus jamais à resaisir
             </div>
           </div>
-          <span style={{ fontSize: 16, opacity: 0.4 }}>›</span>
+          <span style={{ fontSize: 16, opacity: 0.7 }}>›</span>
         </div>
 
         <div style={dividerStyle}>
@@ -132,7 +132,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
     return (
       <div style={containerStyle}>
         <div style={headerStyle}>
-          <div style={emojiStyle}>🎯</div>
+          <div style={emojiStyle} aria-label="Objectif atteint">🎯</div>
           <div>
             <div style={titleStyle}>Prêt pour la prochaine fois</div>
             <div style={subtitleStyle}>Rechargez maintenant, partagez quand vous voulez</div>
@@ -167,7 +167,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
   return (
     <div style={containerStyle}>
       <div style={headerStyle}>
-        <div style={emojiStyle}>💪</div>
+        <div style={emojiStyle} aria-label="Force et puissance">💪</div>
         <div>
           <div style={titleStyle}>{authUser.credits} crédit{authUser.credits > 1 ? 's' : ''} disponible{authUser.credits > 1 ? 's' : ''}</div>
           <div style={subtitleStyle}>Partagez, protégez vos proches</div>

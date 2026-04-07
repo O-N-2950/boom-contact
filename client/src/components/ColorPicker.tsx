@@ -56,7 +56,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
 
   return (
     <div style={{ marginBottom: 4 }}>
-      <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 8 }}>{label}</div>
 
       {/* Color grid */}
       <div style={{

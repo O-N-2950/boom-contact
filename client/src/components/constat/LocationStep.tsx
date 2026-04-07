@@ -149,11 +149,11 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
               Lieu du sinistre — identique au conducteur A
             </div>
             {(initialAccidentData?.address || initialAccidentData?.city) && (
-              <div style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.5 }}>
+              <div style={{ fontSize: 12, opacity: 0.75, lineHeight: 1.5 }}>
                 {[initialAccidentData.address, initialAccidentData.city, initialAccidentData.country].filter(Boolean).join(', ')}
               </div>
             )}
-            <div style={{ fontSize: 11, opacity: 0.45, marginTop: 4 }}>
+            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>
               {initialAccidentData?.date && `${initialAccidentData.date}`}
               {initialAccidentData?.time && ` à ${initialAccidentData.time}`}
             </div>
@@ -163,7 +163,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Vehicle type */}
       <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 12 }}>
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 12 }}>
           {t('location.vehicle_label')}
         </div>
 
@@ -178,7 +178,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 <div style={{ fontWeight: 700, fontSize: 14, color: '#22c55e' }}>
                   {VEHICLE_GROUPS.flatMap(g => g.types).find(v => v.id === vehicleType) ? t(VEHICLE_GROUPS.flatMap(g => g.types).find(v => v.id === vehicleType)!.labelKey) : vehicleType}
                 </div>
-                <div style={{ fontSize: 11, opacity: 0.55, marginTop: 2 }}>✅ Détecté automatiquement depuis le permis de circulation</div>
+                <div style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>✅ Détecté automatiquement depuis le permis de circulation</div>
               </div>
               <button onClick={() => setVehicleType(null)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap', touchAction: 'manipulation' }}>
                 Modifier
@@ -189,7 +189,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {VEHICLE_GROUPS.map(group => (
               <div key={group.groupKey}>
-                <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.3, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                   {group.types.map(v => {
                     const sel = vehicleType === v.id;
@@ -206,7 +206,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                         <span style={{ fontSize: 12, fontWeight: sel ? 700 : 500, color: sel ? 'var(--boom)' : 'var(--text)' }}>
                           {t(v.labelKey)}
                         </span>
-                        <span style={{ fontSize: 9, opacity: 0.4, textAlign: 'center', lineHeight: 1.3 }}>
+                        <span style={{ fontSize: 9, opacity: 0.7, textAlign: 'center', lineHeight: 1.3 }}>
                           {t(v.subKey)}
                         </span>
                       </button>
@@ -222,22 +222,22 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Date & Time — masqué pour B (pré-rempli depuis A) */}
       {!isPartyB && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
             {t('location.datetime_label')}
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
             <div style={{ flex: 2 }}>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.date_label')}</div>
+              <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 5 }}>{t('location.date_label')}</div>
               <input type="date" aria-label="Date de l'accident" value={accidentDate} max={new Date().toISOString().split('T')[0]}
                 onChange={e => setAccidentDate(e.target.value)} style={{ ...inputStyle, fontSize: 14 }} />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.time_label')}</div>
+              <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 5 }}>{t('location.time_label')}</div>
               <input type="time" aria-label="Heure de l'accident" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
                 style={{ ...inputStyle, fontSize: 14 }} />
             </div>
           </div>
-          <div style={{ fontSize: 11, opacity: 0.35, marginTop: 6, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6, lineHeight: 1.5 }}>
             {t('location.datetime_warning')}
           </div>
         </div>
@@ -246,7 +246,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Geolocation — masqué pour B */}
       {!isPartyB && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
             {t('location.geo_label')}
           </div>
 
@@ -269,7 +269,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                     : t('location.gps_missing')}
                 </div>
                 {geoStatus === 'success' && (
-                  <div style={{ fontSize: 10, opacity: 0.5, marginTop: 1 }}>{t('location.gps_saved')}</div>
+                  <div style={{ fontSize: 10, opacity: 0.75, marginTop: 1 }}>{t('location.gps_saved')}</div>
                 )}
               </div>
             </div>
@@ -283,18 +283,18 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.address_label')}</div>
+              <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 4 }}>{t('location.address_label')}</div>
               <input type="text" aria-label="Adresse" value={address} onChange={e => setAddress(e.target.value)}
                 placeholder={t('location.address_placeholder')} style={inputStyle} />
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <div style={{ flex: 2 }}>
-                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.city_label')}</div>
+                <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 4 }}>{t('location.city_label')}</div>
                 <input type="text" aria-label="Ville" value={city} onChange={e => setCity(e.target.value)}
                   placeholder={t('location.city_placeholder')} style={inputStyle} />
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.country_label')}</div>
+                <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 4 }}>{t('location.country_label')}</div>
                 <input type="text" aria-label="Pays" value={country} onChange={e => setCountry(e.target.value)}
                   placeholder={t('location.country_placeholder')} style={inputStyle} />
               </div>
@@ -311,7 +311,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Injuries */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.4, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
           {t('location.injuries_label')}
         </div>
         <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
@@ -341,7 +341,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             </div>
 
             <div>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6 }}>{t('location.severity_label')}</div>
+              <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 6 }}>{t('location.severity_label')}</div>
               <div style={{ display: 'flex', gap: 6 }}>
                 {([
                   { val: 'minor',    label: t('location.severity_minor'),    color: '#f59e0b' },
@@ -362,7 +362,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             </div>
 
             <div>
-              <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
+              <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
               <textarea aria-label="Description des blessures" value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
                 placeholder={t('location.injury_desc_placeholder')} rows={3}
                 style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
@@ -388,7 +388,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
               ))}
             </div>
 
-            <div style={{ fontSize: 11, opacity: 0.5, lineHeight: 1.6 }}>{t('location.injury_footer')}</div>
+            <div style={{ fontSize: 11, opacity: 0.75, lineHeight: 1.6 }}>{t('location.injury_footer')}</div>
           </div>
         )}
       </div>
@@ -449,7 +449,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 {t('location.emergency_ambulance', { number: nums.ambulance, label })}
               </a>
             </div>
-            <div style={{ fontSize: 11, opacity: 0.28, textAlign: 'center' }}>
+            <div style={{ fontSize: 11, opacity: 0.65, textAlign: 'center' }}>
               {t('location.emergency_voluntary')}
             </div>
           </div>

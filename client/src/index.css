@@ -14,7 +14,7 @@
   --card2:  #161628;
   --border: rgba(240,237,232,0.08);
   --text:   #F0EDE8;
-  --muted:  rgba(240,237,232,0.45);
+  --muted:  rgba(240,237,232,0.75);
   --green:  #22c55e;
   --amber:  #f59e0b;
   --red:    #ef4444;
@@ -214,7 +214,7 @@ body {
   --card2:  #F5F3EF;
   --border: rgba(15,12,8,0.1);
   --text:   #0F0C08;
-  --muted:  rgba(15,12,8,0.45);
+  --muted:  rgba(15,12,8,0.75);
   --green:  #15803d;
   --amber:  #b45309;
   --red:    #b91c1c;

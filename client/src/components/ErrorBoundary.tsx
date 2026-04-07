@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
             Une erreur est survenue
           </h2>
-          <p style={{ fontSize: 14, opacity: 0.55, lineHeight: 1.65, marginBottom: 28 }}>
+          <p style={{ fontSize: 14, opacity: 0.75, lineHeight: 1.65, marginBottom: 28 }}>
             L'application a rencontré un problème inattendu. Votre constat n'est pas perdu — rechargez la page pour continuer.
           </p>
           <button
@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
             🔄 Recharger
           </button>
           {process.env.NODE_ENV !== 'production' && (
-            <details style={{ marginTop: 16, fontSize: 11, opacity: 0.4, textAlign: 'left', maxWidth: '100%', overflow: 'auto' }}>
+            <details style={{ marginTop: 16, fontSize: 11, opacity: 0.65, textAlign: 'left', maxWidth: '100%', overflow: 'auto' }}>
               <summary style={{ cursor: 'pointer' }}>Détail technique</summary>
               <pre style={{ marginTop: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                 {this.state.error.message}{'\n'}{this.state.error.stack}

@@ -121,8 +121,8 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
         border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 16, opacity: 0.5 }}>🔍</span>
-        <span style={{ fontSize: 12, opacity: 0.5 }}>Vérification de la cohérence des déclarations…</span>
+        <span style={{ fontSize: 16, opacity: 0.75 }}>🔍</span>
+        <span style={{ fontSize: 12, opacity: 0.75 }}>Vérification de la cohérence des déclarations…</span>
       </div>
     );
   }
@@ -171,7 +171,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
             ? `${warnings.length} point${warnings.length > 1 ? 's' : ''} à vérifier avant de signer`
             : `${infos.length} suggestion${infos.length > 1 ? 's' : ''}`}
         </span>
-        <span style={{ fontSize: 14, opacity: 0.4, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
+        <span style={{ fontSize: 14, opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
       </div>
 
       {/* Détail */}
@@ -190,7 +190,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
               </span>
             </div>
           ))}
-          <div style={{ fontSize: 11, opacity: 0.35, marginTop: 4 }}>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>
             Ces points ne bloquent pas la signature — ils vous alertent pour que vous puissiez vérifier.
           </div>
         </div>

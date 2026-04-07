@@ -385,13 +385,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
-          <div style={{ fontSize: 10, opacity: 0.35, fontFamily: 'monospace', letterSpacing: 1 }}>
+          <div style={{ fontSize: 10, opacity: 0.7, fontFamily: 'monospace', letterSpacing: 1 }}>
             {t('flow.header.role_a')}
           </div>
         </div>
         {/* Indicateur sauvegarde automatique */}
         {step !== 'ocr' && step !== 'done' && sessionId && (
-          <div style={{ fontSize: 9, opacity: 0.3, fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: 3 }}>
+          <div style={{ fontSize: 9, opacity: 0.7, fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: 3 }}>
             <span style={{ color: '#22c55e' }}>●</span> AUTO
           </div>
         )}
@@ -407,7 +407,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           )}
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
-              style={{ fontSize: 11, opacity: 0.2, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+              style={{ fontSize: 11, opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
               aria-label="Réinitialiser le constat"
             >↺</button>
           )}
@@ -541,7 +541,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
               <div style={{ fontSize: 48, marginBottom: 10 }}>🚶</div>
               <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Autre partie : piéton</h2>
-              <p style={{ fontSize: 13, opacity: 0.5, marginTop: 8 }}>
+              <p style={{ fontSize: 13, opacity: 0.75, marginTop: 8 }}>
                 Le piéton a-t-il un téléphone mobile pour scanner le QR code ?
               </p>
             </div>
@@ -715,36 +715,36 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <>
             {/* ── Résumé de relecture avant signature ── */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.35, fontFamily: 'monospace', marginBottom: 12 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.7, fontFamily: 'monospace', marginBottom: 12 }}>
                 Vérifiez avant de signer
               </div>
 
               {/* Véhicule A */}
               <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
+                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
                 <div style={{ fontSize: 13, fontWeight: 700 }}>
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
                   {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: 'var(--boom)', marginLeft: 8 }}>{participantData.vehicle.licensePlate}</span>}
                 </div>
                 {participantData.insurance?.company && (
-                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company || (participantData.insurance as any).companyName}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company || (participantData.insurance as any).companyName}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div style={{ fontSize: 12, opacity: 0.55, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
                 {damagedZones.length > 0 && (
-                  <div style={{ fontSize: 11, opacity: 0.4, marginTop: 4 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
+                  <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
                 )}
               </div>
 
               {/* Accident */}
               <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4, fontWeight: 600 }}>📍 Accident</div>
+                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4, fontWeight: 600 }}>📍 Accident</div>
                 <div style={{ fontSize: 12, opacity: 0.7 }}>
                   {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
                 </div>
                 {(accidentData as any).location?.city && (
-                  <div style={{ fontSize: 12, opacity: 0.55 }}>{(accidentData as any).location.city}, {(accidentData as any).location.country || ''}</div>
+                  <div style={{ fontSize: 12, opacity: 0.75 }}>{(accidentData as any).location.city}, {(accidentData as any).location.country || ''}</div>
                 )}
               </div>
 

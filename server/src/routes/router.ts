@@ -20,6 +20,35 @@ import { sessions as sessionsTable } from '../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
 
+// ── File upload validation helpers ──────────────────────────────
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const MAX_IMAGE_BASE64_SIZE = 7_000_000; // ~5MB in base64 (~4/3 ratio)
+const VALID_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+function validateBase64Image(base64String: string, mediaType: string): { valid: boolean; error?: string } {
+  // Validate media type
+  if (!VALID_MEDIA_TYPES.includes(mediaType)) {
+    return { valid: false, error: `Invalid media type. Allowed: ${VALID_MEDIA_TYPES.join(', ')}` };
+  }
+
+  // Base64 length check (loose check before decode)
+  if (base64String.length > MAX_IMAGE_BASE64_SIZE) {
+    return { valid: false, error: `Image base64 exceeds maximum size (max ${MAX_IMAGE_BASE64_SIZE} chars)` };
+  }
+
+  // Attempt to decode and check actual byte size
+  try {
+    const buffer = Buffer.from(base64String, 'base64');
+    if (buffer.length > MAX_IMAGE_SIZE_BYTES) {
+      return { valid: false, error: `Image size exceeds 5MB limit (actual: ${(buffer.length / 1024 / 1024).toFixed(2)}MB)` };
+    }
+  } catch (e) {
+    return { valid: false, error: 'Invalid base64 encoding' };
+  }
+
+  return { valid: true };
+}
+
 // Import sub-routers
 import { authRouter } from './auth.router.js';
 import { policeRouter } from './police.router.js';
@@ -198,7 +227,7 @@ export const appRouter = router({
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
-            base64:   z.string(),
+            base64:   z.string().max(7_000_000),
             caption:  z.string().optional(),
             takenAt:  z.string(),
           })).optional(),
@@ -210,6 +239,16 @@ export const appRouter = router({
         if (!validA) {
           const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
           if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
+        }
+
+        // Validate photo sizes
+        if (input.data.photos) {
+          for (const photo of input.data.photos) {
+            const validation = validateBase64Image(photo.base64, 'image/jpeg');
+            if (!validation.valid) {
+              throw new TRPCError({ code: 'BAD_REQUEST', message: `Photo validation failed: ${validation.error || 'Invalid image'}` });
+            }
+          }
         }
 
         const session = await updateAccident(input.sessionId, input.data as any);
@@ -341,8 +380,8 @@ export const appRouter = router({
   ocr: router({
     scan: publicProcedure
       .input(z.object({
-        imageBase64:  z.string().min(100).max(10_000_000),
-        mediaType:    z.enum(['image/jpeg','image/png','image/webp']).default('image/jpeg'),
+        imageBase64:  z.string().min(100).max(7_000_000),
+        mediaType:    z.enum(['image/jpeg','image/png','image/webp','image/gif']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().optional(),
         sessionId: z.string().optional(),
@@ -362,6 +401,13 @@ export const appRouter = router({
         } else {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
         }
+
+        // Validate image size and media type
+        const validation = validateBase64Image(input.imageBase64, input.mediaType);
+        if (!validation.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: validation.error || 'Invalid image file' });
+        }
+
         const hint = input.documentType !== 'auto' || input.country
           ? { documentType: input.documentType, country: input.country }
           : undefined;
@@ -388,6 +434,15 @@ export const appRouter = router({
         } else {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
         }
+
+        // Validate each image before processing
+        for (const imageBase64 of input.images) {
+          const validation = validateBase64Image(imageBase64, 'image/jpeg');
+          if (!validation.valid) {
+            throw new TRPCError({ code: 'BAD_REQUEST', message: validation.error || 'Invalid image file in batch' });
+          }
+        }
+
         const results = await Promise.all(
           input.images.map(imageBase64 =>
             scanDocument(imageBase64, 'image/jpeg', { documentType: 'auto' })
@@ -417,6 +472,18 @@ export const appRouter = router({
         } else {
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
         }
+
+        // Validate both images
+        const regValidation = validateBase64Image(input.registrationBase64, 'image/jpeg');
+        if (!regValidation.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: `Registration: ${regValidation.error || 'Invalid image'}` });
+        }
+
+        const greenCardValidation = validateBase64Image(input.greenCardBase64, 'image/jpeg');
+        if (!greenCardValidation.valid) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: `Green card: ${greenCardValidation.error || 'Invalid image'}` });
+        }
+
         return scanDocumentPair(input.registrationBase64, input.greenCardBase64);
       }),
   }),

@@ -34,7 +34,7 @@ export function PoliceLogin({ onLogin }: Props) {
         <div style={{ textAlign:'center', marginBottom: 36 }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🚔</div>
           <h1 style={{ fontSize: 24, fontWeight: 800, color:'#fff', marginBottom: 6 }}>Module Police</h1>
-          <p style={{ fontSize: 14, color:'rgba(240,237,232,0.45)' }}>boom.contact · Accès institutionnel</p>
+          <p style={{ fontSize: 14, color:'rgba(240,237,232,0.75)' }}>boom.contact · Accès institutionnel</p>
         </div>
 
         {/* Form */}
@@ -47,7 +47,7 @@ export function PoliceLogin({ onLogin }: Props) {
           )}
 
           <div style={{ marginBottom: 14 }}>
-            <label htmlFor="email-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
+            <label htmlFor="email-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.75)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
               Email institutionnel
             </label>
             <input
@@ -63,7 +63,7 @@ export function PoliceLogin({ onLogin }: Props) {
           </div>
 
           <div style={{ marginBottom: 22 }}>
-            <label htmlFor="password-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
+            <label htmlFor="password-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.75)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
               Mot de passe
             </label>
             <input

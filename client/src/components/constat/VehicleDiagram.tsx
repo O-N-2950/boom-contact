@@ -155,13 +155,13 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
             {vehicleName}
           </span>
           {bodyLabel && (
-            <span style={{ fontSize: 10, opacity: 0.5 }}>· {bodyLabel}</span>
+            <span style={{ fontSize: 10, opacity: 0.75 }}>· {bodyLabel}</span>
           )}
           {identity.confidence === 'exact' && !isPedestrian && (
             <span title="Modèle reconnu" style={{ fontSize: 10, color: '#22c55e' }}>✓</span>
           )}
         </div>
-        <p style={{ fontSize: 11, opacity: 0.4, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.5 }}>
           {diagramHint}
         </p>
       </div>
@@ -212,7 +212,7 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
       {/* Selected chips */}
       {selected.length > 0 && (
         <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.35,
+          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7,
             textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>
             {selected.length} zone{selected.length > 1 ? 's' : ''} sélectionnée{selected.length > 1 ? 's' : ''}
           </div>
@@ -235,7 +235,7 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
       )}
 
       {selected.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 12, opacity: 0.3 }}>
+        <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 12, opacity: 0.7 }}>
           Aucune zone sélectionnée — touchez le schéma ci-dessus
         </div>
       )}

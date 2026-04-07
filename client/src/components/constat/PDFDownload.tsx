@@ -141,7 +141,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
         <h2 style={{ fontSize: 21, fontWeight: 700, color: '#22c55e', marginBottom: 8 }}>
           Constat finalisé !
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.7 }}>
+        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.7 }}>
           Les deux parties ont signé. Le document numérique certifié est prêt.
         </p>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8,
@@ -161,7 +161,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📄</div>
           <div>
             <div style={{ fontWeight: 700, fontSize: 13 }}>Constat numérique — boom.contact</div>
-            <div style={{ fontSize: 11, opacity: 0.45 }}>Document certifié · 150+ pays</div>
+            <div style={{ fontSize: 11, opacity: 0.7 }}>Document certifié · 150+ pays</div>
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
@@ -175,10 +175,10 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       {insurerName && (
         <div style={{ marginBottom: 16, padding: 14, borderRadius: 10,
           background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
-          <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.5, textTransform: 'uppercase',
+          <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.75, textTransform: 'uppercase',
             fontFamily: 'monospace', marginBottom: 4 }}>Votre assureur</div>
           <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>🟢 {insurerName}</div>
-          <div style={{ fontSize: 12, opacity: 0.55, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 12, opacity: 0.75, lineHeight: 1.5 }}>
             Contactez votre assureur pour déclarer le sinistre.
           </div>
         </div>
@@ -208,6 +208,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
               value={oneshotEmail}
               onChange={e => setOneshotEmail(e.target.value)}
               placeholder="votre@email.com"
+              aria-label="Adresse email pour recevoir le PDF"
               style={{
                 width: '100%', padding: '11px 13px', borderRadius: 8,
                 border: '1.5px solid rgba(255,255,255,0.12)',
@@ -233,7 +234,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           {/* Séparateur */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
-            <span style={{ fontSize: 11, opacity: 0.3 }}>ou</span>
+            <span style={{ fontSize: 11, opacity: 0.7 }}>ou</span>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
           </div>
 
@@ -246,7 +247,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           }}>
             Se connecter (compte existant) →
           </button>
-          <div style={{ fontSize: 11, opacity: 0.3, textAlign: 'center', marginTop: 8 }}>
+          <div style={{ fontSize: 11, opacity: 0.7, textAlign: 'center', marginTop: 8 }}>
             Pack 3 constats CHF 12.90 · Pack 10 constats CHF 34.90
           </div>
         </div>
@@ -269,7 +270,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           }}>
             Acheter un pack →
           </button>
-          <div style={{ fontSize: 11, opacity: 0.4, textAlign: 'center' }}>
+          <div style={{ fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
             1 constat CHF 4.90 · 3 constats CHF 12.90 · 10 constats CHF 34.90
           </div>
         </div>
@@ -281,7 +282,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
           {/* Credit info */}
           {!isAdmin && !creditUsed && (
-            <div style={{ fontSize: 12, opacity: 0.5, textAlign: 'center', marginBottom: 2 }}>
+            <div style={{ fontSize: 12, opacity: 0.75, textAlign: 'center', marginBottom: 2 }}>
               💳 {credits} crédit{credits > 1 ? 's' : ''} disponible{credits > 1 ? 's' : ''} · 1 sera utilisé
             </div>
           )}
@@ -318,7 +319,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
               {showEmailForm && (
                 <div style={{ marginTop: 8, padding: '14px', borderRadius: 10,
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontSize: 12, opacity: 0.5, marginBottom: 8, lineHeight: 1.5 }}>
+                  <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 8, lineHeight: 1.5 }}>
                     Entrez votre email pour recevoir le PDF en pièce jointe.
                   </div>
                   <input type="email" aria-label="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
@@ -393,7 +394,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
         width: '100%', padding: '11px', borderRadius: 10,
         border: '1px solid rgba(240,237,232,0.08)',
         background: 'transparent', color: 'var(--text)', cursor: 'pointer',
-        fontSize: 13, opacity: 0.45,
+        fontSize: 13, opacity: 0.7,
       }}>
         Nouveau constat →
       </button>
@@ -401,7 +402,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       {/* QR persistant */}
       <div style={{ marginTop: 20, padding: '16px', borderRadius: 12,
         background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.35, letterSpacing: 1,
+        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1,
           textTransform: 'uppercase', marginBottom: 10, textAlign: 'center' }}>
           QR du constat — valable 7 jours
         </div>
@@ -412,7 +413,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
             style={{ width: 140, height: 140, borderRadius: 8, display: 'inline-block' }}
           />
         </div>
-        <div style={{ fontSize: 12, opacity: 0.4, textAlign: 'center', lineHeight: 1.6 }}>
+        <div style={{ fontSize: 12, opacity: 0.7, textAlign: 'center', lineHeight: 1.6 }}>
           Si la police intervient, elle peut scanner ce QR<br/>pour accéder au constat.
         </div>
       </div>

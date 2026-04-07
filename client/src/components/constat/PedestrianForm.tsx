@@ -120,7 +120,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
     boxSizing: 'border-box',
   };
   const lbl: React.CSSProperties = {
-    fontSize: 11, opacity: 0.45, marginBottom: 5,
+    fontSize: 11, opacity: 0.7, marginBottom: 5,
     letterSpacing: 0.5, display: 'block', fontFamily: 'DM Mono, monospace',
   };
 
@@ -148,6 +148,9 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
   }) => (
     <div
       onClick={onToggle}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
+      role="button"
+      tabIndex={0}
       style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '13px 16px', cursor: 'pointer', userSelect: 'none',
@@ -161,7 +164,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         {done && !open && <span style={{ fontSize: 11, color: '#22c55e' }}>✓</span>}
       </div>
       <span style={{
-        fontSize: 18, opacity: 0.35,
+        fontSize: 18, opacity: 0.7,
         transform: open ? 'rotate(90deg)' : 'none',
         transition: 'transform 0.2s', display: 'inline-block',
       }}>›</span>
@@ -189,7 +192,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
               : '🚑 Prenez le temps qu\'il faut — seuls votre nom et un contact suffisent'}
           </div>
         ) : (
-          <p style={{ fontSize: 13, opacity: 0.4, marginTop: 6 }}>
+          <p style={{ fontSize: 13, opacity: 0.7, marginTop: 6 }}>
             {filledByDriverA
               ? 'Saisissez les infos du piéton ou scannez sa pièce d\'identité'
               : 'Pour recevoir votre copie PDF du constat'}
@@ -209,7 +212,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           <div style={{ fontSize: 13, fontWeight: 700 }}>
             {ocrDone ? 'Document lu' : 'Scanner un document d\'identité'}
           </div>
-          <div style={{ fontSize: 11, opacity: 0.4, marginTop: 1 }}>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 1 }}>
             {ocrDone ? 'Vérifiez les champs' : 'CI · Passeport · Permis — toutes nationalités'}
           </div>
           {ocrError && <div style={{ fontSize: 11, color: '#ef4444', marginTop: 4 }}>⚠️ {ocrError}</div>}
@@ -228,6 +231,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         </button>
       </div>
       <input ref={fileRef} type="file" accept="image/*" capture="environment"
+        aria-label="Télécharger une pièce d'identité"
         style={{ display: 'none' }}
         onChange={e => { if (e.target.files?.[0]) handleOCR(e.target.files[0]); }} />
 
@@ -241,19 +245,20 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
 
       <div style={{ marginBottom: 18 }}>
         <label style={lbl}>
-          EMAIL <span style={{ opacity: 0.35 }}>{filledByDriverA ? '' : '(pour recevoir le PDF)'}</span>
+          EMAIL <span style={{ opacity: 0.7 }}>{filledByDriverA ? '' : '(pour recevoir le PDF)'}</span>
         </label>
         <input
           type="email" value={data.email || ''}
           onChange={e => set('email', e.target.value)}
           placeholder={filledByDriverA ? 'pieton@email.com' : 'votre@email.com'}
+          aria-label="Adresse email"
           style={{
             ...inp,
             borderColor: data.email?.includes('@') ? 'rgba(34,197,94,0.45)' : 'rgba(240,237,232,0.12)',
           }}
         />
         {!data.email && (
-          <div style={{ fontSize: 11, opacity: 0.3, marginTop: 4 }}>
+          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>
             Optionnel — sans email, le PDF ne sera pas envoyé automatiquement
           </div>
         )}
@@ -313,6 +318,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
                 <select
                   value={data.parentRelation || ''}
                   onChange={e => set('parentRelation', e.target.value)}
+                  aria-label="Lien de parenté"
                   style={{ ...inp, cursor: 'pointer' }}
                 >
                   <option value="">—</option>
