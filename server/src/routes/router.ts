@@ -1,80 +1,55 @@
-import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import type { Context } from '../middleware/context';
 import { scanDocument, scanDocumentPair } from '../services/ocr.service';
 import {
   createSession, getSession, joinSession,
-  updateParticipant, updateAccident, signSession, getQRUrl
+  updateParticipant, updateAccident, signSession, getQRUrl, savePdfUrl
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
-import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
-import { loginPoliceUser, verifyPoliceToken, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
-import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink } from '../services/auth.service.js';
-import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { io } from '../index';
-import { generateDailyPosts, getPendingPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
-import { trackRapportCree, trackPdfGenere, trackPaiementEffectue } from '../analytics.js';
-import { db } from '../db/index.js';
 import { logger } from '../logger.js';
 
-const t = initTRPC.context<Context>().create();
-export const router = t.router;
-export const publicProcedure = t.procedure;
+// Import sub-routers
+import { authRouter } from './auth.router.js';
+import { policeRouter } from './police.router.js';
+import { paymentRouter, userRouter } from './payment.router.js';
+import { vehicleRouter } from './vehicle.router.js';
+import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, marketingRouter } from './admin.router.js';
 
-// ── Protected procedure — requires valid JWT ──────────────────
-import { TRPCError } from '@trpc/server';
-export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
-  if (!ctx.authUser) {
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Connexion requise.' });
-  }
-  return next({ ctx: { ...ctx, authUser: ctx.authUser } });
-});
-
-// ── Police procedure — requires valid police token in input ──────
-export const policeProcedure = t.procedure.use(async ({ ctx, next, rawInput }) => {
-  const input = rawInput as { token?: string } | undefined;
-  if (!input?.token) {
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Token police requis.' });
-  }
-  const policePayload = verifyPoliceToken(input.token);
-  return next({ ctx: { ...ctx, policeUser: policePayload } });
-});
-
-// ── HTML escaping utility to prevent XSS in emails ──────────
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+// Import shared tRPC utilities
+import { router, publicProcedure, protectedProcedure, TRPCError, escapeHtml } from './trpc.js';
 
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
   || 'https://boom-contact-production.up.railway.app';
 
 /**
- * Main tRPC Router (1237 lines)
+ * Main tRPC Router
  *
  * Structure:
- *   - session (lines ~44-300): Session lifecycle, participants, updates, PDFs
- *   - ocr (lines ~302-370): Document scanning (registration, green card, license)
- *   - voice (lines ~372-410): Audio transcription & accident analysis
- *   - auth (lines ~412-500): User authentication, profiles, account management
- *   - vehicle (lines ~502-560): User garage / vehicle management
- *   - stripe (lines ~562-680): Billing, packages, checkout, consent
- *   - police (lines ~682-760): Police dashboard, annotations, infractions
- *   - social (lines ~762-810): Social media post generation
- *   - admin (lines ~812-end): Admin dashboards, analytics
+ *   - session: Session lifecycle, participants, updates, PDFs
+ *   - ocr: Document scanning
+ *   - pdf: PDF generation
+ *   - email: PDF sending via email
+ *   - payment: Stripe billing
+ *   - user: GDPR consent
+ *   - police: Police B2B access
+ *   - voice: Audio transcription
+ *   - sketch: Accident diagram rendering
+ *   - auth: Authentication
+ *   - vehicle: Personal garage
+ *   - admin: Admin dashboard
+ *   - emergency: Insurance/emergency lookup
+ *   - adminDeleteUser, adminSetCredits, etc: Admin maintenance (top-level)
+ *   - marketing: Social post management
  */
 export const appRouter = router({
 
-  // ── SESSION (lines 44-300) ────────────────────────────────
+  // ── SESSION ────────────────────────────────
   session: router({
 
     // Driver A creates session → gets QR code URL
@@ -147,9 +122,9 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
-          vehicleAPos:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(), // position véhicule A sur la carte
-          vehicleCount:     z.number().optional(),   // 1=solo, 2=standard, 3-5=multi
-          partyBStatus:     z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(), // fuite/blessé/refus/décédé
+          vehicleAPos:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          vehicleCount:     z.number().optional(),
+          partyBStatus:     z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -181,7 +156,7 @@ export const appRouter = router({
       .input(z.object({
         sessionId:       z.string(),
         role:            z.enum(['A', 'B', 'C', 'D', 'E']),
-        signatureBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
+        signatureBase64: z.string().min(100).max(10_000_000),
       }))
       .mutation(async ({ input }) => {
         const result = await signSession(input.sessionId, input.role, input.signatureBase64);
@@ -193,7 +168,7 @@ export const appRouter = router({
         if (bothSigned) {
           io.to(`session:${input.sessionId}`).emit('constat-complete', { sessionId: input.sessionId });
 
-          // ── Génération PDF + envoi email automatique ─────────────
+          // ── Auto PDF + email ─────────────────────────────
           setImmediate(async () => {
             try {
               const { logger: log } = await import('../logger.js');
@@ -202,7 +177,6 @@ export const appRouter = router({
               const { eq } = await import('drizzle-orm');
               const { generateConstatPDF } = await import('../services/pdf.service.js');
               const { sendPDFToDriver } = await import('../services/email.service.js');
-              const { savePdfUrl } = await import('../services/session.service.js');
 
               const { getSession } = await import('../services/session.service.js');
               const fullSession = await getSession(input.sessionId);
@@ -213,7 +187,7 @@ export const appRouter = router({
               const emailA = A?.driver?.email;
               const emailB = B?.driver?.email;
 
-              // Stocker ownerEmail en DB (= email du conducteur A)
+              // Stocker ownerEmail en DB
               if (emailA) {
                 await db.update(sessionsTable)
                   .set({ ownerEmail: emailA } as any)
@@ -225,7 +199,7 @@ export const appRouter = router({
               const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
               const filename = `constat-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
 
-              // Sauvegarder l'URL en DB (base64 stocké temporairement)
+              // Sauvegarder l'URL en DB
               await savePdfUrl(input.sessionId, `data:application/pdf;base64,${pdfB64A.slice(0, 50)}...`);
 
               // Envoyer à conducteur A
@@ -270,7 +244,7 @@ export const appRouter = router({
                 await sendPDFToDriver({
                   driverEmail: emailB,
                   driverName: nameB,
-                  role: 'A', // version A du PDF pour le piéton
+                  role: 'A',
                   sessionId: input.sessionId,
                   pdfBase64: pdfB64A,
                   language: B?.language || 'fr',
@@ -279,7 +253,6 @@ export const appRouter = router({
               }
 
             } catch (err) {
-              // Ne jamais bloquer la réponse — l'envoi email est best-effort
               logger.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
             }
           });
@@ -302,11 +275,11 @@ export const appRouter = router({
 
   }),
 
-  // ── OCR ──────────────────────────────────────────────────
+  // ── OCR ────────────────────────────────
   ocr: router({
     scan: publicProcedure
       .input(z.object({
-        imageBase64:  z.string().min(100).max(10_000_000), // ~7.5MB max
+        imageBase64:  z.string().min(100).max(10_000_000),
         mediaType:    z.enum(['image/jpeg','image/png','image/webp']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().optional(),
@@ -318,7 +291,6 @@ export const appRouter = router({
         return scanDocument(input.imageBase64, input.mediaType, hint);
       }),
 
-    // Scan multi-documents — analyse N photos en parallèle, retourne N résultats
     batchScan: publicProcedure
       .input(z.object({
         images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
@@ -334,7 +306,7 @@ export const appRouter = router({
 
     scanPair: publicProcedure
       .input(z.object({
-        registrationBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
+        registrationBase64: z.string().min(100).max(10_000_000),
         greenCardBase64:    z.string().min(100).max(10_000_000),
       }))
       .mutation(async ({ input }) =>
@@ -342,7 +314,7 @@ export const appRouter = router({
       ),
   }),
 
-  // ── PDF ──────────────────────────────────────────────────
+  // ── PDF ────────────────────────────────
   pdf: router({
     generate: publicProcedure
       .input(z.object({
@@ -353,11 +325,6 @@ export const appRouter = router({
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
-        // Conditions pour générer le PDF :
-        // 1. Session completed (deux signatures) — cas normal
-        // 2. Session signing + partyBStatus (déclaration unilatérale)
-        // 3. Session signing + piéton/vélo côté B (pas de signature adverse requise)
-        // 4. Accident solo (vehicleCount=1 dans la colonne DB session, pas dans accident)
         const acc = (session as any).accident ?? {};
         const hasPartyBStatus = !!acc.partyBStatus;
         const sessionVehicleCount = (session as any).vehicleCount ?? 2;
@@ -382,9 +349,9 @@ export const appRouter = router({
         return { pdfBase64, filename };
       }),
   }),
-  // ── EMAIL ─────────────────────────────────────────────────
+
+  // ── EMAIL ────────────────────────────────
   email: router({
-    // Send PDF to driver's own email — they forward to their insurer
     sendToDriver: publicProcedure
       .input(z.object({
         sessionId:   z.string(),
@@ -421,7 +388,6 @@ export const appRouter = router({
         return { ok: true, messageId: result.messageId };
       }),
 
-    // Bug report — envoyé à contact@boom.contact
     bugReport: publicProcedure
       .input(z.object({
         message:  z.string().min(5).max(2000),
@@ -454,202 +420,13 @@ export const appRouter = router({
       }),
   }),
 
-  // ── PAYMENT — packages Stripe ─────────────────────────────
-  payment: router({
-    // Retourner les packages disponibles
-    packages: publicProcedure
-      .query(() => Object.values(PACKAGES)),
-
-    // Créer une session Stripe Checkout
-    createCheckout: publicProcedure
-      .input(z.object({
-        packageId:        z.enum(['single', 'pack3', 'pack10']),
-        userEmail:        z.string().email(),
-        currency:         z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
-        locale:           z.string().default('fr'),
-        countryCode:      z.string().optional(),
-        constatSessionId: z.string().optional(), // pour retour direct après paiement one-shot
-      }))
-      .mutation(async ({ input }) => {
-        return createCheckoutSession(
-          input.packageId,
-          input.userEmail,
-          input.currency,
-          input.locale,
-          input.constatSessionId,
-        );
-      }),
-
-    // GET payment.currencies — return full pricing grid
-    currencies: publicProcedure
-      .query(() => {
-        const grid: Record<string, any> = {};
-        for (const pkgId of ['single','pack3','pack10'] as const) {
-          grid[pkgId] = {};
-          for (const cur of SUPPORTED_CURRENCIES) {
-            grid[pkgId][cur] = {
-              amountCents: getPrice(pkgId, cur),
-              formatted: formatPrice(getPrice(pkgId, cur), cur),
-            };
-          }
-        }
-        return { packages: grid, currencies: SUPPORTED_CURRENCIES, countryMap: COUNTRY_TO_CURRENCY };
-      }),
-
-    // Vérifier le solde de crédits (auth requise)
-    credits: protectedProcedure
-      .query(async ({ ctx }) => {
-        const credits = await getUserCredits(ctx.authUser.email);
-        return { credits };
-      }),
-
-    // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
-    useCredit: protectedProcedure
-      .input(z.object({ sessionId: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-        const ok = await useCredit(ctx.authUser.email, input.sessionId);
-        if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
-        return { ok: true };
-      }),
-  }),
-
-  // ── USER — consentements RGPD ─────────────────────────────
-  user: router({
-    saveConsent: protectedProcedure
-      .input(z.object({
-        consentCGU:        z.boolean(),
-        consentMarketing:  z.boolean(),
-        country:           z.string().optional(),
-        language:          z.string().optional(),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        await saveConsent(
-          ctx.authUser.email,
-          input.consentCGU,
-          input.consentMarketing,
-          input.country,
-          input.language,
-        );
-        return { ok: true };
-      }),
-  }),
-
-
-  // ── POLICE B2B — authentification institutionnelle ───────────
-  police: router({
-
-    // Login agent — retourne JWT 8h
-    login: publicProcedure
-      .input(z.object({
-        email:    z.string().email(),
-        password: z.string().min(6),
-      }))
-      .mutation(async ({ input }) => {
-        const result = await loginPoliceUser(input.email, input.password);
-        return result;
-      }),
-
-    // Dashboard — sessions actives (token requis)
-    dashboard: policeProcedure
-      .input(z.object({ token: z.string() }))
-      .query(async ({ ctx }) => {
-        const payload = ctx.policeUser;
-        const data = await getPoliceDashboard(payload.stationId);
-        return { ...data, agent: { stationId: payload.stationId, canton: payload.canton } };
-      }),
-
-    // Rejoindre une session via QR (lecture seule + annotation)
-    joinSession: policeProcedure
-      .input(z.object({
-        token:     z.string(),
-        sessionId: z.string(),
-      }))
-      .query(async ({ ctx, input }) => {
-        const payload = ctx.policeUser;
-        const session = await getSession(input.sessionId);
-        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
-        return {
-          session,
-          policeAgent: { stationId: payload.stationId, canton: payload.canton }
-        };
-      }),
-
-    // Session complète avec audit trail
-    getFullSession: policeProcedure
-      .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .query(async ({ ctx, input }) => {
-        const payload = ctx.policeUser;
-        const session = await getSession(input.sessionId);
-        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
-        await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, payload.country || 'CH');
-        return { session, policeAgent: payload };
-      }),
-
-    // Charger annotations existantes
-    getAnnotation: policeProcedure
-      .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .query(async ({ ctx, input }) => {
-        const payload = ctx.policeUser;
-        return getAnnotation(input.sessionId, payload.stationId);
-      }),
-
-    // Sauvegarder annotations agent
-    saveAnnotation: policeProcedure
-      .input(z.object({
-        token:     z.string(),
-        sessionId: z.string(),
-        data: z.object({
-          reportNumber:  z.string().optional(),
-          infractions:   z.array(z.object({ code: z.string(), description: z.string(), party: z.enum(['A','B','both']) })),
-          measures:      z.array(z.object({ type: z.string(), description: z.string(), party: z.enum(['A','B','both']).optional() })),
-          witnesses:     z.array(z.object({ name: z.string(), address: z.string().optional(), phone: z.string().optional(), statement: z.string().optional() })),
-          observations:  z.string().optional(),
-        }),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const payload = ctx.policeUser;
-        const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data as any);
-        return { ok: true, id: result.id };
-      }),
-
-    // Générer PDF rapport d'intervention
-    generateReport: policeProcedure
-      .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-        const payload = ctx.policeUser;
-        const session = await getSession(input.sessionId);
-        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
-        const annotation = await getAnnotation(input.sessionId, payload.stationId);
-        const { db } = await import('../db/index.js');
-        const { policeUsers, policeStations } = await import('../db/schema.js');
-        const { eq } = await import('drizzle-orm');
-        const [agentRow] = await db.select().from(policeUsers).where(eq(policeUsers.id, payload.userId)).limit(1);
-        const [stationRow] = await db.select().from(policeStations).where(eq(policeStations.id, payload.stationId)).limit(1);
-        const annotationData = annotation
-          ? { reportNumber: annotation.reportNumber || undefined, infractions: (annotation.infractions as any) || [], measures: (annotation.measures as any) || [], witnesses: (annotation.witnesses as any) || [], observations: annotation.observations || undefined }
-          : { infractions: [], measures: [], witnesses: [] };
-        const { generatePoliceReport } = await import('../services/pdf.police.js');
-        const pdfBytes = await generatePoliceReport(
-          session as any, annotationData,
-          { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
-          payload.country || 'CH'
-        );
-        const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
-        const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
-        return { pdfBase64, filename };
-      }),
-
-  }),
-
-
-  // ── VOICE — Transcription Whisper ─────────────────────────
+  // ── VOICE ────────────────────────────────
   voice: router({
-
     transcribe: publicProcedure
       .input(z.object({
-        audioBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
+        audioBase64: z.string().min(100).max(10_000_000),
         mimeType:    z.string().default('audio/webm'),
-        lang:        z.string().optional(), // hint langue pour Whisper
+        lang:        z.string().optional(),
         sessionId:   z.string(),
         role:        z.enum(['A', 'B', 'C', 'D', 'E']),
       }))
@@ -662,7 +439,6 @@ export const appRouter = router({
         return result;
       }),
 
-    // Analyse IA du témoignage → scénario + questions
     analyzeAccident: publicProcedure
       .input(z.object({
         transcript:      z.string().min(1),
@@ -675,14 +451,9 @@ export const appRouter = router({
         );
         return result;
       }),
-
   }),
 
-
-
-
-
-  // ── SKETCH RENDERER (Puppeteer Chrome) ───────────────────
+  // ── SKETCH ────────────────────────────────
   sketch: router({
     render: publicProcedure
       .input(z.object({
@@ -716,352 +487,13 @@ export const appRouter = router({
       }),
   }),
 
-  // ── AUTH ─────────────────────────────────────────────────────
-  auth: router({
-
-    // POST auth.register
-    register: publicProcedure
-      .input(z.object({ email: z.string().email(), password: z.string().min(6) }))
-      .mutation(async ({ input }) => {
-        try {
-          const result = await registerUser(input.email, input.password);
-          return { ok: true, ...result };
-        } catch (err: any) {
-          if (err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
-          throw err;
-        }
-      }),
-
-    // POST auth.login
-    login: publicProcedure
-      .input(z.object({ email: z.string().email(), password: z.string() }))
-      .mutation(async ({ input }) => {
-        try {
-          const result = await loginWithPassword(input.email, input.password);
-          return result;
-        }
-        catch (err) { logger.warn('auth.login failed', { error: String(err) }); throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Email ou mot de passe incorrect.' }); }
-      }),
-
-    // POST auth.magicLinkRequest
-    magicLinkRequest: publicProcedure
-      .input(z.object({ email: z.string().email() }))
-      .mutation(async ({ input }) => {
-        const token = await createMagicToken(input.email);
-        const magicUrl = `${CLIENT_URL}/?magic=${token}`;
-        await sendMagicLink(input.email, magicUrl);
-        return { ok: true };
-      }),
-
-    // POST auth.magicLinkVerify
-    magicLinkVerify: publicProcedure
-      .input(z.object({ token: z.string() }))
-      .mutation(async ({ input }) => {
-        const result = await verifyMagicToken(input.token);
-        if (!result) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Lien invalide ou expiré.' });
-        return { ok: true, ...result };
-      }),
-
-    // GET auth.me — returns null for unauthenticated, data for authenticated
-    me: publicProcedure
-      .query(async ({ ctx }) => {
-        if (!ctx.authUser) return null;
-        const { db } = await import('../db/index.js');
-        const { users } = await import('../db/schema.js');
-        const { eq } = await import('drizzle-orm');
-        const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
-        if (!user) return null;
-        return { id: user.id, email: user.email, role: user.role, credits: user.credits,
-                 firstName: (user as any).firstName || '', lastName: (user as any).lastName || '',
-                 phone: (user as any).phone || '', company: (user as any).company || '',
-                 address: (user as any).address || '' };
-      }),
-
-    // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
-    updateProfile: protectedProcedure
-      .input(z.object({
-        firstName: z.string().optional(),
-        lastName:  z.string().optional(),
-        phone:     z.string().optional(),
-        company:   z.string().optional(),
-        address:   z.string().optional(),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const { db } = await import('../db/index.js');
-        const { users } = await import('../db/schema.js');
-        const { eq } = await import('drizzle-orm');
-        const updates: Record<string, any> = {};
-        if (input.firstName !== undefined) updates.firstName = input.firstName;
-        if (input.lastName  !== undefined) updates.lastName  = input.lastName;
-        if (input.phone     !== undefined) updates.phone     = input.phone;
-        if (input.company   !== undefined) updates.company   = input.company;
-        if (input.address   !== undefined) updates.address   = input.address;
-        await db.update(users).set(updates).where(eq(users.id, ctx.authUser.sub));
-        return { ok: true };
-      }),
-
-    // POST auth.updateEmail — changer son adresse email
-    updateEmail: protectedProcedure
-      .input(z.object({
-        newEmail:    z.string().email(),
-        currentPassword: z.string().min(1),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const { db } = await import('../db/index.js');
-        const { users } = await import('../db/schema.js');
-        const { eq } = await import('drizzle-orm');
-        const { verifyPassword } = await import('../services/auth.service.js');
-        const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
-        if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable.' });
-        // Vérifier le mot de passe actuel
-        const valid = user.passwordHash && await verifyPassword(input.currentPassword, user.passwordHash);
-        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Mot de passe incorrect.' });
-        // Vérifier que le nouvel email n'est pas déjà utilisé
-        const existing = await db.query.users.findFirst({ where: eq(users.email, input.newEmail) });
-        if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
-        await db.update(users).set({ email: input.newEmail }).where(eq(users.id, ctx.authUser.sub));
-        return { ok: true };
-      }),
-
-    // POST auth.deleteAccount — suppression définitive compte + données
-    deleteAccount: protectedProcedure
-      .input(z.object({}))
-      .mutation(async ({ ctx }) => {
-        const { db } = await import('../db/index.js');
-        const { users, vehicles, magicTokens } = await import('../db/schema.js');
-        const { eq } = await import('drizzle-orm');
-        const userId = ctx.authUser.sub;
-        const userEmail = ctx.authUser.email;
-
-        // Bloquer suppression du compte admin
-        if (ctx.authUser.role === 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer un compte admin.' });
-
-        // Supprimer dans l'ordre : tokens → véhicules → user
-        await db.delete(magicTokens).where(eq(magicTokens.email, userEmail));
-        await db.delete(vehicles).where(eq(vehicles.userId, userId));
-        await db.delete(users).where(eq(users.id, userId));
-
-        logger.info('Compte supprimé', { userId, email: userEmail });
-        return { ok: true };
-      }),
-
-    // POST auth.grantCredits — admin only
-    grantCredits: protectedProcedure
-      .input(z.object({
-        credits: z.number().min(1).max(999999),
-        recipientEmail: z.string().email().optional(),
-        sendEmail: z.boolean().default(false),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        const token = await createGiftLink(input.credits, ctx.authUser.email);
-        const giftUrl = `${CLIENT_URL}/?gift=${token}`;
-        if (input.sendEmail && input.recipientEmail) {
-          await sendGiftCreditsLink(input.recipientEmail, giftUrl, input.credits);
-        }
-        const waText = encodeURIComponent(`🎁 ${input.credits} crédit${input.credits > 1 ? 's' : ''} offert${input.credits > 1 ? 's' : ''} sur boom.contact ! Clique ici pour les réclamer : ${giftUrl}`);
-        return { ok: true, giftUrl, waUrl: `https://wa.me/?text=${waText}` };
-      }),
-
-  
-  // POST auth.adminBootstrap — set admin password (protected by ADMIN_BOOTSTRAP_SECRET env)
-  // One-time use route to set the admin password hash
-  // Call: POST /trpc/auth.adminBootstrap with { secret, password }
-  // Remove ADMIN_BOOTSTRAP_SECRET env var after use
-
-
-
-  adminBootstrap: publicProcedure
-    .input(z.object({ secret: z.string(), password: z.string().min(6) }))
-    .mutation(async ({ input }) => {
-      const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
-      if (!expected || input.secret !== expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
-      const { hashPassword } = await import('../services/auth.service.js');
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
-      const hash = await hashPassword(input.password);
-      await db.update(users).set({ passwordHash: hash, role: 'admin', credits: 999999 }).where(eq(users.email, 'contact@boom.contact'));
-      return { ok: true };
-    }),
-
-  // POST auth.claimGift
-    claimGift: publicProcedure
-      .input(z.object({ token: z.string(), email: z.string().email() }))
-      .mutation(async ({ input }) => {
-        const result = await claimGiftLink(input.token, input.email);
-        return { ok: true, ...result };
-      }),
-
-  }),
-
-  // ── VEHICLES — garage personnel ──────────────────────────────
-  vehicle: router({
-
-    // GET vehicle.list
-    list: protectedProcedure
-      .query(async ({ ctx }) => {
-        const { listVehicles } = await import('../services/vehicle.service.js');
-        return listVehicles(ctx.authUser.sub);
-      }),
-
-    // POST vehicle.save — create or update
-    save: protectedProcedure
-      .input(z.object({
-        id:           z.string().optional(),
-        nickname:     z.string().optional(),
-        plate:        z.string().optional(),
-        make:         z.string().optional(),
-        model:        z.string().optional(),
-        color:        z.string().optional(),
-        year:         z.string().optional(),
-        category:     z.string().optional(),
-        licenseData:  z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
-        insuranceData:z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const { saveVehicle } = await import('../services/vehicle.service.js');
-        return saveVehicle(ctx.authUser.sub, input);
-      }),
-
-    // POST vehicle.delete
-    delete: protectedProcedure
-      .input(z.object({ id: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-        const { deleteVehicle } = await import('../services/vehicle.service.js');
-        return deleteVehicle(ctx.authUser.sub, input.id);
-      }),
-
-  }),
-
-
-  // ── ADMIN ─────────────────────────────────────────────────────
-  admin: router({
-
-    // GET admin.stats — full dashboard data, admin only
-    stats: protectedProcedure
-      .query(async ({ ctx }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-
-        const { db } = await import('../db/index.js');
-        const { sessions, users, payments, creditTxns } = await import('../db/schema.js');
-        const { desc, gte, eq, count, sum, sql } = await import('drizzle-orm');
-
-        const now = new Date();
-        const since24h = new Date(now.getTime() - 24 * 3600 * 1000);
-        const since7d  = new Date(now.getTime() - 7  * 24 * 3600 * 1000);
-        const since30d = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
-
-        // Sessions stats
-        const [totalSessions]     = await db.select({ c: count() }).from(sessions);
-        const [completedSessions] = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'completed'));
-        const [activeSessions]    = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'active'));
-        const [sessions24h]       = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since24h));
-        const [sessions7d]        = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since7d));
-
-        // Recent sessions (last 30)
-        const recentSessions = await db.query.sessions.findMany({
-          orderBy: [desc(sessions.createdAt)],
-          limit: 30,
-          columns: { id: true, status: true, createdAt: true, ownerEmail: true, accident: true, participantA: true },
-        });
-
-        // Users stats
-        const [totalUsers]  = await db.select({ c: count() }).from(users);
-        const [users7d]     = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since7d));
-        const [users30d]    = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since30d));
-
-        // Revenue stats
-        const [totalRevenue]   = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid'));
-        const [revenue30d]     = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since30d));
-        const [revenue7d]      = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since7d));
-        const [totalCredits]   = await db.select({ s: sum(payments.creditsGranted) }).from(payments).where(eq(payments.status, 'paid'));
-
-        // Revenue by package
-        const revenueByPack = await db.select({
-          packageId: payments.packageId,
-          count: count(),
-          revenue: sum(payments.amountCents),
-          credits: sum(payments.creditsGranted),
-        }).from(payments).where(eq(payments.status, 'paid')).groupBy(payments.packageId);
-
-        // Recent payments (last 20)
-        const recentPayments = await db.query.payments.findMany({
-          orderBy: [desc(payments.createdAt)],
-          limit: 20,
-          columns: { id: true, userEmail: true, packageId: true, packageLabel: true, amountCents: true, currency: true, status: true, paidAt: true, creditsGranted: true },
-        });
-
-        // IA costs estimate: OCR scans ≈ 0.003€/scan (Claude Sonnet Vision)
-        // Each completed session uses ~2 OCR scans avg
-        const ocrCostPerScan = 0.003;
-        const estOcrScans    = (completedSessions.c || 0) * 2;
-        const estOcrCost     = estOcrScans * ocrCostPerScan;
-
-        // Credit transactions (gifts sent)
-        const [giftsTotal] = await db.select({ s: sum(creditTxns.delta) }).from(creditTxns).where(eq(creditTxns.reason, 'gift'));
-
-        return {
-          sessions: {
-            total:     totalSessions.c || 0,
-            completed: completedSessions.c || 0,
-            active:    activeSessions.c || 0,
-            last24h:   sessions24h.c || 0,
-            last7d:    sessions7d.c || 0,
-            recent:    recentSessions,
-          },
-          users: {
-            total:  totalUsers.c || 0,
-            last7d: users7d.c || 0,
-            last30d:users30d.c || 0,
-          },
-          revenue: {
-            totalCents:  Number(totalRevenue.s  || 0),
-            last30dCents:Number(revenue30d.s     || 0),
-            last7dCents: Number(revenue7d.s      || 0),
-            totalCredits:Number(totalCredits.s   || 0),
-            byPackage:   revenueByPack,
-            recent:      recentPayments,
-          },
-          ai: {
-            estOcrScans,
-            estOcrCostEur: Math.round(estOcrCost * 100) / 100,
-            costPerSession: ocrCostPerScan * 2,
-          },
-          gifts: {
-            totalGiven: Number(giftsTotal.s || 0),
-          },
-        };
-      }),
-
-    // GET admin.users — paginated user list
-    users: protectedProcedure
-      .input(z.object({ limit: z.number().default(50) }))
-      .query(async ({ ctx, input }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        const { db } = await import('../db/index.js');
-        const { users } = await import('../db/schema.js');
-        const { desc } = await import('drizzle-orm');
-        return db.query.users.findMany({
-          orderBy: [desc(users.createdAt)],
-          limit: input.limit,
-          columns: { id: true, email: true, role: true, credits: true, createdAt: true, lastSeenAt: true, country: true },
-        });
-      }),
-
-  }),
-
-
-  // ── EMERGENCY INSURANCE LOOKUP ───────────────────────────────
+  // ── EMERGENCY ────────────────────────────────
   emergency: router({
-
-    // POST emergency.insuranceLookup — DB first, AI fallback
-    // Looks up 24h assistance number for any insurer worldwide
     insuranceLookup: publicProcedure
       .input(z.object({
-        insurerA: z.string().optional(),  // From participant A OCR
-        insurerB: z.string().optional(),  // From participant B OCR
-        countryCode: z.string().optional(), // ISO 2-letter country code
+        insurerA: z.string().optional(),
+        insurerB: z.string().optional(),
+        countryCode: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
@@ -1074,8 +506,6 @@ export const appRouter = router({
         return { participantA: resultA, participantB: resultB };
       }),
 
-
-    // GET emergency.countryLookup — DB first, AI fallback for any country
     countryLookup: publicProcedure
       .input(z.object({
         countryCode: z.string().min(2).max(3),
@@ -1086,7 +516,6 @@ export const appRouter = router({
         return getCountryEmergencyNumbers(input.countryCode, input.countryName);
       }),
 
-    // GET emergency.singleLookup — for AccountPage / manual use
     singleLookup: publicProcedure
       .input(z.object({
         insurer: z.string().min(2),
@@ -1096,184 +525,25 @@ export const appRouter = router({
         const { getInsuranceAssistance } = await import('../services/insurance-assistance.service.js');
         return getInsuranceAssistance(input.insurer, input.country);
       }),
-
   }),
 
+  // ── MERGED SUB-ROUTERS ────────────────────────────────
+  payment: paymentRouter,
+  user: userRouter,
+  police: policeRouter,
+  auth: authRouter,
+  vehicle: vehicleRouter,
+  admin: adminRouter,
 
+  // ── ADMIN MAINTENANCE (top-level procedures) ────────────────────────────────
+  adminDeleteUser,
+  adminSetCredits,
+  adminListUsers,
+  adminCleanupSessions,
+  adminFixOwnerEmails,
 
-  // ── ADMIN MAINTENANCE ──────────────────────────────────────────
-  // POST admin.deleteUser — supprimer un compte utilisateur par email (admin only)
-  adminDeleteUser: protectedProcedure
-    .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ ctx, input }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { users, vehicles, magicTokens } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
-
-      // Ne pas supprimer le compte admin
-      if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
-
-      const emailLower = input.email.toLowerCase();
-      const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
-      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
-
-      await db.delete(magicTokens).where(eq(magicTokens.email, emailLower));
-      await db.delete(vehicles).where(eq(vehicles.userId, user.id));
-      await db.delete(users).where(eq(users.id, user.id));
-
-      logger.info('Compte supprimé par admin', { email: input.email });
-      return { ok: true, deleted: input.email };
-    }),
-
-  // GET admin.listUsers — lister tous les utilisateurs
-  // POST admin.setCredits — créditer directement un compte (admin only)
-  adminSetCredits: protectedProcedure
-    .input(z.object({
-      email: z.string().email(),
-      credits: z.number().min(0).max(999999),
-    }))
-    .mutation(async ({ ctx, input }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
-      const emailLower = input.email.toLowerCase();
-      const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
-      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
-      await db.update(users).set({ credits: input.credits }).where(eq(users.id, user.id));
-      return { ok: true, email: emailLower, credits: input.credits };
-    }),
-
-  adminListUsers: protectedProcedure
-    .input(z.object({
-      limit: z.number().min(1).max(500).default(100),
-      offset: z.number().min(0).default(0),
-    }).default({ limit: 100, offset: 0 }))
-    .query(async ({ ctx, input }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { users } = await import('../db/schema.js');
-      const { desc } = await import('drizzle-orm');
-      const all = await db.select({
-        id: users.id,
-        email: users.email,
-        role: users.role,
-        credits: users.credits,
-        createdAt: users.createdAt,
-      }).from(users).orderBy(desc(users.createdAt)).limit(input.limit).offset(input.offset);
-      return all;
-    }),
-
-  adminCleanupSessions: protectedProcedure
-    .mutation(async ({ ctx }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { sessions } = await import('../db/schema.js');
-      const { eq } = await import('drizzle-orm');
-      const signing = await db.query.sessions.findMany({ where: eq(sessions.status, 'signing') });
-      let fixed = 0;
-      const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
-      for (const s of signing) {
-        const A = (s.participantA as any) ?? {};
-        const B = (s.participantB as any);
-        const acc = (s.accident as any) ?? {};
-        const sigA = !!A?.signature;
-        if (!sigA) continue;
-        const bHasRealData = B && (B?.driver?.firstName || B?.vehicle?.licensePlate);
-        const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType) || B?.isPedestrian);
-        const hasPartyBStatus = !!acc.partyBStatus;
-        const isSolo = (s.vehicleCount ?? 2) === 1;
-        if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {
-          await db.update(sessions).set({ status: 'completed' } as any).where(eq(sessions.id, s.id));
-          fixed++;
-        }
-      }
-      return { fixed, total: signing.length };
-    }),
-
-  adminFixOwnerEmails: protectedProcedure
-    .mutation(async ({ ctx }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const { db } = await import('../db/index.js');
-      const { sessions } = await import('../db/schema.js');
-      const { eq, isNull, and } = await import('drizzle-orm');
-      const missing = await db.query.sessions.findMany({
-        where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
-      });
-      let fixed = 0;
-      for (const s of missing) {
-        const email = (s.participantA as any)?.driver?.email;
-        if (email) {
-          await db.update(sessions).set({ ownerEmail: email } as any).where(eq(sessions.id, s.id));
-          fixed++;
-        }
-      }
-      return { fixed, total: missing.length };
-    }),
-
-
-  // ── MARKETING ───────────────────────────────────────────────
-  marketing: router({
-
-    posts: protectedProcedure
-      .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
-      .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        const { db } = await import('../db/index.js');
-        const { socialPosts: sp } = await import('../db/schema.js');
-        const { eq, and } = await import('drizzle-orm');
-        const conds: any[] = [];
-        if (input.platform) conds.push(eq(sp.platform, input.platform));
-        if (input.status)   conds.push(eq(sp.status, input.status));
-        const posts = await (conds.length > 0
-          ? (db as any).select().from(sp).where(and(...conds)).orderBy(sp.createdAt)
-          : (db as any).select().from(sp).orderBy(sp.createdAt));
-        return { posts: posts.map((p: any) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
-      }),
-
-    generate: protectedProcedure
-      .input(z.object({ count: z.number().min(1).max(8).default(4) }))
-      .mutation(async ({ ctx }: { ctx: Context }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        const generated = await generateDailyPosts(4);
-        return { generated };
-      }),
-
-    approve: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        await approvePost(input.id);
-        return { ok: true };
-      }),
-
-    markPosted: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        await markPosted(input.id);
-        return { ok: true };
-      }),
-
-    archive: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-        await archivePost(input.id);
-        return { ok: true };
-      }),
-  }),
+  // ── MARKETING ────────────────────────────────
+  marketing: marketingRouter,
 });
 
 export type AppRouter = typeof appRouter;
-
-
-
-
-
-
-
-
-
-

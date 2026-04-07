@@ -597,7 +597,10 @@ export async function generateConstatPDF(
             try {
               logger.info(`[pdf] Fetch carte OSM: ${lat},${lng}`);
               return await fetchAccidentMap(lat, lng, 900, 650, 18);
-            } catch (e: any) { logger.warn('[pdf] OSM fetch failed:', e.message); }
+            } catch (e: unknown) {
+              const msg = e instanceof Error ? e.message : String(e);
+              logger.warn('[pdf] OSM fetch failed:', msg);
+            }
           }
           // Priorité 3: géocoder l'adresse
           const addr = [loc?.address, loc?.city, loc?.country].filter(Boolean).join(', ');
@@ -608,7 +611,10 @@ export async function generateConstatPDF(
               if (coords) {
                 return await fetchAccidentMap(coords.lat, coords.lng, 900, 650, 18);
               }
-            } catch (e: any) { logger.warn('[pdf] Geocode/OSM failed:', e.message); }
+            } catch (e: unknown) {
+              const msg = e instanceof Error ? e.message : String(e);
+              logger.warn('[pdf] Geocode/OSM failed:', msg);
+            }
           }
           return undefined;
         })(),
@@ -618,8 +624,9 @@ export async function generateConstatPDF(
       finalSketchBase64 = puppeteerPng;
       logger.info('[pdf] ✅ Sketch Puppeteer rendu');
     }
-  } catch (sketchErr: any) {
-    logger.warn('[pdf] Sketch Puppeteer fallback:', sketchErr.message);
+  } catch (sketchErr: unknown) {
+    const msg = sketchErr instanceof Error ? sketchErr.message : String(sketchErr);
+    logger.warn('[pdf] Sketch Puppeteer fallback:', msg);
     // Garder sketchImage original si dispo
   }
 

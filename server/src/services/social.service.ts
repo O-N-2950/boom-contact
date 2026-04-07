@@ -139,7 +139,7 @@ Hashtags SANS # dans la valeur. Texte sans hashtags (ils sont séparés).`;
   try {
     const cleaned = raw.replace(/```json|```/g, '').trim();
     parsed = JSON.parse(cleaned);
-  } catch {
+  } catch (e: unknown) {
     logger.warn('[SOCIAL] JSON parse fail, fallback', { raw: raw.slice(0, 100) });
     parsed = {
       text: `Accident à l'étranger ? boom.contact — constat en 5 min, 50 langues, 150+ pays. www.boom.contact`,
@@ -178,8 +178,9 @@ export async function publishFacebook(payload: PostPayload): Promise<PublishResu
     const err = data.error?.message || JSON.stringify(data);
     logger.error('[SOCIAL] ❌ Facebook', { error: err });
     return { success: false, error: err };
-  } catch (e: any) {
-    return { success: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { success: false, error: msg };
   }
 }
 
@@ -234,8 +235,9 @@ export async function publishInstagram(payload: PostPayload): Promise<PublishRes
     const err = published.error?.message || JSON.stringify(published);
     logger.error('[SOCIAL] ❌ Instagram publish', { error: err });
     return { success: false, error: err };
-  } catch (e: any) {
-    return { success: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { success: false, error: msg };
   }
 }
 
@@ -288,8 +290,9 @@ export async function publishTikTok(payload: PostPayload): Promise<PublishResult
     const err = data.error?.message || JSON.stringify(data);
     logger.error('[SOCIAL] ❌ TikTok', { error: err });
     return { success: false, error: err };
-  } catch (e: any) {
-    return { success: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { success: false, error: msg };
   }
 }
 
@@ -340,8 +343,9 @@ export async function publishLinkedIn(payload: PostPayload): Promise<PublishResu
     const err = data.message || data.serviceErrorCode || `HTTP ${res.status}`;
     logger.error('[SOCIAL] ❌ LinkedIn', { error: err, status: res.status });
     return { success: false, error: err };
-  } catch (e: any) {
-    return { success: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { success: false, error: msg };
   }
 }
 
@@ -381,9 +385,10 @@ export async function publishToAllPlatforms(): Promise<Record<string, PublishRes
         postId: result.postId,
         error: result.error,
       });
-    } catch (e: any) {
-      logger.error(`[SOCIAL] ❌ Exception ${platform}`, { error: e.message });
-      results[platform] = { success: false, error: e.message };
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      logger.error(`[SOCIAL] ❌ Exception ${platform}`, { error: msg });
+      results[platform] = { success: false, error: msg };
     }
   }
 

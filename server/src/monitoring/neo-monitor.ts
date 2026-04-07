@@ -26,8 +26,9 @@ async function checkDatabase(): Promise<{ ok: boolean; error?: string }> {
     const { db } = await import('../db/index.js');
     const result = await db.execute('SELECT 1 as ping' as any);
     return { ok: true };
-  } catch (e: any) {
-    return { ok: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
   }
 }
 
@@ -41,8 +42,9 @@ async function checkStripe(): Promise<{ ok: boolean; error?: string }> {
       signal: AbortSignal.timeout(6000),
     });
     return { ok: res.ok, error: res.ok ? undefined : `HTTP ${res.status}` };
-  } catch (e: any) {
-    return { ok: false, error: e.message };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg };
   }
 }
 
@@ -60,7 +62,10 @@ async function sendSMS(msg: string) {
       signal: AbortSignal.timeout(8000),
     });
     logger.info('[NEO-MONITOR] 📱 SMS envoyé');
-  } catch (e: any) { logger.error('[NEO-MONITOR] SMS error', { error: e.message }); }
+  } catch (e: unknown) {
+    const errorMsg = e instanceof Error ? e.message : String(e);
+    logger.error('[NEO-MONITOR] SMS error', { error: errorMsg });
+  }
 }
 
 async function sendWhatsApp(msg: string) {
@@ -76,7 +81,10 @@ async function sendWhatsApp(msg: string) {
       signal: AbortSignal.timeout(8000),
     });
     logger.info('[NEO-MONITOR] 💬 WhatsApp envoyé');
-  } catch (e: any) { logger.error('[NEO-MONITOR] WhatsApp error', { error: e.message }); }
+  } catch (e: unknown) {
+    const errorMsg = e instanceof Error ? e.message : String(e);
+    logger.error('[NEO-MONITOR] WhatsApp error', { error: errorMsg });
+  }
 }
 
 async function reportToCockpit(status: string, failures: string[]) {
@@ -148,8 +156,9 @@ async function purgeExpiredSessions(): Promise<number> {
     const count = (result as any).rows?.length ?? 0;
     if (count > 0) logger.info(`[NEO-MONITOR] 🧹 ${count} session(s) expirée(s) supprimées`);
     return count;
-  } catch (e: any) {
-    logger.warn('[NEO-MONITOR] Purge sessions failed', { error: e.message });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    logger.warn('[NEO-MONITOR] Purge sessions failed', { error: msg });
     return 0;
   }
 }
@@ -167,7 +176,10 @@ export function startMonitoring(intervalMinutes = 5) {
   const ms = intervalMinutes * 60 * 1000;
   state.intervalId = setInterval(async () => {
     try { await runHealthCheck(); }
-    catch (e: any) { logger.error('[NEO-MONITOR] Periodic crash', { error: e.message }); }
+    catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      logger.error('[NEO-MONITOR] Periodic crash', { error: msg });
+    }
   }, ms);
   // Daily purge at startup (runs once, then daily if server uptime allows)
   purgeExpiredSessions().catch(() => {});

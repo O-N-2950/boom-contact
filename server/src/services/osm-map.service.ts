@@ -251,8 +251,9 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
     if (data?.length > 0) {
       return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
     }
-  } catch (e: any) {
-    logger.warn('[osm-map] Geocode failed:', e.message);
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    logger.warn('[osm-map] Geocode failed:', msg);
   }
   return null;
 }

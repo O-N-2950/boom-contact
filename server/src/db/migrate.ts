@@ -228,11 +228,13 @@ export async function runMigrations() {
     `);
 
     logger.info('✅ DB migrations applied');
-  } catch (err: any) {
-    if (err?.code === '42P07') {
+  } catch (err: unknown) {
+    const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;
+    if (code === '42P07') {
       logger.info('DB migrations applied (tables already exist)');
     } else {
-      logger.error('DB migration error', { error: err?.message || String(err) });
+      const msg = err && typeof err === 'object' && 'message' in err ? (err as any).message : String(err);
+      logger.error('DB migration error', { error: msg });
       throw err;
     }
   }
