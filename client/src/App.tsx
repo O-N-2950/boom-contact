@@ -1,24 +1,35 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LandingPage } from './pages/LandingPage';
-import { ConstatFlow } from './pages/ConstatFlow';
-import { JoinSession } from './pages/JoinSession';
-import { PricingPage } from './pages/PricingPage';
-import { CGUModal } from './components/CGUModal';
-import { PoliceLogin } from './pages/PoliceLogin';
-import { PoliceDashboard } from './pages/PoliceDashboard';
-import { PoliceFlow } from './pages/PoliceFlow';
-import { AuthModal } from './components/AuthModal';
-import { AccountPage } from './pages/AccountPage';
-import { AdminDashboard } from './pages/AdminDashboard';
-import { EmergencyNumbers } from './components/EmergencyNumbers';
-import { CookieBanner } from './components/CookieBanner';
-import { PrivacyPage } from './pages/PrivacyPage';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
-import { BugReport } from './components/BugReport';
+
+// ── Code splitting — lazy-loaded pages & modals ──────────────
+const LandingPage     = React.lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
+const ConstatFlow     = React.lazy(() => import('./pages/ConstatFlow').then(m => ({ default: m.ConstatFlow })));
+const JoinSession     = React.lazy(() => import('./pages/JoinSession').then(m => ({ default: m.JoinSession })));
+const PricingPage     = React.lazy(() => import('./pages/PricingPage').then(m => ({ default: m.PricingPage })));
+const PoliceLogin     = React.lazy(() => import('./pages/PoliceLogin').then(m => ({ default: m.PoliceLogin })));
+const PoliceDashboard = React.lazy(() => import('./pages/PoliceDashboard').then(m => ({ default: m.PoliceDashboard })));
+const PoliceFlow      = React.lazy(() => import('./pages/PoliceFlow').then(m => ({ default: m.PoliceFlow })));
+const AccountPage     = React.lazy(() => import('./pages/AccountPage').then(m => ({ default: m.AccountPage })));
+const AdminDashboard  = React.lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const PrivacyPage     = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const EmergencyNumbers = React.lazy(() => import('./components/EmergencyNumbers').then(m => ({ default: m.EmergencyNumbers })));
+const AuthModal       = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
+const CGUModal        = React.lazy(() => import('./components/CGUModal').then(m => ({ default: m.CGUModal })));
+const CookieBanner    = React.lazy(() => import('./components/CookieBanner').then(m => ({ default: m.CookieBanner })));
+const BugReport       = React.lazy(() => import('./components/BugReport').then(m => ({ default: m.BugReport })));
+
+function LoadingSpinner() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'var(--black, #06060C)' }}>
+      <div style={{ width: 32, height: 32, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
 
 type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
 
@@ -232,6 +243,7 @@ export default function App() {
   return (
     <ErrorBoundary>
     <OfflineBanner />
+    <Suspense fallback={<LoadingSpinner />}>
     <div className="min-h-screen bg-[var(--black,#06060C)] text-[var(--text,#ffffff)]">
       {view === 'landing'  && <LandingPage
         onStart={startConstat}
@@ -339,6 +351,7 @@ export default function App() {
       <CookieBanner />
     </div>
       <BugReport />
+    </Suspense>
     </ErrorBoundary>
   );
 }
