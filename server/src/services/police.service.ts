@@ -43,7 +43,15 @@ export async function loginPoliceUser(email: string, password: string) {
 
   // Support both legacy SHA256 and new scrypt hashes
   const legacyHash = hashPasswordSync(password);
-  const isLegacy = legacyHash === user.passwordHash;
+  // Timing-safe comparison to prevent timing attacks
+  const isLegacy = (() => {
+    try {
+      return crypto.timingSafeEqual(
+        Buffer.from(legacyHash, 'hex'),
+        Buffer.from(user.passwordHash || '', 'hex')
+      );
+    } catch { return false; }
+  })();
   if (!isLegacy) throw new Error('Identifiants incorrects');
 
   await db.update(policeUsers)
@@ -319,7 +327,7 @@ export async function createPoliceUser(data: {
     firstName: data.firstName,
     lastName: data.lastName,
     badgeNumber: data.badgeNumber,
-    passwordHash: hashPassword(data.password),
+    passwordHash: await hashPassword(data.password),
     role: data.role || 'agent',
   }).returning();
 
