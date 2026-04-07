@@ -165,6 +165,7 @@ export async function publishFacebook(payload: PostPayload): Promise<PublishResu
   try {
     const res = await fetch(`${FB_API}/${pageId}/feed`, {
       method: 'POST',
+      signal: AbortSignal.timeout(15000),
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: content, access_token: token }),
     });
@@ -201,6 +202,7 @@ export async function publishInstagram(payload: PostPayload): Promise<PublishRes
 
     const containerRes = await fetch(`${FB_API}/${igId}/media`, {
       method: 'POST',
+      signal: AbortSignal.timeout(15000),
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         image_url: imageUrl,
@@ -219,6 +221,7 @@ export async function publishInstagram(payload: PostPayload): Promise<PublishRes
     // Étape 2 : publier le container
     const publishRes = await fetch(`${FB_API}/${igId}/media_publish`, {
       method: 'POST',
+      signal: AbortSignal.timeout(15000),
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ creation_id: container.id, access_token: token }),
     });
@@ -253,6 +256,7 @@ export async function publishTikTok(payload: PostPayload): Promise<PublishResult
     // Initialiser le post photo
     const initRes = await fetch(`${TT_API}/post/publish/content/init/`, {
       method: 'POST',
+      signal: AbortSignal.timeout(20000),
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json; charset=UTF-8',
@@ -304,6 +308,7 @@ export async function publishLinkedIn(payload: PostPayload): Promise<PublishResu
   try {
     const res = await fetch(`${LI_API}/ugcPosts`, {
       method: 'POST',
+      signal: AbortSignal.timeout(15000),
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
