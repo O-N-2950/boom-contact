@@ -530,7 +530,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         </div>
 
         {/* Region filter */}
-        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4, marginBottom: 10, scrollbarWidth: 'none' as any }}>
+        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4, marginBottom: 10, scrollbarWidth: 'none' as const }}>
           {REGIONS.map(r => (
             <button key={r} onClick={() => setRegion(r)} style={{
               background: region === r ? '#FF3500' : '#111',

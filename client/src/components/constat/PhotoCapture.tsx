@@ -234,7 +234,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
       <button
         onClick={onContinue}
         style={{
-          width: '100%', padding: '16px', borderRadius: 12, border: 'none',
+          width: '100%', padding: '16px', borderRadius: 12,
           background: photos.length > 0 ? 'var(--boom)' : 'rgba(255,255,255,0.07)',
           color: photos.length > 0 ? '#fff' : 'rgba(240,237,232,0.6)',
           cursor: 'pointer', fontSize: 15, fontWeight: 700,

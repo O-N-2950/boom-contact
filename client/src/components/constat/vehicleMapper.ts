@@ -483,7 +483,7 @@ const BRAND_ALIASES: Record<string, string> = {
   'ktm ag': 'ktm', 'ducati motor': 'ducati',
   'bmw motorrad': 'bmw motorrad',
   'chevrolet': 'chevrolet', 'chevy': 'chevrolet',
-  'citroën': 'citroen', 'citroën': 'citroen',
+  'citroën': 'citroen',
 };
 
 function normalizeBrand(raw: string): string {

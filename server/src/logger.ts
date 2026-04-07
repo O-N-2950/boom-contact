@@ -9,11 +9,14 @@
 // ── Force synchronous stdout/stderr (MUST be first) ──────────
 function forceUnbuffered() {
   try {
-    if ((process.stdout as any)._handle?.setBlocking) {
-      (process.stdout as any)._handle.setBlocking(true);
+    // TODO(audit-v6): type this properly - accessing private Node.js API
+    const stdout = process.stdout as { _handle?: { setBlocking: (val: boolean) => void } };
+    if (stdout._handle?.setBlocking) {
+      stdout._handle.setBlocking(true);
     }
-    if ((process.stderr as any)._handle?.setBlocking) {
-      (process.stderr as any)._handle.setBlocking(true);
+    const stderr = process.stderr as { _handle?: { setBlocking: (val: boolean) => void } };
+    if (stderr._handle?.setBlocking) {
+      stderr._handle.setBlocking(true);
     }
     // Also set encoding to prevent any encoding-related buffering
     process.stdout.setDefaultEncoding('utf8');
