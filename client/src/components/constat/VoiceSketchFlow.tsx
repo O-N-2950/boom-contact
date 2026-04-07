@@ -114,7 +114,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
     const circumstances = text ? [text] : [];
     onComplete({
       transcript: text,
-      analysis: { circumstances, vehicleCount: 2, confidence: 1 },
+      analysis: { circumstances, confidence: 1 },  // vehicleCount NOT set here — managed by QR step
       sketchBase64: '',
     });
   };
