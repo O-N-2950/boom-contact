@@ -136,6 +136,24 @@ export async function runHealthCheck() {
   return { status, checks, timestamp };
 }
 
+// ── Session cleanup — purge expired sessions (RGPD) ────────────
+async function purgeExpiredSessions(): Promise<number> {
+  try {
+    const { db } = await import('../db/index.js');
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // 30 days
+    const result = await db.execute(
+      `DELETE FROM sessions WHERE expires_at < $1 RETURNING id` as any,
+      [cutoff]
+    );
+    const count = (result as any).rows?.length ?? 0;
+    if (count > 0) logger.info(`[NEO-MONITOR] 🧹 ${count} session(s) expirée(s) supprimées`);
+    return count;
+  } catch (e: any) {
+    logger.warn('[NEO-MONITOR] Purge sessions failed', { error: e.message });
+    return 0;
+  }
+}
+
 // ── Startup ───────────────────────────────────────────────────
 export async function startupCheck() {
   logger.info('[NEO-MONITOR] 🔄 Startup boom.contact');
@@ -151,6 +169,8 @@ export function startMonitoring(intervalMinutes = 5) {
     try { await runHealthCheck(); }
     catch (e: any) { logger.error('[NEO-MONITOR] Periodic crash', { error: e.message }); }
   }, ms);
+  // Daily purge at startup (runs once, then daily if server uptime allows)
+  purgeExpiredSessions().catch(() => {});
   logger.info(`[NEO-MONITOR] 🔁 Monitoring démarré (${intervalMinutes} min)`);
 }
 
