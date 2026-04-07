@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trpc } from '../trpc';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
   onAccept: (email: string, consentMarketing: boolean) => void;
@@ -25,6 +26,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
   const canProceed = isValidEmail(email) && consentCGU;
 
+  const modalRef = useFocusTrap<HTMLDivElement>();
   const saveConsentMutation = trpc.user.saveConsent.useMutation({
     onSuccess: () => { onAccept(email, consentMarketing); },
     onError: (err) => { setError(err.message || t('cgu.error_network')); },
@@ -52,7 +54,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
       background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
     }} onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{
+      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Conditions générales" style={{
         width: '100%', maxWidth: 480,
         background: '#0E0E18',
         border: '1px solid rgba(255,255,255,0.1)',

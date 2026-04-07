@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { trpc } from '../trpc';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent';
 
@@ -17,6 +18,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
 
+  const modalRef = useFocusTrap<HTMLDivElement>();
   const magicReqMut  = trpc.auth.magicLinkRequest.useMutation();
   const loginMut     = trpc.auth.login.useMutation();
   const registerMut  = trpc.auth.register.useMutation();
@@ -63,7 +65,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999,
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}>
-      <div style={{
+      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" style={{
         background: '#111', border: '1px solid #222', borderRadius: 20,
         padding: 32, width: '100%', maxWidth: 420, position: 'relative',
       }}>
