@@ -78,9 +78,9 @@ export const appRouter = router({
         sessionId: z.string(),
         role: z.enum(['A', 'B', 'C', 'D', 'E']),
         data: z.object({
-          vehicle:      z.record(z.string(), z.any()).optional(),
-          driver:       z.record(z.string(), z.any()).optional(),
-          insurance:    z.record(z.string(), z.any()).optional(),
+          vehicle:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          driver:       z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          insurance:    z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
           damagedZones: z.array(z.string()).optional(),
           circumstances:z.array(z.string()).optional(),
           language:     z.string().optional(),
@@ -105,7 +105,7 @@ export const appRouter = router({
         data: z.object({
           date:             z.string().optional(),
           time:             z.string().optional(),
-          location:         z.record(z.string(), z.any()).optional(),
+          location:         z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
           description:      z.string().optional(),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
           witnesses:        z.string().optional(),
@@ -113,9 +113,9 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
-          vehicleAPos:      z.record(z.string(), z.any()).optional(), // position véhicule A sur la carte
+          vehicleAPos:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(), // position véhicule A sur la carte
           vehicleCount:     z.number().optional(),   // 1=solo, 2=standard, 3-5=multi
-          partyBStatus:     z.record(z.string(), z.any()).optional(), // fuite/blessé/refus/décédé
+          partyBStatus:     z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(), // fuite/blessé/refus/décédé
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -879,8 +879,8 @@ export const appRouter = router({
         color:        z.string().optional(),
         year:         z.string().optional(),
         category:     z.string().optional(),
-        licenseData:  z.record(z.string(), z.any()).optional(),
-        insuranceData:z.record(z.string(), z.any()).optional(),
+        licenseData:  z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+        insuranceData:z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         const { saveVehicle } = await import('../services/vehicle.service.js');
