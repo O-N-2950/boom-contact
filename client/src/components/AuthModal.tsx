@@ -70,9 +70,9 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         padding: 32, width: '100%', maxWidth: 420, position: 'relative',
       }}>
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
             {title || '💥 boom.contact'}
-          </div>
+          </h1>
           <div style={{ color: '#888', fontSize: 14, lineHeight: 1.5 }}>
             {subtitle || 'Connectez-vous pour sauvegarder vos véhicules et ne plus rien saisir lors de vos constats.'}
           </div>
@@ -110,9 +110,11 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               type="email" placeholder="votre@email.com" value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleMagicRequest()}
+              aria-label="Adresse email"
+              aria-describedby={error ? "error-magic" : undefined}
               style={inputStyle}
             />
-            {error && <div style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-magic" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#FF3500')}>
               {loading ? 'Envoi...' : 'Envoyer le lien'}
             </button>
@@ -145,15 +147,18 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
+              aria-label="Adresse email"
+              aria-describedby={error ? "error-password" : undefined}
               style={inputStyle}
             />
             <input
               type="password" placeholder="Mot de passe" value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-password" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Connexion...' : 'Se connecter'}
             </button>
@@ -173,15 +178,18 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
+              aria-label="Adresse email"
+              aria-describedby={error ? "error-register" : undefined}
               style={inputStyle}
             />
             <input
               type="password" placeholder="Mot de passe (min. 6 caractères)" value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleRegister()}
+              aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-register" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Création...' : 'Créer mon compte'}
             </button>

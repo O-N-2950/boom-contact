@@ -171,7 +171,35 @@ body {
 }
 .input-boom::placeholder { opacity: 0.35; }
 
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--boom, #FF3500);
+  outline-offset: 2px;
+}
 
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
 
 /* ── Light mode — activé par data-theme="light" sur <html> ─── */
 /* Technique Horlogis : JS toggle, pas prefers-color-scheme */

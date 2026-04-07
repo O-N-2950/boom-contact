@@ -162,9 +162,10 @@ export default function App() {
     return params.get('token') || localStorage.getItem('boom_police_token') || '';
   });
 
-  // Apply RTL direction whenever language changes
+  // Apply RTL direction and lang attribute whenever language changes
   useEffect(() => {
     applyDir(i18n.language);
+    document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
   // Check post-payment success
@@ -242,9 +243,13 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+    <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded">
+      Skip to content
+    </a>
     <OfflineBanner />
     <Suspense fallback={<LoadingSpinner />}>
     <div className="min-h-screen bg-[var(--black,#06060C)] text-[var(--text,#ffffff)]">
+      <main id="main-content">
       {view === 'landing'  && <LandingPage
         onStart={startConstat}
         onPricing={goToPricing}
@@ -349,8 +354,9 @@ export default function App() {
         />
       )}
       <CookieBanner />
+      </main>
     </div>
-      <BugReport />
+    <BugReport />
     </Suspense>
     </ErrorBoundary>
   );

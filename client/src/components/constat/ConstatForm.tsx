@@ -108,13 +108,15 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
       type === 'number' ? 'numeric' :
       type === 'tel'    ? 'tel' :
       type === 'email'  ? 'email' : 'text';
+    const fieldId = `${sec}-${field}`;
     return (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.45,
+      <label htmlFor={fieldId} style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.45,
         textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 6 }}>
         {label}{required && <span style={{ color: 'var(--boom)', marginLeft: 4 }}>*</span>}
       </label>
       <input
+        id={fieldId}
         type={inputType}
         inputMode={inputMode}
         autoComplete="off"
@@ -123,6 +125,8 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
         value={(data[sec] as any)?.[field] ?? ''}
         onChange={e => update(sec, field, e.target.value)}
         placeholder={placeholder}
+        aria-label={label}
+        aria-required={required}
         style={{
           width: '100%', padding: '12px 14px', borderRadius: 8,
           border: `1.5px solid ${(data[sec] as any)?.[field] ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`,
@@ -237,20 +241,23 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Date/heure éditable */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Date et heure de l'accident</div>
+              <label htmlFor="acc-date" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Date et heure de l'accident</label>
               <div style={{ display: 'flex', gap: 8 }}>
-                <input type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
+                <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
+                  aria-label="Date de l'accident"
                   style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
-                <input type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
+                <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
+                  aria-label="Heure de l'accident"
                   style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
               </div>
             </div>
 
             {/* Dégâts apparents section 11 */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts apparents (section 11)</div>
-              <textarea value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
+              <label htmlFor="visible-damage" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Dégâts apparents (section 11)</label>
+              <textarea id="visible-damage" value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
                 placeholder="Décrivez les dommages visibles sur votre véhicule..."
+                aria-label="Dégâts apparents"
                 rows={3}
                 style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>
@@ -270,9 +277,10 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Témoins */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Témoins</div>
-              <textarea value={witnesses} onChange={e => setWitnesses(e.target.value)}
+              <label htmlFor="witnesses" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Témoins</label>
+              <textarea id="witnesses" value={witnesses} onChange={e => setWitnesses(e.target.value)}
                 placeholder="Nom, prénom, téléphone de chaque témoin..."
+                aria-label="Informations sur les témoins"
                 rows={3}
                 style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
             </div>

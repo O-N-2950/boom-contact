@@ -347,7 +347,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '72px 48px' : '52px 24px' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: isDesktop ? 52 : 36 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>{t('landing.how.label')}</div>
+            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }} id="how-works-label" role="doc-subtitle">{t('landing.how.label')}</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 30, letterSpacing: '-0.5px' }}>{t('landing.how.title')} <span style={{ color: 'var(--boom)' }}>{t('landing.how.title_accent')}</span></h2>
           </div>
 
@@ -389,7 +389,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── FEATURES ──────────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '0 48px 72px' : '0 24px 52px' }}>
         <Section>
-          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 28, textAlign: 'center', marginBottom: 32 }}>{t('landing.features.title')}</h2>
+          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 28, textAlign: 'center', marginBottom: 32 }} id="features">{t('landing.features.title')}</h2>
           <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr 1fr', gap: isDesktop ? 16 : 10 }}>
             {features.map((f, i) => <FeatureCard key={i} {...f} delay={i * 80} />)}
           </div>
@@ -400,8 +400,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '52px 48px' : '36px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: 20 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 8 }}>{t('landing.coverage.label')}</div>
-            <h3 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22 }}>{t('landing.coverage.title')}</h3>
+            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 8 }} role="doc-subtitle">{t('landing.coverage.label')}</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22 }}>{t('landing.coverage.title')}</h2>
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
             {flags.map((f, i) => <span key={i} style={{ fontSize: isDesktop ? 28 : 22, opacity: 0.7, cursor: 'default', transition: 'all 0.2s' }} onMouseEnter={e => { (e.target as HTMLElement).style.opacity = '1'; (e.target as HTMLElement).style.transform = 'scale(1.3)'; }} onMouseLeave={e => { (e.target as HTMLElement).style.opacity = '0.7'; (e.target as HTMLElement).style.transform = ''; }}>{f}</span>)}
@@ -416,7 +416,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <div style={{ padding: isDesktop ? '28px 32px' : '22px', borderRadius: 14, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.15)', display: 'flex', alignItems: isDesktop ? 'center' : 'flex-start', gap: 16 }}>
             <span style={{ fontSize: 32, flexShrink: 0 }}>⚖️</span>
             <div>
-              <div style={{ fontWeight: 700, fontSize: isDesktop ? 16 : 14, marginBottom: 6 }}>{t('landing.legal.title')}</div>
+              <h2 style={{ fontWeight: 700, fontSize: isDesktop ? 16 : 14, marginBottom: 6 }}>{t('landing.legal.title')}</h2>
               <div style={{ fontSize: 13, opacity: 0.6, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
             </div>
           </div>
@@ -426,7 +426,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div id="tarifs" style={{ padding: isDesktop ? '72px 48px' : '52px 20px', background: 'var(--dark)', borderTop: '1px solid var(--border)' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: 36 }}>
-            <div style={{ display: 'inline-block', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', borderRadius: 20, padding: '4px 14px', fontSize: 11, fontWeight: 700, color: 'var(--boom)', letterSpacing: 1, marginBottom: 12 }}>TARIFS</div>
+            <div style={{ display: 'inline-block', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', borderRadius: 20, padding: '4px 14px', fontSize: 11, fontWeight: 700, color: 'var(--boom)', letterSpacing: 1, marginBottom: 12 }} role="doc-subtitle">TARIFS</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 26, fontWeight: 700, marginBottom: 8 }}>Simple, transparent, mondial</h2>
             <p style={{ fontSize: 13, opacity: 0.5, lineHeight: 1.6 }}>1 crédit = 1 constat complet · Valable dans 150+ pays · Sans abonnement</p>
           </div>

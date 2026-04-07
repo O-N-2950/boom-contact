@@ -41,30 +41,33 @@ export function PoliceLogin({ onLogin }: Props) {
         <div style={{ background:'rgba(255,255,255,0.04)', borderRadius: 16, border:'1px solid rgba(255,255,255,0.09)', padding: 24 }}>
 
           {error && (
-            <div style={{ marginBottom: 16, padding:'10px 14px', borderRadius: 8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', fontSize: 13, color:'#ef4444' }}>
+            <div id="police-error" style={{ marginBottom: 16, padding:'10px 14px', borderRadius: 8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', fontSize: 13, color:'#ef4444' }}>
               ⚠️ {error}
             </div>
           )}
 
           <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
+            <label htmlFor="email-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
               Email institutionnel
             </label>
             <input
+              id="email-police"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="agent@police-jura.ch"
+              aria-describedby={error ? "police-error" : undefined}
               style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box', outline:'none' }}
             />
           </div>
 
           <div style={{ marginBottom: 22 }}>
-            <label style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
+            <label htmlFor="password-police" style={{ fontSize: 11, color:'rgba(240,237,232,0.45)', letterSpacing: 1, textTransform:'uppercase', display:'block', marginBottom: 6 }}>
               Mot de passe
             </label>
             <input
+              id="password-police"
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}

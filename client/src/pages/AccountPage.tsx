@@ -5,7 +5,17 @@ import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
 
 interface AccountPageProps {
-  user: { id: string; email: string; role: string; credits: number };
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    credits: number;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    company?: string;
+    address?: string;
+  };
   token: string;
   onBack: () => void;
   onLogout: () => void;
@@ -70,15 +80,15 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     const ins = result.greenCard;
     setForm(prev => ({
       ...prev,
-      plate:    (reg as any).vehicle?.licensePlate || (reg as any).licensePlate || prev.plate,
-      make:     (reg as any).vehicle?.make         || (reg as any).make         || prev.make,
-      model:    (reg as any).vehicle?.model        || (reg as any).model        || prev.model,
-      color:    (reg as any).vehicle?.color        || (reg as any).color        || prev.color,
-      year:     (reg as any).vehicle?.year         || (reg as any).year         || prev.year,
-      category: (reg as any).vehicle?.vehicleCategory || prev.category,
+      plate:    reg.vehicle?.licensePlate || prev.plate,
+      make:     reg.vehicle?.make         || prev.make,
+      model:    reg.vehicle?.model        || prev.model,
+      color:    reg.vehicle?.color        || prev.color,
+      year:     reg.vehicle?.year         || prev.year,
+      category: reg.vehicle?.category || prev.category,
       licenseData: { ...prev.licenseData, ...reg },
       insuranceData: ins
-        ? { ...prev.insuranceData, company: (ins as any).insurance?.company || (ins as any).company, policyNumber: (ins as any).insurance?.policyNumber || (ins as any).policyNumber, ...ins }
+        ? { ...prev.insuranceData, company: ins.insurance?.company, policyNumber: ins.insurance?.policyNumber, ...ins }
         : prev.insuranceData,
     }));
     toast('✅ Documents scannés et pré-remplis !');
@@ -151,15 +161,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
           {/* Confirmation par saisie email */}
           <div style={{ marginBottom: 20 }}>
-            <div style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>
+            <label htmlFor="delete-confirm" style={{ color: '#888', fontSize: 12, marginBottom: 8, display: 'block' }}>
               Pour confirmer, saisis ton adresse email :
-            </div>
+            </label>
             <input
+              id="delete-confirm"
               value={deleteConfirmText}
               onChange={e => setDeleteConfirmText(e.target.value)}
               placeholder={emailToConfirm}
               autoCapitalize="none"
               autoCorrect="off"
+              aria-label="Confirmation de l'adresse email"
+              aria-describedby="delete-confirm-help"
               style={{
                 width: '100%', padding: '12px 14px',
                 background: '#1a1a2e', border: '1px solid #2a2a3e',
@@ -168,6 +181,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none',
               }}
             />
+            <div id="delete-confirm-help" style={{ fontSize: 11, color: '#666', marginTop: 4 }}>
+              Ceci est irréversible.
+            </div>
           </div>
 
           {/* Boutons */}
@@ -286,7 +302,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
   // ── Main page ─────────────────────────────────────────────────
   const vehicles = vehicleListQ.data || [];
-  const history  = (historyQ.data || []) as any[];
+  const history  = historyQ.data || [];
 
   return (
     <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
@@ -440,11 +456,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 {!editingProfile && (
                   <button onClick={() => {
                     setProfileForm({
-                      firstName: (user as any).firstName || '',
-                      lastName:  (user as any).lastName  || '',
-                      phone:     (user as any).phone     || '',
-                      company:   (user as any).company   || '',
-                      address:   (user as any).address   || '',
+                      firstName: user.firstName || '',
+                      lastName:  user.lastName  || '',
+                      phone:     user.phone     || '',
+                      company:   user.company   || '',
+                      address:   user.address   || '',
                     });
                     setEditingProfile(true);
                   }}
@@ -456,18 +472,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               {!editingProfile ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {[
-                    ['Prénom', (user as any).firstName],
-                    ['Nom', (user as any).lastName],
-                    ['Téléphone', (user as any).phone],
-                    ['Société', (user as any).company],
-                    ['Adresse', (user as any).address],
+                    ['Prénom', user.firstName],
+                    ['Nom', user.lastName],
+                    ['Téléphone', user.phone],
+                    ['Société', user.company],
+                    ['Adresse', user.address],
                   ].map(([label, val]) => val ? (
                     <div key={label as string}>
                       <div style={{ color: '#555', fontSize: 11 }}>{label as string}</div>
                       <div style={{ color: '#ccc', fontSize: 14 }}>{val as string}</div>
                     </div>
                   ) : null)}
-                  {!((user as any).firstName || (user as any).phone) && (
+                  {!(user.firstName || user.phone) && (
                     <div style={{ color: '#555', fontSize: 13 }}>Aucune information — clique sur Modifier</div>
                   )}
                 </div>

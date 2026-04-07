@@ -65,6 +65,7 @@ export function BugReport() {
           </div>
           <textarea value={text} onChange={e => setText(e.target.value)}
             placeholder="Décrivez ce qui ne fonctionne pas…"
+            aria-label="Description du problème"
             rows={4}
             style={{
               width:'100%', padding:'10px', borderRadius:8,
@@ -77,6 +78,7 @@ export function BugReport() {
           />
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="Votre email (optionnel)"
+            aria-label="Adresse email"
             style={{
               width:'100%', padding:'9px 10px', borderRadius:8,
               border:'1px solid rgba(255,255,255,0.08)',
