@@ -108,8 +108,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
   const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
   const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
-  const [voiceAnalysis, setVoiceAnalysis] = useState<any>(null);
-  const [vehicleCount, setVehicleCount] = useState<2|3|4>(2);
+  const [voiceAnalysis, setVoiceAnalysis] = useState<any>(saved?.voiceAnalysis || null);
+  const [voiceTranscript, setVoiceTranscript] = useState<string>(saved?.voiceTranscript || '');
+  const [vehicleCount, setVehicleCount] = useState<2|3|4>((saved?.vehicleCount as 2|3|4) || 2);
   // Données de tous les véhicules (enrichies au fur et à mesure des scans)
   const [allVehicles, setAllVehicles] = useState<Record<string, any>>({
     A: saved?.vehicleA || null,
@@ -186,7 +187,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   useEffect(() => {
     if (step === 'done') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, qrUrl, participantData, damagedZones, photos, sketchImage, ts: Date.now(),
+      step, sessionId, qrUrl, participantData, damagedZones, photos, sketchImage,
+      vehicleCount, voiceAnalysis, voiceTranscript, ts: Date.now(),
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos]);
 
@@ -638,9 +640,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             role="A"
             sessionId={sessionId}
             lang={participantData.language}
+            initialTranscript={voiceTranscript}
             onComplete={(data) => {
               setVoiceAnalysis(data.analysis);
-              const count = data.analysis?.vehicleCount || 2;
+              setVoiceTranscript(data.transcript || '');
+              const count = data.analysis?.vehicleCount || vehicleCount;
               setVehicleCount(count as 2|3|4);
               if (data.analysis?.circumstances?.length > 0) {
                 setParticipantData(prev => ({
@@ -648,9 +652,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   circumstances: data.analysis.circumstances,
                 }));
               }
-              setStep('form'); // vocal → formulaire → croquis → choc → signature
+              setStep('form');
             }}
-            onSkip={() => setStep('form')} // non bloquant — passer directement au formulaire
+            onSkip={() => setStep('form')}
           />
         )}
 
