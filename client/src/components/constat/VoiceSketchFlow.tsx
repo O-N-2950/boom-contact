@@ -12,6 +12,7 @@ interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   sessionId: string;
   lang?: string;
+  initialTranscript?: string;  // restored from localStorage on back navigation
   preloadedAnalysis?: any;
   vehicleAData?: any;
   vehicleBData?: any;
