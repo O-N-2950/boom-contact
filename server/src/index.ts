@@ -401,12 +401,15 @@ setInterval(async () => {
   try {
     const { db } = await import('./db/index.js');
     const { schema } = await import('./db/schema.js');
-    const { lt, inArray } = await import('drizzle-orm');
+    const { lt, inArray, and } = await import('drizzle-orm');
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const result = await db.update(schema.sessions)
       .set({ status: 'expired' } as any)
       .where(
-        inArray(schema.sessions.status, ['waiting', 'active', 'signing'])
+        and(
+          inArray(schema.sessions.status, ['waiting', 'active', 'signing']),
+          lt(schema.sessions.createdAt, sevenDaysAgo)
+        )
       );
     // On ne log que si quelque chose a changé
   } catch (e) {
