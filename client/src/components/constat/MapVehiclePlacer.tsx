@@ -213,7 +213,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
     if (!sessionId) return;
     const fetchPositions = async () => {
       try {
-        const res = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`);
+        const res = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`, { signal: AbortSignal.timeout(5000) });
         if (!res.ok) return;
         const data = await res.json();
         const session = data?.result?.data;
