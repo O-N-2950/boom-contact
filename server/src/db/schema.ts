@@ -15,6 +15,8 @@ export const sessions = pgTable('sessions', {
   vehicleCount: integer('vehicle_count').notNull().default(2),
   pdfUrl:       text('pdf_url'),
   ownerEmail:   text('owner_email'),
+  tokenA:       text('token_a'),            // participant token for party A
+  tokenB:       text('token_b'),            // participant token for party B
 }, (t) => ({
   statusIdx:     index('sessions_status_idx').on(t.status),
   createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),

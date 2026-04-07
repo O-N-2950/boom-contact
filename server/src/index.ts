@@ -155,7 +155,37 @@ export const io = new SocketServer(httpServer, {
       },
     }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min)');
+    // email.sendToDriver — 5/hour per IP (anti-spam)
+    app.use('/trpc/email.sendToDriver', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit email.sendToDriver', { ip: req.ip });
+        res.status(429).json({ error: 'Trop d\'emails envoyés. Réessayez dans 1 heure.' });
+      },
+    }));
+
+    // email.bugReport — 5/min per IP
+    app.use('/trpc/email.bugReport', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit bugReport', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de rapports. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // voice.transcribe — 10/min per IP
+    app.use('/trpc/voice.transcribe', rateLimit({
+      windowMs: 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit voice.transcribe', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de transcriptions. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min)');
   } catch (e) { logger.warn('Rate limit not available', { error: String(e) }); }
 })();
 
@@ -412,10 +442,26 @@ io.use((socket, next) => {
 io.on('connection', (socket) => {
   logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
-  socket.on('join-session', (sessionId: string) => {
-    socket.join(`session:${sessionId}`);
-    socket.to(`session:${sessionId}`).emit('participant-joined');
-    logger.session('socket-join', sessionId);
+  socket.on('join-session', async (sessionId: string) => {
+    // Validate sessionId exists in DB before joining room
+    if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
+      socket.emit('error', { message: 'Invalid session ID' });
+      return;
+    }
+    try {
+      const { getSession } = await import('./services/session.service.js');
+      const session = await getSession(sessionId);
+      if (!session || session.status === 'expired') {
+        socket.emit('error', { message: 'Session not found or expired' });
+        return;
+      }
+      socket.join(`session:${sessionId}`);
+      socket.to(`session:${sessionId}`).emit('participant-joined');
+      logger.session('socket-join', sessionId);
+    } catch (e) {
+      logger.error('Socket join-session error', { error: String(e) });
+      socket.emit('error', { message: 'Failed to join session' });
+    }
   });
 
   socket.on('update-data', ({ sessionId, role, data }: { sessionId: string; role: 'A' | 'B'; data: unknown }) => {

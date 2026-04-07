@@ -3,7 +3,8 @@ import type { Context } from '../middleware/context';
 import { scanDocument, scanDocumentPair } from '../services/ocr.service';
 import {
   createSession, getSession, joinSession,
-  updateParticipant, updateAccident, signSession, getQRUrl, savePdfUrl
+  updateParticipant, updateAccident, signSession, getQRUrl, savePdfUrl,
+  verifyParticipantToken
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
@@ -52,12 +53,12 @@ export const appRouter = router({
   // ── SESSION ────────────────────────────────
   session: router({
 
-    // Driver A creates session → gets QR code URL
+    // Driver A creates session → gets QR code URL + participant tokens
     create: publicProcedure
       .mutation(async () => {
         const session = await createSession();
         const qrUrl = getQRUrl(session.id, CLIENT_URL);
-        return { sessionId: session.id, qrUrl, status: session.status };
+        return { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA, tokenB: session.tokenB };
       }),
 
     // Get session state
@@ -86,16 +87,60 @@ export const appRouter = router({
       .input(z.object({
         sessionId: z.string(),
         role: z.enum(['A', 'B', 'C', 'D', 'E']),
+        participantToken: z.string().optional(),
         data: z.object({
-          vehicle:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
-          driver:       z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
-          insurance:    z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          vehicle: z.object({
+            vehicleType: z.string().optional(),
+            licensePlate: z.string().optional(),
+            plate: z.string().optional(),
+            brand: z.string().optional(),
+            make: z.string().optional(),
+            model: z.string().optional(),
+            year: z.string().optional(),
+            color: z.string().optional(),
+            vin: z.string().optional(),
+            category: z.string().optional(),
+            bodyStyle: z.string().optional(),
+            type: z.string().optional(),
+          }).passthrough().optional(),
+          driver: z.object({
+            firstName: z.string().optional(),
+            lastName: z.string().optional(),
+            address: z.string().optional(),
+            city: z.string().optional(),
+            postalCode: z.string().optional(),
+            country: z.string().optional(),
+            phone: z.string().optional(),
+            email: z.string().optional(),
+            licenseNumber: z.string().optional(),
+            licenseExpiry: z.string().optional(),
+            name: z.string().optional(),
+          }).passthrough().optional(),
+          insurance: z.object({
+            company: z.string().optional(),
+            policyNumber: z.string().optional(),
+            agentName: z.string().optional(),
+            agentPhone: z.string().optional(),
+            agentEmail: z.string().optional(),
+            address: z.string().optional(),
+            greenCardNumber: z.string().optional(),
+            greenCardExpiry: z.string().optional(),
+          }).passthrough().optional(),
           damagedZones: z.array(z.string()).optional(),
-          circumstances:z.array(z.string()).optional(),
+          circumstances: z.array(z.string()).optional(),
           language:     z.string().optional(),
+          isPedestrian: z.boolean().optional(),
+          signature: z.string().optional(),
+          signedAt: z.string().optional(),
         }),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token if provided (backwards compatible)
+        if (input.participantToken) {
+          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
+          if (!valid) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
+        }
+
         const session = await updateParticipant(input.sessionId, input.role, input.data as any);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
@@ -111,10 +156,19 @@ export const appRouter = router({
     updateAccident: publicProcedure
       .input(z.object({
         sessionId: z.string(),
+        participantToken: z.string().optional(),
         data: z.object({
           date:             z.string().optional(),
           time:             z.string().optional(),
-          location:         z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          location:         z.object({
+            address: z.string().optional(),
+            city: z.string().optional(),
+            country: z.string().optional(),
+            lat: z.number().optional(),
+            lng: z.number().optional(),
+            postalCode: z.string().optional(),
+            canton: z.string().optional(),
+          }).passthrough().optional(),
           description:      z.string().optional(),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
           witnesses:        z.string().optional(),
@@ -122,9 +176,19 @@ export const appRouter = router({
           policeRef:        z.string().optional(),
           injuries:         z.boolean().optional(),
           sketchImage:      z.string().optional(),
-          vehicleAPos:      z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          vehicleAPos:      z.object({
+            x: z.number().optional(),
+            y: z.number().optional(),
+            rotation: z.number().optional(),
+            direction: z.string().optional(),
+          }).passthrough().optional(),
           vehicleCount:     z.number().optional(),
-          partyBStatus:     z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+          partyBStatus:     z.object({
+            status: z.string().optional(),
+            reason: z.string().optional(),
+            description: z.string().optional(),
+            type: z.string().optional(),
+          }).passthrough().optional(),
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -135,17 +199,18 @@ export const appRouter = router({
         }),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token if provided
+        if (input.participantToken) {
+          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+          if (!valid) {
+            // Also try B token (either party can update accident)
+            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+            if (!validB) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
+          }
+        }
+
         const session = await updateAccident(input.sessionId, input.data as any);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
-
-        // Si vehicleCount fourni, mettre à jour la colonne DB dédiée
-        if (input.data.vehicleCount !== undefined) {
-          const { db, schema } = await import('../db/index.js');
-          const { eq } = await import('drizzle-orm');
-          await db.update(schema.sessions)
-            .set({ vehicleCount: input.data.vehicleCount } as any)
-            .where(eq(schema.sessions.id, input.sessionId));
-        }
 
         io.to(`session:${input.sessionId}`).emit('accident-updated', input.data);
         return { ok: true };
@@ -156,9 +221,15 @@ export const appRouter = router({
       .input(z.object({
         sessionId:       z.string(),
         role:            z.enum(['A', 'B', 'C', 'D', 'E']),
+        participantToken: z.string().optional(),
         signatureBase64: z.string().min(100).max(10_000_000),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token if provided
+        if (input.participantToken) {
+          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
+          if (!valid) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
+        }
         const result = await signSession(input.sessionId, input.role, input.signatureBase64);
         if (!result) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 

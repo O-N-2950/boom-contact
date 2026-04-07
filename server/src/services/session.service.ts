@@ -12,7 +12,7 @@ function makeId(size = 12): string {
   return randomBytes(size).toString('base64url').slice(0, size);
 }
 
-function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession {
+function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession & { tokenA?: string; tokenB?: string } {
   return {
     id:           row.id,
     status:       row.status as ConstatSession['status'],
@@ -26,16 +26,22 @@ function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession 
     participantE: (row as any).participantE ?? undefined,
     vehicleCount: (row as any).vehicleCount ?? 2,
     pdfUrl:       row.pdfUrl ?? undefined,
+    tokenA:       (row as any).tokenA ?? undefined,
+    tokenB:       (row as any).tokenB ?? undefined,
   };
 }
 
 // ─────────────────────────────────────────────────────────────
 // CREATE — Driver A starts a constat
 // ─────────────────────────────────────────────────────────────
-export async function createSession(): Promise<ConstatSession> {
+export async function createSession(): Promise<ConstatSession & { tokenA: string; tokenB: string }> {
   const id = makeId(12);
   const now = new Date();
   const expiresAt = new Date(now.getTime() + SESSION_TTL_HOURS * 60 * 60 * 1000);
+
+  // Generate participant tokens for secure access (QR flow — both drivers may be unauthenticated)
+  const tokenA = randomBytes(32).toString('base64url');
+  const tokenB = randomBytes(32).toString('base64url');
 
   const [row] = await db.insert(schema.sessions).values({
     id,
@@ -48,10 +54,29 @@ export async function createSession(): Promise<ConstatSession> {
       insurance: {}, damagedZones: [], circumstances: [], language: 'fr',
     },
     participantB: null,
-  }).returning();
+    tokenA,
+    tokenB,
+  } as any).returning();
 
   logger.session('created', id);
-  return rowToSession(row);
+  return { ...rowToSession(row), tokenA, tokenB };
+}
+
+// Verify participant token for a session+role
+export async function verifyParticipantToken(sessionId: string, token: string, role: string): Promise<boolean> {
+  const [row] = await db
+    .select()
+    .from(schema.sessions)
+    .where(eq(schema.sessions.id, sessionId))
+    .limit(1);
+
+  if (!row) return false;
+  const r = row as any;
+  if (role === 'A' && r.tokenA === token) return true;
+  if (role === 'B' && r.tokenB === token) return true;
+  // Roles C/D/E can use tokenB (they're additional participants like B)
+  if (['C', 'D', 'E'].includes(role) && r.tokenB === token) return true;
+  return false;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -139,22 +164,32 @@ export async function updateAccident(
   id: string,
   data: Partial<AccidentData> & { vehicleCount?: number },
 ): Promise<ConstatSession | null> {
-  const session = await getSession(id);
-  if (!session) return null;
+  // Wrap in transaction to prevent race conditions (concurrent updates from both drivers)
+  return db.transaction(async (tx) => {
+    const [currentRow] = await tx
+      .select()
+      .from(schema.sessions)
+      .where(eq(schema.sessions.id, id))
+      .limit(1);
 
-  // vehicleCount is a top-level column — must be updated separately from accident JSONB
-  const { vehicleCount, ...accidentData } = data as any;
-  const updatePayload: any = { accident: { ...session.accident, ...accidentData } };
-  if (vehicleCount !== undefined) {
-    updatePayload.vehicleCount = vehicleCount;
-  }
+    if (!currentRow) return null;
 
-  const [row] = await db.update(schema.sessions)
-    .set(updatePayload)
-    .where(eq(schema.sessions.id, id))
-    .returning();
+    const currentSession = rowToSession(currentRow);
 
-  return rowToSession(row);
+    // vehicleCount is a top-level column — must be updated separately from accident JSONB
+    const { vehicleCount, ...accidentData } = data as any;
+    const updatePayload: Record<string, unknown> = { accident: { ...currentSession.accident, ...accidentData } };
+    if (vehicleCount !== undefined) {
+      updatePayload.vehicleCount = vehicleCount;
+    }
+
+    const [row] = await tx.update(schema.sessions)
+      .set(updatePayload)
+      .where(eq(schema.sessions.id, id))
+      .returning();
+
+    return rowToSession(row);
+  });
 }
 
 // ─────────────────────────────────────────────────────────────

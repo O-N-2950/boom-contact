@@ -167,6 +167,11 @@ export const authRouter = router({
       const { db } = await import('../db/index.js');
       const { users } = await import('../db/schema.js');
       const { eq } = await import('drizzle-orm');
+
+      // Check if an admin already exists — disable endpoint after first setup
+      const existingAdmin = await db.query.users.findFirst({ where: eq(users.role, 'admin') });
+      if (existingAdmin) throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin already exists. Bootstrap is disabled.' });
+
       const hash = await hashPassword(input.password);
       await db.update(users).set({ passwordHash: hash, role: 'admin', credits: 999999 }).where(eq(users.email, 'contact@boom.contact'));
       return { ok: true };
