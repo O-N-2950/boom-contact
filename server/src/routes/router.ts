@@ -38,9 +38,23 @@ const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
   || 'https://boom-contact-production.up.railway.app';
 
+/**
+ * Main tRPC Router (1237 lines)
+ *
+ * Structure:
+ *   - session (lines ~44-300): Session lifecycle, participants, updates, PDFs
+ *   - ocr (lines ~302-370): Document scanning (registration, green card, license)
+ *   - voice (lines ~372-410): Audio transcription & accident analysis
+ *   - auth (lines ~412-500): User authentication, profiles, account management
+ *   - vehicle (lines ~502-560): User garage / vehicle management
+ *   - stripe (lines ~562-680): Billing, packages, checkout, consent
+ *   - police (lines ~682-760): Police dashboard, annotations, infractions
+ *   - social (lines ~762-810): Social media post generation
+ *   - admin (lines ~812-end): Admin dashboards, analytics
+ */
 export const appRouter = router({
 
-  // ── SESSION ──────────────────────────────────────────────
+  // ── SESSION (lines 44-300) ────────────────────────────────
   session: router({
 
     // Driver A creates session → gets QR code URL
@@ -56,7 +70,7 @@ export const appRouter = router({
       .input(z.object({ sessionId: z.string() }))
       .query(async ({ input }) => {
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session not found or expired');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found or expired' });
         return session;
       }),
 
@@ -65,7 +79,7 @@ export const appRouter = router({
       .input(z.object({ sessionId: z.string(), language: z.string().default('fr') }))
       .mutation(async ({ input }) => {
         const session = await joinSession(input.sessionId, input.language);
-        if (!session) throw new Error('Session not found, expired or already completed');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found, expired or already completed' });
 
         // Notify driver A via WebSocket
         io.to(`session:${input.sessionId}`).emit('participant-joined', { role: 'B' });
@@ -88,7 +102,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const session = await updateParticipant(input.sessionId, input.role, input.data as any);
-        if (!session) throw new Error('Session not found');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         // Sync to other party via WebSocket
         io.to(`session:${input.sessionId}`).emit('data-updated', {
@@ -127,7 +141,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const session = await updateAccident(input.sessionId, input.data as any);
-        if (!session) throw new Error('Session not found');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         // Si vehicleCount fourni, mettre à jour la colonne DB dédiée
         if (input.data.vehicleCount !== undefined) {
@@ -147,11 +161,11 @@ export const appRouter = router({
       .input(z.object({
         sessionId:       z.string(),
         role:            z.enum(['A', 'B', 'C', 'D', 'E']),
-        signatureBase64: z.string().min(100),
+        signatureBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
       }))
       .mutation(async ({ input }) => {
         const result = await signSession(input.sessionId, input.role, input.signatureBase64);
-        if (!result) throw new Error('Session not found');
+        if (!result) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         const { session, bothSigned } = result;
         io.to(`session:${input.sessionId}`).emit('signed', { role: input.role, bothSigned });
@@ -272,7 +286,7 @@ export const appRouter = router({
   ocr: router({
     scan: publicProcedure
       .input(z.object({
-        imageBase64:  z.string().min(100),
+        imageBase64:  z.string().min(100).max(10_000_000), // ~7.5MB max
         mediaType:    z.enum(['image/jpeg','image/png','image/webp']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().optional(),
@@ -287,7 +301,7 @@ export const appRouter = router({
     // Scan multi-documents — analyse N photos en parallèle, retourne N résultats
     batchScan: publicProcedure
       .input(z.object({
-        images: z.array(z.string().min(100)).min(1).max(4),
+        images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
       }))
       .mutation(async ({ input }) => {
         const results = await Promise.all(
@@ -300,8 +314,8 @@ export const appRouter = router({
 
     scanPair: publicProcedure
       .input(z.object({
-        registrationBase64: z.string().min(100),
-        greenCardBase64:    z.string().min(100),
+        registrationBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
+        greenCardBase64:    z.string().min(100).max(10_000_000),
       }))
       .mutation(async ({ input }) =>
         scanDocumentPair(input.registrationBase64, input.greenCardBase64)
@@ -317,7 +331,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session not found');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         // Conditions pour générer le PDF :
         // 1. Session completed (deux signatures) — cas normal
@@ -339,7 +353,7 @@ export const appRouter = router({
           session.status === 'completed' ||
           (session.status === 'signing' && aHasSigned && (hasPartyBStatus || isSolo || bIsNonSigning));
 
-        if (!canGenerate) throw new Error('Both parties must sign before generating PDF');
+        if (!canGenerate) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Both parties must sign before generating PDF' });
 
         const role = (input.role === 'A' || input.role === 'B') ? input.role : 'A';
         const pdfBytes = await generateConstatPDF(session, role);
@@ -360,7 +374,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session not found');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         const roleMap: Record<string, any> = {
           A: session.participantA, B: session.participantB,
@@ -383,7 +397,7 @@ export const appRouter = router({
           language:     lang,
         });
 
-        if (!result.ok) throw new Error(result.error || 'Email send failed');
+        if (!result.ok) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: result.error || 'Email send failed' });
         return { ok: true, messageId: result.messageId };
       }),
 
@@ -470,7 +484,7 @@ export const appRouter = router({
       .input(z.object({ email: z.string().email(), sessionId: z.string() }))
       .mutation(async ({ input }) => {
         const ok = await useCredit(input.email, input.sessionId);
-        if (!ok) throw new Error('Crédits insuffisants');
+        if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
         return { ok: true };
       }),
   }),
@@ -530,7 +544,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const payload = verifyPoliceToken(input.token);
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session introuvable ou expirée');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
         return {
           session,
           policeAgent: { stationId: payload.stationId, canton: payload.canton }
@@ -543,7 +557,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const payload = verifyPoliceToken(input.token);
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session introuvable ou expirée');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
         await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, (payload as any).country || 'CH');
         return { session, policeAgent: payload };
       }),
@@ -581,7 +595,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const payload = verifyPoliceToken(input.token);
         const session = await getSession(input.sessionId);
-        if (!session) throw new Error('Session introuvable');
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
         const annotation = await getAnnotation(input.sessionId, payload.stationId);
         const { db } = await import('../db/index.js');
         const { policeUsers, policeStations } = await import('../db/schema.js');
@@ -610,7 +624,7 @@ export const appRouter = router({
 
     transcribe: publicProcedure
       .input(z.object({
-        audioBase64: z.string().min(100),
+        audioBase64: z.string().min(100).max(10_000_000), // ~7.5MB max
         mimeType:    z.string().default('audio/webm'),
         lang:        z.string().optional(), // hint langue pour Whisper
         sessionId:   z.string(),
@@ -690,7 +704,7 @@ export const appRouter = router({
           const result = await registerUser(input.email, input.password);
           return { ok: true, ...result };
         } catch (err: any) {
-          if (err.message === 'EMAIL_EXISTS') throw new Error('Cet email est déjà utilisé.');
+          if (err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
           throw err;
         }
       }),
@@ -703,7 +717,7 @@ export const appRouter = router({
           const result = await loginWithPassword(input.email, input.password);
           return result;
         }
-        catch (err) { logger.warn('auth.login failed', { error: String(err) }); throw new Error('Email ou mot de passe incorrect.'); }
+        catch (err) { logger.warn('auth.login failed', { error: String(err) }); throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Email ou mot de passe incorrect.' }); }
       }),
 
     // POST auth.magicLinkRequest
@@ -721,7 +735,7 @@ export const appRouter = router({
       .input(z.object({ token: z.string() }))
       .mutation(async ({ input }) => {
         const result = await verifyMagicToken(input.token);
-        if (!result) throw new Error('Lien invalide ou expiré.');
+        if (!result) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Lien invalide ou expiré.' });
         return { ok: true, ...result };
       }),
 
@@ -775,13 +789,13 @@ export const appRouter = router({
         const { eq } = await import('drizzle-orm');
         const { verifyPassword } = await import('../services/auth.service.js');
         const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
-        if (!user) throw new Error('Utilisateur introuvable.');
+        if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable.' });
         // Vérifier le mot de passe actuel
         const valid = user.passwordHash && await verifyPassword(input.currentPassword, user.passwordHash);
-        if (!valid) throw new Error('Mot de passe incorrect.');
+        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Mot de passe incorrect.' });
         // Vérifier que le nouvel email n'est pas déjà utilisé
         const existing = await db.query.users.findFirst({ where: eq(users.email, input.newEmail) });
-        if (existing) throw new Error('Cet email est déjà utilisé.');
+        if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
         await db.update(users).set({ email: input.newEmail }).where(eq(users.id, ctx.authUser.sub));
         return { ok: true };
       }),
@@ -797,7 +811,7 @@ export const appRouter = router({
         const userEmail = ctx.authUser.email;
 
         // Bloquer suppression du compte admin
-        if (ctx.authUser.role === 'admin') throw new Error('Impossible de supprimer un compte admin.');
+        if (ctx.authUser.role === 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer un compte admin.' });
 
         // Supprimer dans l'ordre : tokens → véhicules → user
         await db.delete(magicTokens).where(eq(magicTokens.email, userEmail));
@@ -838,7 +852,7 @@ export const appRouter = router({
     .input(z.object({ secret: z.string(), password: z.string().min(6) }))
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
-      if (!expected || input.secret !== expected) throw new Error('Invalid secret.');
+      if (!expected || input.secret !== expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
       const { hashPassword } = await import('../services/auth.service.js');
       const { db } = await import('../db/index.js');
       const { users } = await import('../db/schema.js');
@@ -1075,11 +1089,11 @@ export const appRouter = router({
       const { eq } = await import('drizzle-orm');
 
       // Ne pas supprimer le compte admin
-      if (input.email === 'contact@boom.contact') throw new Error('Impossible de supprimer le compte admin principal.');
+      if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
 
       const emailLower = input.email.toLowerCase();
       const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
-      if (!user) throw new Error('Utilisateur introuvable: ' + input.email);
+      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
 
       await db.delete(magicTokens).where(eq(magicTokens.email, emailLower));
       await db.delete(vehicles).where(eq(vehicles.userId, user.id));
@@ -1103,7 +1117,7 @@ export const appRouter = router({
       const { eq } = await import('drizzle-orm');
       const emailLower = input.email.toLowerCase();
       const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
-      if (!user) throw new Error('Utilisateur introuvable: ' + input.email);
+      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
       await db.update(users).set({ credits: input.credits }).where(eq(users.id, user.id));
       return { ok: true, email: emailLower, credits: input.credits };
     }),

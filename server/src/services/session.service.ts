@@ -6,6 +6,8 @@ import type { ConstatSession, ParticipantData, AccidentData } from '../../../sha
 
 const SESSION_TTL_HOURS = 24 * 7; // 7 jours — permet de reprendre un constat après blessure
 
+// makeId uses crypto.randomBytes (cryptographically secure PRNG) to generate session IDs.
+// This ensures session IDs are unpredictable and cannot be enumerated by attackers.
 function makeId(size = 12): string {
   return randomBytes(size).toString('base64url').slice(0, size);
 }
@@ -107,19 +109,27 @@ export async function updateParticipant(
   role: 'A' | 'B',
   data: Partial<ParticipantData>,
 ): Promise<ConstatSession | null> {
-  const session = await getSession(id);
-  if (!session) return null;
+  // Wrap in transaction to prevent race conditions (concurrent updates from both drivers)
+  return db.transaction(async (tx) => {
+    const [currentRow] = await tx
+      .select()
+      .from(schema.sessions)
+      .where(eq(schema.sessions.id, id))
+      .limit(1);
 
-  const key = role === 'A' ? 'participantA' : 'participantB';
-  const current = role === 'A' ? session.participantA : (session.participantB ?? {});
-  const merged = { ...current, ...data };
+    if (!currentRow) return null;
 
-  const [row] = await db.update(schema.sessions)
-    .set({ [key]: merged })
-    .where(eq(schema.sessions.id, id))
-    .returning();
+    const key = role === 'A' ? 'participantA' : 'participantB';
+    const current = role === 'A' ? (currentRow.participantA as any) ?? {} : (currentRow.participantB as any) ?? {};
+    const merged = { ...current, ...data };
 
-  return rowToSession(row);
+    const [row] = await tx.update(schema.sessions)
+      .set({ [key]: merged })
+      .where(eq(schema.sessions.id, id))
+      .returning();
+
+    return rowToSession(row);
+  });
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -155,8 +165,16 @@ export async function signSession(
   role: string,
   signatureBase64: string,
 ): Promise<{ session: ConstatSession; bothSigned: boolean } | null> {
-  const session = await getSession(id);
-  if (!session) return null;
+  // Wrap in transaction to prevent race condition when both drivers sign simultaneously
+  return db.transaction(async (tx) => {
+  const [sessionRow] = await tx
+    .select()
+    .from(schema.sessions)
+    .where(eq(schema.sessions.id, id))
+    .limit(1);
+
+  if (!sessionRow) return null;
+  const session = rowToSession(sessionRow);
 
   // Map role to DB column
   const keyMap: Record<string, string> = {
@@ -223,13 +241,14 @@ export async function signSession(
 
   const newStatus = allSigned ? 'completed' : 'signing';
 
-  const [row] = await db.update(schema.sessions)
+  const [row] = await tx.update(schema.sessions)
     .set({ [key]: updated, status: newStatus } as any)
     .where(eq(schema.sessions.id, id))
     .returning();
 
   logger.session(allSigned ? 'completed' : `signed-${role}`, id, role);
   return { session: rowToSession(row), bothSigned: allSigned };
+  }); // end transaction
 }
 
 // ─────────────────────────────────────────────────────────────

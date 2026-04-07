@@ -186,29 +186,32 @@ export async function createGiftLink(credits: number, grantedByEmail: string): P
 }
 
 export async function claimGiftLink(token: string, claimerEmail: string): Promise<{ credits: number }> {
-  const record = await db.query.magicTokens.findFirst({
-    where: and(
-      eq(magicTokens.token, token),
-      eq(magicTokens.type, 'gift'),
-      isNull(magicTokens.usedAt),
-      gt(magicTokens.expiresAt, new Date())
-    ),
+  // Wrap in transaction to prevent double-claiming race condition
+  return db.transaction(async (tx) => {
+    const record = await tx.query.magicTokens.findFirst({
+      where: and(
+        eq(magicTokens.token, token),
+        eq(magicTokens.type, 'gift'),
+        isNull(magicTokens.usedAt),
+        gt(magicTokens.expiresAt, new Date())
+      ),
+    });
+    if (!record || !record.giftCredits) throw new Error('GIFT_INVALID');
+
+    await tx.update(magicTokens).set({ usedAt: new Date() }).where(eq(magicTokens.id, record.id));
+
+    // Upsert recipient
+    let user = await tx.query.users.findFirst({ where: eq(users.email, claimerEmail) });
+    if (!user) {
+      const id = nanoid();
+      await tx.insert(users).values({ id, email: claimerEmail, role: 'customer', credits: record.giftCredits, consentCGU: true, consentCGUAt: new Date() });
+    } else {
+      await tx.update(users).set({ credits: (user.credits || 0) + record.giftCredits }).where(eq(users.id, user.id));
+    }
+
+    logger.info('Gift claimed', { email: claimerEmail, credits: record.giftCredits });
+    return { credits: record.giftCredits };
   });
-  if (!record || !record.giftCredits) throw new Error('GIFT_INVALID');
-
-  await db.update(magicTokens).set({ usedAt: new Date() }).where(eq(magicTokens.id, record.id));
-
-  // Upsert recipient
-  let user = await db.query.users.findFirst({ where: eq(users.email, claimerEmail) });
-  if (!user) {
-    const id = nanoid();
-    await db.insert(users).values({ id, email: claimerEmail, role: 'customer', credits: record.giftCredits, consentCGU: true, consentCGUAt: new Date() });
-  } else {
-    await db.update(users).set({ credits: (user.credits || 0) + record.giftCredits }).where(eq(users.id, user.id));
-  }
-
-  logger.info('Gift claimed', { email: claimerEmail, credits: record.giftCredits });
-  return { credits: record.giftCredits };
 }
 
 // ── Get user by JWT (from request header) ─────────────────────

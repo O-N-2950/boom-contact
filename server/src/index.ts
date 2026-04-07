@@ -40,8 +40,11 @@ export const io = new SocketServer(httpServer, {
 (async () => {
   try {
     const helmet = (await import('helmet')).default;
+    // CSRF: SPA uses Authorization header (not cookies) for JWT, so CSRF tokens are less critical.
+    // Helmet's default settings mitigate XSS, clickjacking, and other header-based attacks.
     app.use(helmet({
       crossOriginEmbedderPolicy: false,
+      xContentTypeOptions: true, // Prevent MIME sniffing by setting X-Content-Type-Options: nosniff
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
@@ -143,8 +146,16 @@ export const io = new SocketServer(httpServer, {
         res.status(429).json({ error: 'Trop de demandes de lien. Réessayez dans 1 heure.' });
       },
     }));
+    app.use('/trpc/police.login', rateLimit({
+      windowMs: 15 * 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit police.login', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' });
+      },
+    }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min)');
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min)');
   } catch (e) { logger.warn('Rate limit not available', { error: String(e) }); }
 })();
 
@@ -166,6 +177,10 @@ app.use(morgan((tokens, req, res) => {
   }
   return null; // Morgan handles writing itself when we return string, null = we handle it
 }));
+
+// ── Compression (gzip/brotli) ────────────────────────────────
+import compression from 'compression';
+app.use(compression());
 
 // ── Core middleware ───────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
