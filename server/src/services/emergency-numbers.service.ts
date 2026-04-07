@@ -101,6 +101,7 @@ Respond ONLY with a JSON object, no markdown:
 {"police":"number","ambulance":"number","fire":"number","universal":"112 or 911 or null","roadside":"number or null","roadsideNote":"org name or null","countryName":"full country name","confidence":"high/medium/low"}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
+      signal: AbortSignal.timeout(10000),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
