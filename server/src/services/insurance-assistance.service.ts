@@ -265,6 +265,7 @@ async function searchWithAI(insurerName: string, country?: string): Promise<Assi
     {"assistance": "number or null", "claims": "number or null", "website": "domain or null", "note": "short note or null", "confidence": "high/medium/low"}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
+      signal: AbortSignal.timeout(10000),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
