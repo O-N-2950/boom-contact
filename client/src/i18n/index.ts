@@ -67,8 +67,8 @@ async function loadLocale(lang: string): Promise<void> {
   try {
     const mod = await loader();
     i18n.addResourceBundle(lang, 'translation', mod.default, true, true);
-  } catch {
-    // Fallback to fr if locale fails to load
+  } catch (error) {
+    console.error(`i18n: failed to load locale '${lang}', falling back to fr`, error);
   }
 }
 

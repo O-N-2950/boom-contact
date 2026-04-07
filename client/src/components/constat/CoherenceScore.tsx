@@ -102,8 +102,8 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
 
         // AI coherence check runs via backend — no direct Anthropic call from frontend
         // Local rule-based analysis is sufficient for most cases
-      } catch {
-        // Keep local issues only
+      } catch (error) {
+        console.error('CoherenceScore: AI check failed, keeping local issues only', error);
       }
     }
 

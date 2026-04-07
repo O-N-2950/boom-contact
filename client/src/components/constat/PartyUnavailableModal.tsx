@@ -135,8 +135,8 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
       setPlatePhoto(b64);
       const plate = await ocrPlate(b64, file.type);
       if (plate !== 'ILLISIBLE') setPlateNumber(plate);
-    } catch {
-      // OCR failed — utilisateur saisit manuellement
+    } catch (error) {
+      console.error('PartyUnavailableModal: OCR plate read failed', error);
     } finally {
       setOcrLoading(false);
     }

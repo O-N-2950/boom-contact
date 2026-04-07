@@ -137,9 +137,9 @@ async function syncPendingSessions() {
           body: JSON.stringify(session.data)
         });
         await markSynced(db, session.id);
-      } catch { }
+      } catch (error) { console.error('SW: session sync failed', error); }
     }
-  } catch { }
+  } catch (error) { console.error('SW: syncPendingSessions failed', error); }
 }
 
 function openIndexedDB() {
