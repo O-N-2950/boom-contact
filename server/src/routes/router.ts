@@ -89,7 +89,7 @@ export const appRouter = router({
       .input(z.object({
         sessionId: z.string(),
         role: z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string().optional(),
+        participantToken: z.string(),
         data: z.object({
           vehicle: z.object({
             vehicleType: z.string().optional(),
@@ -104,7 +104,7 @@ export const appRouter = router({
             category: z.string().optional(),
             bodyStyle: z.string().optional(),
             type: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           driver: z.object({
             firstName: z.string().optional(),
             lastName: z.string().optional(),
@@ -117,7 +117,7 @@ export const appRouter = router({
             licenseNumber: z.string().optional(),
             licenseExpiry: z.string().optional(),
             name: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           insurance: z.object({
             company: z.string().optional(),
             policyNumber: z.string().optional(),
@@ -127,7 +127,7 @@ export const appRouter = router({
             address: z.string().optional(),
             greenCardNumber: z.string().optional(),
             greenCardExpiry: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           damagedZones: z.array(z.string()).optional(),
           circumstances: z.array(z.string()).optional(),
           language:     z.string().optional(),
@@ -137,11 +137,9 @@ export const appRouter = router({
         }),
       }))
       .mutation(async ({ input }) => {
-        // Verify participant token if provided (backwards compatible)
-        if (input.participantToken) {
-          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
-          if (!valid) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
-        }
+        // Verify participant token — REQUIRED
+        const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
+        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
 
         const session = await updateParticipant(input.sessionId, input.role, input.data as any);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
@@ -158,7 +156,7 @@ export const appRouter = router({
     updateAccident: publicProcedure
       .input(z.object({
         sessionId: z.string(),
-        participantToken: z.string().optional(),
+        participantToken: z.string(),
         data: z.object({
           date:             z.string().optional(),
           time:             z.string().optional(),
@@ -170,7 +168,7 @@ export const appRouter = router({
             lng: z.number().optional(),
             postalCode: z.string().optional(),
             canton: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           description:      z.string().optional(),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
           witnesses:        z.string().optional(),
@@ -183,14 +181,14 @@ export const appRouter = router({
             y: z.number().optional(),
             rotation: z.number().optional(),
             direction: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           vehicleCount:     z.number().optional(),
           partyBStatus:     z.object({
             status: z.string().optional(),
             reason: z.string().optional(),
             description: z.string().optional(),
             type: z.string().optional(),
-          }).passthrough().optional(),
+          }).catchall(z.unknown()).optional(),
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -201,14 +199,11 @@ export const appRouter = router({
         }),
       }))
       .mutation(async ({ input }) => {
-        // Verify participant token if provided
-        if (input.participantToken) {
-          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-          if (!valid) {
-            // Also try B token (either party can update accident)
-            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-            if (!validB) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
-          }
+        // Verify participant token — REQUIRED (either party can update accident)
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
         }
 
         const session = await updateAccident(input.sessionId, input.data as any);
@@ -223,15 +218,14 @@ export const appRouter = router({
       .input(z.object({
         sessionId:       z.string(),
         role:            z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string().optional(),
+        participantToken: z.string(),
         signatureBase64: z.string().min(100).max(10_000_000),
       }))
       .mutation(async ({ input }) => {
-        // Verify participant token if provided
-        if (input.participantToken) {
-          const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
-          if (!valid) throw new TRPCError({ code: 'FORBIDDEN', message: 'Invalid participant token' });
-        }
+        // Verify participant token — REQUIRED
+        const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
+        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
+
         const result = await signSession(input.sessionId, input.role, input.signatureBase64);
         if (!result) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 

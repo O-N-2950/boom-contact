@@ -226,7 +226,7 @@ app.use(compression({
 // ── Core middleware ───────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
 // ── Redirection apex → www ───────────────────────────────────
@@ -439,6 +439,9 @@ io.use((socket, next) => {
   next();
 });
 
+// ── Throttle map for socket update-data (300ms per session) ───
+const updateThrottles = new Map<string, { timer: ReturnType<typeof setTimeout>; latestData: unknown; latestRole: string }>();
+
 io.on('connection', (socket) => {
   logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
@@ -464,8 +467,51 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('update-data', ({ sessionId, role, data }: { sessionId: string; role: 'A' | 'B'; data: unknown }) => {
-    socket.to(`session:${sessionId}`).emit('data-updated', { role, data });
+  socket.on('update-data', async ({ sessionId, role, data }: { sessionId: string; role: 'A' | 'B'; data: unknown }) => {
+    // Validate sessionId exists before broadcasting
+    if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
+      socket.emit('error', { message: 'Invalid session ID' });
+      return;
+    }
+
+    // Throttle: batch rapid updates (300ms debounce per session)
+    const key = `${socket.id}:${sessionId}`;
+    const existing = updateThrottles.get(key);
+    if (existing) {
+      clearTimeout(existing.timer);
+      existing.latestData = data;
+      existing.latestRole = role;
+      existing.timer = setTimeout(async () => {
+        updateThrottles.delete(key);
+        try {
+          const { getSession } = await import('./services/session.service.js');
+          const session = await getSession(sessionId);
+          if (!session || session.status === 'expired') return;
+          socket.to(`session:${sessionId}`).emit('data-updated', { role: existing.latestRole, data: existing.latestData });
+        } catch (e) {
+          logger.error('Socket update-data validation error', { error: String(e) });
+        }
+      }, 300);
+    } else {
+      // First emission: validate and send immediately, then set up throttle
+      try {
+        const { getSession } = await import('./services/session.service.js');
+        const session = await getSession(sessionId);
+        if (!session || session.status === 'expired') {
+          socket.emit('error', { message: 'Session not found or expired' });
+          return;
+        }
+        socket.to(`session:${sessionId}`).emit('data-updated', { role, data });
+        updateThrottles.set(key, {
+          latestData: data,
+          latestRole: role,
+          timer: setTimeout(() => updateThrottles.delete(key), 300),
+        });
+      } catch (e) {
+        logger.error('Socket update-data validation error', { error: String(e) });
+        socket.emit('error', { message: 'Failed to validate session' });
+      }
+    }
   });
 
   socket.on('signing-ready', ({ sessionId, role }: { sessionId: string; role: 'A' | 'B' }) => {

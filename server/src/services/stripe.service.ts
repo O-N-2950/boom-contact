@@ -211,7 +211,7 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
         currency: (session.currency || 'eur').toUpperCase(),
         stripeSessionId: session.id,
       });
-    } catch {}
+    } catch (e) { logger.warn('Analytics tracking failed', { error: String(e) }); }
 
     // Idempotency check — skip if already processed
     const [existingPayment] = await db.select()
@@ -223,31 +223,33 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
       return;
     }
 
-    // Marquer paiement comme complété
-    await db.update(schema.payments)
-      .set({ status: 'paid', paidAt: new Date() })
-      .where(eq(schema.payments.stripeSessionId, session.id));
+    // Atomic transaction: update payment status + credit user together
+    await db.transaction(async (tx) => {
+      // Marquer paiement comme complété
+      await tx.update(schema.payments)
+        .set({ status: 'paid', paidAt: new Date() })
+        .where(eq(schema.payments.stripeSessionId, session.id));
 
-    // Créditer l'utilisateur
-    const [user] = await db.select().from(schema.users).where(eq(schema.users.email, userEmail)).limit(1);
-    if (user) {
-      await db.update(schema.users)
-        .set({ credits: user.credits + creditsInt })
-        .where(eq(schema.users.email, userEmail));
-    } else {
-      await upsertUser(userEmail);
-      await db.update(schema.users)
-        .set({ credits: creditsInt })
-        .where(eq(schema.users.email, userEmail));
-    }
+      // Créditer l'utilisateur
+      const [user] = await tx.select().from(schema.users).where(eq(schema.users.email, userEmail)).limit(1);
+      if (user) {
+        await tx.update(schema.users)
+          .set({ credits: user.credits + creditsInt })
+          .where(eq(schema.users.email, userEmail));
+      } else {
+        // Create user inside transaction
+        const id = makeId();
+        await tx.insert(schema.users).values({ id, email: userEmail, credits: creditsInt });
+      }
 
-    // Enregistrer la transaction
-    await db.insert(schema.creditTxns).values({
-      id: makeId(),
-      userEmail,
-      delta: creditsInt,
-      reason: 'purchase',
-      ref: session.id,
+      // Enregistrer la transaction
+      await tx.insert(schema.creditTxns).values({
+        id: makeId(),
+        userEmail,
+        delta: creditsInt,
+        reason: 'purchase',
+        ref: session.id,
+      });
     });
 
     logger.payment('credits-granted', userEmail, packageId, creditsInt);
