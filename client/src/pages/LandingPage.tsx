@@ -176,7 +176,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         {/* NAV */}
         <nav style={{ padding: isDesktop ? '20px 48px' : '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10, maxWidth: isDesktop ? 1200 : 'none', margin: isDesktop ? '0 auto' : undefined, width: '100%', boxSizing: 'border-box' as const }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <img src="/logo.png" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
+            <img src="/logo.webp" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
             {isDesktop && (
               <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22, letterSpacing: '-0.5px' }}>
                 <span style={{ color: 'var(--boom)' }}>boom</span>
@@ -558,7 +558,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '80px 48px' : '44px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <img src="/logo.png" alt="boom.contact" loading="lazy" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
           <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 40 : 28, marginBottom: 10 }}>{t('landing.finalCta.title')}</h2>
           <p style={{ fontSize: 14, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 400, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
           <button onClick={onStart} style={{ padding: '18px 44px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
@@ -573,7 +573,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: isDesktop ? 0 : 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src="/logo.png" alt="boom.contact" loading="lazy" style={{ height: 36, objectFit: 'contain' }} />
+              <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ height: 36, objectFit: 'contain' }} />
               {isDesktop && (
                 <div>
                   <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.7 }}>boom.contact</div>

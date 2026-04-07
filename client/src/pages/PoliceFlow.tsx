@@ -595,7 +595,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       {/* Header institutionnel */}
       <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src="/logo.png" alt="boom.contact" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
+          <img src="/logo.webp" alt="boom.contact" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: '#e8eaf0' }}>Module Police</div>
             <div style={{ fontSize: 10, opacity: 0.5, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>

@@ -381,7 +381,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)',
         display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div style={{ width: 36, height: 36, flexShrink: 0 }}>
-          <img src="/logo.png" alt="boom.contact" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          <img src="/logo.webp" alt="boom.contact" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
