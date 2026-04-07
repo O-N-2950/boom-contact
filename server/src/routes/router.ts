@@ -25,6 +25,14 @@ const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
+// ── Protected procedure — requires valid JWT ──────────────────
+import { TRPCError } from '@trpc/server';
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.authUser) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Connexion requise.' });
+  }
+  return next({ ctx: { ...ctx, authUser: ctx.authUser } });
+});
 
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
@@ -246,9 +254,8 @@ export const appRouter = router({
       }),
 
     // GET session.history — sessions where owner_email = logged-in user
-    history: publicProcedure
+    history: protectedProcedure
       .query(async ({ ctx }) => {
-        if (!ctx.authUser) return [];
         const { db } = await import('../db/index.js');
         const { sessions } = await import('../db/schema.js');
         const { eq, desc } = await import('drizzle-orm');
@@ -451,11 +458,10 @@ export const appRouter = router({
         return { packages: grid, currencies: SUPPORTED_CURRENCIES, countryMap: COUNTRY_TO_CURRENCY };
       }),
 
-    // Vérifier le solde de crédits
-    credits: publicProcedure
-      .input(z.object({ email: z.string().email() }))
-      .query(async ({ input }) => {
-        const credits = await getUserCredits(input.email);
+    // Vérifier le solde de crédits (auth requise)
+    credits: protectedProcedure
+      .query(async ({ ctx }) => {
+        const credits = await getUserCredits(ctx.authUser.email);
         return { credits };
       }),
 
@@ -719,7 +725,7 @@ export const appRouter = router({
         return { ok: true, ...result };
       }),
 
-    // GET auth.me
+    // GET auth.me — returns null for unauthenticated, data for authenticated
     me: publicProcedure
       .query(async ({ ctx }) => {
         if (!ctx.authUser) return null;
@@ -735,7 +741,7 @@ export const appRouter = router({
       }),
 
     // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
-    updateProfile: publicProcedure
+    updateProfile: protectedProcedure
       .input(z.object({
         firstName: z.string().optional(),
         lastName:  z.string().optional(),
@@ -744,7 +750,6 @@ export const appRouter = router({
         address:   z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
-        if (!ctx.authUser) throw new Error('Connexion requise.');
         const { db } = await import('../db/index.js');
         const { users } = await import('../db/schema.js');
         const { eq } = await import('drizzle-orm');
@@ -759,13 +764,12 @@ export const appRouter = router({
       }),
 
     // POST auth.updateEmail — changer son adresse email
-    updateEmail: publicProcedure
+    updateEmail: protectedProcedure
       .input(z.object({
         newEmail:    z.string().email(),
         currentPassword: z.string().min(1),
       }))
       .mutation(async ({ ctx, input }) => {
-        if (!ctx.authUser) throw new Error('Connexion requise.');
         const { db } = await import('../db/index.js');
         const { users } = await import('../db/schema.js');
         const { eq } = await import('drizzle-orm');
@@ -783,10 +787,9 @@ export const appRouter = router({
       }),
 
     // POST auth.deleteAccount — suppression définitive compte + données
-    deleteAccount: publicProcedure
+    deleteAccount: protectedProcedure
       .input(z.object({}))
       .mutation(async ({ ctx }) => {
-        if (!ctx.authUser) throw new Error('Connexion requise.');
         const { db } = await import('../db/index.js');
         const { users, vehicles, magicTokens } = await import('../db/schema.js');
         const { eq } = await import('drizzle-orm');
@@ -806,14 +809,14 @@ export const appRouter = router({
       }),
 
     // POST auth.grantCredits — admin only
-    grantCredits: publicProcedure
+    grantCredits: protectedProcedure
       .input(z.object({
         credits: z.number().min(1).max(999999),
         recipientEmail: z.string().email().optional(),
         sendEmail: z.boolean().default(false),
       }))
       .mutation(async ({ ctx, input }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         const token = await createGiftLink(input.credits, ctx.authUser.email);
         const giftUrl = `${CLIENT_URL}/?gift=${token}`;
         if (input.sendEmail && input.recipientEmail) {
@@ -859,15 +862,14 @@ export const appRouter = router({
   vehicle: router({
 
     // GET vehicle.list
-    list: publicProcedure
+    list: protectedProcedure
       .query(async ({ ctx }) => {
-        if (!ctx.authUser) return [];
         const { listVehicles } = await import('../services/vehicle.service.js');
         return listVehicles(ctx.authUser.sub);
       }),
 
     // POST vehicle.save — create or update
-    save: publicProcedure
+    save: protectedProcedure
       .input(z.object({
         id:           z.string().optional(),
         nickname:     z.string().optional(),
@@ -881,16 +883,14 @@ export const appRouter = router({
         insuranceData:z.record(z.string(), z.any()).optional(),
       }))
       .mutation(async ({ ctx, input }) => {
-        if (!ctx.authUser) throw new Error('Connexion requise.');
         const { saveVehicle } = await import('../services/vehicle.service.js');
         return saveVehicle(ctx.authUser.sub, input);
       }),
 
     // POST vehicle.delete
-    delete: publicProcedure
+    delete: protectedProcedure
       .input(z.object({ id: z.string() }))
       .mutation(async ({ ctx, input }) => {
-        if (!ctx.authUser) throw new Error('Connexion requise.');
         const { deleteVehicle } = await import('../services/vehicle.service.js');
         return deleteVehicle(ctx.authUser.sub, input.id);
       }),
@@ -902,9 +902,9 @@ export const appRouter = router({
   admin: router({
 
     // GET admin.stats — full dashboard data, admin only
-    stats: publicProcedure
+    stats: protectedProcedure
       .query(async ({ ctx }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
 
         const { db } = await import('../db/index.js');
         const { sessions, users, payments, creditTxns } = await import('../db/schema.js');
@@ -998,10 +998,10 @@ export const appRouter = router({
       }),
 
     // GET admin.users — paginated user list
-    users: publicProcedure
+    users: protectedProcedure
       .input(z.object({ limit: z.number().default(50) }))
       .query(async ({ ctx, input }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         const { db } = await import('../db/index.js');
         const { users } = await import('../db/schema.js');
         const { desc } = await import('drizzle-orm');
@@ -1066,10 +1066,10 @@ export const appRouter = router({
 
   // ── ADMIN MAINTENANCE ──────────────────────────────────────────
   // POST admin.deleteUser — supprimer un compte utilisateur par email (admin only)
-  adminDeleteUser: publicProcedure
+  adminDeleteUser: protectedProcedure
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { users, vehicles, magicTokens } = await import('../db/schema.js');
       const { eq } = await import('drizzle-orm');
@@ -1091,13 +1091,13 @@ export const appRouter = router({
 
   // GET admin.listUsers — lister tous les utilisateurs
   // POST admin.setCredits — créditer directement un compte (admin only)
-  adminSetCredits: publicProcedure
+  adminSetCredits: protectedProcedure
     .input(z.object({
       email: z.string().email(),
       credits: z.number().min(0).max(999999),
     }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { users } = await import('../db/schema.js');
       const { eq } = await import('drizzle-orm');
@@ -1108,9 +1108,9 @@ export const appRouter = router({
       return { ok: true, email: emailLower, credits: input.credits };
     }),
 
-  adminListUsers: publicProcedure
+  adminListUsers: protectedProcedure
     .query(async ({ ctx }) => {
-      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { users } = await import('../db/schema.js');
       const all = await db.select({
@@ -1123,9 +1123,9 @@ export const appRouter = router({
       return all;
     }),
 
-  adminCleanupSessions: publicProcedure
+  adminCleanupSessions: protectedProcedure
     .mutation(async ({ ctx }) => {
-      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { sessions } = await import('../db/schema.js');
       const { eq } = await import('drizzle-orm');
@@ -1150,9 +1150,9 @@ export const appRouter = router({
       return { fixed, total: signing.length };
     }),
 
-  adminFixOwnerEmails: publicProcedure
+  adminFixOwnerEmails: protectedProcedure
     .mutation(async ({ ctx }) => {
-      if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('Admin requis.');
+      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { sessions } = await import('../db/schema.js');
       const { eq, isNull, and } = await import('drizzle-orm');
@@ -1174,10 +1174,10 @@ export const appRouter = router({
   // ── MARKETING ───────────────────────────────────────────────
   marketing: router({
 
-    posts: publicProcedure
+    posts: protectedProcedure
       .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
       .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         const { db } = await import('../db/index.js');
         const { socialPosts: sp } = await import('../db/schema.js');
         const { eq, and } = await import('drizzle-orm');
@@ -1190,34 +1190,34 @@ export const appRouter = router({
         return { posts: posts.map((p: any) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
       }),
 
-    generate: publicProcedure
+    generate: protectedProcedure
       .input(z.object({ count: z.number().min(1).max(8).default(4) }))
       .mutation(async ({ ctx }: { ctx: Context }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         const generated = await generateDailyPosts(4);
         return { generated };
       }),
 
-    approve: publicProcedure
+    approve: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         await approvePost(input.id);
         return { ok: true };
       }),
 
-    markPosted: publicProcedure
+    markPosted: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         await markPosted(input.id);
         return { ok: true };
       }),
 
-    archive: publicProcedure
+    archive: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-        if (!ctx.authUser || ctx.authUser.role !== 'admin') throw new Error('UNAUTHORIZED');
+        if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
         await archivePost(input.id);
         return { ok: true };
       }),
