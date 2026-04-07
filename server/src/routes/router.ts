@@ -703,7 +703,7 @@ export const appRouter = router({
           const result = await loginWithPassword(input.email, input.password);
           return result;
         }
-        catch (err) { console.error('[auth.login] failed:', err); throw new Error('Email ou mot de passe incorrect.'); }
+        catch (err) { logger.warn('auth.login failed', { error: String(err) }); throw new Error('Email ou mot de passe incorrect.'); }
       }),
 
     // POST auth.magicLinkRequest
@@ -1085,7 +1085,7 @@ export const appRouter = router({
       await db.delete(vehicles).where(eq(vehicles.userId, user.id));
       await db.delete(users).where(eq(users.id, user.id));
 
-      console.log('[ADMIN] Compte supprimé:', input.email);
+      logger.info('Compte supprimé par admin', { email: input.email });
       return { ok: true, deleted: input.email };
     }),
 

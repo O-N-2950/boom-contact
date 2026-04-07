@@ -1029,7 +1029,6 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
     ctx.fillText('boom.contact · Croquis IA', W-14, H-14);
 
     window.__done = true;
-    console.log('SKETCH_DONE');
 
   } catch(e) {
     window.__err = e.message || String(e);

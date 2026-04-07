@@ -235,7 +235,7 @@ export async function runMigrations() {
     logger.info('✅ DB migrations applied');
   } catch (err: any) {
     if (err?.code === '42P07') {
-      console.log('✅ DB migrations applied (tables already exist)');
+      logger.info('DB migrations applied (tables already exist)');
     } else {
       logger.error('DB migration error', { error: err?.message || String(err) });
       throw err;
