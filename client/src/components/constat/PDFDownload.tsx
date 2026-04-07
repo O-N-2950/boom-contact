@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { trpc } from '../../trpc';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   onBuyPack?: () => void;
 }
 
-export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
+export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
   const [loading, setLoading]           = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfBase64, setPdfBase64]       = useState<string | null>(null);
@@ -418,4 +418,4 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
       </div>
     </div>
   );
-}
+});

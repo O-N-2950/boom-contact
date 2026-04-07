@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ShareBoom } from '../ShareBoom';
 import { trpc } from '../../trpc';
 
@@ -11,7 +11,7 @@ interface PostConstatCTAProps {
   onBuyPack: () => void;       // Opens PricingPage
 }
 
-export function PostConstatCTA({
+export const PostConstatCTA = React.memo(function PostConstatCTA({
   sessionId,
   authToken,
   authUser,
@@ -284,7 +284,7 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
       ))}
     </div>
   );
-}
+});
 
 // ── Styles ────────────────────────────────────────────────────
 const containerStyle: React.CSSProperties = {

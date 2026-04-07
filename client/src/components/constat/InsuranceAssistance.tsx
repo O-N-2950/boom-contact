@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { trpc } from '../../trpc';
 
 interface InsuranceAssistanceProps {
@@ -17,7 +17,7 @@ interface AssistanceResult {
   confidence: 'high' | 'medium' | 'low';
 }
 
-export function InsuranceAssistance({ insurerA, insurerB, countryCode }: InsuranceAssistanceProps) {
+export const InsuranceAssistance = React.memo(function InsuranceAssistance({ insurerA, insurerB, countryCode }: InsuranceAssistanceProps) {
   const [resultA, setResultA] = useState<AssistanceResult | null>(null);
   const [resultB, setResultB] = useState<AssistanceResult | null>(null);
   const [loading, setLoading]  = useState(false);
@@ -67,9 +67,10 @@ export function InsuranceAssistance({ insurerA, insurerB, countryCode }: Insuran
       )}
     </div>
   );
-}
+});
 
 // ── Manual search widget ──────────────────────────────────────
+
 export function InsuranceSearchWidget() {
   const [query, setQuery]   = useState('');
   const [country, setCountry] = useState('CH');

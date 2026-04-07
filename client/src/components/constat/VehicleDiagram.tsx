@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import type { VehicleType } from '../../../../shared/types';
 import { VehicleSilhouetteSVG, getZonesForType, bodyStyleToShape, type DamageZone } from './VehicleSilhouettes';
 import { identifyVehicle, BODY_STYLE_LABELS } from './vehicleMapper';
@@ -60,7 +60,7 @@ function ImpactMarker({ zone, color }: { zone: DamageZone; color: string }) {
   );
 }
 
-export function VehicleDiagram({ role, vehicleType, brand, model, color, selected, onChange }: Props) {
+export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicleType, brand, model, color, selected, onChange }: Props) {
   const [hovering, setHovering] = useState<string | null>(null);
   const [tooltip, setTooltip]   = useState<string | null>(null);
   const roleColor = role === 'A' ? '#FF3500' : '#00E5FF';
@@ -241,4 +241,4 @@ export function VehicleDiagram({ role, vehicleType, brand, model, color, selecte
       )}
     </div>
   );
-}
+});

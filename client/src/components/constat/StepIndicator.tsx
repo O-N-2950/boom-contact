@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface Step { id: string; icon: string; label: string; }
 interface Props {
   steps: Step[];
@@ -5,7 +7,7 @@ interface Props {
   onStepClick?: (stepId: string, index: number) => void;
 }
 
-export function StepIndicator({ steps, currentIndex, onStepClick }: Props) {
+export const StepIndicator = React.memo(function StepIndicator({ steps, currentIndex, onStepClick }: Props) {
   return (
     <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(240,237,232,0.06)',
       display: 'flex', gap: 3, flexShrink: 0 }}>
@@ -69,4 +71,4 @@ export function StepIndicator({ steps, currentIndex, onStepClick }: Props) {
       })}
     </div>
   );
-}
+});

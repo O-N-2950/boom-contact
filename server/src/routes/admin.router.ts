@@ -174,9 +174,12 @@ export const adminListUsers = protectedProcedure
 export const adminCleanupSessions = protectedProcedure
   .mutation(async ({ ctx }) => {
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-    const signing = await db.query.sessions.findMany({ where: eq(sessions.status, 'signing') });
-    let fixed = 0;
+    const signing = await db.query.sessions.findMany({
+      where: eq(sessions.status, 'signing'),
+      columns: { id: true, participantA: true, participantB: true, accident: true, vehicleCount: true },
+    });
     const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
+    const toComplete: string[] = [];
     for (const s of signing) {
       const A = (s.participantA as any) ?? {};
       const B = (s.participantB as any);
@@ -188,11 +191,14 @@ export const adminCleanupSessions = protectedProcedure
       const hasPartyBStatus = !!acc.partyBStatus;
       const isSolo = (s.vehicleCount ?? 2) === 1;
       if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {
-        await db.update(sessions).set({ status: 'completed' } as any).where(eq(sessions.id, s.id));
-        fixed++;
+        toComplete.push(s.id);
       }
     }
-    return { fixed, total: signing.length };
+    // Batch update instead of N+1
+    if (toComplete.length > 0) {
+      await db.update(sessions).set({ status: 'completed' } as any).where(inArray(sessions.id, toComplete));
+    }
+    return { fixed: toComplete.length, total: signing.length };
   });
 
 export const adminFixOwnerEmails = protectedProcedure
@@ -200,16 +206,20 @@ export const adminFixOwnerEmails = protectedProcedure
     if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
     const missing = await db.query.sessions.findMany({
       where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
+      columns: { id: true, participantA: true },
     });
-    let fixed = 0;
+    // Batch: collect all updates, then execute in one pass
+    const updates: { id: string; email: string }[] = [];
     for (const s of missing) {
       const email = (s.participantA as any)?.driver?.email;
-      if (email) {
-        await db.update(sessions).set({ ownerEmail: email } as any).where(eq(sessions.id, s.id));
-        fixed++;
-      }
+      if (email) updates.push({ id: s.id, email });
     }
-    return { fixed, total: missing.length };
+    if (updates.length > 0) {
+      await Promise.all(updates.map(u =>
+        db.update(sessions).set({ ownerEmail: u.email } as any).where(eq(sessions.id, u.id))
+      ));
+    }
+    return { fixed: updates.length, total: missing.length };
   });
 
 // ── MARKETING ROUTER ───────────────────────────────────────────

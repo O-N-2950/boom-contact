@@ -2,7 +2,7 @@
 // Enregistrement vocal réel + transcription Whisper (99 langues)
 // Utilisé par conducteur A, B, C, D — chacun déclare sa version des faits
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { trpc } from '../../trpc';
 
 interface Props {
@@ -16,7 +16,7 @@ type RecordState = 'idle' | 'recording' | 'recorded' | 'transcribing' | 'done' |
 
 const MAX_DURATION_SEC = 180; // 3 minutes max
 
-export function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
+export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
   const [state, setState]           = useState<RecordState>('idle');
   const [elapsed, setElapsed]       = useState(0);
   const [transcript, setTranscript] = useState('');
@@ -295,4 +295,4 @@ export function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
       </div>
     </div>
   );
-}
+});

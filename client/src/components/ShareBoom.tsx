@@ -3,7 +3,7 @@
  * Composant viral : partage de l'app par WhatsApp, SMS, email, TikTok, X, etc.
  * Objectif : devenir l'app constat n°1 par recommandation entre conducteurs
  */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 
 const APP_URL = 'https://www.boom.contact';
 
-export function ShareBoom({ onClose, context = 'landing' }: Props) {
+export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'landing' }: Props) {
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState('');
   const dialogRef = useFocusTrap<HTMLDivElement>(onClose);
@@ -270,4 +270,4 @@ export function ShareBoom({ onClose, context = 'landing' }: Props) {
 
     </div>
   );
-}
+});

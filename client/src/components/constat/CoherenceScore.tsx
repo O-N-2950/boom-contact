@@ -3,7 +3,7 @@
  * Détecte les contradictions entre conducteur A et B avant signature
  * Appel Claude API côté client — analyse rapide des circonstances et zones
  */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Props {
   sessionId: string;
@@ -18,7 +18,7 @@ interface Issue {
   message: string;
 }
 
-export function CoherenceScore({ sessionId, participantA, participantB, accidentData, onReady }: Props) {
+export const CoherenceScore = React.memo(function CoherenceScore({ sessionId, participantA, participantB, accidentData, onReady }: Props) {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -197,4 +197,4 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
       )}
     </div>
   );
-}
+});

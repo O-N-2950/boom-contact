@@ -1,3 +1,4 @@
+import React from 'react';
 /**
  * boom.contact — Sélecteur de couleur véhicule
  * Swatches visuels + saisie libre — multilingue
@@ -44,7 +45,7 @@ const COLORS = [
   { name: 'Nacré',        hex: '#E8E4DA' },
 ];
 
-export function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }: Props) {
+export const ColorPicker = React.memo(function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }: Props) {
   // Find matching color name if hex matches
   const selectedColor = COLORS.find(c =>
     c.hex.toLowerCase() === value?.toLowerCase() ||
@@ -153,4 +154,4 @@ export function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }:
       </div>
     </div>
   );
-}
+});

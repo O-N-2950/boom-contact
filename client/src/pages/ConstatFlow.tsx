@@ -26,7 +26,7 @@ function ocrCategoryToVehicleType(category?: string): VehicleType | null {
 import { PhotoCapture } from '../components/constat/PhotoCapture';
 import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
 import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -192,8 +192,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos, vehicleCount, voiceAnalysis, voiceTranscript]);
 
-  // Steps with translated labels
-  const STEPS: { id: FlowStep; icon: string; label: string }[] = [
+  // Steps with translated labels — memoized to avoid recreating on every render
+  const STEPS = useMemo<{ id: FlowStep; icon: string; label: string }[]>(() => [
     { id: 'ocr',      icon: '📄', label: t('steps.scan') },
     { id: 'location', icon: '📍', label: t('steps.location') },
     { id: 'photos',   icon: '📸', label: t('steps.photos') },
@@ -203,7 +203,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     { id: 'sketch',   icon: '🗺️', label: t('steps.sketch') },
     { id: 'diagram',  icon: '🚗', label: t('steps.damage') },
     { id: 'sign',     icon: '✍️', label: t('steps.sign') },
-  ];
+  ], [t]);
 
   useEffect(() => {
     if (step === 'qr' && !sessionId) createSession();
@@ -302,14 +302,14 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     setStep('photos');
   };
 
-  const handlePhotosContinue = () => {
+  const handlePhotosContinue = useCallback(() => {
     const updatedAccident = { ...accidentData, photos };
     setAccidentData(updatedAccident);
     if (sessionId && photos.length > 0) {
       updateAccidentMutation.mutate({ sessionId, data: { photos } });
     }
     setStep('qr'); // QR d'abord, puis vocal après que B rejoint
-  };
+  }, [accidentData, photos, sessionId]);
 
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
@@ -362,9 +362,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     onError: (err) => console.error('session.sign failed:', err.message),
   });
 
-  const handleSign = (signatureBase64: string) => {
+  const handleSign = useCallback((signatureBase64: string) => {
     if (sessionId) signMutation.mutate({ sessionId, role: 'A', signatureBase64 });
-  };
+  }, [sessionId]);
 
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
 
@@ -408,6 +408,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
               style={{ fontSize: 11, opacity: 0.2, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+              aria-label="Réinitialiser le constat"
             >↺</button>
           )}
         </div>

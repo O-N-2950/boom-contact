@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 interface Props {
   role: string;
@@ -8,7 +8,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = false, disabled = false }: Props) {
+export const SignaturePad = React.memo(function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = false, disabled = false }: Props) {
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const [signing, setSigning]   = useState(false);
@@ -219,7 +219,4 @@ export function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = fa
       )}
     </div>
   );
-}
-
-
-
+});

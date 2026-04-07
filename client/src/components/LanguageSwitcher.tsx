@@ -1,3 +1,4 @@
+import React from 'react';
 // boom.contact — LanguageSwitcher
 // 4 boutons drapeaux toujours visibles — pas de dropdown, pas de bug iOS
 // Ordre des langues : langue du pays détecté en premier
@@ -11,7 +12,7 @@ interface Props {
   compact?: boolean;
 }
 
-export function LanguageSwitcher({ style, compact = false }: Props) {
+export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, compact = false }: Props) {
   const { i18n } = useTranslation();
 
   const currentLang = (SUPPORTED_LANGS.includes(i18n.language as SupportedLang)
@@ -68,4 +69,4 @@ export function LanguageSwitcher({ style, compact = false }: Props) {
       })}
     </div>
   );
-}
+});
