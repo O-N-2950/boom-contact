@@ -100,30 +100,10 @@ ${descB ? `Notes B: ${descB}` : ''}
 Réponds UNIQUEMENT en JSON: {"issues": [{"type": "warning"|"info", "message": "..."}]}
 Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
 
-        const resp = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 300,
-            messages: [{ role: 'user', content: prompt }],
-          }),
-        });
-
-        if (resp.ok) {
-          const data = await resp.json();
-          const raw = data.content?.[0]?.text || '{"issues":[]}';
-          const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
-          const aiIssues: Issue[] = (parsed.issues || []).slice(0, 3);
-          // Dédupliquer avec les issues locales
-          for (const ai of aiIssues) {
-            if (!found.some(f => f.message === ai.message)) {
-              found.push(ai);
-            }
-          }
-        }
+        // AI coherence check runs via backend — no direct Anthropic call from frontend
+        // Local rule-based analysis is sufficient for most cases
       } catch {
-        // IA indispo — on garde les issues locales
+        // Keep local issues only
       }
     }
 
