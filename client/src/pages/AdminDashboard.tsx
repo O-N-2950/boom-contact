@@ -54,7 +54,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
       {/* Header */}
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 13 }}>←</button>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 13 }} aria-label="Retour">←</button>
           <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 18 }}>💥 Admin</span>
           <span style={{ background: '#1a1a1a', color: '#666', fontSize: 11, borderRadius: 4, padding: '2px 6px' }}>boom.contact</span>
         </div>

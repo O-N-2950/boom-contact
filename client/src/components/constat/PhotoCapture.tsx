@@ -212,7 +212,7 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
                           placeholder="Légende..."
                           style={{ flex: 1, background: 'rgba(240,237,232,0.08)', border: 'none', borderRadius: 6, padding: '4px 8px', fontSize: 11, color: 'inherit', outline: '1px solid var(--boom)' }}
                         />
-                        <button onClick={() => saveCaption(photo.id)} style={{ background: 'var(--boom)', border: 'none', color: '#fff', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', fontSize: 11 }}>✓</button>
+                        <button onClick={() => saveCaption(photo.id)} style={{ background: 'var(--boom)', border: 'none', color: '#fff', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', fontSize: 11 }} aria-label="Sauvegarder la légende">✓</button>
                       </div>
                     ) : (
                       <button

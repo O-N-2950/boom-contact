@@ -7,7 +7,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
     <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', padding: '0 0 40px' }}>
       {/* Header */}
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14, position: 'sticky', top: 0, zIndex: 10 }}>
-        <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 18 }}>←</button>
+        <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 18 }} aria-label="Retour">←</button>
         <div>
           <div style={{ color: '#FF3500', fontWeight: 800, fontSize: 16 }}>💥 boom.contact</div>
           <div style={{ color: '#555', fontSize: 11 }}>Mentions légales & Confidentialité</div>

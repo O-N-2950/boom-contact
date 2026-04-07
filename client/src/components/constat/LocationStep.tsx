@@ -375,7 +375,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 { val: hospitalized, set: setHospitalized, label: t('location.hospitalized') },
               ].map((item, i) => (
                 <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-                  <div onClick={() => item.set(!item.val)} style={{
+                  <div onClick={() => item.set(!item.val)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.set(!item.val); } }} role="checkbox" aria-checked={item.val} tabIndex={0} style={{
                     width: 20, height: 20, borderRadius: 5, flexShrink: 0,
                     border: item.val ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
                     background: item.val ? '#ef4444' : 'transparent',

@@ -292,7 +292,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
 
       {error && (
         <div style={{ marginBottom:12, padding:12, borderRadius:8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', fontSize:13, color:'#ef4444', display:'flex', alignItems:'center', gap:8 }}>
-          ⚠️ {error}<button onClick={()=>setError(null)} style={{ marginLeft:'auto', background:'none', border:'none', color:'#ef4444', cursor:'pointer', fontSize:14 }}>✕</button>
+          ⚠️ {error}<button onClick={()=>setError(null)} style={{ marginLeft:'auto', background:'none', border:'none', color:'#ef4444', cursor:'pointer', fontSize:14 }} aria-label="Fermer l'erreur">✕</button>
         </div>
       )}
 

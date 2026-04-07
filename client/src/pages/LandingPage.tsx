@@ -5,6 +5,18 @@ import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { CGUModal } from '../components/CGUModal';
 
+// ── Reusable style constants (extracted from repeated inline styles) ──
+const S = {
+  boomColor: { color: 'var(--boom)' } as React.CSSProperties,
+  sectionLabel: { fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 } as React.CSSProperties,
+  sectionLabelAlt: { fontSize: 9, opacity: 0.4, marginBottom: 4, letterSpacing: 1, fontFamily: 'DM Mono, monospace' } as React.CSSProperties,
+  boldSmall: { fontSize: 12, fontWeight: 700 } as React.CSSProperties,
+  displayBlock: { display: 'block' } as React.CSSProperties,
+  centerMb32: { textAlign: 'center' as const, marginBottom: 32 } as React.CSSProperties,
+  ghostBtn: { background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: 600, padding: '6px 12px' } as React.CSSProperties,
+  boomCircle: { width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Oswald, sans-serif', fontSize: 13, color: 'var(--boom)' } as React.CSSProperties,
+} as const;
+
 interface Props {
   onStart: () => void;
   onPricing?: () => void;
@@ -101,13 +113,13 @@ function PhoneMockup() {
             </div>
           </div>
           <div style={{ background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 12, padding: '12px', marginBottom: 8 }}>
-            <div style={{ fontSize: 9, opacity: 0.4, marginBottom: 4, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>CONDUCTEUR A</div>
-            <div style={{ fontSize: 12, fontWeight: 700 }}>VW Golf · GE 123 456</div>
+            <div style={S.sectionLabelAlt}>CONDUCTEUR A</div>
+            <div style={S.boldSmall}>VW Golf · GE 123 456</div>
             <div style={{ fontSize: 10, opacity: 0.5 }}>Zurich Insurance · ✅ OCR</div>
           </div>
           <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '12px', marginBottom: 12 }}>
-            <div style={{ fontSize: 9, opacity: 0.4, marginBottom: 4, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>CONDUCTEUR B</div>
-            <div style={{ fontSize: 12, fontWeight: 700 }}>Audi A4 · BE 789 012</div>
+            <div style={S.sectionLabelAlt}>CONDUCTEUR B</div>
+            <div style={S.boldSmall}>Audi A4 · BE 789 012</div>
             <div style={{ fontSize: 10, opacity: 0.5 }}>AXA · ✅ Scanné</div>
           </div>
           <div style={{ background: 'var(--boom)', borderRadius: 10, padding: '10px', textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#fff' }}>
@@ -186,7 +198,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <img src="/logo.webp" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
             {isDesktop && (
               <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22, letterSpacing: '-0.5px' }}>
-                <span style={{ color: 'var(--boom)' }}>boom</span>
+                <span style={S.boomColor}>boom</span>
                 <span style={{ opacity: 0.3 }}>.</span>
                 <span>contact</span>
               </div>
@@ -195,12 +207,12 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 16 : 10 }}>
             {isDesktop && (
               <>
-                <button onClick={onGarage} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
+                <button onClick={onGarage} style={S.ghostBtn}
                   onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}>
                   🚗 Mon garage
                 </button>
-                <button onClick={() => { const el = document.getElementById('tarifs'); el?.scrollIntoView({ behavior: 'smooth' }); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
+                <button onClick={() => { const el = document.getElementById('tarifs'); el?.scrollIntoView({ behavior: 'smooth' }); }} style={S.ghostBtn}
                   onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}>
                   Tarifs
@@ -244,10 +256,10 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
 
             {/* Title */}
             <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 'clamp(56px,5vw,80px)' : 'clamp(48px,12vw,72px)', lineHeight: 0.95, letterSpacing: '-1px', marginBottom: 20, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(20px)', transition: 'all 0.6s ease 0.1s' }}>
-              <span style={{ display: 'block' }}>{t('landing.hero.line1')}</span>
-              <span style={{ display: 'block' }}>{t('landing.hero.line2').split(' ')[0]}&nbsp;<span style={{ color: 'var(--boom)', textShadow: '0 0 40px rgba(255,53,0,0.5)' }}>{t('landing.hero.line2').split(' ').slice(1).join(' ')}</span></span>
+              <span style={S.displayBlock}>{t('landing.hero.line1')}</span>
+              <span style={S.displayBlock}>{t('landing.hero.line2').split(' ')[0]}&nbsp;<span style={{ color: 'var(--boom)', textShadow: '0 0 40px rgba(255,53,0,0.5)' }}>{t('landing.hero.line2').split(' ').slice(1).join(' ')}</span></span>
               <span style={{ display: 'block', opacity: 0.35 }}>{t('landing.hero.line3')}</span>
-              <span style={{ display: 'block' }}>{t('landing.hero.line4')}</span>
+              <span style={S.displayBlock}>{t('landing.hero.line4')}</span>
             </h1>
 
             {/* SEO subtitle — keywords "constat amiable numérique" */}
@@ -354,8 +366,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '72px 48px' : '52px 24px' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: isDesktop ? 52 : 36 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }} id="how-works-label" role="doc-subtitle">{t('landing.how.label')}</div>
-            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 30, letterSpacing: '-0.5px' }}>{t('landing.how.title')} <span style={{ color: 'var(--boom)' }}>{t('landing.how.title_accent')}</span></h2>
+            <div style={S.sectionLabel} id="how-works-label" role="doc-subtitle">{t('landing.how.label')}</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 30, letterSpacing: '-0.5px' }}>{t('landing.how.title')} <span style={S.boomColor}>{t('landing.how.title_accent')}</span></h2>
           </div>
 
           {isDesktop ? (
@@ -366,7 +378,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                   {i < howSteps.length - 1 && (
                     <div style={{ position: 'absolute', top: 19, left: '60%', width: '80%', height: 1, background: 'linear-gradient(to right, rgba(255,53,0,0.3), transparent)' }} />
                   )}
-                  <div style={{ width: 40, height: 40, borderRadius: '50%', margin: '0 auto 14px', background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Oswald, sans-serif', fontSize: 13, color: 'var(--boom)' }}>
+                  <div style={{ ...S.boomCircle, margin: '0 auto 14px' }}>
                     {item.step}
                   </div>
                   <div style={{ fontSize: 22, marginBottom: 8 }}>{item.icon}</div>
@@ -381,7 +393,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               {howSteps.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 16, position: 'relative', paddingBottom: i < howSteps.length - 1 ? 28 : 0 }}>
                   {i < howSteps.length - 1 && <div style={{ position: 'absolute', left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
-                  <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Oswald, sans-serif', fontSize: 13, color: 'var(--boom)' }}>{item.step}</div>
+                  <div style={{ ...S.boomCircle, flexShrink: 0 }}>{item.step}</div>
                   <div style={{ paddingTop: 7 }}>
                     <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{item.icon} {item.title}</div>
                     <div style={{ fontSize: 12, opacity: 0.5, lineHeight: 1.6 }}>{item.desc}</div>
@@ -483,8 +495,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>ILS NOUS FONT CONFIANCE</div>
-            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Utilisé dans <span style={{ color: 'var(--boom)' }}>150+ pays</span></h2>
+            <div style={S.sectionLabel}>ILS NOUS FONT CONFIANCE</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Utilisé dans <span style={S.boomColor}>150+ pays</span></h2>
           </div>
 
           {/* Testimonials */}
@@ -502,7 +514,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,53,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: 'var(--boom)' }}>{t.name[0]}</div>
                   <div>
-                    <div style={{ fontSize: 12, fontWeight: 700 }}>{t.name}</div>
+                    <div style={S.boldSmall}>{t.name}</div>
                     <div style={{ fontSize: 10, opacity: 0.4 }}>{t.loc}</div>
                   </div>
                 </div>
@@ -533,8 +545,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <Section>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.3, textTransform: 'uppercase' as const, marginBottom: 10 }}>FAQ</div>
-            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Questions fréquentes sur le <span style={{ color: 'var(--boom)' }}>constat amiable numérique</span></h2>
+            <div style={S.sectionLabel}>FAQ</div>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Questions fréquentes sur le <span style={S.boomColor}>constat amiable numérique</span></h2>
           </div>
 
           <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -602,11 +614,11 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 </a>
               ))}
             </div>
-            <div style={{ fontSize: 10, opacity: 0.22, lineHeight: 1.8, textAlign: isDesktop ? 'right' : 'left' as const }}>
+            <div style={{ fontSize: 10, opacity: 0.4, lineHeight: 1.8, textAlign: isDesktop ? 'right' : 'left' as const }}>
               {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
             </div>
           </div>
-          <div style={{ marginTop: 16, fontSize: 10, opacity: 0.2, textAlign: 'center' }}>{t('landing.footer.copyright')}</div>
+          <div style={{ marginTop: 16, fontSize: 10, opacity: 0.4, textAlign: 'center' }}>{t('landing.footer.copyright')}</div>
         </Section>
       </div>
 

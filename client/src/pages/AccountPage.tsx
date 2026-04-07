@@ -264,7 +264,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             <span style={{ fontSize: 28 }}>📄</span>
             <div style={{ textAlign: 'left' as const }}>
               <div style={{ color: '#60c8f0', fontWeight: 700 }}>Scanner permis + carte verte</div>
-              <div style={{ color: '#555', fontSize: 12 }}>Reconnaissance automatique · 50 langues</div>
+              <div style={{ color: '#8a8a8a', fontSize: 12 }}>Reconnaissance automatique · 50 langues</div>
             </div>
           </button>
 
@@ -354,16 +354,16 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                       <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
                     </div>
                     {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
-                    <div style={{ color: '#555', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                    <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={() => startEdit(v)} style={iconBtn}>✏️</button>
-                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn}>🗑️</button>
+                    <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule">✏️</button>
+                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn} aria-label="Supprimer le véhicule">🗑️</button>
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
                   ? <div style={{ marginTop: 10, background: '#0d2a0d', borderRadius: 8, padding: '7px 12px', fontSize: 12, color: '#4ade80' }}>🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
-                  : <button onClick={() => startEdit(v)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a2a2a', borderRadius: 8, padding: '5px 10px', color: '#555', fontSize: 11, cursor: 'pointer' }}>+ Ajouter assurance</button>
+                  : <button onClick={() => startEdit(v)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a2a2a', borderRadius: 8, padding: '5px 10px', color: '#8a8a8a', fontSize: 11, cursor: 'pointer' }}>+ Ajouter assurance</button>
                 }
               </div>
             ))}
@@ -374,7 +374,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {tab === 'history' && (
           <>
             <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12 }}>Mes constats ({history.length})</div>
-            {historyQ.isLoading && <div style={{ color: '#555', textAlign: 'center', padding: 32 }}>Chargement...</div>}
+            {historyQ.isLoading && <div style={{ color: '#8a8a8a', textAlign: 'center', padding: 32 }}>Chargement...</div>}
             {!historyQ.isLoading && history.length === 0 && (
               <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
@@ -389,8 +389,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     <div>
                       <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 12 }}>{s.id}</div>
                       <div style={{ color: '#fff', fontWeight: 600, marginTop: 2 }}>Plaque : {plate}</div>
-                      <div style={{ color: '#555', fontSize: 12, marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
-                      {s.accident?.location?.address && <div style={{ color: '#555', fontSize: 11, marginTop: 4 }}>📍 {s.accident.location.address}</div>}
+                      <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
+                      {s.accident?.location?.address && <div style={{ color: '#8a8a8a', fontSize: 11, marginTop: 4 }}>📍 {s.accident.location.address}</div>}
                     </div>
                     {s.pdfUrl && (
                       <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, padding: '7px 12px', color: '#ccc', fontSize: 12, textDecoration: 'none' }}>📄 PDF</a>
@@ -410,7 +410,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
               <div style={{ color: '#888', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
               <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
-              <div style={{ color: '#555', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
+              <div style={{ color: '#8a8a8a', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
             </div>
 
             {/* Email — changement */}
@@ -479,12 +479,12 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     ['Adresse', user.address],
                   ].map(([label, val]) => val ? (
                     <div key={label as string}>
-                      <div style={{ color: '#555', fontSize: 11 }}>{label as string}</div>
+                      <div style={{ color: '#8a8a8a', fontSize: 11 }}>{label as string}</div>
                       <div style={{ color: '#ccc', fontSize: 14 }}>{val as string}</div>
                     </div>
                   ) : null)}
                   {!(user.firstName || user.phone) && (
-                    <div style={{ color: '#555', fontSize: 13 }}>Aucune information — clique sur Modifier</div>
+                    <div style={{ color: '#8a8a8a', fontSize: 13 }}>Aucune information — clique sur Modifier</div>
                   )}
                 </div>
               ) : (
@@ -572,7 +572,7 @@ function StatBadge({ value, label, highlight }: { value: any; label: string; hig
   return (
     <div style={{ background: '#1a1a1a', borderRadius: 10, padding: '8px 14px', textAlign: 'center' as const, flex: 1 }}>
       <div style={{ color: highlight ? '#FF3500' : '#fff', fontSize: 20, fontWeight: 900 }}>{value}</div>
-      <div style={{ color: '#555', fontSize: 11 }}>{label}</div>
+      <div style={{ color: '#8a8a8a', fontSize: 11 }}>{label}</div>
     </div>
   );
 }
