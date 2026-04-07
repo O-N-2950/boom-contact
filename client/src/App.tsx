@@ -234,7 +234,7 @@ export default function App() {
   return (
     <ErrorBoundary>
     <OfflineBanner />
-    <div className="min-h-screen bg-[var(--black)] text-[var(--text)]">
+    <div className="min-h-screen bg-[var(--black,#06060C)] text-[var(--text,#ffffff)]">
       {view === 'landing'  && <LandingPage
         onStart={startConstat}
         onPricing={goToPricing}

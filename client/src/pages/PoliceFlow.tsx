@@ -371,6 +371,7 @@ function AnnotationsSection({
         <input
           type="text"
           placeholder="Ex: JU-2026-00123"
+          aria-label="Numéro de rapport ou PV"
           value={ann.reportNumber}
           onChange={e => setAnn(a => ({ ...a, reportNumber: e.target.value }))}
           style={inputStyle}
@@ -384,12 +385,14 @@ function AnnotationsSection({
           <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 1fr 80px 32px', gap: 6, marginBottom: 8, alignItems: 'center' }}>
             <input
               placeholder="Code (ex: LCR 36)"
+              aria-label="Code infraction"
               value={inf.code}
               onChange={e => { const n = [...ann.infractions]; n[i].code = e.target.value; setAnn(a => ({ ...a, infractions: n })); }}
               style={inputStyle}
             />
             <input
               placeholder="Description"
+              aria-label="Description infraction"
               value={inf.description}
               onChange={e => { const n = [...ann.infractions]; n[i].description = e.target.value; setAnn(a => ({ ...a, infractions: n })); }}
               style={inputStyle}
@@ -443,6 +446,7 @@ function AnnotationsSection({
             </select>
             <input
               placeholder="Precision (optionnel)"
+              aria-label="Précision mesure"
               value={m.description}
               onChange={e => { const n = [...ann.measures]; n[i].description = e.target.value; setAnn(a => ({ ...a, measures: n })); }}
               style={inputStyle}

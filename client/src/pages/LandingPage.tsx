@@ -3,6 +3,7 @@ import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { CGUModal } from '../components/CGUModal';
 
 interface Props {
   onStart: () => void;
@@ -147,6 +148,7 @@ function Section({ children, style }: { children: React.ReactNode; style?: React
 
 export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout, authUser }: Props) {
   const [showShare, setShowShare] = useState(false);
+  const [showCGU, setShowCGU] = useState(false);
   const { t } = useTranslation();
   const [heroVisible, setHeroVisible] = useState(false);
   const width = useWindowWidth();
@@ -186,14 +188,14 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 16 : 10 }}>
             {isDesktop && (
               <>
-                <button onClick={onGarage} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.55)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
+                <button onClick={onGarage} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}>
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}>
                   🚗 Mon garage
                 </button>
-                <button onClick={() => { const el = document.getElementById('tarifs'); el?.scrollIntoView({ behavior: 'smooth' }); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.55)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
+                <button onClick={() => { const el = document.getElementById('tarifs'); el?.scrollIntoView({ behavior: 'smooth' }); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: 600, padding: '6px 12px' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}>
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}>
                   Tarifs
                 </button>
               </>
@@ -556,7 +558,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <div style={{ padding: isDesktop ? '80px 48px' : '44px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <img src="/logo.png" alt="boom.contact" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
+          <img src="/logo.png" alt="boom.contact" loading="lazy" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
           <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 40 : 28, marginBottom: 10 }}>{t('landing.finalCta.title')}</h2>
           <p style={{ fontSize: 14, opacity: 0.5, lineHeight: 1.65, marginBottom: 28, maxWidth: 400, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
           <button onClick={onStart} style={{ padding: '18px 44px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
@@ -571,7 +573,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: isDesktop ? 0 : 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src="/logo.png" alt="boom.contact" style={{ height: 36, objectFit: 'contain' }} />
+              <img src="/logo.png" alt="boom.contact" loading="lazy" style={{ height: 36, objectFit: 'contain' }} />
               {isDesktop && (
                 <div>
                   <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.7 }}>boom.contact</div>
@@ -582,12 +584,12 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <div style={{ display: 'flex', gap: isDesktop ? 20 : 12, flexWrap: 'wrap' as const, alignItems: 'center' }}>
               {[
                 { label: 'Confidentialité', href: '/?privacy=true' },
-                { label: 'CGU', href: '#cgu' },
+                { label: 'CGU', href: '#cgu', onClick: (e: React.MouseEvent) => { e.preventDefault(); setShowCGU(true); } },
                 { label: 'RGPD · nLPD', href: '/?privacy=true' },
                 { label: 'privacy@boom.contact', href: 'mailto:privacy@boom.contact' },
-              ].map(({ label, href }) => (
-                <a key={label} href={href} style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', textDecoration: 'none' }}
-                  onMouseOver={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.55)'}
+              ].map(({ label, href, onClick }) => (
+                <a key={label} href={href} onClick={onClick} style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', textDecoration: 'none' }}
+                  onMouseOver={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
                   onMouseOut={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.25)'}>
                   {label}
                 </a>
@@ -602,6 +604,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       </div>
 
       {showShare && <ShareBoom onClose={() => setShowShare(false)} context="landing" />}
+      {showCGU && <CGUModal onAccept={() => setShowCGU(false)} onClose={() => setShowCGU(false)} />}
     </div>
   );
 }

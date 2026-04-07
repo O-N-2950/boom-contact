@@ -238,7 +238,7 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
         <div style={{ display:'grid', gridTemplateColumns:`repeat(${Math.min(docs.length,2)},1fr)`, gap:8, marginBottom:16 }}>
           {docs.map((doc,i) => (
             <div key={doc.id} style={{ position:'relative', borderRadius:10, overflow:'hidden', border:'1.5px solid rgba(34,197,94,0.3)', aspectRatio:'4/3' }}>
-              <img src={doc.preview} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+              <img src={doc.preview} alt={`Document scanné ${i + 1}`} loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
               <div style={{ position:'absolute', top:0, left:0, right:0, padding:'4px 8px', background:'rgba(0,0,0,0.55)', fontSize:11, color:'#fff' }}>Document {i+1}</div>
               <button onClick={()=>setDocs(p=>p.filter(d=>d.id!==doc.id))}
                 style={{ position:'absolute', top:4, right:4, width:24, height:24, borderRadius:'50%', background:'rgba(239,68,68,0.85)', border:'none', color:'#fff', cursor:'pointer', fontSize:14, display:'flex', alignItems:'center', justifyContent:'center', touchAction:'manipulation' }}>×</button>

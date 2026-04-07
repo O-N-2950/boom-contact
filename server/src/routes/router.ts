@@ -697,7 +697,7 @@ export const appRouter = router({
           const result = await loginWithPassword(input.email, input.password);
           return result;
         }
-        catch { throw new Error('Email ou mot de passe incorrect.'); }
+        catch (err) { console.error('[auth.login] failed:', err); throw new Error('Email ou mot de passe incorrect.'); }
       }),
 
     // POST auth.magicLinkRequest
