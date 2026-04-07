@@ -31,6 +31,18 @@ forceUnbuffered();
 
 type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
 
+/** Mask email addresses for privacy in logs: jo**@ex*****.com */
+export function maskEmail(email: string): string {
+  if (!email || !email.includes('@')) return '***';
+  const [local, domain] = email.split('@');
+  const maskedLocal = local.length <= 2 ? local[0] + '*' : local.slice(0, 2) + '*'.repeat(Math.min(local.length - 2, 3));
+  const domainParts = domain.split('.');
+  const maskedDomain = domainParts[0].length <= 2
+    ? domainParts[0][0] + '*'
+    : domainParts[0].slice(0, 2) + '*'.repeat(Math.min(domainParts[0].length - 2, 3));
+  return `${maskedLocal}@${maskedDomain}.${domainParts.slice(1).join('.')}`;
+}
+
 function log(level: LogLevel, message: string, data?: Record<string, unknown>) {
   const ts = new Date().toISOString();
   const dataStr = data && Object.keys(data).length > 0
@@ -62,13 +74,13 @@ export const logger = {
   trpcError: (path: string, code: string, message: string) =>
     log('ERROR', `tRPC ${path} → ${code}`, { message: message.slice(0, 200) }),
   payment: (event: string, email: string, pkg?: string, amount?: number) =>
-    log('INFO', `💳 PAYMENT ${event}`, { email: email.slice(0, 30), pkg, amount }),
+    log('INFO', `💳 PAYMENT ${event}`, { email: maskEmail(email), pkg, amount }),
   ocr: (action: string, country?: string, confidence?: number, durationMs?: number) =>
     log('INFO', `🔍 OCR ${action}`, { country, confidence, durationMs }),
   session: (action: string, sessionId: string, role?: string) =>
     log('INFO', `📋 SESSION ${action}`, { sessionId: sessionId.slice(0, 12), role }),
   email: (action: string, to: string, subject?: string) =>
-    log('INFO', `📧 EMAIL ${action}`, { to: to.slice(0, 30), subject }),
+    log('INFO', `📧 EMAIL ${action}`, { to: maskEmail(to), subject }),
 };
 
 // ── Override console — filter PG noise, force sync output ────

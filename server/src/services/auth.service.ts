@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { users, magicTokens } from '../db/schema.js';
 import { eq, and, gt, isNull } from 'drizzle-orm';
-import { logger } from '../logger.js';
+import { logger, maskEmail } from '../logger.js';
 import { BCRYPT_ROUNDS, MAGIC_LINK_TTL_MS, GIFT_LINK_TTL_MS, JWT_EXPIRES_DAYS } from '../constants.js';
 
 // JWT_SECRET must be set in Railway env — crash at boot if missing
@@ -105,7 +105,7 @@ export async function registerUser(email: string, password: string): Promise<{ i
     consentCGUAt: new Date(),
   });
 
-  logger.info('User registered', { email });
+  logger.info('User registered', { email: maskEmail(email) });
   return { id, token: signJWT({ sub: id, email: email.toLowerCase(), role: 'customer' }) };
 }
 
@@ -122,12 +122,12 @@ export async function loginWithPassword(email: string, password: string): Promis
   if (isLegacyScryptHash(user.passwordHash)) {
     const newHash = await hashPassword(password);
     await db.update(users).set({ passwordHash: newHash }).where(eq(users.id, user.id));
-    logger.info('Password migrated to bcrypt', { email });
+    logger.info('Password migrated to bcrypt', { email: maskEmail(email) });
   }
 
   await db.update(users).set({ lastSeenAt: new Date() }).where(eq(users.id, user.id));
   const token = signJWT({ sub: user.id, email: user.email, role: user.role || 'customer' });
-  logger.info('User login', { email });
+  logger.info('User login', { email: maskEmail(email) });
   return { token, user: { id: user.id, email: user.email, role: user.role, credits: user.credits, firstName: user.firstName, lastName: user.lastName, phone: user.phone, address: user.address } };
 }
 
@@ -138,7 +138,7 @@ export async function createMagicToken(email: string): Promise<string> {
   const expiresAt = new Date(Date.now() + MAGIC_TTL);
 
   await db.insert(magicTokens).values({ id, email: email.toLowerCase(), token, type: 'login', expiresAt });
-  logger.info('Magic token created', { email });
+  logger.info('Magic token created', { email: maskEmail(email) });
   return token;
 }
 
@@ -228,9 +228,9 @@ export async function getUserFromToken(authHeader?: string): Promise<any | null>
 export async function seedAdminUser(): Promise<void> {
   try {
     const existing = await db.query.users.findFirst({ where: eq(users.email, ADMIN_EMAIL) });
-    const passwordHash = await hashPassword(ADMIN_PASSWORD);
 
     if (!existing) {
+      const passwordHash = await hashPassword(ADMIN_PASSWORD);
       await db.insert(users).values({
         id: 'admin_boom_contact_01',
         email: ADMIN_EMAIL,
@@ -241,13 +241,19 @@ export async function seedAdminUser(): Promise<void> {
         consentCGUAt: new Date(),
       });
       logger.info('Admin user created', { email: ADMIN_EMAIL });
-    } else if (existing.role !== 'admin' || existing.credits < 999999) {
-      await db.update(users).set({
-        passwordHash,
-        role: 'admin',
-        credits: 999999,
-      }).where(eq(users.id, existing.id));
-      logger.info('Admin user updated', { email: ADMIN_EMAIL });
+    } else {
+      // Only update role/credits if needed — NEVER overwrite password
+      const updates: Record<string, any> = {};
+      if (existing.role !== 'admin') updates.role = 'admin';
+      if ((existing.credits ?? 0) < 999999) updates.credits = 999999;
+      // Only set password if user has no password hash at all
+      if (!existing.passwordHash) {
+        updates.passwordHash = await hashPassword(ADMIN_PASSWORD);
+      }
+      if (Object.keys(updates).length > 0) {
+        await db.update(users).set(updates).where(eq(users.id, existing.id));
+        logger.info('Admin user updated (role/credits only)', { email: ADMIN_EMAIL });
+      }
     }
   } catch (err) {
     logger.warn('Admin seed skipped', { error: String(err) });

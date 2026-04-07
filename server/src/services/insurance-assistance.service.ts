@@ -1,4 +1,5 @@
 import { logger } from '../logger.js';
+import { z } from 'zod';
 
 // ── Types ────────────────────────────────────────────────────
 export interface AssistanceResult {
@@ -11,6 +12,15 @@ export interface AssistanceResult {
   source: 'db' | 'ai' | 'not_found';
   confidence: 'high' | 'medium' | 'low';
 }
+
+// ── Zod validation schema for AI insurance response ──────────
+const AIInsuranceResponseSchema = z.object({
+  assistance: z.string().optional(),
+  claims: z.string().optional(),
+  website: z.string().optional(),
+  note: z.string().optional(),
+  confidence: z.enum(['high', 'medium', 'low']).optional().default('medium'),
+}).passthrough();
 
 // ── Global insurer database ──────────────────────────────────
 // Format: key = normalized insurer name (lowercase, no spaces/accents)
@@ -281,7 +291,7 @@ async function searchWithAI(insurerName: string, country?: string): Promise<Assi
     });
 
     const data = await response.json() as any;
-    
+
     // Extract text from response (may include tool_use blocks)
     const textBlock = data.content?.find((b: any) => b.type === 'text');
     if (!textBlock?.text) throw new Error('No text in response');
@@ -289,18 +299,19 @@ async function searchWithAI(insurerName: string, country?: string): Promise<Assi
     // Clean and parse JSON
     const clean = textBlock.text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
+    const validated = AIInsuranceResponseSchema.parse(parsed);
 
-    logger.info('AI insurance lookup', { insurer: insurerName, country, result: parsed });
+    logger.info('AI insurance lookup', { insurer: insurerName, country, result: validated });
 
     return {
       insurer: insurerName,
       country,
-      assistanceNumber: parsed.assistance || undefined,
-      claimsNumber: parsed.claims || undefined,
-      website: parsed.website || undefined,
-      note: parsed.note || undefined,
+      assistanceNumber: validated.assistance || undefined,
+      claimsNumber: validated.claims || undefined,
+      website: validated.website || undefined,
+      note: validated.note || undefined,
       source: 'ai',
-      confidence: parsed.confidence || 'medium',
+      confidence: validated.confidence || 'medium',
     };
   } catch (err) {
     logger.warn('AI insurance lookup failed', { insurer: insurerName, error: String(err) });

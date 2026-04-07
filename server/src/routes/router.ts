@@ -14,7 +14,7 @@ import { renderSketch } from '../services/sketch-renderer.service.js';
 import { getInsuranceAssistance } from '../services/insurance-assistance.service.js';
 import { getCountryEmergencyNumbers } from '../services/emergency-numbers.service.js';
 import { io } from '../index';
-import { logger } from '../logger.js';
+import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions as sessionsTable } from '../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
@@ -65,10 +65,16 @@ export const appRouter = router({
 
     // Get session state
     get: publicProcedure
-      .input(z.object({ sessionId: z.string() }))
+      .input(z.object({ sessionId: z.string(), participantToken: z.string() }))
       .query(async ({ input }) => {
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found or expired' });
+        // Verify participantToken — either A or B token is valid
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+        }
         return session;
       }),
 
@@ -241,15 +247,15 @@ export const appRouter = router({
               const fullSession = await getSession(input.sessionId);
               if (!fullSession) return;
 
-              const A = fullSession.participantA as any;
-              const B = fullSession.participantB as any;
+              const A = fullSession.participantA;
+              const B = fullSession.participantB;
               const emailA = A?.driver?.email;
               const emailB = B?.driver?.email;
 
               // Stocker ownerEmail en DB
               if (emailA) {
                 await db.update(sessionsTable)
-                  .set({ ownerEmail: emailA } as any)
+                  .set({ ownerEmail: emailA })
                   .where(eq(sessionsTable.id, input.sessionId));
               }
 
@@ -273,7 +279,7 @@ export const appRouter = router({
                   insurerName: A?.insurance?.company,
                   language: A?.language || 'fr',
                 });
-                logger.info(`PDF envoyé à conducteur A: ${emailA}`);
+                logger.info(`PDF envoyé à conducteur A: ${maskEmail(emailA)}`);
               }
 
               // Envoyer à conducteur B (si email disponible et pas piéton)
@@ -294,7 +300,7 @@ export const appRouter = router({
                   insurerName: B?.insurance?.company,
                   language: B?.language || 'fr',
                 });
-                logger.info(`PDF envoyé à conducteur B: ${emailB}`);
+                logger.info(`PDF envoyé à conducteur B: ${maskEmail(emailB)}`);
               }
 
               // Piéton avec email → envoyer PDF version A aussi
@@ -308,7 +314,7 @@ export const appRouter = router({
                   pdfBase64: pdfB64A,
                   language: B?.language || 'fr',
                 });
-                logger.info(`PDF envoyé au piéton: ${emailB}`);
+                logger.info(`PDF envoyé au piéton: ${maskEmail(emailB)}`);
               }
 
             } catch (err) {
@@ -339,8 +345,23 @@ export const appRouter = router({
         mediaType:    z.enum(['image/jpeg','image/png','image/webp']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().optional(),
+        sessionId: z.string().optional(),
+        participantToken: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
+        // Validate session context when provided (prevents anonymous API token consumption)
+        if (input.sessionId && input.participantToken) {
+          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+          if (!validA) {
+            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
+          }
+        } else if (!input.sessionId && !input.participantToken) {
+          // Allow legacy calls without session context (backwards compatibility)
+          // Rate limiting already protects this path
+        } else {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        }
         const hint = input.documentType !== 'auto' || input.country
           ? { documentType: input.documentType, country: input.country }
           : undefined;
@@ -350,8 +371,23 @@ export const appRouter = router({
     batchScan: publicProcedure
       .input(z.object({
         images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
+        sessionId: z.string().optional(),
+        participantToken: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
+        // Validate session context when provided (prevents anonymous API token consumption)
+        if (input.sessionId && input.participantToken) {
+          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+          if (!validA) {
+            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
+          }
+        } else if (!input.sessionId && !input.participantToken) {
+          // Allow legacy calls without session context (backwards compatibility)
+          // Rate limiting already protects this path
+        } else {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        }
         const results = await Promise.all(
           input.images.map(imageBase64 =>
             scanDocument(imageBase64, 'image/jpeg', { documentType: 'auto' })
@@ -364,10 +400,25 @@ export const appRouter = router({
       .input(z.object({
         registrationBase64: z.string().min(100).max(10_000_000),
         greenCardBase64:    z.string().min(100).max(10_000_000),
+        sessionId: z.string().optional(),
+        participantToken: z.string().optional(),
       }))
-      .mutation(async ({ input }) =>
-        scanDocumentPair(input.registrationBase64, input.greenCardBase64)
-      ),
+      .mutation(async ({ input }) => {
+        // Validate session context when provided (prevents anonymous API token consumption)
+        if (input.sessionId && input.participantToken) {
+          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+          if (!validA) {
+            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
+          }
+        } else if (!input.sessionId && !input.participantToken) {
+          // Allow legacy calls without session context (backwards compatibility)
+          // Rate limiting already protects this path
+        } else {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        }
+        return scanDocumentPair(input.registrationBase64, input.greenCardBase64);
+      }),
   }),
 
   // ── PDF ────────────────────────────────
@@ -376,21 +427,28 @@ export const appRouter = router({
       .input(z.object({
         sessionId: z.string(),
         role: z.enum(['A', 'B', 'C', 'D', 'E']).default('A'),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+        }
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
-        const acc = (session as any).accident ?? {};
+        const acc = session.accident ?? {};
         const hasPartyBStatus = !!acc.partyBStatus;
-        const sessionVehicleCount = (session as any).vehicleCount ?? 2;
+        const sessionVehicleCount = session.vehicleCount ?? 2;
         const isSolo = sessionVehicleCount === 1;
         const NON_SIGNING = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
         const bIsNonSigning =
-          NON_SIGNING.includes((session.participantB as any)?.vehicle?.vehicleType) ||
-          NON_SIGNING.includes((session.participantB as any)?.vehicle?.bodyStyle) ||
-          (session.participantB as any)?.isPedestrian === true;
-        const aHasSigned = !!(session.participantA as any)?.signature;
+          NON_SIGNING.includes(session.participantB?.vehicle?.vehicleType) ||
+          NON_SIGNING.includes(session.participantB?.vehicle?.bodyStyle) ||
+          session.participantB?.isPedestrian === true;
+        const aHasSigned = !!session.participantA?.signature;
 
         const canGenerate =
           session.status === 'completed' ||
@@ -410,19 +468,26 @@ export const appRouter = router({
   email: router({
     sendToDriver: publicProcedure
       .input(z.object({
-        sessionId:   z.string(),
-        role:        z.enum(['A', 'B', 'C', 'D', 'E']),
-        driverEmail: z.string().email(),
-        pdfBase64:   z.string().min(100),
+        sessionId:        z.string(),
+        role:             z.enum(['A', 'B', 'C', 'D', 'E']),
+        participantToken: z.string(),
+        driverEmail:      z.string().email(),
+        pdfBase64:        z.string().min(100),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+        }
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
-        const roleMap: Record<string, any> = {
+        const roleMap: Record<string, Partial<typeof session.participantA> | null | undefined> = {
           A: session.participantA, B: session.participantB,
-          C: (session as any).participantC, D: (session as any).participantD,
-          E: (session as any).participantE,
+          C: session.participantC, D: session.participantD,
+          E: session.participantE,
         };
         const participant = roleMap[input.role];
         const driverName = [participant?.driver?.firstName, participant?.driver?.lastName]
@@ -485,8 +550,15 @@ export const appRouter = router({
         lang:        z.string().optional(),
         sessionId:   z.string(),
         role:        z.enum(['A', 'B', 'C', 'D', 'E']),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for voice' });
+        }
         const result = await transcribeAudio(
           input.audioBase64,
           input.mimeType,
@@ -497,10 +569,18 @@ export const appRouter = router({
 
     analyzeAccident: publicProcedure
       .input(z.object({
+        sessionId: z.string(),
+        participantToken: z.string(),
         transcript:      z.string().min(1),
         previousAnswers: z.record(z.string()).optional(),
       }))
       .mutation(async ({ input }) => {
+        // Verify participant token
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for voice' });
+        }
         const result = await analyzeAccidentTranscript(
           input.transcript,
           input.previousAnswers

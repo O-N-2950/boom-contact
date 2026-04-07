@@ -97,13 +97,27 @@ export async function renderSketch(input: SketchInput): Promise<string> {
   }
 }
 
+/** Sanitize string for safe HTML embedding — prevent XSS in Puppeteer pages */
+function sanitizeForHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\\/g, '\\\\');
+}
+
 function buildHtml(inp: SketchInput, W: number, H: number): string {
   const mapSrc = inp.mapImageBase64
     ? `data:image/png;base64,${inp.mapImageBase64}`
     : '';
 
-  const labelA = [inp.vehicleABrand, inp.vehicleAModel].filter(Boolean).join(' ') || 'Véhicule A';
-  const labelB = [inp.vehicleBBrand, inp.vehicleBModel].filter(Boolean).join(' ') || 'Véhicule B';
+  const labelA = sanitizeForHtml([inp.vehicleABrand, inp.vehicleAModel].filter(Boolean).join(' ') || 'Véhicule A');
+  const labelB = sanitizeForHtml([inp.vehicleBBrand, inp.vehicleBModel].filter(Boolean).join(' ') || 'Véhicule B');
+  const plateA = sanitizeForHtml(inp.vehicleAPlate || '');
+  const plateB = sanitizeForHtml(inp.vehicleBPlate || '');
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8">
 <style>*{margin:0;padding:0}body{background:#12121f;overflow:hidden}</style>
@@ -1016,8 +1030,8 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
       ctx.fillStyle='#111'; ctx.textAlign='center'; ctx.textBaseline='middle';
       ctx.fillText(num,x,y);
     }
-    plate(posA.x, posA.y+65, '${inp.vehicleAPlate || ''}');
-    plate(posB.x, posB.y+65, '${inp.vehicleBPlate || ''}');
+    plate(posA.x, posA.y+65, '${plateA}');
+    plate(posB.x, posB.y+65, '${plateB}');
 
     // Barre inférieure
     ctx.fillStyle='rgba(0,0,0,0.65)';

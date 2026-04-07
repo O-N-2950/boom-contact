@@ -227,6 +227,23 @@ export async function runMigrations() {
       END $$;
     `);
 
+    // ── Block 10 : Participant tokens — v10 audit ──────────────────────
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS token_a TEXT;
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS token_b TEXT;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+      CREATE INDEX IF NOT EXISTS idx_sessions_created_at ON sessions(created_at);
+      CREATE INDEX IF NOT EXISTS idx_sessions_owner_email ON sessions(owner_email);
+    `);
+
+    // ── Block 11 : Additional indexes — v10 audit ──────────────────────
+    await db.execute(`
+      CREATE INDEX IF NOT EXISTS idx_payments_created_at ON payments(created_at);
+      CREATE INDEX IF NOT EXISTS idx_credit_txns_created_at ON credit_txns(created_at);
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

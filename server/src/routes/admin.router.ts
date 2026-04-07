@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Context } from '../middleware/context.js';
 import { router, protectedProcedure, TRPCError } from './trpc.js';
 import { generateDailyPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
-import { logger } from '../logger.js';
+import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
 import { desc, gte, eq, count, sum, sql, isNull, and, inArray } from 'drizzle-orm';
@@ -134,7 +134,7 @@ export const adminDeleteUser = protectedProcedure
     await db.delete(vehicles).where(eq(vehicles.userId, user.id));
     await db.delete(users).where(eq(users.id, user.id));
 
-    logger.info('Compte supprimé par admin', { email: input.email });
+    logger.info('Compte supprimé par admin', { email: maskEmail(input.email) });
     return { ok: true, deleted: input.email };
   });
 
@@ -181,9 +181,9 @@ export const adminCleanupSessions = protectedProcedure
     const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
     const toComplete: string[] = [];
     for (const s of signing) {
-      const A = (s.participantA as any) ?? {};
-      const B = (s.participantB as any);
-      const acc = (s.accident as any) ?? {};
+      const A = s.participantA ?? {};
+      const B = s.participantB;
+      const acc = s.accident ?? {};
       const sigA = !!A?.signature;
       if (!sigA) continue;
       const bHasRealData = B && (B?.driver?.firstName || B?.vehicle?.licensePlate);
@@ -196,7 +196,7 @@ export const adminCleanupSessions = protectedProcedure
     }
     // Batch update instead of N+1
     if (toComplete.length > 0) {
-      await db.update(sessions).set({ status: 'completed' } as any).where(inArray(sessions.id, toComplete));
+      await db.update(sessions).set({ status: 'completed' }).where(inArray(sessions.id, toComplete));
     }
     return { fixed: toComplete.length, total: signing.length };
   });
@@ -211,12 +211,12 @@ export const adminFixOwnerEmails = protectedProcedure
     // Batch: collect all updates, then execute in one pass
     const updates: { id: string; email: string }[] = [];
     for (const s of missing) {
-      const email = (s.participantA as any)?.driver?.email;
+      const email = s.participantA?.driver?.email;
       if (email) updates.push({ id: s.id, email });
     }
     if (updates.length > 0) {
       await Promise.all(updates.map(u =>
-        db.update(sessions).set({ ownerEmail: u.email } as any).where(eq(sessions.id, u.id))
+        db.update(sessions).set({ ownerEmail: u.email }).where(eq(sessions.id, u.id))
       ));
     }
     return { fixed: updates.length, total: missing.length };

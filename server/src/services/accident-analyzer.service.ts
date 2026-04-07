@@ -3,6 +3,7 @@
 // Claude Sonnet — rapide, précis, multilingue
 
 import Anthropic from '@anthropic-ai/sdk';
+import { z } from 'zod';
 import { logger } from '../logger.js';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -23,6 +24,39 @@ export type ScenarioType =
 
 export type Direction = 'north' | 'south' | 'east' | 'west' | 'stopped';
 export type ImpactZone = 'front' | 'front_left' | 'front_right' | 'left' | 'right' | 'rear' | 'rear_left' | 'rear_right' | 'unknown';
+
+// ── Zod validation schemas for AI responses ────────────────────
+const VehicleSceneDataSchema = z.object({
+  direction: z.string(),
+  impactZone: z.string(),
+  wasMoving: z.boolean(),
+  speed: z.enum(['slow', 'normal', 'fast']).optional(),
+  isReversing: z.boolean().optional(),
+  vehicleType: z.string().optional(),
+}).passthrough();
+
+const ClarifyQuestionSchema = z.object({
+  id: z.string(),
+  question: z.string(),
+  options: z.array(z.object({ value: z.string(), label: z.string() })),
+  field: z.string(),
+}).passthrough();
+
+const AccidentAnalysisSchema = z.object({
+  scenario: z.string(),
+  vehicleA: VehicleSceneDataSchema,
+  vehicleB: VehicleSceneDataSchema,
+  confidence: z.number().min(0).max(1),
+  fault: z.enum(['A', 'B', 'shared', 'unknown']).optional(),
+  circumstances: z.array(z.string()).default([]),
+  description: z.string(),
+  language: z.string(),
+  trafficSide: z.enum(['right', 'left']).optional(),
+  country: z.string().optional(),
+  vehicleCount: z.enum([2, 3, 4] as const).default(2),
+  vehicleCountNote: z.string().optional().nullable(),
+  questions: z.array(ClarifyQuestionSchema).optional().default([]),
+}).passthrough();
 
 export interface VehicleSceneData {
   direction: Direction;       // Direction de déplacement avant impact
@@ -172,7 +206,8 @@ export async function analyzeAccidentTranscript(
 
     const text = response.content.find(b => b.type === 'text')?.text ?? '{}';
     const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
-    const result: AccidentSceneAnalysis = JSON.parse(clean);
+    const parsed = JSON.parse(clean);
+    const result = AccidentAnalysisSchema.parse(parsed) as AccidentSceneAnalysis;
 
     logger.info('Accident analysis success', {
       scenario: result.scenario,

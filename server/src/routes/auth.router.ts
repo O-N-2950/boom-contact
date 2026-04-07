@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
-import { logger } from '../logger.js';
+import { logger, maskEmail } from '../logger.js';
 import { db } from '../db/index.js';
 import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
@@ -12,7 +12,7 @@ export const authRouter = router({
 
   // POST auth.register
   register: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string().min(6) }))
+    .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
     .mutation(async ({ input }) => {
       try {
         const result = await registerUser(input.email, input.password);
@@ -123,7 +123,7 @@ export const authRouter = router({
       await db.delete(vehicles).where(eq(vehicles.userId, userId));
       await db.delete(users).where(eq(users.id, userId));
 
-      logger.info('Compte supprimé', { userId, email: userEmail });
+      logger.info('Compte supprimé', { userId, email: maskEmail(userEmail) });
       return { ok: true };
     }),
 
@@ -146,7 +146,7 @@ export const authRouter = router({
     }),
 
   adminBootstrap: publicProcedure
-    .input(z.object({ secret: z.string(), password: z.string().min(6) }))
+    .input(z.object({ secret: z.string(), password: z.string().min(8) }))
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
       if (!expected || input.secret !== expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });

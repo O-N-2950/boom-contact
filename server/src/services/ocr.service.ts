@@ -1,5 +1,6 @@
 import { logger } from '../logger.js';
 import Anthropic from '@anthropic-ai/sdk';
+import { z } from 'zod';
 import type { OCRResult, VehicleData, DriverData, InsuranceData } from '../../../shared/types';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -87,6 +88,26 @@ The Green Card / IMIC (International Motor Insurance Certificate) is standardize
   "rawText": "complete verbatim text extracted",
   "warnings": ["list of issues: blur, partial visibility, expired document, etc."]
 }`;
+
+// ─────────────────────────────────────────────────────────────
+// Zod validation schemas for AI responses
+// ─────────────────────────────────────────────────────────────
+const FieldWithConfidenceSchema = z.object({
+  value: z.union([z.string(), z.null()]),
+  confidence: z.number().min(0).max(1),
+}).passthrough();
+
+const RawOCRResponseSchema = z.object({
+  documentType: z.string(),
+  country: z.union([z.string(), z.null()]).optional(),
+  language: z.string().optional().default('unknown'),
+  overallConfidence: z.number().min(0).max(1).optional().default(0),
+  vehicle: z.record(FieldWithConfidenceSchema).optional().default({}),
+  driver: z.record(FieldWithConfidenceSchema).optional().default({}),
+  insurance: z.record(FieldWithConfidenceSchema).optional().default({}),
+  rawText: z.string().optional().default(''),
+  warnings: z.array(z.string()).optional().default([]),
+}).passthrough();
 
 // ─────────────────────────────────────────────────────────────
 // Types internes
@@ -245,7 +266,8 @@ export async function scanDocument(
 
     const text = response.content.find(b => b.type === 'text')?.text ?? '{}';
     const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
-    const raw: RawOCRResponse = JSON.parse(clean);
+    const parsed = JSON.parse(clean);
+    const raw = RawOCRResponseSchema.parse(parsed) as RawOCRResponse;
 
     logger.info('OCR scan success', {
       docType: raw.documentType,

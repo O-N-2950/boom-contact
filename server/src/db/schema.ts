@@ -77,8 +77,9 @@ export const payments = pgTable('payments', {
   createdAt:         timestamp('created_at').notNull().defaultNow(),
   paidAt:            timestamp('paid_at'),
 }, (t) => ({
-  emailIdx:  index('payments_email_idx').on(t.userEmail),
-  statusIdx: index('payments_status_idx').on(t.status),
+  emailIdx:      index('payments_email_idx').on(t.userEmail),
+  statusIdx:     index('payments_status_idx').on(t.status),
+  createdAtIdx:  index('payments_created_at_idx').on(t.createdAt),
 }));
 
 // ── Credit transactions ───────────────────────────────────────
@@ -90,8 +91,9 @@ export const creditTxns = pgTable('credit_txns', {
   ref:         text('ref'),
   createdAt:   timestamp('created_at').notNull().defaultNow(),
 }, (t) => ({
-  emailIdx:  index('credit_txns_email_idx').on(t.userEmail),
-  reasonIdx: index('credit_txns_reason_idx').on(t.reason),
+  emailIdx:      index('credit_txns_email_idx').on(t.userEmail),
+  reasonIdx:     index('credit_txns_reason_idx').on(t.reason),
+  createdAtIdx:  index('credit_txns_created_at_idx').on(t.createdAt),
 }));
 
 // ── Police stations ───────────────────────────────────────────

@@ -1,5 +1,5 @@
 import { logger } from '../logger.js';
-import { randomBytes } from 'crypto';
+import crypto, { randomBytes } from 'crypto';
 import { eq } from 'drizzle-orm';
 import { db, schema } from '../db';
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
@@ -7,22 +7,41 @@ import { makeId, NON_SIGNING_TYPES } from '../constants.js';
 
 const SESSION_TTL_HOURS = 24 * 7; // 7 jours — permet de reprendre un constat après blessure
 
-function rowToSession(row: typeof schema.sessions.$inferSelect): ConstatSession & { tokenA?: string; tokenB?: string } {
+// Type for raw session row with all known columns
+interface SessionRow {
+  id: string;
+  status: string;
+  createdAt: Date;
+  expiresAt: Date;
+  accident: Partial<AccidentData>;
+  participantA: Partial<ParticipantData>;
+  participantB: Partial<ParticipantData> | null;
+  participantC?: Partial<ParticipantData> | null;
+  participantD?: Partial<ParticipantData> | null;
+  participantE?: Partial<ParticipantData> | null;
+  vehicleCount: number;
+  pdfUrl: string | null;
+  ownerEmail: string | null;
+  tokenA: string | null;
+  tokenB: string | null;
+}
+
+function rowToSession(row: SessionRow): ConstatSession & { tokenA?: string; tokenB?: string } {
   return {
     id:           row.id,
     status:       row.status as ConstatSession['status'],
     createdAt:    row.createdAt,
     expiresAt:    row.expiresAt,
-    accident:     (row.accident as any) ?? {},
-    participantA: (row.participantA as any) ?? { role: 'A', vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: 'fr' },
-    participantB: (row.participantB as any) ?? undefined,
-    participantC: (row as any).participantC ?? undefined,
-    participantD: (row as any).participantD ?? undefined,
-    participantE: (row as any).participantE ?? undefined,
-    vehicleCount: (row as any).vehicleCount ?? 2,
+    accident:     row.accident ?? {},
+    participantA: row.participantA ?? { role: 'A', vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: 'fr' },
+    participantB: row.participantB ?? undefined,
+    participantC: row.participantC ?? undefined,
+    participantD: row.participantD ?? undefined,
+    participantE: row.participantE ?? undefined,
+    vehicleCount: row.vehicleCount ?? 2,
     pdfUrl:       row.pdfUrl ?? undefined,
-    tokenA:       (row as any).tokenA ?? undefined,
-    tokenB:       (row as any).tokenB ?? undefined,
+    tokenA:       row.tokenA ?? undefined,
+    tokenB:       row.tokenB ?? undefined,
   };
 }
 
@@ -54,7 +73,7 @@ export async function createSession(): Promise<ConstatSession & { tokenA: string
   } as any).returning();
 
   logger.session('created', id);
-  return { ...rowToSession(row), tokenA, tokenB };
+  return { ...rowToSession(row as SessionRow), tokenA, tokenB };
 }
 
 // Verify participant token for a session+role
@@ -66,11 +85,25 @@ export async function verifyParticipantToken(sessionId: string, token: string, r
     .limit(1);
 
   if (!row) return false;
-  const r = row as any;
-  if (role === 'A' && r.tokenA === token) return true;
-  if (role === 'B' && r.tokenB === token) return true;
+  const r = row as SessionRow;
+
+  // Use timing-safe comparison to prevent timing attacks
+  function safeCompare(a: string | null | undefined, b: string): boolean {
+    if (!a) return false;
+    try {
+      const bufA = Buffer.from(a);
+      const bufB = Buffer.from(b);
+      if (bufA.length !== bufB.length) return false;
+      return crypto.timingSafeEqual(bufA, bufB);
+    } catch {
+      return false;
+    }
+  }
+
+  if (role === 'A' && safeCompare(r.tokenA, token)) return true;
+  if (role === 'B' && safeCompare(r.tokenB, token)) return true;
   // Roles C/D/E can use tokenB (they're additional participants like B)
-  if (['C', 'D', 'E'].includes(role) && r.tokenB === token) return true;
+  if (['C', 'D', 'E'].includes(role) && safeCompare(r.tokenB, token)) return true;
   return false;
 }
 
@@ -139,8 +172,9 @@ export async function updateParticipant(
 
     if (!currentRow) return null;
 
+    const typedRow = currentRow as SessionRow;
     const key = role === 'A' ? 'participantA' : 'participantB';
-    const current = role === 'A' ? (currentRow.participantA as any) ?? {} : (currentRow.participantB as any) ?? {};
+    const current = role === 'A' ? typedRow.participantA ?? {} : typedRow.participantB ?? {};
     const merged = { ...current, ...data };
 
     const [row] = await tx.update(schema.sessions)
@@ -148,7 +182,7 @@ export async function updateParticipant(
       .where(eq(schema.sessions.id, id))
       .returning();
 
-    return rowToSession(row);
+    return rowToSession(row as SessionRow);
   });
 }
 
@@ -169,10 +203,11 @@ export async function updateAccident(
 
     if (!currentRow) return null;
 
-    const currentSession = rowToSession(currentRow);
+    const typedRow = currentRow as SessionRow;
+    const currentSession = rowToSession(typedRow);
 
     // vehicleCount is a top-level column — must be updated separately from accident JSONB
-    const { vehicleCount, ...accidentData } = data as any;
+    const { vehicleCount, ...accidentData } = data;
     const updatePayload: Record<string, unknown> = { accident: { ...currentSession.accident, ...accidentData } };
     if (vehicleCount !== undefined) {
       updatePayload.vehicleCount = vehicleCount;
@@ -183,7 +218,7 @@ export async function updateAccident(
       .where(eq(schema.sessions.id, id))
       .returning();
 
-    return rowToSession(row);
+    return rowToSession(row as SessionRow);
   });
 }
 
@@ -204,7 +239,8 @@ export async function signSession(
     .limit(1);
 
   if (!sessionRow) return null;
-  const session = rowToSession(sessionRow);
+  const typedRow = sessionRow as SessionRow;
+  const session = rowToSession(typedRow);
 
   // Map role to DB column
   const keyMap: Record<string, string> = {
@@ -213,16 +249,16 @@ export async function signSession(
   const key = keyMap[role];
   if (!key) return null;
 
-  const current = (session as any)[role === 'A' ? 'participantA'
-    : role === 'B' ? 'participantB'
-    : role === 'C' ? 'participantC'
-    : role === 'D' ? 'participantD'
-    : 'participantE'] ?? {};
+  const current = role === 'A' ? typedRow.participantA
+    : role === 'B' ? typedRow.participantB
+    : role === 'C' ? typedRow.participantC
+    : role === 'D' ? typedRow.participantD
+    : typedRow.participantE;
 
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
   // ── Types ne nécessitant pas de signature ─────────────────
-  const isPedestrianOrNonSigning = (p: any) =>
+  const isPedestrianOrNonSigning = (p: Partial<ParticipantData> | null | undefined) =>
     NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
     NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
     NON_SIGNING_TYPES.includes(p?.vehicle?.vehicleType) ||
@@ -231,21 +267,21 @@ export async function signSession(
   const participants = [
     role === 'A' ? updated : session.participantA,
     role === 'B' ? updated : session.participantB,
-    (session as any).participantC && (role === 'C' ? updated : (session as any).participantC),
-    (session as any).participantD && (role === 'D' ? updated : (session as any).participantD),
-    (session as any).participantE && (role === 'E' ? updated : (session as any).participantE),
-  ].filter(Boolean);
+    typedRow.participantC && (role === 'C' ? updated : typedRow.participantC),
+    typedRow.participantD && (role === 'D' ? updated : typedRow.participantD),
+    typedRow.participantE && (role === 'E' ? updated : typedRow.participantE),
+  ].filter(Boolean) as (Partial<ParticipantData> | null)[];
 
-  const presentParticipants = participants.filter((p: any) =>
+  const presentParticipants = participants.filter((p) =>
     p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate ||
     p?.name || p?.vehicle?.brand || isPedestrianOrNonSigning(p)
   );
 
-  const signingParticipants = presentParticipants.filter((p: any) => !isPedestrianOrNonSigning(p));
+  const signingParticipants = presentParticipants.filter((p) => !isPedestrianOrNonSigning(p));
 
   // vehicleCount est une colonne DB sur la session, pas dans l'objet accident
-  const accidentData = (session as any).accident ?? {};
-  const sessionVehicleCount = (session as any).vehicleCount ?? 2;
+  const accidentData = typedRow.accident ?? {};
+  const sessionVehicleCount = typedRow.vehicleCount ?? 2;
   const isSolo = sessionVehicleCount === 1;
 
   // Cas partyBStatus : partie adverse déclarée indisponible (fuite, blessé, refus…)
@@ -256,17 +292,17 @@ export async function signSession(
       // Cas normal : ≥2 parties présentes, tous les conducteurs ont signé
       (presentParticipants.length >= 2 &&
        signingParticipants.length >= 1 &&
-       signingParticipants.every((p: any) => !!p?.signature))
+       signingParticipants.every((p) => !!p?.signature))
     ) ||
     // Cas accident solo : 1 seul conducteur, a signé
-    (isSolo && signingParticipants.length >= 1 && signingParticipants.every((p: any) => !!p?.signature)) ||
+    (isSolo && signingParticipants.length >= 1 && signingParticipants.every((p) => !!p?.signature)) ||
     // Cas partie B indisponible (fuite, blessé, refus, décédé…)
-    (hasPartyBStatus && signingParticipants.some((p: any) => !!p?.signature)) ||
+    (hasPartyBStatus && signingParticipants.some((p) => !!p?.signature)) ||
     // Cas piéton/vélo seul côté B : 1 conducteur + 1 non-signataire, conducteur a signé
     (presentParticipants.length >= 2 &&
      signingParticipants.length === 1 &&
      presentParticipants.some(isPedestrianOrNonSigning) &&
-     signingParticipants.every((p: any) => !!p?.signature));
+     signingParticipants.every((p) => !!p?.signature));
 
   const newStatus = allSigned ? 'completed' : 'signing';
 
@@ -276,7 +312,7 @@ export async function signSession(
     .returning();
 
   logger.session(allSigned ? 'completed' : `signed-${role}`, id, role);
-  return { session: rowToSession(row), bothSigned: allSigned };
+  return { session: rowToSession(row as SessionRow), bothSigned: allSigned };
   }); // end transaction
 }
 

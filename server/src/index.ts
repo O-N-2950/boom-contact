@@ -28,7 +28,8 @@ const ALLOWED_ORIGINS = [
   'https://boom.contact',
   'https://www.boom.contact',
   'https://police.boom.contact',
-  'http://localhost:5173',
+  // Only allow localhost in development
+  ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : []),
 ].filter(Boolean) as string[];
 
 // Socket.io
@@ -37,7 +38,7 @@ export const io = new SocketServer(httpServer, {
 });
 
 // ── Security ──────────────────────────────────────────────────
-(async () => {
+async function setupSecurity() {
   try {
     const helmet = (await import('helmet')).default;
     // CSRF: SPA uses Authorization header (not cookies) for JWT, so CSRF tokens are less critical.
@@ -73,11 +74,13 @@ export const io = new SocketServer(httpServer, {
       next();
     });
     logger.info('🛡️  Helmet active');
-  } catch (e) { logger.warn('Helmet not available', { error: String(e) }); }
-})();
+  } catch (e) {
+    logger.warn('Helmet not available', { error: String(e) });
+  }
+}
 
 // ── Rate limiting ─────────────────────────────────────────────
-(async () => {
+async function setupRateLimiting() {
   try {
     const { rateLimit } = await import('express-rate-limit');
 
@@ -186,8 +189,10 @@ export const io = new SocketServer(httpServer, {
     }));
 
     logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min)');
-  } catch (e) { logger.warn('Rate limit not available', { error: String(e) }); }
-})();
+  } catch (e) {
+    logger.warn('Rate limit not available', { error: String(e) });
+  }
+}
 
 // ── HTTP request logging (Morgan) ─────────────────────────────
 app.use(morgan((tokens, req, res) => {
@@ -245,7 +250,17 @@ app.get('/health', (_req, res) => {
 });
 
 // ── Monitor routes ─────────────────────────────────────────
-app.get('/api/monitor/status', (_req, res) => res.json(getMonitorStatus()));
+app.get('/api/monitor/status', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  const payload = verifyJWT(authHeader.slice(7));
+  if (!payload || payload.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+  res.json(getMonitorStatus());
+});
 app.post('/api/monitor/client-error', (req, res) => {
   const { type, message, url } = req.body || {};
   logger.warn('[CLIENT-ERROR]', { type, message: message?.slice(0, 200), url });
@@ -427,15 +442,15 @@ io.use((socket, next) => {
   const token = socket.handshake.auth?.token || socket.handshake.query?.token;
   if (!token) {
     // Allow anonymous connections for session participants (QR flow)
-    // but tag them as unauthenticated
     (socket as any).authUser = null;
     return next();
   }
   const payload = verifyJWT(token as string);
-  (socket as any).authUser = payload;
   if (!payload) {
-    logger.warn('Socket auth failed — invalid token', { id: socket.id.slice(0, 8) });
+    logger.warn('Socket auth failed — invalid token, disconnecting', { id: socket.id.slice(0, 8) });
+    return next(new Error('Authentication failed: invalid token'));
   }
+  (socket as any).authUser = payload;
   next();
 });
 
@@ -565,7 +580,7 @@ setInterval(async () => {
       );
     // On ne log que si quelque chose a changé
   } catch (e) {
-    // Silencieux — cron non critique
+    logger.debug('Session expiry cron failed (non-critical)', { error: String(e) });
   }
 }, 60 * 60 * 1000); // toutes les heures
 
@@ -588,6 +603,8 @@ setInterval(async () => {
 
 async function start() {
   logger.info('Starting boom.contact server...');
+  await setupSecurity();
+  await setupRateLimiting();
   await runMigrations();
   await startupCheck();
   startMonitoring(5);

@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests yet\" && exit 0"
+    "test": "vitest run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -65,6 +65,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/coverage-v8": "^1.0.0",
     "autoprefixer": "^10.4.0",
     "concurrently": "^8.2.0",
     "drizzle-kit": "^0.31.10",
@@ -75,7 +76,8 @@
     "tailwindcss": "^3.4.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.7"
+    "vite": "^8.0.7",
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=20.0.0"
