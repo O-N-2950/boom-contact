@@ -169,14 +169,9 @@ export async function runMigrations() {
 
     // ── Block 6 : Admin user seed — raw SQL, no dynamic import ──────────
     // Upsert admin user — always sets role=admin + credits=999999 + password
-    // Password: Cristal4you11++ → scrypt hash computed at first run
-    // We use bcrypt-compatible approach: store a known sentinel, 
-    // then auth.service will hash on first login if needed.
-    // For now we store a pre-seeded password_hash via a known value:
-    // We can't compute scrypt here easily — so we set a flag and let 
-    // auth.service handle it. Instead: just ensure role/credits are correct
-    // and set password_hash to NULL so the user can use magic link or 
-    // we'll push the hash separately.
+    // Admin password is set via ADMIN_PASSWORD env var (see auth.service.ts seedAdminUser)
+    // Never hardcode passwords in migration files.
+    // Ensure role/credits are correct — password hash is managed by seedAdminUser.
     await db.execute(`
       INSERT INTO users (id, email, role, credits, consent_cgu, consent_cgu_at, created_at)
       VALUES ('admin_boom_01', 'contact@boom.contact', 'admin', 999999, TRUE, NOW(), NOW())

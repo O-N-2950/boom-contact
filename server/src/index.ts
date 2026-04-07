@@ -359,13 +359,47 @@ app.get('/sitemap.xml', (_req, res) => {
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
-  app.use(express.static(distPath));
-  app.get('*', (_req, res) => res.sendFile(path.join(distPath, 'index.html')));
+  // Static assets (JS, CSS, images) — cache for 1 year (Vite adds content hash)
+  app.use('/assets', express.static(path.join(distPath, 'assets'), {
+    maxAge: '1y',
+    immutable: true,
+  }));
+  // Other static files — short cache
+  app.use(express.static(distPath, {
+    maxAge: '1h',
+    setHeaders: (res, filePath) => {
+      // index.html should never be cached
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
+    },
+  }));
+  app.get('*', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
 }
 
-// ── Socket.io ─────────────────────────────────────────────────
+// ── Socket.io — JWT authentication middleware ────────────────
+import { verifyJWT } from './services/auth.service.js';
+io.use((socket, next) => {
+  const token = socket.handshake.auth?.token || socket.handshake.query?.token;
+  if (!token) {
+    // Allow anonymous connections for session participants (QR flow)
+    // but tag them as unauthenticated
+    (socket as any).authUser = null;
+    return next();
+  }
+  const payload = verifyJWT(token as string);
+  (socket as any).authUser = payload;
+  if (!payload) {
+    logger.warn('Socket auth failed — invalid token', { id: socket.id.slice(0, 8) });
+  }
+  next();
+});
+
 io.on('connection', (socket) => {
-  logger.debug('Socket connected', { id: socket.id.slice(0, 8) });
+  logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
   socket.on('join-session', (sessionId: string) => {
     socket.join(`session:${sessionId}`);

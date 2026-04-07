@@ -12,7 +12,7 @@ if (!JWT_SECRET) {
   console.error('FATAL: JWT_SECRET environment variable is not set. Server cannot start.');
   process.exit(1);
 }
-const JWT_EXPIRES = '30d';
+const JWT_EXPIRES = '7d';
 const MAGIC_TTL   = 15 * 60 * 1000;  // 15 min
 const GIFT_TTL    = 7  * 24 * 60 * 60 * 1000; // 7 days
 

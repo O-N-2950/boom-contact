@@ -34,6 +34,26 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   return next({ ctx: { ...ctx, authUser: ctx.authUser } });
 });
 
+// ── Police procedure — requires valid police token in input ──────
+export const policeProcedure = t.procedure.use(async ({ ctx, next, rawInput }) => {
+  const input = rawInput as { token?: string } | undefined;
+  if (!input?.token) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Token police requis.' });
+  }
+  const policePayload = verifyPoliceToken(input.token);
+  return next({ ctx: { ...ctx, policeUser: policePayload } });
+});
+
+// ── HTML escaping utility to prevent XSS in emails ──────────
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const CLIENT_URL = process.env.CLIENT_URL
   || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : null)
   || 'https://boom-contact-production.up.railway.app';
@@ -412,17 +432,21 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
+        const safeEmail = escapeHtml(input.userEmail || 'Anonyme');
+        const safePage = escapeHtml(input.page || 'Inconnue');
+        const safeUA = escapeHtml(input.userAgent || 'Inconnu');
+        const safeMessage = escapeHtml(input.message);
         await resend.emails.send({
           from: 'boom.contact <contact@boom.contact>',
           to:   'contact@boom.contact',
           subject: `🐛 Bug report — boom.contact`,
           html: `<h2>Bug Report</h2>
-            <p><strong>De :</strong> ${input.userEmail || 'Anonyme'}</p>
-            <p><strong>Page :</strong> ${input.page || 'Inconnue'}</p>
-            <p><strong>User-Agent :</strong> ${input.userAgent || 'Inconnu'}</p>
+            <p><strong>De :</strong> ${safeEmail}</p>
+            <p><strong>Page :</strong> ${safePage}</p>
+            <p><strong>User-Agent :</strong> ${safeUA}</p>
             <hr>
             <p><strong>Message :</strong></p>
-            <p style="white-space:pre-wrap;">${input.message}</p>
+            <p style="white-space:pre-wrap;">${safeMessage}</p>
             <hr>
             <p style="color:#999;font-size:12px;">boom.contact Bug Report · ${new Date().toISOString()}</p>`,
         });
@@ -479,11 +503,11 @@ export const appRouter = router({
         return { credits };
       }),
 
-    // Utiliser 1 crédit pour démarrer un constat
-    useCredit: publicProcedure
-      .input(z.object({ email: z.string().email(), sessionId: z.string() }))
-      .mutation(async ({ input }) => {
-        const ok = await useCredit(input.email, input.sessionId);
+    // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
+    useCredit: protectedProcedure
+      .input(z.object({ sessionId: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        const ok = await useCredit(ctx.authUser.email, input.sessionId);
         if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
         return { ok: true };
       }),
@@ -491,17 +515,16 @@ export const appRouter = router({
 
   // ── USER — consentements RGPD ─────────────────────────────
   user: router({
-    saveConsent: publicProcedure
+    saveConsent: protectedProcedure
       .input(z.object({
-        email:             z.string().email(),
         consentCGU:        z.boolean(),
         consentMarketing:  z.boolean(),
         country:           z.string().optional(),
         language:          z.string().optional(),
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
         await saveConsent(
-          input.email,
+          ctx.authUser.email,
           input.consentCGU,
           input.consentMarketing,
           input.country,
@@ -527,22 +550,22 @@ export const appRouter = router({
       }),
 
     // Dashboard — sessions actives (token requis)
-    dashboard: publicProcedure
+    dashboard: policeProcedure
       .input(z.object({ token: z.string() }))
-      .query(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .query(async ({ ctx }) => {
+        const payload = ctx.policeUser;
         const data = await getPoliceDashboard(payload.stationId);
         return { ...data, agent: { stationId: payload.stationId, canton: payload.canton } };
       }),
 
     // Rejoindre une session via QR (lecture seule + annotation)
-    joinSession: publicProcedure
+    joinSession: policeProcedure
       .input(z.object({
         token:     z.string(),
         sessionId: z.string(),
       }))
-      .query(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .query(async ({ ctx, input }) => {
+        const payload = ctx.policeUser;
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
         return {
@@ -552,26 +575,26 @@ export const appRouter = router({
       }),
 
     // Session complète avec audit trail
-    getFullSession: publicProcedure
+    getFullSession: policeProcedure
       .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .query(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .query(async ({ ctx, input }) => {
+        const payload = ctx.policeUser;
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
-        await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, (payload as any).country || 'CH');
+        await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, payload.country || 'CH');
         return { session, policeAgent: payload };
       }),
 
     // Charger annotations existantes
-    getAnnotation: publicProcedure
+    getAnnotation: policeProcedure
       .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .query(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .query(async ({ ctx, input }) => {
+        const payload = ctx.policeUser;
         return getAnnotation(input.sessionId, payload.stationId);
       }),
 
     // Sauvegarder annotations agent
-    saveAnnotation: publicProcedure
+    saveAnnotation: policeProcedure
       .input(z.object({
         token:     z.string(),
         sessionId: z.string(),
@@ -583,17 +606,17 @@ export const appRouter = router({
           observations:  z.string().optional(),
         }),
       }))
-      .mutation(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .mutation(async ({ ctx, input }) => {
+        const payload = ctx.policeUser;
         const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data as any);
         return { ok: true, id: result.id };
       }),
 
     // Générer PDF rapport d'intervention
-    generateReport: publicProcedure
+    generateReport: policeProcedure
       .input(z.object({ token: z.string(), sessionId: z.string() }))
-      .mutation(async ({ input }) => {
-        const payload = verifyPoliceToken(input.token);
+      .mutation(async ({ ctx, input }) => {
+        const payload = ctx.policeUser;
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
         const annotation = await getAnnotation(input.sessionId, payload.stationId);
@@ -609,7 +632,7 @@ export const appRouter = router({
         const pdfBytes = await generatePoliceReport(
           session as any, annotationData,
           { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
-          (payload as any).country || 'CH'
+          payload.country || 'CH'
         );
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
         const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
@@ -1123,17 +1146,22 @@ export const appRouter = router({
     }),
 
   adminListUsers: protectedProcedure
-    .query(async ({ ctx }) => {
+    .input(z.object({
+      limit: z.number().min(1).max(500).default(100),
+      offset: z.number().min(0).default(0),
+    }).default({ limit: 100, offset: 0 }))
+    .query(async ({ ctx, input }) => {
       if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const { db } = await import('../db/index.js');
       const { users } = await import('../db/schema.js');
+      const { desc } = await import('drizzle-orm');
       const all = await db.select({
         id: users.id,
         email: users.email,
         role: users.role,
         credits: users.credits,
         createdAt: users.createdAt,
-      }).from(users);
+      }).from(users).orderBy(desc(users.createdAt)).limit(input.limit).offset(input.offset);
       return all;
     }),
 

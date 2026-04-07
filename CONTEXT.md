@@ -27,7 +27,7 @@
 | | |
 |---|---|
 | **Email** | contact@boom.contact |
-| **Password** | Cristal4you11++ |
+| **Password** | (set via ADMIN_PASSWORD env var — never hardcode) |
 | **Role** | admin |
 | **Credits** | 999999 (∞) |
 | **Accès dashboard** | https://www.boom.contact/?admin=true |

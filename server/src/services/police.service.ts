@@ -6,14 +6,27 @@ import { policeStations, policeUsers, policeAnnotations, sessions } from '../db/
 import { eq, and, desc, gte } from 'drizzle-orm';
 import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET not set'); })();
 
 // ── Helpers ──────────────────────────────────────────────────
 
+const BCRYPT_ROUNDS = 12;
+
 async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, BCRYPT_ROUNDS);
+}
+
+/** Legacy SHA256 hash for migration — DO NOT USE for new passwords */
+function hashPasswordLegacySHA256(password: string): string {
+  return crypto.createHash('sha256').update(password + 'boom-police-salt').digest('hex');
+}
+
+/** Legacy scrypt hash for migration — DO NOT USE for new passwords */
+function hashPasswordLegacyScrypt(password: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const salt = 'boom-police-fixed-salt'; // fixed salt for police (not per-user — upgrade later)
+    const salt = 'boom-police-fixed-salt';
     crypto.scrypt(password, salt, 64, (err, key) => {
       if (err) return reject(err);
       resolve(key.toString('hex'));
@@ -21,9 +34,9 @@ async function hashPassword(password: string): Promise<string> {
   });
 }
 
-function hashPasswordSync(password: string): string {
-  // Legacy sync hash for existing password verification during migration
-  return crypto.createHash('sha256').update(password + 'boom-police-salt').digest('hex');
+/** Check if stored hash is bcrypt format */
+function isBcryptHash(hash: string): boolean {
+  return hash.startsWith('$2b$') || hash.startsWith('$2a$');
 }
 
 function generateId(prefix: string): string {
@@ -41,18 +54,43 @@ export async function loginPoliceUser(email: string, password: string) {
 
   if (!user) throw new Error('Identifiants incorrects');
 
-  // Support both legacy SHA256 and new scrypt hashes
-  const legacyHash = hashPasswordSync(password);
-  // Timing-safe comparison to prevent timing attacks
-  const isLegacy = (() => {
+  const storedHash = user.passwordHash || '';
+  let authenticated = false;
+
+  if (isBcryptHash(storedHash)) {
+    // New bcrypt hash — verify with bcrypt
+    authenticated = await bcrypt.compare(password, storedHash);
+  } else {
+    // Legacy: try SHA256 first, then scrypt
+    const legacyHashSHA = hashPasswordLegacySHA256(password);
     try {
-      return crypto.timingSafeEqual(
-        Buffer.from(legacyHash, 'hex'),
-        Buffer.from(user.passwordHash || '', 'hex')
+      authenticated = crypto.timingSafeEqual(
+        Buffer.from(legacyHashSHA, 'hex'),
+        Buffer.from(storedHash, 'hex')
       );
-    } catch { return false; }
-  })();
-  if (!isLegacy) throw new Error('Identifiants incorrects');
+    } catch { authenticated = false; }
+
+    if (!authenticated) {
+      // Try legacy scrypt
+      const legacyHashScrypt = await hashPasswordLegacyScrypt(password);
+      try {
+        authenticated = crypto.timingSafeEqual(
+          Buffer.from(legacyHashScrypt, 'hex'),
+          Buffer.from(storedHash, 'hex')
+        );
+      } catch { authenticated = false; }
+    }
+
+    // Progressive migration: re-hash to bcrypt on successful login
+    if (authenticated) {
+      const newHash = await hashPassword(password);
+      await db.update(policeUsers)
+        .set({ passwordHash: newHash })
+        .where(eq(policeUsers.id, user.id));
+    }
+  }
+
+  if (!authenticated) throw new Error('Identifiants incorrects');
 
   await db.update(policeUsers)
     .set({ lastLoginAt: new Date() })
