@@ -15,7 +15,11 @@ export const sessions = pgTable('sessions', {
   vehicleCount: integer('vehicle_count').notNull().default(2),
   pdfUrl:       text('pdf_url'),
   ownerEmail:   text('owner_email'),
-});
+}, (t) => ({
+  statusIdx:     index('sessions_status_idx').on(t.status),
+  createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),
+  ownerEmailIdx: index('sessions_owner_email_idx').on(t.ownerEmail),
+}));
 
 // ── Users — comptes avec crédits ─────────────────────────────
 export const users = pgTable('users', {
@@ -70,7 +74,8 @@ export const payments = pgTable('payments', {
   createdAt:         timestamp('created_at').notNull().defaultNow(),
   paidAt:            timestamp('paid_at'),
 }, (t) => ({
-  emailIdx: index('payments_email_idx').on(t.userEmail),
+  emailIdx:  index('payments_email_idx').on(t.userEmail),
+  statusIdx: index('payments_status_idx').on(t.status),
 }));
 
 // ── Credit transactions ───────────────────────────────────────
@@ -81,7 +86,10 @@ export const creditTxns = pgTable('credit_txns', {
   reason:      varchar('reason', { length: 40 }).notNull(),
   ref:         text('ref'),
   createdAt:   timestamp('created_at').notNull().defaultNow(),
-});
+}, (t) => ({
+  emailIdx:  index('credit_txns_email_idx').on(t.userEmail),
+  reasonIdx: index('credit_txns_reason_idx').on(t.reason),
+}));
 
 // ── Police stations ───────────────────────────────────────────
 export const policeStations = pgTable('police_stations', {

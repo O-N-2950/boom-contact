@@ -55,9 +55,33 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Tout le reste (HTML, JS, CSS, images) : Network-First
+  // Static assets (JS, CSS, images, fonts) → StaleWhileRevalidate
+  // Serve cached version immediately, update cache in background
+  const ext = url.pathname.split('.').pop();
+  if (['js', 'css', 'woff2', 'woff', 'ttf', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'ico'].includes(ext)) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
+  // HTML and everything else: Network-First
   event.respondWith(networkFirst(request));
 });
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(request);
+
+  // Fetch fresh version in background
+  const fetchPromise = fetch(request).then((response) => {
+    if (response.ok && request.method === 'GET') {
+      cache.put(request, response.clone());
+    }
+    return response;
+  }).catch(() => null);
+
+  // Return cached immediately if available, otherwise wait for network
+  return cached || (await fetchPromise) || new Response('Offline', { status: 503 });
+}
 
 async function networkFirst(request) {
   try {
