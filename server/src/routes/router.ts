@@ -469,30 +469,6 @@ export const appRouter = router({
       }),
   }),
 
-  // ── AGENT — interface assistant boom.contact ──────────────
-  agent: router({
-    chat: publicProcedure
-      .input(z.object({
-        systemPrompt: z.string(),
-        messages: z.array(z.object({
-          role: z.enum(['user', 'assistant']),
-          content: z.string(),
-        })).min(1).max(30),
-      }))
-      .mutation(async ({ input }) => {
-        const Anthropic = (await import('@anthropic-ai/sdk')).default;
-        const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-        const response = await client.messages.create({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: input.systemPrompt,
-          messages: input.messages,
-        });
-        const text = response.content.find((b: any) => b.type === 'text')?.text ?? '';
-        return { text };
-      }),
-  }),
-
   // ── USER — consentements RGPD ─────────────────────────────
   user: router({
     saveConsent: publicProcedure
