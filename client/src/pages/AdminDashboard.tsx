@@ -155,13 +155,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const, alignItems: 'flex-end' }}>
                 <div>
                   <div style={{ color: '#666', fontSize: 11, marginBottom: 4 }}>CRÉDITS</div>
-                  <input type="number" min={1} max={100} value={giftCredits}
+                  <input type="number" aria-label="Crédits" min={1} max={100} value={giftCredits}
                     onChange={e => setGiftCredits(Number(e.target.value))}
                     style={{ ...inputSm, width: 70 }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 200 }}>
                   <div style={{ color: '#666', fontSize: 11, marginBottom: 4 }}>EMAIL (optionnel)</div>
-                  <input placeholder="destinataire@email.com" value={giftEmail}
+                  <input aria-label="Adresse email du destinataire" placeholder="destinataire@email.com" value={giftEmail}
                     onChange={e => setGiftEmail(e.target.value)}
                     style={inputSm} />
                 </div>

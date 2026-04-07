@@ -135,6 +135,7 @@ export function ColorPicker({ value, onChange, label = 'Couleur du véhicule' }:
       <div style={{ position: 'relative' }}>
         <input
           type="text"
+          aria-label="Couleur personnalisée"
           value={value ?? ''}
           onChange={e => onChange(e.target.value)}
           placeholder="Autre couleur (ex: Vert racing, Gris Nardo…)"

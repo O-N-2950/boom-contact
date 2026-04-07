@@ -130,6 +130,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
     <div style={{ marginBottom: 12 }}>
       <label style={lbl}>{label}</label>
       <input
+        aria-label={label}
         type={type} value={(data[k] as string) || ''}
         onChange={e => set(k, e.target.value)}
         placeholder={placeholder} style={inp}

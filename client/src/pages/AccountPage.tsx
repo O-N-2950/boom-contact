@@ -562,7 +562,7 @@ function Field({ label, placeholder, value, onChange }: { label: string; placeho
   return (
     <div>
       <div style={{ color: '#666', fontSize: 11, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{label.toUpperCase()}</div>
-      <input placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
+      <input aria-label={label} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
         style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, color: '#fff', padding: '11px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const }} />
     </div>
   );

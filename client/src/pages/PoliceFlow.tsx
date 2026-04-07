@@ -483,20 +483,21 @@ function AnnotationsSection({
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
               <div>
                 <div style={{ ...S.label, marginBottom: 4 }}>Nom complet *</div>
-                <input value={w.name} onChange={e => { const n = [...ann.witnesses]; n[i].name = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
+                <input aria-label="Nom complet du témoin" value={w.name} onChange={e => { const n = [...ann.witnesses]; n[i].name = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
               </div>
               <div>
                 <div style={{ ...S.label, marginBottom: 4 }}>Telephone</div>
-                <input value={w.phone} onChange={e => { const n = [...ann.witnesses]; n[i].phone = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
+                <input aria-label="Téléphone du témoin" value={w.phone} onChange={e => { const n = [...ann.witnesses]; n[i].phone = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
               </div>
             </div>
             <div style={{ marginBottom: 8 }}>
               <div style={{ ...S.label, marginBottom: 4 }}>Adresse</div>
-              <input value={w.address} onChange={e => { const n = [...ann.witnesses]; n[i].address = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
+              <input aria-label="Adresse du témoin" value={w.address} onChange={e => { const n = [...ann.witnesses]; n[i].address = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
             </div>
             <div>
               <div style={{ ...S.label, marginBottom: 4 }}>Declaration</div>
               <textarea
+                aria-label="Déclaration du témoin"
                 value={w.statement}
                 onChange={e => { const n = [...ann.witnesses]; n[i].statement = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }}
                 rows={3}
@@ -514,6 +515,7 @@ function AnnotationsSection({
       <div style={S.sectionHeader()}>Observations de l&apos;agent</div>
       <div style={S.sectionBody}>
         <textarea
+          aria-label="Observations de l'agent"
           value={ann.observations}
           onChange={e => setAnn(a => ({ ...a, observations: e.target.value }))}
           placeholder="Observations libres, contexte, elements importants non couverts par les sections precedentes..."

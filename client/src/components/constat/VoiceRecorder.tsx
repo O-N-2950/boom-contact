@@ -258,6 +258,7 @@ export function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
             </div>
             {isEditing ? (
               <textarea
+                aria-label="Transcription du message vocal"
                 value={transcript}
                 onChange={e => setTranscript(e.target.value)}
                 onBlur={() => { setIsEditing(false); onComplete?.(transcript, audioBase64); }}

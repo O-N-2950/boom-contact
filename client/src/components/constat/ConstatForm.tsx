@@ -310,7 +310,7 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
             {/* Observations libres section 14 */}
             <div>
               <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.45, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</div>
-              <textarea value={observations} onChange={e => setObservations(e.target.value)}
+              <textarea aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
                 style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />

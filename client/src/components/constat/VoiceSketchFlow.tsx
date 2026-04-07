@@ -173,6 +173,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
       ) : (
         <>
           <textarea
+            aria-label="Description de l'accident"
             value={manualText}
             onChange={e => setManualText(e.target.value)}
             placeholder="Décrivez l'accident en quelques phrases…"
@@ -252,6 +253,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
           </div>
           {inputMode === 'text' ? (
             <textarea
+              aria-label="Récit de l'accident"
               value={manualText || transcript}
               onChange={e => { setManualText(e.target.value); setTranscript(e.target.value); }}
               rows={6}

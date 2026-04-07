@@ -467,7 +467,7 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
           <div style={{ fontSize:11, opacity:0.55, textAlign:'center', marginBottom:6 }}>
             Direction : {angle}° {angle<22?'→ Est':angle<67?'↘ SE':angle<112?'↓ Sud':angle<157?'↙ SO':angle<202?'← Ouest':angle<247?'↖ NO':angle<292?'↑ Nord':angle<337?'↗ NE':'→ Est'}
           </div>
-          <input type="range" min={0} max={359} value={angle}
+          <input type="range" aria-label="Direction du véhicule" min={0} max={359} value={angle}
             onChange={e => setAngle(Number(e.target.value))}
             style={{ width:'100%', accentColor:roleColor }} />
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, opacity:0.35, marginTop:2 }}>

@@ -235,3 +235,19 @@ body {
 [data-theme="light"] ::-webkit-scrollbar-thumb {
   background: rgba(229,45,0,0.25);
 }
+
+/* Accessibility: minimum 44x44px touch targets */
+button, a, [role="button"], [role="checkbox"], input[type="checkbox"], input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Accessibility: respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

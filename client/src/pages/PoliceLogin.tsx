@@ -41,7 +41,7 @@ export function PoliceLogin({ onLogin }: Props) {
         <div style={{ background:'rgba(255,255,255,0.04)', borderRadius: 16, border:'1px solid rgba(255,255,255,0.09)', padding: 24 }}>
 
           {error && (
-            <div id="police-error" style={{ marginBottom: 16, padding:'10px 14px', borderRadius: 8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', fontSize: 13, color:'#ef4444' }}>
+            <div id="police-error" role="alert" style={{ marginBottom: 16, padding:'10px 14px', borderRadius: 8, background:'rgba(239,68,68,0.1)', border:'1px solid rgba(239,68,68,0.3)', fontSize: 13, color:'#ef4444' }}>
               ⚠️ {error}
             </div>
           )}

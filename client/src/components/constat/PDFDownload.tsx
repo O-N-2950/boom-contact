@@ -321,7 +321,7 @@ export function PDFDownload({ sessionId, role, driverEmail, insurerName, driverN
                   <div style={{ fontSize: 12, opacity: 0.5, marginBottom: 8, lineHeight: 1.5 }}>
                     Entrez votre email pour recevoir le PDF en pièce jointe.
                   </div>
-                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  <input type="email" aria-label="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="votre@email.com"
                     style={{ width: '100%', padding: '11px 13px', borderRadius: 8,
                       border: '1.5px solid rgba(255,255,255,0.1)',

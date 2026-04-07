@@ -434,6 +434,7 @@ export function CountryEmergencySearch() {
       </div>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
         <input
+          aria-label="Code pays"
           placeholder="Code pays (ex: MA, KE, VN...)"
           value={code}
           onChange={e => setCode(e.target.value.toUpperCase().slice(0,3))}
@@ -441,6 +442,7 @@ export function CountryEmergencySearch() {
           style={{ width: 100, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 10px', fontSize: 14, boxSizing: 'border-box' as const }}
         />
         <input
+          aria-label="Nom du pays"
           placeholder="Nom du pays (optionnel)"
           value={name}
           onChange={e => setName(e.target.value)}
@@ -496,7 +498,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 14 }}>
             🆘 Urgences · {selected.flag} {selected.name}
           </div>
-          <select value={country} onChange={e => setCountry(e.target.value)}
+          <select aria-label="Sélectionner un pays" value={country} onChange={e => setCountry(e.target.value)}
             style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#ccc', padding: '4px 8px', fontSize: 11 }}>
             {EMERGENCY_DATA.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
           </select>

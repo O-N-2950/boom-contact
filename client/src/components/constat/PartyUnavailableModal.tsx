@@ -360,6 +360,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     NUMÉRO DE PLAQUE {plateNumber ? '✓ lu automatiquement' : '(saisissez si non lisible)'}
                   </label>
                   <input
+                    aria-label="Numéro de plaque"
                     value={plateNumber}
                     onChange={e => setPlateNumber(e.target.value.toUpperCase())}
                     placeholder="VD 123456"
@@ -378,6 +379,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     DESCRIPTION DU VÉHICULE B (optionnel)
                   </label>
                   <input
+                    aria-label="Description du véhicule"
                     value={vehicleDesc}
                     onChange={e => setVehicleDesc(e.target.value)}
                     placeholder="Ex: Berline grise, BMW Série 3"
@@ -432,6 +434,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     RÉFÉRENCE DU RAPPORT DE POLICE (si disponible)
                   </label>
                   <input
+                    aria-label="Référence du rapport de police"
                     value={policeRef}
                     onChange={e => setPoliceRef(e.target.value)}
                     placeholder="N° PV ou rapport"
@@ -446,6 +449,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                   OBSERVATIONS (optionnel)
                 </label>
                 <textarea
+                  aria-label="Observations"
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   placeholder={

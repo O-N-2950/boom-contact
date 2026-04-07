@@ -228,12 +228,12 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div style={{ display: 'flex', gap: 10 }}>
             <div style={{ flex: 2 }}>
               <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.date_label')}</div>
-              <input type="date" value={accidentDate} max={new Date().toISOString().split('T')[0]}
+              <input type="date" aria-label="Date de l'accident" value={accidentDate} max={new Date().toISOString().split('T')[0]}
                 onChange={e => setAccidentDate(e.target.value)} style={{ ...inputStyle, fontSize: 14 }} />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.time_label')}</div>
-              <input type="time" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
+              <input type="time" aria-label="Heure de l'accident" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
                 style={{ ...inputStyle, fontSize: 14 }} />
             </div>
           </div>
@@ -284,18 +284,18 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div>
               <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.address_label')}</div>
-              <input type="text" value={address} onChange={e => setAddress(e.target.value)}
+              <input type="text" aria-label="Adresse" value={address} onChange={e => setAddress(e.target.value)}
                 placeholder={t('location.address_placeholder')} style={inputStyle} />
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <div style={{ flex: 2 }}>
                 <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.city_label')}</div>
-                <input type="text" value={city} onChange={e => setCity(e.target.value)}
+                <input type="text" aria-label="Ville" value={city} onChange={e => setCity(e.target.value)}
                   placeholder={t('location.city_placeholder')} style={inputStyle} />
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 4 }}>{t('location.country_label')}</div>
-                <input type="text" value={country} onChange={e => setCountry(e.target.value)}
+                <input type="text" aria-label="Pays" value={country} onChange={e => setCountry(e.target.value)}
                   placeholder={t('location.country_placeholder')} style={inputStyle} />
               </div>
             </div>
@@ -363,7 +363,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
             <div>
               <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
-              <textarea value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
+              <textarea aria-label="Description des blessures" value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
                 placeholder={t('location.injury_desc_placeholder')} rows={3}
                 style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />

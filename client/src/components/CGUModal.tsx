@@ -26,7 +26,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
   const canProceed = isValidEmail(email) && consentCGU;
 
-  const modalRef = useFocusTrap<HTMLDivElement>();
+  const modalRef = useFocusTrap<HTMLDivElement>(onClose);
   const saveConsentMutation = trpc.user.saveConsent.useMutation({
     onSuccess: () => { onAccept(email, consentMarketing); },
     onError: (err) => { setError(err.message || t('cgu.error_network')); },
@@ -124,13 +124,14 @@ export function CGUModal({ onAccept, onClose }: Props) {
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder={t('cgu.email_placeholder')}
+              aria-label="Adresse email"
               className="input-boom" style={{ width: '100%' }}
             />
           </div>
 
           {/* CGU consent (required) */}
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10, cursor: 'pointer' }}>
-            <div onClick={() => setConsentCGU(!consentCGU)} style={{
+            <div onClick={() => setConsentCGU(!consentCGU)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setConsentCGU(!consentCGU); } }} role="checkbox" aria-checked={consentCGU} tabIndex={0} style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
               border: consentCGU ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
               background: consentCGU ? 'var(--boom)' : 'transparent',
@@ -160,7 +161,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           {/* Marketing consent (optional) — Suisse uniquement */}
           {isSwiss && (
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16, cursor: 'pointer' }}>
-            <div onClick={() => setConsentMarketing(!consentMarketing)} style={{
+            <div onClick={() => setConsentMarketing(!consentMarketing)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setConsentMarketing(!consentMarketing); } }} role="checkbox" aria-checked={consentMarketing} tabIndex={0} style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
               border: consentMarketing ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
               background: consentMarketing ? '#22c55e' : 'transparent',
@@ -180,7 +181,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           )}
 
           {error && (
-            <div style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, background: 'rgba(239,68,68,0.1)', fontSize: 12, color: '#ef4444' }}>
+            <div role="alert" style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, background: 'rgba(239,68,68,0.1)', fontSize: 12, color: '#ef4444' }}>
               ⚠️ {error}
             </div>
           )}

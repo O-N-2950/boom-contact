@@ -185,13 +185,13 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
           </div>
           <div style={{ marginBottom:8 }}>
             <label style={{ fontSize:11, opacity:0.5, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>Compagnie</label>
-            <input type="text" value={company} onChange={e=>setManualIns(p=>({...p,company:e.target.value}))} placeholder="AXA, Zurich, Allianz, emmental…" style={inputStyle} />
+            <input type="text" aria-label="Compagnie d'assurance" value={company} onChange={e=>setManualIns(p=>({...p,company:e.target.value}))} placeholder="AXA, Zurich, Allianz, emmental…" style={inputStyle} />
           </div>
           <div>
             <label style={{ fontSize:11, opacity:0.5, letterSpacing:1, textTransform:'uppercase', display:'block', marginBottom:4 }}>
               N° de police{!policyNumber&&<span style={{color:'#f59e0b',marginLeft:8}}>(saisie manuelle)</span>}
             </label>
-            <input type="text" value={policyNumber} onChange={e=>setManualIns(p=>({...p,policyNumber:e.target.value}))} placeholder="50194120 / FR-2026-XXXXX…" style={inputStyle} />
+            <input type="text" aria-label="Numéro de police" value={policyNumber} onChange={e=>setManualIns(p=>({...p,policyNumber:e.target.value}))} placeholder="50194120 / FR-2026-XXXXX…" style={inputStyle} />
           </div>
         </div>
 

@@ -18,7 +18,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
 
-  const modalRef = useFocusTrap<HTMLDivElement>();
+  const modalRef = useFocusTrap<HTMLDivElement>(onSkip);
   const magicReqMut  = trpc.auth.magicLinkRequest.useMutation();
   const loginMut     = trpc.auth.login.useMutation();
   const registerMut  = trpc.auth.register.useMutation();
@@ -114,7 +114,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-describedby={error ? "error-magic" : undefined}
               style={inputStyle}
             />
-            {error && <div id="error-magic" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-magic" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#FF3500')}>
               {loading ? 'Envoi...' : 'Envoyer le lien'}
             </button>
@@ -158,7 +158,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div id="error-password" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-password" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Connexion...' : 'Se connecter'}
             </button>
@@ -189,7 +189,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div id="error-register" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-register" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
             <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Création...' : 'Créer mon compte'}
             </button>
