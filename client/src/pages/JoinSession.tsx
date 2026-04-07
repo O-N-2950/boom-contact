@@ -481,7 +481,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             role={urlRole as 'A' | 'B' | 'C' | 'D' | 'E'}
             sessionId={sessionId}
             lang={participantData.language}
+            initialTranscript={voiceTranscript}
             onComplete={(data) => {
+              setVoiceTranscript(data.transcript || '');
               setSketchImage(data.sketchBase64);
               if (data.analysis?.circumstances?.length > 0) {
                 setParticipantData(prev => ({
