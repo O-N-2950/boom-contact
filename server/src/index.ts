@@ -448,6 +448,7 @@ io.use((socket, next) => {
   const payload = verifyJWT(token as string);
   if (!payload) {
     logger.warn('Socket auth failed — invalid token, disconnecting', { id: socket.id.slice(0, 8) });
+    socket.disconnect(true);
     return next(new Error('Authentication failed: invalid token'));
   }
   (socket as any).authUser = payload;
