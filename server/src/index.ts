@@ -274,6 +274,26 @@ app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
+// ── CSRF prevention — custom header check ────────────────────
+// Mutating requests (POST/PUT/PATCH/DELETE) to /trpc must include
+// X-Requested-With header to prevent cross-origin form submissions.
+// Browsers block custom headers on cross-origin requests unless CORS allows it.
+app.use('/trpc', (req, res, next) => {
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+    const xrw = req.headers['x-requested-with'] || req.headers['x-trpc-source'];
+    if (!xrw) {
+      logger.warn('CSRF: missing X-Requested-With header on mutation', {
+        ip: req.ip,
+        path: req.path,
+        method: req.method,
+      });
+      res.status(403).json({ error: 'Missing required header: X-Requested-With or X-TRPC-Source' });
+      return;
+    }
+  }
+  next();
+});
+
 // ── Redirection apex → www ───────────────────────────────────
 // boom.contact → www.boom.contact (301 permanent)
 app.use((req, res, next) => {
@@ -479,7 +499,16 @@ if (process.env.NODE_ENV === 'production') {
 // ── Socket.io — JWT authentication middleware ────────────────
 import { verifyJWT } from './services/auth.service.js';
 io.use((socket, next) => {
-  const token = socket.handshake.auth?.token || socket.handshake.query?.token;
+  // SECURITY: Only accept token from auth object, not query string
+  // Query string tokens are visible in server logs and browser history
+  if (socket.handshake.query?.token) {
+    logger.warn('DEPRECATED: socket query token used — migrate to socket.handshake.auth.token', {
+      id: socket.id.slice(0, 8),
+      ip: socket.handshake.address,
+    });
+    // Reject query token — do NOT fall back to it
+  }
+  const token = socket.handshake.auth?.token;
   if (!token) {
     // Allow anonymous connections for session participants (QR flow)
     (socket as any).authUser = null;
@@ -494,6 +523,36 @@ io.use((socket, next) => {
   (socket as any).authUser = payload;
   next();
 });
+
+// ── Socket anonymous connection rate limiting (anti-spam QR flow) ──
+const socketConnPerIP = new Map<string, { count: number; resetAt: number }>();
+const SOCKET_ANON_MAX = 20;       // max 20 anonymous connections per minute per IP
+const SOCKET_ANON_WINDOW = 60_000; // 1 minute window
+
+io.use((socket, next) => {
+  // Only throttle anonymous connections (no auth token)
+  if (socket.handshake.auth?.token) return next();
+  const ip = socket.handshake.address || 'unknown';
+  const now = Date.now();
+  let entry = socketConnPerIP.get(ip);
+  if (!entry || now > entry.resetAt) {
+    entry = { count: 0, resetAt: now + SOCKET_ANON_WINDOW };
+    socketConnPerIP.set(ip, entry);
+  }
+  entry.count++;
+  if (entry.count > SOCKET_ANON_MAX) {
+    logger.warn('Socket anon rate limit hit', { ip, count: entry.count });
+    return next(new Error('Too many anonymous connections — try again later'));
+  }
+  next();
+});
+// Cleanup stale entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of socketConnPerIP) {
+    if (now > entry.resetAt) socketConnPerIP.delete(ip);
+  }
+}, 5 * 60 * 1000).unref();
 
 // ── Throttle map for socket update-data (300ms per session) ───
 const updateThrottles = new Map<string, { timer: ReturnType<typeof setTimeout>; latestData: unknown; latestRole: string }>();

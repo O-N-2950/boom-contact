@@ -8,6 +8,9 @@ export const trpc = createTRPCReact<AppRouter>();
 // tRPC vanilla client (pour les appels hors composant / utilityaires)
 export const trpcClient = createTRPCClient<AppRouter>({
   links: [
-    httpBatchLink({ url: '/trpc' }),
+    httpBatchLink({
+      url: '/trpc',
+      headers: () => ({ 'X-Requested-With': 'trpc-client' }),
+    }),
   ],
 });

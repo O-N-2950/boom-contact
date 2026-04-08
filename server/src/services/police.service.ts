@@ -91,6 +91,9 @@ export async function loginPoliceUser(email: string, password: string) {
 
   if (!authenticated) throw new Error('Identifiants incorrects');
 
+  // Detect if account still uses legacy hash (non-bcrypt) — flag for force-reset
+  const mustChangePassword = !isBcryptHash(storedHash);
+
   await db.update(policeUsers)
     .set({ lastLoginAt: new Date() })
     .where(eq(policeUsers.id, user.id));
@@ -108,6 +111,7 @@ export async function loginPoliceUser(email: string, password: string) {
       role: 'police',
       canton: station?.canton,
       country: station?.country || 'CH',
+      mustChangePassword,
     },
     JWT_SECRET,
     { expiresIn: '8h' }
@@ -115,6 +119,7 @@ export async function loginPoliceUser(email: string, password: string) {
 
   return {
     token,
+    mustChangePassword,
     user: {
       id: user.id,
       firstName: user.firstName,

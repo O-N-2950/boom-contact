@@ -34,7 +34,9 @@ function Root() {
         url: '/trpc',
         headers: () => {
           const token = localStorage.getItem('boom_user_token');
-          return token ? { Authorization: `Bearer ${token}` } : {};
+          const h: Record<string, string> = { 'X-Requested-With': 'trpc-client' };
+          if (token) h['Authorization'] = `Bearer ${token}`;
+          return h;
         },
       })],
     })
