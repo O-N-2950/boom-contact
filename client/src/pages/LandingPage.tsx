@@ -85,7 +85,7 @@ function FloatingBadge({ icon, text, style }: { icon: string; text: string; styl
       position: 'absolute', display: 'flex', alignItems: 'center', gap: 8,
       padding: '8px 14px', borderRadius: 100,
       background: 'rgba(14,14,24,0.92)',
-      border: '1px solid rgba(255,255,255,0.1)',
+      border: '1px solid rgba(255,255,255,0.25)',
       backdropFilter: 'blur(12px)',
       fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap',
       ...style,
@@ -100,7 +100,7 @@ function PhoneMockup() {
     <div style={{ position: 'relative', width: '100%', maxWidth: 280, margin: '0 auto' }}>
       <div style={{
         background: 'linear-gradient(160deg, rgba(255,53,0,0.15) 0%, rgba(0,0,0,0.6) 100%)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: 28, padding: '18px 14px', backdropFilter: 'blur(20px)',
         boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,53,0,0.1)',
       }}>
@@ -117,7 +117,7 @@ function PhoneMockup() {
             <div style={S.boldSmall}>VW Golf · GE 123 456</div>
             <div style={{ fontSize: 10, opacity: 0.75 }}>Zurich Insurance · ✅ OCR</div>
           </div>
-          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '12px', marginBottom: 12 }}>
+          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 12, padding: '12px', marginBottom: 12 }}>
             <div style={S.sectionLabelAlt}>CONDUCTEUR B</div>
             <div style={S.boldSmall}>Audi A4 · BE 789 012</div>
             <div style={{ fontSize: 10, opacity: 0.75 }}>AXA · ✅ Scanné</div>
@@ -265,7 +265,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             </h1>
 
             {/* SEO subtitle — keywords "constat amiable numérique" */}
-            <p style={{ fontSize: isDesktop ? 13 : 12, lineHeight: 1.5, opacity: heroVisible ? 0.35 : 0, marginBottom: 6, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(14px)', transition: 'all 0.6s ease 0.15s', fontFamily: 'DM Mono, monospace', letterSpacing: 0.5 }}>
+            <p style={{ fontSize: isDesktop ? 13 : 12, lineHeight: 1.5, opacity: heroVisible ? 0.55 : 0, marginBottom: 6, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(14px)', transition: 'all 0.6s ease 0.15s', fontFamily: 'DM Mono, monospace', letterSpacing: 0.5 }}>
               {t('landing.seoLine', { defaultValue: 'Le constat amiable numérique mondial · Digital accident report' })}
             </p>
 
@@ -278,7 +278,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.3s', marginBottom: isDesktop ? 0 : 44, maxWidth: isDesktop ? 440 : 'none' }}>
 
               {authUser && (
-                <div style={{ width: '100%', marginBottom: 10, borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                <div style={{ width: '100%', marginBottom: 10, borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
                   <button onClick={onAccount} style={{ flex: 1, padding: '10px 14px', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
                     <span style={{ fontSize: 16 }}>👤</span>
                     <span style={{ opacity: 0.7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>{authUser.email}</span>
@@ -286,9 +286,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                       {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
                     </span>
                   </button>
-                  <button onClick={onLogout} title="Se déconnecter" style={{ padding: '10px 14px', background: 'none', border: 'none', borderLeft: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.35)', cursor: 'pointer', fontSize: 16, flexShrink: 0, transition: 'color 0.15s' }}
+                  <button onClick={onLogout} title="Se déconnecter" style={{ padding: '10px 14px', background: 'none', border: 'none', borderLeft: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 16, flexShrink: 0, transition: 'color 0.15s' }}
                     onMouseEnter={e => (e.currentTarget.style.color = '#FF3500')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}>
+                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}>
                     ↩
                   </button>
                 </div>
@@ -302,9 +302,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 <span style={{ marginLeft: 'auto', fontSize: 20, opacity: 0.7 }}>→</span>
               </button>
 
-              <button onClick={onGarage} style={{ width: '100%', marginTop: 10, padding: '14px 18px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.8)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, fontWeight: 600, transition: 'all 0.15s' }}
+              <button onClick={onGarage} style={{ width: '100%', marginTop: 10, padding: '14px 18px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.8)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, fontWeight: 600, transition: 'all 0.15s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,53,0,0.4)'; e.currentTarget.style.background = 'rgba(255,53,0,0.06)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}>
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}>
                 <span style={{ fontSize: 20 }}>🚗</span>
                 <div style={{ textAlign: 'left' as const, flex: 1 }}>
                   <div>Préparer mon garage</div>
@@ -331,7 +331,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                     { icon: '⚡', text: '5 minutes' },
                     { icon: '📄', text: 'PDF certifié' },
                   ].map(b => (
-                    <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', borderRadius: 20, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 11, opacity: 0.7 }}>
+                    <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', borderRadius: 20, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', fontSize: 11, opacity: 0.7 }}>
                       <span>{b.icon}</span><span>{b.text}</span>
                     </div>
                   ))}

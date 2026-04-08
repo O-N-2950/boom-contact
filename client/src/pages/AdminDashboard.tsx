@@ -196,7 +196,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     const statusColor = session.status === 'completed' ? '#4ade80' : session.status === 'active' ? '#60c8f0' : session.status === 'signing' ? '#fbbf24' : '#aaa';
                     return (
                       <tr key={session.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
-                        <td style={td}><span style={{ fontFamily: 'monospace', color: '#FF3500', fontSize: 12 }}>{session.id}</span></td>
+                        <td style={td}><span style={{ fontFamily: 'monospace', color: '#FF5533', fontSize: 12 }}>{session.id}</span></td>
                         <td style={td}><span style={{ color: statusColor, fontSize: 12 }}>● {session.status}</span></td>
                         <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{date}</td>
                         <td style={{ ...td, fontFamily: 'monospace', fontSize: 12 }}>{plate}</td>

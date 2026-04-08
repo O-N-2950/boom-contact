@@ -13,21 +13,27 @@ export const paymentRouter = router({
   createCheckout: publicProcedure
     .input(z.object({
       packageId:        z.enum(['single', 'pack3', 'pack10']),
-      userEmail:        z.string().email().max(320),
+      userEmail: z.string().trim().email().max(320),
       currency:         z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
-      locale:           z.string().max(10).default('fr'),
-      countryCode:      z.string().max(10).optional(),
-      constatSessionId: z.string().max(50).optional(), // pour retour direct après paiement one-shot
+      locale: z.string().trim().max(10).default('fr'),
+      countryCode: z.string().trim().max(10).optional(),
+      constatSessionId: z.string().trim().max(50).optional(), // pour retour direct après paiement one-shot
+      idempotencyKey: z.string().trim().max(100).optional(),
     }))
     .output(paymentCreateCheckoutOutput)
     .mutation(async ({ input }) => {
-      return createCheckoutSession(
+      const cached = checkIdempotency(input.idempotencyKey);
+      if (cached) return cached as typeof paymentCreateCheckoutOutput._output;
+
+      const result = await createCheckoutSession(
         input.packageId,
         input.userEmail,
         input.currency,
         input.locale,
         input.constatSessionId,
       );
+      storeIdempotency(input.idempotencyKey, result);
+      return result;
     }),
 
   // GET payment.currencies — return full pricing grid
@@ -57,7 +63,7 @@ export const paymentRouter = router({
 
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
   useCredit: protectedProcedure
-    .input(z.object({ sessionId: z.string().max(50), idempotencyKey: z.string().max(100).optional() }))
+    .input(z.object({ sessionId: z.string().trim().max(50), idempotencyKey: z.string().trim().max(100).optional() }))
     .output(paymentUseCreditOutput)
     .mutation(async ({ ctx, input }) => {
       const cached = checkIdempotency(input.idempotencyKey);
@@ -76,7 +82,7 @@ export const userRouter = router({
     .input(z.object({
       consentCGU:        z.boolean(),
       consentMarketing:  z.boolean(),
-      country:           z.string().max(100).optional(),
+      country: z.string().trim().max(100).optional(),
       language:          z.string().max(10).optional(),
     }))
     .output(userSaveConsentOutput)

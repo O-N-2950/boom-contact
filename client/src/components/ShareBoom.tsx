@@ -187,7 +187,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
               alignItems: 'center', gap: 6,
               padding: '12px 8px',
               borderRadius: 14,
-              border: sent === ch.id ? `1.5px solid ${ch.color}` : '1px solid rgba(255,255,255,0.08)',
+              border: sent === ch.id ? `1.5px solid ${ch.color}` : '1px solid rgba(255,255,255,0.25)',
               background: sent === ch.id ? `${ch.color}22` : 'rgba(255,255,255,0.04)',
               cursor: 'pointer', transition: 'all 0.15s',
             }}
@@ -215,7 +215,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
             alignItems: 'center', gap: 6,
             padding: '12px 8px',
             borderRadius: 14,
-            border: copied ? '1.5px solid #22c55e' : '1px solid rgba(255,255,255,0.08)',
+            border: copied ? '1.5px solid #22c55e' : '1px solid rgba(255,255,255,0.25)',
             background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.04)',
             cursor: 'pointer', transition: 'all 0.2s',
           }}
@@ -248,7 +248,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
           ['0€', 'pour essayer'],
         ].map(([val, label]) => (
           <div key={label} style={{ textAlign: 'center' }}>
-            <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 16 }}>{val}</div>
+            <div style={{ color: '#FF5533', fontWeight: 900, fontSize: 16 }}>{val}</div>
             <div style={{ color: '#d0d0d0', fontSize: 10 }}>{label}</div>
           </div>
         ))}

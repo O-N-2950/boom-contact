@@ -43,7 +43,7 @@ export function BugReport() {
         <button onClick={() => setOpen(o => !o)} aria-label="Signaler un problème"
           style={{
             position:'fixed', bottom:76, right:16, zIndex:600,
-            background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.1)',
+            background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.25)',
             borderRadius:20, padding:'6px 11px',
             color:'rgba(255,255,255,0.6)', cursor:'pointer',
             fontSize:11, fontFamily:'monospace',
@@ -57,7 +57,7 @@ export function BugReport() {
       {open && (
         <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" style={{
           position:'fixed', bottom:112, right:16, zIndex:700,
-          background:'#06060C', border:'1px solid rgba(255,255,255,0.12)',
+          background:'#06060C', border:'1px solid rgba(255,255,255,0.25)',
           borderRadius:14, padding:16, width:272,
           boxShadow:'0 8px 32px rgba(0,0,0,0.6)',
         }}>
@@ -71,7 +71,7 @@ export function BugReport() {
             rows={4}
             style={{
               width:'100%', padding:'10px', borderRadius:8,
-              border:'1px solid rgba(255,255,255,0.1)',
+              border:'1px solid rgba(255,255,255,0.25)',
               background:'rgba(255,255,255,0.04)', color:'var(--text)',
               fontSize:13, lineHeight:1.5, resize:'none',
               fontFamily:'inherit',
@@ -85,7 +85,7 @@ export function BugReport() {
             aria-label="Adresse email"
             style={{
               width:'100%', padding:'9px 10px', borderRadius:8,
-              border:'1px solid rgba(255,255,255,0.08)',
+              border:'1px solid rgba(255,255,255,0.25)',
               background:'rgba(255,255,255,0.04)', color:'var(--text)',
               fontSize:13, fontFamily:'inherit',
               boxSizing:'border-box' as const, marginBottom:10,

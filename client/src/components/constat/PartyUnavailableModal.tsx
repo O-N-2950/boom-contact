@@ -90,7 +90,7 @@ const URGENCY_COLORS = {
   critical: { bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.35)', text: '#ef4444', selected: 'rgba(239,68,68,0.2)' },
   high:     { bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.3)', text: '#f59e0b', selected: 'rgba(245,158,11,0.18)' },
   medium:   { bg: 'rgba(99,102,241,0.08)', border: 'rgba(99,102,241,0.25)', text: '#6366f1', selected: 'rgba(99,102,241,0.18)' },
-  low:      { bg: 'rgba(255,255,255,0.04)', border: 'rgba(255,255,255,0.12)', text: 'rgba(240,237,232,0.6)', selected: 'rgba(255,255,255,0.08)' },
+  low:      { bg: 'rgba(255,255,255,0.04)', border: 'rgba(255,255,255,0.25)', text: 'rgba(240,237,232,0.6)', selected: 'rgba(255,255,255,0.25)' },
 };
 
 async function ocrPlate(b64: string, mediaType: string): Promise<string> {
@@ -172,18 +172,18 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
     }}>
       <div ref={modalRef} role="dialog" aria-label="Partie B indisponible" aria-modal="true" style={{
         width: '100%', maxWidth: 480, background: '#0A0A16',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: '20px 20px 0 0', maxHeight: '92svh',
         display: 'flex', flexDirection: 'column',
         animation: 'slideUp 0.25s ease',
       }}>
         {/* Handle */}
         <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 0' }}>
-          <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)' }} />
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.25)' }} />
         </div>
 
         {/* Header */}
-        <div style={{ padding: '14px 20px 12px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div style={{ padding: '14px 20px 12px', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 16 }}>Partie B indisponible</div>
@@ -227,7 +227,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 return (
                   <button key={r.id} onClick={() => setSelected(r)} style={{
                     width: '100%', textAlign: 'left', padding: '14px 16px',
-                    borderRadius: 12, border: `1.5px solid ${isSelected ? c.border : 'rgba(255,255,255,0.08)'}`,
+                    borderRadius: 12, border: `1.5px solid ${isSelected ? c.border : 'rgba(255,255,255,0.25)'}`,
                     background: isSelected ? c.selected : 'rgba(255,255,255,0.03)',
                     cursor: 'pointer', marginBottom: 8,
                     transition: 'all 0.15s',
@@ -300,7 +300,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                   </div>
                   <button onClick={() => setPoliceAlertDismissed(true)} aria-label="Confirmer que j'ai contacté les secours" style={{
                     marginTop: 10, background: 'none', border: 'none',
-                    color: 'rgba(255,255,255,0.35)', cursor: 'pointer', fontSize: 12,
+                    color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 12,
                   }}>
                     J'ai déjà contacté les secours ✓
                   </button>
@@ -321,7 +321,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     <img
                       src={`data:image/jpeg;base64,${platePhoto}`}
                       alt="Photo de la plaque d'immatriculation"
-                      style={{ width: '100%', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}
+                      style={{ width: '100%', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)' }}
                     />
                     <button onClick={() => { setPlatePhoto(null); setPlateNumber(''); fileRef.current?.click(); }}
                       aria-label="Reprendre la photo"
@@ -359,10 +359,11 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
                 {/* Numéro plaque */}
                 <div style={{ marginTop: 12 }}>
-                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5, fontFamily: 'monospace' }}>
+                  <label htmlFor="party-unavail-plate" style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5, fontFamily: 'monospace' }}>
                     NUMÉRO DE PLAQUE {plateNumber ? '✓ lu automatiquement' : '(saisissez si non lisible)'}
                   </label>
                   <input
+                    id="party-unavail-plate"
                     aria-label="Numéro de plaque"
                     value={plateNumber}
                     onChange={e => setPlateNumber(e.target.value.toUpperCase())}
@@ -378,10 +379,11 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
                 {/* Description véhicule */}
                 <div style={{ marginTop: 12 }}>
-                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                  <label htmlFor="party-unavail-desc" style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
                     DESCRIPTION DU VÉHICULE B (optionnel)
                   </label>
                   <input
+                    id="party-unavail-desc"
                     aria-label="Description du véhicule"
                     value={vehicleDesc}
                     onChange={e => setVehicleDesc(e.target.value)}
@@ -394,7 +396,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               <div style={{ display: 'flex', gap: 10 }}>
                 <button onClick={() => setStep('reason')} style={{
                   flex: 1, padding: '14px', borderRadius: 12,
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.25)',
                   background: 'transparent', color: 'rgba(240,237,232,0.5)',
                   cursor: 'pointer', fontSize: 14,
                 }}>← Retour</button>
@@ -473,7 +475,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               <div style={{
                 padding: '12px 14px', borderRadius: 10, marginBottom: 20,
                 background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.25)',
                 fontSize: 12, lineHeight: 1.7,
               }}>
                 <div style={{ fontWeight: 700, marginBottom: 6, opacity: 0.75 }}>RÉCAPITULATIF</div>
@@ -489,7 +491,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               <div style={{ display: 'flex', gap: 10 }}>
                 <button onClick={() => setStep('plate')} style={{
                   flex: 1, padding: '14px', borderRadius: 12,
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.25)',
                   background: 'transparent', color: 'rgba(240,237,232,0.5)',
                   cursor: 'pointer', fontSize: 14,
                 }}>← Retour</button>

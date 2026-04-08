@@ -9,8 +9,8 @@ export const policeRouter = router({
   // Login agent — retourne JWT 8h
   login: publicProcedure
     .input(z.object({
-      email:    z.string().email().max(320),
-      password: z.string().min(6).max(200),
+      email: z.string().trim().email().max(320),
+      password: z.string().trim().min(6).max(200),
     }))
     .output(policeLoginOutput)
     .mutation(async ({ input }) => {
@@ -20,7 +20,7 @@ export const policeRouter = router({
 
   // Dashboard — sessions actives (token requis)
   dashboard: policeProcedure
-    .input(z.object({ token: z.string().max(2000) }))
+    .input(z.object({ token: z.string().trim().max(2000) }))
     .output(policeDashboardOutput)
     .query(async ({ ctx }) => {
       const payload = ctx.policeUser;
@@ -32,7 +32,7 @@ export const policeRouter = router({
   joinSession: policeProcedure
     .input(z.object({
       token:     z.string().max(2000),
-      sessionId: z.string().max(50),
+      sessionId: z.string().trim().max(50),
     }))
     .output(policeJoinSessionOutput)
     .query(async ({ ctx, input }) => {
@@ -47,7 +47,7 @@ export const policeRouter = router({
 
   // Session complète avec audit trail
   getFullSession: policeProcedure
-    .input(z.object({ token: z.string().max(2000), sessionId: z.string().max(50) }))
+    .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGetFullSessionOutput)
     .query(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
@@ -59,7 +59,7 @@ export const policeRouter = router({
 
   // Charger annotations existantes
   getAnnotation: policeProcedure
-    .input(z.object({ token: z.string().max(2000), sessionId: z.string().max(50) }))
+    .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGetAnnotationOutput)
     .query(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
@@ -70,7 +70,7 @@ export const policeRouter = router({
   saveAnnotation: policeProcedure
     .input(z.object({
       token:     z.string().max(2000),
-      sessionId: z.string().max(50),
+      sessionId: z.string().trim().max(50),
       data: z.object({
         reportNumber:  z.string().max(200).optional(),
         infractions:   z.array(z.object({ code: z.string().max(100), description: z.string().max(1000), party: z.enum(['A','B','both']) })).max(50),
@@ -88,7 +88,7 @@ export const policeRouter = router({
 
   // Générer PDF rapport d'intervention
   generateReport: policeProcedure
-    .input(z.object({ token: z.string().max(2000), sessionId: z.string().max(50) }))
+    .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGenerateReportOutput)
     .mutation(async ({ ctx, input }) => {
       const payload = ctx.policeUser;

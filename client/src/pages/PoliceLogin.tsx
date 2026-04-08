@@ -58,7 +58,7 @@ export function PoliceLogin({ onLogin }: Props) {
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="agent@police-jura.ch"
               aria-describedby={error ? "police-error" : undefined}
-              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
+              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
             />
           </div>
 
@@ -73,7 +73,7 @@ export function PoliceLogin({ onLogin }: Props) {
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="••••••••"
-              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
+              style={{ width:'100%', padding:'12px 14px', borderRadius: 10, border:'1px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.06)', color:'#fff', fontSize: 15, boxSizing:'border-box' }}
             />
           </div>
 
@@ -86,7 +86,7 @@ export function PoliceLogin({ onLogin }: Props) {
           </button>
         </div>
 
-        <p style={{ textAlign:'center', fontSize: 12, color:'rgba(240,237,232,0.25)', marginTop: 20, lineHeight: 1.6 }}>
+        <p style={{ textAlign:'center', fontSize: 12, color:'rgba(240,237,232,0.55)', marginTop: 20, lineHeight: 1.6 }}>
           Accès réservé aux forces de l'ordre.<br/>
           Pour un accès pilote : <a href="mailto:contact@boom.contact" style={{ color:'rgba(255,53,0,0.7)' }}>contact@boom.contact</a>
         </p>

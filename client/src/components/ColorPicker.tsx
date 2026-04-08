@@ -86,7 +86,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
                   ? '2.5px solid var(--boom)'
                   : isLight
                     ? '1px solid rgba(0,0,0,0.15)'
-                    : '1px solid rgba(255,255,255,0.1)',
+                    : '1px solid rgba(255,255,255,0.25)',
                 cursor: 'pointer',
                 position: 'relative',
                 transition: 'transform 0.1s, border 0.1s',
@@ -113,7 +113,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
           display: 'flex', alignItems: 'center', gap: 8,
           padding: '6px 10px', borderRadius: 8,
           background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid rgba(255,255,255,0.25)',
           marginBottom: 8,
         }}>
           <div style={{
@@ -128,7 +128,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
             onClick={() => onChange('')}
             aria-label="Effacer la couleur"
             style={{ marginLeft: 'auto', background: 'none', border: 'none',
-              color: 'rgba(240,237,232,0.35)', cursor: 'pointer', fontSize: 14 }}
+              color: 'rgba(240,237,232,0.55)', cursor: 'pointer', fontSize: 14 }}
           >✕</button>
         </div>
       )}
@@ -143,13 +143,13 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
           placeholder="Autre couleur (ex: Vert racing, Gris Nardo…)"
           style={{
             width: '100%', padding: '10px 13px', borderRadius: 8,
-            border: '1.5px solid rgba(255,255,255,0.08)',
+            border: '1.5px solid rgba(255,255,255,0.25)',
             background: 'rgba(255,255,255,0.04)',
             color: 'var(--text)', fontSize: 13,
             boxSizing: 'border-box', fontFamily: 'inherit',
           }}
           onFocus={e => { e.target.style.borderColor = 'rgba(255,53,0,0.5)'; e.target.style.outline = '2px solid var(--boom)'; }}
-          onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; e.target.style.outline = 'none'; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.25)'; e.target.style.outline = 'none'; }}
         />
       </div>
     </div>

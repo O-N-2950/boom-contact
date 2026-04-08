@@ -43,6 +43,14 @@ export const io = new SocketServer(httpServer, {
 async function setupSecurity() {
   try {
     const helmet = (await import('helmet')).default;
+    const crypto = await import('crypto');
+
+    // Generate a unique CSP nonce per request
+    app.use((_req: any, res: any, next: any) => {
+      res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+      next();
+    });
+
     // CSRF: SPA uses Authorization header (not cookies) for JWT, so CSRF tokens are less critical.
     // Helmet's default settings mitigate XSS, clickjacking, and other header-based attacks.
     app.use(helmet({
@@ -51,7 +59,7 @@ async function setupSecurity() {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", 'https://js.stripe.com', 'https://www.googletagmanager.com'],
+          scriptSrc: ["'self'", (req: any, res: any) => `'nonce-${res.locals.cspNonce}'`, 'https://js.stripe.com', 'https://www.googletagmanager.com'],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
           imgSrc: ["'self'", 'data:', 'blob:', 'https://tile.openstreetmap.org', 'https://*.tile.openstreetmap.org',
@@ -287,6 +295,16 @@ async function setupRateLimiting() {
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.adminBootstrap', { ip: req.ip });
         res.status(429).json({ error: 'Trop de tentatives. Réessayez dans 1 heure.' });
+      },
+    }));
+
+    // police.generateReport — 5/min per IP (expensive PDF rendering)
+    app.use('/trpc/police.generateReport', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit police.generateReport', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de générations de rapport. Réessayez dans 1 minute.' });
       },
     }));
 
@@ -549,7 +567,13 @@ if (process.env.NODE_ENV === 'production') {
   }));
   app.get('*', (_req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.sendFile(path.join(distPath, 'index.html'));
+    const nonce = res.locals.cspNonce || '';
+    const fs = require('fs');
+    const htmlPath = path.join(distPath, 'index.html');
+    let html = fs.readFileSync(htmlPath, 'utf-8');
+    // Inject nonce into all <script> tags
+    html = html.replace(/<script/g, `<script nonce="${nonce}"`);
+    res.type('html').send(html);
   });
 }
 
@@ -674,12 +698,20 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('update-data', async ({ sessionId, role, data }: { sessionId: string; role: 'A' | 'B'; data: unknown }) => {
-    // Validate sessionId exists before broadcasting
-    if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
-      socket.emit('error', { message: 'Invalid session ID' });
+  socket.on('update-data', async (raw: unknown) => {
+    // Zod validation on socket update-data payload
+    const { z } = await import('zod');
+    const updateDataSchema = z.object({
+      sessionId: z.string().min(1).max(20),
+      role: z.enum(['A', 'B', 'C', 'D', 'E']),
+      data: z.unknown(),
+    });
+    const parsed = updateDataSchema.safeParse(raw);
+    if (!parsed.success) {
+      socket.emit('error', { message: 'Invalid update-data payload' });
       return;
     }
+    const { sessionId, role, data } = parsed.data;
 
     // SECURITY: Socket must have joined this session before sending data to it
     if (!joinedSessions.has(sessionId)) {

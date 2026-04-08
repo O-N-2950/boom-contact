@@ -211,7 +211,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
               aria-label="Adresse email pour recevoir le PDF"
               style={{
                 width: '100%', padding: '11px 13px', borderRadius: 8,
-                border: '1.5px solid rgba(255,255,255,0.12)',
+                border: '1.5px solid rgba(255,255,255,0.25)',
                 background: 'rgba(255,255,255,0.05)',
                 color: 'var(--text)', fontSize: 14,
                 marginBottom: 10, boxSizing: 'border-box' as const,
@@ -241,7 +241,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           {/* Option 2 : Se connecter (compte existant) */}
           <button onClick={() => onLogin?.()} style={{
             width: '100%', padding: '13px', borderRadius: 10,
-            border: '1.5px solid rgba(255,255,255,0.12)',
+            border: '1.5px solid rgba(255,255,255,0.25)',
             background: 'transparent', color: 'var(--text)', cursor: 'pointer',
             fontSize: 14, fontWeight: 500,
           }}>
@@ -318,14 +318,14 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
               {showEmailForm && (
                 <div style={{ marginTop: 8, padding: '14px', borderRadius: 10,
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
                   <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 8, lineHeight: 1.5 }}>
                     Entrez votre email pour recevoir le PDF en pièce jointe.
                   </div>
                   <input type="email" aria-label="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="votre@email.com"
                     style={{ width: '100%', padding: '11px 13px', borderRadius: 8,
-                      border: '1.5px solid rgba(255,255,255,0.1)',
+                      border: '1.5px solid rgba(255,255,255,0.25)',
                       background: 'rgba(255,255,255,0.05)',
                       color: 'var(--text)', fontSize: 14,
                       marginBottom: 8, boxSizing: 'border-box' as const }}

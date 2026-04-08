@@ -101,7 +101,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
   const inputStyle: React.CSSProperties = {
     width:'100%', padding:'10px 12px', borderRadius:8,
-    border:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.05)',
+    border:'1px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.05)',
     color:'var(--text)', fontSize:14, boxSizing:'border-box', fontFamily:'inherit',
   };
 
@@ -143,7 +143,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
             <div style={{ fontSize:12, opacity:0.75 }}>Confiance : {Math.round((reg.confidence||0)*100)}%</div>
           </div>
           <button onClick={() => { setResult(null); setDocs([]); setManualIns({company:'',policyNumber:''}); }}
-            style={{ marginLeft:'auto', padding:'6px 10px', borderRadius:6, border:'1px solid rgba(255,255,255,0.1)', background:'transparent', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:12 }}>
+            style={{ marginLeft:'auto', padding:'6px 10px', borderRadius:6, border:'1px solid rgba(255,255,255,0.25)', background:'transparent', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:12 }}>
             Rescanner
           </button>
         </div>
@@ -266,7 +266,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
           </button>
           <button onClick={()=>fileRef.current?.click()}
             style={{ flex:1, padding:'16px', borderRadius:12,
-              border:'1.5px solid rgba(255,255,255,0.12)',
+              border:'1.5px solid rgba(255,255,255,0.25)',
               background:'rgba(255,255,255,0.03)',
               cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8,
               touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
@@ -312,7 +312,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
       {onSkip && (
         <button onClick={onSkip}
           style={{ width:'100%', padding:'13px', borderRadius:10, marginTop:10,
-            border:'1px solid rgba(255,255,255,0.08)', background:'transparent',
+            border:'1px solid rgba(255,255,255,0.25)', background:'transparent',
             cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.6)',
             touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
           Passer — saisie manuelle →

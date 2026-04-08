@@ -21,7 +21,7 @@ const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
@@ -401,7 +401,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           aria-label="Votre adresse email"
           style={{
             width: '100%', padding: '13px 14px', borderRadius: 10,
-            border: '1.5px solid rgba(255,255,255,0.12)',
+            border: '1.5px solid rgba(255,255,255,0.25)',
             background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
             fontSize: 15, boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
@@ -452,7 +452,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           {canGoBack && (
             <button onClick={goBack} style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
-              borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)',
               background: 'rgba(255,255,255,0.05)', cursor: 'pointer',
               fontSize: 13, fontWeight: 600, color: 'var(--text)',
               touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
@@ -588,7 +588,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
               </div>
               <button
                 onClick={() => setStep('form')}
-                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
               >
                 ✏️ Corriger mes informations
               </button>

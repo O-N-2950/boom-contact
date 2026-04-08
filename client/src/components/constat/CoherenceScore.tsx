@@ -118,7 +118,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
       <div style={{
         margin: '0 20px 14px', padding: '12px 16px',
         background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
       }}>
         <span style={{ fontSize: 16, opacity: 0.75 }}>🔍</span>

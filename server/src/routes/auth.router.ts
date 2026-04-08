@@ -14,7 +14,7 @@ export const authRouter = router({
 
   // POST auth.register
   register: publicProcedure
-    .input(z.object({ email: z.string().email().max(320), password: z.string().min(8).max(200) }))
+    .input(z.object({ email: z.string().trim().email().max(320), password: z.string().trim().min(8).max(200) }))
     .output(authRegisterOutput)
     .mutation(async ({ input }) => {
       try {
@@ -28,7 +28,7 @@ export const authRouter = router({
 
   // POST auth.login
   login: publicProcedure
-    .input(z.object({ email: z.string().email().max(320), password: z.string().max(200) }))
+    .input(z.object({ email: z.string().trim().email().max(320), password: z.string().trim().max(200) }))
     .output(authLoginOutput)
     .mutation(async ({ input }) => {
       try {
@@ -44,7 +44,7 @@ export const authRouter = router({
 
   // POST auth.magicLinkRequest
   magicLinkRequest: publicProcedure
-    .input(z.object({ email: z.string().email() }))
+    .input(z.object({ email: z.string().trim().email().max(320) }))
     .output(authMagicLinkRequestOutput)
     .mutation(async ({ input }) => {
       try {
@@ -63,7 +63,7 @@ export const authRouter = router({
 
   // POST auth.magicLinkVerify
   magicLinkVerify: publicProcedure
-    .input(z.object({ token: z.string().max(500) }))
+    .input(z.object({ token: z.string().trim().max(500) }))
     .output(authMagicLinkVerifyOutput)
     .mutation(async ({ input }) => {
       const result = await verifyMagicToken(input.token);
@@ -87,11 +87,11 @@ export const authRouter = router({
   // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
   updateProfile: protectedProcedure
     .input(z.object({
-      firstName: z.string().max(200).optional(),
-      lastName:  z.string().max(200).optional(),
-      phone:     z.string().max(50).optional(),
-      company:   z.string().max(300).optional(),
-      address:   z.string().max(500).optional(),
+      firstName: z.string().trim().max(200).optional(),
+      lastName: z.string().trim().max(200).optional(),
+      phone: z.string().trim().max(50).optional(),
+      company: z.string().trim().max(300).optional(),
+      address: z.string().trim().max(500).optional(),
     }))
     .output(authUpdateProfileOutput)
     .mutation(async ({ ctx, input }) => {
@@ -108,8 +108,8 @@ export const authRouter = router({
   // POST auth.updateEmail — changer son adresse email
   updateEmail: protectedProcedure
     .input(z.object({
-      newEmail:    z.string().email(),
-      currentPassword: z.string().min(1),
+      newEmail: z.string().trim().email(),
+      currentPassword: z.string().trim().min(1),
     }))
     .output(authUpdateEmailOutput)
     .mutation(async ({ ctx, input }) => {
@@ -149,7 +149,7 @@ export const authRouter = router({
   grantCredits: adminProcedure
     .input(z.object({
       credits: z.number().min(1).max(999999),
-      recipientEmail: z.string().email().optional(),
+      recipientEmail: z.string().trim().email().optional(),
       sendEmail: z.boolean().default(false),
     }))
     .output(authGrantCreditsOutput)
@@ -164,7 +164,7 @@ export const authRouter = router({
     }),
 
   adminBootstrap: publicProcedure
-    .input(z.object({ secret: z.string().max(500), password: z.string().min(8).max(200) }))
+    .input(z.object({ secret: z.string().trim().max(500), password: z.string().trim().min(8).max(200) }))
     .output(authAdminBootstrapOutput)
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
@@ -187,13 +187,14 @@ export const authRouter = router({
 
   // POST auth.logout — revoke all tokens for the current user
   logout: protectedProcedure
+    .output(z.object({ ok: z.boolean() }))
     .mutation(async ({ ctx }) => {
       await revokeUserTokens(ctx.authUser.sub);
       return { ok: true };
     }),
 
   claimGift: publicProcedure
-    .input(z.object({ token: z.string().max(500), email: z.string().email().max(320) }))
+    .input(z.object({ token: z.string().trim().max(500), email: z.string().trim().email().max(320) }))
     .output(authClaimGiftOutput)
     .mutation(async ({ input }) => {
       const result = await claimGiftLink(input.token, input.email);

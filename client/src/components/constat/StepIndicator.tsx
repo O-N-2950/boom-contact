@@ -34,6 +34,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
               flex: 1, textAlign: 'center',
               cursor: clickable ? 'pointer' : 'default',
               borderRadius: 6, padding: '3px 1px',
+              minHeight: 44, minWidth: 44,
               WebkitTapHighlightColor: 'transparent',
               position: 'relative',
               background: 'none',

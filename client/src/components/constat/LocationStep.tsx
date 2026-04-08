@@ -132,7 +132,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '11px 13px', borderRadius: 8,
-    border: '1.5px solid rgba(255,255,255,0.1)',
+    border: '1.5px solid rgba(255,255,255,0.25)',
     background: 'rgba(255,255,255,0.05)',
     color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
   };
@@ -180,7 +180,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 </div>
                 <div style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>✅ Détecté automatiquement depuis le permis de circulation</div>
               </div>
-              <button onClick={() => setVehicleType(null)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap', touchAction: 'manipulation' }}>
+              <button onClick={() => setVehicleType(null)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.45)', cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap', touchAction: 'manipulation', minHeight: 44, minWidth: 44 }}>
                 Modifier
               </button>
             </div>
@@ -197,7 +197,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                       <button key={v.id} onClick={() => setVehicleType(v.id)} style={{
                         padding: '12px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
                         background: sel ? 'rgba(255,53,0,0.12)' : 'rgba(255,255,255,0.03)',
-                        outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.08)',
+                        outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.25)',
                         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
                         transition: 'all 0.15s',
                         touchAction: 'manipulation',
@@ -253,7 +253,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div style={{
             padding: '10px 14px', borderRadius: 10, marginBottom: 12,
             background: geoStatus === 'success' ? 'rgba(34,197,94,0.08)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.04)',
-            border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' : 'rgba(255,255,255,0.08)'}`,
+            border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' : 'rgba(255,255,255,0.25)'}`,
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -322,7 +322,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             <button key={String(opt.val)} onClick={() => setInjuries(opt.val)} style={{
               flex: 1, padding: '14px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
               background: injuries === opt.val ? `${opt.color}15` : 'rgba(255,255,255,0.03)',
-              outline: injuries === opt.val ? `2px solid ${opt.color}` : '1.5px solid rgba(255,255,255,0.08)',
+              outline: injuries === opt.val ? `2px solid ${opt.color}` : '1.5px solid rgba(255,255,255,0.25)',
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
               transition: 'all 0.15s',
             }}>
@@ -351,7 +351,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                   <button key={s.val} onClick={() => setInjurySeverity(s.val)} style={{
                     flex: 1, padding: '8px 4px', borderRadius: 8, border: 'none', cursor: 'pointer',
                     background: injurySeverity === s.val ? `${s.color}20` : 'transparent',
-                    outline: injurySeverity === s.val ? `1.5px solid ${s.color}` : '1px solid rgba(255,255,255,0.1)',
+                    outline: injurySeverity === s.val ? `1.5px solid ${s.color}` : '1px solid rgba(255,255,255,0.25)',
                     color: injurySeverity === s.val ? s.color : 'rgba(240,237,232,0.5)',
                     fontSize: 12, fontWeight: 600, transition: 'all 0.15s',
                   }}>
@@ -365,7 +365,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
               <div style={{ fontSize: 11, opacity: 0.7, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
               <textarea aria-label="Description des blessures" value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
                 placeholder={t('location.injury_desc_placeholder')} rows={3}
-                style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
+                style={{ width: '100%', padding: '10px 13px', borderRadius: 8, border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 13, resize: 'none', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />
             </div>
 

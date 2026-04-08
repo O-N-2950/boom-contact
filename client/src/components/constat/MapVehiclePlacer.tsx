@@ -459,7 +459,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', marginBottom: 14, fontSize: 13, color: 'rgba(255,200,100,0.9)' }}>
         ⚠️ Impossible de localiser l'adresse sur la carte. Vérifiez l'adresse saisie à l'étape Lieu.
       </div>
-      <button onClick={onSkip} style={{ width: '100%', padding: 12, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13 }}>
+      <button onClick={onSkip} style={{ width: '100%', padding: 12, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13 }}>
         Passer cette étape
       </button>
     </div>
@@ -490,7 +490,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {/* Étapes */}
       <div style={{ display:'flex', gap:6, marginBottom:10 }}>
         {[['place','✋','1. Placer'],['rotate','↻','2. Orienter'],['confirm','✓','3. Valider']] .map(([s,icon,label]) => (
-          <div key={s} style={{ flex:1, padding:'5px 3px', borderRadius:8, textAlign:'center', background:step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border:`1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, fontSize:10, color:step===s?roleColor:'rgba(255,255,255,0.35)', fontWeight:step===s?700:400 }}>
+          <div key={s} style={{ flex:1, padding:'5px 3px', borderRadius:8, textAlign:'center', background:step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border:`1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, fontSize:10, color:step===s?roleColor:'rgba(255,255,255,0.55)', fontWeight:step===s?700:400 }}>
             {icon} {label}
           </div>
         ))}
@@ -531,7 +531,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {!confirmed ? (
         <div style={{ display:'flex', gap:8 }}>
           <button onClick={onSkip}
-            style={{ flex:1, padding:'11px', borderRadius:10, border:'1px solid rgba(255,255,255,0.08)', background:'transparent', cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.35)', touchAction:'manipulation' }}>
+            style={{ flex:1, padding:'11px', borderRadius:10, border:'1px solid rgba(255,255,255,0.25)', background:'transparent', cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.55)', touchAction:'manipulation' }}>
             Passer
           </button>
           <button onClick={step==='place' ? () => setStep('rotate') : confirm}

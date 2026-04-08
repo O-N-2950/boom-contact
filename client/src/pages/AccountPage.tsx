@@ -217,7 +217,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               style={{
                 width: '100%', padding: '13px',
                 borderRadius: 12,
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.25)',
                 background: 'transparent', color: '#d0d0d0',
                 cursor: 'pointer', fontSize: 14, fontWeight: 600,
               }}
@@ -354,7 +354,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     <div>
                       <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
                     </div>
-                    {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
+                    {v.plate && <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
                     <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -388,7 +388,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 <div key={s.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 12 }}>{s.id}</div>
+                      <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 12 }}>{s.id}</div>
                       <div style={{ color: '#fff', fontWeight: 600, marginTop: 2 }}>Plaque : {plate}</div>
                       <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
                       {s.accident?.location?.address && <div style={{ color: '#8a8a8a', fontSize: 11, marginTop: 4 }}>📍 {s.accident.location.address}</div>}
@@ -523,7 +523,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Partage viral */}
             <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Faire connaître boom.contact</div>
+              <div style={{ color: '#FF5533', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Faire connaître boom.contact</div>
               <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
                 Partage l'app à tes proches, collègues et sur les réseaux. Aide-les avant qu'ils en aient besoin.
               </div>

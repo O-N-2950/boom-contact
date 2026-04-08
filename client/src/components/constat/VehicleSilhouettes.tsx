@@ -754,8 +754,8 @@ export function VehicleSilhouetteSVG({ type, color, bodyColor, bodyColorDark }: 
         {/* Phare intégré */}
         <ellipse cx="140" cy="100" rx="12" ry="7" fill="rgba(255,240,160,0.2)" stroke="rgba(255,240,160,0.5)" strokeWidth="0.8"/>
         {/* Guidon sous carénage (presque caché) */}
-        <path d="M82,110 Q108,104 116,110" fill="none" stroke="rgba(240,237,232,0.25)" strokeWidth="3.5" strokeLinecap="round"/>
-        <path d="M164,110 Q172,104 198,110" fill="none" stroke="rgba(240,237,232,0.25)" strokeWidth="3.5" strokeLinecap="round"/>
+        <path d="M82,110 Q108,104 116,110" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="3.5" strokeLinecap="round"/>
+        <path d="M164,110 Q172,104 198,110" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="3.5" strokeLinecap="round"/>
         {/* Réservoir sport */}
         <path d="M114,134 Q140,122 166,134 L168,182 Q140,196 112,182 Z" fill={body} stroke={line} strokeWidth="1"/>
         {/* Carénages latéraux profilés */}
@@ -790,8 +790,8 @@ export function VehicleSilhouetteSVG({ type, color, bodyColor, bodyColorDark }: 
         {/* Phare */}
         <rect x="126" y="88" width="28" height="16" rx="6" fill="rgba(255,240,160,0.2)" stroke="rgba(255,240,160,0.4)" strokeWidth="0.8"/>
         {/* Guidon */}
-        <path d="M64,110 Q100,100 112,108" fill="none" stroke="rgba(240,237,232,0.35)" strokeWidth="4" strokeLinecap="round"/>
-        <path d="M168,108 Q180,100 216,110" fill="none" stroke="rgba(240,237,232,0.35)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M64,110 Q100,100 112,108" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M168,108 Q180,100 216,110" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
         <circle cx="64" cy="110" r="5" fill={body2} stroke={line} strokeWidth="1"/>
         <circle cx="216" cy="110" r="5" fill={body2} stroke={line} strokeWidth="1"/>
         {/* Réservoir */}
@@ -854,8 +854,8 @@ export function VehicleSilhouetteSVG({ type, color, bodyColor, bodyColorDark }: 
         <path d="M134,92 L128,118 L152,118 L146,92 Z" fill={body} stroke={line} strokeWidth="0.8"/>
         <path d="M116,108 Q140,96 164,108 L168,128 Q140,140 112,128 Z" fill={body2} stroke={line} strokeWidth="1"/>
         <ellipse cx="140" cy="116" rx="14" ry="8" fill="rgba(255,240,160,0.2)" stroke="rgba(255,240,160,0.4)" strokeWidth="0.8"/>
-        <path d="M64,112 Q100,102 116,108" fill="none" stroke="rgba(240,237,232,0.35)" strokeWidth="4" strokeLinecap="round"/>
-        <path d="M164,108 Q180,102 216,112" fill="none" stroke="rgba(240,237,232,0.35)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M64,112 Q100,102 116,108" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M164,108 Q180,102 216,112" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
         <circle cx="66" cy="112" r="5" fill={body2} stroke={line} strokeWidth="1"/>
         <circle cx="214" cy="112" r="5" fill={body2} stroke={line} strokeWidth="1"/>
         <path d="M112,136 Q140,126 168,136 L170,188 Q140,200 110,188 Z" fill={body} stroke={line} strokeWidth="1"/>
@@ -908,8 +908,8 @@ export function VehicleSilhouetteSVG({ type, color, bodyColor, bodyColorDark }: 
             stroke="rgba(255,255,255,0.08)" strokeWidth="0.8"/>
         ))}
         <path d="M136,94 L132,116 L148,116 L144,94 Z" fill={body} stroke={line} strokeWidth="0.8"/>
-        <path d="M70,104 Q104,96 124,108" fill="none" stroke="rgba(240,237,232,0.28)" strokeWidth="4" strokeLinecap="round"/>
-        <path d="M156,108 Q176,96 210,104" fill="none" stroke="rgba(240,237,232,0.28)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M70,104 Q104,96 124,108" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
+        <path d="M156,108 Q176,96 210,104" fill="none" stroke="rgba(240,237,232,0.55)" strokeWidth="4" strokeLinecap="round"/>
         <rect x="133" y="106" width="14" height="28" rx="3" fill={body2} stroke={line} strokeWidth="0.8"/>
         <path d="M136,134 L124,230" fill="none" stroke="rgba(240,237,232,0.22)" strokeWidth="5" strokeLinecap="round"/>
         <path d="M144,134 L156,230" fill="none" stroke="rgba(240,237,232,0.22)" strokeWidth="5" strokeLinecap="round"/>

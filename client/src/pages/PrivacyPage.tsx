@@ -10,7 +10,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14, position: 'sticky', top: 0, zIndex: 10 }}>
         <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 18 }} aria-label="Retour">←</button>
         <div>
-          <div style={{ color: '#FF3500', fontWeight: 800, fontSize: 16 }}>💥 boom.contact</div>
+          <div style={{ color: '#FF5533', fontWeight: 800, fontSize: 16 }}>💥 boom.contact</div>
           <div style={{ color: '#d0d0d0', fontSize: 11 }}>Mentions légales & Confidentialité</div>
         </div>
       </div>
@@ -37,7 +37,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
         {/* RESPONSABLE DE TRAITEMENT */}
         <Section title="🔐 Responsable de traitement (RGPD art. 13)">
           <p>PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse.</p>
-          <p>DPO : <a href="mailto:privacy@boom.contact" style={{ color: '#FF3500' }}>privacy@boom.contact</a></p>
+          <p>DPO : <a href="mailto:privacy@boom.contact" style={{ color: '#FF5533' }}>privacy@boom.contact</a></p>
         </Section>
 
         {/* DONNÉES COLLECTÉES */}
@@ -105,7 +105,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
             ))}
           </div>
           <div style={{ marginTop: 14, color: '#d0d0d0', fontSize: 13, lineHeight: 1.6 }}>
-            Exercez vos droits par email : <a href="mailto:privacy@boom.contact" style={{ color: '#FF3500' }}>privacy@boom.contact</a> — réponse sous 30 jours.<br />
+            Exercez vos droits par email : <a href="mailto:privacy@boom.contact" style={{ color: '#FF5533' }}>privacy@boom.contact</a> — réponse sous 30 jours.<br />
             <br />
             <strong style={{ color: '#ccc' }}>Autorités de contrôle :</strong><br />
             🇨🇭 PFPDT (Suisse) — <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#d0d0d0' }}>edoeb.admin.ch</a><br />

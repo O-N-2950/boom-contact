@@ -126,17 +126,21 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
 
   const Field = ({ label, k, type = 'text', placeholder = '' }: {
     label: string; k: keyof PedestrianData; type?: string; placeholder?: string;
-  }) => (
-    <div style={{ marginBottom: 12 }}>
-      <label style={lbl}>{label}</label>
-      <input
-        aria-label={label}
-        type={type} value={(data[k] as string) || ''}
-        onChange={e => set(k, e.target.value)}
-        placeholder={placeholder} style={inp}
-      />
-    </div>
-  );
+  }) => {
+    const fieldId = `ped-${k}`;
+    return (
+      <div style={{ marginBottom: 12 }}>
+        <label htmlFor={fieldId} style={lbl}>{label}</label>
+        <input
+          id={fieldId}
+          aria-label={label}
+          type={type} value={(data[k] as string) || ''}
+          onChange={e => set(k, e.target.value)}
+          placeholder={placeholder} style={inp}
+        />
+      </div>
+    );
+  };
 
   const isMinor = data.dateOfBirth ? isMinorFromDOB(data.dateOfBirth) : false;
 
@@ -244,10 +248,11 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       <Field label="TÉLÉPHONE" k="phone" type="tel" placeholder="+41 79 000 00 00" />
 
       <div style={{ marginBottom: 18 }}>
-        <label style={lbl}>
+        <label htmlFor="ped-email" style={lbl}>
           EMAIL <span style={{ opacity: 0.7 }}>{filledByDriverA ? '' : '(pour recevoir le PDF)'}</span>
         </label>
         <input
+          id="ped-email"
           type="email" value={data.email || ''}
           onChange={e => set('email', e.target.value)}
           placeholder={filledByDriverA ? 'pieton@email.com' : 'votre@email.com'}
@@ -265,7 +270,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
 
       {/* === NIVEAU 2 — Adresse === */}
-      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)', marginBottom: 10, overflow: 'hidden' }}>
+      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 10, overflow: 'hidden' }}>
         <AccordionHeader
           icon="🏠" title="Adresse"
           open={showAddress} onToggle={() => setShowAddress(v => !v)}
@@ -286,7 +291,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       {/* === NIVEAU 3 — Parents / Tuteur === */}
       <div style={{
         borderRadius: 12, marginBottom: 10, overflow: 'hidden',
-        border: `1px solid ${isMinor ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.08)'}`,
+        border: `1px solid ${isMinor ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.25)'}`,
       }}>
         <AccordionHeader
           icon="👨‍👩‍👧" title="Parent / Tuteur"
@@ -314,8 +319,9 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
               <Field label="NOM DU PARENT / TUTEUR" k="parentName" placeholder="Marie Dupont" />
               <div style={{ marginBottom: 12 }}>
-                <label style={lbl}>LIEN</label>
+                <label htmlFor="ped-parentRelation" style={lbl}>LIEN</label>
                 <select
+                  id="ped-parentRelation"
                   value={data.parentRelation || ''}
                   onChange={e => set('parentRelation', e.target.value)}
                   aria-label="Lien de parenté"
@@ -336,7 +342,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
 
       {/* === Pièce d'identité === */}
-      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.08)', marginBottom: 20, overflow: 'hidden' }}>
+      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 20, overflow: 'hidden' }}>
         <AccordionHeader
           icon="🪪" title="Pièce d'identité"
           open={showIdentity} onToggle={() => setShowIdentity(v => !v)}
@@ -384,8 +390,8 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           onClick={onSkip}
           style={{
             width: '100%', padding: '13px', borderRadius: 12,
-            border: '1px solid rgba(255,255,255,0.07)',
-            background: 'transparent', color: 'rgba(240,237,232,0.28)',
+            border: '1px solid rgba(255,255,255,0.25)',
+            background: 'transparent', color: 'rgba(240,237,232,0.55)',
             cursor: 'pointer', fontSize: 13,
           }}
         >

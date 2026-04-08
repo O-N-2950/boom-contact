@@ -124,7 +124,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
                   }}
                   style={{
                     padding: '5px 10px', borderRadius: 20, cursor: 'pointer', fontSize: 11,
-                    border: secondPartyType === opt.val ? '1.5px solid var(--boom)' : '1px solid rgba(255,255,255,0.1)',
+                    border: secondPartyType === opt.val ? '1.5px solid var(--boom)' : '1px solid rgba(255,255,255,0.25)',
                     background: secondPartyType === opt.val ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.03)',
                     color: secondPartyType === opt.val ? 'var(--boom)' : 'rgba(255,255,255,0.55)',
                     fontWeight: secondPartyType === opt.val ? 700 : 400,

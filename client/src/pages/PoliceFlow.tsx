@@ -48,15 +48,15 @@ const MEASURE_TYPES = [
 const S = {
   label: { fontSize: 10, opacity: 0.75, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', marginBottom: 4 },
   value: { fontSize: 14, fontWeight: 600, color: 'var(--text)' },
-  card: { padding: '14px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 10 },
+  card: { padding: '14px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)', marginBottom: 10 },
   sectionHeader: (color = '#1e3a5f') => ({
     padding: '8px 14px', borderRadius: '6px 6px 0 0',
     background: color, fontSize: 11, fontWeight: 700,
     letterSpacing: 1.5, textTransform: 'uppercase' as const, color: '#fff',
   }),
-  sectionBody: { padding: '12px 14px', border: '1px solid rgba(255,255,255,0.08)', borderTop: 'none', borderRadius: '0 0 6px 6px', marginBottom: 16 },
+  sectionBody: { padding: '12px 14px', border: '1px solid rgba(255,255,255,0.25)', borderTop: 'none', borderRadius: '0 0 6px 6px', marginBottom: 16 },
   fieldGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 8 },
-  fieldBox: { padding: '8px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' },
+  fieldBox: { padding: '8px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' },
 };
 
 function FieldBox({ label, value }: { label: string; value?: string | null }) {
@@ -240,7 +240,7 @@ function MediaSection({ session }: { session: any }) {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
                   {photos.map((photo) => (
-                    <div key={photo.id} style={{ borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div key={photo.id} style={{ borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)' }}>
                       <img
                         src={`data:image/jpeg;base64,${photo.base64}`}
                         alt={CATEGORIES[photo.category] || photo.category}
@@ -261,7 +261,7 @@ function MediaSection({ session }: { session: any }) {
                 <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 10 }}>
                   CROQUIS
                 </div>
-                <div style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', marginBottom: 8 }}>
+                <div style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)', marginBottom: 8 }}>
                   <img
                     src={sketchImage}
                     alt="Croquis de l'accident"
@@ -355,7 +355,7 @@ function AnnotationsSection({
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '8px 10px', borderRadius: 6,
-    border: '1px solid rgba(255,255,255,0.12)',
+    border: '1px solid rgba(255,255,255,0.25)',
     background: 'rgba(255,255,255,0.05)',
     color: 'var(--text)', fontSize: 13, boxSizing: 'border-box',
     fontFamily: 'inherit',
@@ -409,7 +409,8 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, infractions: a.infractions.filter((_, j) => j !== i) }))}
-              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, height: 34 }}
+              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, minHeight: 44, minWidth: 44 }}
+              aria-label="Supprimer"
             >×</button>
           </div>
         ))}
@@ -465,7 +466,8 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, measures: a.measures.filter((_, j) => j !== i) }))}
-              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, height: 34 }}
+              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, minHeight: 44, minWidth: 44 }}
+              aria-label="Supprimer"
             >×</button>
           </div>
         ))}
@@ -478,7 +480,7 @@ function AnnotationsSection({
       <div style={S.sectionHeader()}>Temoins</div>
       <div style={S.sectionBody}>
         {ann.witnesses.map((w, i) => (
-          <div key={i} style={{ padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', marginBottom: 10, background: 'rgba(255,255,255,0.02)', position: 'relative' }}>
+          <div key={i} style={{ padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 10, background: 'rgba(255,255,255,0.02)', position: 'relative' }}>
             <button
               onClick={() => setAnn(a => ({ ...a, witnesses: a.witnesses.filter((_, j) => j !== i) }))}
               style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 4, color: '#ef4444', cursor: 'pointer', fontSize: 12, padding: '2px 8px' }}
@@ -599,7 +601,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Dossier police — constat {sessionId}</h1>
 
       {/* Header institutionnel */}
-      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
           <div>
@@ -612,7 +614,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
 
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
           {/* Session ID badge */}
-          <div style={{ padding: '4px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', fontFamily: 'DM Mono, monospace', fontSize: 11 }}>
+          <div style={{ padding: '4px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', fontFamily: 'DM Mono, monospace', fontSize: 11 }}>
             Session: {sessionId}
           </div>
           {/* Agent info */}
@@ -630,7 +632,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Tab bar */}
-      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '0 20px', display: 'flex', gap: 0 }}>
+      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '0 20px', display: 'flex', gap: 0 }}>
         {TABS.map(tab => (
           <button
             key={tab.id}

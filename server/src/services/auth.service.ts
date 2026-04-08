@@ -256,7 +256,10 @@ export async function getUserFromToken(authHeader?: string): Promise<any | null>
   const payload = verifyJWT(token);
   if (!payload) return null;
   const user = await db.query.users.findFirst({ where: eq(users.id, payload.sub) });
-  return user || null;
+  if (!user) return null;
+  // Verify tokenVersion — reject revoked tokens (same check as tRPC middleware)
+  if ((payload.tokenVersion ?? -1) !== (user.tokenVersion ?? 0)) return null;
+  return user;
 }
 
 // ── Admin seed (called from migrate) ─────────────────────────

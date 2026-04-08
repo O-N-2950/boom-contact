@@ -57,7 +57,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
       <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Conditions générales" style={{
         width: '100%', maxWidth: 480,
         background: '#0E0E18',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: '24px 24px 0 0',
         maxHeight: '90svh',
         display: 'flex', flexDirection: 'column',
@@ -77,7 +77,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           <div style={{ fontSize: 11, opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1, marginBottom: 16 }}>{t('cgu.before_continue')}</div>
 
           {/* Tabs */}
-          <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.07)', marginBottom: 0 }}>
+          <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.25)', marginBottom: 0 }}>
             {([['cgu', t('cgu.tab_cgu')], ['privacy', t('cgu.tab_privacy')]] as const).map(([id, label]) => (
               <button key={id} onClick={() => setTab(id)} style={{
                 padding: '8px 16px', background: 'none', border: 'none', cursor: 'pointer',
@@ -117,7 +117,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
         </div>
 
         {/* Bottom action area */}
-        <div style={{ padding: '16px 24px 32px', borderTop: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
+        <div style={{ padding: '16px 24px 32px', borderTop: '1px solid rgba(255,255,255,0.25)', flexShrink: 0 }}>
           {/* Email */}
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, letterSpacing: 0.5 }}>{t('cgu.email_label')}</div>

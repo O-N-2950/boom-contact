@@ -62,7 +62,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         </button>
         <button onClick={() => setShowShare(true)} style={{
           width: '100%', marginTop: 8, padding: '12px',
-          borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)',
           background: 'transparent', color: 'rgba(240,237,232,0.6)',
           cursor: 'pointer', fontSize: 13, fontWeight: 600,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -99,7 +99,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div style={packCardStyle}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
             <div>
-              <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 16 }}>🔥 Pack famille</div>
+              <div style={{ color: '#FF5533', fontWeight: 900, fontSize: 16 }}>🔥 Pack famille</div>
               <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>3 constats à partager avec vos proches</div>
             </div>
             <div style={{ textAlign: 'right' as const }}>
@@ -151,7 +151,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
         {/* Packs avec focus "offrir" */}
         <div style={packCardStyle}>
-          <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 15, marginBottom: 6 }}>
+          <div style={{ color: '#FF5533', fontWeight: 900, fontSize: 15, marginBottom: 6 }}>
             🎁 Offrez un constat par WhatsApp
           </div>
           <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 14 }}>
@@ -201,7 +201,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
       {/* Partage viral — après constat */}
       <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 12, padding: 14, marginBottom: 12 }}>
-        <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Partage boom.contact</div>
+        <div style={{ color: '#FF5533', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Partage boom.contact</div>
         <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>
           Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.
         </div>
@@ -278,7 +278,7 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
         }}>
           {p.star && <div style={{ color: '#fff', fontSize: 9, fontWeight: 700, marginBottom: 3 }}>⭐ POPULAIRE</div>}
           <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>{p.label}</div>
-          <div style={{ color: p.star ? '#ffd0c0' : '#FF3500', fontWeight: 900, fontSize: 16 }}>CHF {p.price}</div>
+          <div style={{ color: p.star ? '#ffd0c0' : '#FF5533', fontWeight: 900, fontSize: 16 }}>CHF {p.price}</div>
           <div style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#aaa', fontSize: 10, marginTop: 2 }}>{p.note}</div>
         </button>
       ))}

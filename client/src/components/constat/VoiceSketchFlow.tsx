@@ -145,11 +145,11 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
       </div>
 
       {/* Mode selector */}
-      <div style={{ display: 'flex', marginBottom: 20, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ display: 'flex', marginBottom: 20, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)' }}>
         <button onClick={() => setInputMode('voice')} style={{
           flex: 1, padding: '10px 0', background: inputMode === 'voice' ? `${roleColor}22` : 'transparent',
           border: 'none', cursor: 'pointer', color: inputMode === 'voice' ? roleColor : 'rgba(255,255,255,0.4)',
-          fontSize: 13, fontWeight: 700, borderRight: '1px solid rgba(255,255,255,0.08)',
+          fontSize: 13, fontWeight: 700, borderRight: '1px solid rgba(255,255,255,0.25)',
         }}>🎙️ Vocal</button>
         <button onClick={() => setInputMode('text')} style={{
           flex: 1, padding: '10px 0', background: inputMode === 'text' ? `${roleColor}22` : 'transparent',
@@ -179,7 +179,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
             placeholder="Décrivez l'accident en quelques phrases…"
             rows={5}
             style={{
-              width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
+              width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.25)',
               borderRadius: 12, color: '#fff', fontSize: 14, padding: 14,
               boxSizing: 'border-box' as const, resize: 'vertical', lineHeight: 1.6,
               fontFamily: 'inherit', marginBottom: 16,
@@ -269,7 +269,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
             />
           ) : (
             <div style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)',
               borderRadius: 12, padding: 16, fontSize: 14,
               fontStyle: 'italic', lineHeight: 1.65, color: 'rgba(255,255,255,0.8)',
             }}>
@@ -280,7 +280,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
 
         <div style={{ display: 'flex', gap: 10 }}>
           <button onClick={() => { setTranscript(''); setManualText(''); setFlowState('intro'); setInputMode('voice'); }}
-            style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 14 }}>
+            style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 14 }}>
             Recommencer
           </button>
           <button onClick={handleConfirm} style={{ ...btnPrimary, flex: 2 }}>

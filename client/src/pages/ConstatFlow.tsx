@@ -28,7 +28,7 @@ const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm')
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 // ── Zod schema for localStorage validation ─────────────────
@@ -411,7 +411,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           {canGoBack && (
             <button onClick={goBack} style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
-              borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)',
               background: 'rgba(255,255,255,0.05)', cursor: 'pointer',
               fontSize: 13, fontWeight: 600, color: 'var(--text)',
               touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
@@ -471,7 +471,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                     <div style={{ color: '#fff', fontWeight: 600 }}>
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
-                    {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 13 }}>{v.plate}</div>}
+                    {v.plate && <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 13 }}>{v.plate}</div>}
                     {v.insuranceData?.companyName && <div style={{ color: '#d0d0d0', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
@@ -586,8 +586,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onClick={() => { setPedestrianHasPhone(false); setStep('voice'); }}
               style={{
                 width: '100%', padding: '14px', borderRadius: 14,
-                border: '1px solid rgba(255,255,255,0.07)',
-                background: 'transparent', color: 'rgba(240,237,232,0.35)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                background: 'transparent', color: 'rgba(240,237,232,0.55)',
                 fontSize: 13, cursor: 'pointer',
               }}
             >
@@ -762,7 +762,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               </div>
 
               {/* Accident */}
-              <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
                 <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4, fontWeight: 600 }}>📍 Accident</div>
                 <div style={{ fontSize: 12, opacity: 0.7 }}>
                   {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
@@ -775,7 +775,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               {/* Bouton corriger */}
               <button
                 onClick={() => setStep('form')}
-                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
               >
                 ✏️ Corriger mes informations
               </button>

@@ -99,7 +99,7 @@ export function CookieBanner() {
         maxWidth: 480,
         margin: '0 auto',
         background: '#0E0E18',
-        border: '1px solid rgba(255,255,255,0.12)',
+        border: '1px solid rgba(255,255,255,0.25)',
         borderBottom: 'none',
         borderRadius: '16px 16px 0 0',
         padding: '18px 20px 20px',

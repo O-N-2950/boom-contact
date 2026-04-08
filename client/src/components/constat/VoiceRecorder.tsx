@@ -147,7 +147,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
   const roleColor = { A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#EC4899' }[role];
 
   return (
-    <div style={{ borderRadius: 14, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
+    <div style={{ borderRadius: 14, border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
 
       {/* Header */}
       <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -159,7 +159,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
           <div style={{ fontSize: 11, opacity: 0.7 }}>Version des faits selon {roleLabel.toLowerCase()}</div>
         </div>
         {state === 'done' && (
-          <button onClick={reset} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', touchAction: 'manipulation' }}>
+          <button onClick={reset} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', touchAction: 'manipulation', minHeight: 44, minWidth: 44 }}>
             Refaire
           </button>
         )}
@@ -229,7 +229,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={reset}
-                style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
+                style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
                 Recommencer
               </button>
               <button onClick={transcribe}
@@ -272,7 +272,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsEditing(true); } }}
                 role="button"
                 tabIndex={0}
-                style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 14, lineHeight: 1.7, cursor: 'text', minHeight: 80, color: 'var(--text)' }}
+                style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', fontSize: 14, lineHeight: 1.7, cursor: 'text', minHeight: 80, color: 'var(--text)' }}
               >
                 {transcript}
               </div>
@@ -290,7 +290,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
               ⚠️ {error}
             </div>
             <button onClick={reset}
-              style={{ width: '100%', padding: '12px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
+              style={{ width: '100%', padding: '12px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
               Réessayer
             </button>
           </>

@@ -161,6 +161,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
               border: `1px solid ${currency === c ? '#FF3500' : '#222'}`,
               color: '#fff', borderRadius: 8, padding: '6px 10px',
               fontSize: 12, fontWeight: currency === c ? 700 : 400, cursor: 'pointer',
+              minHeight: 44, minWidth: 44,
             }}>
               {CURRENCY_FLAGS[c]} {c}
             </button>
@@ -179,7 +180,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           return (
             <div key={pkg.id} style={{
               borderRadius: 16, overflow: 'hidden',
-              border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.08)',
+              border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)',
               background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)',
             }}>
               {pkg.popular && (
