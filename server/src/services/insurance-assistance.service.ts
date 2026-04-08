@@ -262,43 +262,23 @@ function lookupDB(insurerName: string, country?: string): InsuranceEntry | null 
 
 // ── AI fallback — Claude web search ─────────────────────────
 async function searchWithAI(insurerName: string, country?: string): Promise<AssistanceResult> {
-  const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_KEY) {
-    return { insurer: insurerName, source: 'not_found', confidence: 'low' };
-  }
-
   try {
+    const { callAnthropicJSON } = await import('./anthropic.client.js');
+
     const countryText = country ? ` in ${country}` : '';
-    const prompt = `What is the 24/7 roadside assistance phone number for the insurance company "${insurerName}"${countryText}? 
+    const prompt = `What is the 24/7 roadside assistance phone number for the insurance company "${insurerName}"${countryText}?
     Also provide the claims declaration number if different.
     Respond ONLY with a JSON object, no markdown, no explanation:
     {"assistance": "number or null", "claims": "number or null", "website": "domain or null", "note": "short note or null", "confidence": "high/medium/low"}`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      signal: AbortSignal.timeout(10000),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+    const parsed = await callAnthropicJSON<Record<string, string>>(
+      { prompt, maxTokens: 300 }
+    );
 
-    const data = await response.json() as any;
+    if (!parsed) {
+      return { insurer: insurerName, source: 'not_found', confidence: 'low' };
+    }
 
-    // Extract text from response (may include tool_use blocks)
-    const textBlock = data.content?.find((b: any) => b.type === 'text');
-    if (!textBlock?.text) throw new Error('No text in response');
-
-    // Clean and parse JSON
-    const clean = textBlock.text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
     const validated = AIInsuranceResponseSchema.parse(parsed);
 
     logger.info('AI insurance lookup', { insurer: insurerName, country, result: validated });

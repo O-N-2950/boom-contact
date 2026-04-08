@@ -184,7 +184,7 @@ export function startMonitoring(intervalMinutes = 5) {
     }
   }, ms);
   // Daily purge at startup (runs once, then daily if server uptime allows)
-  purgeExpiredSessions().catch(() => {});
+  purgeExpiredSessions().catch((e) => { logger.debug('purgeExpiredSessions failed', { error: String(e) }); });
   logger.info(`[NEO-MONITOR] 🔁 Monitoring démarré (${intervalMinutes} min)`);
 }
 

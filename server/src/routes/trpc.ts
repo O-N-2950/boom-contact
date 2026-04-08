@@ -47,4 +47,33 @@ export function escapeHtml(str: string): string {
     .replace(/'/g, '&#39;');
 }
 
+// ── Idempotency cache — prevents duplicate mutations ────────
+// In-memory with TTL (15 min). For multi-instance, use Redis.
+const idempotencyCache = new Map<string, { result: unknown; expiry: number }>();
+const IDEMPOTENCY_TTL_MS = 15 * 60 * 1000;
+
+// Periodic cleanup every 5 min
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of idempotencyCache) {
+    if (now > entry.expiry) idempotencyCache.delete(key);
+  }
+}, 5 * 60 * 1000);
+
+/**
+ * Check and store idempotency key.
+ * Returns cached result if key was already processed, null otherwise.
+ */
+export function checkIdempotency(key: string | undefined): unknown | null {
+  if (!key) return null;
+  const cached = idempotencyCache.get(key);
+  if (cached && Date.now() < cached.expiry) return cached.result;
+  return null;
+}
+
+export function storeIdempotency(key: string | undefined, result: unknown): void {
+  if (!key) return;
+  idempotencyCache.set(key, { result, expiry: Date.now() + IDEMPOTENCY_TTL_MS });
+}
+
 export { TRPCError };

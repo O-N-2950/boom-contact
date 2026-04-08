@@ -63,7 +63,7 @@ export async function fetchAccidentMap(
       tasks.push(
         fetchTile(tx, ty, zoom)
           .then(img => { ctx.drawImage(img as any, px, py, TILE_SIZE, TILE_SIZE); })
-          .catch(() => {}) // tuile indisponible = fond gris
+          .catch((e) => { logger.debug('Tile fetch failed (grey fallback)', { tile: `${tx},${ty}`, error: String(e) }); })
       );
     }
   }

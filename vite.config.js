@@ -36,6 +36,13 @@ export default defineConfig({
           if (id.includes('posthog-js')) {
             return 'vendor-posthog';
           }
+          // Named chunks for route prefetching
+          if (id.includes('/pages/ConstatFlow')) {
+            return 'ConstatFlow';
+          }
+          if (id.includes('/pages/JoinSession')) {
+            return 'JoinSession';
+          }
         },
       },
     },

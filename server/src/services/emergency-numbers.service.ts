@@ -89,39 +89,21 @@ const EMERGENCY_DB: Record<string, Omit<CountryEmergencyResult, 'source' | 'conf
 
 // ── AI fallback for unknown countries ─────────────────────────
 async function lookupWithAI(countryCode: string, countryName?: string): Promise<CountryEmergencyResult> {
-  const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_KEY) {
-    return { countryCode, countryName: countryName || countryCode, police:'112', ambulance:'112', fire:'112', source:'not_found', confidence:'low' };
-  }
-
   try {
+    const { callAnthropicJSON } = await import('./anthropic.client.js');
+
     const prompt = `What are the official emergency phone numbers for ${countryName || countryCode} (country code: ${countryCode})?
 Also include a national roadside assistance or breakdown service number if one exists.
 Respond ONLY with a JSON object, no markdown:
 {"police":"number","ambulance":"number","fire":"number","universal":"112 or 911 or null","roadside":"number or null","roadsideNote":"org name or null","countryName":"full country name","confidence":"high/medium/low"}`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      signal: AbortSignal.timeout(10000),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+    const parsed = await callAnthropicJSON<Record<string, string>>(
+      { prompt, maxTokens: 300 }
+    );
 
-    const data = await response.json() as any;
-    const textBlock = data.content?.find((b: any) => b.type === 'text');
-    if (!textBlock?.text) throw new Error('No text');
-
-    const clean = textBlock.text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    if (!parsed) {
+      return { countryCode, countryName: countryName || countryCode, police:'112', ambulance:'112', fire:'112', source:'not_found', confidence:'low' };
+    }
 
     logger.info('AI emergency lookup', { countryCode, result: parsed });
 
@@ -135,7 +117,7 @@ Respond ONLY with a JSON object, no markdown:
       roadside: parsed.roadside || undefined,
       roadsideNote: parsed.roadsideNote || undefined,
       source: 'ai',
-      confidence: parsed.confidence || 'medium',
+      confidence: (parsed.confidence as 'high' | 'medium' | 'low') || 'medium',
     };
   } catch (err) {
     logger.warn('AI emergency lookup failed', { countryCode, error: String(err) });

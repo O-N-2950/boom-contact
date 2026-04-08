@@ -84,7 +84,7 @@ const accidentDataSchema = z.object({
     caption: z.string().optional(),
     takenAt: z.string(),
   })).optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── auth.me ──────────────────────────────────────────────────
 export const authMeOutput = z.object({
@@ -143,7 +143,7 @@ const participantSchema = z.object({
   language: z.string().optional(),
   isPedestrian: z.boolean().optional(),
   name: z.string().optional(),
-}).catchall(z.unknown()).optional();
+}).passthrough().optional();
 
 export const sessionGetOutput = z.object({
   id: z.string(),
@@ -158,7 +158,7 @@ export const sessionGetOutput = z.object({
   participantE: participantSchema,
   vehicleCount: z.number().optional(),
   pdfUrl: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── session.join ─────────────────────────────────────────────
 export const sessionJoinOutput = sessionGetOutput;
@@ -210,7 +210,7 @@ const dashboardSessionSchema = z.object({
   createdAt: z.unknown(),
   ownerEmail: z.string().nullable().optional(),
   vehicleCount: z.number().nullable().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 export const policeDashboardOutput = z.object({
   sessions: z.array(dashboardSessionSchema),
@@ -262,7 +262,7 @@ export const sessionHistoryOutput = z.array(z.object({
   status: z.string(),
   createdAt: z.unknown(),
   ownerEmail: z.string().nullable().optional(),
-}).catchall(z.unknown()));
+}).passthrough());
 
 // ── ocr.scan ────────────────────────────────────────────────
 export const ocrScanOutput = z.object({
@@ -270,7 +270,7 @@ export const ocrScanOutput = z.object({
   vehicle: vehicleDataSchema,
   driver: driverDataSchema,
   insurance: insuranceDataSchema,
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── ocr.batchScan ───────────────────────────────────────────
 export const ocrBatchScanOutput = z.array(ocrScanOutput);
@@ -280,7 +280,7 @@ export const ocrScanPairOutput = z.object({
   vehicle: vehicleDataSchema,
   driver: driverDataSchema,
   insurance: insuranceDataSchema,
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── email.sendToDriver ──────────────────────────────────────
 export const emailSendToDriverOutput = z.object({
@@ -296,12 +296,12 @@ export const emailBugReportOutput = z.object({
 // ── voice.transcribe ────────────────────────────────────────
 export const voiceTranscribeOutput = z.object({
   text: z.string(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── voice.analyzeAccident ───────────────────────────────────
 export const voiceAnalyzeAccidentOutput = z.object({
   answers: z.record(z.string()).optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── sketch.render ───────────────────────────────────────────
 export const sketchRenderOutput = z.object({
@@ -316,7 +316,7 @@ const insuranceAssistanceResult = z.object({
   phone: z.string().optional(),
   email: z.string().optional(),
   website: z.string().optional(),
-}).catchall(z.unknown()).nullable();
+}).passthrough().nullable();
 
 export const emergencyInsuranceLookupOutput = z.object({
   participantA: insuranceAssistanceResult,
@@ -331,7 +331,7 @@ export const emergencyCountryLookupOutput = z.object({
   general: z.string().optional(),
   countryCode: z.string().optional(),
   countryName: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── emergency.singleLookup ─────────────────────────────────
 export const emergencySingleLookupOutput = z.object({
@@ -339,7 +339,7 @@ export const emergencySingleLookupOutput = z.object({
   phone: z.string().optional(),
   email: z.string().optional(),
   website: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── auth misc outputs ───────────────────────────────────────
 export const okOutput = z.object({ ok: z.boolean() });
@@ -349,7 +349,7 @@ export const authMagicLinkRequestOutput = okOutput;
 export const authMagicLinkVerifyOutput = z.object({
   ok: z.boolean(),
   token: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 export const authUpdateProfileOutput = okOutput;
 export const authUpdateEmailOutput = okOutput;
@@ -365,14 +365,14 @@ export const authAdminBootstrapOutput = okOutput;
 
 export const authClaimGiftOutput = z.object({
   ok: z.boolean(),
-}).catchall(z.unknown());
+}).passthrough();
 
 // ── payment misc outputs ────────────────────────────────────
 export const paymentPackagesOutput = z.array(z.object({
   id: z.string(),
   label: z.string(),
   credits: z.number(),
-}).catchall(z.unknown()));
+}).passthrough());
 
 export const paymentCurrenciesOutput = z.object({
   packages: z.record(z.string(), z.unknown()),
@@ -393,7 +393,7 @@ export const policeGetAnnotationOutput = z.object({
   measures: z.array(z.unknown()).optional(),
   witnesses: z.array(z.unknown()).optional(),
   observations: z.string().nullable().optional(),
-}).catchall(z.unknown()).nullable();
+}).passthrough().nullable();
 
 export const policeSaveAnnotationOutput = z.object({
   ok: z.boolean(),
@@ -414,7 +414,7 @@ export const adminUsersOutput = z.array(z.object({
   createdAt: z.unknown(),
   lastSeenAt: z.unknown().optional(),
   country: z.string().nullable().optional(),
-}).catchall(z.unknown()));
+}).passthrough());
 
 export const adminDeleteUserOutput = z.object({
   ok: z.boolean(),
@@ -452,7 +452,7 @@ export const marketingPostsOutput = z.object({
     platform: z.string(),
     status: z.string(),
     hashtags: z.array(z.string()),
-  }).catchall(z.unknown())),
+  }).passthrough()),
 });
 
 export const marketingActionOutput = okOutput;
@@ -466,7 +466,7 @@ export const policeGetFullSessionOutput = z.object({
     canton: z.string().optional(),
     country: z.string().optional(),
     name: z.string().optional(),
-  }).catchall(z.unknown()),
+  }).passthrough(),
 });
 
 // ── admin.stats — large analytics payload ────────────────────
@@ -474,20 +474,20 @@ const recentSessionSchema = z.object({
   id: z.string(),
   status: z.string(),
   createdAt: z.unknown(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const revenueEntrySchema = z.object({
   id: z.string().optional(),
   amount: z.number().optional(),
   currency: z.string().optional(),
   createdAt: z.unknown().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const packageBreakdownSchema = z.object({
   packageId: z.string().optional(),
   count: z.number().optional(),
   totalCents: z.number().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 export const adminStatsOutput = z.object({
   sessions: z.object({

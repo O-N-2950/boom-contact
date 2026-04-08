@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
+import { router, publicProcedure, protectedProcedure, TRPCError, checkIdempotency, storeIdempotency } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
 import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, userSaveConsentOutput } from './output-schemas.js';
 
@@ -57,12 +57,17 @@ export const paymentRouter = router({
 
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
   useCredit: protectedProcedure
-    .input(z.object({ sessionId: z.string().max(50) }))
+    .input(z.object({ sessionId: z.string().max(50), idempotencyKey: z.string().max(100).optional() }))
     .output(paymentUseCreditOutput)
     .mutation(async ({ ctx, input }) => {
+      const cached = checkIdempotency(input.idempotencyKey);
+      if (cached) return cached as typeof paymentUseCreditOutput._output;
+
       const ok = await useCredit(ctx.authUser.email, input.sessionId);
       if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
-      return { ok: true };
+      const result = { ok: true };
+      storeIdempotency(input.idempotencyKey, result);
+      return result;
     }),
 });
 

@@ -89,7 +89,7 @@ if ('serviceWorker' in navigator) {
       });
       
       // Vérifier si une mise à jour est disponible au démarrage
-      registration.update().catch(() => {});
+      registration.update().catch((e) => { console.debug('SW update check failed', e); });
       
     } catch (e) {
       console.warn('SW registration failed:', e);

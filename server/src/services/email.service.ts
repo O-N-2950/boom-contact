@@ -1,6 +1,16 @@
 import { logger } from '../logger.js';
 import { RESEND_API_KEY } from '../config.js';
 import { escapeHtml } from '../routes/trpc.js';
+
+// ── Resend singleton — avoids re-creating client on every email send ──
+let _resendInstance: InstanceType<typeof import('resend').Resend> | null = null;
+
+export async function getResendClient() {
+  if (_resendInstance) return _resendInstance;
+  const { Resend } = await import('resend');
+  _resendInstance = new Resend(RESEND_API_KEY);
+  return _resendInstance;
+}
 /**
  * Email service — boom.contact
  *
@@ -531,9 +541,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
   }
 
   try {
-    // Dynamic import — resend may not be installed yet
-    const { Resend } = await import('resend');
-    const resend = new Resend(RESEND_KEY);
+    const resend = await getResendClient();
 
     const t = getTemplate(params.language);
     const html = buildEmailHTML(params);
@@ -571,8 +579,7 @@ export async function sendMagicLink(email: string, magicUrl: string): Promise<vo
   if (!RESEND_KEY) { logger.warn('RESEND missing — magic link not sent'); return; }
 
   try {
-    const { Resend } = await import('resend');
-    const resend = new Resend(RESEND_KEY);
+    const resend = await getResendClient();
     await resend.emails.send({
       from: 'boom.contact <contact@boom.contact>',
       to: email,
@@ -602,8 +609,7 @@ export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: strin
   if (!RESEND_KEY) { logger.warn('RESEND missing — gift email not sent'); return; }
 
   try {
-    const { Resend } = await import('resend');
-    const resend = new Resend(RESEND_KEY);
+    const resend = await getResendClient();
     await resend.emails.send({
       from: 'boom.contact <contact@boom.contact>',
       to: recipientEmail,

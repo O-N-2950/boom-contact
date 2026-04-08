@@ -269,7 +269,7 @@ export default function App() {
               dispatch({ type: 'SET_AUTH', token: localStorage.getItem(USER_TOKEN_KEY) || '', user });
             }
           })
-          .catch(() => {});
+          .catch((e) => { console.debug('auth.me silent refresh failed', e); });
       }
     }
   }, []);

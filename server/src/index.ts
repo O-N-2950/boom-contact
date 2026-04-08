@@ -17,7 +17,7 @@ import { runMigrations } from './db/migrate.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Init Sentry ASAP (called once here, not duplicated below)
-initSentry().catch(() => {});
+initSentry().catch((e) => { logger.debug('Sentry init skipped', { error: String(e) }); });
 
 const app = express();
 // Trust first proxy (Railway) — required for rate limiters to see real client IP
@@ -529,41 +529,6 @@ app.get('/sitemap.xml', (_req, res) => {
 });
 
 
-
-/* SOCIAL DISABLED — // ── Social media — endpoint auto-publish (sécurisé) ───────── */
-// Déclenché par cron-job.org toutes les 24h à 9h00 Europe/Zurich
-// app.post('/social/auto-publish', express.json(), async (req, res) => {
-//   const secret = req.body?.secret || req.query.secret;
-//   if (secret !== process.env.SOCIAL_SECRET) {
-//     return res.status(401).json({ error: 'Unauthorized' });
-//   }
-//   try {
-//     const { publishToAllPlatforms } = await import('./services/social.service.js');
-//     const results = await publishToAllPlatforms();
-//     const ok = Object.values(results).filter((r: any) => r.success).length;
-//     logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
-//     res.json({ success: true, results, summary: `${ok}/${Object.keys(results).length} plateformes` });
-//   } catch (err: any) {
-//     logger.error('[SOCIAL] Auto-publish erreur', { error: err.message });
-//     res.status(500).json({ success: false, error: err.message });
-//   }
-// });
-
-/* SOCIAL DISABLED — // Endpoint de santé social (sans auth) */
-// app.get('/social/health', async (_req, res) => {
-//   try {
-//     const { hasPostedToday } = await import('./services/social.service.js');
-//     const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
-//     const status: Record<string, boolean> = {};
-//     for (const p of platforms) {
-//       status[p] = await hasPostedToday(p);
-//     }
-//     res.json({ ok: true, today: status, ts: new Date().toISOString() });
-//   } catch (err: any) {
-//     res.json({ ok: false, error: err.message });
-//   }
-// });
-
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
@@ -803,7 +768,7 @@ process.on('uncaughtException', (err) => {
     error: err.message,
     stack: err.stack?.split('\n').slice(0, 8).join(' | '),
   });
-  captureException(err, { source: 'uncaughtException' }).catch(() => {});
+  captureException(err, { source: 'uncaughtException' }).catch((e) => { logger.debug('captureException failed', { error: String(e) }); });
   process.exit(1);
 });
 
@@ -811,7 +776,7 @@ process.on('unhandledRejection', (reason) => {
   const msg = reason instanceof Error ? reason.message : String(reason);
   const stack = reason instanceof Error ? reason.stack?.split('\n').slice(0, 5).join(' | ') : '';
   logger.error('UNHANDLED REJECTION', { reason: msg, stack });
-  captureException(reason, { source: 'unhandledRejection' }).catch(() => {});
+  captureException(reason, { source: 'unhandledRejection' }).catch((e) => { logger.debug('captureException failed', { error: String(e) }); });
 });
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -838,22 +803,6 @@ setInterval(async () => {
   }
 }, 60 * 60 * 1000); // toutes les heures
 
-
-
-/* SOCIAL DISABLED — // ── Cron marketing — génération automatique de posts sociaux ── */
-// Tous les jours à 7h00 : génère 4 posts (1 par pilier A/B/C/D)
-// setInterval(async () => {
-//   const now = new Date();
-//   if (now.getHours() === 7 && now.getMinutes() < 15) {
-//     try {
-//       const { generateDailyPosts } = await import('./services/social-generator.service.js');
-//       const count = await generateDailyPosts(4);
-//       logger.info('[Cron] Posts sociaux générés', { count });
-//     } catch (e) {
-//       logger.error('[Cron] Erreur génération posts', { error: String(e) });
-//     }
-//   }
-// }, 15 * 60 * 1000); // toutes les 15 min (check heure)
 
 async function start() {
   logger.info('Starting boom.contact server...');

@@ -57,7 +57,7 @@ import { vehicleRouter } from './vehicle.router.js';
 import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, marketingRouter } from './admin.router.js';
 
 // Import shared tRPC utilities
-import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml } from './trpc.js';
+import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml, checkIdempotency, storeIdempotency } from './trpc.js';
 import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput, sessionHistoryOutput, ocrScanOutput, ocrBatchScanOutput, ocrScanPairOutput, emailSendToDriverOutput, emailBugReportOutput, voiceTranscribeOutput, voiceAnalyzeAccidentOutput, sketchRenderOutput, emergencyInsuranceLookupOutput, emergencyCountryLookupOutput, emergencySingleLookupOutput } from './output-schemas.js';
 
 // ── Helper: verify participant token for A-E ──────────────────
@@ -98,11 +98,18 @@ export const appRouter = router({
     // Driver A creates session → gets QR code URL + participant tokens
     // SECURITY: tokenB is only embedded in the QR URL, never returned directly to Driver A
     create: publicProcedure
+      .input(z.object({ idempotencyKey: z.string().max(100).optional() }).optional())
       .output(sessionCreateOutput)
-      .mutation(async () => {
+      .mutation(async ({ input }) => {
+        const iKey = input?.idempotencyKey;
+        const cached = checkIdempotency(iKey);
+        if (cached) return cached as typeof sessionCreateOutput._output;
+
         const session = await createSession();
         const qrUrl = getQRUrl(session.id, session.tokenB, CLIENT_URL);
-        return { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA };
+        const result = { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA };
+        storeIdempotency(iKey, result);
+        return result;
       }),
 
     // Get session state
@@ -574,8 +581,8 @@ export const appRouter = router({
       }))
       .output(emailBugReportOutput)
       .mutation(async ({ input }) => {
-        const { Resend } = await import('resend');
-        const resend = new Resend(process.env.RESEND_API_KEY);
+        const { getResendClient } = await import('../services/email.service.js');
+        const resend = await getResendClient();
         const safeEmail = escapeHtml(input.userEmail || 'Anonyme');
         const safePage = escapeHtml(input.page || 'Inconnue');
         const safeUA = escapeHtml(input.userAgent || 'Inconnu');
