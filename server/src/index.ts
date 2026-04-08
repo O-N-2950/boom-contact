@@ -188,7 +188,47 @@ async function setupRateLimiting() {
       },
     }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min)');
+    // sketch.render — 10/min per IP (Puppeteer rendering is expensive)
+    app.use('/trpc/sketch.render', rateLimit({
+      windowMs: 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit sketch.render', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de rendus. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // emergency.insuranceLookup — 5/min per IP
+    app.use('/trpc/emergency.insuranceLookup', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit emergency.insuranceLookup', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // emergency.singleLookup — 5/min per IP
+    app.use('/trpc/emergency.singleLookup', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit emergency.singleLookup', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // emergency.countryLookup — 5/min per IP
+    app.use('/trpc/emergency.countryLookup', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit emergency.countryLookup', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min) sketch(10/min) emergency(5/min)');
   } catch (e) {
     logger.warn('Rate limit not available', { error: String(e) });
   }

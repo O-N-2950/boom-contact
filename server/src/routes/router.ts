@@ -85,11 +85,12 @@ export const appRouter = router({
   session: router({
 
     // Driver A creates session → gets QR code URL + participant tokens
+    // SECURITY: tokenB is only embedded in the QR URL, never returned directly to Driver A
     create: publicProcedure
       .mutation(async () => {
         const session = await createSession();
-        const qrUrl = getQRUrl(session.id, CLIENT_URL);
-        return { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA, tokenB: session.tokenB };
+        const qrUrl = getQRUrl(session.id, session.tokenB, CLIENT_URL);
+        return { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA };
       }),
 
     // Get session state
@@ -107,10 +108,14 @@ export const appRouter = router({
         return session;
       }),
 
-    // Driver B joins via QR scan
+    // Driver B joins via QR scan — SECURITY: requires tokenB from QR code URL
     join: publicProcedure
-      .input(z.object({ sessionId: z.string(), language: z.string().default('fr') }))
+      .input(z.object({ sessionId: z.string(), tokenB: z.string(), language: z.string().default('fr') }))
       .mutation(async ({ input }) => {
+        // Verify tokenB before allowing join (timing-safe comparison)
+        const validToken = await verifyParticipantToken(input.sessionId, input.tokenB, 'B');
+        if (!validToken) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or expired join token' });
+
         const session = await joinSession(input.sessionId, input.language);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found, expired or already completed' });
 
@@ -384,22 +389,15 @@ export const appRouter = router({
         mediaType:    z.enum(['image/jpeg','image/png','image/webp','image/gif']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().optional(),
-        sessionId: z.string().optional(),
-        participantToken: z.string().optional(),
+        sessionId: z.string(),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
-        // Validate session context when provided (prevents anonymous API token consumption)
-        if (input.sessionId && input.participantToken) {
-          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-          if (!validA) {
-            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-          }
-        } else if (!input.sessionId && !input.participantToken) {
-          // Allow legacy calls without session context (backwards compatibility)
-          // Rate limiting already protects this path
-        } else {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        // SECURITY: Always require valid session context — no anonymous OCR
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
         }
 
         // Validate image size and media type
@@ -417,22 +415,15 @@ export const appRouter = router({
     batchScan: publicProcedure
       .input(z.object({
         images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
-        sessionId: z.string().optional(),
-        participantToken: z.string().optional(),
+        sessionId: z.string(),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
-        // Validate session context when provided (prevents anonymous API token consumption)
-        if (input.sessionId && input.participantToken) {
-          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-          if (!validA) {
-            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-          }
-        } else if (!input.sessionId && !input.participantToken) {
-          // Allow legacy calls without session context (backwards compatibility)
-          // Rate limiting already protects this path
-        } else {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        // SECURITY: Always require valid session context — no anonymous OCR
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
         }
 
         // Validate each image before processing
@@ -455,22 +446,15 @@ export const appRouter = router({
       .input(z.object({
         registrationBase64: z.string().min(100).max(10_000_000),
         greenCardBase64:    z.string().min(100).max(10_000_000),
-        sessionId: z.string().optional(),
-        participantToken: z.string().optional(),
+        sessionId: z.string(),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
-        // Validate session context when provided (prevents anonymous API token consumption)
-        if (input.sessionId && input.participantToken) {
-          const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-          if (!validA) {
-            const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-            if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-          }
-        } else if (!input.sessionId && !input.participantToken) {
-          // Allow legacy calls without session context (backwards compatibility)
-          // Rate limiting already protects this path
-        } else {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Both sessionId and participantToken are required' });
+        // SECURITY: Always require valid session context — no anonymous OCR
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
         }
 
         // Validate both images
@@ -660,6 +644,8 @@ export const appRouter = router({
   sketch: router({
     render: publicProcedure
       .input(z.object({
+        sessionId:         z.string(),
+        participantToken:  z.string(),
         scenario:          z.string().default('intersection_cross'),
         trafficSide:       z.enum(['right','left']).default('right'),
         vehicleAType:      z.string().default('car'),
@@ -685,6 +671,12 @@ export const appRouter = router({
         height:            z.number().default(650),
       }))
       .mutation(async ({ input }) => {
+        // SECURITY: Verify participant token before allowing render
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) {
+          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
+          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for sketch' });
+        }
         const pngBase64 = await renderSketch(input);
         return { pngBase64, width: input.width, height: input.height };
       }),

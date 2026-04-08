@@ -328,8 +328,8 @@ export async function savePdfUrl(id: string, url: string): Promise<void> {
 // ─────────────────────────────────────────────────────────────
 // QR URL helper
 // ─────────────────────────────────────────────────────────────
-export function getQRUrl(sessionId: string, baseUrl: string): string {
-  return `${baseUrl}?session=${sessionId}`;
+export function getQRUrl(sessionId: string, tokenB: string, baseUrl: string): string {
+  return `${baseUrl}?session=${sessionId}&tokenB=${encodeURIComponent(tokenB)}`;
 }
 
 
