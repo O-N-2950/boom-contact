@@ -256,6 +256,207 @@ export const policeJoinSessionOutput = z.object({
   }),
 });
 
+// ── session.history ─────────────────────────────────────────
+export const sessionHistoryOutput = z.array(z.object({
+  id: z.string(),
+  status: z.string(),
+  createdAt: z.unknown(),
+  ownerEmail: z.string().nullable().optional(),
+}).catchall(z.unknown()));
+
+// ── ocr.scan ────────────────────────────────────────────────
+export const ocrScanOutput = z.object({
+  documentType: z.string().optional(),
+  vehicle: vehicleDataSchema,
+  driver: driverDataSchema,
+  insurance: insuranceDataSchema,
+}).catchall(z.unknown());
+
+// ── ocr.batchScan ───────────────────────────────────────────
+export const ocrBatchScanOutput = z.array(ocrScanOutput);
+
+// ── ocr.scanPair ────────────────────────────────────────────
+export const ocrScanPairOutput = z.object({
+  vehicle: vehicleDataSchema,
+  driver: driverDataSchema,
+  insurance: insuranceDataSchema,
+}).catchall(z.unknown());
+
+// ── email.sendToDriver ──────────────────────────────────────
+export const emailSendToDriverOutput = z.object({
+  ok: z.boolean(),
+  messageId: z.string().optional(),
+});
+
+// ── email.bugReport ─────────────────────────────────────────
+export const emailBugReportOutput = z.object({
+  ok: z.boolean(),
+});
+
+// ── voice.transcribe ────────────────────────────────────────
+export const voiceTranscribeOutput = z.object({
+  text: z.string(),
+}).catchall(z.unknown());
+
+// ── voice.analyzeAccident ───────────────────────────────────
+export const voiceAnalyzeAccidentOutput = z.object({
+  answers: z.record(z.string()).optional(),
+}).catchall(z.unknown());
+
+// ── sketch.render ───────────────────────────────────────────
+export const sketchRenderOutput = z.object({
+  pngBase64: z.string(),
+  width: z.number(),
+  height: z.number(),
+});
+
+// ── emergency.insuranceLookup ───────────────────────────────
+const insuranceAssistanceResult = z.object({
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  website: z.string().optional(),
+}).catchall(z.unknown()).nullable();
+
+export const emergencyInsuranceLookupOutput = z.object({
+  participantA: insuranceAssistanceResult,
+  participantB: insuranceAssistanceResult,
+});
+
+// ── emergency.countryLookup ─────────────────────────────────
+export const emergencyCountryLookupOutput = z.object({
+  police: z.string().optional(),
+  ambulance: z.string().optional(),
+  fire: z.string().optional(),
+  general: z.string().optional(),
+  countryCode: z.string().optional(),
+  countryName: z.string().optional(),
+}).catchall(z.unknown());
+
+// ── emergency.singleLookup ─────────────────────────────────
+export const emergencySingleLookupOutput = z.object({
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  website: z.string().optional(),
+}).catchall(z.unknown());
+
+// ── auth misc outputs ───────────────────────────────────────
+export const okOutput = z.object({ ok: z.boolean() });
+
+export const authMagicLinkRequestOutput = okOutput;
+
+export const authMagicLinkVerifyOutput = z.object({
+  ok: z.boolean(),
+  token: z.string().optional(),
+}).catchall(z.unknown());
+
+export const authUpdateProfileOutput = okOutput;
+export const authUpdateEmailOutput = okOutput;
+export const authDeleteAccountOutput = okOutput;
+
+export const authGrantCreditsOutput = z.object({
+  ok: z.boolean(),
+  giftUrl: z.string(),
+  waUrl: z.string(),
+});
+
+export const authAdminBootstrapOutput = okOutput;
+
+export const authClaimGiftOutput = z.object({
+  ok: z.boolean(),
+}).catchall(z.unknown());
+
+// ── payment misc outputs ────────────────────────────────────
+export const paymentPackagesOutput = z.array(z.object({
+  id: z.string(),
+  label: z.string(),
+  credits: z.number(),
+}).catchall(z.unknown()));
+
+export const paymentCurrenciesOutput = z.object({
+  packages: z.record(z.string(), z.unknown()),
+  currencies: z.unknown(),
+  countryMap: z.record(z.string(), z.string()),
+});
+
+export const paymentCreditsOutput = z.object({ credits: z.number() });
+export const paymentUseCreditOutput = okOutput;
+export const userSaveConsentOutput = okOutput;
+
+// ── police misc outputs ─────────────────────────────────────
+export const policeGetAnnotationOutput = z.object({
+  id: z.string().optional(),
+  sessionId: z.string().optional(),
+  reportNumber: z.string().nullable().optional(),
+  infractions: z.array(z.unknown()).optional(),
+  measures: z.array(z.unknown()).optional(),
+  witnesses: z.array(z.unknown()).optional(),
+  observations: z.string().nullable().optional(),
+}).catchall(z.unknown()).nullable();
+
+export const policeSaveAnnotationOutput = z.object({
+  ok: z.boolean(),
+  id: z.string(),
+});
+
+export const policeGenerateReportOutput = z.object({
+  pdfBase64: z.string(),
+  filename: z.string(),
+});
+
+// ── admin misc outputs ──────────────────────────────────────
+export const adminUsersOutput = z.array(z.object({
+  id: z.string(),
+  email: z.string(),
+  role: z.string(),
+  credits: z.number(),
+  createdAt: z.unknown(),
+  lastSeenAt: z.unknown().optional(),
+  country: z.string().nullable().optional(),
+}).catchall(z.unknown()));
+
+export const adminDeleteUserOutput = z.object({
+  ok: z.boolean(),
+  deleted: z.string(),
+});
+
+export const adminSetCreditsOutput = z.object({
+  ok: z.boolean(),
+  email: z.string(),
+  credits: z.number(),
+});
+
+export const adminListUsersOutput = z.array(z.object({
+  id: z.string(),
+  email: z.string(),
+  role: z.string(),
+  credits: z.number(),
+  createdAt: z.unknown(),
+}));
+
+export const adminCleanupSessionsOutput = z.object({
+  fixed: z.number(),
+  total: z.number(),
+});
+
+export const adminFixOwnerEmailsOutput = z.object({
+  fixed: z.number(),
+  total: z.number(),
+});
+
+// ── marketing outputs ───────────────────────────────────────
+export const marketingPostsOutput = z.object({
+  posts: z.array(z.object({
+    id: z.number(),
+    platform: z.string(),
+    status: z.string(),
+    hashtags: z.array(z.string()),
+  }).catchall(z.unknown())),
+});
+
+export const marketingActionOutput = okOutput;
+
 // ── police.getFullSession ───────────────────────────────────
 export const policeGetFullSessionOutput = z.object({
   session: sessionGetOutput,

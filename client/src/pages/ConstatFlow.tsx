@@ -389,6 +389,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       display: 'flex', flexDirection: 'column' }}>
 
       {/* Header */}
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Constat amiable boom.contact</h1>
       <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)',
         display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div style={{ width: 36, height: 36, flexShrink: 0 }}>

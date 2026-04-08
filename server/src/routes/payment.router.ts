@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
-import { paymentCreateCheckoutOutput } from './output-schemas.js';
+import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, userSaveConsentOutput } from './output-schemas.js';
 
 export const paymentRouter = router({
   // Retourner les packages disponibles
   packages: publicProcedure
+    .output(paymentPackagesOutput)
     .query(() => Object.values(PACKAGES)),
 
   // Créer une session Stripe Checkout
@@ -31,6 +32,7 @@ export const paymentRouter = router({
 
   // GET payment.currencies — return full pricing grid
   currencies: publicProcedure
+    .output(paymentCurrenciesOutput)
     .query(() => {
       const grid: Record<string, any> = {};
       for (const pkgId of ['single','pack3','pack10'] as const) {
@@ -47,6 +49,7 @@ export const paymentRouter = router({
 
   // Vérifier le solde de crédits (auth requise)
   credits: protectedProcedure
+    .output(paymentCreditsOutput)
     .query(async ({ ctx }) => {
       const credits = await getUserCredits(ctx.authUser.email);
       return { credits };
@@ -55,6 +58,7 @@ export const paymentRouter = router({
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
   useCredit: protectedProcedure
     .input(z.object({ sessionId: z.string().max(50) }))
+    .output(paymentUseCreditOutput)
     .mutation(async ({ ctx, input }) => {
       const ok = await useCredit(ctx.authUser.email, input.sessionId);
       if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
@@ -70,6 +74,7 @@ export const userRouter = router({
       country:           z.string().max(100).optional(),
       language:          z.string().max(10).optional(),
     }))
+    .output(userSaveConsentOutput)
     .mutation(async ({ ctx, input }) => {
       await saveConsent(
         ctx.authUser.email,

@@ -279,7 +279,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         ))}
       </div>
 
-      <div style={{ color: '#333', fontSize: 11, textAlign: 'center' as const, lineHeight: 1.6 }}>
+      <div style={{ color: '#b0b0b0', fontSize: 11, textAlign: 'center' as const, lineHeight: 1.6 }}>
         boom.contact · PEP's Swiss SA · CHE-476.484.632<br/>
         Bellevue 7, 2950 Courgenay, Jura, Suisse<br/>
         <a href="mailto:contact@boom.contact" style={{ color: '#d0d0d0' }}>contact@boom.contact</a>

@@ -459,7 +459,7 @@ export function CountryEmergencySearch() {
       {submitted && search && (
         <UnknownCountryLookup countryCode={submitted.code} countryName={submitted.name || undefined} />
       )}
-      <div style={{ color: '#333', fontSize: 11, marginTop: 8 }}>
+      <div style={{ color: '#b0b0b0', fontSize: 11, marginTop: 8 }}>
         ISO 3166-1 alpha-2 · Si non trouvé, une recherche IA est lancée automatiquement.
       </div>
     </div>
@@ -581,7 +581,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
             <button key={f.key} onClick={() => setFilter(f.key)} style={{
               background: filter === f.key ? '#222' : 'none',
               border: '1px solid ' + (filter === f.key ? '#444' : '#1a1a1a'),
-              color: filter === f.key ? '#fff' : '#aaa',
+              color: filter === f.key ? '#fff' : '#d0d0d0',
               borderRadius: 6, padding: '5px 10px', fontSize: 12, cursor: 'pointer',
             }}>
               {f.label}
@@ -626,7 +626,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           </a>
         ))}
 
-        <div style={{ color: '#333', fontSize: 11, textAlign: 'center' as const, marginTop: 20, lineHeight: 1.6 }}>
+        <div style={{ color: '#b0b0b0', fontSize: 11, textAlign: 'center' as const, marginTop: 20, lineHeight: 1.6 }}>
           Appuyez pour appeler directement.<br />
           Urgence vitale → toujours composer le <strong style={{ color: '#d0d0d0' }}>112</strong> (Europe) ou <strong style={{ color: '#d0d0d0' }}>911</strong> (Amériques).
         </div>

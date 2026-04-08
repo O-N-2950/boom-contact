@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Context } from '../middleware/context.js';
 import { router, adminProcedure, TRPCError } from './trpc.js';
-import { adminStatsOutput } from './output-schemas.js';
+import { adminStatsOutput, adminUsersOutput, adminDeleteUserOutput, adminSetCreditsOutput, adminListUsersOutput, adminCleanupSessionsOutput, adminFixOwnerEmailsOutput, marketingPostsOutput, marketingActionOutput } from './output-schemas.js';
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
@@ -116,6 +116,7 @@ export const adminRouter = router({
   // GET admin.users — paginated user list
   users: adminProcedure
     .input(z.object({ limit: z.number().default(50) }))
+    .output(adminUsersOutput)
     .query(async ({ input }) => {
       return db.query.users.findMany({
         orderBy: [desc(users.createdAt)],
@@ -130,6 +131,7 @@ export const adminRouter = router({
 
 export const adminDeleteUser = adminProcedure
   .input(z.object({ email: z.string().email().max(320) }))
+  .output(adminDeleteUserOutput)
   .mutation(async ({ input }) => {
     // Ne pas supprimer le compte admin
     if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
@@ -152,6 +154,7 @@ export const adminSetCredits = adminProcedure
     email: z.string().email().max(320),
     credits: z.number().min(0).max(999999),
   }))
+  .output(adminSetCreditsOutput)
   .mutation(async ({ input }) => {
     const emailLower = input.email.toLowerCase();
     const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
@@ -166,6 +169,7 @@ export const adminListUsers = adminProcedure
     limit: z.number().min(1).max(500).default(100),
     offset: z.number().min(0).default(0),
   }).default({ limit: 100, offset: 0 }))
+  .output(adminListUsersOutput)
   .query(async ({ input }) => {
     const all = await db.select({
       id: users.id,
@@ -178,6 +182,7 @@ export const adminListUsers = adminProcedure
   });
 
 export const adminCleanupSessions = adminProcedure
+  .output(adminCleanupSessionsOutput)
   .mutation(async () => {
     const signing = await db.query.sessions.findMany({
       where: eq(sessions.status, 'signing'),
@@ -207,6 +212,7 @@ export const adminCleanupSessions = adminProcedure
   });
 
 export const adminFixOwnerEmails = adminProcedure
+  .output(adminFixOwnerEmailsOutput)
   .mutation(async () => {
     const missing = await db.query.sessions.findMany({
       where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
@@ -234,6 +240,7 @@ export const marketingRouter = router({
 
   posts: adminProcedure
     .input(z.object({ platform: z.string().max(100).optional(), status: z.string().max(50).optional() }))
+    .output(marketingPostsOutput)
     .query(async ({ input }) => {
       const conds: ReturnType<typeof eq>[] = [];
       if (input.platform) conds.push(eq(socialPosts.platform, input.platform));
@@ -246,12 +253,14 @@ export const marketingRouter = router({
 
   generate: adminProcedure
     .input(z.object({ count: z.number().min(1).max(8).default(4) }))
+    .output(marketingActionOutput)
     .mutation(async () => {
       throw new TRPCError({ code: 'NOT_IMPLEMENTED', message: 'Social generator module has been removed.' });
     }),
 
   approve: adminProcedure
     .input(z.object({ id: z.number() }))
+    .output(marketingActionOutput)
     .mutation(async ({ input }) => {
       await db.update(socialPosts).set({ status: 'approved' }).where(eq(socialPosts.id, input.id));
       return { ok: true };
@@ -259,6 +268,7 @@ export const marketingRouter = router({
 
   markPosted: adminProcedure
     .input(z.object({ id: z.number() }))
+    .output(marketingActionOutput)
     .mutation(async ({ input }) => {
       await db.update(socialPosts).set({ status: 'posted' }).where(eq(socialPosts.id, input.id));
       return { ok: true };
@@ -266,6 +276,7 @@ export const marketingRouter = router({
 
   archive: adminProcedure
     .input(z.object({ id: z.number() }))
+    .output(marketingActionOutput)
     .mutation(async ({ input }) => {
       await db.update(socialPosts).set({ status: 'archived' }).where(eq(socialPosts.id, input.id));
       return { ok: true };

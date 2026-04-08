@@ -20,6 +20,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 initSentry().catch(() => {});
 
 const app = express();
+// Trust first proxy (Railway) — required for rate limiters to see real client IP
+app.set('trust proxy', 1);
 const httpServer = createServer(app);
 
 const ALLOWED_ORIGINS = [
@@ -664,19 +666,39 @@ io.on('connection', (socket) => {
   // SECURITY: Track which sessions this socket has joined — prevent cross-session data injection
   const joinedSessions = new Set<string>();
 
-  socket.on('join-session', async (sessionId: string) => {
+  socket.on('join-session', async (sessionId: string, participantToken?: string) => {
     // Validate sessionId exists in DB before joining room
     if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
       socket.emit('error', { message: 'Invalid session ID' });
       return;
     }
     try {
-      const { getSession } = await import('./services/session.service.js');
+      const { getSession, verifyParticipantToken } = await import('./services/session.service.js');
       const session = await getSession(sessionId);
       if (!session || session.status === 'expired') {
         socket.emit('error', { message: 'Session not found or expired' });
         return;
       }
+
+      // SECURITY: Verify participantToken (tokenA or tokenB) before allowing room join
+      if (!participantToken || typeof participantToken !== 'string') {
+        socket.emit('error', { message: 'Participant token required to join session' });
+        return;
+      }
+      const roles = ['A', 'B', 'C', 'D', 'E'] as const;
+      let tokenValid = false;
+      for (const role of roles) {
+        if (await verifyParticipantToken(sessionId, participantToken, role)) {
+          tokenValid = true;
+          break;
+        }
+      }
+      if (!tokenValid) {
+        logger.warn('Socket join-session rejected — invalid participant token', { id: socket.id.slice(0, 8), sessionId });
+        socket.emit('error', { message: 'Invalid participant token' });
+        return;
+      }
+
       socket.join(`session:${sessionId}`);
       joinedSessions.add(sessionId);
       socket.to(`session:${sessionId}`).emit('participant-joined');

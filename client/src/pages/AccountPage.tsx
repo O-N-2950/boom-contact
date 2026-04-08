@@ -313,6 +313,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         </div>
 
         {/* Profile card */}
+        <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Mon compte boom.contact</h1>
         <div style={{ background: '#111', border: '1px solid #222', borderRadius: 16, padding: 20, marginBottom: 20 }}>
           <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>💥 boom.contact</div>
           <div style={{ color: '#d0d0d0', fontSize: 13, marginTop: 2 }}>{freshUser.email}</div>

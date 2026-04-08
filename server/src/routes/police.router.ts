@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, policeProcedure, TRPCError } from './trpc.js';
 import { loginPoliceUser, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { getSession } from '../services/session.service.js';
-import { policeLoginOutput, policeDashboardOutput, policeJoinSessionOutput, policeGetFullSessionOutput } from './output-schemas.js';
+import { policeLoginOutput, policeDashboardOutput, policeJoinSessionOutput, policeGetFullSessionOutput, policeGetAnnotationOutput, policeSaveAnnotationOutput, policeGenerateReportOutput } from './output-schemas.js';
 
 export const policeRouter = router({
 
@@ -60,6 +60,7 @@ export const policeRouter = router({
   // Charger annotations existantes
   getAnnotation: policeProcedure
     .input(z.object({ token: z.string().max(2000), sessionId: z.string().max(50) }))
+    .output(policeGetAnnotationOutput)
     .query(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
       return getAnnotation(input.sessionId, payload.stationId);
@@ -78,6 +79,7 @@ export const policeRouter = router({
         observations:  z.string().max(10_000).optional(),
       }),
     }))
+    .output(policeSaveAnnotationOutput)
     .mutation(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
       const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data);
@@ -87,6 +89,7 @@ export const policeRouter = router({
   // Générer PDF rapport d'intervention
   generateReport: policeProcedure
     .input(z.object({ token: z.string().max(2000), sessionId: z.string().max(50) }))
+    .output(policeGenerateReportOutput)
     .mutation(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
       const session = await getSession(input.sessionId);

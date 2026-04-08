@@ -8,7 +8,7 @@ import { db } from '../db/index.js';
 import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
-import { authMeOutput, authLoginOutput, authRegisterOutput } from './output-schemas.js';
+import { authMeOutput, authLoginOutput, authRegisterOutput, authMagicLinkRequestOutput, authMagicLinkVerifyOutput, authUpdateProfileOutput, authUpdateEmailOutput, authDeleteAccountOutput, authGrantCreditsOutput, authAdminBootstrapOutput, authClaimGiftOutput } from './output-schemas.js';
 
 export const authRouter = router({
 
@@ -45,6 +45,7 @@ export const authRouter = router({
   // POST auth.magicLinkRequest
   magicLinkRequest: publicProcedure
     .input(z.object({ email: z.string().email() }))
+    .output(authMagicLinkRequestOutput)
     .mutation(async ({ input }) => {
       const token = await createMagicToken(input.email);
       const magicUrl = `${CLIENT_URL}/?magic=${token}`;
@@ -55,6 +56,7 @@ export const authRouter = router({
   // POST auth.magicLinkVerify
   magicLinkVerify: publicProcedure
     .input(z.object({ token: z.string().max(500) }))
+    .output(authMagicLinkVerifyOutput)
     .mutation(async ({ input }) => {
       const result = await verifyMagicToken(input.token);
       if (!result) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Lien invalide ou expiré.' });
@@ -83,6 +85,7 @@ export const authRouter = router({
       company:   z.string().max(300).optional(),
       address:   z.string().max(500).optional(),
     }))
+    .output(authUpdateProfileOutput)
     .mutation(async ({ ctx, input }) => {
       const updates: Record<string, string | undefined> = {};
       if (input.firstName !== undefined) updates.firstName = input.firstName;
@@ -100,6 +103,7 @@ export const authRouter = router({
       newEmail:    z.string().email(),
       currentPassword: z.string().min(1),
     }))
+    .output(authUpdateEmailOutput)
     .mutation(async ({ ctx, input }) => {
       const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
       if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable.' });
@@ -116,6 +120,7 @@ export const authRouter = router({
   // POST auth.deleteAccount — suppression définitive compte + données
   deleteAccount: protectedProcedure
     .input(z.object({}))
+    .output(authDeleteAccountOutput)
     .mutation(async ({ ctx }) => {
       const userId = ctx.authUser.sub;
       const userEmail = ctx.authUser.email;
@@ -139,6 +144,7 @@ export const authRouter = router({
       recipientEmail: z.string().email().optional(),
       sendEmail: z.boolean().default(false),
     }))
+    .output(authGrantCreditsOutput)
     .mutation(async ({ ctx, input }) => {
       const token = await createGiftLink(input.credits, ctx.authUser.email);
       const giftUrl = `${CLIENT_URL}/?gift=${token}`;
@@ -151,6 +157,7 @@ export const authRouter = router({
 
   adminBootstrap: publicProcedure
     .input(z.object({ secret: z.string().max(500), password: z.string().min(8).max(200) }))
+    .output(authAdminBootstrapOutput)
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
       if (!expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
@@ -172,6 +179,7 @@ export const authRouter = router({
 
   claimGift: publicProcedure
     .input(z.object({ token: z.string().max(500), email: z.string().email().max(320) }))
+    .output(authClaimGiftOutput)
     .mutation(async ({ input }) => {
       const result = await claimGiftLink(input.token, input.email);
       return { ok: true, ...result };

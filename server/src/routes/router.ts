@@ -58,7 +58,7 @@ import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCle
 
 // Import shared tRPC utilities
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml } from './trpc.js';
-import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput } from './output-schemas.js';
+import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput, sessionHistoryOutput, ocrScanOutput, ocrBatchScanOutput, ocrScanPairOutput, emailSendToDriverOutput, emailBugReportOutput, voiceTranscribeOutput, voiceAnalyzeAccidentOutput, sketchRenderOutput, emergencyInsuranceLookupOutput, emergencyCountryLookupOutput, emergencySingleLookupOutput } from './output-schemas.js';
 
 // ── Helper: verify participant token for A-E ──────────────────
 async function verifyAnyParticipant(sessionId: string, participantToken: string): Promise<void> {
@@ -390,6 +390,7 @@ export const appRouter = router({
 
     // GET session.history — sessions where owner_email = logged-in user
     history: protectedProcedure
+      .output(sessionHistoryOutput)
       .query(async ({ ctx }) => {
         return db.query.sessions.findMany({
           where: eq(sessionsTable.ownerEmail, ctx.authUser.email),
@@ -411,6 +412,7 @@ export const appRouter = router({
         sessionId: z.string().max(50),
         participantToken: z.string().max(500),
       }))
+      .output(ocrScanOutput)
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -433,6 +435,7 @@ export const appRouter = router({
         sessionId: z.string().max(50),
         participantToken: z.string().max(500),
       }))
+      .output(ocrBatchScanOutput)
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -460,6 +463,7 @@ export const appRouter = router({
         sessionId: z.string().max(50),
         participantToken: z.string().max(500),
       }))
+      .output(ocrScanPairOutput)
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -529,6 +533,7 @@ export const appRouter = router({
         driverEmail:      z.string().email().max(320),
         pdfBase64:        z.string().min(100).max(20_000_000),
       }))
+      .output(emailSendToDriverOutput)
       .mutation(async ({ input }) => {
         // Verify participant token
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -567,6 +572,7 @@ export const appRouter = router({
         page:     z.string().optional(),
         userAgent: z.string().optional(),
       }))
+      .output(emailBugReportOutput)
       .mutation(async ({ input }) => {
         const { Resend } = await import('resend');
         const resend = new Resend(process.env.RESEND_API_KEY);
@@ -603,6 +609,7 @@ export const appRouter = router({
         role:        z.enum(['A', 'B', 'C', 'D', 'E']),
         participantToken: z.string().max(500),
       }))
+      .output(voiceTranscribeOutput)
       .mutation(async ({ input }) => {
         // Verify participant token
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -621,6 +628,7 @@ export const appRouter = router({
         transcript:      z.string().min(1).max(50_000),
         previousAnswers: z.record(z.string().max(5000)).optional(),
       }))
+      .output(voiceAnalyzeAccidentOutput)
       .mutation(async ({ input }) => {
         // Verify participant token
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -662,6 +670,7 @@ export const appRouter = router({
         width:             z.number().default(900),
         height:            z.number().default(650),
       }))
+      .output(sketchRenderOutput)
       .mutation(async ({ input }) => {
         // SECURITY: Verify participant token before allowing render
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -680,6 +689,7 @@ export const appRouter = router({
         sessionId: z.string().max(50),
         participantToken: z.string().max(500),
       }))
+      .output(emergencyInsuranceLookupOutput)
       .mutation(async ({ input }) => {
         await verifyAnyParticipant(input.sessionId, input.participantToken);
         const [resultA, resultB] = await Promise.all([
@@ -697,6 +707,7 @@ export const appRouter = router({
         sessionId: z.string().max(50).optional(),
         participantToken: z.string().max(500).optional(),
       }))
+      .output(emergencyCountryLookupOutput)
       .query(async ({ input }) => {
         if (input.sessionId && input.participantToken) {
           await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -711,6 +722,7 @@ export const appRouter = router({
         sessionId: z.string().max(50),
         participantToken: z.string().max(500),
       }))
+      .output(emergencySingleLookupOutput)
       .mutation(async ({ input }) => {
         await verifyAnyParticipant(input.sessionId, input.participantToken);
         return getInsuranceAssistance(input.insurer, input.country);
@@ -729,4 +741,11 @@ export const appRouter = router({
   adminDeleteUser,
   adminSetCredits,
   adminListUsers,
-  adminCl
+  adminCleanupSessions,
+  adminFixOwnerEmails,
+
+  // ── MARKETING ────────────────────────────────
+  marketing: marketingRouter,
+});
+
+export type AppRouter = typeof appRouter;

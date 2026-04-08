@@ -114,7 +114,7 @@ export async function loginPoliceUser(email: string, password: string) {
       mustChangePassword,
     },
     JWT_SECRET,
-    { expiresIn: '8h' }
+    { expiresIn: '8h', issuer: 'boom.contact', audience: 'boom.contact' }
   );
 
   return {
@@ -139,7 +139,7 @@ export async function loginPoliceUser(email: string, password: string) {
 
 export function verifyPoliceToken(token: string) {
   try {
-    return jwt.verify(token, JWT_SECRET) as {
+    return jwt.verify(token, JWT_SECRET, { issuer: 'boom.contact', audience: 'boom.contact' }) as {
       userId: string;
       stationId: string;
       role: 'police';

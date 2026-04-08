@@ -623,4 +623,6 @@ export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: strin
     });
     logger.email('gift-credits', recipientEmail, `${credits} credits gift sent`);
   } catch (err) {
-    logger.error(
+    logger.error('Failed to send gift credits email', { error: String(err) });
+  }
+}
