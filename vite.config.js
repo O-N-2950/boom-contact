@@ -36,9 +36,32 @@ function brotliCompressPlugin() {
           });
           await pipeline(createReadStream(filePath), brotli, createWriteStream(brPath));
         }));
-        console.log(`\n🗜️  Brotli: compressed ${compressible.length} assets in dist/client/assets/`);
+        console.log(`\nðï¸  Brotli: compressed ${compressible.length} assets in dist/client/assets/`);
       } catch (e) {
         console.warn('Brotli compression skipped:', e.message);
+      }
+
+      // Also compress root static files (index.html, manifest.json, sw.js, etc.)
+      const rootDir = path.resolve(__dirname, 'dist/client');
+      try {
+        const rootFiles = readdirSync(rootDir);
+        const rootCompressible = rootFiles.filter(f => /\.(html|json|js|xml|txt|webmanifest)$/.test(f));
+        await Promise.all(rootCompressible.map(async (file) => {
+          const filePath = path.join(rootDir, file);
+          const brPath = filePath + '.br';
+          const stat = statSync(filePath);
+          if (stat.size < 512) return;
+          const brotli = createBrotliCompress({
+            params: {
+              [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
+              [zlibConstants.BROTLI_PARAM_SIZE_HINT]: stat.size,
+            },
+          });
+          await pipeline(createReadStream(filePath), brotli, createWriteStream(brPath));
+        }));
+        console.log(`    + ${rootCompressible.length} root files (index.html, manifest.json, etc.)`);
+      } catch (e) {
+        console.warn('Root Brotli compression skipped:', e.message);
       }
     },
   };
@@ -70,7 +93,7 @@ export default defineConfig({
           return 'assets/[name]-[hash].js';
         },
         manualChunks(id) {
-          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('@tanstack/react-query') || id.includes('@trpc/')) {
             return 'vendor';
           }
           if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {

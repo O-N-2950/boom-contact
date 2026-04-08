@@ -5,7 +5,7 @@ import { db, schema } from '../db';
 import type { ConstatSession, ParticipantData, AccidentData } from '../../../shared/types';
 import { makeId, NON_SIGNING_TYPES } from '../constants.js';
 
-const SESSION_TTL_HOURS = 24 * 7; // 7 jours — permet de reprendre un constat après blessure
+const SESSION_TTL_HOURS = 24 * 7; // 7 jours â permet de reprendre un constat aprÃ¨s blessure
 
 // Type for raw session row with all known columns
 interface SessionRow {
@@ -45,15 +45,15 @@ function rowToSession(row: SessionRow): ConstatSession & { tokenA?: string; toke
   };
 }
 
-// ─────────────────────────────────────────────────────────────
-// CREATE — Driver A starts a constat
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// CREATE â Driver A starts a constat
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function createSession(): Promise<ConstatSession & { tokenA: string; tokenB: string }> {
   const id = makeId(12);
   const now = new Date();
   const expiresAt = new Date(now.getTime() + SESSION_TTL_HOURS * 60 * 60 * 1000);
 
-  // Generate participant tokens for secure access (QR flow — both drivers may be unauthenticated)
+  // Generate participant tokens for secure access (QR flow â both drivers may be unauthenticated)
   const tokenA = randomBytes(32).toString('base64url');
   const tokenB = randomBytes(32).toString('base64url');
 
@@ -77,15 +77,19 @@ export async function createSession(): Promise<ConstatSession & { tokenA: string
 }
 
 // Verify participant token for a session+role
-export async function verifyParticipantToken(sessionId: string, token: string, role: string): Promise<boolean> {
-  const [row] = await db
-    .select()
-    .from(schema.sessions)
-    .where(eq(schema.sessions.id, sessionId))
-    .limit(1);
-
-  if (!row) return false;
-  const r = row as SessionRow;
+export async function verifyParticipantToken(sessionId: string, token: string, role: string, prefetchedRow?: unknown): Promise<boolean> {
+  let r: SessionRow;
+  if (prefetchedRow) {
+    r = prefetchedRow as SessionRow;
+  } else {
+    const [row] = await db
+      .select()
+      .from(schema.sessions)
+      .where(eq(schema.sessions.id, sessionId))
+      .limit(1);
+    if (!row) return false;
+    r = row as SessionRow;
+  }
 
   // Use timing-safe comparison to prevent timing attacks
   function safeCompare(a: string | null | undefined, b: string): boolean {
@@ -107,9 +111,9 @@ export async function verifyParticipantToken(sessionId: string, token: string, r
   return false;
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // GET
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function getSession(id: string): Promise<ConstatSession | null> {
   const [row] = await db
     .select()
@@ -119,7 +123,7 @@ export async function getSession(id: string): Promise<ConstatSession | null> {
 
   if (!row) return null;
 
-  // Auto-expire check — only expire if not signed/completed
+  // Auto-expire check â only expire if not signed/completed
   // Sessions signing et completed ne s'expirent jamais automatiquement
   if (new Date() > row.expiresAt && row.status !== 'completed' && row.status !== 'signing' && row.status !== 'active') {
     await db.update(schema.sessions)
@@ -131,9 +135,9 @@ export async function getSession(id: string): Promise<ConstatSession | null> {
   return rowToSession(row);
 }
 
-// ─────────────────────────────────────────────────────────────
-// JOIN — Driver B scans QR
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// JOIN â Driver B scans QR
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSession | null> {
   const session = await getSession(id);
   if (!session) return null;
@@ -154,9 +158,9 @@ export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSessi
   return rowToSession(row);
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // UPDATE PARTICIPANT
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function updateParticipant(
   id: string,
   role: 'A' | 'B',
@@ -186,9 +190,9 @@ export async function updateParticipant(
   });
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // UPDATE ACCIDENT
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function updateAccident(
   id: string,
   data: Partial<AccidentData> & { vehicleCount?: number },
@@ -206,7 +210,7 @@ export async function updateAccident(
     const typedRow = currentRow as SessionRow;
     const currentSession = rowToSession(typedRow);
 
-    // vehicleCount is a top-level column — must be updated separately from accident JSONB
+    // vehicleCount is a top-level column â must be updated separately from accident JSONB
     const { vehicleCount, ...accidentData } = data;
     const updatePayload: Record<string, unknown> = { accident: { ...currentSession.accident, ...accidentData } };
     if (vehicleCount !== undefined) {
@@ -222,9 +226,9 @@ export async function updateAccident(
   });
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // SIGN
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function signSession(
   id: string,
   role: string,
@@ -257,7 +261,7 @@ export async function signSession(
 
   const updated = { ...current, signature: signatureBase64, signedAt: new Date().toISOString() };
 
-  // ── Types ne nécessitant pas de signature ─────────────────
+  // ââ Types ne nÃ©cessitant pas de signature âââââââââââââââââ
   const isPedestrianOrNonSigning = (p: Partial<ParticipantData> | null | undefined) =>
     NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
     NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
@@ -284,21 +288,21 @@ export async function signSession(
   const sessionVehicleCount = typedRow.vehicleCount ?? 2;
   const isSolo = sessionVehicleCount === 1;
 
-  // Cas partyBStatus : partie adverse déclarée indisponible (fuite, blessé, refus…)
+  // Cas partyBStatus : partie adverse dÃ©clarÃ©e indisponible (fuite, blessÃ©, refusâ¦)
   const hasPartyBStatus = !!accidentData.partyBStatus;
 
   const allSigned =
     (
-      // Cas normal : ≥2 parties présentes, tous les conducteurs ont signé
+      // Cas normal : â¥2 parties prÃ©sentes, tous les conducteurs ont signÃ©
       (presentParticipants.length >= 2 &&
        signingParticipants.length >= 1 &&
        signingParticipants.every((p) => !!p?.signature))
     ) ||
-    // Cas accident solo : 1 seul conducteur, a signé
+    // Cas accident solo : 1 seul conducteur, a signÃ©
     (isSolo && signingParticipants.length >= 1 && signingParticipants.every((p) => !!p?.signature)) ||
-    // Cas partie B indisponible (fuite, blessé, refus, décédé…)
+    // Cas partie B indisponible (fuite, blessÃ©, refus, dÃ©cÃ©dÃ©â¦)
     (hasPartyBStatus && signingParticipants.some((p) => !!p?.signature)) ||
-    // Cas piéton/vélo seul côté B : 1 conducteur + 1 non-signataire, conducteur a signé
+    // Cas piÃ©ton/vÃ©lo seul cÃ´tÃ© B : 1 conducteur + 1 non-signataire, conducteur a signÃ©
     (presentParticipants.length >= 2 &&
      signingParticipants.length === 1 &&
      presentParticipants.some(isPedestrianOrNonSigning) &&
@@ -316,18 +320,18 @@ export async function signSession(
   }); // end transaction
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // SAVE PDF URL
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function savePdfUrl(id: string, url: string): Promise<void> {
   await db.update(schema.sessions)
     .set({ pdfUrl: url })
     .where(eq(schema.sessions.id, id));
 }
 
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // QR URL helper
-// ─────────────────────────────────────────────────────────────
+// âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export function getQRUrl(sessionId: string, tokenB: string, baseUrl: string): string {
   return `${baseUrl}?session=${sessionId}&tokenB=${encodeURIComponent(tokenB)}`;
 }

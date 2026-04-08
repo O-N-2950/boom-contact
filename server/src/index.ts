@@ -1,4 +1,4 @@
-// ── Logger MUST be first — before any other import ──────────
+// ââ Logger MUST be first â before any other import ââââââââââ
 import './logger.js';
 import { logger } from './logger.js';
 import { startupCheck, startMonitoring, runHealthCheck, getMonitorStatus } from './monitoring/neo-monitor.js';
@@ -22,7 +22,7 @@ initSentry().catch((e) => { logger.debug('Sentry init skipped', { error: String(
 const app = express();
 // Suppress X-Powered-By header to avoid fingerprinting
 app.disable('x-powered-by');
-// Trust first proxy (Railway) — required for rate limiters to see real client IP
+// Trust first proxy (Railway) â required for rate limiters to see real client IP
 app.set('trust proxy', 1);
 const httpServer = createServer(app);
 
@@ -39,9 +39,13 @@ const ALLOWED_ORIGINS = [
 // Socket.io
 export const io = new SocketServer(httpServer, {
   cors: { origin: ALLOWED_ORIGINS, credentials: true },
+  pingTimeout: 20000,
+  pingInterval: 25000,
+  connectTimeout: 20000,
+  maxHttpBufferSize: 1e6, // 1MB max payload
 });
 
-// ── Security ──────────────────────────────────────────────────
+// ââ Security ââââââââââââââââââââââââââââââââââââââââââââââââââ
 async function setupSecurity() {
   try {
     const helmet = (await import('helmet')).default;
@@ -80,59 +84,59 @@ async function setupSecurity() {
         },
       },
     }));
-    // HSTS — force HTTPS for 1 year
+    // HSTS â force HTTPS for 1 year
     app.use((_req: any, res: any, next: any) => {
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
       next();
     });
-    logger.info('🛡️  Helmet active');
+    logger.info('ð¡ï¸  Helmet active');
   } catch (e) {
     logger.warn('Helmet not available', { error: String(e) });
   }
 }
 
-// ── Rate limiting ─────────────────────────────────────────────
+// ââ Rate limiting âââââââââââââââââââââââââââââââââââââââââââââ
 async function setupRateLimiting() {
   try {
     const { rateLimit } = await import('express-rate-limit');
 
-    // OCR — 10 req/min (Claude Vision coûteux)
+    // OCR â 10 req/min (Claude Vision coÃ»teux)
     app.use('/trpc/ocr', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit OCR', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de requêtes OCR. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de requÃªtes OCR. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.create — 5 créations/min par IP
+    // session.create â 5 crÃ©ations/min par IP
     app.use('/trpc/session.create', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.create', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de sessions créées. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de sessions crÃ©Ã©es. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.join — 10 tentatives/min par IP
+    // session.join â 10 tentatives/min par IP
     app.use('/trpc/session.join', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.join', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de tentatives. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // payment.createCheckout — 3 tentatives/min par IP (anti-abus Stripe)
+    // payment.createCheckout â 3 tentatives/min par IP (anti-abus Stripe)
     app.use('/trpc/payment.createCheckout', rateLimit({
       windowMs: 60 * 1000, max: 3,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit payment', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives de paiement. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de tentatives de paiement. RÃ©essayez dans 1 minute.' });
       },
     }));
 
@@ -142,7 +146,7 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.login', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' });
+        res.status(429).json({ error: 'Trop de tentatives de connexion. RÃ©essayez dans 15 minutes.' });
       },
     }));
     app.use('/trpc/auth.register', rateLimit({
@@ -150,7 +154,7 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.register', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de créations de compte. Réessayez dans 1 heure.' });
+        res.status(429).json({ error: 'Trop de crÃ©ations de compte. RÃ©essayez dans 1 heure.' });
       },
     }));
     app.use('/trpc/auth.magicLinkRequest', rateLimit({
@@ -158,7 +162,7 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit magicLink', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de demandes de lien. Réessayez dans 1 heure.' });
+        res.status(429).json({ error: 'Trop de demandes de lien. RÃ©essayez dans 1 heure.' });
       },
     }));
     app.use('/trpc/police.login', rateLimit({
@@ -166,187 +170,187 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit police.login', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' });
+        res.status(429).json({ error: 'Trop de tentatives de connexion. RÃ©essayez dans 15 minutes.' });
       },
     }));
 
-    // email.sendToDriver — 5/hour per IP (anti-spam)
+    // email.sendToDriver â 5/hour per IP (anti-spam)
     app.use('/trpc/email.sendToDriver', rateLimit({
       windowMs: 60 * 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit email.sendToDriver', { ip: req.ip });
-        res.status(429).json({ error: 'Trop d\'emails envoyés. Réessayez dans 1 heure.' });
+        res.status(429).json({ error: 'Trop d\'emails envoyÃ©s. RÃ©essayez dans 1 heure.' });
       },
     }));
 
-    // email.bugReport — 5/min per IP
+    // email.bugReport â 5/min per IP
     app.use('/trpc/email.bugReport', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit bugReport', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de rapports. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de rapports. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // voice.transcribe — 10/min per IP
+    // voice.transcribe â 10/min per IP
     app.use('/trpc/voice.transcribe', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit voice.transcribe', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de transcriptions. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de transcriptions. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // sketch.render — 10/min per IP (Puppeteer rendering is expensive)
+    // sketch.render â 10/min per IP (Puppeteer rendering is expensive)
     app.use('/trpc/sketch.render', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit sketch.render', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de rendus. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de rendus. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // emergency.insuranceLookup — 5/min per IP
+    // emergency.insuranceLookup â 5/min per IP
     app.use('/trpc/emergency.insuranceLookup', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit emergency.insuranceLookup', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de recherches. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // emergency.singleLookup — 5/min per IP
+    // emergency.singleLookup â 5/min per IP
     app.use('/trpc/emergency.singleLookup', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit emergency.singleLookup', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de recherches. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // emergency.countryLookup — 5/min per IP
+    // emergency.countryLookup â 5/min per IP
     app.use('/trpc/emergency.countryLookup', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit emergency.countryLookup', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de recherches. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de recherches. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.updateParticipant — 30/min per IP (frequent during form fill)
+    // session.updateParticipant â 30/min per IP (frequent during form fill)
     app.use('/trpc/session.updateParticipant', rateLimit({
       windowMs: 60 * 1000, max: 30,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.updateParticipant', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de mises à jour. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.updateAccident — 30/min per IP
+    // session.updateAccident â 30/min per IP
     app.use('/trpc/session.updateAccident', rateLimit({
       windowMs: 60 * 1000, max: 30,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.updateAccident', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de mises à jour. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.sign — 5/min per IP
+    // session.sign â 5/min per IP
     app.use('/trpc/session.sign', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.sign', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives de signature. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de tentatives de signature. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // auth.magicLinkVerify — 10/15min per IP (brute force token guessing)
+    // auth.magicLinkVerify â 10/15min per IP (brute force token guessing)
     app.use('/trpc/auth.magicLinkVerify', rateLimit({
       windowMs: 15 * 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.magicLinkVerify', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives de vérification. Réessayez dans 15 minutes.' });
+        res.status(429).json({ error: 'Trop de tentatives de vÃ©rification. RÃ©essayez dans 15 minutes.' });
       },
     }));
 
-    // auth.claimGift — 5/h per IP (abuse prevention)
+    // auth.claimGift â 5/h per IP (abuse prevention)
     app.use('/trpc/auth.claimGift', rateLimit({
       windowMs: 60 * 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.claimGift', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de réclamations. Réessayez dans 1 heure.' });
+        res.status(429).json({ error: 'Trop de rÃ©clamations. RÃ©essayez dans 1 heure.' });
       },
     }));
 
-    // auth.adminBootstrap — 3/h per IP (critical endpoint)
+    // auth.adminBootstrap â 3/h per IP (critical endpoint)
     app.use('/trpc/auth.adminBootstrap', rateLimit({
       windowMs: 60 * 60 * 1000, max: 3,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit auth.adminBootstrap', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de tentatives. Réessayez dans 1 heure.' });
+        res.status(429).json({ error: 'Trop de tentatives. RÃ©essayez dans 1 heure.' });
       },
     }));
 
-    // police.generateReport — 5/min per IP (expensive PDF rendering)
+    // police.generateReport â 5/min per IP (expensive PDF rendering)
     app.use('/trpc/police.generateReport', rateLimit({
       windowMs: 60 * 1000, max: 5,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit police.generateReport', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de générations de rapport. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de gÃ©nÃ©rations de rapport. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // voice.analyzeAccident — 10/min per IP (AI cost)
+    // voice.analyzeAccident â 10/min per IP (AI cost)
     app.use('/trpc/voice.analyzeAccident', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit voice.analyzeAccident', { ip: req.ip });
-        res.status(429).json({ error: 'Trop d\'analyses. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop d\'analyses. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // pdf.generate — 10/min per IP (expensive rendering)
+    // pdf.generate â 10/min per IP (expensive rendering)
     app.use('/trpc/pdf.generate', rateLimit({
       windowMs: 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit pdf.generate', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de générations PDF. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de gÃ©nÃ©rations PDF. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    // session.get — 60/min per IP (frequent polling)
+    // session.get â 60/min per IP (frequent polling)
     app.use('/trpc/session.get', rateLimit({
       windowMs: 60 * 1000, max: 60,
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.get', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de requêtes. Réessayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de requÃªtes. RÃ©essayez dans 1 minute.' });
       },
     }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) session.get(60/min) session.updateParticipant(30/min) session.updateAccident(30/min) session.sign(5/min) payment(3/min) auth(15min) magicLinkVerify(10/15min) claimGift(5/h) adminBootstrap(3/h) police(15min) email(5/h) bugReport(5/min) voice(10/min) analyzeAccident(10/min) pdf(10/min) sketch(10/min) emergency(5/min)');
+    logger.info('ð¦ Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) session.get(60/min) session.updateParticipant(30/min) session.updateAccident(30/min) session.sign(5/min) payment(3/min) auth(15min) magicLinkVerify(10/15min) claimGift(5/h) adminBootstrap(3/h) police(15min) email(5/h) bugReport(5/min) voice(10/min) analyzeAccident(10/min) pdf(10/min) sketch(10/min) emergency(5/min)');
   } catch (e) {
     logger.warn('Rate limit not available', { error: String(e) });
   }
 }
 
-// ── HTTP request logging (Morgan) ─────────────────────────────
+// ââ HTTP request logging (Morgan) âââââââââââââââââââââââââââââ
 app.use(morgan((tokens, req, res) => {
   const method  = tokens.method(req, res) || '-';
   const url     = tokens.url(req, res) || '-';
@@ -365,7 +369,7 @@ app.use(morgan((tokens, req, res) => {
   return null; // Morgan handles writing itself when we return string, null = we handle it
 }));
 
-// ── Compression (gzip + brotli via zlib) ─────────────────────
+// ââ Compression (gzip + brotli via zlib) âââââââââââââââââââââ
 import compression from 'compression';
 import zlib from 'zlib';
 app.use(compression({
@@ -380,13 +384,13 @@ app.use(compression({
 // Brotli is typically handled by the CDN/reverse proxy (Railway, Cloudflare).
 // For direct brotli support, consider shrink-ray-current or a Brotli-capable proxy.
 
-// ── Core middleware ───────────────────────────────────────────
+// ââ Core middleware âââââââââââââââââââââââââââââââââââââââââââ
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
-// ── CSRF prevention — custom header check ────────────────────
+// ââ CSRF prevention â custom header check ââââââââââââââââââââ
 // Mutating requests (POST/PUT/PATCH/DELETE) to /trpc must include
 // X-Requested-With header to prevent cross-origin form submissions.
 // Browsers block custom headers on cross-origin requests unless CORS allows it.
@@ -406,8 +410,8 @@ app.use('/trpc', (req, res, next) => {
   next();
 });
 
-// ── Redirection apex → www ───────────────────────────────────
-// boom.contact → www.boom.contact (301 permanent)
+// ââ Redirection apex â www âââââââââââââââââââââââââââââââââââ
+// boom.contact â www.boom.contact (301 permanent)
 app.use((req, res, next) => {
   const host = req.hostname || req.headers.host || '';
   if (host === 'boom.contact') {
@@ -416,12 +420,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// ── Health check ─────────────────────────────────────────────
+// ââ Health check âââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/health', (_req, res) => {
   res.json({ ok: true, service: 'boom.contact', env: process.env.NODE_ENV, ts: new Date().toISOString() });
 });
 
-// ── Monitor routes ─────────────────────────────────────────
+// ââ Monitor routes âââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/monitor/status', (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith('Bearer ')) {
@@ -443,9 +447,9 @@ app.get('/api/monitor/health', async (_req, res) => {
   res.status(result.status === 'ok' ? 200 : 503).json(result);
 });
 
-// ── Blocage bots / scanners (WordPress, PHPMyAdmin, etc.) ─────
-// Ces routes n'existent pas sur boom.contact — on répond 404 immédiatement
-// pour éviter le bruit dans les logs et réduire la charge
+// ââ Blocage bots / scanners (WordPress, PHPMyAdmin, etc.) âââââ
+// Ces routes n'existent pas sur boom.contact â on rÃ©pond 404 immÃ©diatement
+// pour Ã©viter le bruit dans les logs et rÃ©duire la charge
 const BOT_PATTERNS = [
   '/wp-admin', '/wp-login', '/wp-content', '/wordpress',
   '/phpMyAdmin', '/phpmyadmin', '/pma', '/admin/pma',
@@ -463,7 +467,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-// ── Stripe Webhook — raw body ─────────────────────────────────
+// ââ Stripe Webhook â raw body âââââââââââââââââââââââââââââââââ
 app.post('/webhook/stripe',
   express.raw({ type: 'application/json' }),
   async (req, res) => {
@@ -481,13 +485,13 @@ app.post('/webhook/stripe',
   }
 );
 
-// ── tRPC router ───────────────────────────────────────────────
+// ââ tRPC router âââââââââââââââââââââââââââââââââââââââââââââââ
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routes/router.js';
 import { createContext } from './middleware/context.js';
 import crypto from 'crypto';
 
-// ── ETag middleware for tRPC GET queries ─────────────────────
+// ââ ETag middleware for tRPC GET queries âââââââââââââââââââââ
 // Calculates a hash of the JSON response body and returns 304 if unchanged.
 // Targets frequent polling queries like session.get, police.getSessions.
 app.use('/trpc', (req, res, next) => {
@@ -530,9 +534,9 @@ app.use('/trpc', createExpressMiddleware({
 }));
 
 
-// ── SEO — robots.txt + sitemap.xml ───────────────────────────
-// CRITIQUE : ces routes DOIVENT être AVANT express.static
-// sinon le wildcard SPA renvoie le HTML React à la place
+// ââ SEO â robots.txt + sitemap.xml âââââââââââââââââââââââââââ
+// CRITIQUE : ces routes DOIVENT Ãªtre AVANT express.static
+// sinon le wildcard SPA renvoie le HTML React Ã  la place
 app.get('/robots.txt', (_req, res) => {
   res.type('text/plain').send(
 `User-agent: *
@@ -576,7 +580,7 @@ app.get('/sitemap.xml', (_req, res) => {
 });
 
 
-// ── Serve React app ───────────────────────────────────────────
+// ââ Serve React app âââââââââââââââââââââââââââââââââââââââââââ
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
   const assetsPath = path.join(distPath, 'assets');
@@ -585,44 +589,85 @@ if (process.env.NODE_ENV === 'production') {
   const fs = await import('fs');
   const indexHtmlTemplate = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
 
-  // ── Brotli pre-compressed asset middleware ──────────────────
-  // Serves .br files when client supports Brotli (Accept-Encoding: br)
-  app.use('/assets', (req, res, next) => {
-    const acceptEncoding = req.headers['accept-encoding'] || '';
-    if (acceptEncoding.includes('br')) {
-      const brPath = path.join(assetsPath, req.path + '.br');
-      try {
-        fs.accessSync(brPath, fs.constants.R_OK);
-        // Set correct content-type based on original extension
-        const ext = path.extname(req.path);
-        const mimeTypes: Record<string, string> = {
-          '.js': 'application/javascript',
-          '.css': 'text/css',
-          '.svg': 'image/svg+xml',
-          '.json': 'application/json',
-          '.html': 'text/html',
-          '.xml': 'application/xml',
-          '.wasm': 'application/wasm',
-        };
-        if (mimeTypes[ext]) res.setHeader('Content-Type', mimeTypes[ext]);
-        res.setHeader('Content-Encoding', 'br');
-        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        res.setHeader('Vary', 'Accept-Encoding');
-        fs.createReadStream(brPath).pipe(res);
-        return;
-      } catch {
-        // .br not found — fall through to uncompressed
-      }
-    }
-    next();
-  });
+  // ── Brotli pre-compressed file index (built once at startup) ──
+    // O(1) Set lookup instead of fs.accessSync syscall per request
+    const brMimeTypes: Record<string, string> = {
+      '.js': 'application/javascript',
+      '.css': 'text/css',
+      '.svg': 'image/svg+xml',
+      '.json': 'application/json',
+      '.html': 'text/html',
+      '.xml': 'application/xml',
+      '.wasm': 'application/wasm',
+    };
 
-  // Static assets (JS, CSS, images) — cache for 1 year (Vite adds content hash)
+    // Build Set of .br files for /assets
+    const assetsBrFiles = new Set<string>();
+    try {
+      for (const f of fs.readdirSync(assetsPath)) {
+        if (f.endsWith('.br')) assetsBrFiles.add(f);
+      }
+      logger.info(`Brotli index: ${assetsBrFiles.size} pre-compressed assets`);
+    } catch { /* assets dir may not exist in dev */ }
+
+    // Build Set of .br files for root dist (index.html.br, manifest.json.br, etc.)
+    const rootBrFiles = new Set<string>();
+    try {
+      for (const f of fs.readdirSync(distPath)) {
+        if (f.endsWith('.br')) rootBrFiles.add(f);
+      }
+      if (rootBrFiles.size > 0) logger.info(`Brotli index: ${rootBrFiles.size} pre-compressed root files`);
+    } catch { /* dist dir may not exist in dev */ }
+
+    // ── Brotli pre-compressed asset middleware ────────────────
+    // Serves .br files when client supports Brotli (Accept-Encoding: br)
+    app.use('/assets', (req, res, next) => {
+      const acceptEncoding = req.headers['accept-encoding'] || '';
+      if (acceptEncoding.includes('br')) {
+        const brFileName = req.path.slice(1) + '.br'; // remove leading /
+        if (assetsBrFiles.has(brFileName)) {
+          const ext = path.extname(req.path);
+          if (brMimeTypes[ext]) res.setHeader('Content-Type', brMimeTypes[ext]);
+          res.setHeader('Content-Encoding', 'br');
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          res.setHeader('Vary', 'Accept-Encoding');
+          fs.createReadStream(path.join(assetsPath, brFileName)).pipe(res);
+          return;
+        }
+      }
+      next();
+    });
+
+    // Static assets (JS, CSS, images) â cache for 1 year (Vite adds content hash)
   app.use('/assets', express.static(assetsPath, {
     maxAge: '1y',
     immutable: true,
   }));
-  // Other static files — short cache
+  // ── Brotli for root static files (index.html, manifest.json, sw.js, etc.) ──
+    app.use((req, res, next) => {
+      const acceptEncoding = req.headers['accept-encoding'] || '';
+      if (acceptEncoding.includes('br') && req.method === 'GET') {
+        const fileName = req.path === '/' ? 'index.html' : req.path.slice(1);
+        const brFileName = fileName + '.br';
+        if (rootBrFiles.has(brFileName)) {
+          const ext = path.extname(fileName) || '.html';
+          if (brMimeTypes[ext]) res.setHeader('Content-Type', brMimeTypes[ext]);
+          res.setHeader('Content-Encoding', 'br');
+          res.setHeader('Vary', 'Accept-Encoding');
+          // Don't cache index.html
+          if (fileName === 'index.html') {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+          } else {
+            res.setHeader('Cache-Control', 'public, max-age=3600');
+          }
+          fs.createReadStream(path.join(distPath, brFileName)).pipe(res);
+          return;
+        }
+      }
+      next();
+    });
+
+    // Other static files â short cache
   app.use(express.static(distPath, {
     maxAge: '1h',
     setHeaders: (res, filePath) => {
@@ -632,7 +677,7 @@ if (process.env.NODE_ENV === 'production') {
       }
     },
   }));
-  // SPA wildcard — inject CSP nonce from in-memory template
+  // SPA wildcard â inject CSP nonce from in-memory template
   app.get('*', (_req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const nonce = res.locals.cspNonce || '';
@@ -641,17 +686,17 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// ── Socket.io — JWT authentication middleware ────────────────
+// ââ Socket.io â JWT authentication middleware ââââââââââââââââ
 import { verifyJWT, verifyJWTWithRevocationCheck } from './services/auth.service.js';
 io.use(async (socket, next) => {
   // SECURITY: Only accept token from auth object, not query string
   // Query string tokens are visible in server logs and browser history
   if (socket.handshake.query?.token) {
-    logger.warn('DEPRECATED: socket query token used — migrate to socket.handshake.auth.token', {
+    logger.warn('DEPRECATED: socket query token used â migrate to socket.handshake.auth.token', {
       id: socket.id.slice(0, 8),
       ip: socket.handshake.address,
     });
-    // Reject query token — do NOT fall back to it
+    // Reject query token â do NOT fall back to it
   }
   const token = socket.handshake.auth?.token;
   if (!token) {
@@ -661,7 +706,7 @@ io.use(async (socket, next) => {
   }
   const payload = await verifyJWTWithRevocationCheck(token as string);
   if (!payload) {
-    logger.warn('Socket auth failed — invalid or revoked token, disconnecting', { id: socket.id.slice(0, 8) });
+    logger.warn('Socket auth failed â invalid or revoked token, disconnecting', { id: socket.id.slice(0, 8) });
     socket.disconnect(true);
     return next(new Error('Authentication failed: invalid or revoked token'));
   }
@@ -669,7 +714,7 @@ io.use(async (socket, next) => {
   next();
 });
 
-// ── Socket anonymous connection rate limiting (anti-spam QR flow) ──
+// ââ Socket anonymous connection rate limiting (anti-spam QR flow) ââ
 const socketConnPerIP = new Map<string, { count: number; resetAt: number }>();
 const SOCKET_ANON_MAX = 20;       // max 20 anonymous connections per minute per IP
 const SOCKET_ANON_WINDOW = 60_000; // 1 minute window
@@ -687,7 +732,7 @@ io.use((socket, next) => {
   entry.count++;
   if (entry.count > SOCKET_ANON_MAX) {
     logger.warn('Socket anon rate limit hit', { ip, count: entry.count });
-    return next(new Error('Too many anonymous connections — try again later'));
+    return next(new Error('Too many anonymous connections â try again later'));
   }
   next();
 });
@@ -699,10 +744,10 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000).unref();
 
-// ── Throttle map for socket update-data (300ms per session) ───
+// ââ Throttle map for socket update-data (300ms per session) âââ
 const updateThrottles = new Map<string, { timer: ReturnType<typeof setTimeout>; latestData: unknown; latestRole: string }>();
 
-// ── Session existence cache with 30s TTL ───
+// ââ Session existence cache with 30s TTL âââ
 const sessionExistsCache = new Map<string, { exists: boolean; ts: number }>();
 const SESSION_CACHE_TTL = 30_000;
 
@@ -716,7 +761,7 @@ function getCachedSessionExists(sessionId: string): boolean | null {
 io.on('connection', (socket) => {
   logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
-  // SECURITY: Track which sessions this socket has joined — prevent cross-session data injection
+  // SECURITY: Track which sessions this socket has joined â prevent cross-session data injection
   const joinedSessions = new Set<string>();
 
   socket.on('join-session', async (sessionId: string, participantToken?: string) => {
@@ -741,13 +786,13 @@ io.on('connection', (socket) => {
       const roles = ['A', 'B', 'C', 'D', 'E'] as const;
       let tokenValid = false;
       for (const role of roles) {
-        if (await verifyParticipantToken(sessionId, participantToken, role)) {
+        if (await verifyParticipantToken(sessionId, participantToken, role, session)) {
           tokenValid = true;
           break;
         }
       }
       if (!tokenValid) {
-        logger.warn('Socket join-session rejected — invalid participant token', { id: socket.id.slice(0, 8), sessionId });
+        logger.warn('Socket join-session rejected â invalid participant token', { id: socket.id.slice(0, 8), sessionId });
         socket.emit('error', { message: 'Invalid participant token' });
         return;
       }
@@ -762,7 +807,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  // ── Police join — authenticated agent joins a constat session ──
+  // ââ Police join â authenticated agent joins a constat session ââ
   socket.on('police-join-session', async ({ sessionId, policeToken }: { sessionId: string; policeToken: string }) => {
     if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
       socket.emit('error', { message: 'Invalid session ID' });
@@ -796,7 +841,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  // ── Police leave — agent leaves a session ─────────────────────
+  // ââ Police leave â agent leaves a session âââââââââââââââââââââ
   socket.on('police-leave-session', ({ sessionId }: { sessionId: string }) => {
     if (!sessionId || !joinedSessions.has(sessionId)) return;
     socket.to(`session:${sessionId}`).emit('police-left', {
@@ -903,9 +948,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// ── Catch unhandled errors ────────────────────────────────────
+// ââ Catch unhandled errors ââââââââââââââââââââââââââââââââââââ
 process.on('uncaughtException', (err) => {
-  logger.error('UNCAUGHT EXCEPTION — server will exit', {
+  logger.error('UNCAUGHT EXCEPTION â server will exit', {
     error: err.message,
     stack: err.stack?.split('\n').slice(0, 8).join(' | '),
   });
@@ -922,7 +967,7 @@ process.on('unhandledRejection', (reason) => {
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 
-// ── Cron nettoyage automatique ────────────────────────────────
+// ââ Cron nettoyage automatique ââââââââââââââââââââââââââââââââ
 // Toutes les heures : expire les sessions > 7 jours en statut waiting/active/signing
 setInterval(async () => {
   try {
@@ -938,11 +983,11 @@ setInterval(async () => {
           lt(schema.sessions.createdAt, sevenDaysAgo)
         )
       );
-    // On ne log que si quelque chose a changé
+    // On ne log que si quelque chose a changÃ©
   } catch (e) {
     logger.warn('Session expiry cron failed', { error: String(e) });
   }
-}, 60 * 60 * 1000); // toutes les heures
+}, 60 * 60 * 1000).unref(); // toutes les heures
 
 
 async function start() {
@@ -953,20 +998,20 @@ async function start() {
   await startupCheck();
   startMonitoring(5);
   httpServer.listen(PORT, '0.0.0.0', () => {
-    logger.info(`💥 boom.contact running`, {
+    logger.info(`ð¥ boom.contact running`, {
       port: PORT,
       env: process.env.NODE_ENV || 'development',
-      db: process.env.DATABASE_URL ? '✅' : '❌ MISSING',
-      claude: process.env.ANTHROPIC_API_KEY ? '✅' : '❌ MISSING',
-      stripe: process.env.STRIPE_SECRET_KEY ? '✅' : '❌ MISSING',
-      resend: process.env.RESEND_API_KEY ? '✅' : '❌ MISSING',
+      db: process.env.DATABASE_URL ? 'â' : 'â MISSING',
+      claude: process.env.ANTHROPIC_API_KEY ? 'â' : 'â MISSING',
+      stripe: process.env.STRIPE_SECRET_KEY ? 'â' : 'â MISSING',
+      resend: process.env.RESEND_API_KEY ? 'â' : 'â MISSING',
     });
   });
 }
 
-// ── Graceful shutdown ────────────────────────────────────────
+// ââ Graceful shutdown ââââââââââââââââââââââââââââââââââââââââ
 async function gracefulShutdown(signal: string) {
-  logger.info(`${signal} received — shutting down gracefully...`);
+  logger.info(`${signal} received â shutting down gracefully...`);
   httpServer.close(() => {
     logger.info('HTTP server closed');
     io.close(async () => {
