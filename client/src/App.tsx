@@ -257,7 +257,7 @@ export default function App() {
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);
 
-  // Announce view changes to screen readers
+  // Announce view changes to screen readers + update document.title
   useEffect(() => {
     const viewLabels: Record<AppView, string> = {
       landing: 'Page d\'accueil',
@@ -274,7 +274,9 @@ export default function App() {
       police_flow: 'Flux police',
       police_intervention: 'Intervention police',
     };
-    dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: `Navigation vers ${viewLabels[view]}` });
+    const label = viewLabels[view];
+    dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: `Navigation vers ${label}` });
+    document.title = view === 'landing' ? 'boom.contact — Constat amiable numérique' : `${label} — boom.contact`;
   }, [view]);
 
   // Check post-payment success

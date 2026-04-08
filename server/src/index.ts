@@ -20,6 +20,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 initSentry().catch((e) => { logger.debug('Sentry init skipped', { error: String(e) }); });
 
 const app = express();
+// Suppress X-Powered-By header to avoid fingerprinting
+app.disable('x-powered-by');
 // Trust first proxy (Railway) — required for rate limiters to see real client IP
 app.set('trust proxy', 1);
 const httpServer = createServer(app);
@@ -640,8 +642,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // ── Socket.io — JWT authentication middleware ────────────────
-import { verifyJWT } from './services/auth.service.js';
-io.use((socket, next) => {
+import { verifyJWT, verifyJWTWithRevocationCheck } from './services/auth.service.js';
+io.use(async (socket, next) => {
   // SECURITY: Only accept token from auth object, not query string
   // Query string tokens are visible in server logs and browser history
   if (socket.handshake.query?.token) {
@@ -657,11 +659,11 @@ io.use((socket, next) => {
     (socket as any).authUser = null;
     return next();
   }
-  const payload = verifyJWT(token as string);
+  const payload = await verifyJWTWithRevocationCheck(token as string);
   if (!payload) {
-    logger.warn('Socket auth failed — invalid token, disconnecting', { id: socket.id.slice(0, 8) });
+    logger.warn('Socket auth failed — invalid or revoked token, disconnecting', { id: socket.id.slice(0, 8) });
     socket.disconnect(true);
-    return next(new Error('Authentication failed: invalid token'));
+    return next(new Error('Authentication failed: invalid or revoked token'));
   }
   (socket as any).authUser = payload;
   next();

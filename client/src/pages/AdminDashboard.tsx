@@ -75,7 +75,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         {/* Tabs */}
         <div className="flex gap-1.5 mb-6">
           {(['overview', 'sessions', 'revenue', 'users'] as Tab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} className="text-white rounded-lg text-xs font-bold cursor-pointer px-3.5 py-[7px]" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#444') }}>
+            <button key={t} onClick={() => setTab(t)} className="text-white rounded-lg text-xs font-bold cursor-pointer px-3.5 py-[7px]" style={{ background: tab === t ? '#D42D00' : '#111', border: '1px solid ' + (tab === t ? '#D42D00' : '#444') }}>
               {t === 'overview' ? '📊 Vue d\'ensemble' : t === 'sessions' ? '📋 Sessions' : t === 'revenue' ? '💰 Revenus' : '👥 Utilisateurs'}
             </button>
           ))}
@@ -271,7 +271,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     <tr key={u.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td className="text-[13px]">{u.email}</td>
                       <td style={td}>
-                        <span className="rounded text-[11px] px-[7px] py-0.5" style={{ background: u.role === 'admin' ? '#FF3500' : '#3a3a3a', color: u.role === 'admin' ? '#fff' : '#aaa' }}>
+                        <span className="rounded text-[11px] px-[7px] py-0.5" style={{ background: u.role === 'admin' ? '#D42D00' : '#3a3a3a', color: u.role === 'admin' ? '#fff' : '#aaa' }}>
                           {u.role}
                         </span>
                       </td>

@@ -36,7 +36,7 @@ export function BugReport() {
       {/* Bouton flottant discret */}
       {!sent && (
         <button onClick={() => setOpen(o => !o)} aria-label="Signaler un problème"
-          className="bottom-[76px] right-4 rounded-[20px] px-[11px] py-1.5 cursor-pointer touch-manipulation fixed text-[11px]" style={{ zIndex:600, background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.25)', color:'rgba(255,255,255,0.6)', fontFamily:'monospace', backdropFilter:'blur(6px)', WebkitTapHighlightColor:'transparent' }}>
+          className="bottom-[76px] right-4 rounded-[20px] px-[11px] py-1.5 cursor-pointer touch-manipulation fixed text-[11px]" style={{ zIndex:600, background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.25)', color:'rgba(255,255,255,0.6)', fontFamily:'monospace', backdropFilter:'blur(6px)', WebkitTapHighlightColor:'transparent', minWidth:44, minHeight:44, display:'flex', alignItems:'center', justifyContent:'center' }}>
           🐛
         </button>
       )}

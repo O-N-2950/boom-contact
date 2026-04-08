@@ -109,7 +109,7 @@ export function InsuranceSearchWidget() {
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
-        <button onClick={handleSearch} disabled={loading || !query.trim()} className="text-white border-0 rounded-lg font-bold cursor-pointer text-sm px-3.5 py-[9px] bg-[#FF3500]">
+        <button onClick={handleSearch} disabled={loading || !query.trim()} className="text-white border-0 rounded-lg font-bold cursor-pointer text-sm px-3.5 py-[9px] bg-[#D42D00]">
           {loading ? '...' : '🔍'}
         </button>
       </div>

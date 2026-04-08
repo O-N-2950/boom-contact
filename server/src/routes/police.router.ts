@@ -31,7 +31,7 @@ export const policeRouter = router({
   // Rejoindre une session via QR (lecture seule + annotation)
   joinSession: policeProcedure
     .input(z.object({
-      token:     z.string().max(2000),
+      token:     z.string().trim().max(2000),
       sessionId: z.string().trim().max(50),
     }))
     .output(policeJoinSessionOutput)
@@ -69,10 +69,10 @@ export const policeRouter = router({
   // Sauvegarder annotations agent
   saveAnnotation: policeProcedure
     .input(z.object({
-      token:     z.string().max(2000),
+      token:     z.string().trim().max(2000),
       sessionId: z.string().trim().max(50),
       data: z.object({
-        reportNumber:  z.string().max(200).optional(),
+        reportNumber:  z.string().trim().max(200).optional(),
         infractions:   z.array(z.object({ code: z.string().max(100), description: z.string().max(1000), party: z.enum(['A','B','both']) })).max(50),
         measures:      z.array(z.object({ type: z.string().max(200), description: z.string().max(1000), party: z.enum(['A','B','both']).optional() })).max(50),
         witnesses:     z.array(z.object({ name: z.string().max(200), address: z.string().max(500).optional(), phone: z.string().max(50).optional(), statement: z.string().max(5000).optional() })).max(20),
@@ -91,8 +91,8 @@ export const policeRouter = router({
   // Rejoindre une intervention (crée le record si absent)
   joinIntervention: policeProcedure
     .input(z.object({
-      token: z.string().max(2000),
-      sessionId: z.string().max(50),
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
     }))
     .output(policeGetInterventionOutput)
     .mutation(async ({ ctx, input }) => {
@@ -106,8 +106,8 @@ export const policeRouter = router({
   // Sauvegarder les données d'intervention complètes
   saveIntervention: policeProcedure
     .input(z.object({
-      token: z.string().max(2000),
-      sessionId: z.string().max(50),
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
       data: z.object({
         infractions: z.array(z.object({
           code: z.string().max(100),
@@ -160,8 +160,8 @@ export const policeRouter = router({
   // Récupérer une intervention existante
   getIntervention: policeProcedure
     .input(z.object({
-      token: z.string().max(2000),
-      sessionId: z.string().max(50),
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
     }))
     .output(policeGetInterventionOutput)
     .query(async ({ ctx, input }) => {
@@ -172,8 +172,8 @@ export const policeRouter = router({
   // Ajouter une photo police
   addPolicePhoto: policeProcedure
     .input(z.object({
-      token: z.string().max(2000),
-      sessionId: z.string().max(50),
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
       photo: z.object({
         id: z.string().max(50),
         category: z.enum(['overview', 'tracks', 'signage', 'other']),

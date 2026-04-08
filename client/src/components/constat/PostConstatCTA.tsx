@@ -248,7 +248,7 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
   return (
     <div className="flex gap-2">
       {packs.map(p => (
-        <button key={p.id} onClick={onSelect} className="flex-1 rounded-[10px] cursor-pointer" style={{ background: p.star ? '#FF3500' : '#1a1a1a', border: `1px solid ${p.star ? '#FF3500' : '#333'}`, padding: '10px 8px', textAlign: 'center' as const }}>
+        <button key={p.id} onClick={onSelect} className="flex-1 rounded-[10px] cursor-pointer" style={{ background: p.star ? '#D42D00' : '#1a1a1a', border: `1px solid ${p.star ? '#D42D00' : '#333'}`, padding: '10px 8px', textAlign: 'center' as const }}>
           {p.star && <div className="text-white text-[9px] font-bold mb-[3px]" >⭐ POPULAIRE</div>}
           <div className="text-white font-bold text-[13px]">{p.label}</div>
           <div className="font-black text-base" style={{ color: p.star ? '#ffd0c0' : '#FF5533' }}>CHF {p.price}</div>
@@ -275,7 +275,7 @@ const headerStyle: React.CSSProperties = {
 
 const emojiStyle: React.CSSProperties = {
   width: 48, height: 48,
-  background: '#FF3500',
+  background: '#D42D00',
   borderRadius: 14,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   fontSize: 24, flexShrink: 0,
@@ -315,7 +315,7 @@ const packCardStyle: React.CSSProperties = {
 
 const primaryBtnStyle: React.CSSProperties = {
   width: '100%',
-  background: '#FF3500',
+  background: '#D42D00',
   color: '#fff',
   border: 'none',
   borderRadius: 12,

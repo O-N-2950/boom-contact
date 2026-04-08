@@ -136,10 +136,12 @@ export const authRouter = router({
       // Bloquer suppression du compte admin
       if (ctx.authUser.role === 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer un compte admin.' });
 
-      // Supprimer dans l'ordre : tokens → véhicules → user
-      await db.delete(magicTokens).where(eq(magicTokens.email, userEmail));
-      await db.delete(vehicles).where(eq(vehicles.userId, userId));
-      await db.delete(users).where(eq(users.id, userId));
+      // Supprimer dans une transaction atomique : tokens → véhicules → user
+      await db.transaction(async (tx) => {
+        await tx.delete(magicTokens).where(eq(magicTokens.email, userEmail));
+        await tx.delete(vehicles).where(eq(vehicles.userId, userId));
+        await tx.delete(users).where(eq(users.id, userId));
+      });
 
       logger.info('Compte supprimé', { userId, email: maskEmail(userEmail) });
       return { ok: true };

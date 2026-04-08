@@ -68,6 +68,7 @@
 
 :root {
   --boom:   #FF3500;
+  --boom-cta: #D42D00; /* WCAG AA compliant for white text on dark backgrounds */
   --boom2:  #FFB300;
   --boom3:  #FF6B35;
   --black:  #06060C;

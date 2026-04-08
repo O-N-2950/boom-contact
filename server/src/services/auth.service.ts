@@ -77,12 +77,12 @@ export interface JWTPayload {
 }
 
 export function signJWT(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET!, { expiresIn: JWT_EXPIRES, issuer: 'boom.contact', audience: 'boom.contact' });
+  return jwt.sign(payload, JWT_SECRET!, { algorithm: 'HS256', expiresIn: JWT_EXPIRES, issuer: 'boom.contact', audience: 'boom.contact' });
 }
 
 export function verifyJWT(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET!, { issuer: 'boom.contact', audience: 'boom.contact' }) as unknown as JWTPayload;
+    return jwt.verify(token, JWT_SECRET!, { algorithms: ['HS256'], issuer: 'boom.contact', audience: 'boom.contact' }) as unknown as JWTPayload;
   } catch {
     return null;
   }

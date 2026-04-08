@@ -298,7 +298,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* Tabs */}
         <div className="flex gap-1.5 mb-5">
           {(['garage', 'history', 'profile'] as PageTab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer px-1.5 py-[9px]" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222') }}>
+            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer px-1.5 py-[9px]" style={{ background: tab === t ? '#D42D00' : '#111', border: '1px solid ' + (tab === t ? '#D42D00' : '#222') }}>
               {t === 'garage' ? '🚗 Garage' : t === 'history' ? '📋 Historique' : '👤 Profil'}
             </button>
           ))}
@@ -309,7 +309,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           <>
             <div className="flex justify-between items-center mb-3">
               <div className="text-white font-bold">Mon garage ({vehicles.length})</div>
-              <button onClick={startAdd} className="bg-[#FF3500] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
+              <button onClick={startAdd} className="bg-[#D42D00] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
             </div>
             {vehicles.length === 0 && (
               <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
@@ -568,7 +568,7 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
 }
 
 const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '4px 0', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 };
-const primaryBtn: React.CSSProperties = { background: '#FF3500', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
+const primaryBtn: React.CSSProperties = { background: '#D42D00', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
 const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
 
 

@@ -39,7 +39,7 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
             onClick={() => handleChange(lang)}
             title={LANG_META[lang].label}
             aria-label={LANG_META[lang].label}
-            className="flex items-center justify-center rounded-lg cursor-pointer p-0 shrink-0 touch-manipulation" style={{ width: compact ? 32 : 36, height: compact ? 32 : 36, border: isActive
+            className="flex items-center justify-center rounded-lg cursor-pointer p-0 shrink-0 touch-manipulation" style={{ width: compact ? 40 : 44, height: compact ? 40 : 44, minWidth: 44, minHeight: 44, border: isActive
                 ? '2px solid var(--boom)'
                 : '1.5px solid rgba(255,255,255,0.12)', background: isActive
                 ? 'rgba(255,53,0,0.12)'

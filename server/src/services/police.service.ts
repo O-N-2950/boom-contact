@@ -19,15 +19,19 @@ async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, BCRYPT_ROUNDS);
 }
 
+// Legacy salts — read from env, fall back to original values for migration compatibility
+const POLICE_HASH_SALT = process.env.POLICE_HASH_SALT || 'boom-police-salt';
+const POLICE_SCRYPT_SALT = process.env.POLICE_SCRYPT_SALT || 'boom-police-fixed-salt';
+
 /** Legacy SHA256 hash for migration — DO NOT USE for new passwords */
 function hashPasswordLegacySHA256(password: string): string {
-  return crypto.createHash('sha256').update(password + 'boom-police-salt').digest('hex');
+  return crypto.createHash('sha256').update(password + POLICE_HASH_SALT).digest('hex');
 }
 
 /** Legacy scrypt hash for migration — DO NOT USE for new passwords */
 function hashPasswordLegacyScrypt(password: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const salt = 'boom-police-fixed-salt';
+    const salt = POLICE_SCRYPT_SALT;
     crypto.scrypt(password, salt, 64, (err, key) => {
       if (err) return reject(err);
       resolve(key.toString('hex'));
@@ -116,7 +120,7 @@ export async function loginPoliceUser(email: string, password: string) {
       mustChangePassword,
     },
     POLICE_JWT_SECRET,
-    { expiresIn: '8h', issuer: 'boom.contact', audience: 'boom.contact' }
+    { algorithm: 'HS256', expiresIn: '8h', issuer: 'boom.contact', audience: 'boom.contact' }
   );
 
   return {
@@ -141,7 +145,7 @@ export async function loginPoliceUser(email: string, password: string) {
 
 export function verifyPoliceToken(token: string) {
   try {
-    return jwt.verify(token, POLICE_JWT_SECRET, { issuer: 'boom.contact', audience: 'boom.contact' }) as {
+    return jwt.verify(token, POLICE_JWT_SECRET, { algorithms: ['HS256'], issuer: 'boom.contact', audience: 'boom.contact' }) as {
       userId: string;
       stationId: string;
       role: 'police';

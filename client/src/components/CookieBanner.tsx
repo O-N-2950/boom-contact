@@ -81,7 +81,7 @@ export function CookieBanner() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 9000, padding: '0 0 env(safe-area-inset-bottom)' }}>
+    <div aria-live="polite" className="fixed bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 9000, padding: '0 0 env(safe-area-inset-bottom)' }}>
       <div
         ref={bannerRef}
         role="dialog"
@@ -163,7 +163,7 @@ export function CookieBanner() {
           </button>
           <button
             onClick={() => accept('all')}
-            className="flex-1 border-0 rounded-[10px] text-white text-[13px] font-bold cursor-pointer px-3 py-[11px] bg-[#FF3500]"
+            className="flex-1 border-0 rounded-[10px] text-white text-[13px] font-bold cursor-pointer px-3 py-[11px] bg-[#D42D00]"
           >
             Accepter ✓
           </button>

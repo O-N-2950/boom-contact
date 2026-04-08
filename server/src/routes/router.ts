@@ -25,6 +25,14 @@ export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 export const MAX_IMAGE_BASE64_SIZE = 7_000_000; // ~5MB in base64 (~4/3 ratio)
 export const VALID_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
+// Magic bytes signatures for image format verification
+const MAGIC_BYTES: Record<string, number[]> = {
+  'image/jpeg': [0xFF, 0xD8, 0xFF],
+  'image/png':  [0x89, 0x50, 0x4E, 0x47],
+  'image/webp': [0x52, 0x49, 0x46, 0x46], // RIFF header
+  'image/gif':  [0x47, 0x49, 0x46],        // GIF
+};
+
 export function validateBase64Image(base64String: string, mediaType: string): { valid: boolean; error?: string } {
   // Validate media type
   if (!VALID_MEDIA_TYPES.includes(mediaType)) {
@@ -37,13 +45,26 @@ export function validateBase64Image(base64String: string, mediaType: string): { 
   }
 
   // Attempt to decode and check actual byte size
+  let buffer: Buffer;
   try {
-    const buffer = Buffer.from(base64String, 'base64');
+    buffer = Buffer.from(base64String, 'base64');
     if (buffer.length > MAX_IMAGE_SIZE_BYTES) {
       return { valid: false, error: `Image size exceeds 5MB limit (actual: ${(buffer.length / 1024 / 1024).toFixed(2)}MB)` };
     }
   } catch (e) {
     return { valid: false, error: 'Invalid base64 encoding' };
+  }
+
+  // Verify magic bytes match declared media type
+  const expectedMagic = MAGIC_BYTES[mediaType];
+  if (expectedMagic) {
+    if (buffer.length < expectedMagic.length) {
+      return { valid: false, error: 'File too small to be a valid image' };
+    }
+    const match = expectedMagic.every((byte, i) => buffer[i] === byte);
+    if (!match) {
+      return { valid: false, error: `File content does not match declared type ${mediaType} (magic bytes mismatch)` };
+    }
   }
 
   return { valid: true };
@@ -397,12 +418,19 @@ export const appRouter = router({
 
     // GET session.history — sessions where owner_email = logged-in user
     history: protectedProcedure
+      .input(z.object({
+        limit: z.number().min(1).max(100).default(50),
+        offset: z.number().min(0).default(0),
+      }).optional())
       .output(sessionHistoryOutput)
-      .query(async ({ ctx }) => {
+      .query(async ({ ctx, input }) => {
+        const limit = input?.limit ?? 50;
+        const offset = input?.offset ?? 0;
         return db.query.sessions.findMany({
           where: eq(sessionsTable.ownerEmail, ctx.authUser.email),
           orderBy: [desc(sessionsTable.createdAt)],
-          limit: 50,
+          limit,
+          offset,
         });
       }),
 

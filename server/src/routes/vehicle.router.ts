@@ -15,14 +15,14 @@ export const vehicleRouter = router({
   // POST vehicle.save — create or update
   save: protectedProcedure
     .input(z.object({
-      id:           z.string().max(100).optional(),
-      nickname:     z.string().max(200).optional(),
-      plate:        z.string().max(50).optional(),
-      make:         z.string().max(100).optional(),
-      model:        z.string().max(100).optional(),
-      color:        z.string().max(50).optional(),
-      year:         z.string().max(10).optional(),
-      category:     z.string().max(100).optional(),
+      id:           z.string().trim().max(100).optional(),
+      nickname:     z.string().trim().max(200).optional(),
+      plate:        z.string().trim().max(50).optional(),
+      make:         z.string().trim().max(100).optional(),
+      model:        z.string().trim().max(100).optional(),
+      color:        z.string().trim().max(50).optional(),
+      year:         z.string().trim().max(10).optional(),
+      category:     z.string().trim().max(100).optional(),
       licenseData:  z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
       insuranceData:z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
     }))
@@ -34,7 +34,7 @@ export const vehicleRouter = router({
 
   // POST vehicle.delete
   delete: protectedProcedure
-    .input(z.object({ id: z.string().max(100) }))
+    .input(z.object({ id: z.string().trim().max(100) }))
     .output(vehicleDeleteOutput)
     .mutation(async ({ ctx, input }) => {
       const { deleteVehicle } = await import('../services/vehicle.service.js');

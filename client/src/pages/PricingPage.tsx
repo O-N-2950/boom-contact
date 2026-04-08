@@ -156,7 +156,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         </div>
         <div className="flex gap-1.5" style={{ flexWrap: 'wrap' as const }}>
           {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => (
-            <button key={c} onClick={() => setCurrency(c)} className="text-white rounded-lg text-xs cursor-pointer min-h-[44px] min-w-[44px]" style={{ background: currency === c ? '#FF3500' : '#111', border: `1px solid ${currency === c ? '#FF3500' : '#222'}`, padding: '6px 10px', fontWeight: currency === c ? 700 : 400 }}>
+            <button key={c} onClick={() => setCurrency(c)} className="text-white rounded-lg text-xs cursor-pointer min-h-[44px] min-w-[44px]" style={{ background: currency === c ? '#D42D00' : '#111', border: `1px solid ${currency === c ? '#D42D00' : '#222'}`, padding: '6px 10px', fontWeight: currency === c ? 700 : 400 }}>
               {CURRENCY_FLAGS[c]} {c}
             </button>
           ))}
@@ -174,7 +174,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           return (
             <div key={pkg.id} className="rounded-2xl overflow-hidden" style={{ border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)', background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)' }}>
               {pkg.popular && (
-                <div className="bg-[#FF3500] text-[10px] font-bold text-white px-4 py-1 tracking-[1px]">
+                <div className="bg-[#D42D00] text-[10px] font-bold text-white px-4 py-1 tracking-[1px]">
                   ⭐ PLUS POPULAIRE · ÉCONOMIE {pkg.savings}
                 </div>
               )}
@@ -212,7 +212,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 <button
                   onClick={() => handleBuy(pkg.id)}
                   disabled={!!loading}
-                  className="w-full rounded-[10px] border-0 text-sm font-bold text-white transition-all duration-200 px-5 py-[13px]" style={{ cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? '#FF3500' : 'rgba(255,255,255,0.08)', opacity: loading ? 0.6 : 1 }}
+                  className="w-full rounded-[10px] border-0 text-sm font-bold text-white transition-all duration-200 px-5 py-[13px]" style={{ cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? '#D42D00' : 'rgba(255,255,255,0.08)', opacity: loading ? 0.6 : 1 }}
                 >
                   {isLoading ? '⏳ Redirection Stripe...' : `Acheter ${pkg.label} — ${currency === 'JPY' ? `¥${amountCents}` : `${symbol} ${priceStr}`}`}
                 </button>

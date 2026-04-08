@@ -64,9 +64,9 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
       <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" className="rounded-[20px] p-8 w-full max-w-[420px] relative bg-[#111]" style={{ border: '1px solid #444' }}>
         <div className="mb-6">
-          <h1 className="text-[28px] font-extrabold text-white mb-1.5">
+          <h2 className="text-[28px] font-extrabold text-white mb-1.5">
             {title || '💥 boom.contact'}
-          </h1>
+          </h2>
           <div className="text-[#d0d0d0] text-sm leading-normal">
             {subtitle || 'Connectez-vous pour sauvegarder vos véhicules et ne plus rien saisir lors de vos constats.'}
           </div>
@@ -75,7 +75,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: choose */}
         {mode === 'choose' && (
           <div className="flex flex-col gap-3">
-            <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
+            <button onClick={() => setMode('magic')} style={btnStyle('#D42D00')}>
               📧 Connexion par lien email (recommandé)
             </button>
             <button onClick={() => setMode('password')} style={btnStyle('#444')}>
@@ -111,7 +111,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               style={inputStyle}
             />
             {error && <div id="error-magic" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#FF3500')}>
+            <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#D42D00')}>
               {loading ? 'Envoi...' : 'Envoyer le lien'}
             </button>
             <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>
@@ -159,7 +159,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               style={inputStyle}
             />
             {error && <div id="error-password" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
+            <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
               {loading ? 'Connexion...' : 'Se connecter'}
             </button>
             <button onClick={() => { setMode('magic'); setError(''); }} style={linkStyle}>
@@ -194,7 +194,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               style={inputStyle}
             />
             {error && <div id="error-register" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
+            <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
               {loading ? 'Création...' : 'Créer mon compte'}
             </button>
             <p className="text-[#d0d0d0] text-[11px] m-0 leading-normal">

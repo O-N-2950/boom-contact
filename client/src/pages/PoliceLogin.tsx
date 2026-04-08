@@ -73,14 +73,16 @@ export function PoliceLogin({ onLogin }: Props) {
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="••••••••"
+              aria-describedby={error ? "police-error" : "password-hint"}
               className="w-full rounded-[10px] text-white text-[15px] box-border px-3.5 py-3" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}
             />
+            <span id="password-hint" className="sr-only">Minimum 6 caractères</span>
           </div>
 
           <button
             onClick={handleSubmit}
             disabled={loginMutation.isPending}
-            className="w-full rounded-[10px] border-0 text-white text-[15px] font-bold p-3.5"  style={{ background: loginMutation.isPending ? 'rgba(255,53,0,0.4)' : '#FF3500', cursor: loginMutation.isPending ? 'wait' : 'pointer' }}
+            className="w-full rounded-[10px] border-0 text-white text-[15px] font-bold p-3.5"  style={{ background: loginMutation.isPending ? 'rgba(212,45,0,0.4)' : '#D42D00', cursor: loginMutation.isPending ? 'wait' : 'pointer' }}
           >
             {loginMutation.isPending ? '⏳ Connexion...' : '🔐 Se connecter'}
           </button>

@@ -2,7 +2,24 @@ import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { Context } from '../middleware/context';
 
-const t = initTRPC.context<Context>().create();
+const t = initTRPC.context<Context>().create({
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        // Standardized error envelope: { success: false, error: { code, message } }
+        standardError: {
+          success: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
+        },
+      },
+    };
+  },
+});
 
 export const router = t.router;
 export const publicProcedure = t.procedure;

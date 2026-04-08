@@ -446,7 +446,7 @@ export function CountryEmergencySearch() {
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           className="flex-1 rounded-lg text-white text-sm px-3 py-[9px] bg-[#1a1a1a]" style={{ border: '1px solid #555' }}
         />
-        <button onClick={handleSubmit} disabled={!code.trim()} className="text-white border-0 rounded-lg font-bold cursor-pointer text-sm shrink-0 px-3.5 py-[9px] bg-[#FF3500]">
+        <button onClick={handleSubmit} disabled={!code.trim()} className="text-white border-0 rounded-lg font-bold cursor-pointer text-sm shrink-0 px-3.5 py-[9px] bg-[#D42D00]">
           🔍
         </button>
       </div>
@@ -525,7 +525,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {/* Region filter */}
         <div className="flex gap-1.5 overflow-x-auto mb-2.5 pb-1"  style={{ scrollbarWidth: 'none' as const }}>
           {REGIONS.map(r => (
-            <button key={r} onClick={() => setRegion(r)} className="text-white rounded-md text-[11px] font-semibold cursor-pointer shrink-0 px-2.5 py-[5px]" style={{ background: region === r ? '#FF3500' : '#111', border: '1px solid ' + (region === r ? '#FF3500' : '#444'), whiteSpace: 'nowrap' as const }}>
+            <button key={r} onClick={() => setRegion(r)} className="text-white rounded-md text-[11px] font-semibold cursor-pointer shrink-0 px-2.5 py-[5px]" style={{ background: region === r ? '#D42D00' : '#111', border: '1px solid ' + (region === r ? '#D42D00' : '#444'), whiteSpace: 'nowrap' as const }}>
               {r}
             </button>
           ))}
@@ -534,7 +534,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {/* Country selector */}
         <div className="flex gap-1.5 overflow-x-auto pb-1 mb-3.5"  style={{ scrollbarWidth: 'none' as string }}>
           {filteredCountries.map(c => (
-            <button key={c.code} onClick={() => setCountry(c.code)} className="text-white rounded-lg text-[13px] font-semibold cursor-pointer shrink-0 px-3 py-[7px]" style={{ background: country === c.code ? '#FF3500' : '#111', border: '1px solid ' + (country === c.code ? '#FF3500' : '#444'), whiteSpace: 'nowrap' as const }}>
+            <button key={c.code} onClick={() => setCountry(c.code)} className="text-white rounded-lg text-[13px] font-semibold cursor-pointer shrink-0 px-3 py-[7px]" style={{ background: country === c.code ? '#D42D00' : '#111', border: '1px solid ' + (country === c.code ? '#D42D00' : '#444'), whiteSpace: 'nowrap' as const }}>
               {c.flag} {c.code}
             </button>
           ))}

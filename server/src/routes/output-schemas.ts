@@ -460,27 +460,27 @@ const infractionRecord = z.object({
   label: z.string().optional(),
   severity: z.string().optional(),
   driver: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const driverStateRecord = z.object({
   driver: z.string().optional(),
   state: z.string().optional(),
   details: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const conditionsRecord = z.object({
   weather: z.string().optional(),
   visibility: z.string().optional(),
   roadCondition: z.string().optional(),
   lighting: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const witnessRecord = z.object({
   name: z.string().optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
   statement: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 const policePhotoRecord = z.object({
   id: z.string().optional(),
@@ -488,7 +488,7 @@ const policePhotoRecord = z.object({
   category: z.string().optional(),
   caption: z.string().optional(),
   takenAt: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 export const policeGetInterventionOutput = z.object({
   id: z.string().optional(),
@@ -520,7 +520,7 @@ const measureRecord = z.object({
   code: z.string().optional(),
   label: z.string().optional(),
   details: z.string().optional(),
-}).catchall(z.unknown());
+}).passthrough();
 
 export const policeGetAnnotationOutput = z.object({
   id: z.string().optional(),
