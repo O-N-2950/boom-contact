@@ -2,8 +2,8 @@
 // v2 — Plan OSM par défaut (pas de voitures fantômes), satellite en option
 // Géocodage automatique si lat/lng absent (Nominatim OSM)
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { io as socketIO, Socket } from 'socket.io-client';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import type { Socket } from 'socket.io-client';
 
 interface VehiclePosition {
   x: number; y: number; angle: number; lat: number; lng: number;
@@ -176,7 +176,7 @@ function drawVehicle(
 }
 
 // ── Composant principal ───────────────────────────────────────
-export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
+export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, required = true, sessionId, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
 
@@ -214,8 +214,11 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
   useEffect(() => {
     if (!sessionId) return;
 
-    // Initial fetch for current state
-    const fetchPositions = async () => {
+    let socket: Socket | null = null;
+    let cancelled = false;
+
+    (async () => {
+      // Initial fetch for current state
       try {
         const res = await fetch(`/trpc/session.get?input=${encodeURIComponent(JSON.stringify({ sessionId }))}`, { signal: AbortSignal.timeout(5000) });
         if (!res.ok) return;
@@ -241,48 +244,53 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
         if (vehicleAPos && role !== 'A' && !positions.find(p => p.role === 'A')) {
           positions.push({ role: 'A', pos: vehicleAPos });
         }
-        setLivePositions(positions);
+        if (!cancelled) setLivePositions(positions);
       } catch (e) { console.warn('[MapVehiclePlacer] Failed to fetch initial positions', e); }
-    };
-    fetchPositions();
 
-    // Connect to Socket.io and join session room
-    const socket = socketIO(window.location.origin, { reconnection: true });
-    socketRef.current = socket;
+      // Connect to Socket.io and join session room
+      const { io: socketIO } = await import('socket.io-client');
+      if (cancelled) return;
 
-    socket.on('connect', () => {
-      socket.emit('join-session', sessionId);
-    });
+      socket = socketIO(window.location.origin, { reconnection: true });
+      socketRef.current = socket;
 
-    // Listen for data updates (participant vehicle position changes)
-    socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: any }) => {
-      if (updatedRole === role) return; // skip own updates
-      const pos = data?.vehicle?.mapPosition;
-      if (pos?.x !== undefined && pos?.lat !== undefined) {
-        setLivePositions(prev => {
-          const updated = prev.filter(p => p.role !== updatedRole);
-          return [...updated, { role: updatedRole, pos, vehicleType: data?.vehicle?.vehicleType }];
-        });
-      }
-    });
+      socket.on('connect', () => {
+        socket!.emit('join-session', sessionId);
+      });
 
-    // Listen for accident updates (vehicleAPos changes)
-    socket.on('accident-updated', (data: any) => {
-      const vehicleAPos = data?.vehicleAPos;
-      if (vehicleAPos && role !== 'A') {
-        setLivePositions(prev => {
-          const updated = prev.filter(p => p.role !== 'A');
-          return [...updated, { role: 'A', pos: vehicleAPos }];
-        });
-      }
-    });
+      // Listen for data updates (participant vehicle position changes)
+      socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: any }) => {
+        if (updatedRole === role) return; // skip own updates
+        const pos = data?.vehicle?.mapPosition;
+        if (pos?.x !== undefined && pos?.lat !== undefined) {
+          setLivePositions(prev => {
+            const updated = prev.filter(p => p.role !== updatedRole);
+            return [...updated, { role: updatedRole, pos, vehicleType: data?.vehicle?.vehicleType }];
+          });
+        }
+      });
+
+      // Listen for accident updates (vehicleAPos changes)
+      socket.on('accident-updated', (data: any) => {
+        const vehicleAPos = data?.vehicleAPos;
+        if (vehicleAPos && role !== 'A') {
+          setLivePositions(prev => {
+            const updated = prev.filter(p => p.role !== 'A');
+            return [...updated, { role: 'A', pos: vehicleAPos }];
+          });
+        }
+      });
+    })();
 
     // Cleanup on unmount
     return () => {
-      socket.off('data-updated');
-      socket.off('accident-updated');
-      socket.off('connect');
-      socket.disconnect();
+      cancelled = true;
+      if (socket) {
+        socket.off('data-updated');
+        socket.off('accident-updated');
+        socket.off('connect');
+        socket.disconnect();
+      }
       socketRef.current = null;
     };
   }, [sessionId, role]);
@@ -538,4 +546,4 @@ export function MapVehiclePlacer({ role, required = true, sessionId, accidentLat
       )}
     </div>
   );
-}
+});

@@ -28,6 +28,18 @@ export const authLoginOutput = z.object({
   }),
 });
 
+// ── auth.register ─────────────────────────────────────────────
+export const authRegisterOutput = z.object({
+  ok: z.boolean(),
+  token: z.string(),
+  user: z.object({
+    id: z.string(),
+    email: z.string(),
+    role: z.string(),
+    credits: z.number(),
+  }),
+});
+
 // ── session.create ───────────────────────────────────────────
 export const sessionCreateOutput = z.object({
   sessionId: z.string(),

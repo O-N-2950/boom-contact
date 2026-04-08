@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import type { ScenePhoto, PhotoCategory } from '../../../../shared/types';
 
 interface Props {
@@ -43,7 +43,7 @@ async function compressImage(file: File): Promise<string> {
   });
 }
 
-export function PhotoCapture({ photos, onChange, onContinue }: Props) {
+export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange, onContinue }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<PhotoCategory>('scene');
   const [editingCaption, setEditingCaption] = useState<string | null>(null);
   const [captionValue, setCaptionValue] = useState('');
@@ -255,4 +255,4 @@ export function PhotoCapture({ photos, onChange, onContinue }: Props) {
       </p>
     </div>
   );
-}
+});

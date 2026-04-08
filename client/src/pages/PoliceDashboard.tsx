@@ -147,7 +147,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
                 </div>
               </div>
               <span style={{ color:'rgba(240,237,232,0.25)', fontSize: 18 }}>›</span>
-            </div>
+            </button>
           ))}
         </div>
       </div>

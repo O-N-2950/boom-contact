@@ -60,6 +60,16 @@ import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCle
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml } from './trpc.js';
 import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput } from './output-schemas.js';
 
+// ── Helper: verify participant token for A-E ──────────────────
+async function verifyAnyParticipant(sessionId: string, participantToken: string): Promise<void> {
+  const roles = ['A', 'B', 'C', 'D', 'E'] as const;
+  for (const role of roles) {
+    const valid = await verifyParticipantToken(sessionId, participantToken, role);
+    if (valid) return;
+  }
+  throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+}
+
 /**
  * Main tRPC Router
  *
@@ -148,7 +158,7 @@ export const appRouter = router({
             category: z.string().optional(),
             bodyStyle: z.string().optional(),
             type: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           driver: z.object({
             firstName: z.string().optional(),
             lastName: z.string().optional(),
@@ -161,7 +171,7 @@ export const appRouter = router({
             licenseNumber: z.string().optional(),
             licenseExpiry: z.string().optional(),
             name: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           insurance: z.object({
             company: z.string().optional(),
             policyNumber: z.string().optional(),
@@ -171,7 +181,7 @@ export const appRouter = router({
             address: z.string().optional(),
             greenCardNumber: z.string().optional(),
             greenCardExpiry: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           damagedZones: z.array(z.string()).optional(),
           circumstances: z.array(z.string()).optional(),
           language:     z.string().optional(),
@@ -212,7 +222,7 @@ export const appRouter = router({
             lng: z.number().optional(),
             postalCode: z.string().optional(),
             canton: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           description:      z.string().optional(),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
           witnesses:        z.string().optional(),
@@ -225,14 +235,14 @@ export const appRouter = router({
             y: z.number().optional(),
             rotation: z.number().optional(),
             direction: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           vehicleCount:     z.number().optional(),
           partyBStatus:     z.object({
             status: z.string().optional(),
             reason: z.string().optional(),
             description: z.string().optional(),
             type: z.string().optional(),
-          }).catchall(z.unknown()).optional(),
+          }).optional(),
           photos:           z.array(z.object({
             id:       z.string(),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
@@ -244,11 +254,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // Verify participant token — REQUIRED (either party can update accident)
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
 
         // Validate photo sizes
         if (input.data.photos) {
@@ -404,11 +410,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
 
         // Validate image size and media type
         const validation = validateBase64Image(input.imageBase64, input.mediaType);
@@ -430,11 +432,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
 
         // Validate each image before processing
         for (const imageBase64 of input.images) {
@@ -461,11 +459,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for OCR' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
 
         // Validate both images
         const regValidation = validateBase64Image(input.registrationBase64, 'image/jpeg');
@@ -493,11 +487,7 @@ export const appRouter = router({
       .output(pdfGenerateOutput)
       .mutation(async ({ input }) => {
         // Verify participant token
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
@@ -538,11 +528,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
@@ -616,11 +602,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for voice' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const result = await transcribeAudio(
           input.audioBase64,
           input.mimeType,
@@ -638,11 +620,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for voice' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const result = await analyzeAccidentTranscript(
           input.transcript,
           input.previousAnswers
@@ -683,11 +661,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Verify participant token before allowing render
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token for sketch' });
-        }
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const pngBase64 = await renderSketch(input);
         return { pngBase64, width: input.width, height: input.height };
       }),
@@ -700,8 +674,11 @@ export const appRouter = router({
         insurerA: z.string().optional(),
         insurerB: z.string().optional(),
         countryCode: z.string().optional(),
+        sessionId: z.string(),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         const [resultA, resultB] = await Promise.all([
           input.insurerA ? getInsuranceAssistance(input.insurerA, input.countryCode) : Promise.resolve(null),
           input.insurerB ? getInsuranceAssistance(input.insurerB, input.countryCode) : Promise.resolve(null),
@@ -714,8 +691,13 @@ export const appRouter = router({
       .input(z.object({
         countryCode: z.string().min(2).max(3),
         countryName: z.string().optional(),
+        sessionId: z.string().optional(),
+        participantToken: z.string().optional(),
       }))
       .query(async ({ input }) => {
+        if (input.sessionId && input.participantToken) {
+          await verifyAnyParticipant(input.sessionId, input.participantToken);
+        }
         return getCountryEmergencyNumbers(input.countryCode, input.countryName);
       }),
 
@@ -723,8 +705,11 @@ export const appRouter = router({
       .input(z.object({
         insurer: z.string().min(2),
         country: z.string().optional(),
+        sessionId: z.string(),
+        participantToken: z.string(),
       }))
       .mutation(async ({ input }) => {
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
         return getInsuranceAssistance(input.insurer, input.country);
       }),
   }),

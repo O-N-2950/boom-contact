@@ -241,7 +241,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       )}
     </div>
   );
-}
+});
 
 // ── Sub-components ────────────────────────────────────────────
 function Benefit({ icon, text }: { icon: string; text: string }) {
@@ -284,7 +284,7 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
       ))}
     </div>
   );
-});
+}
 
 // ── Styles ────────────────────────────────────────────────────
 const containerStyle: React.CSSProperties = {

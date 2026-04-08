@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { CGUModal } from '../components/CGUModal';
+const CGUModal = React.lazy(() => import('../components/CGUModal').then(m => ({ default: m.CGUModal })));
 
 // ── Reusable style constants (extracted from repeated inline styles) ──
 const S = {

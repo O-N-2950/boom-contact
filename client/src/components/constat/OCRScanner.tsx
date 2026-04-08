@@ -1,7 +1,7 @@
 // client/src/components/constat/OCRScanner.tsx
 // Scanner multi-documents — 1 seule étape, tous pays, analyse tout en parallèle
 
-import { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { trpc } from '../../trpc';
 import type { OCRResult } from '../../../../shared/types';
 
@@ -56,7 +56,7 @@ function mergeResults(scans: OCRResult[]): { registration: OCRResult; greenCard?
   return { registration, greenCard };
 }
 
-export function OCRScanner({ role, onComplete, onSkip }: Props) {
+export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onSkip }: Props) {
   const [docs, setDocs]           = useState<DocPhoto[]>([]);
   const [scanning, setScanning]   = useState(false);
   const [error, setError]         = useState<string | null>(null);
@@ -320,4 +320,4 @@ export function OCRScanner({ role, onComplete, onSkip }: Props) {
       )}
     </div>
   );
-}
+});

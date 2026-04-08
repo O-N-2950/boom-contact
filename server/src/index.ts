@@ -228,7 +228,37 @@ async function setupRateLimiting() {
       },
     }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min) sketch(10/min) emergency(5/min)');
+    // session.updateParticipant — 30/min per IP (frequent during form fill)
+    app.use('/trpc/session.updateParticipant', rateLimit({
+      windowMs: 60 * 1000, max: 30,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.updateParticipant', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de mises à jour. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // session.updateAccident — 30/min per IP
+    app.use('/trpc/session.updateAccident', rateLimit({
+      windowMs: 60 * 1000, max: 30,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.updateAccident', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de mises à jour. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // session.sign — 5/min per IP
+    app.use('/trpc/session.sign', rateLimit({
+      windowMs: 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.sign', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives de signature. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) session.updateParticipant(30/min) session.updateAccident(30/min) session.sign(5/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min) sketch(10/min) emergency(5/min)');
   } catch (e) {
     logger.warn('Rate limit not available', { error: String(e) });
   }

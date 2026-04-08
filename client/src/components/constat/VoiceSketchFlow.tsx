@@ -2,7 +2,7 @@
 // v3 — Description vocale uniquement → transcript sauvegardé dans le constat
 // Suppression du croquis IA automatique (remplacé par la carte MapVehiclePlacer)
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { trpc } from '../../trpc';
 
 type FlowState = 'intro' | 'recording' | 'transcribing' | 'done';
@@ -37,7 +37,7 @@ async function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '', onComplete, onSkip }: Props) {
+export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '', onComplete, onSkip }: Props) {
   const [flowState, setFlowState] = useState<FlowState>(initialTranscript ? 'done' : 'intro');
   const [inputMode, setInputMode] = useState<InputMode>('voice');
   const [manualText, setManualText] = useState('');
@@ -292,4 +292,4 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
   }
 
   return null;
-}
+});

@@ -8,13 +8,14 @@ import { db } from '../db/index.js';
 import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
-import { authMeOutput, authLoginOutput } from './output-schemas.js';
+import { authMeOutput, authLoginOutput, authRegisterOutput } from './output-schemas.js';
 
 export const authRouter = router({
 
   // POST auth.register
   register: publicProcedure
     .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
+    .output(authRegisterOutput)
     .mutation(async ({ input }) => {
       try {
         const result = await registerUser(input.email, input.password);

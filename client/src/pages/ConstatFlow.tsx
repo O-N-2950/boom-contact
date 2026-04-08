@@ -1,5 +1,34 @@
-import { LocationStep } from '../components/constat/LocationStep';
+import React, { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
+import { trpc } from '../trpc';
+import { LocationStep } from '../components/constat/LocationStep';
+import { QRSession } from '../components/constat/QRSession';
+import { StepIndicator } from '../components/constat/StepIndicator';
+import { PDFDownload } from '../components/constat/PDFDownload';
+import { EmergencyNumbers } from '../components/EmergencyNumbers';
+import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
+import { UnknownCountryLookup } from '../components/EmergencyNumbers';
+import { PostConstatCTA } from '../components/constat/PostConstatCTA';
+import { PedestrianForm } from '../components/constat/PedestrianForm';
+import { PartyUnavailableModal } from '../components/constat/PartyUnavailableModal';
+import { CoherenceScore } from '../components/constat/CoherenceScore';
+import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
+import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
+
+// ── Lazy-loaded heavy components (code-splitting) ──────────────
+const OCRScanner = React.lazy(() => import('../components/constat/OCRScanner').then(m => ({ default: m.OCRScanner })));
+const VehicleDiagram = React.lazy(() => import('../components/constat/VehicleDiagram').then(m => ({ default: m.VehicleDiagram })));
+const MapVehiclePlacer = React.lazy(() => import('../components/constat/MapVehiclePlacer').then(m => ({ default: m.MapVehiclePlacer })));
+const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad').then(m => ({ default: m.SignaturePad })));
+const VoiceSketchFlow = React.lazy(() => import('../components/constat/VoiceSketchFlow').then(m => ({ default: m.VoiceSketchFlow })));
+const PhotoCapture = React.lazy(() => import('../components/constat/PhotoCapture').then(m => ({ default: m.PhotoCapture })));
+const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm').then(m => ({ default: m.ConstatForm })));
+
+// ── Loading fallback component ───────────────────────────────────
+function LazyLoading() {
+  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+}
 
 // ── Zod schema for localStorage validation ─────────────────
 const savedStateSchema = z.object({
@@ -40,30 +69,6 @@ function ocrCategoryToVehicleType(category?: string): VehicleType | null {
   if (c.includes('trottinette') || c.includes('edpm') || c.includes('e-scooter')) return 'escooter';
   return null;
 }
-
-
-import { PhotoCapture } from '../components/constat/PhotoCapture';
-import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
-import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { trpc } from '../trpc';
-import { OCRScanner } from '../components/constat/OCRScanner';
-import { QRSession } from '../components/constat/QRSession';
-import { ConstatForm } from '../components/constat/ConstatForm';
-import { VehicleDiagram } from '../components/constat/VehicleDiagram';
-import { SignaturePad } from '../components/constat/SignaturePad';
-import { StepIndicator } from '../components/constat/StepIndicator';
-import { PDFDownload } from '../components/constat/PDFDownload';
-import { EmergencyNumbers } from '../components/EmergencyNumbers';
-import { InsuranceAssistance } from '../components/constat/InsuranceAssistance';
-import { UnknownCountryLookup } from '../components/EmergencyNumbers';
-import { PostConstatCTA } from '../components/constat/PostConstatCTA';
-import { PedestrianForm } from '../components/constat/PedestrianForm';
-import { PartyUnavailableModal } from '../components/constat/PartyUnavailableModal';
-import { CoherenceScore } from '../components/constat/CoherenceScore';
-import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
-import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
 
@@ -499,7 +504,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="A" onComplete={handleOCRComplete} onSkip={() => setStep('location')} />
+          <Suspense fallback={<LazyLoading />}>
+            <OCRScanner role="A" onComplete={handleOCRComplete} onSkip={() => setStep('location')} />
+          </Suspense>
         )}
 
         {step === 'location' && (
@@ -507,11 +514,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
 
         {step === 'photos' && (
-          <PhotoCapture
-            photos={photos}
-            onChange={setPhotos}
-            onContinue={handlePhotosContinue}
-          />
+          <Suspense fallback={<LazyLoading />}>
+            <PhotoCapture
+              photos={photos}
+              onChange={setPhotos}
+              onContinue={handlePhotosContinue}
+            />
+          </Suspense>
         )}
 
         {step === 'qr' && sessionId && vehicleType !== 'pedestrian' && (
@@ -660,72 +669,80 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
 
         {step === 'form' && (
-          <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
+          <Suspense fallback={<LazyLoading />}>
+            <ConstatForm role="A" prefilled={participantData} accidentData={accidentData} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
+          </Suspense>
         )}
 
         {step === 'voice' && sessionId && (
-          <VoiceSketchFlow
-            role="A"
-            sessionId={sessionId}
-            lang={participantData.language}
-            initialTranscript={voiceTranscript}
-            onComplete={(data) => {
-              setVoiceAnalysis(data.analysis);
-              setVoiceTranscript(data.transcript || '');
-              const count = data.analysis?.vehicleCount || vehicleCount;
-              setVehicleCount(count as 2|3|4);
-              if (data.analysis?.circumstances?.length > 0) {
-                setParticipantData(prev => ({
-                  ...prev,
-                  circumstances: data.analysis.circumstances,
-                }));
-              }
-              setStep('form');
-            }}
-            onSkip={() => setStep('form')}
-          />
+          <Suspense fallback={<LazyLoading />}>
+            <VoiceSketchFlow
+              role="A"
+              sessionId={sessionId}
+              lang={participantData.language}
+              initialTranscript={voiceTranscript}
+              onComplete={(data) => {
+                setVoiceAnalysis(data.analysis);
+                setVoiceTranscript(data.transcript || '');
+                const count = data.analysis?.vehicleCount || vehicleCount;
+                setVehicleCount(count as 2|3|4);
+                if (data.analysis?.circumstances?.length > 0) {
+                  setParticipantData(prev => ({
+                    ...prev,
+                    circumstances: data.analysis.circumstances,
+                  }));
+                }
+                setStep('form');
+              }}
+              onSkip={() => setStep('form')}
+            />
+          </Suspense>
         )}
 
         {step === 'sketch' && (
-          <MapVehiclePlacer
-            required={false}
-            role="A"
-            sessionId={sessionId}
-            accidentLat={accidentData.location?.lat}
-            accidentLng={accidentData.location?.lng}
-            accidentAddress={accidentData.location?.address}
-            accidentCity={accidentData.location?.city}
-            vehicleColor={participantData.vehicle?.color}
-            vehicleType={participantData.vehicle?.vehicleType}
-            brand={participantData.vehicle?.brand}
-            onComplete={(vehiclePos, mapImageB64) => {
-              setSketchImage(mapImageB64);
-              // Stocker la position de A pour que B la voie sur sa carte
-              (window as any).__boomVehicleAPos = vehiclePos;
-              if (sessionId && mapImageB64) {
-                updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
-              }
-              setParticipantData(prev => ({
-                ...prev,
-                vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
-              }));
-              setStep('diagram');
-            }}
-            onSkip={() => setStep('diagram')}
-          />
+          <Suspense fallback={<LazyLoading />}>
+            <MapVehiclePlacer
+              required={false}
+              role="A"
+              sessionId={sessionId}
+              accidentLat={accidentData.location?.lat}
+              accidentLng={accidentData.location?.lng}
+              accidentAddress={accidentData.location?.address}
+              accidentCity={accidentData.location?.city}
+              vehicleColor={participantData.vehicle?.color}
+              vehicleType={participantData.vehicle?.vehicleType}
+              brand={participantData.vehicle?.brand}
+              onComplete={(vehiclePos, mapImageB64) => {
+                setSketchImage(mapImageB64);
+                // Stocker la position de A pour que B la voie sur sa carte
+                (window as any).__boomVehicleAPos = vehiclePos;
+                if (sessionId && mapImageB64) {
+                  updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
+                }
+                setParticipantData(prev => ({
+                  ...prev,
+                  vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
+                }));
+                setStep('diagram');
+              }}
+              onSkip={() => setStep('diagram')}
+            />
+          </Suspense>
         )}
 
         {step === 'diagram' && (
           <div>
-            <VehicleDiagram
-                  role="A"
-                  vehicleType={participantData.vehicle?.vehicleType}
-                  brand={participantData.vehicle?.brand}
-                  model={participantData.vehicle?.model}
-                  color={participantData.vehicle?.color}
-                  selected={damagedZones}
-                  onChange={setDamagedZones}
-                />
+            <Suspense fallback={<LazyLoading />}>
+              <VehicleDiagram
+                    role="A"
+                    vehicleType={participantData.vehicle?.vehicleType}
+                    brand={participantData.vehicle?.brand}
+                    model={participantData.vehicle?.model}
+                    color={participantData.vehicle?.color}
+                    selected={damagedZones}
+                    onChange={setDamagedZones}
+                  />
+            </Suspense>
             <div style={{ padding: '0 20px 20px' }}>
               <button onClick={handleDiagramDone} style={{
                 width: '100%', padding: '16px', borderRadius: 10, border: 'none',
@@ -793,13 +810,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 accidentData={accidentData}
               />
             )}
-            <SignaturePad
-              role="A"
-              onSign={handleSign}
-              otherSigned={otherSigned}
-              isOtherPedestrian={otherPartyNoSignRequired}
-              disabled={false}
-            />
+            <Suspense fallback={<LazyLoading />}>
+              <SignaturePad
+                role="A"
+                onSign={handleSign}
+                otherSigned={otherSigned}
+                isOtherPedestrian={otherPartyNoSignRequired}
+                disabled={false}
+              />
+            </Suspense>
           </>
         )}
 

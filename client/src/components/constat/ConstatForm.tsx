@@ -1,6 +1,6 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { ColorPicker } from '../ColorPicker';
 import { VoiceRecorder } from './VoiceRecorder';
-import { useState, useEffect, useRef } from 'react';
 import type { ParticipantData, AccidentData, ParticipantRole } from '../../../../shared/types';
 
 interface Props {
@@ -35,7 +35,7 @@ const ACCIDENT_CIRCUMSTANCES = [
 
 type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances' | 'complement';
 
-export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
+export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
   const [section, setSection] = useState<Section>('vehicle');
   const [data, setData] = useState<Partial<ParticipantData>>({
     role,
@@ -162,10 +162,10 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
       <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
 
         {section === 'vehicle' && <>
-          <Field sec section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required />
-          <Field sec section="vehicle" field="brand"        label="Marque"          placeholder="Toyota, VW, Peugeot..." required />
-          <Field sec section="vehicle" field="model"        label="Modèle"          placeholder="Yaris, Golf, 208..." />
-          <Field sec section="vehicle" field="year"         label="Année"           placeholder="2019" type="number" />
+          <Field section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required />
+          <Field section="vehicle" field="brand"        label="Marque"          placeholder="Toyota, VW, Peugeot..." required />
+          <Field section="vehicle" field="model"        label="Modèle"          placeholder="Yaris, Golf, 208..." />
+          <Field section="vehicle" field="year"         label="Année"           placeholder="2019" type="number" />
           {/* Couleur — sélecteur visuel */}
           <ColorPicker
             value={data.vehicle?.color ?? ''}
@@ -174,36 +174,36 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
               vehicle: { ...prev.vehicle, color: v }
             }))}
           />
-          <Field sec section="vehicle" field="vin"          label="N° châssis (VIN)" placeholder="VF1..." />
+          <Field section="vehicle" field="vin"          label="N° châssis (VIN)" placeholder="VF1..." />
         </>}
 
         {section === 'driver' && <>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
-              <Field sec section="driver" field="firstName" label="Prénom" required />
+              <Field section="driver" field="firstName" label="Prénom" required />
             </div>
             <div>
-              <Field sec section="driver" field="lastName"  label="Nom"    required />
+              <Field section="driver" field="lastName"  label="Nom"    required />
             </div>
           </div>
-          <Field sec section="driver" field="address"       label="Adresse"         placeholder="Rue de la Paix 1" required />
+          <Field section="driver" field="address"       label="Adresse"         placeholder="Rue de la Paix 1" required />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 12 }}>
-            <div><Field sec section="driver" field="postalCode" label="NPA" placeholder="1000" /></div>
-            <div><Field sec section="driver" field="city"       label="Localité" placeholder="Lausanne" required /></div>
+            <div><Field section="driver" field="postalCode" label="NPA" placeholder="1000" /></div>
+            <div><Field section="driver" field="city"       label="Localité" placeholder="Lausanne" required /></div>
           </div>
-          <Field sec section="driver" field="country"       label="Pays"            placeholder="CH, FR, DE..." />
-          <Field sec section="driver" field="phone"         label="Téléphone"       placeholder="+41 79 123 45 67" type="tel" required />
-          <Field sec section="driver" field="email"         label="Email"           placeholder="nom@email.com" type="email" />
-          <Field sec section="driver" field="licenseNumber" label="N° permis de conduire" required />
+          <Field section="driver" field="country"       label="Pays"            placeholder="CH, FR, DE..." />
+          <Field section="driver" field="phone"         label="Téléphone"       placeholder="+41 79 123 45 67" type="tel" required />
+          <Field section="driver" field="email"         label="Email"           placeholder="nom@email.com" type="email" />
+          <Field section="driver" field="licenseNumber" label="N° permis de conduire" required />
         </>}
 
         {section === 'insurance' && <>
-          <Field sec section="insurance" field="company"         label="Compagnie d'assurance" placeholder="Zurich, AXA, Allianz..." required />
-          <Field sec section="insurance" field="policyNumber"    label="N° de police"          placeholder="CH-2026-12345" required />
-          <Field sec section="insurance" field="greenCardNumber" label="N° carte verte"        placeholder="..." />
-          <Field sec section="insurance" field="greenCardExpiry" label="Validité carte verte"  placeholder="12/2026" />
-          <Field sec section="insurance" field="agentName"       label="Agent / Courtier"      placeholder="Nom de l'agent" />
-          <Field sec section="insurance" field="agentPhone"      label="Tél. assurance"        placeholder="+41 21 123 45 67" type="tel" />
+          <Field section="insurance" field="company"         label="Compagnie d'assurance" placeholder="Zurich, AXA, Allianz..." required />
+          <Field section="insurance" field="policyNumber"    label="N° de police"          placeholder="CH-2026-12345" required />
+          <Field section="insurance" field="greenCardNumber" label="N° carte verte"        placeholder="..." />
+          <Field section="insurance" field="greenCardExpiry" label="Validité carte verte"  placeholder="12/2026" />
+          <Field section="insurance" field="agentName"       label="Agent / Courtier"      placeholder="Nom de l'agent" />
+          <Field section="insurance" field="agentPhone"      label="Tél. assurance"        placeholder="+41 21 123 45 67" type="tel" />
         </>}
 
         {section === 'circumstances' && <>
@@ -355,4 +355,4 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
       </div>
     </div>
   );
-}
+});
