@@ -1,9 +1,17 @@
 /**
- * Anthropic API client factory — centralizes all Claude API calls.
- * Used by emergency-numbers.service.ts and insurance-assistance.service.ts.
+ * Anthropic API client — single source of truth for all Claude API calls.
+ * Exports:
+ *   - `anthropic` — singleton SDK instance (used by ocr, accident-analyzer, etc.)
+ *   - `callAnthropic` / `callAnthropicJSON` — lightweight raw-fetch helpers
  */
+import Anthropic from '@anthropic-ai/sdk';
 import { ANTHROPIC_API_KEY } from '../config.js';
 import { logger } from '../logger.js';
+
+// ── Singleton SDK instance ────────────────────────────────────
+export const anthropic = new Anthropic({
+  apiKey: ANTHROPIC_API_KEY ?? undefined,
+});
 
 const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_VERSION = '2023-06-01';

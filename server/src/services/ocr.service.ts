@@ -1,9 +1,7 @@
 import { logger } from '../logger.js';
-import Anthropic from '@anthropic-ai/sdk';
+import { anthropic } from './anthropic.client.js';
 import { z } from 'zod';
 import type { OCRResult, VehicleData, DriverData, InsuranceData } from '../../../shared/types';
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // ─────────────────────────────────────────────────────────────
 // Prompt système — expert mondial documents véhicules & assurance

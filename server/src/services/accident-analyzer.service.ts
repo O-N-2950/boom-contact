@@ -2,11 +2,9 @@
 // Analyse IA du témoignage vocal → scénario d'accident structuré
 // Claude Sonnet — rapide, précis, multilingue
 
-import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
 import { logger } from '../logger.js';
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+import { anthropic } from './anthropic.client.js';
 
 // ── Types scène ───────────────────────────────────────────────
 export type ScenarioType =
