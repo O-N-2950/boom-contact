@@ -2,7 +2,6 @@ import { z } from 'zod';
 import type { Context } from '../middleware/context.js';
 import { router, adminProcedure, TRPCError } from './trpc.js';
 import { adminStatsOutput } from './output-schemas.js';
-import { generateDailyPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
@@ -229,6 +228,8 @@ export const adminFixOwnerEmails = adminProcedure
 
 // ── MARKETING ROUTER ───────────────────────────────────────────
 
+// Marketing router — social-generator module removed (dead code).
+// Keeping router stub so existing admin references don't break.
 export const marketingRouter = router({
 
   posts: adminProcedure
@@ -246,28 +247,27 @@ export const marketingRouter = router({
   generate: adminProcedure
     .input(z.object({ count: z.number().min(1).max(8).default(4) }))
     .mutation(async () => {
-      const generated = await generateDailyPosts(4);
-      return { generated };
+      throw new TRPCError({ code: 'NOT_IMPLEMENTED', message: 'Social generator module has been removed.' });
     }),
 
   approve: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      await approvePost(input.id);
+      await db.update(socialPosts).set({ status: 'approved' }).where(eq(socialPosts.id, input.id));
       return { ok: true };
     }),
 
   markPosted: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      await markPosted(input.id);
+      await db.update(socialPosts).set({ status: 'posted' }).where(eq(socialPosts.id, input.id));
       return { ok: true };
     }),
 
   archive: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      await archivePost(input.id);
+      await db.update(socialPosts).set({ status: 'archived' }).where(eq(socialPosts.id, input.id));
       return { ok: true };
     }),
 

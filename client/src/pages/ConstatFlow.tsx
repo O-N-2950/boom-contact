@@ -1,4 +1,23 @@
 import { LocationStep } from '../components/constat/LocationStep';
+import { z } from 'zod';
+
+// ── Zod schema for localStorage validation ─────────────────
+const savedStateSchema = z.object({
+  step: z.string().optional(),
+  sessionId: z.string().nullable().optional(),
+  qrUrl: z.string().optional(),
+  participantData: z.record(z.unknown()).optional(),
+  damagedZones: z.array(z.string()).optional(),
+  photos: z.array(z.unknown()).optional(),
+  sketchImage: z.string().optional(),
+  vehicleCount: z.number().optional(),
+  voiceAnalysis: z.unknown().optional(),
+  voiceTranscript: z.string().optional(),
+  accidentData: z.record(z.unknown()).optional(),
+  vehicleType: z.string().nullable().optional(),
+  vehicleA: z.record(z.unknown()).nullable().optional(),
+  ts: z.number().optional(),
+}).passthrough();
 
 // Mapping catégorie OCR → VehicleType
 // Le permis CH dit "Voiture de tourisme", "Motocycle", "Camion", etc.
@@ -54,13 +73,21 @@ function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const data = JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    const result = savedStateSchema.safeParse(parsed);
+    if (!result.success) {
+      console.warn('ConstatFlow: invalid localStorage data, clearing', result.error.issues);
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    const data = result.data;
     if (data.ts && Date.now() - data.ts > 2 * 60 * 60 * 1000) {
       localStorage.removeItem(STORAGE_KEY);
       return null;
     }
     return data;
   } catch {
+    localStorage.removeItem(STORAGE_KEY);
     return null;
   }
 }
@@ -407,7 +434,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           )}
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
-              style={{ fontSize: 11, opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+              style={{ fontSize: 11, opacity: 0.75, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
               aria-label="Réinitialiser le constat"
             >↺</button>
           )}

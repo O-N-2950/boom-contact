@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
 import type { SupportedLang } from '../i18n';
 import { trpc } from '../trpc';
+import { z } from 'zod';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import { ConstatForm } from '../components/constat/ConstatForm';
 import { VehicleDiagram } from '../components/constat/VehicleDiagram';
@@ -19,11 +20,29 @@ type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | '
 
 const STORAGE_KEY = 'boom_flow_b';
 
+const savedStateBSchema = z.object({
+  sessionId: z.string().optional(),
+  step: z.string().optional(),
+  joined: z.boolean().optional(),
+  participantData: z.record(z.unknown()).optional(),
+  damagedZones: z.array(z.string()).optional(),
+  photos: z.array(z.unknown()).optional(),
+  lang: z.string().optional(),
+  ts: z.number().optional(),
+}).passthrough();
+
 function loadState(sessionId: string) {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const data = JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    const result = savedStateBSchema.safeParse(parsed);
+    if (!result.success) {
+      console.warn('JoinSession: invalid localStorage data, clearing', result.error.issues);
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    const data = result.data;
     // Only restore if same session and less than 2h old
     if (data.sessionId !== sessionId) { localStorage.removeItem(STORAGE_KEY); return null; }
     if (data.ts && Date.now() - data.ts > 2 * 60 * 60 * 1000) {
@@ -32,6 +51,7 @@ function loadState(sessionId: string) {
     }
     return data;
   } catch {
+    localStorage.removeItem(STORAGE_KEY);
     return null;
   }
 }

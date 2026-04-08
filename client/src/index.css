@@ -242,6 +242,31 @@ button, a, [role="button"], [role="checkbox"], input[type="checkbox"], input[typ
   min-width: 44px;
 }
 
+/* Accessibility: focus-visible on interactive SVG elements */
+svg [role="button"]:focus-visible {
+  outline: 2px solid #FF3500;
+  outline-offset: 2px;
+}
+
+/* Accessibility: visible focus for all focusable elements */
+*:focus-visible {
+  outline: 2px solid #FF3500;
+  outline-offset: 2px;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Accessibility: respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -11,6 +11,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
   return (
     <div
       role="tablist"
+      aria-label="Étapes du constat"
       style={{ padding: '10px 16px', borderBottom: '1px solid rgba(240,237,232,0.06)',
       display: 'flex', gap: 3, flexShrink: 0 }}>
       {steps.map((step, i) => {

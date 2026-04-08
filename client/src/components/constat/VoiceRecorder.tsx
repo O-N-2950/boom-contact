@@ -277,7 +277,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
                 {transcript}
               </div>
             )}
-            <div style={{ fontSize: 11, opacity: 0.65, marginTop: 6, textAlign: 'right' }}>
+            <div style={{ fontSize: 11, opacity: 0.75, marginTop: 6, textAlign: 'right' }}>
               Tapez pour modifier · Intégré au PDF du constat
             </div>
           </>

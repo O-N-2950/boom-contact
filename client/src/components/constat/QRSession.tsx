@@ -82,9 +82,9 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
   if (partnerJoined) return (
     <div style={{ padding: 32, textAlign: 'center' }}>
       <div style={{ fontSize: 64, marginBottom: 16, animation: 'bounceIn 0.5s ease' }}>🤝</div>
-      <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--boom)', marginBottom: 8 }}>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--boom)', marginBottom: 8 }}>
         {vehicleCount > 2 ? `${joinedRoles.size} conducteur${joinedRoles.size > 1 ? 's' : ''} ont rejoint !` : "L'autre conducteur a rejoint !"}
-      </h3>
+      </h2>
       <p style={{ fontSize: 14, opacity: 0.75 }}>Connexion établie. Passage au formulaire…</p>
       <style>{`@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}`}</style>
     </div>
@@ -139,7 +139,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
                   {secondPartyType === 'pedestrian' ? '🚶 Piéton impliqué' :
                    secondPartyType === 'object' ? '🏗️ Aucun autre conducteur' : '🧍 Conducteur seul'}
                 </div>
-                <div style={{ fontSize: 11, opacity: 0.65, lineHeight: 1.6, marginBottom: 10 }}>
+                <div style={{ fontSize: 11, opacity: 0.75, lineHeight: 1.6, marginBottom: 10 }}>
                   {secondPartyType === 'pedestrian'
                     ? "Piéton sans téléphone? Continuez seul. Coordonnées saisies dans le formulaire. Appelez le 117 si blessé."
                     : secondPartyType === 'object'

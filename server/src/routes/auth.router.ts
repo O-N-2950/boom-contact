@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError } from './trpc.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword } from '../services/auth.service.js';
@@ -151,7 +152,13 @@ export const authRouter = router({
     .input(z.object({ secret: z.string(), password: z.string().min(8) }))
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
-      if (!expected || input.secret !== expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
+      if (!expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
+      // Timing-safe comparison to prevent timing attacks
+      const inputBuf = Buffer.from(input.secret);
+      const expectedBuf = Buffer.from(expected);
+      if (inputBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(inputBuf, expectedBuf)) {
+        throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
+      }
 
       // Check if an admin already exists — disable endpoint after first setup
       const existingAdmin = await db.query.users.findFirst({ where: eq(users.role, 'admin') });

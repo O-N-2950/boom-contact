@@ -131,14 +131,10 @@ export function CGUModal({ onAccept, onClose }: Props) {
 
           {/* CGU consent (required) */}
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10, cursor: 'pointer' }}>
-            <div onClick={() => setConsentCGU(!consentCGU)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setConsentCGU(!consentCGU); } }} role="checkbox" aria-checked={consentCGU} tabIndex={0} style={{
+            <input type="checkbox" checked={consentCGU} onChange={() => setConsentCGU(!consentCGU)} aria-label="Accepter les conditions générales" required style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
-              border: consentCGU ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
-              background: consentCGU ? 'var(--boom)' : 'transparent',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
-            }}>
-              {consentCGU && <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>✓</span>}
-            </div>
+              accentColor: 'var(--boom)', cursor: 'pointer',
+            }} />
             <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.8 }}>
               {/* Parse the consent string with embedded <cgu> and <privacy> tags */}
               {t('cgu.consent_cgu').split(/(<cgu>.*?<\/cgu>|<privacy>.*?<\/privacy>)/g).map((part, i) => {
@@ -161,15 +157,11 @@ export function CGUModal({ onAccept, onClose }: Props) {
           {/* Marketing consent (optional) — Suisse uniquement */}
           {isSwiss && (
           <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16, cursor: 'pointer' }}>
-            <div onClick={() => setConsentMarketing(!consentMarketing)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setConsentMarketing(!consentMarketing); } }} role="checkbox" aria-checked={consentMarketing} tabIndex={0} style={{
+            <input type="checkbox" checked={consentMarketing} onChange={() => setConsentMarketing(!consentMarketing)} aria-label="Consentement marketing" style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
-              border: consentMarketing ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
-              background: consentMarketing ? '#22c55e' : 'transparent',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
-            }}>
-              {consentMarketing && <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>✓</span>}
-            </div>
-            <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.65 }}>
+              accentColor: '#22c55e', cursor: 'pointer',
+            }} />
+            <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.75 }}>
               {t('cgu.consent_marketing').split(/(<opt>.*?<\/opt>)/g).map((part, i) => {
                 if (part.startsWith('<opt>')) return (
                   <span key={i} style={{ opacity: 0.75 }}>{part.replace(/<\/?opt>/g, '')}</span>

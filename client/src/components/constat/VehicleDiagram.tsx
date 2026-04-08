@@ -27,10 +27,13 @@ function ZoneHit({ zone, selected, hovering, color, onToggle, onHover, onLeave }
   const sw     = selected ? 2.5 : 1.5;
   const common = {
     fill, stroke, strokeWidth: sw,
-    style: { cursor: 'pointer', transition: 'fill 0.1s, stroke 0.1s' } as React.CSSProperties,
+    style: { cursor: 'pointer', transition: 'fill 0.1s, stroke 0.1s', outline: 'none' } as React.CSSProperties,
     role: 'button' as const,
+    tabIndex: 0,
     'aria-label': zone.label, 'aria-pressed': selected,
     onClick: onToggle, onMouseEnter: onHover, onMouseLeave: onLeave,
+    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } },
+    onFocus: onHover, onBlur: onLeave,
     onTouchStart: (e: React.TouchEvent) => { e.preventDefault(); onHover(); },
     onTouchEnd:   (e: React.TouchEvent) => { e.preventDefault(); onToggle(); onLeave(); },
   };
@@ -134,9 +137,9 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
     <div style={{ padding: '20px 16px' }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 14 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
           {diagramTitle}
-        </h3>
+        </h2>
         {/* Vehicle identity badge */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '5px 12px', borderRadius: 20, marginBottom: 4,
@@ -151,6 +154,9 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
             }}/>
           )}
           {isPedestrian && <span style={{ fontSize: 14 }}>🚶</span>}
+          <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', background: roleColor, padding: '1px 6px', borderRadius: 4 }}>
+            {role}
+          </span>
           <span style={{ fontSize: 12, fontWeight: 600, color: roleColor }}>
             {vehicleName}
           </span>
@@ -171,8 +177,9 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
         <svg
           viewBox={`0 0 280 ${vbH}`}
           width="100%"
+          role="img"
           style={{ maxWidth: 300, display: 'block', userSelect: 'none', touchAction: 'none' }}
-          aria-label={`${vehicleName} vue de dessus`}
+          aria-label={`Schéma interactif — ${vehicleName} vue de dessus — Conducteur ${role}`}
         >
           <text x="140" y="8" textAnchor="middle" fontSize="7"
             fill="rgba(255,255,255,0.2)" letterSpacing="2">AVANT ↑</text>

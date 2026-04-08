@@ -163,7 +163,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Vehicle type */}
       <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 12 }}>
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.75, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 12 }}>
           {t('location.vehicle_label')}
         </div>
 
@@ -189,7 +189,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {VEHICLE_GROUPS.map(group => (
               <div key={group.groupKey}>
-                <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
+                <div style={{ fontSize: 9, letterSpacing: 2, opacity: 0.75, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>{t(group.groupKey)}</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                   {group.types.map(v => {
                     const sel = vehicleType === v.id;
@@ -222,7 +222,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Date & Time — masqué pour B (pré-rempli depuis A) */}
       {!isPartyB && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.75, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
             {t('location.datetime_label')}
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -246,7 +246,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Geolocation — masqué pour B */}
       {!isPartyB && (
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+          <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.75, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
             {t('location.geo_label')}
           </div>
 
@@ -311,7 +311,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Injuries */}
       <div style={{ marginBottom: 24 }}>
-        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.65, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
+        <div style={{ fontSize: 11, letterSpacing: 2, opacity: 0.75, textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 10 }}>
           {t('location.injuries_label')}
         </div>
         <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
@@ -375,14 +375,10 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 { val: hospitalized, set: setHospitalized, label: t('location.hospitalized') },
               ].map((item, i) => (
                 <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-                  <div onClick={() => item.set(!item.val)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.set(!item.val); } }} role="checkbox" aria-checked={item.val} tabIndex={0} style={{
+                  <input type="checkbox" checked={item.val} onChange={() => item.set(!item.val)} aria-label={item.label} style={{
                     width: 20, height: 20, borderRadius: 5, flexShrink: 0,
-                    border: item.val ? 'none' : '1.5px solid rgba(255,255,255,0.25)',
-                    background: item.val ? '#ef4444' : 'transparent',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
-                  }}>
-                    {item.val && <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>✓</span>}
-                  </div>
+                    accentColor: '#ef4444', cursor: 'pointer',
+                  }} />
                   <span style={{ fontSize: 13, opacity: 0.8 }}>{item.label}</span>
                 </label>
               ))}
@@ -449,7 +445,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 {t('location.emergency_ambulance', { number: nums.ambulance, label })}
               </a>
             </div>
-            <div style={{ fontSize: 11, opacity: 0.65, textAlign: 'center' }}>
+            <div style={{ fontSize: 11, opacity: 0.75, textAlign: 'center' }}>
               {t('location.emergency_voluntary')}
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { logger } from '../logger.js';
+import { RESEND_API_KEY } from '../config.js';
 /**
  * Email service — boom.contact
  *
@@ -517,7 +518,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
 
 // ── Main send function ────────────────────────────────────────
 export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<EmailResult> {
-  const RESEND_KEY = process.env.RESEND_API_KEY;
+  const RESEND_KEY = RESEND_API_KEY;
 
   if (!RESEND_KEY) {
     logger.warn('RESEND_API_KEY not set — email not sent');
@@ -561,7 +562,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
 
 // ── Magic link email ──────────────────────────────────────────
 export async function sendMagicLink(email: string, magicUrl: string): Promise<void> {
-  const RESEND_KEY = process.env.RESEND_API_KEY;
+  const RESEND_KEY = RESEND_API_KEY;
   if (!RESEND_KEY) { logger.warn('RESEND missing — magic link not sent'); return; }
 
   try {
@@ -592,7 +593,7 @@ export async function sendMagicLink(email: string, magicUrl: string): Promise<vo
 
 // ── Gift credits email ────────────────────────────────────────
 export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: string, credits: number): Promise<void> {
-  const RESEND_KEY = process.env.RESEND_API_KEY;
+  const RESEND_KEY = RESEND_API_KEY;
   if (!RESEND_KEY) { logger.warn('RESEND missing — gift email not sent'); return; }
 
   try {

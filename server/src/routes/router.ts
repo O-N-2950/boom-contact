@@ -366,7 +366,13 @@ export const appRouter = router({
               }
 
             } catch (err) {
-              logger.error('Auto PDF/email failed', { sessionId: input.sessionId, err: String(err) });
+              const errorMsg = err instanceof Error ? err.message : String(err);
+              const errorStack = err instanceof Error ? err.stack : undefined;
+              logger.error('Auto PDF/email failed — requires manual retry', {
+                sessionId: input.sessionId,
+                error: errorMsg,
+                stack: errorStack,
+              });
             }
           });
         }

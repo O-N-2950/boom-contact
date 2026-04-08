@@ -157,12 +157,15 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
       borderRadius: 10, overflow: 'hidden',
     }}>
       {/* Header */}
-      <div
+      <button
         onClick={() => setExpanded(v => !v)}
+        aria-expanded={expanded}
+        aria-label={hasWarnings ? 'Points à vérifier avant de signer' : 'Suggestions de vérification'}
         style={{
-          padding: '11px 14px',
+          width: '100%', padding: '11px 14px', border: 'none',
           background: hasWarnings ? 'rgba(245,158,11,0.08)' : 'rgba(99,102,241,0.06)',
           display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+          color: 'inherit', font: 'inherit',
         }}
       >
         <span style={{ fontSize: 16 }}>{hasWarnings ? '⚠️' : 'ℹ️'}</span>
@@ -171,8 +174,8 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
             ? `${warnings.length} point${warnings.length > 1 ? 's' : ''} à vérifier avant de signer`
             : `${infos.length} suggestion${infos.length > 1 ? 's' : ''}`}
         </span>
-        <span style={{ fontSize: 14, opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
-      </div>
+        <span aria-hidden="true" style={{ fontSize: 14, opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
+      </button>
 
       {/* Détail */}
       {expanded && (

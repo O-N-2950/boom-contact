@@ -143,9 +143,9 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
 
       {/* Section tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid rgba(240,237,232,0.08)', flexShrink: 0 }}>
+      <div role="tablist" aria-label="Sections du formulaire" style={{ display: 'flex', borderBottom: '1px solid rgba(240,237,232,0.08)', flexShrink: 0 }}>
         {sections.map(s => (
-          <button key={s.id} onClick={() => setSection(s.id)} style={{
+          <button key={s.id} role="tab" aria-selected={s.id === section} onClick={() => setSection(s.id)} style={{
             flex: 1, padding: '12px 4px', border: 'none', cursor: 'pointer',
             background: s.id === section ? 'rgba(255,53,0,0.08)' : 'transparent',
             borderBottom: s.id === section ? '2px solid var(--boom)' : '2px solid transparent',
@@ -214,14 +214,14 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
             {ACCIDENT_CIRCUMSTANCES.map(c => {
               const checked = data.circumstances?.includes(c.id);
               return (
-                <button key={c.id} onClick={() => toggleCircumstance(c.id)} style={{
+                <button key={c.id} role="checkbox" aria-checked={!!checked} onClick={() => toggleCircumstance(c.id)} style={{
                   padding: '12px 14px', borderRadius: 8, textAlign: 'left', cursor: 'pointer',
                   border: `1.5px solid ${checked ? 'rgba(255,53,0,0.4)' : 'rgba(240,237,232,0.08)'}`,
                   background: checked ? 'rgba(255,53,0,0.08)' : 'transparent',
                   color: 'var(--text)', fontSize: 13, lineHeight: 1.5,
                   display: 'flex', alignItems: 'flex-start', gap: 10, transition: 'all 0.15s',
                 }}>
-                  <span style={{ fontSize: 16, flexShrink: 0, marginTop: 1 }}>
+                  <span aria-hidden="true" style={{ fontSize: 16, flexShrink: 0, marginTop: 1 }}>
                     {checked ? '✅' : '⬜'}
                   </span>
                   <span>{c.label}</span>
@@ -309,8 +309,8 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
 
             {/* Observations libres section 14 */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</div>
-              <textarea aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
+              <label htmlFor="observations-field" style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</label>
+              <textarea id="observations-field" aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
                 style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
@@ -321,7 +321,9 @@ export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, 
               <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 12 }}>Preneur d'assurance (si différent du conducteur)</div>
               {(['insuranceHolder', 'insuranceHolderAddress'] as const).map(field => (
                 <div key={field} style={{ marginBottom: 10 }}>
+                  <label htmlFor={`ins-${field}`} className="sr-only">{field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}</label>
                   <input
+                    id={`ins-${field}`}
                     placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
                     aria-label={field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}
                     value={(data.insurance as any)?.[field] ?? ''}

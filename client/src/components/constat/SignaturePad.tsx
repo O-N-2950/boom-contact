@@ -126,9 +126,9 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
   return (
     <div style={{ padding: 20 }}>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
-          Signature — Conducteur {role}
-        </h3>
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+          Signature — <span style={{ color: roleColor, fontWeight: 800 }}>Conducteur {role}</span>
+        </h2>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 10 }}>
           {[
             { label: `Conducteur ${role}`, done: signed, isPrimary: true },
@@ -164,7 +164,9 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       >
         <canvas
           ref={canvasRef}
-          aria-label="Zone de signature"
+          role="img"
+          aria-label={`Zone de signature — Conducteur ${role}`}
+          tabIndex={0}
           style={{
             display: 'block',
             touchAction: 'none',
@@ -181,7 +183,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         />
         {isEmpty && !signed && (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-            <span style={{ fontSize: 13, opacity: 0.65, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
+            <span style={{ fontSize: 13, opacity: 0.75, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
           </div>
         )}
         {signed && (
