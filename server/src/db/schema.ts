@@ -155,6 +155,54 @@ export const policeUsers = pgTable('police_users', {
   stationIdx: index('police_users_station_idx').on(t.stationId),
 }));
 
+// ── Police interventions — Module QR complet ─────────────────
+// Données terrain saisies par l'agent lors de l'intervention
+export interface DriverStateRecord {
+  party: 'A' | 'B';
+  apparentState: 'normal' | 'shocked' | 'minor_injury' | 'serious_injury' | 'under_influence';
+  alcoholTestDone: boolean;
+  alcoholResult?: 'negative' | 'positive';
+  alcoholRate?: string;
+  drugTestDone: boolean;
+  drugResult?: 'negative' | 'positive';
+  testRefused: boolean;
+}
+
+export interface ConditionsRecord {
+  weather: string;
+  visibility: string;
+  roadState: string;
+  signage: string;
+  signageDetails?: string;
+  speedLimit?: number;
+}
+
+export interface PolicePhotoRecord {
+  id: string;
+  category: 'overview' | 'tracks' | 'signage' | 'other';
+  base64: string;
+  caption?: string;
+  takenAt: string;
+}
+
+export const policeInterventions = pgTable('police_interventions', {
+  id:                   varchar('id', { length: 30 }).primaryKey(),
+  sessionId:            varchar('session_id', { length: 20 }).notNull(),
+  policeUserId:         varchar('police_user_id', { length: 20 }).notNull().references(() => policeUsers.id),
+  infractions:          jsonb('infractions').$type<InfractionRecord[]>().notNull().default([]),
+  driverStates:         jsonb('driver_states').$type<DriverStateRecord[]>().notNull().default([]),
+  conditions:           jsonb('conditions').$type<ConditionsRecord>(),
+  witnesses:            jsonb('witnesses').$type<WitnessRecord[]>().notNull().default([]),
+  observations:         text('observations'),
+  responsibilityEstimate: varchar('responsibility_estimate', { length: 30 }),
+  policePhotos:         jsonb('police_photos').$type<PolicePhotoRecord[]>().notNull().default([]),
+  createdAt:            timestamp('created_at').notNull().defaultNow(),
+  updatedAt:            timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  sessionIdx: index('police_interventions_session_idx').on(t.sessionId),
+  userIdx:    index('police_interventions_user_idx').on(t.policeUserId),
+}));
+
 // ── Police annotations — Session 7 ───────────────────────────
 // Annotations de l'agent sur une session conducteur
 // Séparées des données conducteurs — jamais visibles côté B2C

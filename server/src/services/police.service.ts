@@ -335,6 +335,115 @@ export async function getAnnotation(sessionId: string, stationId: string) {
   return annotation || null;
 }
 
+// ── Interventions (module QR complet) ────────────────────────
+
+import { policeInterventions, type DriverStateRecord, type ConditionsRecord, type PolicePhotoRecord } from '../db/schema.js';
+
+export interface InterventionData {
+  infractions: { code: string; description: string; party: 'A' | 'B' | 'both' }[];
+  driverStates: DriverStateRecord[];
+  conditions?: ConditionsRecord;
+  witnesses: { name: string; firstName?: string; phone?: string; address?: string; statement?: string }[];
+  observations?: string;
+  responsibilityEstimate?: string;
+  policePhotos?: PolicePhotoRecord[];
+}
+
+export async function getOrCreateIntervention(sessionId: string, policeUserId: string) {
+  const [existing] = await db
+    .select()
+    .from(policeInterventions)
+    .where(and(
+      eq(policeInterventions.sessionId, sessionId),
+      eq(policeInterventions.policeUserId, policeUserId)
+    ))
+    .limit(1);
+
+  if (existing) return existing;
+
+  const id = generateId('pint');
+  const [created] = await db.insert(policeInterventions).values({
+    id,
+    sessionId,
+    policeUserId,
+    infractions: [],
+    driverStates: [],
+    witnesses: [],
+    policePhotos: [],
+  }).returning();
+
+  return created;
+}
+
+export async function saveIntervention(sessionId: string, policeUserId: string, data: InterventionData) {
+  const [existing] = await db
+    .select()
+    .from(policeInterventions)
+    .where(and(
+      eq(policeInterventions.sessionId, sessionId),
+      eq(policeInterventions.policeUserId, policeUserId)
+    ))
+    .limit(1);
+
+  if (existing) {
+    const [updated] = await db.update(policeInterventions)
+      .set({
+        infractions: data.infractions,
+        driverStates: data.driverStates,
+        conditions: data.conditions || null,
+        witnesses: data.witnesses,
+        observations: data.observations || null,
+        responsibilityEstimate: data.responsibilityEstimate || null,
+        policePhotos: data.policePhotos || [],
+        updatedAt: new Date(),
+      })
+      .where(eq(policeInterventions.id, existing.id))
+      .returning();
+    return updated;
+  }
+
+  const id = generateId('pint');
+  const [created] = await db.insert(policeInterventions).values({
+    id,
+    sessionId,
+    policeUserId,
+    infractions: data.infractions,
+    driverStates: data.driverStates,
+    conditions: data.conditions || null,
+    witnesses: data.witnesses,
+    observations: data.observations || null,
+    responsibilityEstimate: data.responsibilityEstimate || null,
+    policePhotos: data.policePhotos || [],
+  }).returning();
+
+  return created;
+}
+
+export async function getIntervention(sessionId: string, policeUserId: string) {
+  const [intervention] = await db
+    .select()
+    .from(policeInterventions)
+    .where(and(
+      eq(policeInterventions.sessionId, sessionId),
+      eq(policeInterventions.policeUserId, policeUserId)
+    ))
+    .limit(1);
+  return intervention || null;
+}
+
+export async function addPolicePhoto(sessionId: string, policeUserId: string, photo: PolicePhotoRecord) {
+  const intervention = await getOrCreateIntervention(sessionId, policeUserId);
+  const currentPhotos = intervention.policePhotos || [];
+  const updatedPhotos = [...currentPhotos, photo];
+
+  const [updated] = await db.update(policeInterventions)
+    .set({ policePhotos: updatedPhotos, updatedAt: new Date() })
+    .where(eq(policeInterventions.id, intervention.id))
+    .returning();
+
+  return updated;
+}
+
 // ── Admin : créer station + agent ────────────────────────────
 
 export async function createPoliceStation(data: {

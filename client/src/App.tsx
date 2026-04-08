@@ -15,8 +15,9 @@ const PoliceLogin     = React.lazy(() => import('./pages/PoliceLogin').then(m =>
 const PoliceDashboard = React.lazy(() => import('./pages/PoliceDashboard').then(m => ({ default: m.PoliceDashboard })));
 const PoliceFlow      = React.lazy(() => import('./pages/PoliceFlow').then(m => ({ default: m.PoliceFlow })));
 const AccountPage     = React.lazy(() => import('./pages/AccountPage').then(m => ({ default: m.AccountPage })));
-const AdminDashboard  = React.lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
-const PrivacyPage     = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const AdminDashboard       = React.lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const PoliceIntervention   = React.lazy(() => import('./pages/PoliceIntervention').then(m => ({ default: m.PoliceIntervention })));
+const PrivacyPage          = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
 const EmergencyNumbers = React.lazy(() => import('./components/EmergencyNumbers').then(m => ({ default: m.EmergencyNumbers })));
 const AuthModal       = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const CGUModal        = React.lazy(() => import('./components/CGUModal').then(m => ({ default: m.CGUModal })));
@@ -32,7 +33,7 @@ function LoadingSpinner() {
   );
 }
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow' | 'police_intervention';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -43,18 +44,35 @@ const CGU_KEY   = 'boom_cgu_accepted';
 
 function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
+  const pathname = window.location.pathname;
   if (params.get('admin') === 'true') return 'admin';
   if (params.get('urgences') === 'true') return 'emergency';
   if (params.get('privacy') === 'true') return 'privacy';
   // Magic link / gift link handled inline after mount
+
+  // Police intervention route: /police/intervention/:sessionId
+  const interventionMatch = pathname.match(/^\/police\/intervention\/([A-Za-z0-9_-]+)/);
+  if (interventionMatch) {
+    const token = localStorage.getItem('boom_police_token');
+    if (token) return 'police_intervention';
+    return 'police_login';
+  }
+
   // Police flow MUST be checked before generic session check
   if (params.get('session') && params.get('role') === 'police') {
     const token = params.get('token') || localStorage.getItem('boom_police_token');
     if (token) return 'police_flow';
   }
-  if (params.get('session'))         return 'join';
+
+  // QR scan detection: if police is authenticated and ?session= is present, go to intervention
+  if (params.get('session')) {
+    const policeToken = localStorage.getItem('boom_police_token');
+    if (policeToken) return 'police_intervention';
+    return 'join';
+  }
+
   if (params.get('pricing') === 'true') return 'pricing';
-  if (params.get('police') === 'true' || window.location.pathname.startsWith('/police')) {
+  if (params.get('police') === 'true' || pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
     return token ? 'police_dashboard' : 'police_login';
   }
@@ -91,6 +109,7 @@ type AppAction =
   | { type: 'LOGOUT' }
   | { type: 'POLICE_LOGIN'; token: string; user: unknown }
   | { type: 'POLICE_VIEW_SESSION'; sessionId: string; token: string }
+  | { type: 'POLICE_INTERVENTION'; sessionId: string }
   | { type: 'CGU_ACCEPT'; email: string };
 
 function appReducer(state: AppState, action: AppAction): AppState {
@@ -117,6 +136,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, policeToken: action.token, policeUser: action.user, view: 'police_dashboard' };
     case 'POLICE_VIEW_SESSION':
       return { ...state, policeSessionId: action.sessionId, policeFlowToken: action.token, view: 'police_flow' };
+    case 'POLICE_INTERVENTION':
+      return { ...state, policeSessionId: action.sessionId, view: 'police_intervention' };
     case 'CGU_ACCEPT':
       return { ...state, userEmail: action.email, showCGU: false };
     default:
@@ -126,6 +147,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
 
 function getInitialAppState(): AppState {
   const params = new URLSearchParams(window.location.search);
+  const pathname = window.location.pathname;
+  // Extract sessionId from /police/intervention/:sessionId or ?session= param
+  const interventionMatch = pathname.match(/^\/police\/intervention\/([A-Za-z0-9_-]+)/);
+  const sessionId = interventionMatch?.[1] || params.get('session') || '';
   return {
     view: getInitialView(),
     routeAnnouncement: '',
@@ -138,7 +163,7 @@ function getInitialAppState(): AppState {
     pendingAction: null,
     policeToken: localStorage.getItem('boom_police_token') || '',
     policeUser: (() => { try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; } })(),
-    policeSessionId: params.get('session') || '',
+    policeSessionId: sessionId,
     policeFlowToken: params.get('token') || localStorage.getItem('boom_police_token') || '',
   };
 }
@@ -238,6 +263,7 @@ export default function App() {
       police_login: 'Connexion police',
       police_dashboard: 'Tableau de bord police',
       police_flow: 'Flux police',
+      police_intervention: 'Intervention police',
     };
     dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: `Navigation vers ${viewLabels[view]}` });
   }, [view]);
@@ -366,7 +392,7 @@ export default function App() {
           token={policeToken}
           user={policeUser as any}
           onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); dispatch({ type: 'SET_VIEW', view: 'landing' }); }}
-          onViewSession={(sessionId) => dispatch({ type: 'POLICE_VIEW_SESSION', sessionId, token: policeToken })}
+          onViewSession={(sessionId) => dispatch({ type: 'POLICE_INTERVENTION', sessionId })}
         />
       )}
 
@@ -375,6 +401,20 @@ export default function App() {
           sessionId={policeSessionId}
           token={policeFlowToken || policeToken}
           agent={policeUser as any}
+          onLogout={() => {
+            localStorage.removeItem('boom_police_token');
+            localStorage.removeItem('boom_police_user');
+            dispatch({ type: 'SET_VIEW', view: 'landing' });
+          }}
+        />
+      )}
+
+      {view === 'police_intervention' && policeUser && policeSessionId && (
+        <PoliceIntervention
+          sessionId={policeSessionId}
+          token={policeToken}
+          agent={policeUser as any}
+          onBack={() => dispatch({ type: 'SET_VIEW', view: 'police_dashboard' })}
           onLogout={() => {
             localStorage.removeItem('boom_police_token');
             localStorage.removeItem('boom_police_user');

@@ -698,6 +698,51 @@ io.on('connection', (socket) => {
     }
   });
 
+  // ── Police join — authenticated agent joins a constat session ──
+  socket.on('police-join-session', async ({ sessionId, policeToken }: { sessionId: string; policeToken: string }) => {
+    if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
+      socket.emit('error', { message: 'Invalid session ID' });
+      return;
+    }
+    if (!policeToken || typeof policeToken !== 'string') {
+      socket.emit('error', { message: 'Police token required' });
+      return;
+    }
+    try {
+      const { verifyPoliceToken } = await import('./services/police.service.js');
+      const payload = verifyPoliceToken(policeToken);
+      const { getSession } = await import('./services/session.service.js');
+      const session = await getSession(sessionId);
+      if (!session) {
+        socket.emit('error', { message: 'Session not found' });
+        return;
+      }
+      socket.join(`session:${sessionId}`);
+      joinedSessions.add(sessionId);
+      // Notify drivers that a police officer has joined
+      socket.to(`session:${sessionId}`).emit('police-joined', {
+        message: 'Un agent de police a rejoint le constat',
+        agentId: payload.userId,
+      });
+      socket.emit('police-join-ok', { sessionId });
+      logger.session('police-socket-join', sessionId, `agent:${payload.userId}`);
+    } catch (e) {
+      logger.error('Socket police-join-session error', { error: String(e) });
+      socket.emit('error', { message: 'Failed to join session as police' });
+    }
+  });
+
+  // ── Police leave — agent leaves a session ─────────────────────
+  socket.on('police-leave-session', ({ sessionId }: { sessionId: string }) => {
+    if (!sessionId || !joinedSessions.has(sessionId)) return;
+    socket.to(`session:${sessionId}`).emit('police-left', {
+      message: "L'agent de police a quitte le constat",
+    });
+    socket.leave(`session:${sessionId}`);
+    joinedSessions.delete(sessionId);
+    logger.session('police-socket-leave', sessionId);
+  });
+
   socket.on('update-data', async (raw: unknown) => {
     // Zod validation on socket update-data payload
     const { z } = await import('zod');

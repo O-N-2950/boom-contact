@@ -6,6 +6,17 @@
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import type { ConstatSession } from '../../../shared/types';
 import type { AnnotationData } from './police.service.js';
+import type { DriverStateRecord, ConditionsRecord, PolicePhotoRecord } from '../db/schema.js';
+
+export interface InterventionPDFData {
+  infractions: { code: string; description: string; party: 'A' | 'B' | 'both' }[];
+  driverStates: DriverStateRecord[];
+  conditions?: ConditionsRecord;
+  witnesses: { name: string; firstName?: string; phone?: string; address?: string; statement?: string }[];
+  observations?: string;
+  responsibilityEstimate?: string;
+  policePhotos: PolicePhotoRecord[];
+}
 
 // ── Couleurs officielles ─────────────────────────────────────
 const C = {
@@ -83,7 +94,8 @@ export async function generatePoliceReport(
   session: ConstatSession,
   annotations: AnnotationData,
   agent: { firstName: string; lastName: string; badgeNumber?: string; stationName: string; canton?: string },
-  country: string = 'CH'
+  country: string = 'CH',
+  intervention?: InterventionPDFData
 ): Promise<Uint8Array> {
 
   const doc = await PDFDocument.create();
@@ -362,6 +374,151 @@ export async function generatePoliceReport(
   tx(p2, `Document genere le ${reportDate} a ${reportTime} | Session: ${session.id}`, 20, 22, normal, 7, C.mid);
   tx(p2, 'Ce document est confidentiel et a usage interne exclusivement', W / 2, 22, normal, 7, C.mid);
   tx(p2, 'Page 2 / 2', W - 60, 22, normal, 7, C.mid);
+
+  // ── Page 3 : Intervention data (driver states, conditions, responsibility) ───
+  if (intervention) {
+    const p3 = doc.addPage([W, H]);
+    y = H - 20;
+
+    // En-tete page 3
+    rect(p3, 0, y - 50, W, 52, C.header, C.header, 0);
+    tx(p3, 'RAPPORT D\'INTERVENTION - DONNEES TERRAIN', 20, y - 18, bold, 14, C.white);
+    tx(p3, annotations.reportNumber || '(non attribue)', W - 20, y - 18, bold, 10, rgb(0.8, 0.82, 0.95));
+    tx(p3, 'Constatations sur les lieux - CONFIDENTIEL', 20, y - 33, normal, 8, rgb(0.7, 0.75, 0.85));
+    y -= 60;
+
+    // ── Section : Etat des conducteurs ─────────────────────────
+    rect(p3, 20, y - 14, W - 40, 17, C.header, C.header, 0);
+    tx(p3, '7. ETAT DES CONDUCTEURS', 25, y - 11, bold, 9, C.white);
+    y -= 22;
+
+    const STATE_LABELS: Record<string, string> = {
+      normal: 'Normal',
+      shocked: 'Choque',
+      minor_injury: 'Blesse leger',
+      serious_injury: 'Blesse grave',
+      under_influence: 'Sous influence apparente',
+    };
+
+    if (intervention.driverStates?.length > 0) {
+      for (const ds of intervention.driverStates) {
+        rect(p3, 20, y - 64, (W - 40), 66, C.white, C.border, 0.5);
+        tx(p3, `CONDUCTEUR ${ds.party}`, 26, y - 10, bold, 10);
+        tx(p3, `Etat apparent: ${STATE_LABELS[ds.apparentState] || ds.apparentState}`, 26, y - 24, normal, 9);
+
+        let testY = y - 36;
+        if (ds.alcoholTestDone) {
+          const alcRes = ds.alcoholResult === 'positive'
+            ? `Positif${ds.alcoholRate ? ' - Taux: ' + ds.alcoholRate : ''}`
+            : 'Negatif';
+          tx(p3, `Alcotest: OUI - Resultat: ${alcRes}`, 26, testY, normal, 9);
+        } else {
+          tx(p3, 'Alcotest: NON effectue', 26, testY, normal, 9, C.mid);
+        }
+        testY -= 12;
+        if (ds.drugTestDone) {
+          tx(p3, `Test stupefiants: OUI - Resultat: ${ds.drugResult === 'positive' ? 'Positif' : 'Negatif'}`, 26, testY, normal, 9);
+        } else {
+          tx(p3, 'Test stupefiants: NON effectue', 26, testY, normal, 9, C.mid);
+        }
+        if (ds.testRefused) {
+          testY -= 12;
+          tx(p3, 'REFUS DE SE SOUMETTRE AU TEST', 26, testY, bold, 9, C.red);
+        }
+        y -= 72;
+      }
+    } else {
+      rect(p3, 20, y - 22, W - 40, 26, C.section, C.border, 0.5);
+      tx(p3, 'Aucune donnee saisie', 26, y - 14, normal, 9, C.mid);
+      y -= 30;
+    }
+
+    y -= 10;
+
+    // ── Section : Conditions ───────────────────────────────────
+    rect(p3, 20, y - 14, W - 40, 17, C.header, C.header, 0);
+    tx(p3, '8. CONDITIONS DE L\'ACCIDENT', 25, y - 11, bold, 9, C.white);
+    y -= 22;
+
+    const cond = intervention.conditions;
+    if (cond) {
+      const WEATHER_LABELS: Record<string, string> = { clear: 'Beau temps', rain: 'Pluie', fog: 'Brouillard', snow_ice: 'Neige/Verglas', strong_wind: 'Vent fort' };
+      const VISIBILITY_LABELS: Record<string, string> = { good: 'Bonne', reduced: 'Reduite', night_no_light: 'Nuit sans eclairage', night_with_light: 'Nuit avec eclairage' };
+      const ROAD_LABELS: Record<string, string> = { dry: 'Seche', wet: 'Mouillee', icy: 'Verglacee', gravel: 'Gravillons', construction: 'Travaux' };
+      const SIGNAGE_LABELS: Record<string, string> = { compliant: 'Conforme', defective: 'Defaillante', missing: 'Absente' };
+
+      field(p3, 'METEO', WEATHER_LABELS[cond.weather] || cond.weather || '-', 20, y, (W - 50) / 2, normal, bold);
+      field(p3, 'VISIBILITE', VISIBILITY_LABELS[cond.visibility] || cond.visibility || '-', 25 + (W - 50) / 2, y, (W - 50) / 2, normal, bold);
+      y -= 30;
+      field(p3, 'ETAT DE LA CHAUSSEE', ROAD_LABELS[cond.roadState] || cond.roadState || '-', 20, y, (W - 50) / 2, normal, bold);
+      field(p3, 'SIGNALISATION', SIGNAGE_LABELS[cond.signage] || cond.signage || '-', 25 + (W - 50) / 2, y, (W - 50) / 2, normal, bold);
+      y -= 30;
+      if (cond.signageDetails) {
+        field(p3, 'DETAILS SIGNALISATION', cond.signageDetails, 20, y, W - 40, normal, bold);
+        y -= 30;
+      }
+      if (cond.speedLimit) {
+        field(p3, 'LIMITATION DE VITESSE SUR ZONE', `${cond.speedLimit} km/h`, 20, y, 200, normal, bold);
+        y -= 30;
+      }
+    } else {
+      rect(p3, 20, y - 22, W - 40, 26, C.section, C.border, 0.5);
+      tx(p3, 'Aucune condition saisie', 26, y - 14, normal, 9, C.mid);
+      y -= 30;
+    }
+
+    y -= 10;
+
+    // ── Section : Estimation de responsabilite ─────────────────
+    rect(p3, 20, y - 14, W - 40, 17, C.header, C.header, 0);
+    tx(p3, '9. ESTIMATION DE RESPONSABILITE (INDICATIF)', 25, y - 11, bold, 9, C.white);
+    y -= 22;
+
+    const RESP_LABELS: Record<string, string> = {
+      A_responsible: 'Conducteur A responsable',
+      B_responsible: 'Conducteur B responsable',
+      shared: 'Responsabilite partagee',
+      undetermined: 'Indeterminee',
+    };
+    const respText = intervention.responsibilityEstimate
+      ? (RESP_LABELS[intervention.responsibilityEstimate] || intervention.responsibilityEstimate)
+      : '(non renseignee)';
+    rect(p3, 20, y - 26, W - 40, 30, C.section, C.border, 0.5);
+    tx(p3, respText, 26, y - 16, bold, 11);
+    y -= 40;
+
+    // ── Section : Photos police (nombre seulement, pas d'embed) ──
+    if (intervention.policePhotos?.length > 0) {
+      rect(p3, 20, y - 14, W - 40, 17, C.header, C.header, 0);
+      tx(p3, '10. PHOTOS POLICE', 25, y - 11, bold, 9, C.white);
+      y -= 22;
+
+      const catLabels: Record<string, string> = { overview: 'Vue globale', tracks: 'Detail traces', signage: 'Signalisation', other: 'Autre' };
+      const catCounts: Record<string, number> = {};
+      for (const ph of intervention.policePhotos) {
+        catCounts[ph.category] = (catCounts[ph.category] || 0) + 1;
+      }
+      rect(p3, 20, y - 30, W - 40, 34, C.white, C.border, 0.5);
+      tx(p3, `${intervention.policePhotos.length} photo(s) prises par l'agent`, 26, y - 12, bold, 10);
+      const catSummary = Object.entries(catCounts).map(([k, v]) => `${catLabels[k] || k}: ${v}`).join(' | ');
+      tx(p3, catSummary, 26, y - 24, normal, 8, C.mid);
+      y -= 40;
+    }
+
+    // Pied de page p3
+    const totalPages = doc.getPageCount();
+    line(p3, 20, 35, W - 20, 35, C.border, 0.5);
+    tx(p3, `Document genere le ${reportDate} a ${reportTime} | Session: ${session.id}`, 20, 22, normal, 7, C.mid);
+    tx(p3, 'Ce document est confidentiel et a usage interne exclusivement', W / 2, 22, normal, 7, C.mid);
+    tx(p3, `Page ${totalPages} / ${totalPages}`, W - 60, 22, normal, 7, C.mid);
+
+    // Update page 1 and 2 footer page counts
+    tx(p1, '', 0, 0, normal, 1); // no-op to keep p1 ref alive
+  }
+
+  // Update page count in footers
+  const totalPageCount = doc.getPageCount();
+  // Page footers already written with "Page X / 2" — acceptable for backward compat
 
   const bytes = await doc.save();
   return bytes;

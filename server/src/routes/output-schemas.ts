@@ -384,6 +384,30 @@ export const paymentCreditsOutput = z.object({ credits: z.number() });
 export const paymentUseCreditOutput = okOutput;
 export const userSaveConsentOutput = okOutput;
 
+// ── police intervention outputs ─────────────────────────────
+export const policeGetInterventionOutput = z.object({
+  id: z.string().optional(),
+  sessionId: z.string().optional(),
+  policeUserId: z.string().optional(),
+  infractions: z.array(z.unknown()).optional(),
+  driverStates: z.array(z.unknown()).optional(),
+  conditions: z.unknown().nullable().optional(),
+  witnesses: z.array(z.unknown()).optional(),
+  observations: z.string().nullable().optional(),
+  responsibilityEstimate: z.string().nullable().optional(),
+  policePhotos: z.array(z.unknown()).optional(),
+}).passthrough().nullable();
+
+export const policeSaveInterventionOutput = z.object({
+  ok: z.boolean(),
+  id: z.string(),
+});
+
+export const policeAddPhotoOutput = z.object({
+  ok: z.boolean(),
+  photoCount: z.number(),
+});
+
 // ── police misc outputs ─────────────────────────────────────
 export const policeGetAnnotationOutput = z.object({
   id: z.string().optional(),
