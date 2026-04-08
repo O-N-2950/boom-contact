@@ -14,3 +14,8 @@ const client = postgres(process.env.DATABASE_URL, {
 
 export const db = drizzle(client, { schema });
 export { schema };
+
+/** Close the PostgreSQL connection pool (for graceful shutdown) */
+export async function closeDbPool(): Promise<void> {
+  await client.end({ timeout: 5 });
+}

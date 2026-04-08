@@ -60,8 +60,8 @@ async function setupSecurity() {
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", (req: any, res: any) => `'nonce-${res.locals.cspNonce}'`, 'https://js.stripe.com', 'https://www.googletagmanager.com'],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          fontSrc: ["'self'"],
           imgSrc: ["'self'", 'data:', 'blob:', 'https://tile.openstreetmap.org', 'https://*.tile.openstreetmap.org',
                    'https://a.tile.openstreetmap.org', 'https://b.tile.openstreetmap.org', 'https://c.tile.openstreetmap.org',
                    'https://server.arcgisonline.com', 'https://api.qrserver.com'],
@@ -483,6 +483,33 @@ app.post('/webhook/stripe',
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routes/router.js';
 import { createContext } from './middleware/context.js';
+import crypto from 'crypto';
+
+// ── ETag middleware for tRPC GET queries ─────────────────────
+// Calculates a hash of the JSON response body and returns 304 if unchanged.
+// Targets frequent polling queries like session.get, police.getSessions.
+app.use('/trpc', (req, res, next) => {
+  // Only apply ETag to GET queries (tRPC queries)
+  if (req.method !== 'GET') return next();
+
+  const originalJson = res.json.bind(res);
+  res.json = function (body: unknown) {
+    const bodyStr = JSON.stringify(body);
+    const hash = crypto.createHash('md5').update(bodyStr).digest('hex');
+    const etag = `"${hash}"`;
+    res.setHeader('ETag', etag);
+    res.setHeader('Cache-Control', 'no-cache'); // Allow conditional requests
+
+    const ifNoneMatch = req.headers['if-none-match'];
+    if (ifNoneMatch === etag) {
+      res.status(304).end();
+      return res;
+    }
+
+    return originalJson(body);
+  };
+  next();
+});
 
 app.use('/trpc', createExpressMiddleware({
   router: appRouter,
@@ -550,8 +577,46 @@ app.get('/sitemap.xml', (_req, res) => {
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
+  const assetsPath = path.join(distPath, 'assets');
+
+  // Read index.html ONCE at startup (avoid readFileSync per request)
+  const fs = await import('fs');
+  const indexHtmlTemplate = fs.readFileSync(path.join(distPath, 'index.html'), 'utf-8');
+
+  // ── Brotli pre-compressed asset middleware ──────────────────
+  // Serves .br files when client supports Brotli (Accept-Encoding: br)
+  app.use('/assets', (req, res, next) => {
+    const acceptEncoding = req.headers['accept-encoding'] || '';
+    if (acceptEncoding.includes('br')) {
+      const brPath = path.join(assetsPath, req.path + '.br');
+      try {
+        fs.accessSync(brPath, fs.constants.R_OK);
+        // Set correct content-type based on original extension
+        const ext = path.extname(req.path);
+        const mimeTypes: Record<string, string> = {
+          '.js': 'application/javascript',
+          '.css': 'text/css',
+          '.svg': 'image/svg+xml',
+          '.json': 'application/json',
+          '.html': 'text/html',
+          '.xml': 'application/xml',
+          '.wasm': 'application/wasm',
+        };
+        if (mimeTypes[ext]) res.setHeader('Content-Type', mimeTypes[ext]);
+        res.setHeader('Content-Encoding', 'br');
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.setHeader('Vary', 'Accept-Encoding');
+        fs.createReadStream(brPath).pipe(res);
+        return;
+      } catch {
+        // .br not found — fall through to uncompressed
+      }
+    }
+    next();
+  });
+
   // Static assets (JS, CSS, images) — cache for 1 year (Vite adds content hash)
-  app.use('/assets', express.static(path.join(distPath, 'assets'), {
+  app.use('/assets', express.static(assetsPath, {
     maxAge: '1y',
     immutable: true,
   }));
@@ -565,14 +630,11 @@ if (process.env.NODE_ENV === 'production') {
       }
     },
   }));
+  // SPA wildcard — inject CSP nonce from in-memory template
   app.get('*', (_req, res) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     const nonce = res.locals.cspNonce || '';
-    const fs = require('fs');
-    const htmlPath = path.join(distPath, 'index.html');
-    let html = fs.readFileSync(htmlPath, 'utf-8');
-    // Inject nonce into all <script> tags
-    html = html.replace(/<script/g, `<script nonce="${nonce}"`);
+    const html = indexHtmlTemplate.replace(/<script/g, `<script nonce="${nonce}"`);
     res.type('html').send(html);
   });
 }
@@ -901,12 +963,20 @@ async function start() {
 }
 
 // ── Graceful shutdown ────────────────────────────────────────
-function gracefulShutdown(signal: string) {
+async function gracefulShutdown(signal: string) {
   logger.info(`${signal} received — shutting down gracefully...`);
   httpServer.close(() => {
     logger.info('HTTP server closed');
-    io.close(() => {
+    io.close(async () => {
       logger.info('Socket.io closed');
+      // Close PostgreSQL connection pool
+      try {
+        const { closeDbPool } = await import('./db/index.js');
+        await closeDbPool();
+        logger.info('PostgreSQL pool closed');
+      } catch (e) {
+        logger.warn('DB pool close error (non-fatal)', { error: String(e) });
+      }
       process.exit(0);
     });
   });

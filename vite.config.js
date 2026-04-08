@@ -2,11 +2,50 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createBrotliCompress, constants as zlibConstants } from 'zlib';
+import { createReadStream, createWriteStream, statSync, readdirSync } from 'fs';
+import { pipeline } from 'stream/promises';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+/**
+ * Vite plugin: pre-compress assets with Brotli (.br) at build time.
+ * Express will serve these pre-compressed files when the client supports Brotli.
+ */
+function brotliCompressPlugin() {
+  return {
+    name: 'vite-plugin-brotli',
+    apply: 'build',
+    enforce: 'post',
+    async closeBundle() {
+      const distDir = path.resolve(__dirname, 'dist/client/assets');
+      try {
+        const files = readdirSync(distDir);
+        const compressible = files.filter(f => /\.(js|css|svg|json|html|xml|txt|wasm)$/.test(f));
+        await Promise.all(compressible.map(async (file) => {
+          const filePath = path.join(distDir, file);
+          const brPath = filePath + '.br';
+          const stat = statSync(filePath);
+          // Skip small files (<1KB)
+          if (stat.size < 1024) return;
+          const brotli = createBrotliCompress({
+            params: {
+              [zlibConstants.BROTLI_PARAM_QUALITY]: 11,
+              [zlibConstants.BROTLI_PARAM_SIZE_HINT]: stat.size,
+            },
+          });
+          await pipeline(createReadStream(filePath), brotli, createWriteStream(brPath));
+        }));
+        console.log(`\n🗜️  Brotli: compressed ${compressible.length} assets in dist/client/assets/`);
+      } catch (e) {
+        console.warn('Brotli compression skipped:', e.message);
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), brotliCompressPlugin()],
   root: 'client',
   resolve: {
     alias: { '@': path.resolve(__dirname, 'client/src') }

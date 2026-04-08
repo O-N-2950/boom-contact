@@ -1,6 +1,9 @@
 /**
  * Zod output schemas for critical tRPC endpoints.
  * Ensures API contract validation on responses.
+ *
+ * IMPORTANT: No .passthrough() — every returned field must be explicitly declared.
+ * This prevents accidental data leakage when new DB columns are added.
  */
 import { z } from 'zod';
 
@@ -71,12 +74,15 @@ const accidentDataSchema = z.object({
     direction: z.string().optional(),
   }).optional(),
   vehicleCount: z.number().optional(),
-  partyBStatus: z.object({
-    status: z.string().optional(),
-    reason: z.string().optional(),
-    description: z.string().optional(),
-    type: z.string().optional(),
-  }).optional(),
+  partyBStatus: z.union([
+    z.object({
+      status: z.string().optional(),
+      reason: z.string().optional(),
+      description: z.string().optional(),
+      type: z.string().optional(),
+    }),
+    z.string(),
+  ]).optional(),
   photos: z.array(z.object({
     id: z.string(),
     category: z.string(),
@@ -84,7 +90,17 @@ const accidentDataSchema = z.object({
     caption: z.string().optional(),
     takenAt: z.string(),
   })).optional(),
-}).passthrough();
+  injuryDetails: z.object({
+    hasInjuries: z.boolean(),
+    description: z.string().optional(),
+    ambulance: z.boolean().optional(),
+    hospitalized: z.boolean().optional(),
+    selfReported: z.string().optional(),
+    severity: z.enum(['minor', 'moderate', 'serious']).optional(),
+  }).optional(),
+  thirdPartyDamage: z.boolean().optional(),
+  insurerB: z.string().optional(),
+});
 
 // ── auth.me ──────────────────────────────────────────────────
 export const authMeOutput = z.object({
@@ -139,17 +155,17 @@ const participantSchema = z.object({
   damagedZones: z.array(z.string()).optional(),
   circumstances: z.array(z.string()).optional(),
   signature: z.string().optional(),
-  signedAt: z.unknown().optional(),
+  signedAt: z.union([z.string(), z.date(), z.null()]).optional(),
   language: z.string().optional(),
   isPedestrian: z.boolean().optional(),
   name: z.string().optional(),
-}).passthrough().optional();
+}).optional();
 
 export const sessionGetOutput = z.object({
   id: z.string(),
   status: z.string(),
-  createdAt: z.unknown(),
-  expiresAt: z.unknown(),
+  createdAt: z.union([z.string(), z.date()]),
+  expiresAt: z.union([z.string(), z.date()]),
   accident: accidentDataSchema,
   participantA: participantSchema,
   participantB: participantSchema,
@@ -158,7 +174,7 @@ export const sessionGetOutput = z.object({
   participantE: participantSchema,
   vehicleCount: z.number().optional(),
   pdfUrl: z.string().optional(),
-}).passthrough();
+});
 
 // ── session.join ─────────────────────────────────────────────
 export const sessionJoinOutput = sessionGetOutput;
@@ -207,10 +223,10 @@ export const policeLoginOutput = z.object({
 const dashboardSessionSchema = z.object({
   id: z.string(),
   status: z.string(),
-  createdAt: z.unknown(),
+  createdAt: z.union([z.string(), z.date()]),
   ownerEmail: z.string().nullable().optional(),
   vehicleCount: z.number().nullable().optional(),
-}).passthrough();
+});
 
 export const policeDashboardOutput = z.object({
   sessions: z.array(dashboardSessionSchema),
@@ -233,8 +249,8 @@ const vehicleSchema = z.object({
   category: z.string().nullable().optional(),
   licenseData: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).nullable().optional(),
   insuranceData: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).nullable().optional(),
-  createdAt: z.unknown(),
-  updatedAt: z.unknown(),
+  createdAt: z.union([z.string(), z.date()]),
+  updatedAt: z.union([z.string(), z.date()]),
 });
 
 export const vehicleListOutput = z.array(vehicleSchema);
@@ -260,17 +276,28 @@ export const policeJoinSessionOutput = z.object({
 export const sessionHistoryOutput = z.array(z.object({
   id: z.string(),
   status: z.string(),
-  createdAt: z.unknown(),
+  createdAt: z.union([z.string(), z.date()]),
   ownerEmail: z.string().nullable().optional(),
-}).passthrough());
+}));
 
 // ── ocr.scan ────────────────────────────────────────────────
 export const ocrScanOutput = z.object({
   documentType: z.string().optional(),
+  type: z.string().optional(),
+  confidence: z.number().optional(),
+  country: z.string().optional(),
+  language: z.string().optional(),
   vehicle: vehicleDataSchema,
   driver: driverDataSchema,
   insurance: insuranceDataSchema,
-}).passthrough();
+  lowConfidenceFields: z.array(z.object({
+    field: z.string(),
+    value: z.string(),
+    confidence: z.number(),
+  })).optional(),
+  warnings: z.array(z.string()).optional(),
+  rawText: z.string().optional(),
+});
 
 // ── ocr.batchScan ───────────────────────────────────────────
 export const ocrBatchScanOutput = z.array(ocrScanOutput);
@@ -280,7 +307,7 @@ export const ocrScanPairOutput = z.object({
   vehicle: vehicleDataSchema,
   driver: driverDataSchema,
   insurance: insuranceDataSchema,
-}).passthrough();
+});
 
 // ── email.sendToDriver ──────────────────────────────────────
 export const emailSendToDriverOutput = z.object({
@@ -296,12 +323,31 @@ export const emailBugReportOutput = z.object({
 // ── voice.transcribe ────────────────────────────────────────
 export const voiceTranscribeOutput = z.object({
   text: z.string(),
-}).passthrough();
+  language: z.string().optional(),
+  duration: z.number().optional(),
+});
 
 // ── voice.analyzeAccident ───────────────────────────────────
 export const voiceAnalyzeAccidentOutput = z.object({
-  answers: z.record(z.string()).optional(),
-}).passthrough();
+  answers: z.record(z.string(), z.string()).optional(),
+  scenario: z.string().optional(),
+  vehicleA: z.object({
+    direction: z.string().optional(),
+    impactZone: z.string().optional(),
+    wasMoving: z.boolean().optional(),
+  }).optional(),
+  vehicleB: z.object({
+    direction: z.string().optional(),
+    impactZone: z.string().optional(),
+    wasMoving: z.boolean().optional(),
+  }).optional(),
+  confidence: z.number().optional(),
+  fault: z.string().optional(),
+  circumstances: z.array(z.string()).optional(),
+  description: z.string().optional(),
+  language: z.string().optional(),
+  vehicleCount: z.number().optional(),
+});
 
 // ── sketch.render ───────────────────────────────────────────
 export const sketchRenderOutput = z.object({
@@ -312,11 +358,18 @@ export const sketchRenderOutput = z.object({
 
 // ── emergency.insuranceLookup ───────────────────────────────
 const insuranceAssistanceResult = z.object({
+  insurer: z.string().optional(),
   name: z.string().optional(),
+  country: z.string().optional(),
+  assistanceNumber: z.string().optional(),
+  claimsNumber: z.string().optional(),
   phone: z.string().optional(),
   email: z.string().optional(),
   website: z.string().optional(),
-}).passthrough().nullable();
+  note: z.string().optional(),
+  source: z.string().optional(),
+  confidence: z.string().optional(),
+}).nullable();
 
 export const emergencyInsuranceLookupOutput = z.object({
   participantA: insuranceAssistanceResult,
@@ -329,17 +382,29 @@ export const emergencyCountryLookupOutput = z.object({
   ambulance: z.string().optional(),
   fire: z.string().optional(),
   general: z.string().optional(),
+  universal: z.string().optional(),
+  roadside: z.string().optional(),
+  roadsideNote: z.string().optional(),
   countryCode: z.string().optional(),
   countryName: z.string().optional(),
-}).passthrough();
+  source: z.string().optional(),
+  confidence: z.string().optional(),
+});
 
 // ── emergency.singleLookup ─────────────────────────────────
 export const emergencySingleLookupOutput = z.object({
+  insurer: z.string().optional(),
   name: z.string().optional(),
+  country: z.string().optional(),
+  assistanceNumber: z.string().optional(),
+  claimsNumber: z.string().optional(),
   phone: z.string().optional(),
   email: z.string().optional(),
   website: z.string().optional(),
-}).passthrough();
+  note: z.string().optional(),
+  source: z.string().optional(),
+  confidence: z.string().optional(),
+});
 
 // ── auth misc outputs ───────────────────────────────────────
 export const okOutput = z.object({ ok: z.boolean() });
@@ -349,7 +414,7 @@ export const authMagicLinkRequestOutput = okOutput;
 export const authMagicLinkVerifyOutput = z.object({
   ok: z.boolean(),
   token: z.string().optional(),
-}).passthrough();
+});
 
 export const authUpdateProfileOutput = okOutput;
 export const authUpdateEmailOutput = okOutput;
@@ -365,18 +430,23 @@ export const authAdminBootstrapOutput = okOutput;
 
 export const authClaimGiftOutput = z.object({
   ok: z.boolean(),
-}).passthrough();
+  credits: z.number().optional(),
+});
 
 // ── payment misc outputs ────────────────────────────────────
 export const paymentPackagesOutput = z.array(z.object({
   id: z.string(),
   label: z.string(),
   credits: z.number(),
-}).passthrough());
+  priceCHF: z.number().optional(),
+  priceEUR: z.number().optional(),
+  priceUSD: z.number().optional(),
+  popular: z.boolean().optional(),
+}));
 
 export const paymentCurrenciesOutput = z.object({
-  packages: z.record(z.string(), z.unknown()),
-  currencies: z.unknown(),
+  packages: z.record(z.string(), z.record(z.string(), z.number())),
+  currencies: z.array(z.string()),
   countryMap: z.record(z.string(), z.string()),
 });
 
@@ -385,18 +455,55 @@ export const paymentUseCreditOutput = okOutput;
 export const userSaveConsentOutput = okOutput;
 
 // ── police intervention outputs ─────────────────────────────
+const infractionRecord = z.object({
+  code: z.string().optional(),
+  label: z.string().optional(),
+  severity: z.string().optional(),
+  driver: z.string().optional(),
+}).catchall(z.unknown());
+
+const driverStateRecord = z.object({
+  driver: z.string().optional(),
+  state: z.string().optional(),
+  details: z.string().optional(),
+}).catchall(z.unknown());
+
+const conditionsRecord = z.object({
+  weather: z.string().optional(),
+  visibility: z.string().optional(),
+  roadCondition: z.string().optional(),
+  lighting: z.string().optional(),
+}).catchall(z.unknown());
+
+const witnessRecord = z.object({
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  statement: z.string().optional(),
+}).catchall(z.unknown());
+
+const policePhotoRecord = z.object({
+  id: z.string().optional(),
+  base64: z.string().optional(),
+  category: z.string().optional(),
+  caption: z.string().optional(),
+  takenAt: z.string().optional(),
+}).catchall(z.unknown());
+
 export const policeGetInterventionOutput = z.object({
   id: z.string().optional(),
   sessionId: z.string().optional(),
   policeUserId: z.string().optional(),
-  infractions: z.array(z.unknown()).optional(),
-  driverStates: z.array(z.unknown()).optional(),
-  conditions: z.unknown().nullable().optional(),
-  witnesses: z.array(z.unknown()).optional(),
+  infractions: z.array(infractionRecord).optional(),
+  driverStates: z.array(driverStateRecord).optional(),
+  conditions: conditionsRecord.nullable().optional(),
+  witnesses: z.array(witnessRecord).optional(),
   observations: z.string().nullable().optional(),
   responsibilityEstimate: z.string().nullable().optional(),
-  policePhotos: z.array(z.unknown()).optional(),
-}).passthrough().nullable();
+  policePhotos: z.array(policePhotoRecord).optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional(),
+}).nullable();
 
 export const policeSaveInterventionOutput = z.object({
   ok: z.boolean(),
@@ -409,15 +516,26 @@ export const policeAddPhotoOutput = z.object({
 });
 
 // ── police misc outputs ─────────────────────────────────────
+const measureRecord = z.object({
+  code: z.string().optional(),
+  label: z.string().optional(),
+  details: z.string().optional(),
+}).catchall(z.unknown());
+
 export const policeGetAnnotationOutput = z.object({
   id: z.string().optional(),
   sessionId: z.string().optional(),
   reportNumber: z.string().nullable().optional(),
-  infractions: z.array(z.unknown()).optional(),
-  measures: z.array(z.unknown()).optional(),
-  witnesses: z.array(z.unknown()).optional(),
+  infractions: z.array(infractionRecord).optional(),
+  measures: z.array(measureRecord).optional(),
+  witnesses: z.array(witnessRecord).optional(),
   observations: z.string().nullable().optional(),
-}).passthrough().nullable();
+  agentId: z.string().optional(),
+  stationId: z.string().optional(),
+  country: z.string().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+  updatedAt: z.union([z.string(), z.date()]).optional(),
+}).nullable();
 
 export const policeSaveAnnotationOutput = z.object({
   ok: z.boolean(),
@@ -435,10 +553,10 @@ export const adminUsersOutput = z.array(z.object({
   email: z.string(),
   role: z.string(),
   credits: z.number(),
-  createdAt: z.unknown(),
-  lastSeenAt: z.unknown().optional(),
+  createdAt: z.union([z.string(), z.date()]),
+  lastSeenAt: z.union([z.string(), z.date(), z.null()]).optional(),
   country: z.string().nullable().optional(),
-}).passthrough());
+}));
 
 export const adminDeleteUserOutput = z.object({
   ok: z.boolean(),
@@ -456,7 +574,7 @@ export const adminListUsersOutput = z.array(z.object({
   email: z.string(),
   role: z.string(),
   credits: z.number(),
-  createdAt: z.unknown(),
+  createdAt: z.union([z.string(), z.date()]),
 }));
 
 export const adminCleanupSessionsOutput = z.object({
@@ -474,9 +592,16 @@ export const marketingPostsOutput = z.object({
   posts: z.array(z.object({
     id: z.number(),
     platform: z.string(),
+    pillar: z.string().optional(),
+    text: z.string().optional(),
     status: z.string(),
     hashtags: z.array(z.string()),
-  }).passthrough()),
+    staging: z.string().nullable().optional(),
+    postedAt: z.union([z.string(), z.date(), z.null()]).optional(),
+    scheduledFor: z.union([z.string(), z.date(), z.null()]).optional(),
+    generatedBy: z.string().nullable().optional(),
+    createdAt: z.union([z.string(), z.date()]).optional(),
+  })),
 });
 
 export const marketingActionOutput = okOutput;
@@ -490,28 +615,37 @@ export const policeGetFullSessionOutput = z.object({
     canton: z.string().optional(),
     country: z.string().optional(),
     name: z.string().optional(),
-  }).passthrough(),
+  }),
 });
 
 // ── admin.stats — large analytics payload ────────────────────
 const recentSessionSchema = z.object({
   id: z.string(),
   status: z.string(),
-  createdAt: z.unknown(),
-}).passthrough();
+  createdAt: z.union([z.string(), z.date()]),
+});
 
 const revenueEntrySchema = z.object({
   id: z.string().optional(),
+  userEmail: z.string().optional(),
+  packageId: z.string().optional(),
+  packageLabel: z.string().optional(),
   amount: z.number().optional(),
+  amountCents: z.number().optional(),
   currency: z.string().optional(),
-  createdAt: z.unknown().optional(),
-}).passthrough();
+  status: z.string().optional(),
+  paidAt: z.union([z.string(), z.date(), z.null()]).optional(),
+  creditsGranted: z.number().optional(),
+  createdAt: z.union([z.string(), z.date()]).optional(),
+});
 
 const packageBreakdownSchema = z.object({
-  packageId: z.string().optional(),
-  count: z.number().optional(),
+  packageId: z.string().nullable().optional(),
+  count: z.union([z.number(), z.string()]).optional(),
+  revenue: z.union([z.number(), z.string(), z.null()]).optional(),
+  credits: z.union([z.number(), z.string(), z.null()]).optional(),
   totalCents: z.number().optional(),
-}).passthrough();
+});
 
 export const adminStatsOutput = z.object({
   sessions: z.object({
