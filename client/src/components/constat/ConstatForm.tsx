@@ -84,7 +84,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
   const update = (section: keyof ParticipantData, field: string, value: string) => {
     setData(prev => ({
       ...prev,
-      [section]: { ...(prev[section] as any ?? {}), [field]: value },
+      [section]: { ...((prev[section] as Record<string, unknown>) ?? {}), [field]: value },
     }));
   };
 
@@ -110,9 +110,8 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       type === 'email'  ? 'email' : 'text';
     const fieldId = `${sec}-${field}`;
     return (
-    <div style={{ marginBottom: 14 }}>
-      <label htmlFor={fieldId} style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.7,
-        textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 6 }}>
+    <div className="mb-3.5">
+      <label htmlFor={fieldId} className="block text-[11px] opacity-70 uppercase mb-1.5 tracking-[1.5px]" style={{ fontFamily: 'monospace' }}>
         {label}{required && <span className="ml-1" style={{ color: 'var(--boom)' }}>*</span>}
       </label>
       <input
@@ -122,18 +121,12 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize={type === 'email' || type === 'number' || field === 'licensePlate' || field === 'policyNumber' || field === 'vin' ? 'none' : 'words'}
-        value={(data[sec] as any)?.[field] ?? ''}
+        value={(data[sec] as Record<string, unknown>)?.[field] ?? ''}
         onChange={e => update(sec, field, e.target.value)}
         placeholder={placeholder}
         aria-label={label}
         aria-required={required}
-        style={{
-          width: '100%', padding: '12px 14px', borderRadius: 8,
-          border: `1.5px solid ${(data[sec] as any)?.[field] ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`,
-          background: 'rgba(255,255,255,0.04)', color: 'var(--text)',
-          fontSize: 14, fontFamily: 'inherit',
-          transition: 'border-color 0.2s',
-        }}
+        className="w-full rounded-lg text-sm px-3.5 py-3" style={{ border: `1.5px solid ${(data[sec] as Record<string, unknown>)?.[field] ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`, background: 'rgba(255,255,255,0.04)', color: 'var(--text)', fontFamily: 'inherit', transition: 'border-color 0.2s' }}
       />
     </div>
     );
@@ -145,15 +138,9 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       {/* Section tabs */}
       <div role="tablist" aria-label="Sections du formulaire" className="flex shrink-0" style={{ borderBottom: '1px solid rgba(240,237,232,0.08)' }}>
         {sections.map(s => (
-          <button key={s.id} id={`form-tab-${s.id}`} role="tab" aria-selected={s.id === section} aria-controls={`form-tabpanel-${s.id}`} onClick={() => setSection(s.id)} style={{
-            flex: 1, padding: '12px 4px', border: 'none', cursor: 'pointer',
-            background: s.id === section ? 'rgba(255,53,0,0.08)' : 'transparent',
-            borderBottom: s.id === section ? '2px solid var(--boom)' : '2px solid transparent',
-            color: s.id === section ? 'var(--boom)' : 'var(--text)',
-            transition: 'all 0.2s', fontSize: 11, fontWeight: 600,
-          }}>
-            <div className="text-lg" style={{ marginBottom: 2 }}>{s.icon}</div>
-            <div className="text-[10px]" style={{ letterSpacing: 1, opacity: s.id === section ? 1 : 0.85 }}>{s.label}</div>
+          <button key={s.id} id={`form-tab-${s.id}`} role="tab" aria-selected={s.id === section} aria-controls={`form-tabpanel-${s.id}`} onClick={() => setSection(s.id)} className="flex-1 border-0 cursor-pointer transition-all duration-200 text-[11px] font-semibold px-1 py-3" style={{ background: s.id === section ? 'rgba(255,53,0,0.08)' : 'transparent', borderBottom: s.id === section ? '2px solid var(--boom)' : '2px solid transparent', color: s.id === section ? 'var(--boom)' : 'var(--text)' }}>
+            <div className="text-lg mb-0.5" >{s.icon}</div>
+            <div className="text-[10px] tracking-[1px]" style={{ opacity: s.id === section ? 1 : 0.85 }}>{s.label}</div>
           </button>
         ))}
       </div>
@@ -207,21 +194,15 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         </>}
 
         {section === 'circumstances' && <>
-          <p className="text-[13px] mb-4 leading-relaxed" style={{ opacity: 0.75 }}>
+          <p className="text-[13px] mb-4 leading-relaxed opacity-75">
             Cochez toutes les cases qui décrivent la situation de votre véhicule <strong>({role})</strong> au moment du choc.
           </p>
           <div className="flex flex-col gap-2">
             {ACCIDENT_CIRCUMSTANCES.map(c => {
               const checked = data.circumstances?.includes(c.id);
               return (
-                <button key={c.id} role="checkbox" aria-checked={!!checked} onClick={() => toggleCircumstance(c.id)} style={{
-                  padding: '12px 14px', borderRadius: 8, textAlign: 'left', cursor: 'pointer',
-                  border: `1.5px solid ${checked ? 'rgba(255,53,0,0.4)' : 'rgba(240,237,232,0.08)'}`,
-                  background: checked ? 'rgba(255,53,0,0.08)' : 'transparent',
-                  color: 'var(--text)', fontSize: 13, lineHeight: 1.5,
-                  display: 'flex', alignItems: 'flex-start', gap: 10, transition: 'all 0.15s',
-                }}>
-                  <span aria-hidden="true" className="text-base shrink-0" style={{ marginTop: 1 }}>
+                <button key={c.id} role="checkbox" aria-checked={!!checked} onClick={() => toggleCircumstance(c.id)} className="rounded-lg text-left cursor-pointer text-[13px] leading-normal flex items-start gap-2.5 px-3.5 py-3" style={{ border: `1.5px solid ${checked ? 'rgba(255,53,0,0.4)' : 'rgba(240,237,232,0.08)'}`, background: checked ? 'rgba(255,53,0,0.08)' : 'transparent', color: 'var(--text)', transition: 'all 0.15s' }}>
+                  <span aria-hidden="true" className="text-base shrink-0 mt-px" >
                     {checked ? '✅' : '⬜'}
                   </span>
                   <span>{c.label}</span>
@@ -229,46 +210,46 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
               );
             })}
           </div>
-          <div className="mt-4 text-[11px] text-center" style={{ opacity: 0.7 }}>
+          <div className="mt-4 text-[11px] text-center opacity-70" >
             {data.circumstances?.length ?? 0} case{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''} cochée{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''}
           </div>
         </>}
         {section === 'complement' && (
-          <div className="flex flex-col" style={{ gap: 18 }}>
-            <p className="text-[13px] leading-relaxed" style={{ opacity: 0.75 }}>
+          <div className="flex flex-col gap-[18px]" >
+            <p className="text-[13px] leading-relaxed opacity-75">
               Informations complémentaires du constat — sections 11, 13 et 14.
             </p>
 
             {/* Date/heure éditable */}
             <div>
-              <label htmlFor="acc-date" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Date et heure de l'accident</label>
+              <label htmlFor="acc-date" className="text-[11px] uppercase mb-2 block opacity-70 tracking-[1.5px]">Date et heure de l'accident</label>
               <div className="flex gap-2">
                 <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
-                  className="flex-1 rounded-lg text-sm" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
+                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
                 <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
                   aria-label="Heure de l'accident"
-                  className="flex-1 rounded-lg text-sm" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
+                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
               </div>
             </div>
 
             {/* Dégâts apparents section 11 */}
             <div>
-              <label htmlFor="visible-damage" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Dégâts apparents (section 11)</label>
+              <label htmlFor="visible-damage" className="text-[11px] uppercase mb-2 block opacity-70 tracking-[1.5px]">Dégâts apparents (section 11)</label>
               <textarea id="visible-damage" value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
                 placeholder="Décrivez les dommages visibles sur votre véhicule..."
                 aria-label="Dégâts apparents"
                 rows={3}
-                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border resize-y px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontFamily: 'inherit' }} />
             </div>
 
             {/* Dégâts matériels à des tiers */}
             <div>
-              <div className="text-[11px] uppercase mb-2" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Dégâts matériels à des tiers (autres que A et B)</div>
+              <div className="text-[11px] uppercase mb-2 opacity-70 tracking-[1.5px]">Dégâts matériels à des tiers (autres que A et B)</div>
               <div className="flex gap-2">
                 {[{ val: false, label: '✅ Non', color: 'rgba(34,197,94,0.6)' }, { val: true, label: '⚠️ Oui', color: 'rgba(255,179,0,0.6)' }].map(opt => (
                   <button key={String(opt.val)} onClick={() => setThirdParty(opt.val)}
-                    className="flex-1 rounded-lg cursor-pointer text-sm font-semibold" style={{ padding: '12px', border: `1.5px solid ${thirdParty === opt.val ? opt.color : 'rgba(240,237,232,0.08)'}`, background: thirdParty === opt.val ? `${opt.color}22` : 'transparent', color: 'var(--text)' }}>
+                    className="flex-1 rounded-lg cursor-pointer text-sm font-semibold p-3"  style={{ border: `1.5px solid ${thirdParty === opt.val ? opt.color : 'rgba(240,237,232,0.08)'}`, background: thirdParty === opt.val ? `${opt.color}22` : 'transparent', color: 'var(--text)' }}>
                     {opt.label}
                   </button>
                 ))}
@@ -277,18 +258,18 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
 
             {/* Témoins */}
             <div>
-              <label htmlFor="witnesses" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Témoins</label>
+              <label htmlFor="witnesses" className="text-[11px] uppercase mb-2 block opacity-70 tracking-[1.5px]">Témoins</label>
               <textarea id="witnesses" value={witnesses} onChange={e => setWitnesses(e.target.value)}
                 placeholder="Nom, prénom, téléphone de chaque témoin..."
                 aria-label="Informations sur les témoins"
                 rows={3}
-                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border resize-y px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontFamily: 'inherit' }} />
             </div>
 
             {/* Déclaration vocale */}
             {sessionId && (
               <div>
-                <div className="text-[11px] uppercase mb-2.5" style={{ letterSpacing: 1.5, opacity: 0.7 }}>
+                <div className="text-[11px] uppercase mb-2.5 opacity-70 tracking-[1.5px]">
                   🎙️ Déclaration vocale (optionnel)
                 </div>
                 <VoiceRecorder
@@ -309,16 +290,16 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
 
             {/* Observations libres section 14 */}
             <div>
-              <label htmlFor="observations-field" className="block text-[11px] uppercase mb-2" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Observations libres — conducteur {role} (section 14)</label>
+              <label htmlFor="observations-field" className="block text-[11px] uppercase mb-2 opacity-70 tracking-[1.5px]">Observations libres — conducteur {role} (section 14)</label>
               <textarea id="observations-field" aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
-                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border resize-y px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontFamily: 'inherit' }} />
             </div>
 
             {/* Preneur d'assurance différent du conducteur */}
-            <div className="rounded-[10px]" style={{ padding: '14px', background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
-              <div className="text-[11px] uppercase mb-3" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Preneur d'assurance (si différent du conducteur)</div>
+            <div className="rounded-[10px] p-3.5"  style={{ background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
+              <div className="text-[11px] uppercase mb-3 opacity-70 tracking-[1.5px]">Preneur d'assurance (si différent du conducteur)</div>
               {(['insuranceHolder', 'insuranceHolderAddress'] as const).map(field => (
                 <div key={field} className="mb-2.5">
                   <label htmlFor={`ins-${field}`} className="sr-only">{field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}</label>
@@ -326,9 +307,9 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
                     id={`ins-${field}`}
                     placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
                     aria-label={field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}
-                    value={(data.insurance as any)?.[field] ?? ''}
+                    value={(data.insurance as Record<string, unknown>)?.[field] ?? ''}
                     onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
-                    className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }}
+                    className="w-full rounded-lg text-sm box-border px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }}
                   />
                 </div>
               ))}
@@ -338,18 +319,14 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       </div>
 
       {/* Save button */}
-      <div className="shrink-0" style={{ padding: '14px 20px', borderTop: '1px solid rgba(240,237,232,0.06)' }}>
+      <div className="shrink-0 px-5 py-3.5" style={{ borderTop: '1px solid rgba(240,237,232,0.06)' }}>
         <button onClick={() => onSave(data, {
           date: accDate || undefined,
           time: accTime || undefined,
           witnesses: witnesses || undefined,
           thirdPartyDamage: thirdParty !== null ? thirdParty : undefined,
           description: observations || undefined,
-        })} style={{
-          width: '100%', padding: '16px', borderRadius: 10, border: 'none',
-          background: 'var(--boom)', color: '#fff', cursor: 'pointer',
-          fontSize: 15, fontWeight: 700,
-        }}>
+        })} className="w-full p-4 rounded-[10px] border-0 text-white cursor-pointer font-bold text-[15px]" style={{ background: 'var(--boom)' }}>
           Enregistrer et continuer →
         </button>
       </div>

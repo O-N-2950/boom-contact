@@ -61,7 +61,7 @@ function RadioGroup({ name, options, value, onChange, label }: {
             className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-colors min-h-[44px] text-sm ${
               value === opt.value
                 ? 'border-blue-500 bg-blue-500/10 text-white'
-                : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/8'
+                : 'border-white/25 bg-white/5 text-white/70 hover:bg-white/8'
             }`}
           >
             <input
@@ -134,7 +134,7 @@ export function ConditionsForm({ conditions, onChange }: Props) {
             value={conditions.signageDetails || ''}
             onChange={e => update('signageDetails', e.target.value)}
             placeholder="Ex: panneau stop manquant au croisement..."
-            className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+            className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
           />
         </div>
       ) : null}
@@ -151,7 +151,7 @@ export function ConditionsForm({ conditions, onChange }: Props) {
           value={conditions.speedLimit ?? ''}
           onChange={e => update('speedLimit', e.target.value ? Number(e.target.value) : undefined)}
           placeholder="Ex: 50"
-          className="w-32 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+          className="w-32 bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
         />
       </div>
     </section>

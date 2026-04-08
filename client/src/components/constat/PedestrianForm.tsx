@@ -155,48 +155,36 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } }}
       role="button"
       tabIndex={0}
-      style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '13px 16px', cursor: 'pointer', userSelect: 'none',
-        background: open ? 'rgba(255,255,255,0.04)' : 'transparent',
-      }}
+      className="flex items-center justify-between cursor-pointer select-none px-4 py-[13px]" style={{ background: open ? 'rgba(255,255,255,0.04)' : 'transparent' }}
     >
-      <div className="flex items-center" style={{ gap: 9 }}>
-        <span style={{ fontSize: 17 }}>{icon}</span>
+      <div className="flex items-center gap-[9px]" >
+        <span className="text-[17px]">{icon}</span>
         <span className="text-[13px] font-semibold">{title}</span>
         {badge}
         {done && !open && <span className="text-[11px] text-green-500">✓</span>}
       </div>
-      <span style={{
-        fontSize: 18, opacity: 0.7,
-        transform: open ? 'rotate(90deg)' : 'none',
-        transition: 'transform 0.2s', display: 'inline-block',
-      }}>›</span>
+      <span className="text-lg opacity-70 inline-block" style={{ transform: open ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>›</span>
     </div>
   );
 
   return (
-    <div className="mx-auto" style={{ padding: '20px 20px 48px', maxWidth: 480 }}>
+    <div className="mx-auto max-w-[480px] px-5 pt-5 pb-12">
 
       {/* Header */}
-      <div className="text-center" style={{ marginBottom: 22 }}>
-        <div className="mb-2" style={{ fontSize: 42 }}>{hasInjuries ? '🚑' : '🚶'}</div>
+      <div className="text-center mb-[22px]" >
+        <div className="mb-2 text-[42px]">{hasInjuries ? '🚑' : '🚶'}</div>
         <h2 className="text-lg font-extrabold m-0">
           {filledByDriverA ? 'Coordonnées du piéton' : 'Vos coordonnées'}
         </h2>
 
         {hasInjuries ? (
-          <div style={{
-            marginTop: 10, padding: '10px 16px', borderRadius: 10,
-            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.22)',
-            fontSize: 13, color: '#ef4444', lineHeight: 1.4,
-          }}>
+          <div className="mt-2.5 rounded-[10px] text-[13px] px-4 py-2.5 leading-[1.4] text-[#ef4444]" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.22)' }}>
             {filledByDriverA
               ? '🚑 Piéton blessé — seuls le nom et un numéro de contact sont indispensables'
               : '🚑 Prenez le temps qu\'il faut — seuls votre nom et un contact suffisent'}
           </div>
         ) : (
-          <p className="text-[13px]" style={{ opacity: 0.7, marginTop: 6 }}>
+          <p className="text-[13px] opacity-70 mt-1.5" >
             {filledByDriverA
               ? 'Saisissez les infos du piéton ou scannez sa pièce d\'identité'
               : 'Pour recevoir votre copie PDF du constat'}
@@ -205,18 +193,13 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
 
       {/* OCR */}
-      <div style={{
-        padding: '11px 14px', borderRadius: 12, marginBottom: 20,
-        background: ocrDone ? 'rgba(34,197,94,0.07)' : 'rgba(255,53,0,0.05)',
-        border: `1px solid ${ocrDone ? 'rgba(34,197,94,0.25)' : 'rgba(255,53,0,0.15)'}`,
-        display: 'flex', alignItems: 'center', gap: 11,
-      }}>
+      <div className="rounded-xl mb-5 flex items-center gap-[11px] px-3.5 py-[11px]" style={{ background: ocrDone ? 'rgba(34,197,94,0.07)' : 'rgba(255,53,0,0.05)', border: `1px solid ${ocrDone ? 'rgba(34,197,94,0.25)' : 'rgba(255,53,0,0.15)'}` }}>
         <span className="text-[22px] shrink-0">{ocrDone ? '✅' : '📄'}</span>
         <div className="flex-1">
           <div className="text-[13px] font-bold">
             {ocrDone ? 'Document lu' : 'Scanner un document d\'identité'}
           </div>
-          <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 1 }}>
+          <div className="text-[11px] opacity-70 mt-px" >
             {ocrDone ? 'Vérifiez les champs' : 'CI · Passeport · Permis — toutes nationalités'}
           </div>
           {ocrError && <div className="text-[11px] text-red-500 mt-1">⚠️ {ocrError}</div>}
@@ -224,12 +207,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         <button
           onClick={() => fileRef.current?.click()}
           disabled={ocrLoading}
-          style={{
-            padding: '8px 13px', borderRadius: 8, border: 'none', flexShrink: 0,
-            background: ocrDone ? 'rgba(255,255,255,0.08)' : 'var(--boom)',
-            color: ocrDone ? 'rgba(240,237,232,0.45)' : '#fff',
-            fontSize: 12, fontWeight: 700, cursor: 'pointer',
-          }}
+          className="rounded-lg border-0 shrink-0 text-xs font-bold cursor-pointer px-[13px] py-2" style={{ background: ocrDone ? 'rgba(255,255,255,0.08)' : 'var(--boom)', color: ocrDone ? 'rgba(240,237,232,0.45)' : '#fff' }}
         >
           {ocrLoading ? '⏳' : ocrDone ? 'Rescan' : '📷 Photo'}
         </button>
@@ -247,9 +225,9 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
 
       <Field label="TÉLÉPHONE" k="phone" type="tel" placeholder="+41 79 000 00 00" />
 
-      <div style={{ marginBottom: 18 }}>
+      <div className="mb-[18px]">
         <label htmlFor="ped-email" style={lbl}>
-          EMAIL <span style={{ opacity: 0.7 }}>{filledByDriverA ? '' : '(pour recevoir le PDF)'}</span>
+          EMAIL <span className="opacity-70">{filledByDriverA ? '' : '(pour recevoir le PDF)'}</span>
         </label>
         <input
           id="ped-email"
@@ -263,7 +241,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           }}
         />
         {!data.email && (
-          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>
+          <div className="text-[11px] mt-1 opacity-70" >
             Optionnel — sans email, le PDF ne sera pas envoyé automatiquement
           </div>
         )}
@@ -277,7 +255,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           done={!!(data.address || data.city)}
         />
         {showAddress && (
-          <div style={{ padding: '4px 16px 14px' }}>
+          <div className="px-4 pt-1 pb-3.5">
             <Field label="RUE ET N°" k="address" placeholder="Rue de la Paix 12" />
             <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
               <Field label="VILLE" k="city" placeholder="Genève" />
@@ -289,30 +267,19 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
 
       {/* === NIVEAU 3 — Parents / Tuteur === */}
-      <div style={{
-        borderRadius: 12, marginBottom: 10, overflow: 'hidden',
-        border: `1px solid ${isMinor ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.25)'}`,
-      }}>
+      <div className="rounded-xl mb-2.5 overflow-hidden" style={{ border: `1px solid ${isMinor ? 'rgba(245,158,11,0.35)' : 'rgba(255,255,255,0.25)'}` }}>
         <AccordionHeader
           icon="👨‍👩‍👧" title="Parent / Tuteur"
           open={showParents} onToggle={() => setShowParents(v => !v)}
           done={!!(data.parentName || data.parentPhone)}
           badge={isMinor ? (
-            <span style={{
-              fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
-              background: 'rgba(245,158,11,0.12)', color: '#f59e0b',
-              border: '1px solid rgba(245,158,11,0.3)',
-            }}>MINEUR</span>
+            <span className="text-[10px] font-bold rounded-[20px] px-2 py-0.5 text-[#f59e0b]" style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.3)' }}>MINEUR</span>
           ) : undefined}
         />
         {showParents && (
-          <div style={{ padding: '4px 16px 14px' }}>
+          <div className="px-4 pt-1 pb-3.5">
             {isMinor && (
-              <div style={{
-                padding: '8px 12px', borderRadius: 8, marginBottom: 14,
-                background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.2)',
-                fontSize: 12, color: '#f59e0b',
-              }}>
+              <div className="rounded-lg mb-3.5 text-xs px-3 py-2 text-[#f59e0b]" style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.2)' }}>
                 ⚠️ Le piéton est mineur — les coordonnées d'un parent ou tuteur sont importantes pour le dossier
               </div>
             )}
@@ -349,7 +316,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           done={!!(data.idNumber || data.dateOfBirth)}
         />
         {showIdentity && (
-          <div style={{ padding: '4px 16px 14px' }}>
+          <div className="px-4 pt-1 pb-3.5">
             <Field label="DATE DE NAISSANCE" k="dateOfBirth" type="date" />
             <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '0 10px' }}>
               <Field label="N° DOCUMENT" k="idNumber" placeholder="X 000000" />
@@ -361,11 +328,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
 
       {/* Validation minimale */}
       {!hasMinimum && (
-        <div style={{
-          padding: '10px 14px', borderRadius: 8, marginBottom: 14,
-          background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)',
-          fontSize: 12, color: '#f59e0b',
-        }}>
+        <div className="rounded-lg mb-3.5 text-xs px-3.5 py-2.5 text-[#f59e0b]" style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)' }}>
           Minimum requis : <strong>prénom + nom</strong>, <strong>téléphone</strong>, ou <strong>email</strong>
         </div>
       )}
@@ -374,13 +337,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       <button
         onClick={() => onComplete(data)}
         disabled={!hasMinimum}
-        style={{
-          width: '100%', padding: '16px', borderRadius: 12, border: 'none',
-          background: hasMinimum ? 'var(--boom)' : 'rgba(255,255,255,0.07)',
-          color: hasMinimum ? '#fff' : 'rgba(255,255,255,0.6)',
-          cursor: hasMinimum ? 'pointer' : 'not-allowed',
-          fontSize: 15, fontWeight: 700, marginBottom: 10, transition: 'all 0.2s',
-        }}
+        className="w-full p-4 rounded-xl border-0 font-bold mb-2.5 transition-all duration-200 text-[15px]" style={{ background: hasMinimum ? 'var(--boom)' : 'rgba(255,255,255,0.07)', color: hasMinimum ? '#fff' : 'rgba(255,255,255,0.6)', cursor: hasMinimum ? 'pointer' : 'not-allowed' }}
       >
         ✅ Valider
       </button>
@@ -388,12 +345,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       {onSkip && (
         <button
           onClick={onSkip}
-          style={{
-            width: '100%', padding: '13px', borderRadius: 12,
-            border: '1px solid rgba(255,255,255,0.25)',
-            background: 'transparent', color: 'rgba(240,237,232,0.55)',
-            cursor: 'pointer', fontSize: 13,
-          }}
+          className="w-full p-[13px] rounded-xl bg-transparent cursor-pointer text-[13px]" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.55)' }}
         >
           Continuer sans informations piéton
         </button>

@@ -33,7 +33,7 @@ export function PoliceObservations({ observations, responsibilityEstimate, onObs
           onChange={e => onObservationsChange(e.target.value)}
           placeholder="Observations libres de l'agent : description des lieux, comportement des parties, elements notables..."
           rows={6}
-          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 resize-y"
+          className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 resize-y"
         />
       </div>
 
@@ -45,7 +45,7 @@ export function PoliceObservations({ observations, responsibilityEstimate, onObs
           id="responsibility-estimate"
           value={responsibilityEstimate}
           onChange={e => onResponsibilityChange(e.target.value)}
-          className="w-full sm:w-72 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white min-h-[44px]"
+          className="w-full sm:w-72 bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white min-h-[44px]"
         >
           {RESPONSIBILITY_OPTIONS.map(opt => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>

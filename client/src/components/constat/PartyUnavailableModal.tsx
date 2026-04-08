@@ -165,80 +165,55 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
   };
 
   return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 2000,
-      background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)',
-      display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-    }}>
-      <div ref={modalRef} role="dialog" aria-label="Partie B indisponible" aria-modal="true" style={{
-        width: '100%', maxWidth: 480, background: '#0A0A16',
-        border: '1px solid rgba(255,255,255,0.25)',
-        borderRadius: '20px 20px 0 0', maxHeight: '92svh',
-        display: 'flex', flexDirection: 'column',
-        animation: 'slideUp 0.25s ease',
-      }}>
+    <div className="fixed inset-0 flex items-end justify-center" style={{ zIndex: 2000, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(10px)' }}>
+      <div ref={modalRef} role="dialog" aria-label="Partie B indisponible" aria-modal="true" className="w-full max-w-[480px] flex flex-col bg-[#0A0A16]" style={{ border: '1px solid rgba(255,255,255,0.25)', borderRadius: '20px 20px 0 0', maxHeight: '92svh', animation: 'slideUp 0.25s ease' }}>
         {/* Handle */}
         <div className="flex justify-center" style={{ padding: '12px 0 0' }}>
-          <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.25)' }} />
+          <div className="w-9 h-1 rounded-sm" style={{ background: 'rgba(255,255,255,0.25)' }} />
         </div>
 
         {/* Header */}
-        <div style={{ padding: '14px 20px 12px', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
+        <div className="px-5 pt-3.5 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
           <div className="flex items-center justify-between">
             <div>
               <div className="font-extrabold text-base">Partie B indisponible</div>
-              <div className="text-[11px]" style={{ opacity: 0.755, marginTop: 2 }}>
+              <div className="text-[11px] mt-0.5"  style={{ opacity: 0.755 }}>
                 {step === 'reason' && 'Sélectionnez la raison'}
                 {step === 'plate' && 'Photo de la plaque'}
                 {step === 'details' && 'Informations complémentaires'}
               </div>
             </div>
-            <button onClick={onCancel} aria-label="Annuler" style={{
-              background: 'rgba(255,255,255,0.06)', border: 'none',
-              color: 'rgba(240,237,232,0.5)', cursor: 'pointer',
-              borderRadius: 8, padding: '6px 12px', fontSize: 12,
-            }}>Annuler</button>
+            <button onClick={onCancel} aria-label="Annuler" className="border-0 cursor-pointer rounded-lg text-xs px-3 py-1.5" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(240,237,232,0.5)' }}>Annuler</button>
           </div>
           {/* Step dots */}
           <div className="flex gap-1.5 mt-3">
             {['reason', 'plate', 'details'].map((s, i) => (
-              <div key={s} style={{
-                height: 3, flex: 1, borderRadius: 2,
-                background: ['reason', 'plate', 'details'].indexOf(step) >= i
-                  ? 'var(--boom)' : 'rgba(255,255,255,0.1)',
-                transition: 'background 0.3s',
-              }} />
+              <div key={s} className="h-[3px] flex-1 rounded-sm" style={{ background: ['reason', 'plate', 'details'].indexOf(step) >= i
+                  ? 'var(--boom)' : 'rgba(255,255,255,0.1)', transition: 'background 0.3s' }} />
             ))}
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto" style={{ padding: '16px 20px 24px' }}>
+        <div className="flex-1 overflow-y-auto px-5 pt-4 pb-6">
 
           {/* ── STEP 1 : RAISON ── */}
           {step === 'reason' && (
             <div>
-              <div className="text-[13px] leading-normal" style={{ opacity: 0.7, marginBottom: 14 }}>
+              <div className="text-[13px] leading-normal opacity-70 mb-3.5" >
                 Le constat sera établi en <strong style={{ color: 'var(--boom)' }}>déclaration unilatérale de sinistre</strong> — document légalement reconnu par les assurances dans toute l'Europe.
               </div>
               {REASONS.map(r => {
                 const c = URGENCY_COLORS[r.urgency];
                 const isSelected = selected?.id === r.id;
                 return (
-                  <button key={r.id} onClick={() => setSelected(r)} style={{
-                    width: '100%', textAlign: 'left', padding: '14px 16px',
-                    borderRadius: 12, border: `1.5px solid ${isSelected ? c.border : 'rgba(255,255,255,0.25)'}`,
-                    background: isSelected ? c.selected : 'rgba(255,255,255,0.03)',
-                    cursor: 'pointer', marginBottom: 8,
-                    transition: 'all 0.15s',
-                    display: 'flex', alignItems: 'center', gap: 14,
-                  }}>
+                  <button key={r.id} onClick={() => setSelected(r)} className="w-full text-left rounded-xl cursor-pointer mb-2 flex items-center gap-3.5 px-4 py-3.5" style={{ border: `1.5px solid ${isSelected ? c.border : 'rgba(255,255,255,0.25)'}`, background: isSelected ? c.selected : 'rgba(255,255,255,0.03)', transition: 'all 0.15s' }}>
                     <span className="text-2xl shrink-0">{r.icon}</span>
                     <div className="flex-1">
                       <div className="text-sm font-bold" style={{ color: isSelected ? c.text : 'var(--text)' }}>
                         {r.label}
                       </div>
-                      <div className="text-xs" style={{ opacity: 0.7, marginTop: 2 }}>{r.sub}</div>
+                      <div className="text-xs opacity-70 mt-0.5" >{r.sub}</div>
                     </div>
                     {isSelected && <span className="text-base" style={{ color: c.text }}>✓</span>}
                   </button>
@@ -248,14 +223,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               <button
                 onClick={() => setStep('plate')}
                 disabled={!selected}
-                style={{
-                  width: '100%', padding: '15px', borderRadius: 12,
-                  border: 'none', marginTop: 8,
-                  background: selected ? 'var(--boom)' : 'rgba(255,255,255,0.06)',
-                  color: selected ? '#fff' : 'rgba(255,255,255,0.6)',
-                  cursor: selected ? 'pointer' : 'not-allowed',
-                  fontSize: 15, fontWeight: 700,
-                }}
+                className="w-full p-[15px] rounded-xl border-0 mt-2 font-bold text-[15px]" style={{ background: selected ? 'var(--boom)' : 'rgba(255,255,255,0.06)', color: selected ? '#fff' : 'rgba(255,255,255,0.6)', cursor: selected ? 'pointer' : 'not-allowed' }}
               >
                 Continuer →
               </button>
@@ -267,17 +235,14 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
             <div>
               {/* Alerte police proactive */}
               {selected.suggestPolice && !policeAlertDismissed && (
-                <div style={{
-                  padding: '14px 16px', borderRadius: 12, marginBottom: 18,
-                  background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.3)',
-                }}>
+                <div className="rounded-xl mb-[18px] px-4 py-3.5" style={{ background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.3)' }}>
                   <div className="flex items-start gap-2.5">
                     <span className="text-[22px] shrink-0">🚨</span>
                     <div className="flex-1">
                       <div className="text-sm font-extrabold text-red-500 mb-1">
                         {selected.id === 'deceased' ? 'La police est obligatoire' : 'Appelez la police'}
                       </div>
-                      <div className="text-xs leading-normal" style={{ opacity: 0.7 }}>
+                      <div className="text-xs leading-normal opacity-70" >
                         {selected.id === 'deceased'
                           ? 'Un accident mortel nécessite obligatoirement l\'intervention des forces de l\'ordre.'
                           : selected.id === 'fled'
@@ -285,23 +250,12 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                           : 'En cas de blessé grave, la police et les secours doivent être alertés immédiatement.'}
                       </div>
                       <div className="flex gap-2 mt-2.5">
-                        <a href="tel:117" style={{
-                          padding: '8px 14px', borderRadius: 8,
-                          background: '#ef4444', color: '#fff',
-                          fontSize: 13, fontWeight: 700, textDecoration: 'none',
-                        }}>📞 Police (117)</a>
-                        <a href="tel:144" style={{
-                          padding: '8px 14px', borderRadius: 8,
-                          background: 'rgba(255,255,255,0.1)', color: 'var(--text)',
-                          fontSize: 13, fontWeight: 700, textDecoration: 'none',
-                        }}>🚑 Ambulance (144)</a>
+                        <a href="tel:117" className="rounded-lg text-white text-[13px] font-bold no-underline px-3.5 py-2 bg-[#ef4444]">📞 Police (117)</a>
+                        <a href="tel:144" className="rounded-lg text-[13px] font-bold no-underline px-3.5 py-2" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--text)' }}>🚑 Ambulance (144)</a>
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => setPoliceAlertDismissed(true)} aria-label="Confirmer que j'ai contacté les secours" style={{
-                    marginTop: 10, background: 'none', border: 'none',
-                    color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 12,
-                  }}>
+                  <button onClick={() => setPoliceAlertDismissed(true)} aria-label="Confirmer que j'ai contacté les secours" className="mt-2.5 bg-none border-0 cursor-pointer text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
                     J'ai déjà contacté les secours ✓
                   </button>
                 </div>
@@ -325,30 +279,15 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     />
                     <button onClick={() => { setPlatePhoto(null); setPlateNumber(''); fileRef.current?.click(); }}
                       aria-label="Reprendre la photo"
-                      style={{
-                        position: 'absolute', top: 8, right: 8,
-                        padding: '4px 10px', borderRadius: 6,
-                        background: 'rgba(0,0,0,0.7)', border: 'none',
-                        color: '#fff', fontSize: 11, cursor: 'pointer',
-                      }}>
+                      className="absolute top-2 right-2 rounded-md border-0 text-white text-[11px] cursor-pointer px-2.5 py-1" style={{ background: 'rgba(0,0,0,0.7)' }}>
                       Reprendre
                     </button>
                     {ocrLoading && (
-                      <div style={{
-                        position: 'absolute', inset: 0, borderRadius: 10,
-                        background: 'rgba(0,0,0,0.6)', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center',
-                        fontSize: 13, color: '#fff',
-                      }}>⏳ Lecture en cours…</div>
+                      <div className="absolute inset-0 rounded-[10px] flex items-center justify-center text-[13px] text-white" style={{ background: 'rgba(0,0,0,0.6)' }}>⏳ Lecture en cours…</div>
                     )}
                   </div>
                 ) : (
-                  <button onClick={() => fileRef.current?.click()} style={{
-                    width: '100%', padding: '20px', borderRadius: 12,
-                    border: `2px dashed ${selected.plateMandatory ? 'rgba(255,53,0,0.4)' : 'rgba(255,255,255,0.15)'}`,
-                    background: 'rgba(255,255,255,0.02)', color: 'var(--text)',
-                    cursor: 'pointer', fontSize: 14, marginBottom: 12,
-                  }}>
+                  <button onClick={() => fileRef.current?.click()} className="w-full p-5 rounded-xl cursor-pointer text-sm mb-3" style={{ border: `2px dashed ${selected.plateMandatory ? 'rgba(255,53,0,0.4)' : 'rgba(255,255,255,0.15)'}`, background: 'rgba(255,255,255,0.02)', color: 'var(--text)' }}>
                     📷 Photographier la plaque
                   </button>
                 )}
@@ -359,7 +298,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
                 {/* Numéro plaque */}
                 <div className="mt-3">
-                  <label htmlFor="party-unavail-plate" className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5, fontFamily: 'monospace' }}>
+                  <label htmlFor="party-unavail-plate" className="text-[11px] block opacity-70 mb-[5px] tracking-[0.5px]" style={{ fontFamily: 'monospace' }}>
                     NUMÉRO DE PLAQUE {plateNumber ? '✓ lu automatiquement' : '(saisissez si non lisible)'}
                   </label>
                   <input
@@ -368,18 +307,13 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     value={plateNumber}
                     onChange={e => setPlateNumber(e.target.value.toUpperCase())}
                     placeholder="VD 123456"
-                    style={{
-                      ...inp,
-                      fontFamily: 'DM Mono, monospace',
-                      fontSize: 16, fontWeight: 700, letterSpacing: 2,
-                      borderColor: plateNumber ? 'rgba(34,197,94,0.4)' : 'rgba(240,237,232,0.12)',
-                    }}
+                    className="font-bold tracking-[2px] text-base" style={{ ...inp, fontFamily: 'DM Mono, monospace', borderColor: plateNumber ? 'rgba(34,197,94,0.4)' : 'rgba(240,237,232,0.12)' }}
                   />
                 </div>
 
                 {/* Description véhicule */}
                 <div className="mt-3">
-                  <label htmlFor="party-unavail-desc" className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
+                  <label htmlFor="party-unavail-desc" className="text-[11px] block opacity-70 mb-[5px] tracking-[0.5px]">
                     DESCRIPTION DU VÉHICULE B (optionnel)
                   </label>
                   <input
@@ -394,24 +328,13 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               </div>
 
               <div className="flex gap-2.5">
-                <button onClick={() => setStep('reason')} style={{
-                  flex: 1, padding: '14px', borderRadius: 12,
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  background: 'transparent', color: 'rgba(240,237,232,0.5)',
-                  cursor: 'pointer', fontSize: 14,
-                }}>← Retour</button>
+                <button onClick={() => setStep('reason')} className="flex-1 p-3.5 rounded-xl bg-transparent cursor-pointer text-sm" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.5)' }}>← Retour</button>
                 <button
                   onClick={() => setStep('details')}
                   disabled={selected.plateMandatory && !platePhoto && !plateNumber}
-                  style={{
-                    flex: 2, padding: '14px', borderRadius: 12, border: 'none',
-                    background: (selected.plateMandatory && !platePhoto && !plateNumber)
-                      ? 'rgba(255,255,255,0.06)' : 'var(--boom)',
-                    color: (selected.plateMandatory && !platePhoto && !plateNumber)
-                      ? 'rgba(255,255,255,0.6)' : '#fff',
-                    cursor: (selected.plateMandatory && !platePhoto && !plateNumber) ? 'not-allowed' : 'pointer',
-                    fontSize: 14, fontWeight: 700,
-                  }}
+                  className="p-3.5 rounded-xl border-0 text-sm font-bold" style={{ flex: 2, background: (selected.plateMandatory && !platePhoto && !plateNumber)
+                      ? 'rgba(255,255,255,0.06)' : 'var(--boom)', color: (selected.plateMandatory && !platePhoto && !plateNumber)
+                      ? 'rgba(255,255,255,0.6)' : '#fff', cursor: (selected.plateMandatory && !platePhoto && !plateNumber) ? 'not-allowed' : 'pointer' }}
                 >
                   Continuer →
                 </button>
@@ -422,11 +345,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
           {/* ── STEP 3 : DÉTAILS ── */}
           {step === 'details' && selected && (
             <div>
-              <div style={{
-                padding: '12px 14px', borderRadius: 10, marginBottom: 18,
-                background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)',
-                fontSize: 12, lineHeight: 1.6,
-              }}>
+              <div className="rounded-[10px] mb-[18px] text-xs px-3.5 py-3 leading-[1.6]" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
                 <strong style={{ color: 'var(--boom)' }}>Déclaration unilatérale de sinistre</strong><br/>
                 Raison : <strong>{selected.label}</strong><br/>
                 Ce document est légalement valable auprès de votre assurance dans les 46 pays signataires de la Convention Européenne.
@@ -434,8 +353,8 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
               {/* Référence police */}
               {selected.suggestPolice && (
-                <div style={{ marginBottom: 14 }}>
-                  <label className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
+                <div className="mb-3.5">
+                  <label className="text-[11px] block opacity-70 mb-[5px] tracking-[0.5px]">
                     RÉFÉRENCE DU RAPPORT DE POLICE (si disponible)
                   </label>
                   <input
@@ -450,7 +369,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
 
               {/* Notes libres */}
               <div className="mb-5">
-                <label className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
+                <label className="text-[11px] block opacity-70 mb-[5px] tracking-[0.5px]">
                   OBSERVATIONS (optionnel)
                 </label>
                 <textarea
@@ -463,43 +382,25 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     : 'Toute information utile pour le dossier…'
                   }
                   rows={4}
-                  style={{
-                    ...inp,
-                    resize: 'none', lineHeight: 1.5,
-                    fontFamily: 'inherit',
-                  }}
+                  className="leading-normal" style={{ ...inp, resize: 'none', fontFamily: 'inherit' }}
                 />
               </div>
 
               {/* Récap */}
-              <div style={{
-                padding: '12px 14px', borderRadius: 10, marginBottom: 20,
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.25)',
-                fontSize: 12, lineHeight: 1.7,
-              }}>
-                <div className="font-bold mb-1.5" style={{ opacity: 0.75 }}>RÉCAPITULATIF</div>
+              <div className="rounded-[10px] mb-5 text-xs px-3.5 py-3 leading-[1.7]" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                <div className="font-bold mb-1.5 opacity-75">RÉCAPITULATIF</div>
                 <div>Raison : <strong>{selected.label}</strong></div>
                 {plateNumber && <div>Plaque : <strong style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{plateNumber}</strong></div>}
                 {vehicleDesc && <div>Véhicule : {vehicleDesc}</div>}
                 {policeRef && <div>Réf. police : {policeRef}</div>}
-                <div style={{ marginTop: 6, opacity: 0.75 }}>
+                <div className="mt-1.5 opacity-75">
                   Enregistré le {new Date().toLocaleString('fr-CH')}
                 </div>
               </div>
 
               <div className="flex gap-2.5">
-                <button onClick={() => setStep('plate')} style={{
-                  flex: 1, padding: '14px', borderRadius: 12,
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  background: 'transparent', color: 'rgba(240,237,232,0.5)',
-                  cursor: 'pointer', fontSize: 14,
-                }}>← Retour</button>
-                <button onClick={handleConfirm} style={{
-                  flex: 2, padding: '14px', borderRadius: 12, border: 'none',
-                  background: 'var(--boom)', color: '#fff',
-                  cursor: 'pointer', fontSize: 14, fontWeight: 700,
-                }}>
+                <button onClick={() => setStep('plate')} className="flex-1 p-3.5 rounded-xl bg-transparent cursor-pointer text-sm" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.5)' }}>← Retour</button>
+                <button onClick={handleConfirm} className="p-3.5 rounded-xl border-0 text-white cursor-pointer text-sm font-bold" style={{ flex: 2, background: 'var(--boom)' }}>
                   ✅ Finaliser le constat
                 </button>
               </div>

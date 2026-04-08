@@ -12,8 +12,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
     <div
       role="tablist"
       aria-label="Étapes du constat"
-      style={{ padding: '10px 16px', borderBottom: '1px solid rgba(240,237,232,0.06)',
-      display: 'flex', gap: 3, flexShrink: 0 }}>
+      className="flex gap-[3px] shrink-0 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(240,237,232,0.06)' }}>
       {steps.map((step, i) => {
         const done     = i < currentIndex;
         const active   = i === currentIndex;
@@ -30,53 +29,24 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
             onClick={clickable ? () => onStepClick!(step.id, i) : undefined}
             title={clickable ? `↩ ${step.label}` : undefined}
             disabled={!clickable}
-            style={{
-              flex: 1, textAlign: 'center',
-              cursor: clickable ? 'pointer' : 'default',
-              borderRadius: 6, padding: '3px 1px',
-              minHeight: 44, minWidth: 44,
-              WebkitTapHighlightColor: 'transparent',
-              position: 'relative',
-              background: 'none',
-              border: 'none',
-              font: 'inherit',
-            } as React.CSSProperties}
+            className="flex-1 text-center rounded-md min-h-[44px] min-w-[44px] relative bg-none border-0 px-px py-[3px]" style={{ cursor: clickable ? 'pointer' : 'default', WebkitTapHighlightColor: 'transparent', font: 'inherit', } as React.CSSPropertie }}}
           >
             {/* Barre colorée */}
-            <div style={{
-              height: 3, borderRadius: 2, marginBottom: 5,
-              transition: 'background 0.3s',
-              background: done ? '#22c55e' : active ? 'var(--boom)' : 'rgba(240,237,232,0.1)',
-            }}/>
+            <div className="h-[3px] rounded-sm mb-[5px]" style={{ transition: 'background 0.3s', background: done ? '#22c55e' : active ? 'var(--boom)' : 'rgba(240,237,232,0.1)' }}/>
 
             {/* Icône */}
-            <div style={{
-              fontSize: active ? 15 : 13,
-              marginBottom: 2,
-              opacity: pending ? 0.75 : 1,
-            }}>
+            <div className="mb-0.5" style={{ fontSize: active ? 15 : 13, opacity: pending ? 0.75 : 1 }}>
               {step.icon}
             </div>
 
             {/* Label */}
-            <div style={{
-              fontSize: 8, letterSpacing: 0.8,
-              textTransform: 'uppercase', fontFamily: 'monospace',
-              opacity: active ? 1 : pending ? 0.75 : 0.85,
-              color: active ? 'var(--boom)' : done ? '#22c55e' : 'var(--text)',
-              fontWeight: active ? 700 : done ? 600 : 400,
-            }}>
+            <div className="uppercase tracking-[0.8px] text-[8px]" style={{ fontFamily: 'monospace', opacity: active ? 1 : pending ? 0.75 : 0.85, color: active ? 'var(--boom)' : done ? '#22c55e' : 'var(--text)', fontWeight: active ? 700 : done ? 600 : 400 }}>
               {step.label}
             </div>
 
             {/* Dot indicateur de navigation retour */}
             {clickable && (
-              <div style={{
-                width: 4, height: 4, borderRadius: '50%',
-                background: '#22c55e',
-                margin: '2px auto 0',
-                opacity: 0.7,
-              }}/>
+              <div className="w-1 h-1 rounded-full opacity-70 bg-[#22c55e]" style={{ margin: '2px auto 0' }}/>
             )}
           </button>
         );

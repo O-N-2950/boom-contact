@@ -5,9 +5,9 @@ interface PrivacyPageProps {
 export function PrivacyPage({ onBack }: PrivacyPageProps) {
   return (
     <div className="min-h-screen bg-[#06060C] text-white" style={{ padding: '0 0 40px' }}>
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Mentions légales et politique de confidentialité — boom.contact</h1>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Mentions légales et politique de confidentialité — boom.contact</h1>
       {/* Header */}
-      <div className="bg-[#06060C] flex items-center gap-3.5 sticky z-10" style={{ borderBottom: '1px solid #1a1a1a', padding: '14px 20px', top: 0 }}>
+      <div className="bg-[#06060C] flex items-center gap-3.5 sticky z-10 top-0 px-5 py-3.5" style={{ borderBottom: '1px solid #1a1a1a' }}>
         <button onClick={onBack} className="bg-transparent border-0 text-[#d0d0d0] cursor-pointer text-lg" aria-label="Retour">←</button>
         <div>
           <div className="font-extrabold text-base text-[#FF5533]">💥 boom.contact</div>
@@ -15,10 +15,10 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
         </div>
       </div>
 
-      <div className="mx-auto" style={{ maxWidth: 600, padding: '24px 20px' }}>
+      <div className="mx-auto max-w-[600px] px-5 py-6">
 
         {/* Version badge */}
-        <div className="bg-[#111] rounded-lg mb-6" style={{ border: '1px solid #222', padding: '8px 14px', display: 'inline-block' }}>
+        <div className="bg-[#111] rounded-lg mb-6 inline-block px-3.5 py-2" style={{ border: '1px solid #222' }}>
           <span className="text-[#d0d0d0] text-[11px]">Version 1.0 · Mars 2026 · RGPD art. 13 · nLPD Suisse</span>
         </div>
 
@@ -98,13 +98,13 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
               { right: 'Opposition', desc: 'S\'opposer à un traitement' },
               { right: 'Limitation', desc: 'Restreindre un traitement' },
             ].map(({ right, desc }) => (
-              <div key={right} className="bg-[#111] rounded-lg" style={{ border: '1px solid #1a1a1a', padding: '10px 12px' }}>
+              <div key={right} className="bg-[#111] rounded-lg px-3 py-2.5" style={{ border: '1px solid #1a1a1a' }}>
                 <div className="text-green-400 font-bold text-xs">{right}</div>
-                <div className="text-[#d0d0d0] text-[11px]" style={{ marginTop: 2 }}>{desc}</div>
+                <div className="text-[#d0d0d0] text-[11px] mt-0.5" >{desc}</div>
               </div>
             ))}
           </div>
-          <div className="text-[#d0d0d0] text-[13px] leading-relaxed" style={{ marginTop: 14 }}>
+          <div className="text-[#d0d0d0] text-[13px] leading-relaxed mt-3.5" >
             Exercez vos droits par email : <a href="mailto:privacy@boom.contact" className="text-[#FF5533]">privacy@boom.contact</a> — réponse sous 30 jours.<br />
             <br />
             <strong className="text-[#ccc]">Autorités de contrôle :</strong><br />
@@ -116,7 +116,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 
         {/* SÉCURITÉ */}
         <Section title="🔒 Sécurité des données">
-          <ul className="text-[#d0d0d0] text-[13px] m-0" style={{ lineHeight: 1.8, paddingLeft: 20 }}>
+          <ul className="text-[#d0d0d0] text-[13px] m-0 pl-5 leading-[1.8]">
             <li>Chiffrement TLS 1.3 sur toutes les communications</li>
             <li>Base de données PostgreSQL avec chiffrement at-rest (Railway)</li>
             <li>Authentification JWT signée (algorithme HS256, secret rotatif)</li>
@@ -139,7 +139,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
         </Section>
 
         {/* Contact */}
-        <div className="pt-5 text-[#d0d0d0] text-[11px]" style={{ borderTop: '1px solid #1a1a1a', textAlign: 'center' as const, lineHeight: 1.8 }}>
+        <div className="pt-5 text-[#d0d0d0] text-[11px] text-center leading-[1.8]" style={{ borderTop: '1px solid #1a1a1a' }}>
           boom.contact · PEP's Swiss SA · CHE-476.484.632<br />
           Bellevue 7, 2950 Courgenay, Jura, Suisse<br />
           <a href="mailto:privacy@boom.contact" className="text-[#d0d0d0]">privacy@boom.contact</a>
@@ -155,7 +155,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 function Section({ title, children, accent }: { title: string; children: React.ReactNode; accent?: boolean }) {
   return (
     <div className="mb-8">
-      <div className="font-extrabold text-base" style={{ color: accent ? '#FF3500' : '#fff', marginBottom: 14, paddingBottom: 8, borderBottom: `1px solid ${accent ? '#FF350020' : '#1a1a1a'}` }}>
+      <div className="font-extrabold text-base mb-3.5 pb-2"  style={{ color: accent ? '#FF3500' : '#fff', borderBottom: `1px solid ${accent ? '#FF350020' : '#1a1a1a'}` }}>
         {title}
       </div>
       <div>{children}</div>
@@ -166,7 +166,7 @@ function Section({ title, children, accent }: { title: string; children: React.R
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3" style={{ padding: '7px 0', borderBottom: '1px solid #111' }}>
-      <div className="text-[#d0d0d0] text-xs shrink-0" style={{ minWidth: 140 }}>{label}</div>
+      <div className="text-[#d0d0d0] text-xs shrink-0 min-w-[140px]" >{label}</div>
       <div className="text-xs text-[#ccc]">{value}</div>
     </div>
   );
@@ -179,17 +179,17 @@ function DataTable({ rows }: { rows: { data: string; purpose: string; legal: str
         <thead>
           <tr style={{ borderBottom: '1px solid #222' }}>
             {['Données', 'Finalité', 'Base légale', 'Durée'].map(h => (
-              <th key={h} className="text-[#d0d0d0] font-semibold" style={{ textAlign: 'left' as const, padding: '8px 10px', letterSpacing: 0.5, whiteSpace: 'nowrap' as const }}>{h}</th>
+              <th key={h} className="text-[#d0d0d0] font-semibold px-2.5 py-2 tracking-[0.5px] text-left" style={{ whiteSpace: 'nowrap' as const }}>{h}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((r, i) => (
             <tr key={i} style={{ borderBottom: '1px solid #111' }}>
-              <td className="text-white font-medium" style={{ padding: '8px 10px' }}>{r.data}</td>
-              <td className="text-[#d0d0d0]" style={{ padding: '8px 10px' }}>{r.purpose}</td>
-              <td style={{ padding: '8px 10px', color: '#60c8f0', whiteSpace: 'nowrap' as const }}>{r.legal}</td>
-              <td className="text-[#d0d0d0]" style={{ padding: '8px 10px', whiteSpace: 'nowrap' as const }}>{r.retention}</td>
+              <td className="text-white font-medium px-2.5 py-2">{r.data}</td>
+              <td className="text-[#d0d0d0] px-2.5 py-2">{r.purpose}</td>
+              <td className="px-2.5 py-2 text-[#60c8f0]" style={{ whiteSpace: 'nowrap' as const }}>{r.legal}</td>
+              <td className="text-[#d0d0d0] px-2.5 py-2" style={{ whiteSpace: 'nowrap' as const }}>{r.retention}</td>
             </tr>
           ))}
         </tbody>
@@ -204,10 +204,10 @@ function CookieDetailTable({ rows }: { rows: { name: string; purpose: string; du
       {rows.map((r, i) => (
         <div key={i} className="flex justify-between items-start" style={{ padding: '8px 0', borderBottom: '1px solid #111' }}>
           <div>
-            <div className="text-xs" style={{ color: '#ccc', fontFamily: 'monospace' }}>{r.name}</div>
+            <div className="text-xs text-[#ccc]" style={{ fontFamily: 'monospace' }}>{r.name}</div>
             <div className="text-[#d0d0d0] text-[11px]">{r.purpose}</div>
           </div>
-          <div className="shrink-0 ml-3" style={{ textAlign: 'right' as const }}>
+          <div className="shrink-0 ml-3 text-right">
             <div className="text-green-400 text-[10px] font-bold">{r.type}</div>
             <div className="text-[#d0d0d0] text-[10px]">{r.duration}</div>
           </div>
@@ -224,7 +224,7 @@ function SubprocessorRow({ name, location, purpose, privacy }: { name: string; l
         <div className="text-white font-semibold text-[13px]">{name}</div>
         <div className="text-[#d0d0d0] text-[11px]">{location}</div>
       </div>
-      <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>{purpose}</div>
+      <div className="text-[#d0d0d0] text-xs mt-0.5" >{purpose}</div>
       <a href={`https://${privacy}`} target="_blank" rel="noopener noreferrer" className="text-[#d0d0d0] text-[11px] underline">{privacy}</a>
     </div>
   );

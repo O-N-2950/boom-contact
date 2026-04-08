@@ -63,7 +63,7 @@ function FieldBox({ label, value }: { label: string; value?: string | null }) {
   return (
     <div style={S.fieldBox}>
       <div style={S.label}>{label}</div>
-      <div style={S.value}>{value || <span style={{ opacity: 0.7 }}>—</span>}</div>
+      <div style={S.value}>{value || <span className="opacity-70">—</span>}</div>
     </div>
   );
 }
@@ -105,7 +105,7 @@ function IncidentSection({ session }: { session: Record<string, unknown> }) {
           </div>
         )}
         {accident.injuries && accident.injuryDetails && (
-          <div className="rounded-md mb-2" style={{ padding: '10px 12px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+          <div className="rounded-md mb-2 px-3 py-2.5" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
             <div className="text-[11px] font-bold text-red-500 mb-1.5">BLESSES — DETAILS</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Gravite" value={accident.injuryDetails.severity} />
@@ -138,12 +138,12 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
       <div style={S.sectionHeader(color)}>{label}</div>
       <div style={S.sectionBody}>
         {isEmpty ? (
-          <div className="p-3 text-center text-[13px]" style={{ opacity: 0.7 }}>
+          <div className="p-3 text-center text-[13px] opacity-70" >
             Conducteur non encore enregistre
           </div>
         ) : (
           <>
-            <div className="text-[11px] font-bold mb-2" style={{ opacity: 0.75, letterSpacing: 1 }}>IDENTITE</div>
+            <div className="text-[11px] font-bold mb-2 opacity-75 tracking-[1px]">IDENTITE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Nom" value={d.lastName} />
               <FieldBox label="Prenom" value={d.firstName} />
@@ -154,7 +154,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
             </div>
             <FieldBox label="Adresse" value={d.address} />
 
-            <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>VEHICULE</div>
+            <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>VEHICULE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Plaque" value={v.plate} />
               <FieldBox label="Marque / Modele" value={[v.brand, v.model].filter(Boolean).join(' ')} />
@@ -164,7 +164,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
               <FieldBox label="Type" value={v.vehicleType} />
             </div>
 
-            <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ASSURANCE</div>
+            <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>ASSURANCE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Assureur" value={i.company} />
               <FieldBox label="N\u00b0 police" value={i.policyNumber} />
@@ -172,10 +172,10 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.damagedZones?.length > 0 && (
               <>
-                <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
+                <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
                 <div className="flex flex-wrap gap-1">
                   {participant.damagedZones.map((z: string) => (
-                    <span key={z} className="rounded text-[11px]" style={{ padding: '3px 8px', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)', color: '#ff6633' }}>{z}</span>
+                    <span key={z} className="rounded text-[11px] px-2 py-[3px] text-[#ff6633]" style={{ background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)' }}>{z}</span>
                   ))}
                 </div>
               </>
@@ -183,7 +183,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.circumstances?.length > 0 && (
               <>
-                <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
+                <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
                 <div className="flex flex-col gap-[3px]">
                   {participant.circumstances.map((c: string, i: number) => (
                     <div key={i} className="text-xs" style={{ padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>• {c}</div>
@@ -230,12 +230,12 @@ function MediaSection({ session }: { session: Record<string, unknown> }) {
       <div style={S.sectionHeader()}>3. Photos et croquis</div>
       <div style={S.sectionBody}>
         {photos.length === 0 && !sketchImage ? (
-          <div className="text-center p-5" style={{ opacity: 0.7 }}>Aucun media enregistre</div>
+          <div className="text-center p-5 opacity-70" >Aucun media enregistre</div>
         ) : (
           <>
             {photos.length > 0 && (
               <>
-                <div className="text-[11px] font-bold mb-2.5" style={{ opacity: 0.75, letterSpacing: 1 }}>
+                <div className="text-[11px] font-bold mb-2.5 opacity-75 tracking-[1px]">
                   PHOTOS ({photos.length})
                 </div>
                 <div className="grid gap-2 mb-4" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
@@ -246,9 +246,9 @@ function MediaSection({ session }: { session: Record<string, unknown> }) {
                         alt={CATEGORIES[photo.category] || photo.category}
                         className="w-full object-cover block" style={{ aspectRatio: '4/3' }}
                       />
-                      <div className="text-[9px]" style={{ padding: '5px 7px', background: 'rgba(0,0,0,0.6)', opacity: 0.8 }}>
+                      <div className="text-[9px] opacity-80 px-[7px] py-[5px]" style={{ background: 'rgba(0,0,0,0.6)' }}>
                         {CATEGORIES[photo.category] || photo.category}
-                        {photo.caption && <span style={{ opacity: 0.75 }}> — {photo.caption}</span>}
+                        {photo.caption && <span className="opacity-75"> — {photo.caption}</span>}
                       </div>
                     </div>
                   ))}
@@ -258,7 +258,7 @@ function MediaSection({ session }: { session: Record<string, unknown> }) {
 
             {sketchImage && (
               <>
-                <div className="text-[11px] font-bold mb-2.5" style={{ opacity: 0.75, letterSpacing: 1 }}>
+                <div className="text-[11px] font-bold mb-2.5 opacity-75 tracking-[1px]">
                   CROQUIS
                 </div>
                 <div className="rounded-lg overflow-hidden mb-2" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
@@ -313,9 +313,9 @@ function AnnotationsSection({
     if (existing) {
       setAnn({
         reportNumber: existing.reportNumber || '',
-        infractions: (existing.infractions as any) || [],
-        measures: (existing.measures as any) || [],
-        witnesses: (existing.witnesses as any) || [],
+        infractions: (existing.infractions as unknown[]) || [],
+        measures: (existing.measures as unknown[]) || [],
+        witnesses: (existing.witnesses as unknown[]) || [],
         observations: existing.observations || '',
       });
     }
@@ -398,7 +398,7 @@ function AnnotationsSection({
             />
             <select
               value={inf.party}
-              onChange={e => { const n = [...ann.infractions]; n[i].party = e.target.value as any; setAnn(a => ({ ...a, infractions: n })); }}
+              onChange={e => { const n = [...ann.infractions]; n[i].party = e.target.value as 'A' | 'B'; setAnn(a => ({ ...a, infractions: n })); }}
               aria-label="Partie concernée par l'infraction"
               style={selectStyle}
             >
@@ -408,16 +408,16 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, infractions: a.infractions.filter((_, j) => j !== i) }))}
-              className="rounded-md text-red-500 cursor-pointer text-sm" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', minHeight: 44, minWidth: 44 }}
+              className="rounded-md text-red-500 cursor-pointer text-sm min-h-[44px] min-w-[44px]"  style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}
               aria-label="Supprimer"
             >×</button>
           </div>
         ))}
 
-        <div className="flex gap-2 flex-wrap" style={{ marginTop: 6 }}>
+        <div className="flex gap-2 flex-wrap mt-1.5" >
           <button
             onClick={() => addInfraction()}
-            className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
+            className="rounded-md bg-transparent cursor-pointer text-xs px-3 py-1.5" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
           >
             + Ajouter
           </button>
@@ -425,7 +425,7 @@ function AnnotationsSection({
             <button
               key={p.code}
               onClick={() => addInfraction(p)}
-              className="rounded-md cursor-pointer text-[11px]" style={{ padding: '4px 10px', border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,179,0,0.06)', color: '#FFB300' }}
+              className="rounded-md cursor-pointer text-[11px] px-2.5 py-1 text-[#FFB300]" style={{ border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,179,0,0.06)' }}
             >
               {p.code}
             </button>
@@ -456,7 +456,7 @@ function AnnotationsSection({
             <select
               aria-label="Partie concernée par la mesure"
               value={m.party}
-              onChange={e => { const n = [...ann.measures]; n[i].party = e.target.value as any; setAnn(a => ({ ...a, measures: n })); }}
+              onChange={e => { const n = [...ann.measures]; n[i].party = e.target.value as 'A' | 'B'; setAnn(a => ({ ...a, measures: n })); }}
               style={selectStyle}
             >
               <option value="A">Partie A</option>
@@ -465,12 +465,12 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, measures: a.measures.filter((_, j) => j !== i) }))}
-              className="rounded-md text-red-500 cursor-pointer text-sm" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', minHeight: 44, minWidth: 44 }}
+              className="rounded-md text-red-500 cursor-pointer text-sm min-h-[44px] min-w-[44px]"  style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}
               aria-label="Supprimer"
             >×</button>
           </div>
         ))}
-        <button onClick={addMeasure} className="rounded-md bg-transparent cursor-pointer text-xs mt-1" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
+        <button onClick={addMeasure} className="rounded-md bg-transparent cursor-pointer text-xs mt-1 px-3 py-1.5" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
           + Ajouter une mesure
         </button>
       </div>
@@ -482,7 +482,7 @@ function AnnotationsSection({
           <div key={i} className="p-3 rounded-lg mb-2.5 relative" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.02)' }}>
             <button
               onClick={() => setAnn(a => ({ ...a, witnesses: a.witnesses.filter((_, j) => j !== i) }))}
-              className="absolute rounded text-red-500 cursor-pointer text-xs" style={{ top: 8, right: 8, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)', padding: '2px 8px' }}
+              className="absolute rounded text-red-500 cursor-pointer text-xs top-2 right-2 px-2 py-0.5" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)' }}
             >Supprimer</button>
             <div className="grid gap-2 mb-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
               <div>
@@ -510,7 +510,7 @@ function AnnotationsSection({
             </div>
           </div>
         ))}
-        <button onClick={addWitness} className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
+        <button onClick={addWitness} className="rounded-md bg-transparent cursor-pointer text-xs px-3 py-1.5" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
           + Ajouter un temoin
         </button>
       </div>
@@ -533,24 +533,14 @@ function AnnotationsSection({
         <button
           onClick={handleSave}
           disabled={saving}
-          style={{
-            flex: 1, padding: '13px', borderRadius: 8, border: 'none',
-            background: saved ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.1)',
-            color: saved ? '#22c55e' : 'var(--text)',
-            cursor: saving ? 'not-allowed' : 'pointer', fontSize: 14, fontWeight: 600,
-          }}
+          className="flex-1 p-[13px] rounded-lg border-0 text-sm font-semibold" style={{ background: saved ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.1)', color: saved ? '#22c55e' : 'var(--text)', cursor: saving ? 'not-allowed' : 'pointer' }}
         >
           {saving ? 'Sauvegarde...' : saved ? 'Sauvegarde ✓' : 'Sauvegarder'}
         </button>
         <button
           onClick={handleGeneratePDF}
           disabled={loadingPDF}
-          style={{
-            flex: 2, padding: '13px', borderRadius: 8, border: 'none',
-            background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)',
-            color: '#fff', cursor: loadingPDF ? 'not-allowed' : 'pointer',
-            fontSize: 14, fontWeight: 700,
-          }}
+          className="p-[13px] rounded-lg border-0 text-white text-sm font-bold" style={{ flex: 2, background: 'linear-gradient(135deg, #1e3a8a, #1d4ed8)', cursor: loadingPDF ? 'not-allowed' : 'pointer' }}
         >
           {loadingPDF ? 'Generation...' : 'Generer Rapport d\'Intervention PDF'}
         </button>
@@ -597,15 +587,15 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--black)' }}>
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Dossier police — constat {sessionId}</h1>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Dossier police — constat {sessionId}</h1>
 
       {/* Header institutionnel */}
-      <div className="flex items-center gap-4 shrink-0" style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '12px 20px' }}>
+      <div className="flex items-center gap-4 shrink-0 px-5 py-3 bg-[#0d1b35]" style={{ borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
         <div className="flex items-center gap-2.5">
-          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain" style={{ height: 32, opacity: 0.9 }} />
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain h-8 opacity-90"  />
           <div>
             <div className="font-bold text-sm text-[#e8eaf0]">Module Police</div>
-            <div className="text-[10px]" style={{ opacity: 0.75, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+            <div className="text-[10px] opacity-75 tracking-[1px]" style={{ fontFamily: 'DM Mono, monospace' }}>
               {agent.station?.name?.toUpperCase() || 'POSTE'} {agent.station?.canton ? `· ${agent.station.canton}` : ''}
             </div>
           </div>
@@ -613,17 +603,17 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
 
         <div className="ml-auto flex items-center gap-4">
           {/* Session ID badge */}
-          <div className="rounded-md text-[11px]" style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', fontFamily: 'DM Mono, monospace' }}>
+          <div className="rounded-md text-[11px] px-2.5 py-1" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', fontFamily: 'DM Mono, monospace' }}>
             Session: {sessionId}
           </div>
           {/* Agent info */}
-          <div className="text-xs text-right" style={{ opacity: 0.7 }}>
+          <div className="text-xs text-right opacity-70" >
             <div className="font-semibold">{agent.firstName} {agent.lastName}</div>
-            {agent.badgeNumber && <div className="text-[10px]" style={{ opacity: 0.75 }}>Badge: {agent.badgeNumber}</div>}
+            {agent.badgeNumber && <div className="text-[10px] opacity-75">Badge: {agent.badgeNumber}</div>}
           </div>
           <button
             onClick={onLogout}
-            className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
+            className="rounded-md bg-transparent cursor-pointer text-xs px-3 py-1.5" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
           >
             Deconnexion
           </button>
@@ -631,22 +621,16 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Tab bar */}
-      <div className="flex" style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '0 20px', gap: 0 }}>
+      <div className="flex gap-0 bg-[#0d1b35]" style={{ borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '0 20px' }}>
         {TABS.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            style={{
-              padding: '10px 18px', background: 'none', border: 'none', cursor: 'pointer',
-              color: activeTab === tab.id ? '#4a9eff' : 'rgba(255,255,255,0.45)',
-              borderBottom: activeTab === tab.id ? '2px solid #4a9eff' : '2px solid transparent',
-              fontSize: 13, fontWeight: activeTab === tab.id ? 700 : 400,
-              transition: 'all 0.15s',
-            }}
+            className="bg-none border-0 cursor-pointer text-[13px] px-[18px] py-2.5" style={{ color: activeTab === tab.id ? '#4a9eff' : 'rgba(255,255,255,0.45)', borderBottom: activeTab === tab.id ? '2px solid #4a9eff' : '2px solid transparent', fontWeight: activeTab === tab.id ? 700 : 400, transition: 'all 0.15s' }}
           >
             {tab.label}
             {tab.id === 'annotations' && (
-              <span className="rounded-[10px] text-[10px] text-white" style={{ marginLeft: 6, padding: '1px 6px', background: '#1d4ed8' }}>
+              <span className="rounded-[10px] text-[10px] text-white ml-1.5 px-1.5 py-px bg-[#1d4ed8]">
                 Confidentiel
               </span>
             )}
@@ -657,22 +641,16 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
         <button
           onClick={handleGeneratePDF}
           disabled={pdfLoading || isLoading}
-          style={{
-            marginLeft: 'auto', padding: '8px 16px',
-            borderRadius: 6, border: 'none',
-            background: '#1d4ed8', color: '#fff',
-            cursor: pdfLoading ? 'not-allowed' : 'pointer',
-            fontSize: 12, fontWeight: 700, alignSelf: 'center',
-          }}
+          className="ml-auto rounded-md border-0 text-white text-xs font-bold self-center px-4 py-2 bg-[#1d4ed8]" style={{ cursor: pdfLoading ? 'not-allowed' : 'pointer' }}
         >
           {pdfLoading ? 'Generation...' : 'Rapport PDF'}
         </button>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto w-full mx-auto" style={{ padding: '20px', maxWidth: 900 }}>
+      <div className="flex-1 overflow-y-auto w-full mx-auto p-5 max-w-[900px]" >
         {isLoading && (
-          <div className="text-center" style={{ padding: 60, opacity: 0.75 }}>
+          <div className="text-center p-[60px] opacity-75">
             Chargement de la session...
           </div>
         )}
@@ -703,7 +681,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Bandeau confidentiel */}
-      <div className="text-center text-[10px]" style={{ padding: '6px', background: '#0d1b35', borderTop: '1px solid rgba(255,255,255,0.06)', opacity: 0.7, letterSpacing: 1 }}>
+      <div className="text-center text-[10px] p-1.5 opacity-70 tracking-[1px] bg-[#0d1b35]" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         DOCUMENT OFFICIEL — USAGE INTERNE EXCLUSIVEMENT — boom.contact Module Police
       </div>
     </div>

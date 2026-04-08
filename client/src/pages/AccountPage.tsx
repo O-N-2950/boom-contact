@@ -116,19 +116,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   if (showDeleteModal) {
     const emailToConfirm = freshUser.email || user.email;
     return (
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(6,6,12,0.97)',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-        padding: 24,
-      }}>
-        <div style={{
-          width: '100%', maxWidth: 420,
-          background: '#0d0d18',
-          border: '1.5px solid rgba(239,68,68,0.35)',
-          borderRadius: 20, padding: 28,
-        }}>
+      <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center p-6" style={{ background: 'rgba(6,6,12,0.97)' }}>
+        <div className="w-full max-w-[420px] rounded-[20px] p-7 bg-[#0d0d18]" style={{ border: '1.5px solid rgba(239,68,68,0.35)' }}>
           {/* Icône warning */}
           <div className="text-center text-5xl mb-4">⚠️</div>
 
@@ -173,13 +162,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               autoCorrect="off"
               aria-label="Confirmation de l'adresse email"
               aria-describedby="delete-confirm-help"
-              style={{
-                width: '100%', padding: '12px 14px',
-                background: '#1a1a2e', border: '1px solid #2a2a3e',
-                borderRadius: 10, color: '#fff', fontSize: 14,
-                boxSizing: 'border-box',
-                outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none',
-              }}
+              className="w-full rounded-[10px] text-white text-sm box-border px-3.5 py-3 bg-[#1a1a2e]" style={{ border: '1px solid #2a2a3e', outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none' }}
             />
             <div id="delete-confirm-help" className="text-[11px] text-[#d0d0d0] mt-1">
               Ceci est irréversible.
@@ -200,27 +183,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   setShowDeleteModal(false);
                 } finally { setSaving(false); }
               }}
-              style={{
-                width: '100%', padding: '14px',
-                borderRadius: 12, border: 'none',
-                background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)',
-                color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.6)',
-                cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed',
-                fontSize: 15, fontWeight: 700,
-                transition: 'all 0.2s',
-              }}
+              className="w-full p-3.5 rounded-xl border-0 font-bold transition-all duration-200 text-[15px]" style={{ background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)', color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.6)', cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed' }}
             >
               {saving ? 'Suppression...' : '🗑️ Supprimer définitivement'}
             </button>
             <button
               onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
-              style={{
-                width: '100%', padding: '13px',
-                borderRadius: 12,
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'transparent', color: '#d0d0d0',
-                cursor: 'pointer', fontSize: 14, fontWeight: 600,
-              }}
+              className="w-full p-[13px] rounded-xl bg-transparent cursor-pointer text-sm font-semibold text-[#d0d0d0]" style={{ border: '1px solid rgba(255,255,255,0.25)' }}
             >
               Annuler — garder mon compte
             </button>
@@ -260,7 +229,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
           {feedback && <FeedbackBanner msg={feedback} />}
 
-          <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5" style={{ background: '#0d1f2a', border: '1px solid #1a4a6a', padding: '14px 16px' }}>
+          <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5 px-4 py-3.5 bg-[#0d1f2a]" style={{ border: '1px solid #1a4a6a' }}>
             <span className="text-[28px]">📄</span>
             <div className="text-left">
               <div className="font-bold text-[#60c8f0]">Scanner permis + carte verte</div>
@@ -281,11 +250,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
-              <div className="rounded-[10px] p-3.5" style={{ background: '#0d2a0d', border: '1px solid #1a4a1a' }}>
+              <div className="rounded-[10px] p-3.5 bg-[#0d2a0d]" style={{ border: '1px solid #1a4a1a' }}>
                 <div className="text-green-400 font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
                 {form.insuranceData.company && <div className="text-[13px] text-[#ccc]">{form.insuranceData.company}</div>}
                 {form.insuranceData.policyNumber && <div className="text-[#d0d0d0] text-xs">Police n° {form.insuranceData.policyNumber}</div>}
-                <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-green-400 text-xs cursor-pointer" style={{ border: '1px dashed #2a4a2a', padding: '6px 12px' }}>
+                <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-green-400 text-xs cursor-pointer px-3 py-1.5" style={{ border: '1px dashed #2a4a2a' }}>
                   Mettre à jour →
                 </button>
               </div>
@@ -313,11 +282,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         </div>
 
         {/* Profile card */}
-        <h1 className="absolute p-0 overflow-hidden" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Mon compte boom.contact</h1>
+        <h1 className="absolute p-0 overflow-hidden w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Mon compte boom.contact</h1>
         <div className="bg-[#111] rounded-2xl p-5 mb-5" style={{ border: '1px solid #222' }}>
           <div className="text-[#FF3500] font-black text-xl">💥 boom.contact</div>
-          <div className="text-[#d0d0d0] text-[13px]" style={{ marginTop: 2 }}>{freshUser.email}</div>
-          <div className="flex gap-2.5" style={{ marginTop: 14 }}>
+          <div className="text-[#d0d0d0] text-[13px] mt-0.5" >{freshUser.email}</div>
+          <div className="flex gap-2.5 mt-3.5" >
             <StatBadge value={freshUser.credits === 999999 ? '∞' : freshUser.credits} label="crédits" highlight />
             <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
             <StatBadge value={history.length || '—'} label="constats" />
@@ -329,7 +298,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* Tabs */}
         <div className="flex gap-1.5 mb-5">
           {(['garage', 'history', 'profile'] as PageTab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222'), padding: '9px 6px' }}>
+            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer px-1.5 py-[9px]" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222') }}>
               {t === 'garage' ? '🚗 Garage' : t === 'history' ? '📋 Historique' : '👤 Profil'}
             </button>
           ))}
@@ -340,22 +309,22 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           <>
             <div className="flex justify-between items-center mb-3">
               <div className="text-white font-bold">Mon garage ({vehicles.length})</div>
-              <button onClick={startAdd} className="bg-[#FF3500] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer" style={{ padding: '8px 14px' }}>+ Ajouter</button>
+              <button onClick={startAdd} className="bg-[#FF3500] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
             </div>
             {vehicles.length === 0 && (
               <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
-                <button onClick={startAdd} className="mt-4" style={{ width: 'auto', padding: '11px 20px' }}>➕ Ajouter mon premier véhicule</button>
+                <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]">➕ Ajouter mon premier véhicule</button>
               </EmptyState>
             )}
-            {vehicles.map((v: any) => (
+            {vehicles.map((v: Record<string, unknown>) => (
               <div key={v.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
                 <div className="flex justify-between">
                   <div>
                     <div>
                       <div className="text-white font-bold">{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
                     </div>
-                    {v.plate && <div className="text-sm" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{v.plate}</div>}
-                    <div className="text-xs" style={{ color: '#8a8a8a', marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                    {v.plate && <div className="text-sm text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
+                    <div className="text-xs mt-0.5 text-[#8a8a8a]">{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
                   <div className="flex gap-1.5">
                     <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule">✏️</button>
@@ -363,8 +332,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
-                  ? <div className="mt-2.5 rounded-lg text-xs text-green-400" style={{ background: '#0d2a0d', padding: '7px 12px' }}>🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
-                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer" style={{ border: '1px dashed #2a2a2a', padding: '5px 10px', color: '#8a8a8a' }}>+ Ajouter assurance</button>
+                  ? <div className="mt-2.5 rounded-lg text-xs text-green-400 px-3 py-[7px] bg-[#0d2a0d]">🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
+                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer px-2.5 py-[5px] text-[#8a8a8a]" style={{ border: '1px dashed #2a2a2a' }}>+ Ajouter assurance</button>
                 }
               </div>
             ))}
@@ -379,7 +348,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {!historyQ.isLoading && history.length === 0 && (
               <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
-            {history.map((s: any) => {
+            {history.map((s: Record<string, unknown>) => {
               const a = s.participantA || {};
               const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
               const date = new Date(s.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -388,13 +357,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 <div key={s.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="text-xs" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{s.id}</div>
-                      <div className="text-white font-semibold" style={{ marginTop: 2 }}>Plaque : {plate}</div>
-                      <div className="text-xs" style={{ color: '#8a8a8a', marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
+                      <div className="text-xs text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{s.id}</div>
+                      <div className="text-white font-semibold mt-0.5" >Plaque : {plate}</div>
+                      <div className="text-xs mt-0.5 text-[#8a8a8a]">{date} · {statusIcon} {s.status}</div>
                       {s.accident?.location?.address && <div className="text-[11px] mt-1 text-[#8a8a8a]">📍 {s.accident.location.address}</div>}
                     </div>
                     {s.pdfUrl && (
-                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg text-xs no-underline" style={{ background: '#1a1a1a', border: '1px solid #333', padding: '7px 12px', color: '#ccc' }}>📄 PDF</a>
+                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg text-xs no-underline px-3 py-[7px] bg-[#1a1a1a] text-[#ccc]" style={{ border: '1px solid #333' }}>📄 PDF</a>
                     )}
                   </div>
                 </div>
@@ -418,11 +387,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
               <div className="flex justify-between items-center" style={{ marginBottom: editingEmail ? 14 : 0 }}>
                 <div>
-                  <div className="text-[#d0d0d0] text-[11px] font-semibold" style={{ marginBottom: 3 }}>EMAIL</div>
+                  <div className="text-[#d0d0d0] text-[11px] font-semibold mb-[3px]" >EMAIL</div>
                   <div className="text-white text-sm">{freshUser.email || user.email}</div>
                 </div>
                 <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
-                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer" style={{ border: '1px solid #2a2a2a', padding: '5px 10px' }}>
+                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #2a2a2a' }}>
                   {editingEmail ? 'Annuler' : 'Modifier →'}
                 </button>
               </div>
@@ -452,7 +421,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Profil — infos personnelles */}
             <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
-              <div className="flex justify-between items-center" style={{ marginBottom: 14 }}>
+              <div className="flex justify-between items-center mb-3.5" >
                 <div className="text-white font-bold text-sm">👤 Informations personnelles</div>
                 {!editingProfile && (
                   <button onClick={() => {
@@ -465,7 +434,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     });
                     setEditingProfile(true);
                   }}
-                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer" style={{ border: '1px solid #2a2a2a', padding: '5px 10px' }}>
+                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #2a2a2a' }}>
                     Modifier →
                   </button>
                 )}
@@ -499,7 +468,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
                   <div className="flex gap-2 mt-1">
                     <button onClick={() => setEditingProfile(false)}
-                      className="flex-1 bg-transparent rounded-[10px] text-[#d0d0d0] cursor-pointer text-[13px]" style={{ border: '1px solid #2a2a2a', padding: '11px' }}>
+                      className="flex-1 bg-transparent rounded-[10px] text-[#d0d0d0] cursor-pointer text-[13px] p-[11px]"  style={{ border: '1px solid #2a2a2a' }}>
                       Annuler
                     </button>
                     <button onClick={async () => {
@@ -541,12 +510,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               </div>
               <button
                 onClick={() => setShowDeleteModal(true)}
-                style={{
-                  width: '100%', padding: '11px', borderRadius: 10,
-                  border: '1px solid rgba(239,68,68,0.3)',
-                  background: 'rgba(239,68,68,0.06)',
-                  color: '#ef4444', cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                }}
+                className="w-full p-[11px] rounded-[10px] cursor-pointer text-[13px] font-semibold text-[#ef4444]" style={{ border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.06)' }}
               >
                 🗑️ Supprimer mon compte
               </button>
@@ -562,16 +526,16 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <div className="text-[#d0d0d0] text-[11px] font-semibold mb-1" style={{ letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
+      <div className="text-[#d0d0d0] text-[11px] font-semibold mb-1 tracking-[0.5px]">{label.toUpperCase()}</div>
       <input aria-label={label} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-        className="rounded-[10px] text-white text-sm w-full" style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', padding: '11px 14px', boxSizing: 'border-box' as const }} />
+        className="rounded-[10px] text-white text-sm w-full px-3.5 py-[11px] box-border bg-[#1a1a1a]" style={{ border: '1px solid #2a2a2a' }} />
     </div>
   );
 }
 
-function StatBadge({ value, label, highlight }: { value: any; label: string; highlight?: boolean }) {
+function StatBadge({ value, label, highlight }: { value: string | number; label: string; highlight?: boolean }) {
   return (
-    <div className="rounded-[10px] flex-1" style={{ background: '#1a1a1a', padding: '8px 14px', textAlign: 'center' as const }}>
+    <div className="rounded-[10px] flex-1 px-3.5 py-2 bg-[#1a1a1a] text-center">
       <div className="text-xl font-black" style={{ color: highlight ? '#FF3500' : '#fff' }}>{value}</div>
       <div className="text-[11px] text-[#8a8a8a]">{label}</div>
     </div>
@@ -580,7 +544,7 @@ function StatBadge({ value, label, highlight }: { value: any; label: string; hig
 
 function FeedbackBanner({ msg }: { msg: string }) {
   const ok = msg.startsWith('✅');
-  return <div className="rounded-[10px] mb-4 text-sm" style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a'), padding: '12px 16px', color: '#ccc' }}>{msg}</div>;
+  return <div className="rounded-[10px] mb-4 text-sm px-4 py-3 text-[#ccc]" style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a') }}>{msg}</div>;
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
@@ -594,7 +558,7 @@ function InfoCard({ label, value }: { label: string; value: string }) {
 
 function EmptyState({ icon, title, subtitle, children }: { icon: string; title: string; subtitle: string; children?: React.ReactNode }) {
   return (
-    <div className="bg-[#111] rounded-[14px] p-8" style={{ border: '1px dashed #2a2a2a', textAlign: 'center' as const }}>
+    <div className="bg-[#111] rounded-[14px] p-8 text-center" style={{ border: '1px dashed #2a2a2a' }}>
       <div className="text-[40px] mb-3">{icon}</div>
       <div className="text-white font-bold mb-1.5">{title}</div>
       <div className="text-[#d0d0d0] text-sm leading-relaxed">{subtitle}</div>

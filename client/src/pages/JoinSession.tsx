@@ -21,7 +21,7 @@ const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div className="flex items-center justify-center p-10"><div className="rounded-full" style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
@@ -220,7 +220,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       color: vB?.color, type: detectedType || 'car',
       brand: vB?.brand, model: vB?.model,
     };
-    (window as any).__boomVehicleB = bData;
+    window.__boomVehicleB = bData;
 
     // Sauvegarder dans la session
     if (sessionId) {
@@ -292,26 +292,26 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
   // ── LANDING ──────────────────────────────────────────────
   if (step === 'landing') return (
-    <div className="mx-auto min-h-[100svh] flex flex-col justify-center" style={{ maxWidth: 420, padding: '32px 24px' }}>
+    <div className="mx-auto min-h-[100svh] flex flex-col justify-center max-w-[420px] px-6 py-8">
 
       {/* Animated header */}
-      <div className="text-center" style={{ marginBottom: 36 }}>
-        <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain mb-4" style={{ width: 100, height: 100, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
-        <h1 className="text-[32px] mb-2" style={{ fontFamily: 'Oswald, sans-serif', letterSpacing: '-0.5px' }}>
+      <div className="text-center mb-9" >
+        <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain mb-4 w-[100px] h-[100px] inline-block"  style={{ animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
+        <h1 className="text-[32px] mb-2 tracking-[-0.5px]" style={{ fontFamily: 'Oswald, sans-serif' }}>
           <span style={{ color: 'var(--boom)' }}>boom</span>
-          <span style={{ opacity: 0.7 }}>.</span>
+          <span className="opacity-70">.</span>
           <span>contact</span>
         </h1>
-        <p className="text-sm" style={{ opacity: 0.75, lineHeight: 1.65 }}>
+        <p className="text-sm opacity-75 leading-[1.65]">
           Vous avez été invité à rejoindre un constat d'accident partagé.
         </p>
       </div>
 
       {/* Session badge */}
       {sessionId && (
-        <div className="rounded-xl text-center mb-6" style={{ padding: '16px 20px', background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)' }}>
-          <div className="text-[10px] uppercase mb-1.5" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>Session</div>
-          <div className="text-xl font-bold" style={{ letterSpacing: 2, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
+        <div className="rounded-xl text-center mb-6 px-5 py-4" style={{ background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)' }}>
+          <div className="text-[10px] uppercase mb-1.5 opacity-70 tracking-[2px]" style={{ fontFamily: 'DM Mono, monospace' }}>Session</div>
+          <div className="text-xl font-bold tracking-[2px]" style={{ fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
         </div>
       )}
 
@@ -331,13 +331,13 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-3" style={{ padding: '10px 0', borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
             <span className="text-xl shrink-0">{item.icon}</span>
-            <span className="text-[13px]" style={{ opacity: 0.7 }}>{item.text}</span>
+            <span className="text-[13px] opacity-70" >{item.text}</span>
           </div>
         ))}
       </div>
 
       {error && (
-        <div className="p-4 rounded-[10px] text-[13px] text-red-500" style={{ marginBottom: 14, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}>
+        <div className="p-4 rounded-[10px] text-[13px] text-red-500 mb-3.5"  style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}>
           <div className="font-bold mb-1.5">⚠️ {error}</div>
           {(error.includes('introuvable') || error.includes('expir') || error.includes('not found')) && (
             <div className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
@@ -349,7 +349,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
       {/* Sélecteur de langue — chaque conducteur choisit sa propre langue */}
       <div className="mb-5">
-        <div className="text-[11px] uppercase mb-2.5 text-center" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
+        <div className="text-[11px] uppercase mb-2.5 text-center opacity-70 tracking-[1px]" style={{ fontFamily: 'DM Mono, monospace' }}>
           Votre langue / Your language / Ihre Sprache / La tua lingua
         </div>
         <div className="flex justify-center gap-2">
@@ -360,17 +360,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                 key={lang}
                 onClick={() => handleLangChange(lang)}
                 title={LANG_META[lang].label}
-                style={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-                  padding: '10px 12px', borderRadius: 10,
-                  border: isActive ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.12)',
-                  background: isActive ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.04)',
-                  cursor: 'pointer', fontSize: 24,
-                  touchAction: 'manipulation',
-                  WebkitTapHighlightColor: 'transparent',
-                  minWidth: 60, minHeight: 60,
-                  transition: 'all 0.15s',
-                }}
+                className="flex flex-col items-center gap-1 rounded-[10px] cursor-pointer text-2xl min-w-[60px] min-h-[60px] px-3 py-2.5 touch-manipulation" style={{ border: isActive ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.12)', background: isActive ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.04)', WebkitTapHighlightColor: 'transparent', transition: 'all 0.15s' }}
               >
                 <span>{LANG_META[lang].flag}</span>
                 <span className="text-[10px]" style={{ fontWeight: isActive ? 700 : 400, color: isActive ? 'var(--boom)' : 'rgba(255,255,255,0.5)' }}>
@@ -384,9 +374,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
       {/* Email conducteur B */}
       <div className="mb-4">
-        <div className="text-xs font-semibold mb-2 flex items-center gap-1.5" style={{ opacity: 0.7 }}>
+        <div className="text-xs font-semibold mb-2 flex items-center gap-1.5 opacity-70" >
           📧 Votre email
-          <span className="font-normal" style={{ opacity: 0.7 }}>(pour recevoir le PDF)</span>
+          <span className="font-normal opacity-70" >(pour recevoir le PDF)</span>
         </div>
         <input
           type="email"
@@ -399,28 +389,16 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           }}
           placeholder="votre@email.com"
           aria-label="Votre adresse email"
-          style={{
-            width: '100%', padding: '13px 14px', borderRadius: 10,
-            border: '1.5px solid rgba(255,255,255,0.25)',
-            background: 'rgba(255,255,255,0.05)', color: 'var(--text)',
-            fontSize: 15, boxSizing: 'border-box' as const, fontFamily: 'inherit',
-          }}
+          className="w-full rounded-[10px] px-3.5 py-[13px] box-border text-[15px]" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontFamily: 'inherit' }}
         />
-        <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 6 }}>
+        <div className="text-[11px] opacity-70 mt-1.5" >
           Optionnel — le PDF vous sera envoyé automatiquement après signature
         </div>
       </div>
 
-      <button onClick={join} disabled={joining || !sessionId} style={{
-        width: '100%', padding: '18px', borderRadius: 12, border: 'none',
-        background: joining || !sessionId ? 'rgba(255,53,0,0.4)' : 'var(--boom)',
-        color: '#fff', cursor: joining || !sessionId ? 'not-allowed' : 'pointer',
-        fontSize: 16, fontWeight: 700, transition: 'all 0.2s',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-        boxShadow: '0 8px 32px rgba(255,53,0,0.35)',
-      }}>
+      <button onClick={join} disabled={joining || !sessionId} className="w-full p-[18px] rounded-xl border-0 text-white text-base font-bold transition-all duration-200 flex items-center justify-center gap-3" style={{ background: joining || !sessionId ? 'rgba(255,53,0,0.4)' : 'var(--boom)', cursor: joining || !sessionId ? 'not-allowed' : 'pointer', boxShadow: '0 8px 32px rgba(255,53,0,0.35)' }}>
         {joining ? (
-          <><span className="text-xl" style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span> Connexion…</>
+          <><span className="text-xl inline-block"  style={{ animation: 'spin 1s linear infinite' }}>⏳</span> Connexion…</>
         ) : joined ? (
           <><span>🤝</span> Connecté ! Démarrage…</>
         ) : (
@@ -428,7 +406,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
       </button>
 
-      <p className="text-center mt-2.5 text-[11px]" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
+      <p className="text-center mt-2.5 text-[11px] opacity-70 tracking-[1px]" style={{ fontFamily: 'DM Mono, monospace' }}>
         GRATUIT · SANS INSCRIPTION · CHIFFRÉ
       </p>
     </div>
@@ -438,25 +416,19 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   return (
     <div className="mx-auto min-h-[100svh] flex flex-col max-w-[420px]">
       {/* Header */}
-      <div className="flex items-center gap-3 shrink-0" style={{ padding: '14px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)' }}>
-        <div className="shrink-0" style={{ width: 36, height: 36 }}>
+      <div className="flex items-center gap-3 shrink-0 px-5 py-3.5" style={{ borderBottom: '1px solid rgba(240,237,232,0.06)' }}>
+        <div className="shrink-0 w-9 h-9" >
           <img src="/logo.webp" alt="boom.contact" loading="lazy" className="w-full h-full object-contain" />
         </div>
         <div>
           <div className="font-bold text-sm">boom.contact</div>
-          <div className="text-[10px]" style={{ opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+          <div className="text-[10px] opacity-70 tracking-[1px]" style={{ fontFamily: 'DM Mono, monospace' }}>
             CONDUCTEUR {urlRole} · SESSION {sessionId}
           </div>
         </div>
         <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
-            <button onClick={goBack} style={{
-              display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
-              borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)',
-              background: 'rgba(255,255,255,0.05)', cursor: 'pointer',
-              fontSize: 13, fontWeight: 600, color: 'var(--text)',
-              touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
-            }}>← Retour</button>
+            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← Retour</button>
           )}
         </div>
       </div>
@@ -527,8 +499,8 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             brand={participantData.vehicle?.brand}
             existingVehicles={
               // Position de A : depuis window (si même appareil) ou depuis la session
-              (window as any).__boomVehicleAPos
-                ? [{ role: 'A', pos: (window as any).__boomVehicleAPos }]
+              window.__boomVehicleAPos
+                ? [{ role: 'A', pos: window.__boomVehicleAPos }]
                 : sessionAccidentData?.vehicleAPos
                   ? [{ role: 'A', pos: sessionAccidentData.vehicleAPos }]
                   : []
@@ -559,7 +531,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                   onChange={setDamagedZones}
                 />
             <div style={{ padding: '0 20px 20px' }}>
-              <button onClick={handleDiagramDone} className="w-full rounded-[10px] border-0 text-white cursor-pointer text-[15px] font-bold" style={{ padding: '16px', background: 'var(--boom)' }}>
+              <button onClick={handleDiagramDone} className="w-full rounded-[10px] border-0 text-white cursor-pointer text-[15px] font-bold p-4"  style={{ background: 'var(--boom)' }}>
                 Continuer → Signature
               </button>
             </div>
@@ -570,25 +542,25 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <>
             {/* Résumé avant signature B */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div className="text-[11px] font-bold uppercase mb-3" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'monospace' }}>
+              <div className="text-[11px] font-bold uppercase mb-3 opacity-70 tracking-[2px]" style={{ fontFamily: 'monospace' }}>
                 Vérifiez avant de signer
               </div>
-              <div className="mb-2.5 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
-                <div className="text-[11px] mb-1.5 font-semibold" style={{ opacity: 0.75 }}>🚗 Votre véhicule</div>
+              <div className="mb-2.5 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
+                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 Votre véhicule</div>
                 <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
-                  {participantData.vehicle?.licensePlate && <span className="ml-2" style={{ fontFamily: 'monospace', color: '#00E5FF' }}>{(participantData.vehicle as any).licensePlate}</span>}
+                  {participantData.vehicle?.licensePlate && <span className="ml-2 text-[#00E5FF]" style={{ fontFamily: 'monospace' }}>{(participantData.vehicle as any).licensePlate}</span>}
                 </div>
                 {participantData.insurance?.company && (
-                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 3 }}>🛡️ {participantData.insurance.company}</div>
+                  <div className="text-xs mt-[3px] opacity-75">🛡️ {participantData.insurance.company}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div className="text-xs mt-0.5 opacity-75">👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
               </div>
               <button
                 onClick={() => setStep('form')}
-                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2" style={{ padding: '10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
+                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2 p-2.5"  style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
               >
                 ✏️ Corriger mes informations
               </button>

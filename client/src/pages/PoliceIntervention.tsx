@@ -42,7 +42,7 @@ const TABS: { id: InterventionTab; label: string }[] = [
 
 export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }: Props) {
   const [tab, setTab] = useState<InterventionTab>('constat');
-  const [sessionData, setSessionData] = useState<any>(null);
+  const [sessionData, setSessionData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -127,8 +127,8 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
     });
 
     // Listen for driver data updates
-    socket.on('data-updated', ({ role, data }: { role: string; data: any }) => {
-      setSessionData((prev: any) => {
+    socket.on('data-updated', ({ role, data }: { role: string; data: Record<string, unknown> }) => {
+      setSessionData((prev: Record<string, unknown> | null) => {
         if (!prev) return prev;
         const key = `participant${role}`;
         return { ...prev, [key]: { ...(prev[key] || {}), ...data } };
@@ -174,8 +174,8 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
-    } catch (e: any) {
-      setError(e.message || 'Erreur lors de la sauvegarde');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Erreur lors de la sauvegarde');
     } finally {
       setSaving(false);
     }
@@ -194,8 +194,8 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
       link.href = `data:application/pdf;base64,${result.pdfBase64}`;
       link.download = result.filename;
       link.click();
-    } catch (e: any) {
-      setError(e.message || 'Erreur lors de la generation du rapport');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Erreur lors de la generation du rapport');
     } finally {
       setGenerating(false);
     }
@@ -212,7 +212,7 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
   return (
     <div className="min-h-screen bg-[#06060C] text-white">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-b border-white/10">
+      <header className="sticky top-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-b border-white/25">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
@@ -226,16 +226,16 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
             </button>
             <div>
               <h1 className="text-sm font-semibold text-blue-400">Intervention Police</h1>
-              <p className="text-[10px] text-white/40">Session {sessionId}</p>
+              <p className="text-[10px] text-white/55">Session {sessionId}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-white/40 hidden sm:block">
+            <span className="text-xs text-white/55 hidden sm:block">
               {agent.firstName} {agent.lastName}
             </span>
             <button
               onClick={onLogout}
-              className="text-xs text-white/40 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="text-xs text-white/55 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Deconnexion"
             >
               Quitter
@@ -249,8 +249,10 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
             {TABS.map(t => (
               <button
                 key={t.id}
+                id={`tab-${t.id}`}
                 role="tab"
                 aria-selected={tab === t.id}
+                aria-controls={`tabpanel-${t.id}`}
                 onClick={() => setTab(t.id)}
                 className={`px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-colors min-h-[44px] ${
                   tab === t.id
@@ -288,49 +290,61 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
           </div>
         )}
 
-        <div role="tabpanel">
-          {tab === 'constat' && sessionData && (
+        {tab === 'constat' && sessionData && (
+          <div id="tabpanel-constat" role="tabpanel" aria-labelledby="tab-constat">
             <ConstatDataView
               accident={sessionData.accident}
               participantA={sessionData.participantA}
               participantB={sessionData.participantB}
               vehicleCount={sessionData.vehicleCount}
             />
-          )}
+          </div>
+        )}
 
-          {tab === 'infractions' && (
+        {tab === 'infractions' && (
+          <div id="tabpanel-infractions" role="tabpanel" aria-labelledby="tab-infractions">
             <InfractionForm infractions={infractions} onChange={setInfractions} />
-          )}
+          </div>
+        )}
 
-          {tab === 'drivers' && (
+        {tab === 'drivers' && (
+          <div id="tabpanel-drivers" role="tabpanel" aria-labelledby="tab-drivers">
             <DriverStateForm driverStates={driverStates} onChange={setDriverStates} />
-          )}
+          </div>
+        )}
 
-          {tab === 'conditions' && (
+        {tab === 'conditions' && (
+          <div id="tabpanel-conditions" role="tabpanel" aria-labelledby="tab-conditions">
             <ConditionsForm conditions={conditions} onChange={setConditions} />
-          )}
+          </div>
+        )}
 
-          {tab === 'witnesses' && (
+        {tab === 'witnesses' && (
+          <div id="tabpanel-witnesses" role="tabpanel" aria-labelledby="tab-witnesses">
             <WitnessForm witnesses={witnesses} onChange={setWitnesses} />
-          )}
+          </div>
+        )}
 
-          {tab === 'observations' && (
+        {tab === 'observations' && (
+          <div id="tabpanel-observations" role="tabpanel" aria-labelledby="tab-observations">
             <PoliceObservations
               observations={observations}
               responsibilityEstimate={responsibilityEstimate}
               onObservationsChange={setObservations}
               onResponsibilityChange={setResponsibilityEstimate}
             />
-          )}
+          </div>
+        )}
 
-          {tab === 'photos' && (
+        {tab === 'photos' && (
+          <div id="tabpanel-photos" role="tabpanel" aria-labelledby="tab-photos">
             <PolicePhotoCapture photos={policePhotos} onChange={setPolicePhotos} />
-          )}
-        </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-t border-white/10">
+      <div className="fixed bottom-0 left-0 right-0 z-30 bg-[#0a0a14]/95 backdrop-blur border-t border-white/25">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <button
             onClick={handleSave}

@@ -60,33 +60,23 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <button onClick={onLogin} style={primaryBtnStyle}>
           Créer mon compte gratuit →
         </button>
-        <button onClick={() => setShowShare(true)} style={{
-          width: '100%', marginTop: 8, padding: '12px',
-          borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)',
-          background: 'transparent', color: 'rgba(240,237,232,0.6)',
-          cursor: 'pointer', fontSize: 13, fontWeight: 600,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-        }}>
+        <button onClick={() => setShowShare(true)} className="w-full mt-2 p-3 rounded-[10px] bg-transparent cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.6)' }}>
           <span>📤</span> Partager à mes proches
         </button>
         {showShare && <ShareBoom onClose={() => setShowShare(false)} context="post_constat" />}
 
         {/* Rappel garage — juste après inscription */}
-        <div style={{
-          marginTop: 10, padding: '12px 16px', borderRadius: 12,
-          background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)',
-          display: 'flex', alignItems: 'center', gap: 12,
-        }}>
+        <div className="mt-2.5 rounded-xl flex items-center gap-3 px-4 py-3" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
           <span className="text-[22px]">🚗</span>
           <div className="flex-1">
             <div className="text-[13px] font-bold" style={{ color: 'rgba(240,237,232,0.9)' }}>
               Ensuite, enregistre ton véhicule
             </div>
-            <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 2 }}>
+            <div className="text-[11px] opacity-70 mt-0.5" >
               Scan permis de circuler + carte verte · 30 sec · plus jamais à resaisir
             </div>
           </div>
-          <span className="text-base" style={{ opacity: 0.7 }}>›</span>
+          <span className="text-base opacity-70" >›</span>
         </div>
 
         <div style={dividerStyle}>
@@ -100,16 +90,16 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div className="flex justify-between items-start mb-2.5">
             <div>
               <div className="font-black text-base text-[#FF5533]">🔥 Pack famille</div>
-              <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>3 constats à partager avec vos proches</div>
+              <div className="text-[#d0d0d0] text-xs mt-0.5" >3 constats à partager avec vos proches</div>
             </div>
-            <div style={{ textAlign: 'right' as const }}>
+            <div className="text-right">
               <div className="text-white font-black text-[22px]">12.90</div>
               <div className="text-[#d0d0d0] text-[11px]">CHF / EUR</div>
             </div>
           </div>
 
           {/* Scénarios marketing */}
-          <div className="flex gap-1.5" style={{ flexDirection: 'column' as const, marginBottom: 14 }}>
+          <div className="flex gap-1.5 mb-3.5"  style={{ flexDirection: 'column' as const }}>
             <Scenario icon="📱" text="Votre enfant appelle — accident. Envoyez-lui un constat en 3 secondes sur son mobile." />
             <Scenario icon="🏢" text="Employé avec véhicule société. Transférez un crédit par WhatsApp instantanément." />
             <Scenario icon="👫" text="Ami en difficulté à l'étranger. Il reçoit un lien, pas de compte requis." />
@@ -139,12 +129,12 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           </div>
         </div>
 
-        <div className="rounded-xl p-4 mb-4" style={{ background: '#0d1a0d', border: '1px solid #1a3a1a' }}>
+        <div className="rounded-xl p-4 mb-4 bg-[#0d1a0d]" style={{ border: '1px solid #1a3a1a' }}>
           <div className="text-green-400 font-bold mb-2.5">✅ Votre compte boom.contact</div>
           <div className="text-[#d0d0d0] text-[13px] leading-relaxed">
             Vos véhicules sont mémorisés. Lors de votre prochain accident, vous partez directement à l'étape QR — aucune saisie, aucun scan.
           </div>
-          <button onClick={onAccount} className="mt-2.5 text-xs" style={{ padding: '8px 14px' }}>
+          <button onClick={onAccount} className="mt-2.5 text-xs px-3.5 py-2">
             Gérer mon garage →
           </button>
         </div>
@@ -154,7 +144,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div className="font-black text-[15px] mb-1.5 text-[#FF5533]">
             🎁 Offrez un constat par WhatsApp
           </div>
-          <div className="text-[#d0d0d0] text-[13px] leading-relaxed" style={{ marginBottom: 14 }}>
+          <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3.5" >
             Un de vos crédits = un lien unique à envoyer à <strong className="text-white">n'importe qui</strong>, sans que la personne ait besoin d'un compte.
           </div>
           <PackChoice onSelect={onBuyPack} />
@@ -175,24 +165,16 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       </div>
 
       {/* Envoyer par WhatsApp */}
-      <div className="rounded-xl p-4 mb-3" style={{ background: '#0d1a1a', border: '1px solid #1a3a3a' }}>
+      <div className="rounded-xl p-4 mb-3 bg-[#0d1a1a]" style={{ border: '1px solid #1a3a3a' }}>
         <div className="font-bold mb-2 text-[#60c8f0]">📲 Offrir un constat par WhatsApp</div>
         <div className="text-[#d0d0d0] text-[13px] mb-3 leading-relaxed">
           En 1 clic, envoyez un lien à votre enfant, employé ou ami. Il fait son constat sans compte ni paiement — décompté de vos crédits.
         </div>
         <div className="flex gap-2">
-          <button onClick={() => sendGift(1)} disabled={grantMut.isPending} style={{
-            flex: 1, background: '#25D366', color: '#fff', border: 'none',
-            borderRadius: 8, padding: '11px 12px', fontWeight: 700, cursor: 'pointer', fontSize: 13,
-          }}>
+          <button onClick={() => sendGift(1)} disabled={grantMut.isPending} className="flex-1 text-white border-0 rounded-lg font-bold cursor-pointer text-[13px] px-3 py-[11px] bg-[#25D366]">
             {grantMut.isPending ? '...' : '📲 Envoyer 1 constat'}
           </button>
-          <button onClick={() => sendGift(3)} disabled={grantMut.isPending || authUser.credits < 3} style={{
-            flex: 1, background: authUser.credits >= 3 ? '#1da851' : '#1a1a1a',
-            color: authUser.credits >= 3 ? '#fff' : '#aaa',
-            border: `1px solid ${authUser.credits >= 3 ? '#1da851' : '#333'}`,
-            borderRadius: 8, padding: '11px 12px', fontWeight: 700, cursor: authUser.credits >= 3 ? 'pointer' : 'default', fontSize: 13,
-          }}>
+          <button onClick={() => sendGift(3)} disabled={grantMut.isPending || authUser.credits < 3} className="flex-1 rounded-lg font-bold text-[13px]" style={{ background: authUser.credits >= 3 ? '#1da851' : '#1a1a1a', color: authUser.credits >= 3 ? '#fff' : '#aaa', border: `1px solid ${authUser.credits >= 3 ? '#1da851' : '#333'}`, padding: '11px 12px', cursor: authUser.credits >= 3 ? 'pointer' : 'default' }}>
             📲 Envoyer 3 constats
           </button>
         </div>
@@ -205,12 +187,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div className="text-[#d0d0d0] text-[13px] leading-normal mb-2.5">
           Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.
         </div>
-        <button onClick={() => setShowShare(true)} style={{
-          width: '100%', padding: '11px', borderRadius: 10,
-          border: 'none', background: 'var(--boom)',
-          color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 700,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-        }}>
+        <button onClick={() => setShowShare(true)} className="w-full p-[11px] rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold flex items-center justify-center gap-2" style={{ background: 'var(--boom)' }}>
           <span className="text-lg">📤</span> Partager à mes proches
         </button>
       </div>
@@ -222,14 +199,14 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div className="text-[#d0d0d0] text-[13px] leading-normal">
           Flotte d'entreprise, moto, camping-car ? Chaque véhicule scanné = plus jamais de saisie lors d'un accident.
         </div>
-        <button onClick={onAccount} className="mt-2.5 text-[13px]" style={{ padding: '9px 14px' }}>
+        <button onClick={onAccount} className="mt-2.5 text-[13px] px-3.5 py-[9px]">
           Gérer mon garage →
         </button>
       </div>
 
       {/* Recharger si peu de crédits */}
       {authUser.credits <= 2 && (
-        <div className="rounded-xl p-3.5" style={{ background: '#1a1000', border: '1px solid #3a2000' }}>
+        <div className="rounded-xl p-3.5 bg-[#1a1000]" style={{ border: '1px solid #3a2000' }}>
           <div className="font-bold mb-1.5 text-[#fbbf24]">⚡ Il vous reste seulement {authUser.credits} crédit{authUser.credits > 1 ? 's' : ''}</div>
           <div className="text-[#d0d0d0] text-[13px] mb-2.5">
             Rechargez maintenant et profitez des remises sur les packs famille et entreprise.
@@ -255,7 +232,7 @@ function Benefit({ icon, text }: { icon: string; text: string }) {
 
 function Scenario({ icon, text }: { icon: string; text: string }) {
   return (
-    <div className="bg-[#111] rounded-lg flex gap-2.5 items-start" style={{ padding: '10px 12px' }}>
+    <div className="bg-[#111] rounded-lg flex gap-2.5 items-start px-3 py-2.5">
       <span className="text-base shrink-0">{icon}</span>
       <span className="text-[#d0d0d0] text-xs leading-normal">{text}</span>
     </div>
@@ -271,15 +248,11 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
   return (
     <div className="flex gap-2">
       {packs.map(p => (
-        <button key={p.id} onClick={onSelect} style={{
-          flex: 1, background: p.star ? '#FF3500' : '#1a1a1a',
-          border: `1px solid ${p.star ? '#FF3500' : '#333'}`,
-          borderRadius: 10, padding: '10px 8px', cursor: 'pointer', textAlign: 'center' as const,
-        }}>
-          {p.star && <div className="text-white text-[9px] font-bold" style={{ marginBottom: 3 }}>⭐ POPULAIRE</div>}
+        <button key={p.id} onClick={onSelect} className="flex-1 rounded-[10px] cursor-pointer" style={{ background: p.star ? '#FF3500' : '#1a1a1a', border: `1px solid ${p.star ? '#FF3500' : '#333'}`, padding: '10px 8px', textAlign: 'center' as const }}>
+          {p.star && <div className="text-white text-[9px] font-bold mb-[3px]" >⭐ POPULAIRE</div>}
           <div className="text-white font-bold text-[13px]">{p.label}</div>
           <div className="font-black text-base" style={{ color: p.star ? '#ffd0c0' : '#FF5533' }}>CHF {p.price}</div>
-          <div className="text-[10px]" style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#aaa', marginTop: 2 }}>{p.note}</div>
+          <div className="text-[10px] mt-0.5"  style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#aaa' }}>{p.note}</div>
         </button>
       ))}
     </div>

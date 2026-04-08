@@ -63,9 +63,9 @@ export async function initGA4() {
     s.async = true;
     s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
     document.head.appendChild(s);
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag(...args: unknown[]) { (window as any).dataLayer.push(args); }
-    (window as any).gtag = gtag;
+    window.dataLayer = window.dataLayer || [];
+    function gtag(...args: unknown[]) { window.dataLayer.push(args); }
+    window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', id, { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure' });
   } catch (e) {
@@ -75,8 +75,7 @@ export async function initGA4() {
 
 function gtag(...args: unknown[]) {
   try {
-    const w = window as any;
-    if (typeof w.gtag === 'function') w.gtag(...args);
+    if (typeof window.gtag === 'function') window.gtag(...args);
   } catch (e) { console.warn('[Analytics] gtag call failed', e); }
 }
 

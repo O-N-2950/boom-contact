@@ -137,69 +137,60 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
     <div className="p-6">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="mb-2.5" style={{ fontSize: 60 }}>🎉</div>
-        <h2 className="font-bold text-green-500 mb-2" style={{ fontSize: 21 }}>
+        <div className="mb-2.5 text-[60px]">🎉</div>
+        <h2 className="font-bold text-green-500 mb-2 text-[21px]">
           Constat finalisé !
         </h2>
-        <p className="text-[13px]" style={{ opacity: 0.75, lineHeight: 1.7 }}>
+        <p className="text-[13px] opacity-75 leading-[1.7]">
           Les deux parties ont signé. Le document numérique certifié est prêt.
         </p>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8,
-          padding: '5px 14px', borderRadius: 20,
-          background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
-          <span className="text-[10px] text-green-500" style={{ fontFamily: 'monospace', letterSpacing: 1 }}>
+        <div className="inline-flex items-center gap-2 mt-2 rounded-[20px] px-3.5 py-[5px]" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
+          <span className="text-[10px] text-green-500 tracking-[1px]" style={{ fontFamily: 'monospace' }}>
             SESSION {sessionId}
           </span>
         </div>
       </div>
 
       {/* PDF card */}
-      <div style={{ marginBottom: 16, padding: 14, borderRadius: 12,
-        border: '1px solid rgba(255,53,0,0.2)', background: 'rgba(255,53,0,0.04)' }}>
+      <div className="mb-4 p-3.5 rounded-xl" style={{ border: '1px solid rgba(255,53,0,0.2)', background: 'rgba(255,53,0,0.04)' }}>
         <div className="flex items-center gap-3 mb-2.5">
-          <div style={{ width: 38, height: 38, borderRadius: 8, background: 'var(--boom)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📄</div>
+          <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center text-lg" style={{ background: 'var(--boom)' }}>📄</div>
           <div>
             <div className="font-bold text-[13px]">Constat numérique — boom.contact</div>
-            <div className="text-[11px]" style={{ opacity: 0.7 }}>Document certifié · 150+ pays</div>
+            <div className="text-[11px] opacity-70" >Document certifié · 150+ pays</div>
           </div>
         </div>
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 5 }}>
+        <div className="grid gap-[5px]"  style={{ gridTemplateColumns: '1fr 1fr' }}>
           {['✅ Véhicules A & B','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ 2 signatures'].map((item, i) => (
-            <div key={i} className="text-[11px]" style={{ opacity: 0.75 }}>{item}</div>
+            <div key={i} className="text-[11px] opacity-75">{item}</div>
           ))}
         </div>
       </div>
 
       {/* Insurer info */}
       {insurerName && (
-        <div style={{ marginBottom: 16, padding: 14, borderRadius: 10,
-          background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
-          <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.75, textTransform: 'uppercase',
-            fontFamily: 'monospace', marginBottom: 4 }}>Votre assureur</div>
+        <div className="mb-4 p-3.5 rounded-[10px]" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
+          <div className="text-[11px] uppercase mb-1 tracking-[1.5px] opacity-75" style={{ fontFamily: 'monospace' }}>Votre assureur</div>
           <div className="font-bold text-[15px] mb-1">🟢 {insurerName}</div>
-          <div className="text-xs leading-normal" style={{ opacity: 0.75 }}>
+          <div className="text-xs leading-normal opacity-75">
             Contactez votre assureur pour déclarer le sinistre.
           </div>
         </div>
       )}
 
       {error && (
-        <div style={{ marginBottom: 12, padding: 12, borderRadius: 8,
-          background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-          fontSize: 13, color: '#ef4444' }}>⚠️ {error}</div>
+        <div className="mb-3 p-3 rounded-lg text-[13px] text-[#ef4444]" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>⚠️ {error}</div>
       )}
 
       {/* ── PAYWALL — pas connecté : 2 options ── */}
       {!authUser && (
         <div className="mb-4">
           {/* Option 1 : Payer sans compte — one shot */}
-          <div style={{ padding: 16, borderRadius: 12, marginBottom: 10,
-            background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
+          <div className="p-4 rounded-xl mb-2.5" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
             <div className="font-bold text-sm mb-1">
               💳 Payer sans créer de compte
             </div>
-            <div className="text-xs mb-3" style={{ opacity: 0.75, lineHeight: 1.55 }}>
+            <div className="text-xs mb-3 opacity-75 leading-[1.55]">
               1 constat — <strong>CHF 4.90 / €4.90</strong> · Paiement sécurisé Stripe<br/>
               Votre PDF vous sera envoyé par email après paiement.
             </div>
@@ -209,45 +200,28 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
               onChange={e => setOneshotEmail(e.target.value)}
               placeholder="votre@email.com"
               aria-label="Adresse email pour recevoir le PDF"
-              style={{
-                width: '100%', padding: '11px 13px', borderRadius: 8,
-                border: '1.5px solid rgba(255,255,255,0.25)',
-                background: 'rgba(255,255,255,0.05)',
-                color: 'var(--text)', fontSize: 14,
-                marginBottom: 10, boxSizing: 'border-box' as const,
-              }}
+              className="w-full rounded-lg text-sm mb-2.5 px-[13px] py-[11px] box-border" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)' }}
             />
             <button
               onClick={payOneShot}
               disabled={oneshotLoading || !oneshotEmail.includes('@')}
-              style={{
-                width: '100%', padding: '14px', borderRadius: 10, border: 'none',
-                background: oneshotEmail.includes('@') ? 'var(--boom)' : 'rgba(255,53,0,0.3)',
-                color: '#fff', cursor: oneshotEmail.includes('@') ? 'pointer' : 'not-allowed',
-                fontSize: 15, fontWeight: 700,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              }}>
+              className="w-full p-3.5 rounded-[10px] border-0 text-white font-bold flex items-center justify-center gap-2 text-[15px]" style={{ background: oneshotEmail.includes('@') ? 'var(--boom)' : 'rgba(255,53,0,0.3)', cursor: oneshotEmail.includes('@') ? 'pointer' : 'not-allowed' }}>
               {oneshotLoading ? '⏳ Redirection…' : '💳 Payer CHF 4.90 →'}
             </button>
           </div>
 
           {/* Séparateur */}
           <div className="flex items-center gap-2.5 mb-2.5">
-            <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}/>
-            <span className="text-[11px]" style={{ opacity: 0.7 }}>ou</span>
-            <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}/>
+            <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }}/>
+            <span className="text-[11px] opacity-70" >ou</span>
+            <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }}/>
           </div>
 
           {/* Option 2 : Se connecter (compte existant) */}
-          <button onClick={() => onLogin?.()} style={{
-            width: '100%', padding: '13px', borderRadius: 10,
-            border: '1.5px solid rgba(255,255,255,0.25)',
-            background: 'transparent', color: 'var(--text)', cursor: 'pointer',
-            fontSize: 14, fontWeight: 500,
-          }}>
+          <button onClick={() => onLogin?.()} className="w-full p-[13px] rounded-[10px] bg-transparent cursor-pointer text-sm font-medium" style={{ border: '1.5px solid rgba(255,255,255,0.25)', color: 'var(--text)' }}>
             Se connecter (compte existant) →
           </button>
-          <div className="text-[11px] text-center mt-2" style={{ opacity: 0.7 }}>
+          <div className="text-[11px] text-center mt-2 opacity-70" >
             Pack 3 constats CHF 12.90 · Pack 10 constats CHF 34.90
           </div>
         </div>
@@ -255,22 +229,17 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
       {/* ── PAYWALL — connecté mais 0 crédit ── */}
       {authUser && !isAdmin && credits <= 0 && !creditUsed && showPaywall && (
-        <div style={{ marginBottom: 16, padding: 16, borderRadius: 12,
-          background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
+        <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
           <div className="font-bold text-sm mb-1.5">
             🔒 1 crédit requis pour télécharger
           </div>
-          <div className="text-[13px]" style={{ opacity: 0.755, lineHeight: 1.65, marginBottom: 14 }}>
+          <div className="text-[13px] mb-3.5 leading-[1.65]" style={{ opacity: 0.755 }}>
             Vous n'avez plus de crédit. Achetez un pack pour récupérer votre constat.
           </div>
-          <button onClick={() => onBuyPack?.()} style={{
-            width: '100%', padding: '14px', borderRadius: 10, border: 'none',
-            background: 'var(--boom)', color: '#fff', cursor: 'pointer',
-            fontSize: 15, fontWeight: 700, marginBottom: 8,
-          }}>
+          <button onClick={() => onBuyPack?.()} className="w-full p-3.5 rounded-[10px] border-0 text-white cursor-pointer font-bold mb-2 text-[15px]" style={{ background: 'var(--boom)' }}>
             Acheter un pack →
           </button>
-          <div className="text-[11px] text-center" style={{ opacity: 0.7 }}>
+          <div className="text-[11px] text-center opacity-70" >
             1 constat CHF 4.90 · 3 constats CHF 12.90 · 10 constats CHF 34.90
           </div>
         </div>
@@ -282,73 +251,49 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
           {/* Credit info */}
           {!isAdmin && !creditUsed && (
-            <div className="text-xs text-center" style={{ opacity: 0.75, marginBottom: 2 }}>
+            <div className="text-xs text-center mb-0.5 opacity-75">
               💳 {credits} crédit{credits > 1 ? 's' : ''} disponible{credits > 1 ? 's' : ''} · 1 sera utilisé
             </div>
           )}
           {creditUsed && (
-            <div className="text-xs text-green-500 text-center" style={{ marginBottom: 2 }}>
+            <div className="text-xs text-green-500 text-center mb-0.5" >
               ✅ Crédit consommé
             </div>
           )}
 
           {/* Download */}
-          <button onClick={() => handleAction('download')} disabled={loading} style={{
-            padding: '16px', borderRadius: 10, border: 'none',
-            background: loading ? 'rgba(255,53,0,0.5)' : 'var(--boom)',
-            color: '#fff', cursor: loading ? 'not-allowed' : 'pointer',
-            fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          }}>
+          <button onClick={() => handleAction('download')} disabled={loading} className="p-4 rounded-[10px] border-0 text-white font-bold flex items-center justify-center gap-2.5 text-[15px]" style={{ background: loading ? 'rgba(255,53,0,0.5)' : 'var(--boom)', cursor: loading ? 'not-allowed' : 'pointer' }}>
             {loading ? '⏳ Génération…' : '⬇️ Télécharger le PDF'}
           </button>
 
           {/* Email */}
           {!emailSent ? (
             <div>
-              <button onClick={() => handleAction('email')} style={{
-                width: '100%', padding: '14px', borderRadius: 10,
-                border: '1.5px solid rgba(240,237,232,0.15)',
-                background: showEmailForm ? 'rgba(255,255,255,0.06)' : 'transparent',
-                color: 'var(--text)', cursor: 'pointer', fontSize: 14, fontWeight: 500,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              }}>
+              <button onClick={() => handleAction('email')} className="w-full p-3.5 rounded-[10px] cursor-pointer text-sm font-medium flex items-center justify-center gap-2.5" style={{ border: '1.5px solid rgba(240,237,232,0.15)', background: showEmailForm ? 'rgba(255,255,255,0.06)' : 'transparent', color: 'var(--text)' }}>
                 📧 Recevoir le PDF par email
               </button>
 
               {showEmailForm && (
-                <div style={{ marginTop: 8, padding: '14px', borderRadius: 10,
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                  <div className="text-xs mb-2 leading-normal" style={{ opacity: 0.75 }}>
+                <div className="mt-2 p-3.5 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                  <div className="text-xs mb-2 leading-normal opacity-75">
                     Entrez votre email pour recevoir le PDF en pièce jointe.
                   </div>
                   <input type="email" aria-label="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="votre@email.com"
-                    style={{ width: '100%', padding: '11px 13px', borderRadius: 8,
-                      border: '1.5px solid rgba(255,255,255,0.25)',
-                      background: 'rgba(255,255,255,0.05)',
-                      color: 'var(--text)', fontSize: 14,
-                      marginBottom: 8, boxSizing: 'border-box' as const }}
+                    className="w-full rounded-lg text-sm mb-2 px-[13px] py-[11px] box-border" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)' }}
                     onKeyDown={e => e.key === 'Enter' && sendEmail()}
                   />
                   {emailError && (
                     <div className="text-xs text-red-500 mb-2">⚠️ {emailError}</div>
                   )}
-                  <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} style={{
-                    width: '100%', padding: '11px', borderRadius: 8, border: 'none',
-                    background: !email.includes('@') ? 'rgba(255,255,255,0.1)' : 'rgba(34,197,94,0.8)',
-                    color: '#fff', cursor: !email.includes('@') ? 'not-allowed' : 'pointer',
-                    fontSize: 14, fontWeight: 600,
-                  }}>
+                  <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} className="w-full p-[11px] rounded-lg border-0 text-white text-sm font-semibold" style={{ background: !email.includes('@') ? 'rgba(255,255,255,0.1)' : 'rgba(34,197,94,0.8)', cursor: !email.includes('@') ? 'not-allowed' : 'pointer' }}>
                     {sendingEmail ? '⏳ Envoi…' : '✉️ Envoyer'}
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <div style={{ padding: '14px', borderRadius: 10,
-              background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)',
-              textAlign: 'center', fontSize: 14, color: '#22c55e', fontWeight: 600 }}>
+            <div className="p-3.5 rounded-[10px] text-center text-sm font-semibold text-[#22c55e]" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
               ✅ PDF envoyé à {email}
             </div>
           )}
@@ -358,62 +303,42 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       {/* ── Si connecté mais paywall pas encore affiché ── */}
       {authUser && !isAdmin && credits <= 0 && !creditUsed && !showPaywall && (
         <div className="flex flex-col gap-2.5 mb-4">
-          <button onClick={() => handleAction('download')} style={{
-            padding: '16px', borderRadius: 10, border: 'none',
-            background: 'var(--boom)', color: '#fff', cursor: 'pointer',
-            fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          }}>
+          <button onClick={() => handleAction('download')} className="p-4 rounded-[10px] border-0 text-white cursor-pointer font-bold flex items-center justify-center gap-2.5 text-[15px]" style={{ background: 'var(--boom)' }}>
             ⬇️ Télécharger le PDF
           </button>
-          <button onClick={() => handleAction('email')} style={{
-            width: '100%', padding: '14px', borderRadius: 10,
-            border: '1.5px solid rgba(240,237,232,0.15)',
-            background: 'transparent', color: 'var(--text)', cursor: 'pointer',
-            fontSize: 14, fontWeight: 500,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          }}>
+          <button onClick={() => handleAction('email')} className="w-full p-3.5 rounded-[10px] bg-transparent cursor-pointer text-sm font-medium flex items-center justify-center gap-2.5" style={{ border: '1.5px solid rgba(240,237,232,0.15)', color: 'var(--text)' }}>
             📧 Recevoir le PDF par email
           </button>
         </div>
       )}
 
       {/* Legal */}
-      <div style={{ padding: 14, borderRadius: 10,
-        background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)',
-        marginBottom: 14 }}>
-        <div className="text-xs font-bold" style={{ color: '#f59e0b', marginBottom: 5 }}>
+      <div className="p-3.5 rounded-[10px] mb-3.5" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
+        <div className="text-xs font-bold mb-[5px] text-[#f59e0b]">
           ⏰ À transmettre à votre assureur
         </div>
-        <div className="text-xs" style={{ opacity: 0.755, lineHeight: 1.65 }}>
+        <div className="text-xs leading-[1.65]" style={{ opacity: 0.755 }}>
           Transmettez ce document à <strong>votre propre assureur</strong> dans les délais prévus par votre contrat.
         </div>
       </div>
 
-      <button onClick={() => window.location.href = '/'} style={{
-        width: '100%', padding: '11px', borderRadius: 10,
-        border: '1px solid rgba(240,237,232,0.08)',
-        background: 'transparent', color: 'var(--text)', cursor: 'pointer',
-        fontSize: 13, opacity: 0.7,
-      }}>
+      <button onClick={() => window.location.href = '/'} className="w-full p-[11px] rounded-[10px] bg-transparent cursor-pointer text-[13px] opacity-70" style={{ border: '1px solid rgba(240,237,232,0.08)', color: 'var(--text)' }}>
         Nouveau constat →
       </button>
 
       {/* QR persistant */}
-      <div style={{ marginTop: 20, padding: '16px', borderRadius: 12,
-        background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
-        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1,
-          textTransform: 'uppercase', marginBottom: 10, textAlign: 'center' }}>
+      <div className="mt-5 p-4 rounded-xl" style={{ background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
+        <div className="text-[11px] font-bold opacity-70 uppercase mb-2.5 text-center tracking-[1px]">
           QR du constat — valable 7 jours
         </div>
         <div className="text-center mb-2.5">
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(`${window.location.origin}/?session=${sessionId}`)}&bgcolor=0E0E18&color=F0EDE8&margin=2`}
             alt="QR du constat"
-            className="rounded-lg" style={{ width: 140, height: 140, display: 'inline-block' }}
+            className="rounded-lg w-[140px] h-[140px] inline-block" 
           />
         </div>
-        <div className="text-xs text-center leading-relaxed" style={{ opacity: 0.7 }}>
+        <div className="text-xs text-center leading-relaxed opacity-70" >
           Si la police intervient, elle peut scanner ce QR<br/>pour accéder au constat.
         </div>
       </div>

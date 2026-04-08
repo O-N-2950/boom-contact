@@ -51,34 +51,31 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
   return (
     <div className="min-h-screen bg-[#06060C] text-white" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Administration boom.contact</h1>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Administration boom.contact</h1>
       {/* Header */}
-      <div className="bg-[#06060C] flex items-center justify-between sticky z-[100]" style={{ borderBottom: '1px solid #3a3a3a', padding: '14px 20px', top: 0 }}>
+      <div className="bg-[#06060C] flex items-center justify-between sticky z-[100] top-0 px-5 py-3.5" style={{ borderBottom: '1px solid #3a3a3a' }}>
         <div className="flex items-center gap-3.5">
           <button onClick={onBack} className="bg-transparent border-0 text-[#d0d0d0] cursor-pointer text-[13px]" aria-label="Retour">←</button>
           <span className="text-[#FF3500] font-black text-lg">💥 Admin</span>
-          <span className="text-[#d0d0d0] text-[11px] rounded" style={{ background: '#3a3a3a', padding: '2px 6px' }}>boom.contact</span>
+          <span className="text-[#d0d0d0] text-[11px] rounded px-1.5 py-0.5 bg-[#3a3a3a]">boom.contact</span>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="rounded-full" style={{ width: 8, height: 8, background: autoRefresh ? '#4ade80' : '#555' }} />
+          <div className="rounded-full w-2 h-2"  style={{ background: autoRefresh ? '#4ade80' : '#555' }} />
           <button onClick={() => setAuto(a => !a)} className="bg-transparent border-0 text-[#d0d0d0] text-[11px] cursor-pointer">
             {autoRefresh ? 'Live' : 'Paused'}
           </button>
-          <button onClick={() => statsQ.refetch()} className="rounded-md text-xs cursor-pointer" style={{ background: '#3a3a3a', border: '1px solid #555', color: '#ccc', padding: '4px 10px' }}>
+          <button onClick={() => statsQ.refetch()} className="rounded-md text-xs cursor-pointer px-2.5 py-1 bg-[#3a3a3a] text-[#ccc]" style={{ border: '1px solid #555' }}>
             ↻ Refresh
           </button>
         </div>
       </div>
 
-      <div className="mx-auto" style={{ maxWidth: 900, padding: '20px 16px' }}>
+      <div className="mx-auto max-w-[900px] px-4 py-5">
 
         {/* Tabs */}
         <div className="flex gap-1.5 mb-6">
           {(['overview', 'sessions', 'revenue', 'users'] as Tab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{
-              background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#444'),
-              color: '#fff', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 700, cursor: 'pointer',
-            }}>
+            <button key={t} onClick={() => setTab(t)} className="text-white rounded-lg text-xs font-bold cursor-pointer px-3.5 py-[7px]" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#444') }}>
               {t === 'overview' ? '📊 Vue d\'ensemble' : t === 'sessions' ? '📋 Sessions' : t === 'revenue' ? '💰 Revenus' : '👥 Utilisateurs'}
             </button>
           ))}
@@ -130,15 +127,15 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Pack', 'Ventes', 'Revenus', 'Crédits'].map(h => (
-                      <th key={h} className="text-[#d0d0d0] text-[11px] font-semibold" style={{ padding: '10px 16px', textAlign: 'left' as const, letterSpacing: 1 }}>{h.toUpperCase()}</th>
+                      <th key={h} className="text-[#d0d0d0] text-[11px] font-semibold px-4 py-2.5 tracking-[1px] text-left">{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {s.revenue.byPackage.length === 0 && (
-                    <tr><td colSpan={4} className="text-[#d0d0d0]" style={{ padding: '20px 16px', textAlign: 'center' as const }}>Aucune vente</td></tr>
+                    <tr><td colSpan={4} className="text-[#d0d0d0] px-4 py-5 text-center">Aucune vente</td></tr>
                   )}
-                  {s.revenue.byPackage.map((p: any) => (
+                  {s.revenue.byPackage.map((p: Record<string, unknown>) => (
                     <tr key={p.packageId} style={{ borderBottom: '1px solid #111' }}>
                       <td style={td}><span className="text-white font-semibold">{p.packageId}</span></td>
                       <td style={td}>{p.count}</td>
@@ -152,7 +149,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
             {/* Gift credits panel */}
             <SectionTitle>🎁 Envoyer des crédits</SectionTitle>
-            <div className="rounded-xl p-5 mb-6" style={{ background: '#0d1f2a', border: '1px solid #1a3a4a' }}>
+            <div className="rounded-xl p-5 mb-6 bg-[#0d1f2a]" style={{ border: '1px solid #1a3a4a' }}>
               <div className="flex gap-2.5 items-end" style={{ flexWrap: 'wrap' as const }}>
                 <div>
                   <div className="text-[#d0d0d0] text-[11px] mb-1">CRÉDITS</div>
@@ -160,13 +157,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     onChange={e => setGiftCredits(Number(e.target.value))}
                     style={{ ...inputSm, width: 70 }} />
                 </div>
-                <div className="flex-1" style={{ minWidth: 200 }}>
+                <div className="flex-1 min-w-[200px]" >
                   <div className="text-[#d0d0d0] text-[11px] mb-1">EMAIL (optionnel)</div>
                   <input aria-label="Adresse email du destinataire" placeholder="destinataire@email.com" value={giftEmail}
                     onChange={e => setGiftEmail(e.target.value)}
                     style={inputSm} />
                 </div>
-                <button onClick={sendGift} className="text-white border-0 rounded-lg font-bold cursor-pointer text-[13px]" style={{ background: '#25D366', padding: '10px 16px' }}>
+                <button onClick={sendGift} className="text-white border-0 rounded-lg font-bold cursor-pointer text-[13px] px-4 py-2.5 bg-[#25D366]">
                   📲 WhatsApp
                 </button>
               </div>
@@ -184,19 +181,19 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['ID', 'Statut', 'Date', 'Plaque A', 'Propriétaire'].map(h => (
-                      <th key={h} className="text-[#d0d0d0] text-[11px]" style={{ padding: '10px 14px', textAlign: 'left' as const, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} className="text-[#d0d0d0] text-[11px] px-3.5 py-2.5 tracking-[0.8px] text-left">{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {s.sessions.recent.map((session: any) => {
-                    const a   = session.participantA as any || {};
+                  {s.sessions.recent.map((session: Record<string, unknown>) => {
+                    const a   = (session.participantA || {}) as Record<string, unknown>;
                     const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
                     const date = new Date(session.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                     const statusColor = session.status === 'completed' ? '#4ade80' : session.status === 'active' ? '#60c8f0' : session.status === 'signing' ? '#fbbf24' : '#aaa';
                     return (
                       <tr key={session.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
-                        <td style={td}><span className="text-xs" style={{ fontFamily: 'monospace', color: '#FF5533' }}>{session.id}</span></td>
+                        <td style={td}><span className="text-xs text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{session.id}</span></td>
                         <td style={td}><span className="text-xs" style={{ color: statusColor }}>● {session.status}</span></td>
                         <td className="text-[#d0d0d0] text-xs">{date}</td>
                         <td className="text-xs" style={{ fontFamily: 'monospace' }}>{plate}</td>
@@ -219,18 +216,18 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Email', 'Pack', 'Montant', 'Crédits', 'Date'].map(h => (
-                      <th key={h} className="text-[#d0d0d0] text-[11px]" style={{ padding: '10px 14px', textAlign: 'left' as const, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} className="text-[#d0d0d0] text-[11px] px-3.5 py-2.5 tracking-[0.8px] text-left">{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {s.revenue.recent.length === 0 && (
-                    <tr><td colSpan={5} className="text-[#d0d0d0]" style={{ padding: '24px', textAlign: 'center' as const }}>Aucun paiement</td></tr>
+                    <tr><td colSpan={5} className="text-[#d0d0d0] p-6 text-center">Aucun paiement</td></tr>
                   )}
-                  {s.revenue.recent.map((p: any) => (
+                  {s.revenue.recent.map((p: Record<string, unknown>) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td className="text-xs">{p.userEmail}</td>
-                      <td style={td}><span className="rounded text-[11px]" style={{ background: '#3a3a3a', padding: '2px 6px' }}>{p.packageLabel}</span></td>
+                      <td style={td}><span className="rounded text-[11px] px-1.5 py-0.5 bg-[#3a3a3a]">{p.packageLabel}</span></td>
                       <td className="text-green-400 font-bold">{EUR(p.amountCents)} <span className="text-[#d0d0d0] text-[10px]">{p.currency}</span></td>
                       <td style={td}>{p.creditsGranted}</td>
                       <td className="text-[#d0d0d0] text-xs">{p.paidAt ? new Date(p.paidAt).toLocaleDateString('fr-CH') : <span className="text-[#d0d0d0]">pending</span>}</td>
@@ -265,16 +262,16 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Email', 'Rôle', 'Crédits', 'Pays', 'Inscrit', 'Dernière activité'].map(h => (
-                      <th key={h} className="text-[#d0d0d0] text-[11px]" style={{ padding: '10px 14px', textAlign: 'left' as const, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} className="text-[#d0d0d0] text-[11px] px-3.5 py-2.5 tracking-[0.8px] text-left">{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {(usersQ.data || []).map((u: any) => (
+                  {(usersQ.data || []).map((u: Record<string, unknown>) => (
                     <tr key={u.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td className="text-[13px]">{u.email}</td>
                       <td style={td}>
-                        <span className="rounded text-[11px]" style={{ background: u.role === 'admin' ? '#FF3500' : '#3a3a3a', padding: '2px 7px', color: u.role === 'admin' ? '#fff' : '#aaa' }}>
+                        <span className="rounded text-[11px] px-[7px] py-0.5" style={{ background: u.role === 'admin' ? '#FF3500' : '#3a3a3a', color: u.role === 'admin' ? '#fff' : '#aaa' }}>
                           {u.role}
                         </span>
                       </td>
@@ -298,13 +295,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
 // ── Sub-components ────────────────────────────────────────────
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <div className="text-[#d0d0d0] text-[11px] font-bold mb-2.5 mt-2" style={{ letterSpacing: 1.5, textTransform: 'uppercase' as const }}>{children}</div>;
+  return <div className="text-[#d0d0d0] text-[11px] font-bold mb-2.5 mt-2 tracking-[1.5px] uppercase">{children}</div>;
 }
 
-function KPI({ label, value, sub, color }: { label: string; value: any; sub?: string; color?: string }) {
+function KPI({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color?: string }) {
   return (
-    <div className="bg-[#111] rounded-xl flex-1" style={{ border: '1px solid #3a3a3a', padding: '16px 18px', minWidth: 100 }}>
-      <div className="text-[#d0d0d0] text-[11px] mb-1.5" style={{ letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
+    <div className="bg-[#111] rounded-xl flex-1 min-w-[100px] px-[18px] py-4" style={{ border: '1px solid #3a3a3a' }}>
+      <div className="text-[#d0d0d0] text-[11px] mb-1.5 tracking-[0.5px]">{label.toUpperCase()}</div>
       <div className="text-[22px] font-black leading-none" style={{ color: color || '#fff' }}>{value}</div>
       {sub && <div className="text-[#d0d0d0] text-[11px] mt-1">{sub}</div>}
     </div>
@@ -314,7 +311,7 @@ function KPI({ label, value, sub, color }: { label: string; value: any; sub?: st
 function CostLine({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div>
-      <div className="text-[#d0d0d0] text-[11px]" style={{ marginBottom: 2 }}>{label}</div>
+      <div className="text-[#d0d0d0] text-[11px] mb-0.5" >{label}</div>
       <div className="text-[15px]" style={{ color: highlight ? '#4ade80' : '#fff', fontWeight: highlight ? 700 : 400 }}>{value}</div>
     </div>
   );

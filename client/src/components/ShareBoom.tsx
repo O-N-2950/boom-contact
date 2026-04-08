@@ -101,42 +101,22 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
   ];
 
   return (
-    <div ref={dialogRef} role="dialog" aria-label="Partager boom.contact" aria-modal="true" style={{
-      position: 'fixed', inset: 0, zIndex: 900,
-      background: 'rgba(6,6,12,0.95)',
-      display: 'flex', flexDirection: 'column',
-      padding: '0 0 env(safe-area-inset-bottom)',
-    }}>
+    <div ref={dialogRef} role="dialog" aria-label="Partager boom.contact" aria-modal="true" className="fixed inset-0 flex flex-col" style={{ zIndex: 900, background: 'rgba(6,6,12,0.95)', padding: '0 0 env(safe-area-inset-bottom)' }}>
       {/* Header */}
-      <div style={{
-        padding: '20px 20px 0',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      }}>
+      <div className="flex justify-between items-start" style={{ padding: '20px 20px 0' }}>
         <div>
           <div className="text-[22px] font-black text-white">{m.title}</div>
-          <div className="text-[13px] mt-1 leading-normal" style={{ color: 'rgba(240,237,232,0.5)', maxWidth: 280 }}>
+          <div className="text-[13px] mt-1 leading-normal max-w-[280px]"  style={{ color: 'rgba(240,237,232,0.5)' }}>
             {m.subtitle}
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} aria-label="Fermer le partage" style={{
-            background: 'rgba(255,255,255,0.08)', border: 'none',
-            borderRadius: 20, width: 36, height: 36,
-            color: '#d0d0d0', cursor: 'pointer', fontSize: 18, flexShrink: 0,
-          }}>×</button>
+          <button onClick={onClose} aria-label="Fermer le partage" className="border-0 rounded-[20px] w-9 h-9 cursor-pointer text-lg shrink-0 text-[#d0d0d0]" style={{ background: 'rgba(255,255,255,0.08)' }}>×</button>
         )}
       </div>
 
       {/* Message preview */}
-      <div style={{
-        margin: '16px 20px 0',
-        padding: '14px 16px',
-        background: 'rgba(255,53,0,0.06)',
-        border: '1px solid rgba(255,53,0,0.2)',
-        borderRadius: 12,
-        fontSize: 12, color: 'rgba(240,237,232,0.6)', lineHeight: 1.6,
-        fontStyle: 'italic',
-      }}>
+      <div className="rounded-xl text-xs italic px-4 py-3.5 leading-[1.6]" style={{ margin: '16px 20px 0', background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', color: 'rgba(240,237,232,0.6)' }}>
         "{m.whatsapp.slice(0, 120)}..."
       </div>
 
@@ -145,15 +125,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         <div style={{ padding: '16px 20px 0' }}>
           <button
             onClick={() => share('native')}
-            style={{
-              width: '100%', padding: '16px',
-              borderRadius: 14, border: 'none',
-              background: 'var(--boom)',
-              color: '#fff', cursor: 'pointer',
-              fontSize: 16, fontWeight: 700,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              boxShadow: '0 6px 24px rgba(255,53,0,0.4)',
-            }}
+            className="w-full p-4 rounded-[14px] border-0 text-white cursor-pointer text-base font-bold flex items-center justify-center gap-2.5" style={{ background: 'var(--boom)', boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}
           >
             <span className="text-xl">📤</span>
             Partager maintenant
@@ -162,43 +134,21 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
       )}
 
       {/* Séparateur */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 12,
-        padding: '16px 20px 0',
-      }}>
-        <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }} />
+      <div className="flex items-center gap-3" style={{ padding: '16px 20px 0' }}>
+        <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }} />
         <div className="text-[#d0d0d0] text-[11px]">ou choisir</div>
-        <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }} />
+        <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }} />
       </div>
 
       {/* Grille canaux */}
-      <div style={{
-        padding: '14px 20px 0',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 10,
-      }}>
+      <div className="grid gap-2.5" style={{ padding: '14px 20px 0', gridTemplateColumns: 'repeat(4, 1fr)' }}>
         {channels.map(ch => (
           <button
             key={ch.id}
             onClick={() => share(ch.id)}
-            style={{
-              display: 'flex', flexDirection: 'column',
-              alignItems: 'center', gap: 6,
-              padding: '12px 8px',
-              borderRadius: 14,
-              border: sent === ch.id ? `1.5px solid ${ch.color}` : '1px solid rgba(255,255,255,0.25)',
-              background: sent === ch.id ? `${ch.color}22` : 'rgba(255,255,255,0.04)',
-              cursor: 'pointer', transition: 'all 0.15s',
-            }}
+            className="flex flex-col items-center gap-1.5 rounded-[14px] cursor-pointer px-2 py-3" style={{ border: sent === ch.id ? `1.5px solid ${ch.color}` : '1px solid rgba(255,255,255,0.25)', background: sent === ch.id ? `${ch.color}22` : 'rgba(255,255,255,0.04)', transition: 'all 0.15s' }}
           >
-            <div style={{
-              width: 36, height: 36, borderRadius: 10,
-              background: ch.color,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: ch.id === 'x' ? 14 : ch.id === 'linkedin' ? 14 : 18,
-              color: '#fff', fontWeight: 900,
-            }}>
+            <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-white" style={{ background: ch.color, fontSize: ch.id === 'x' ? 14 : ch.id === 'linkedin' ? 14 : 18, fontWeight: 900 }}>
               {ch.icon}
             </div>
             <div className="text-[10px] text-center" style={{ color: 'rgba(240,237,232,0.6)' }}>
@@ -210,22 +160,9 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         {/* Copier le lien */}
         <button
           onClick={() => share('copy')}
-          style={{
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', gap: 6,
-            padding: '12px 8px',
-            borderRadius: 14,
-            border: copied ? '1.5px solid #22c55e' : '1px solid rgba(255,255,255,0.25)',
-            background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.04)',
-            cursor: 'pointer', transition: 'all 0.2s',
-          }}
+          className="flex flex-col items-center gap-1.5 rounded-[14px] cursor-pointer transition-all duration-200 px-2 py-3" style={{ border: copied ? '1.5px solid #22c55e' : '1px solid rgba(255,255,255,0.25)', background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.04)' }}
         >
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: copied ? '#22c55e' : '#333',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 18, transition: 'background 0.2s',
-          }}>
+          <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-lg" style={{ background: copied ? '#22c55e' : '#333', transition: 'background 0.2s' }}>
             {copied ? '✅' : '📋'}
           </div>
           <div className="text-[10px] text-center" style={{ color: copied ? '#22c55e' : 'rgba(240,237,232,0.6)' }}>
@@ -235,13 +172,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
       </div>
 
       {/* Stats sociales — preuve sociale */}
-      <div style={{
-        margin: '16px 20px 0',
-        padding: '12px 16px',
-        background: 'rgba(255,255,255,0.03)',
-        borderRadius: 12,
-        display: 'flex', gap: 20, justifyContent: 'center',
-      }}>
+      <div className="rounded-xl flex gap-5 justify-center px-4 py-3" style={{ margin: '16px 20px 0', background: 'rgba(255,255,255,0.03)' }}>
         {[
           ['150+', 'pays reconnus'],
           ['5 min', 'pour un constat'],
@@ -255,13 +186,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
       </div>
 
       {/* TikTok — astuce */}
-      <div style={{
-        margin: '12px 20px 0',
-        padding: '10px 14px',
-        background: 'rgba(0,0,0,0.4)',
-        borderRadius: 10,
-        display: 'flex', alignItems: 'center', gap: 10,
-      }}>
+      <div className="rounded-[10px] flex items-center gap-2.5 px-3.5 py-2.5" style={{ margin: '12px 20px 0', background: 'rgba(0,0,0,0.4)' }}>
         <span className="text-xl">🎵</span>
         <div className="text-[11px] text-[#d0d0d0] leading-normal">
           <strong className="text-white">TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !

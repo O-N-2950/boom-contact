@@ -447,16 +447,16 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   // ── Rendu JSX ────────────────────────────────────────────────
   if (geoStatus === 'loading') return (
     <div role="status" aria-label="Chargement en cours" className="p-10 text-center" style={{ color: 'rgba(255,255,255,0.7)' }}>
-      <div className="text-4xl mb-3" style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }} aria-hidden="true">🌍</div>
+      <div className="text-4xl mb-3 inline-block"  style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true">🌍</div>
       <div className="font-bold">Localisation de l'accident…</div>
-      <div className="text-xs" style={{ opacity: 0.75, marginTop: 6 }}>Géocodage de l'adresse</div>
+      <div className="text-xs mt-1.5 opacity-75">Géocodage de l'adresse</div>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
   if (geoStatus === 'error') return (
     <div className="p-6">
-      <div className="rounded-[10px] text-[13px]" style={{ padding: '14px', background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', marginBottom: 14, color: 'rgba(255,200,100,0.9)' }}>
+      <div className="rounded-[10px] text-[13px] p-3.5 mb-3.5"  style={{ background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', color: 'rgba(255,200,100,0.9)' }}>
         ⚠️ Impossible de localiser l'adresse sur la carte. Vérifiez l'adresse saisie à l'étape Lieu.
       </div>
       <button onClick={onSkip} className="w-full p-3 rounded-[10px] cursor-pointer text-[13px]" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.6)' }}>
@@ -469,20 +469,20 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   const roleLabel = { A:'Conducteur A', B:'Conducteur B', C:'Conducteur C', D:'Conducteur D' }[role];
 
   return (
-    <div style={{ padding: '14px 18px' }}>
+    <div className="px-[18px] py-3.5">
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-3">
-        <div className="rounded-full flex items-center justify-center font-extrabold text-[15px]" style={{ width: 34, height: 34, background: `${roleColor}22`, border: `2px solid ${roleColor}`, color: roleColor }}>
+        <div className="rounded-full flex items-center justify-center font-extrabold text-[15px] w-[34px] h-[34px]"  style={{ background: `${roleColor}22`, border: `2px solid ${roleColor}`, color: roleColor }}>
           {role}
         </div>
         <div>
           <div className="font-bold text-sm">{roleLabel} — Positionner mon véhicule</div>
-          <div className="text-[11px]" style={{ opacity: 0.7 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
+          <div className="text-[11px] opacity-70" >{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
         </div>
         {/* Toggle plan / satellite */}
         <button
           onClick={() => setSatellite(s => !s)}
-          className="ml-auto rounded-2xl text-[11px] cursor-pointer font-semibold touch-manipulation whitespace-nowrap" style={{ padding: '5px 10px', border: `1px solid ${satellite ? '#f59e0b' : 'rgba(255,255,255,0.15)'}`, background: satellite ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.04)', color: satellite ? '#f59e0b' : 'rgba(255,255,255,0.55)' }}>
+          className="ml-auto rounded-2xl text-[11px] cursor-pointer font-semibold touch-manipulation whitespace-nowrap px-2.5 py-[5px]" style={{ border: `1px solid ${satellite ? '#f59e0b' : 'rgba(255,255,255,0.15)'}`, background: satellite ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.04)', color: satellite ? '#f59e0b' : 'rgba(255,255,255,0.55)' }}>
           {satellite ? '🛰 Satellite' : '🗺 Plan'}
         </button>
       </div>
@@ -490,7 +490,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {/* Étapes */}
       <div className="flex gap-1.5 mb-2.5">
         {[['place','✋','1. Placer'],['rotate','↻','2. Orienter'],['confirm','✓','3. Valider']] .map(([s,icon,label]) => (
-          <div key={s} className="flex-1 rounded-lg text-center text-[10px]" style={{ padding: '5px 3px', background: step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border: `1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, color: step===s?roleColor:'rgba(255,255,255,0.55)', fontWeight: step===s?700:400 }}>
+          <div key={s} className="flex-1 rounded-lg text-center text-[10px] px-[3px] py-[5px]" style={{ background: step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border: `1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, color: step===s?roleColor:'rgba(255,255,255,0.55)', fontWeight: step===s?700:400 }}>
             {icon} {label}
           </div>
         ))}
@@ -499,14 +499,14 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {/* Canvas */}
       <div className="rounded-xl overflow-hidden mb-3 relative" style={{ border: `2px solid ${roleColor}44` }}>
         {loadingTiles && (
-          <div className="absolute rounded-lg text-[10px] z-10" style={{ top: 8, right: 8, background: 'rgba(0,0,0,0.6)', padding: '3px 8px', color: 'rgba(255,255,255,0.6)' }}>
+          <div className="absolute rounded-lg text-[10px] z-10 top-2 right-2 px-2 py-[3px]" style={{ background: 'rgba(0,0,0,0.6)', color: 'rgba(255,255,255,0.6)' }}>
             {tilesLoaded}/{totalTiles} tiles…
           </div>
         )}
         <canvas
           ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
           aria-label="Placement du véhicule sur le schéma"
-          className="w-full block" style={{ cursor: dragging?'grabbing':'grab', touchAction: 'none' }}
+          className="w-full block touch-none" style={{ cursor: dragging?'grabbing':'grab' }}
           onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
           onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
         />
@@ -515,13 +515,13 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {/* Slider rotation */}
       {step === 'rotate' && !confirmed && (
         <div className="mb-3">
-          <div className="text-[11px] text-center mb-1.5" style={{ opacity: 0.85 }}>
+          <div className="text-[11px] text-center mb-1.5 opacity-85">
             Direction : {angle}° {angle<22?'→ Est':angle<67?'↘ SE':angle<112?'↓ Sud':angle<157?'↙ SO':angle<202?'← Ouest':angle<247?'↖ NO':angle<292?'↑ Nord':angle<337?'↗ NE':'→ Est'}
           </div>
           <input type="range" aria-label="Direction du véhicule" min={0} max={359} value={angle}
             onChange={e => setAngle(Number(e.target.value))}
             className="w-full" style={{ accentColor: roleColor }} />
-          <div className="flex justify-between text-[9px]" style={{ opacity: 0.75, marginTop: 2 }}>
+          <div className="flex justify-between text-[9px] mt-0.5 opacity-75">
             <span>↑N</span><span>→E</span><span>↓S</span><span>←O</span>
           </div>
         </div>
@@ -531,16 +531,16 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {!confirmed ? (
         <div className="flex gap-2">
           <button onClick={onSkip}
-            className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] touch-manipulation" style={{ padding: '11px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)' }}>
+            className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] touch-manipulation p-[11px]"  style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)' }}>
             Passer
           </button>
           <button onClick={step==='place' ? () => setStep('rotate') : confirm}
-            className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold touch-manipulation" style={{ flex: 2, padding: '13px', background: roleColor }}>
+            className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold touch-manipulation p-[13px]"  style={{ flex: 2, background: roleColor }}>
             {step==='place' ? 'Orienter →' : '✓ Valider ma position'}
           </button>
         </div>
       ) : (
-        <div className="rounded-[10px] text-center text-sm text-green-500 font-bold" style={{ padding: '13px', background: 'rgba(34,197,94,0.09)', border: '1px solid rgba(34,197,94,0.28)' }}>
+        <div className="rounded-[10px] text-center text-sm text-green-500 font-bold p-[13px]"  style={{ background: 'rgba(34,197,94,0.09)', border: '1px solid rgba(34,197,94,0.28)' }}>
           ✅ Position enregistrée sur la carte
         </div>
       )}

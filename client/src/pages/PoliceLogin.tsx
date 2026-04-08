@@ -31,7 +31,7 @@ export function PoliceLogin({ onLogin }: Props) {
       <div className="w-full max-w-[380px]">
 
         {/* Header */}
-        <div className="text-center" style={{ marginBottom: 36 }}>
+        <div className="text-center mb-9" >
           <div className="text-5xl mb-3">🚔</div>
           <h1 className="text-2xl font-extrabold text-white mb-1.5">Module Police</h1>
           <p className="text-sm" style={{ color: 'rgba(240,237,232,0.75)' }}>boom.contact · Accès institutionnel</p>
@@ -41,13 +41,13 @@ export function PoliceLogin({ onLogin }: Props) {
         <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }}>
 
           {error && (
-            <div id="police-error" role="alert" className="mb-4 rounded-lg text-[13px] text-red-500" style={{ padding: '10px 14px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
+            <div id="police-error" role="alert" className="mb-4 rounded-lg text-[13px] text-red-500 px-3.5 py-2.5" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
               ⚠️ {error}
             </div>
           )}
 
-          <div style={{ marginBottom: 14 }}>
-            <label htmlFor="email-police" className="text-[11px] uppercase block mb-1.5" style={{ color: 'rgba(240,237,232,0.75)', letterSpacing: 1 }}>
+          <div className="mb-3.5">
+            <label htmlFor="email-police" className="text-[11px] uppercase block mb-1.5 tracking-[1px]" style={{ color: 'rgba(240,237,232,0.75)' }}>
               Email institutionnel
             </label>
             <input
@@ -58,12 +58,12 @@ export function PoliceLogin({ onLogin }: Props) {
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="agent@police-jura.ch"
               aria-describedby={error ? "police-error" : undefined}
-              className="w-full rounded-[10px] text-white text-[15px] box-border" style={{ padding: '12px 14px', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}
+              className="w-full rounded-[10px] text-white text-[15px] box-border px-3.5 py-3" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}
             />
           </div>
 
-          <div style={{ marginBottom: 22 }}>
-            <label htmlFor="password-police" className="text-[11px] uppercase block mb-1.5" style={{ color: 'rgba(240,237,232,0.75)', letterSpacing: 1 }}>
+          <div className="mb-[22px]">
+            <label htmlFor="password-police" className="text-[11px] uppercase block mb-1.5 tracking-[1px]" style={{ color: 'rgba(240,237,232,0.75)' }}>
               Mot de passe
             </label>
             <input
@@ -73,14 +73,14 @@ export function PoliceLogin({ onLogin }: Props) {
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
               placeholder="••••••••"
-              className="w-full rounded-[10px] text-white text-[15px] box-border" style={{ padding: '12px 14px', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}
+              className="w-full rounded-[10px] text-white text-[15px] box-border px-3.5 py-3" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.06)' }}
             />
           </div>
 
           <button
             onClick={handleSubmit}
             disabled={loginMutation.isPending}
-            className="w-full rounded-[10px] border-0 text-white text-[15px] font-bold" style={{ padding: '14px', background: loginMutation.isPending ? 'rgba(255,53,0,0.4)' : '#FF3500', cursor: loginMutation.isPending ? 'wait' : 'pointer' }}
+            className="w-full rounded-[10px] border-0 text-white text-[15px] font-bold p-3.5"  style={{ background: loginMutation.isPending ? 'rgba(255,53,0,0.4)' : '#FF3500', cursor: loginMutation.isPending ? 'wait' : 'pointer' }}
           >
             {loginMutation.isPending ? '⏳ Connexion...' : '🔐 Se connecter'}
           </button>

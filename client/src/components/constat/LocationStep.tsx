@@ -138,22 +138,22 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
   };
 
   return (
-    <div className="mx-auto" style={{ padding: '20px 20px 32px', maxWidth: 480 }}>
+    <div className="mx-auto max-w-[480px] px-5 pt-5 pb-8">
 
       {/* ── CONDUCTEUR B : badge localisation depuis A ── */}
       {isPartyB && (
-        <div className="mb-6 rounded-xl flex items-start gap-3" style={{ padding: '14px 16px', background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
+        <div className="mb-6 rounded-xl flex items-start gap-3 px-4 py-3.5" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
           <span className="text-[22px] shrink-0">📍</span>
           <div>
             <div className="font-bold text-[13px] text-green-500 mb-1">
               Lieu du sinistre — identique au conducteur A
             </div>
             {(initialAccidentData?.address || initialAccidentData?.city) && (
-              <div className="text-xs leading-normal" style={{ opacity: 0.75 }}>
+              <div className="text-xs leading-normal opacity-75">
                 {[initialAccidentData.address, initialAccidentData.city, initialAccidentData.country].filter(Boolean).join(', ')}
               </div>
             )}
-            <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>
+            <div className="text-[11px] mt-1 opacity-70" >
               {initialAccidentData?.date && `${initialAccidentData.date}`}
               {initialAccidentData?.time && ` à ${initialAccidentData.time}`}
             </div>
@@ -163,14 +163,14 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Vehicle type */}
       <div className="mb-7">
-        <div className="text-[11px] uppercase mb-3" style={{ letterSpacing: 2, opacity: 0.75, fontFamily: 'monospace' }}>
+        <div className="text-[11px] uppercase mb-3 tracking-[2px] opacity-75" style={{ fontFamily: 'monospace' }}>
           {t('location.vehicle_label')}
         </div>
 
         {/* Si OCR a détecté le type, afficher confirmation et masquer les autres groupes */}
         {initialVehicleType && vehicleType === initialVehicleType ? (
           <div>
-            <div className="rounded-xl flex items-center gap-3 mb-3" style={{ padding: '14px 16px', background: 'rgba(34,197,94,0.08)', border: '2px solid rgba(34,197,94,0.3)' }}>
+            <div className="rounded-xl flex items-center gap-3 mb-3 px-4 py-3.5" style={{ background: 'rgba(34,197,94,0.08)', border: '2px solid rgba(34,197,94,0.3)' }}>
               <span className="text-[28px]">
                 {VEHICLE_GROUPS.flatMap(g => g.types).find(v => v.id === vehicleType)?.icon || '🚗'}
               </span>
@@ -178,9 +178,9 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 <div className="font-bold text-sm text-green-500">
                   {VEHICLE_GROUPS.flatMap(g => g.types).find(v => v.id === vehicleType) ? t(VEHICLE_GROUPS.flatMap(g => g.types).find(v => v.id === vehicleType)!.labelKey) : vehicleType}
                 </div>
-                <div className="text-[11px]" style={{ opacity: 0.75, marginTop: 2 }}>✅ Détecté automatiquement depuis le permis de circulation</div>
+                <div className="text-[11px] mt-0.5 opacity-75">✅ Détecté automatiquement depuis le permis de circulation</div>
               </div>
-              <button onClick={() => setVehicleType(null)} className="rounded-md bg-transparent cursor-pointer text-[11px] whitespace-nowrap touch-manipulation" style={{ padding: '5px 10px', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.45)', minHeight: 44, minWidth: 44 }}>
+              <button onClick={() => setVehicleType(null)} className="rounded-md bg-transparent cursor-pointer text-[11px] whitespace-nowrap touch-manipulation min-h-[44px] min-w-[44px] px-2.5 py-[5px]" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.45)' }}>
                 Modifier
               </button>
             </div>
@@ -189,24 +189,17 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
           <div className="flex flex-col gap-4">
             {VEHICLE_GROUPS.map(group => (
               <div key={group.groupKey}>
-                <div className="text-[9px] uppercase mb-2" style={{ letterSpacing: 2, opacity: 0.75, fontFamily: 'monospace' }}>{t(group.groupKey)}</div>
+                <div className="text-[9px] uppercase mb-2 tracking-[2px] opacity-75" style={{ fontFamily: 'monospace' }}>{t(group.groupKey)}</div>
                 <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
                   {group.types.map(v => {
                     const sel = vehicleType === v.id;
                     return (
-                      <button key={v.id} onClick={() => setVehicleType(v.id)} style={{
-                        padding: '12px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
-                        background: sel ? 'rgba(255,53,0,0.12)' : 'rgba(255,255,255,0.03)',
-                        outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.25)',
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-                        transition: 'all 0.15s',
-                        touchAction: 'manipulation',
-                      }}>
+                      <button key={v.id} onClick={() => setVehicleType(v.id)} className="rounded-xl border-0 cursor-pointer flex flex-col items-center gap-1 px-2.5 py-3 touch-manipulation" style={{ background: sel ? 'rgba(255,53,0,0.12)' : 'rgba(255,255,255,0.03)', outline: sel ? '2px solid var(--boom)' : '1.5px solid rgba(255,255,255,0.25)', transition: 'all 0.15s' }}>
                         <span className="text-[26px]">{v.icon}</span>
                         <span className="text-xs" style={{ fontWeight: sel ? 700 : 500, color: sel ? 'var(--boom)' : 'var(--text)' }}>
                           {t(v.labelKey)}
                         </span>
-                        <span className="text-[9px] text-center leading-tight" style={{ opacity: 0.7 }}>
+                        <span className="text-[9px] text-center leading-tight opacity-70" >
                           {t(v.subKey)}
                         </span>
                       </button>
@@ -222,22 +215,22 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Date & Time — masqué pour B (pré-rempli depuis A) */}
       {!isPartyB && (
         <div className="mb-6">
-          <div className="text-[11px] uppercase mb-2.5" style={{ letterSpacing: 2, opacity: 0.75, fontFamily: 'monospace' }}>
+          <div className="text-[11px] uppercase mb-2.5 tracking-[2px] opacity-75" style={{ fontFamily: 'monospace' }}>
             {t('location.datetime_label')}
           </div>
           <div className="flex gap-2.5">
             <div style={{ flex: 2 }}>
-              <div className="text-[11px]" style={{ opacity: 0.7, marginBottom: 5 }}>{t('location.date_label')}</div>
+              <div className="text-[11px] opacity-70 mb-[5px]" >{t('location.date_label')}</div>
               <input type="date" aria-label="Date de l'accident" value={accidentDate} max={new Date().toISOString().split('T')[0]}
                 onChange={e => setAccidentDate(e.target.value)} className="text-sm" />
             </div>
             <div className="flex-1">
-              <div className="text-[11px]" style={{ opacity: 0.7, marginBottom: 5 }}>{t('location.time_label')}</div>
+              <div className="text-[11px] opacity-70 mb-[5px]" >{t('location.time_label')}</div>
               <input type="time" aria-label="Heure de l'accident" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
                 className="text-sm" />
             </div>
           </div>
-          <div className="text-[11px] leading-normal" style={{ opacity: 0.7, marginTop: 6 }}>
+          <div className="text-[11px] leading-normal opacity-70 mt-1.5" >
             {t('location.datetime_warning')}
           </div>
         </div>
@@ -246,16 +239,11 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       {/* Geolocation — masqué pour B */}
       {!isPartyB && (
         <div className="mb-6">
-          <div className="text-[11px] uppercase mb-2.5" style={{ letterSpacing: 2, opacity: 0.75, fontFamily: 'monospace' }}>
+          <div className="text-[11px] uppercase mb-2.5 tracking-[2px] opacity-75" style={{ fontFamily: 'monospace' }}>
             {t('location.geo_label')}
           </div>
 
-          <div style={{
-            padding: '10px 14px', borderRadius: 10, marginBottom: 12,
-            background: geoStatus === 'success' ? 'rgba(34,197,94,0.08)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.04)',
-            border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' : 'rgba(255,255,255,0.25)'}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10,
-          }}>
+          <div className="rounded-[10px] mb-3 flex items-center justify-between gap-2.5 px-3.5 py-2.5" style={{ background: geoStatus === 'success' ? 'rgba(34,197,94,0.08)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${geoStatus === 'success' ? 'rgba(34,197,94,0.25)' : geoStatus === 'loading' ? 'rgba(245,158,11,0.25)' : 'rgba(255,255,255,0.25)'}` }}>
             <div className="flex items-center gap-2">
               <span className="text-base">
                 {geoStatus === 'success' ? '📍' : geoStatus === 'loading' ? '⏳' : geoStatus === 'denied' ? '🚫' : '📍'}
@@ -269,40 +257,37 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                     : t('location.gps_missing')}
                 </div>
                 {geoStatus === 'success' && (
-                  <div className="text-[10px]" style={{ opacity: 0.75, marginTop: 1 }}>{t('location.gps_saved')}</div>
+                  <div className="text-[10px] mt-px opacity-75">{t('location.gps_saved')}</div>
                 )}
               </div>
             </div>
             {(geoStatus === 'denied' || geoStatus === 'error') && (
-              <button onClick={requestGeo} style={{
-                padding: '5px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)',
-                background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 11, whiteSpace: 'nowrap',
-              }}>{t('common.retry')}</button>
+              <button onClick={requestGeo} className="rounded-md bg-transparent cursor-pointer text-[11px] whitespace-nowrap px-2.5 py-[5px]" style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>{t('common.retry')}</button>
             )}
           </div>
 
           <div className="flex flex-col gap-2">
             <div>
-              <div className="text-[11px] mb-1" style={{ opacity: 0.7 }}>{t('location.address_label')}</div>
+              <div className="text-[11px] mb-1 opacity-70" >{t('location.address_label')}</div>
               <input type="text" aria-label="Adresse" value={address} onChange={e => setAddress(e.target.value)}
                 placeholder={t('location.address_placeholder')} style={inputStyle} />
             </div>
             <div className="flex gap-2">
               <div style={{ flex: 2 }}>
-                <div className="text-[11px] mb-1" style={{ opacity: 0.7 }}>{t('location.city_label')}</div>
+                <div className="text-[11px] mb-1 opacity-70" >{t('location.city_label')}</div>
                 <input type="text" aria-label="Ville" value={city} onChange={e => setCity(e.target.value)}
                   placeholder={t('location.city_placeholder')} style={inputStyle} />
               </div>
               <div className="flex-1">
-                <div className="text-[11px] mb-1" style={{ opacity: 0.7 }}>{t('location.country_label')}</div>
+                <div className="text-[11px] mb-1 opacity-70" >{t('location.country_label')}</div>
                 <input type="text" aria-label="Pays" value={country} onChange={e => setCountry(e.target.value)}
                   placeholder={t('location.country_placeholder')} style={inputStyle} />
               </div>
             </div>
           </div>
 
-          <div className="mt-2 rounded-lg" style={{ padding: '10px 12px', background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-            <div className="text-[11px] leading-relaxed" style={{ opacity: 0.7 }}>
+          <div className="mt-2 rounded-lg px-3 py-2.5" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
+            <div className="text-[11px] leading-relaxed opacity-70" >
               {t('location.location_tip')}
             </div>
           </div>
@@ -311,7 +296,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
       {/* Injuries */}
       <div className="mb-6">
-        <div className="text-[11px] uppercase mb-2.5" style={{ letterSpacing: 2, opacity: 0.75, fontFamily: 'monospace' }}>
+        <div className="text-[11px] uppercase mb-2.5 tracking-[2px] opacity-75" style={{ fontFamily: 'monospace' }}>
           {t('location.injuries_label')}
         </div>
         <div className="flex gap-2.5 mb-3">
@@ -319,13 +304,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             { val: false, label: t('location.no_injuries'), icon: '✅', color: '#22c55e' },
             { val: true,  label: t('location.yes_injuries'), icon: '🚑', color: '#ef4444' },
           ] as const).map(opt => (
-            <button key={String(opt.val)} onClick={() => setInjuries(opt.val)} style={{
-              flex: 1, padding: '14px 10px', borderRadius: 12, border: 'none', cursor: 'pointer',
-              background: injuries === opt.val ? `${opt.color}15` : 'rgba(255,255,255,0.03)',
-              outline: injuries === opt.val ? `2px solid ${opt.color}` : '1.5px solid rgba(255,255,255,0.25)',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-              transition: 'all 0.15s',
-            }}>
+            <button key={String(opt.val)} onClick={() => setInjuries(opt.val)} className="flex-1 rounded-xl border-0 cursor-pointer flex flex-col items-center gap-1.5 px-2.5 py-3.5" style={{ background: injuries === opt.val ? `${opt.color}15` : 'rgba(255,255,255,0.03)', outline: injuries === opt.val ? `2px solid ${opt.color}` : '1.5px solid rgba(255,255,255,0.25)', transition: 'all 0.15s' }}>
               <span className="text-2xl">{opt.icon}</span>
               <span className="text-xs font-semibold" style={{ color: injuries === opt.val ? opt.color : 'rgba(240,237,232,0.6)' }}>
                 {opt.label}
@@ -336,25 +315,19 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
 
         {injuries === true && (
           <div className="p-4 rounded-xl flex flex-col gap-3" style={{ border: '1.5px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.05)' }}>
-            <div className="text-xs font-bold text-red-500" style={{ marginBottom: 2 }}>
+            <div className="text-xs font-bold text-red-500 mb-0.5" >
               {t('location.injury_details_title')}
             </div>
 
             <div>
-              <div className="text-[11px] mb-1.5" style={{ opacity: 0.7 }}>{t('location.severity_label')}</div>
+              <div className="text-[11px] mb-1.5 opacity-70" >{t('location.severity_label')}</div>
               <div className="flex gap-1.5">
                 {([
                   { val: 'minor',    label: t('location.severity_minor'),    color: '#f59e0b' },
                   { val: 'moderate', label: t('location.severity_moderate'), color: '#f97316' },
                   { val: 'serious',  label: t('location.severity_serious'),  color: '#ef4444' },
                 ] as const).map(s => (
-                  <button key={s.val} onClick={() => setInjurySeverity(s.val)} style={{
-                    flex: 1, padding: '8px 4px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                    background: injurySeverity === s.val ? `${s.color}20` : 'transparent',
-                    outline: injurySeverity === s.val ? `1.5px solid ${s.color}` : '1px solid rgba(255,255,255,0.25)',
-                    color: injurySeverity === s.val ? s.color : 'rgba(240,237,232,0.5)',
-                    fontSize: 12, fontWeight: 600, transition: 'all 0.15s',
-                  }}>
+                  <button key={s.val} onClick={() => setInjurySeverity(s.val)} className="flex-1 rounded-lg border-0 cursor-pointer text-xs font-semibold px-1 py-2" style={{ background: injurySeverity === s.val ? `${s.color}20` : 'transparent', outline: injurySeverity === s.val ? `1.5px solid ${s.color}` : '1px solid rgba(255,255,255,0.25)', color: injurySeverity === s.val ? s.color : 'rgba(240,237,232,0.5)', transition: 'all 0.15s' }}>
                     {s.label}
                   </button>
                 ))}
@@ -362,10 +335,10 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             </div>
 
             <div>
-              <div className="text-[11px]" style={{ opacity: 0.7, marginBottom: 5 }}>{t('location.injury_desc_label')}</div>
+              <div className="text-[11px] opacity-70 mb-[5px]" >{t('location.injury_desc_label')}</div>
               <textarea aria-label="Description des blessures" value={injuryDesc} onChange={e => setInjuryDesc(e.target.value)}
                 placeholder={t('location.injury_desc_placeholder')} rows={3}
-                className="w-full rounded-lg text-[13px] box-border" style={{ padding: '10px 13px', border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', resize: 'none', fontFamily: 'inherit' }}
+                className="w-full rounded-lg text-[13px] box-border resize-none px-[13px] py-2.5" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontFamily: 'inherit' }}
               />
             </div>
 
@@ -375,28 +348,19 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
                 { val: hospitalized, set: setHospitalized, label: t('location.hospitalized') },
               ].map((item, i) => (
                 <label key={i} className="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" checked={item.val} onChange={() => item.set(!item.val)} aria-label={item.label} style={{
-                    width: 20, height: 20, borderRadius: 5, flexShrink: 0,
-                    accentColor: '#ef4444', cursor: 'pointer',
-                  }} />
-                  <span className="text-[13px]" style={{ opacity: 0.8 }}>{item.label}</span>
+                  <input type="checkbox" checked={item.val} onChange={() => item.set(!item.val)} aria-label={item.label} className="w-5 h-5 rounded-[5px] shrink-0 cursor-pointer" style={{ accentColor: '#ef4444' }} />
+                  <span className="text-[13px] opacity-80" >{item.label}</span>
                 </label>
               ))}
             </div>
 
-            <div className="text-[11px] leading-relaxed" style={{ opacity: 0.75 }}>{t('location.injury_footer')}</div>
+            <div className="text-[11px] leading-relaxed opacity-75">{t('location.injury_footer')}</div>
           </div>
         )}
       </div>
 
       {/* CTA */}
-      <button onClick={handleContinue} disabled={!canContinue} style={{
-        width: '100%', padding: '16px', borderRadius: 12, border: 'none',
-        background: canContinue ? 'var(--boom)' : 'rgba(255,255,255,0.08)',
-        color: canContinue ? '#fff' : 'rgba(255,255,255,0.6)',
-        cursor: canContinue ? 'pointer' : 'not-allowed',
-        fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
-      }}>
+      <button onClick={handleContinue} disabled={!canContinue} className="w-full p-4 rounded-xl border-0 font-bold transition-all duration-200 text-[15px]" style={{ background: canContinue ? 'var(--boom)' : 'rgba(255,255,255,0.08)', color: canContinue ? '#fff' : 'rgba(255,255,255,0.6)', cursor: canContinue ? 'pointer' : 'not-allowed' }}>
         {!vehicleType ? t('location.cta_no_vehicle') :
          injuries === null ? t('location.cta_no_injuries') :
          t('common.continue')}
@@ -430,22 +394,14 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
         return (
           <div className="mt-2.5 flex flex-col gap-2">
             <div className="flex gap-2">
-              <a href={`tel:${nums.police}`} style={{
-                flex: 1, padding: '11px', borderRadius: 10, textDecoration: 'none',
-                border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
-                color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
-              }}>
+              <a href={`tel:${nums.police}`} className="flex-1 p-[11px] rounded-[10px] no-underline text-[13px] font-semibold text-[#ef4444] text-center" style={{ border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)' }}>
                 {t('location.emergency_police', { number: nums.police, label })}
               </a>
-              <a href={`tel:${nums.ambulance}`} style={{
-                flex: 1, padding: '11px', borderRadius: 10, textDecoration: 'none',
-                border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)',
-                color: '#ef4444', fontSize: 13, fontWeight: 600, textAlign: 'center' as const,
-              }}>
+              <a href={`tel:${nums.ambulance}`} className="flex-1 p-[11px] rounded-[10px] no-underline text-[13px] font-semibold text-[#ef4444] text-center" style={{ border: '1px solid rgba(239,68,68,0.25)', background: 'rgba(239,68,68,0.06)' }}>
                 {t('location.emergency_ambulance', { number: nums.ambulance, label })}
               </a>
             </div>
-            <div className="text-[11px] text-center" style={{ opacity: 0.75 }}>
+            <div className="text-[11px] text-center opacity-75">
               {t('location.emergency_voluntary')}
             </div>
           </div>

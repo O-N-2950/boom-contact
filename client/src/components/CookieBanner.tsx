@@ -81,35 +81,16 @@ export function CookieBanner() {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      zIndex: 9000,
-      padding: '0 0 env(safe-area-inset-bottom)',
-      pointerEvents: 'none',
-    }}>
+    <div className="fixed bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 9000, padding: '0 0 env(safe-area-inset-bottom)' }}>
       <div
         ref={bannerRef}
         role="dialog"
         aria-label="Paramètres cookies"
         aria-modal="true"
-        style={{
-        maxWidth: 480,
-        margin: '0 auto',
-        background: '#0E0E18',
-        border: '1px solid rgba(255,255,255,0.25)',
-        borderBottom: 'none',
-        borderRadius: '16px 16px 0 0',
-        padding: '18px 20px 20px',
-        pointerEvents: 'all',
-        boxShadow: '0 -8px 32px rgba(0,0,0,0.6)',
-        animation: 'slideUp 0.4s ease',
-      }}>
+        className="max-w-[480px] mx-auto my-0 px-5 pt-[18px] pb-5 bg-[#0E0E18]" style={{ border: '1px solid rgba(255,255,255,0.25)', borderBottom: 'none', borderRadius: '16px 16px 0 0', pointerEvents: 'all', boxShadow: '0 -8px 32px rgba(0,0,0,0.6)', animation: 'slideUp 0.4s ease' }}>
         {/* Handle */}
-        <div className="flex justify-center" style={{ marginBottom: 14 }}>
-          <div style={{ width: 36, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
+        <div className="flex justify-center mb-3.5" >
+          <div className="w-9 h-[3px] rounded-sm" style={{ background: 'rgba(255,255,255,0.15)' }} />
         </div>
 
         {/* Header */}
@@ -121,7 +102,7 @@ export function CookieBanner() {
           </div>
         </div>
 
-        <div className="text-[#d0d0d0] text-[13px] leading-relaxed" style={{ marginBottom: 14 }}>
+        <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3.5" >
           boom.contact utilise uniquement des cookies <strong className="text-[#ccc]">strictement nécessaires</strong> au fonctionnement du service (session, préférences langue). Aucun cookie publicitaire ou de tracking.
         </div>
 
@@ -134,7 +115,7 @@ export function CookieBanner() {
         </button>
 
         {expanded && (
-          <div className="bg-[#111] rounded-[10px] p-3.5" style={{ border: '1px solid #3a3a3a', marginBottom: 14 }}>
+          <div className="bg-[#111] rounded-[10px] p-3.5 mb-3.5"  style={{ border: '1px solid #3a3a3a' }}>
             <CookieRow
               name="boom_cgu_accepted"
               purpose="Session constat — obligatoire"
@@ -176,39 +157,19 @@ export function CookieBanner() {
         <div className="flex gap-2">
           <button
             onClick={() => accept('essential')}
-            style={{
-              flex: 1,
-              background: 'none',
-              border: '1px solid #555',
-              borderRadius: 10,
-              color: '#d0d0d0',
-              padding: '11px 12px',
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
+            className="flex-1 bg-none rounded-[10px] text-[13px] font-semibold cursor-pointer px-3 py-[11px] text-[#d0d0d0]" style={{ border: '1px solid #555' }}
           >
             Essentiels uniquement
           </button>
           <button
             onClick={() => accept('all')}
-            style={{
-              flex: 1,
-              background: '#FF3500',
-              border: 'none',
-              borderRadius: 10,
-              color: '#fff',
-              padding: '11px 12px',
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            className="flex-1 border-0 rounded-[10px] text-white text-[13px] font-bold cursor-pointer px-3 py-[11px] bg-[#FF3500]"
           >
             Accepter ✓
           </button>
         </div>
 
-        <div className="mt-2.5 text-[10px]" style={{ textAlign: 'center' as const, color: '#b0b0b0' }}>
+        <div className="mt-2.5 text-[10px] text-center text-[#b0b0b0]">
           En continuant sans choisir, seuls les cookies essentiels sont utilisés. ·{' '}
           <a
             href="/?privacy=true"
@@ -227,10 +188,10 @@ function CookieRow({ name, purpose, duration, type }: { name: string; purpose: s
   return (
     <div className="flex justify-between items-start" style={{ padding: '6px 0', borderBottom: '1px solid #3a3a3a' }}>
       <div>
-        <div className="text-xs" style={{ color: '#ccc', fontFamily: 'monospace' }}>{name}</div>
+        <div className="text-xs text-[#ccc]" style={{ fontFamily: 'monospace' }}>{name}</div>
         <div className="text-[#d0d0d0] text-[11px]">{purpose}</div>
       </div>
-      <div className="shrink-0" style={{ textAlign: 'right' as const, marginLeft: 10 }}>
+      <div className="shrink-0 ml-2.5 text-right">
         <div className="text-green-400 text-[10px] font-bold">{type}</div>
         <div className="text-[10px] text-[#c0c0c0]">{duration}</div>
       </div>

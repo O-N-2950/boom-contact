@@ -23,14 +23,8 @@ export function RouteAnnouncer({ message }: RouteAnnouncerProps) {
       role="status"
       aria-live="assertive"
       aria-atomic="true"
-      className="sr-only"
-      style={{
-        position: 'absolute',
-        left: '-10000px',
-        width: '1px',
-        height: '1px',
-        overflow: 'hidden',
-      }}
+      className="sr-only absolute left-[-10000px] w-px h-px overflow-hidden"
+      
     />
   );
 }

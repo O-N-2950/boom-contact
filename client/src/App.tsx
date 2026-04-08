@@ -6,6 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
 
+type PoliceAgent = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  badgeNumber?: string;
+  role: string;
+  station: { id: string; name: string; canton?: string; country?: string } | null;
+};
+
 // ── Code splitting — lazy-loaded pages & modals ──────────────
 const LandingPage     = React.lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
 const ConstatFlow     = React.lazy(() => import('./pages/ConstatFlow').then(m => ({ default: m.ConstatFlow })));
@@ -27,7 +36,7 @@ const BugReport       = React.lazy(() => import('./components/BugReport').then(m
 function LoadingSpinner() {
   return (
     <div role="status" aria-label="Chargement en cours" className="flex items-center justify-center min-h-screen" style={{ background: 'var(--black, #06060C)' }}>
-      <div aria-hidden="true" className="rounded-full" style={{ width: 32, height: 32, border: '3px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} />
+      <div aria-hidden="true" className="rounded-full w-8 h-8"  style={{ border: '3px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
@@ -86,7 +95,7 @@ interface AppState {
   routeAnnouncement: string;
   accountInitialTab: 'garage' | 'history' | 'profile';
   userEmail: string;
-  authUser: any;
+  authUser: Record<string, unknown> | null;
   authToken: string;
   showAuthModal: boolean;
   showCGU: boolean;
@@ -101,7 +110,7 @@ type AppAction =
   | { type: 'SET_VIEW'; view: AppView }
   | { type: 'SET_ROUTE_ANNOUNCEMENT'; message: string }
   | { type: 'SET_ACCOUNT_TAB'; tab: 'garage' | 'history' | 'profile' }
-  | { type: 'SET_AUTH'; token: string; user: any }
+  | { type: 'SET_AUTH'; token: string; user: Record<string, unknown> }
   | { type: 'SET_USER_EMAIL'; email: string }
   | { type: 'SHOW_AUTH_MODAL'; show: boolean }
   | { type: 'SHOW_CGU'; show: boolean }
@@ -207,7 +216,7 @@ export default function App() {
     }
   }, []);
 
-  const handleAuth = useCallback((token: string, user: any) => {
+  const handleAuth = useCallback((token: string, user: Record<string, unknown>) => {
     localStorage.setItem(USER_TOKEN_KEY, token);
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
     dispatch({ type: 'SET_AUTH', token, user });
@@ -390,7 +399,7 @@ export default function App() {
       {view === 'police_dashboard' && policeUser && (
         <PoliceDashboard
           token={policeToken}
-          user={policeUser as any}
+          user={policeUser as PoliceAgent}
           onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); dispatch({ type: 'SET_VIEW', view: 'landing' }); }}
           onViewSession={(sessionId) => dispatch({ type: 'POLICE_INTERVENTION', sessionId })}
         />
@@ -400,7 +409,7 @@ export default function App() {
         <PoliceFlow
           sessionId={policeSessionId}
           token={policeFlowToken || policeToken}
-          agent={policeUser as any}
+          agent={policeUser as PoliceAgent}
           onLogout={() => {
             localStorage.removeItem('boom_police_token');
             localStorage.removeItem('boom_police_user');
@@ -413,7 +422,7 @@ export default function App() {
         <PoliceIntervention
           sessionId={policeSessionId}
           token={policeToken}
-          agent={policeUser as any}
+          agent={policeUser as PoliceAgent}
           onBack={() => dispatch({ type: 'SET_VIEW', view: 'police_dashboard' })}
           onLogout={() => {
             localStorage.removeItem('boom_police_token');

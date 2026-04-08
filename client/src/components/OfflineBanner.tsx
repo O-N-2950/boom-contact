@@ -13,23 +13,7 @@ export default function OfflineBanner() {
     <div
       role="alert"
       aria-live="assertive"
-      style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 9999,
-      background: 'linear-gradient(90deg, #FF6B00, #FF3500)',
-      color: '#fff',
-      padding: '10px 16px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 10,
-      fontSize: 13,
-      fontWeight: 600,
-      boxShadow: '0 2px 12px rgba(255,53,0,0.4)',
-    }}>
+      className="fixed top-0 left-0 right-0 z-[9999] text-white flex items-center justify-center gap-2.5 text-[13px] font-semibold px-4 py-2.5" style={{ background: 'linear-gradient(90deg, #FF6B00, #FF3500)', boxShadow: '0 2px 12px rgba(255,53,0,0.4)' }}>
       <span className="text-base">📡</span>
       <span>
         Mode hors ligne — vos données sont sauvegardées localement

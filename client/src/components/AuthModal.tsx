@@ -5,7 +5,7 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 type AuthMode = 'choose' | 'magic' | 'password' | 'register' | 'magic_sent';
 
 interface AuthModalProps {
-  onAuth: (token: string, user: any) => void;
+  onAuth: (token: string, user: Record<string, unknown>) => void;
   onSkip: () => void;
   title?: string;
   subtitle?: string;
@@ -30,7 +30,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       await magicReqMut.mutateAsync({ email });
       setMode('magic_sent');
     } catch (e: unknown) {
-      setError(e.message || 'Erreur');
+      setError(e instanceof Error ? e.message : 'Erreur');
     } finally { setLoading(false); }
   };
 
@@ -56,19 +56,13 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user', JSON.stringify({ id: res.id, email, role: 'customer', credits: 0 }));
       onAuth(res.token, { id: res.id, email, role: 'customer', credits: 0 });
     } catch (e: unknown) {
-      setError(e.message || "Erreur lors de l'inscription.");
+      setError(e instanceof Error ? e.message : "Erreur lors de l'inscription.");
     } finally { setLoading(false); }
   };
 
   return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999,
-      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
-    }}>
-      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" style={{
-        background: '#111', border: '1px solid #444', borderRadius: 20,
-        padding: 32, width: '100%', maxWidth: 420, position: 'relative',
-      }}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
+      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" className="rounded-[20px] p-8 w-full max-w-[420px] relative bg-[#111]" style={{ border: '1px solid #444' }}>
         <div className="mb-6">
           <h1 className="text-[28px] font-extrabold text-white mb-1.5">
             {title || '💥 boom.contact'}

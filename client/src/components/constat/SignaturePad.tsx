@@ -138,12 +138,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
               noSig: isOtherPedestrian,
             },
           ].map((p, i) => (
-            <div key={i} style={{
-              padding: '4px 12px', borderRadius: 20, fontSize: 11, fontFamily: 'monospace',
-              background: p.done ? 'rgba(34,197,94,0.15)' : i === 0 ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.05)',
-              border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`,
-              color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)',
-            }}>
+            <div key={i} className="rounded-[20px] text-[11px] px-3 py-1" style={{ fontFamily: 'monospace', background: p.done ? 'rgba(34,197,94,0.15)' : i === 0 ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`, color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)' }}>
               {p.done ? (p.noSig ? '✓' : '✅') : '⏳'} {p.label}{p.noSig ? ' — sans signature' : ''}
             </div>
           ))}
@@ -153,26 +148,14 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       {/* Wrapper observé par ResizeObserver */}
       <div
         ref={wrapperRef}
-        style={{
-          position: 'relative',
-          borderRadius: 12,
-          overflow: 'hidden',
-          border: `2px solid ${signed ? 'rgba(34,197,94,0.4)' : `${roleColor}33`}`,
-          marginBottom: 14,
-          width: '100%',
-        }}
+        className="relative rounded-xl overflow-hidden mb-3.5 w-full" style={{ border: `2px solid ${signed ? 'rgba(34,197,94,0.4)' : `${roleColor}33`}` }}
       >
         <canvas
           ref={canvasRef}
           role="img"
           aria-label={`Zone de signature — Conducteur ${role}`}
           tabIndex={0}
-          style={{
-            display: 'block',
-            touchAction: 'none',
-            cursor: signed ? 'default' : 'crosshair',
-            width: '100%',   // CSS width — ResizeObserver gère le canvas interne
-          }}
+          className="block w-full touch-none" style={{ cursor: signed ? 'default' : 'crosshair', // CSS width — ResizeObserver gère le canvas interne }}
           onMouseDown={startDraw}
           onMouseMove={draw}
           onMouseUp={endDraw}
@@ -183,11 +166,11 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         />
         {isEmpty && !signed && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-[13px]" style={{ opacity: 0.75, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
+            <span className="text-[13px] italic opacity-75">Signez ici avec votre doigt</span>
           </div>
         )}
         {signed && (
-          <div className="absolute rounded text-[10px] text-green-500" style={{ top: 8, right: 8, padding: '3px 8px', background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace', letterSpacing: 1 }}>
+          <div className="absolute rounded text-[10px] text-green-500 top-2 right-2 px-2 py-[3px] tracking-[1px]" style={{ background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace' }}>
             SIGNÉ ✓
           </div>
         )}
@@ -195,10 +178,10 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
 
       {!signed && (
         <div className="flex gap-2.5">
-          <button onClick={clear} className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px]" style={{ padding: '13px', border: '1.5px solid rgba(240,237,232,0.12)', color: 'var(--text)' }}>
+          <button onClick={clear} className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] p-[13px]"  style={{ border: '1.5px solid rgba(240,237,232,0.12)', color: 'var(--text)' }}>
             🗑 Effacer
           </button>
-          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} className="rounded-[10px] border-0 text-white text-sm font-bold" style={{ flex: 2, opacity: disabled ? 0.4 : 1, padding: '13px', background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}>
+          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} className="rounded-[10px] border-0 text-white text-sm font-bold p-[13px] transition-all duration-200"  style={{ flex: 2, opacity: disabled ? 0.4 : 1, background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty ? 'not-allowed' : 'pointer' }}>
             {signing ? '⏳ Enregistrement…' : '✍️ Confirmer la signature'}
           </button>
         </div>
@@ -208,7 +191,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
           <div className="text-[22px] mb-1.5">⏳</div>
           <div className="text-[13px] font-semibold text-[#f59e0b]">En attente de la signature de l'autre conducteur…</div>
-          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>Le PDF sera généré dès que les deux parties auront signé.</div>
+          <div className="text-[11px] mt-1 opacity-70" >Le PDF sera généré dès que les deux parties auront signé.</div>
         </div>
       )}
 
@@ -216,7 +199,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)' }}>
           <div className="text-4xl mb-1.5">🎉</div>
           <div className="text-[15px] font-bold text-green-500">Constat signé !</div>
-          <div className="text-xs mt-1" style={{ opacity: 0.75 }}>Génération du PDF en cours…</div>
+          <div className="text-xs mt-1 opacity-75">Génération du PDF en cours…</div>
         </div>
       )}
     </div>

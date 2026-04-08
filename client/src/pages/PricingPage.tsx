@@ -124,15 +124,15 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
   };
 
   return (
-    <div className="mx-auto min-h-[100svh]" style={{ maxWidth: 440, padding: '24px 16px' }}>
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Tarifs — boom.contact</h1>
+    <div className="mx-auto min-h-[100svh] max-w-[440px] px-4 py-6">
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Tarifs — boom.contact</h1>
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button onClick={onBack} className="bg-transparent border-0 cursor-pointer text-[15px] font-semibold flex items-center gap-1.5 touch-manipulation" style={{ color: 'rgba(255,255,255,0.55)', padding: '8px 0' }}>← Retour←</button>
         <div>
           <div className="font-extrabold text-lg">Acheter des constats</div>
-          <div className="text-[11px]" style={{ opacity: 0.7 }}>Crédits sans expiration · Partageables par WhatsApp</div>
+          <div className="text-[11px] opacity-70" >Crédits sans expiration · Partageables par WhatsApp</div>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
             <div className="font-bold text-sm" style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24' }}>
               {authUser.credits > 0 ? `✅ ${authUser.credits} crédit${authUser.credits > 1 ? 's' : ''} disponible${authUser.credits > 1 ? 's' : ''}` : '⚡ Aucun crédit — rechargez maintenant'}
             </div>
-            <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>{authUser.email}</div>
+            <div className="text-[#d0d0d0] text-xs mt-0.5" >{authUser.email}</div>
           </div>
           {authUser.credits === 999999 && <span className="text-[#FF3500] font-black text-xl">∞</span>}
         </div>
@@ -151,18 +151,12 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
 
       {/* Currency selector */}
       <div className="mb-5">
-        <div className="text-[#d0d0d0] text-[11px] font-semibold mb-2" style={{ letterSpacing: 1 }}>
-          DEVISE {detected && <span className="text-green-400" style={{ marginLeft: 6 }}>✓ détectée auto</span>}
+        <div className="text-[#d0d0d0] text-[11px] font-semibold mb-2 tracking-[1px]">
+          DEVISE {detected && <span className="text-green-400 ml-1.5" >✓ détectée auto</span>}
         </div>
         <div className="flex gap-1.5" style={{ flexWrap: 'wrap' as const }}>
           {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => (
-            <button key={c} onClick={() => setCurrency(c)} style={{
-              background: currency === c ? '#FF3500' : '#111',
-              border: `1px solid ${currency === c ? '#FF3500' : '#222'}`,
-              color: '#fff', borderRadius: 8, padding: '6px 10px',
-              fontSize: 12, fontWeight: currency === c ? 700 : 400, cursor: 'pointer',
-              minHeight: 44, minWidth: 44,
-            }}>
+            <button key={c} onClick={() => setCurrency(c)} className="text-white rounded-lg text-xs cursor-pointer min-h-[44px] min-w-[44px]" style={{ background: currency === c ? '#FF3500' : '#111', border: `1px solid ${currency === c ? '#FF3500' : '#222'}`, padding: '6px 10px', fontWeight: currency === c ? 700 : 400 }}>
               {CURRENCY_FLAGS[c]} {c}
             </button>
           ))}
@@ -178,27 +172,23 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           const isLoading   = loading === pkg.id;
 
           return (
-            <div key={pkg.id} style={{
-              borderRadius: 16, overflow: 'hidden',
-              border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)',
-              background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)',
-            }}>
+            <div key={pkg.id} className="rounded-2xl overflow-hidden" style={{ border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)', background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)' }}>
               {pkg.popular && (
-                <div className="bg-[#FF3500] text-[10px] font-bold text-white" style={{ padding: '4px 16px', letterSpacing: 1 }}>
+                <div className="bg-[#FF3500] text-[10px] font-bold text-white px-4 py-1 tracking-[1px]">
                   ⭐ PLUS POPULAIRE · ÉCONOMIE {pkg.savings}
                 </div>
               )}
 
-              <div style={{ padding: '18px 20px' }}>
+              <div className="px-5 py-[18px]">
                 <div className="flex justify-between items-start mb-2.5">
                   <div>
-                    <div className="font-extrabold" style={{ fontSize: 17 }}>{pkg.icon} {pkg.label}</div>
-                    <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>{pkg.desc}</div>
+                    <div className="font-extrabold text-[17px]">{pkg.icon} {pkg.label}</div>
+                    <div className="text-[#d0d0d0] text-xs mt-0.5" >{pkg.desc}</div>
                     {!pkg.popular && pkg.savings && (
                       <div className="text-green-400 text-[11px] mt-1">Économie {pkg.savings}</div>
                     )}
                   </div>
-                  <div className="shrink-0" style={{ textAlign: 'right' as const }}>
+                  <div className="shrink-0 text-right">
                     <div className="text-[26px] font-black" style={{ color: pkg.popular ? '#FF3500' : '#fff' }}>
                       {currency === 'JPY' ? `¥${amountCents}` : priceStr}
                     </div>
@@ -206,7 +196,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                       {currency !== 'JPY' ? symbol : ''}{' '}par pack
                     </div>
                     {pkg.credits > 1 && (
-                      <div className="text-[#d0d0d0] text-[10px]" style={{ marginTop: 2 }}>
+                      <div className="text-[#d0d0d0] text-[10px] mt-0.5" >
                         ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} / constat
                       </div>
                     )}
@@ -214,7 +204,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 </div>
 
                 {pkg.marketing && (
-                  <div className="rounded-lg mb-3 text-[#d0d0d0] text-xs leading-normal" style={{ background: 'rgba(255,255,255,0.04)', padding: '8px 12px' }}>
+                  <div className="rounded-lg mb-3 text-[#d0d0d0] text-xs leading-normal px-3 py-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
                     {pkg.marketing}
                   </div>
                 )}
@@ -222,13 +212,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 <button
                   onClick={() => handleBuy(pkg.id)}
                   disabled={!!loading}
-                  style={{
-                    width: '100%', borderRadius: 10, border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
-                    padding: '13px 20px', fontSize: 14, fontWeight: 700,
-                    background: pkg.popular ? '#FF3500' : 'rgba(255,255,255,0.08)',
-                    color: '#fff', opacity: loading ? 0.6 : 1,
-                    transition: 'all 0.2s',
-                  }}
+                  className="w-full rounded-[10px] border-0 text-sm font-bold text-white transition-all duration-200 px-5 py-[13px]" style={{ cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? '#FF3500' : 'rgba(255,255,255,0.08)', opacity: loading ? 0.6 : 1 }}
                 >
                   {isLoading ? '⏳ Redirection Stripe...' : `Acheter ${pkg.label} — ${currency === 'JPY' ? `¥${amountCents}` : `${symbol} ${priceStr}`}`}
                 </button>
@@ -239,7 +223,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       </div>
 
       {error && (
-        <div className="rounded-[10px] p-3 mb-4 text-[13px]" style={{ background: '#2a0a0a', border: '1px solid #5c1a1a', color: '#f87171' }}>
+        <div className="rounded-[10px] p-3 mb-4 text-[13px] bg-[#2a0a0a] text-[#f87171]" style={{ border: '1px solid #5c1a1a' }}>
           ⚠️ {error}
         </div>
       )}
@@ -254,7 +238,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           { icon: '📄', text: 'Facture PDF automatique' },
           { icon: '🏢', text: 'Idéal flottes entreprise' },
         ].map((item, i) => (
-          <div key={i} className="flex items-center gap-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 10px' }}>
+          <div key={i} className="flex items-center gap-2 rounded-lg px-2.5 py-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
             <span className="text-base">{item.icon}</span>
             <span className="text-[#d0d0d0] text-[11px]">{item.text}</span>
           </div>
@@ -263,7 +247,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
 
       {/* Scenarios */}
       <div className="rounded-[14px] p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-        <div className="text-[#d0d0d0] text-xs font-bold mb-2.5" style={{ letterSpacing: 0.5 }}>
+        <div className="text-[#d0d0d0] text-xs font-bold mb-2.5 tracking-[0.5px]">
           POURQUOI AVOIR DES CRÉDITS D'AVANCE ?
         </div>
         {[
@@ -275,13 +259,13 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
             <span className="text-xl shrink-0">{s.icon}</span>
             <div>
               <div className="font-semibold text-[13px] text-[#ccc]">{s.title}</div>
-              <div className="text-[#d0d0d0] text-xs leading-normal" style={{ marginTop: 2 }}>{s.text}</div>
+              <div className="text-[#d0d0d0] text-xs leading-normal mt-0.5" >{s.text}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="text-[11px] leading-relaxed" style={{ color: '#b0b0b0', textAlign: 'center' as const }}>
+      <div className="text-[11px] leading-relaxed text-[#b0b0b0] text-center">
         boom.contact · PEP's Swiss SA · CHE-476.484.632<br/>
         Bellevue 7, 2950 Courgenay, Jura, Suisse<br/>
         <a href="mailto:contact@boom.contact" className="text-[#d0d0d0]">contact@boom.contact</a>

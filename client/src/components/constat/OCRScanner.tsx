@@ -137,25 +137,25 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
-          <div className="rounded-[10px] flex items-center justify-center text-[22px]" style={{ width: 44, height: 44, background: 'rgba(34,197,94,0.15)' }}>✅</div>
+          <div className="rounded-[10px] flex items-center justify-center text-[22px] w-11 h-11"  style={{ background: 'rgba(34,197,94,0.15)' }}>✅</div>
           <div>
             <div className="font-bold text-base">{docs.length} document{docs.length>1?'s':''} analysé{docs.length>1?'s':''}</div>
-            <div className="text-xs" style={{ opacity: 0.75 }}>Confiance : {Math.round((reg.confidence||0)*100)}%</div>
+            <div className="text-xs opacity-75">Confiance : {Math.round((reg.confidence||0)*100)}%</div>
           </div>
           <button onClick={() => { setResult(null); setDocs([]); setManualIns({company:'',policyNumber:''}); }}
-            className="ml-auto rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}>
+            className="ml-auto rounded-md bg-transparent cursor-pointer text-xs px-2.5 py-1.5" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}>
             Rescanner
           </button>
         </div>
 
         {/* Véhicule */}
         {reg.vehicle && Object.values(reg.vehicle).some(Boolean) && (
-          <div style={{ marginBottom:14 }}>
-            <div className="text-[10px] uppercase" style={{ letterSpacing: 2, opacity: 0.7, marginBottom: 7, fontFamily: 'monospace' }}>🚗 Véhicule</div>
+          <div className="mb-3.5">
+            <div className="text-[10px] uppercase opacity-70 mb-[7px] tracking-[2px]" style={{ fontFamily: 'monospace' }}>🚗 Véhicule</div>
             <div className="rounded-[10px] overflow-hidden" style={{ border: '1px solid rgba(240,237,232,0.08)' }}>
               {Object.entries(reg.vehicle).filter(([k,v]) => v && k!=='vehicleType' && k!=='category').map(([key,value],i,arr) => (
-                <div key={key} className="flex justify-between" style={{ padding: '9px 14px', borderBottom: i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background: i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
-                  <span className="text-xs" style={{ opacity: 0.75 }}>{key==='licensePlate'?'Plaque':key==='vin'?'VIN':key}</span>
+                <div key={key} className="flex justify-between px-3.5 py-[9px]" style={{ borderBottom: i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background: i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
+                  <span className="text-xs opacity-75">{key==='licensePlate'?'Plaque':key==='vin'?'VIN':key}</span>
                   <span className="text-[13px] font-semibold">{String(value)}</span>
                 </div>
               ))}
@@ -165,12 +165,12 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
         {/* Conducteur */}
         {reg.driver && Object.values(reg.driver).some(Boolean) && (
-          <div style={{ marginBottom:14 }}>
-            <div className="text-[10px] uppercase" style={{ letterSpacing: 2, opacity: 0.7, marginBottom: 7, fontFamily: 'monospace' }}>👤 Conducteur</div>
+          <div className="mb-3.5">
+            <div className="text-[10px] uppercase opacity-70 mb-[7px] tracking-[2px]" style={{ fontFamily: 'monospace' }}>👤 Conducteur</div>
             <div className="rounded-[10px] overflow-hidden" style={{ border: '1px solid rgba(240,237,232,0.08)' }}>
               {Object.entries(reg.driver).filter(([,v])=>v).map(([key,value],i,arr) => (
-                <div key={key} className="flex justify-between" style={{ padding: '9px 14px', borderBottom: i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background: i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
-                  <span className="text-xs" style={{ opacity: 0.75 }}>{key==='firstName'?'Prénom':key==='lastName'?'Nom':key}</span>
+                <div key={key} className="flex justify-between px-3.5 py-[9px]" style={{ borderBottom: i<arr.length-1?'1px solid rgba(240,237,232,0.05)':'none', background: i%2===0?'rgba(255,255,255,0.02)':'transparent' }}>
+                  <span className="text-xs opacity-75">{key==='firstName'?'Prénom':key==='lastName'?'Nom':key}</span>
                   <span className="text-[13px] font-semibold text-right" style={{ maxWidth: '55%' }}>{String(value)}</span>
                 </div>
               ))}
@@ -184,11 +184,11 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
             {hasIns ? '✅ Assurance' : '⚠️ Assurance — compléter manuellement'}
           </div>
           <div className="mb-2">
-            <label className="text-[11px] uppercase block mb-1" style={{ opacity: 0.75, letterSpacing: 1 }}>Compagnie</label>
+            <label className="text-[11px] uppercase block mb-1 opacity-75 tracking-[1px]">Compagnie</label>
             <input type="text" aria-label="Compagnie d'assurance" value={company} onChange={e=>setManualIns(p=>({...p,company:e.target.value}))} placeholder="AXA, Zurich, Allianz, emmental…" style={inputStyle} />
           </div>
           <div>
-            <label className="text-[11px] uppercase block mb-1" style={{ opacity: 0.75, letterSpacing: 1 }}>
+            <label className="text-[11px] uppercase block mb-1 opacity-75 tracking-[1px]">
               N° de police{!policyNumber&&<span className="ml-2 text-[#f59e0b]">(saisie manuelle)</span>}
             </label>
             <input type="text" aria-label="Numéro de police" value={policyNumber} onChange={e=>setManualIns(p=>({...p,policyNumber:e.target.value}))} placeholder="50194120 / FR-2026-XXXXX…" style={inputStyle} />
@@ -206,9 +206,9 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
   // ── SCANNING ────────────────────────────────────────────────
   if (scanning) return (
     <div role="status" aria-label="Analyse en cours" className="p-10 text-center">
-      <div className="mb-5" style={{ fontSize: 52, display: 'inline-block', animation: 'spin 1.2s linear infinite' }} aria-hidden="true">🔍</div>
-      <div className="font-bold mb-2" style={{ fontSize: 17 }}>Analyse en cours…</div>
-      <div className="text-[13px]" style={{ opacity: 0.75 }}>{docs.length} document{docs.length>1?'s':''} · identification automatique</div>
+      <div className="mb-5 inline-block text-[52px]" style={{ animation: 'spin 1.2s linear infinite' }} aria-hidden="true">🔍</div>
+      <div className="font-bold mb-2 text-[17px]">Analyse en cours…</div>
+      <div className="text-[13px] opacity-75">{docs.length} document{docs.length>1?'s':''} · identification automatique</div>
       <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
     </div>
   );
@@ -227,9 +227,9 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
         className="hidden" onChange={handleFile} />
 
       <div className="text-center mb-6">
-        <div className="mb-2.5" style={{ fontSize: 52 }}>📄</div>
+        <div className="mb-2.5 text-[52px]">📄</div>
         <h2 className="text-xl font-bold mb-2">Photographiez vos documents</h2>
-        <p className="text-[13px]" style={{ opacity: 0.75, lineHeight: 1.65 }}>
+        <p className="text-[13px] opacity-75 leading-[1.65]">
           Permis de circulation + carte verte en une seule analyse.<br/>
           L&apos;application identifie et extrait tout automatiquement.
         </p>
@@ -241,9 +241,9 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
           {docs.map((doc,i) => (
             <div key={doc.id} className="relative rounded-[10px] overflow-hidden" style={{ border: '1.5px solid rgba(34,197,94,0.3)', aspectRatio: '4/3' }}>
               <img src={doc.preview} alt={`Document scanné ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
-              <div className="absolute text-[11px] text-white" style={{ top: 0, left: 0, right: 0, padding: '4px 8px', background: 'rgba(0,0,0,0.55)' }}>Document {i+1}</div>
+              <div className="absolute text-[11px] text-white top-0 left-0 right-0 px-2 py-1" style={{ background: 'rgba(0,0,0,0.55)' }}>Document {i+1}</div>
               <button onClick={()=>setDocs(p=>p.filter(d=>d.id!==doc.id))}
-                className="absolute rounded-full border-0 text-white cursor-pointer text-sm flex items-center justify-center touch-manipulation" style={{ top: 4, right: 4, width: 24, height: 24, background: 'rgba(239,68,68,0.85)' }}>×</button>
+                className="absolute rounded-full border-0 text-white cursor-pointer text-sm flex items-center justify-center touch-manipulation top-1 right-1 w-6 h-6"  style={{ background: 'rgba(239,68,68,0.85)' }}>×</button>
             </div>
           ))}
         </div>
@@ -253,27 +253,19 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
       {docs.length < MAX_DOCS && (
         <div className="flex gap-2.5 mb-3">
           <button onClick={()=>cameraRef.current?.click()}
-            style={{ flex:2, padding:'16px', borderRadius:12,
-              border:`2px solid ${docs.length===0?'rgba(255,53,0,0.5)':'rgba(255,255,255,0.15)'}`,
-              background:docs.length===0?'rgba(255,53,0,0.06)':'rgba(255,255,255,0.03)',
-              cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:10,
-              touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+            className="p-4 rounded-xl gap-2.5" style={{ flex:2, border:`2px solid ${docs.length===0?'rgba(255,53,0,0.5)':'rgba(255,255,255,0.15)'}`, background:docs.length===0?'rgba(255,53,0,0.06)':'rgba(255,255,255,0.03)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
             <span className="text-[26px]">📸</span>
             <div className="text-left">
               <div className="font-bold text-sm" style={{ color: 'var(--text)' }}>Photographier</div>
-              <div className="text-[11px]" style={{ opacity: 0.7 }}>Caméra arrière</div>
+              <div className="text-[11px] opacity-70" >Caméra arrière</div>
             </div>
           </button>
           <button onClick={()=>fileRef.current?.click()}
-            style={{ flex:1, padding:'16px', borderRadius:12,
-              border:'1.5px solid rgba(255,255,255,0.25)',
-              background:'rgba(255,255,255,0.03)',
-              cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8,
-              touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+            className="p-4 rounded-xl gap-2 cursor-pointer touch-manipulation flex items-center justify-center" style={{ flex:1, border:'1.5px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.03)', WebkitTapHighlightColor:'transparent' }}>
             <span className="text-[22px]">🖼</span>
             <div className="text-left">
               <div className="font-semibold text-[13px]" style={{ color: 'var(--text)' }}>Galerie</div>
-              <div className="text-[10px]" style={{ opacity: 0.7 }}>{docs.length}/{MAX_DOCS}</div>
+              <div className="text-[10px] opacity-70" >{docs.length}/{MAX_DOCS}</div>
             </div>
           </button>
         </div>
@@ -281,8 +273,8 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
       {/* Guide pays */}
       {docs.length === 0 && (
-        <div className="rounded-[10px] text-xs mb-3" style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.85, lineHeight: 1.8 }}>
-          <div className="font-semibold mb-1" style={{ opacity: 0.8 }}>Quels documents scanner ?</div>
+        <div className="rounded-[10px] text-xs mb-3 px-3.5 py-3 opacity-85 leading-[1.8]" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="font-semibold mb-1 opacity-80" >Quels documents scanner ?</div>
           🇨🇭 Permis de circulation + carte verte<br/>
           🇫🇷 Carte grise + carte verte / attestation<br/>
           🇩🇪 Zulassung + Grüne Karte<br/>
@@ -300,10 +292,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
       {docs.length > 0 && (
         <button onClick={()=>{setScanning(true);setError(null);batchMut.mutate({images:docs.map(d=>d.base64)});}}
-          style={{ width:'100%', padding:'16px', borderRadius:12, border:'none',
-            background:'var(--boom)', color:'#fff', cursor:'pointer',
-            fontSize:15, fontWeight:700, marginTop:4,
-            touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+          className="p-4 rounded-xl text-white mt-1 cursor-pointer font-bold touch-manipulation w-full text-[15px]" style={{ border:'none', background:'var(--boom)', WebkitTapHighlightColor:'transparent' }}>
           🔍 Analyser {docs.length} document{docs.length>1?'s':''}
         </button>
       )}
@@ -311,10 +300,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
       {/* Passer sans scanner — saisie manuelle dans le formulaire */}
       {onSkip && (
         <button onClick={onSkip}
-          style={{ width:'100%', padding:'13px', borderRadius:10, marginTop:10,
-            border:'1px solid rgba(255,255,255,0.25)', background:'transparent',
-            cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.6)',
-            touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
+          className="p-[13px] rounded-[10px] mt-2.5 cursor-pointer touch-manipulation w-full text-[13px]" style={{ border:'1px solid rgba(255,255,255,0.25)', background:'transparent', color:'rgba(255,255,255,0.6)', WebkitTapHighlightColor:'transparent' }}>
           Passer — saisie manuelle →
         </button>
       )}

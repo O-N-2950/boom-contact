@@ -56,23 +56,23 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
 
   return (
     <div className="min-h-screen bg-[#06060C] text-[#F0EDE8]">
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Tableau de bord Police — boom.contact</h1>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Tableau de bord Police — boom.contact</h1>
 
       {/* Header */}
-      <div className="flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '16px 20px' }}>
+      <div className="flex items-center justify-between px-5 py-4" style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
         <div className="flex items-center gap-3">
           <span className="text-2xl">🚔</span>
           <div>
             <div className="font-extrabold text-base">Module Police</div>
-            <div className="text-xs" style={{ opacity: 0.7 }}>{user.station?.name || 'boom.contact'} {user.station?.canton ? `· ${user.station.canton}` : ''}</div>
+            <div className="text-xs opacity-70" >{user.station?.name || 'boom.contact'} {user.station?.canton ? `· ${user.station.canton}` : ''}</div>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-[13px] font-semibold">{user.firstName} {user.lastName}</div>
-            {user.badgeNumber && <div className="text-[11px]" style={{ opacity: 0.7 }}>Badge {user.badgeNumber}</div>}
+            {user.badgeNumber && <div className="text-[11px] opacity-70" >Badge {user.badgeNumber}</div>}
           </div>
-          <button onClick={onLogout} className="rounded-lg bg-transparent cursor-pointer text-xs" style={{ padding: '7px 14px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.5)' }}>
+          <button onClick={onLogout} className="rounded-lg bg-transparent cursor-pointer text-xs px-3.5 py-[7px]" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.5)' }}>
             Déconnexion
           </button>
         </div>
@@ -88,10 +88,10 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
               { label: 'Avec blessures', value: data.stats.withInjuries, icon: '🚑', color: '#ef4444' },
               { label: 'Signés', value: data.stats.signed, icon: '✅', color: '#22c55e' },
             ].map(stat => (
-              <div key={stat.label} className="rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', padding: '16px' }}>
+              <div key={stat.label} className="rounded-xl text-center p-4"  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
                 <div className="text-[28px] mb-1.5">{stat.icon}</div>
                 <div className="text-[28px] font-extrabold" style={{ color: stat.color }}>{stat.value}</div>
-                <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 2 }}>{stat.label}</div>
+                <div className="text-[11px] opacity-70 mt-0.5" >{stat.label}</div>
               </div>
             ))}
           </div>
@@ -104,27 +104,27 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
             value={searchId}
             onChange={e => setSearchId(e.target.value)}
             placeholder="Rechercher par ID, lieu…"
-            className="flex-1 rounded-[10px] text-white text-sm" style={{ padding: '11px 14px', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)' }}
+            className="flex-1 rounded-[10px] text-white text-sm px-3.5 py-[11px]" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)' }}
             aria-label="Rechercher un constat"
           />
-          <button onClick={() => refetch()} className="rounded-[10px] cursor-pointer text-[13px]" style={{ padding: '11px 16px', border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.6)' }}>
+          <button onClick={() => refetch()} className="rounded-[10px] cursor-pointer text-[13px] px-4 py-[11px]" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.6)' }}>
             🔄
           </button>
         </div>
 
         {/* Sessions list */}
         {isLoading && (
-          <div className="text-center p-10" style={{ opacity: 0.7 }}>Chargement des sessions…</div>
+          <div className="text-center p-10 opacity-70" >Chargement des sessions…</div>
         )}
 
         {error && (
-          <div className="rounded-[10px] text-red-500 text-[13px]" style={{ padding: '12px 16px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
+          <div className="rounded-[10px] text-red-500 text-[13px] px-4 py-3" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
             ⚠️ {error.message}
           </div>
         )}
 
         {filtered.length === 0 && !isLoading && (
-          <div className="text-center" style={{ padding: 48, opacity: 0.7 }}>
+          <div className="text-center p-12 opacity-70" >
             <div className="text-[40px] mb-2.5">📭</div>
             <div>Aucune session active dans les dernières 24h</div>
           </div>
@@ -134,16 +134,16 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
           {filtered.map((s: Session) => (
             <button role="button" tabIndex={0} key={s.id}
               onClick={() => onViewSession(s.id)}
-              className="rounded-xl cursor-pointer flex items-center gap-3.5" style={{ background: 'rgba(255,255,255,0.04)', border: s.hasInjuries ? '1px solid rgba(239,68,68,0.4)' : '1px solid rgba(255,255,255,0.25)', padding: '14px 16px' }}
+              className="rounded-xl cursor-pointer flex items-center gap-3.5 px-4 py-3.5" style={{ background: 'rgba(255,255,255,0.04)', border: s.hasInjuries ? '1px solid rgba(239,68,68,0.4)' : '1px solid rgba(255,255,255,0.25)' }}
             >
               <div className="text-2xl">{s.hasInjuries ? '🚑' : '🚗'}</div>
               <div className="flex-1">
-                <div className="flex items-center gap-2" style={{ marginBottom: 3 }}>
+                <div className="flex items-center gap-2 mb-[3px]" >
                   <span className="text-[13px] font-bold" style={{ fontFamily: 'monospace', color: 'rgba(240,237,232,0.7)' }}>{s.id}</span>
                   <span className="text-[11px] rounded-[20px]" style={{ color: statusColor(s.status), background: `${statusColor(s.status)}20`, padding: '2px 7px' }}>{statusLabel(s.status)}</span>
-                  {s.hasInjuries && <span className="text-[11px] text-red-500 rounded-[20px]" style={{ background: 'rgba(239,68,68,0.1)', padding: '2px 7px' }}>⚠️ Blessures</span>}
+                  {s.hasInjuries && <span className="text-[11px] text-red-500 rounded-[20px] px-[7px] py-0.5" style={{ background: 'rgba(239,68,68,0.1)' }}>⚠️ Blessures</span>}
                 </div>
-                <div className="text-xs" style={{ opacity: 0.7 }}>
+                <div className="text-xs opacity-70" >
                   {s.vehicleCount} véhicule{s.vehicleCount > 1 ? 's' : ''} · {s.location || 'Localisation non renseignée'} · {timeAgo(s.createdAt)}
                 </div>
               </div>

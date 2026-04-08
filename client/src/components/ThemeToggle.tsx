@@ -38,19 +38,7 @@ export function ThemeToggle({ style }: Props) {
       onClick={toggle}
       aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
       title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-      style={{
-        background: 'none',
-        border: '1px solid var(--border)',
-        borderRadius: 20,
-        padding: '5px 10px',
-        cursor: 'pointer',
-        fontSize: 16,
-        color: 'var(--text)',
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 6,
-        ...style,
-      }}
+      className="bg-none rounded-[20px] cursor-pointer text-base inline-flex items-center gap-1.5 px-2.5 py-[5px]" style={{ border: '1px solid var(--border)', color: 'var(--text)', ...style }}
     >
       {theme === 'dark' ? '☀️' : '🌙'}
     </button>

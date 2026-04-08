@@ -36,11 +36,11 @@ export function WitnessForm({ witnesses, onChange }: Props) {
       </h3>
 
       {witnesses.length === 0 && (
-        <p className="text-sm text-white/40">Aucun temoin enregistre.</p>
+        <p className="text-sm text-white/55">Aucun temoin enregistre.</p>
       )}
 
       {witnesses.map((w, i) => (
-        <div key={i} className="p-4 rounded-lg border border-white/10 bg-white/5 space-y-3">
+        <div key={i} className="p-4 rounded-lg border border-white/25 bg-white/5 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-white">Temoin {i + 1}</span>
             <button
@@ -62,7 +62,7 @@ export function WitnessForm({ witnesses, onChange }: Props) {
                 value={w.name}
                 onChange={e => updateWitness(i, 'name', e.target.value)}
                 placeholder="Nom de famille"
-                className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+                className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
               />
             </div>
             <div>
@@ -73,7 +73,7 @@ export function WitnessForm({ witnesses, onChange }: Props) {
                 value={w.firstName || ''}
                 onChange={e => updateWitness(i, 'firstName', e.target.value)}
                 placeholder="Prenom"
-                className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+                className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export function WitnessForm({ witnesses, onChange }: Props) {
                 value={w.phone || ''}
                 onChange={e => updateWitness(i, 'phone', e.target.value)}
                 placeholder="+41 79 123 45 67"
-                className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+                className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
               />
             </div>
             <div>
@@ -98,7 +98,7 @@ export function WitnessForm({ witnesses, onChange }: Props) {
                 value={w.address || ''}
                 onChange={e => updateWitness(i, 'address', e.target.value)}
                 placeholder="Adresse du temoin"
-                className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+                className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
               />
             </div>
           </div>
@@ -111,7 +111,7 @@ export function WitnessForm({ witnesses, onChange }: Props) {
               onChange={e => updateWitness(i, 'statement', e.target.value)}
               placeholder="Resume de la deposition du temoin..."
               rows={3}
-              className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 resize-y"
+              className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 resize-y"
             />
           </div>
         </div>

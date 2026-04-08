@@ -106,7 +106,7 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
           <p className="text-xs text-white/50">{photos.length} photo(s) prise(s)</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {photos.map((photo, i) => (
-              <div key={photo.id} className="relative rounded-lg border border-white/10 overflow-hidden bg-white/5">
+              <div key={photo.id} className="relative rounded-lg border border-white/25 overflow-hidden bg-white/5">
                 <img
                   src={photo.base64}
                   alt={`Photo police ${i + 1} - ${getCategoryLabel(photo.category)}`}
@@ -121,7 +121,7 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
                     value={photo.caption || ''}
                     onChange={e => updateCaption(i, e.target.value)}
                     placeholder="Legende..."
-                    className="w-full bg-transparent border-b border-white/10 text-xs text-white placeholder-white/30 py-1"
+                    className="w-full bg-transparent border-b border-white/25 text-xs text-white placeholder-white/30 py-1"
                     aria-label={`Legende photo ${i + 1}`}
                   />
                 </div>
@@ -130,7 +130,7 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
                   onClick={() => removePhoto(i)}
                   className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-red-400 text-xs flex items-center justify-center min-w-[44px] min-h-[44px]"
                   aria-label={`Supprimer photo ${i + 1}`}
-                  style={{ minWidth: 28, minHeight: 28 }}
+                  
                 >
                   X
                 </button>

@@ -27,12 +27,7 @@ export function BugReport() {
   return (
     <>
       {sent && (
-        <div style={{
-          position:'fixed', bottom:76, right:16, zIndex:600,
-          background:'#06060C', border:'1px solid #22c55e', borderRadius:12,
-          padding:'10px 14px', fontSize:13, color:'#22c55e', fontWeight:600,
-          boxShadow:'0 4px 20px rgba(0,0,0,0.4)', display:'flex', alignItems:'center', gap:8,
-        }}>
+        <div className="bottom-[76px] right-4 rounded-xl gap-2 px-3.5 py-2.5 font-semibold fixed bg-[#06060C] text-[13px] text-[#22c55e] flex items-center" style={{ zIndex:600, border:'1px solid #22c55e', boxShadow:'0 4px 20px rgba(0,0,0,0.4)' }}>
           ✅ Merci !
           <button onClick={() => setSent(false)} aria-label="Fermer le message" className="bg-transparent border-0 text-green-500 cursor-pointer text-sm">✕</button>
         </div>
@@ -41,26 +36,13 @@ export function BugReport() {
       {/* Bouton flottant discret */}
       {!sent && (
         <button onClick={() => setOpen(o => !o)} aria-label="Signaler un problème"
-          style={{
-            position:'fixed', bottom:76, right:16, zIndex:600,
-            background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.25)',
-            borderRadius:20, padding:'6px 11px',
-            color:'rgba(255,255,255,0.6)', cursor:'pointer',
-            fontSize:11, fontFamily:'monospace',
-            backdropFilter:'blur(6px)',
-            touchAction:'manipulation', WebkitTapHighlightColor:'transparent',
-          }}>
+          className="bottom-[76px] right-4 rounded-[20px] px-[11px] py-1.5 cursor-pointer touch-manipulation fixed text-[11px]" style={{ zIndex:600, background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.25)', color:'rgba(255,255,255,0.6)', fontFamily:'monospace', backdropFilter:'blur(6px)', WebkitTapHighlightColor:'transparent' }}>
           🐛
         </button>
       )}
 
       {open && (
-        <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" style={{
-          position:'fixed', bottom:112, right:16, zIndex:700,
-          background:'#06060C', border:'1px solid rgba(255,255,255,0.25)',
-          borderRadius:14, padding:16, width:272,
-          boxShadow:'0 8px 32px rgba(0,0,0,0.6)',
-        }}>
+        <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" className="bottom-[112px] right-4 rounded-[14px] p-4 w-[272px] fixed bg-[#06060C]" style={{ zIndex:700, border:'1px solid rgba(255,255,255,0.25)', boxShadow:'0 8px 32px rgba(0,0,0,0.6)' }}>
           <div className="flex justify-between items-center mb-2.5">
             <div className="font-bold text-[13px]">🐛 Signaler un problème</div>
             <button onClick={() => setOpen(false)} aria-label="Fermer le formulaire" className="bg-transparent border-0 cursor-pointer text-base" style={{ color: 'rgba(255,255,255,0.4)' }}>✕</button>
@@ -69,38 +51,19 @@ export function BugReport() {
             placeholder="Décrivez ce qui ne fonctionne pas…"
             aria-label="Description du problème"
             rows={4}
-            style={{
-              width:'100%', padding:'10px', borderRadius:8,
-              border:'1px solid rgba(255,255,255,0.25)',
-              background:'rgba(255,255,255,0.04)', color:'var(--text)',
-              fontSize:13, lineHeight:1.5, resize:'none',
-              fontFamily:'inherit',
-              boxSizing:'border-box' as const, marginBottom:8,
-            }}
+            className="p-2.5 rounded-lg mb-2 leading-normal box-border w-full text-[13px]" style={{ border:'1px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.04)', color:'var(--text)', resize:'none', fontFamily:'inherit' }}
             onFocus={(e) => e.currentTarget.style.outline = '2px solid var(--boom)'}
             onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
           <input type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="Votre email (optionnel)"
             aria-label="Adresse email"
-            style={{
-              width:'100%', padding:'9px 10px', borderRadius:8,
-              border:'1px solid rgba(255,255,255,0.25)',
-              background:'rgba(255,255,255,0.04)', color:'var(--text)',
-              fontSize:13, fontFamily:'inherit',
-              boxSizing:'border-box' as const, marginBottom:10,
-            }}
+            className="rounded-lg mb-2.5 px-2.5 py-[9px] box-border w-full text-[13px]" style={{ border:'1px solid rgba(255,255,255,0.25)', background:'rgba(255,255,255,0.04)', color:'var(--text)', fontFamily:'inherit' }}
             onFocus={(e) => e.currentTarget.style.outline = '2px solid var(--boom)'}
             onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
           <button onClick={submit} disabled={!text.trim() || sendMut.isPending}
-            style={{
-              width:'100%', padding:'10px', borderRadius:8, border:'none',
-              background: text.trim() ? 'var(--boom)' : 'rgba(255,255,255,0.06)',
-              color: text.trim() ? '#fff' : 'rgba(255,255,255,0.6)',
-              cursor: text.trim() ? 'pointer' : 'not-allowed',
-              fontSize:13, fontWeight:700,
-            }}>
+            className="p-2.5 rounded-lg font-bold w-full text-[13px]" style={{ border:'none', background: text.trim() ? 'var(--boom)' : 'rgba(255,255,255,0.06)', color: text.trim() ? '#fff' : 'rgba(255,255,255,0.6)', cursor: text.trim() ? 'pointer' : 'not-allowed' }}>
             {sendMut.isPending ? '⏳ Envoi…' : 'Envoyer →'}
           </button>
         </div>

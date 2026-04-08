@@ -30,12 +30,7 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
   return (
     <div
       aria-label="Select language"
-      style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 4,
-      ...style,
-    }}>
+      className="flex items-center gap-1" style={{ ...style }}>
       {orderedLangs.map(lang => {
         const isActive = lang === currentLang;
         return (
@@ -44,27 +39,11 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
             onClick={() => handleChange(lang)}
             title={LANG_META[lang].label}
             aria-label={LANG_META[lang].label}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: compact ? 32 : 36,
-              height: compact ? 32 : 36,
-              borderRadius: 8,
-              border: isActive
+            className="flex items-center justify-center rounded-lg cursor-pointer p-0 shrink-0 touch-manipulation" style={{ width: compact ? 32 : 36, height: compact ? 32 : 36, border: isActive
                 ? '2px solid var(--boom)'
-                : '1.5px solid rgba(255,255,255,0.12)',
-              background: isActive
+                : '1.5px solid rgba(255,255,255,0.12)', background: isActive
                 ? 'rgba(255,53,0,0.12)'
-                : 'rgba(255,255,255,0.04)',
-              cursor: 'pointer',
-              fontSize: compact ? 16 : 18,
-              transition: 'all 0.15s',
-              touchAction: 'manipulation',
-              WebkitTapHighlightColor: 'transparent',
-              padding: 0,
-              flexShrink: 0,
-            }}
+                : 'rgba(255,255,255,0.04)', fontSize: compact ? 16 : 18, transition: 'all 0.15s', WebkitTapHighlightColor: 'transparent' }}
           >
             {LANG_META[lang].flag}
           </button>

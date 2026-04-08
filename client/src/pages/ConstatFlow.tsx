@@ -28,7 +28,7 @@ const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm')
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div className="flex items-center justify-center p-10"><div className="rounded-full" style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 // ── Zod schema for localStorage validation ─────────────────
@@ -289,8 +289,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
     // Exposer les données véhicule pour le moteur de dessin
     // (couleur, type, marque extraites par OCR)
-    const vehData = result.registration?.vehicle as any;
-    (window as any).__boomVehicleA = {
+    const vehData = result.registration?.vehicle as Record<string, unknown> | undefined;
+    window.__boomVehicleA = {
       color: vehData?.color,
       type:  vehData?.vehicleType || guessVehicleType(vehData?.category),
       brand: vehData?.brand,
@@ -385,41 +385,33 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   }
 
   return (
-    <div style={{ maxWidth: 420, margin: '0 auto', minHeight: '100vh',
-      display: 'flex', flexDirection: 'column' }}>
+    <div className="max-w-[420px] mx-auto my-0 min-h-screen flex flex-col">
 
       {/* Header */}
-      <h1 className="absolute p-0 overflow-hidden" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Constat amiable boom.contact</h1>
-      <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)',
-        display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-        <div className="shrink-0" style={{ width: 36, height: 36 }}>
+      <h1 className="absolute p-0 overflow-hidden w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Constat amiable boom.contact</h1>
+      <div className="flex items-center gap-3 shrink-0 px-5 py-4" style={{ borderBottom: '1px solid rgba(240,237,232,0.06)' }}>
+        <div className="shrink-0 w-9 h-9" >
           <img src="/logo.webp" alt="boom.contact" loading="lazy" className="w-full h-full object-contain" />
         </div>
         <div>
           <div className="font-bold text-sm">boom.contact</div>
-          <div className="text-[10px]" style={{ opacity: 0.7, fontFamily: 'monospace', letterSpacing: 1 }}>
+          <div className="text-[10px] opacity-70 tracking-[1px]" style={{ fontFamily: 'monospace' }}>
             {t('flow.header.role_a')}
           </div>
         </div>
         {/* Indicateur sauvegarde automatique */}
         {step !== 'ocr' && step !== 'done' && sessionId && (
-          <div className="text-[9px] flex items-center gap-[3px]" style={{ opacity: 0.7, fontFamily: 'monospace' }}>
+          <div className="text-[9px] flex items-center gap-[3px] opacity-70"  style={{ fontFamily: 'monospace' }}>
             <span className="text-green-500">●</span> AUTO
           </div>
         )}
         <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
-            <button onClick={goBack} style={{
-              display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
-              borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)',
-              background: 'rgba(255,255,255,0.05)', cursor: 'pointer',
-              fontSize: 13, fontWeight: 600, color: 'var(--text)',
-              touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent',
-            }}>← Retour</button>
+            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← Retour</button>
           )}
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
-              className="text-[11px] bg-transparent border-0 cursor-pointer" style={{ opacity: 0.75, color: 'inherit' }}
+              className="text-[11px] bg-transparent border-0 cursor-pointer opacity-75" style={{ color: 'inherit' }}
               aria-label="Réinitialiser le constat"
             >↺</button>
           )}
@@ -446,11 +438,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             {!showVehiclePicker ? (
               <button
                 onClick={() => setShowVehiclePicker(true)}
-                style={{
-                  width: '100%', background: '#0d2a0d', border: '1px solid #1a5c1a',
-                  borderRadius: 12, padding: '14px 16px', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', gap: 12,
-                }}
+                className="w-full rounded-xl cursor-pointer flex items-center gap-3 px-4 py-3.5 bg-[#0d2a0d]" style={{ border: '1px solid #1a5c1a' }}
               >
                 <span className="text-2xl">🚗</span>
                 <div className="text-left">
@@ -463,15 +451,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               <div className="bg-[#111] rounded-xl p-4" style={{ border: '1px solid #1a5c1a' }}>
                 <div className="text-green-400 font-bold mb-3">Choisissez votre véhicule :</div>
                 {savedVehicles.map((v: Record<string, unknown>) => (
-                  <button key={v.id} onClick={() => applyVehicle(v)} style={{
-                    width: '100%', background: '#1a2a1a', border: '1px solid #2a4a2a',
-                    borderRadius: 10, padding: '12px 14px', marginBottom: 8, cursor: 'pointer',
-                    textAlign: 'left' as const,
-                  }}>
+                  <button key={v.id} onClick={() => applyVehicle(v)} className="w-full rounded-[10px] mb-2 cursor-pointer px-3.5 py-3 bg-[#1a2a1a] text-left" style={{ border: '1px solid #2a4a2a' }}>
                     <div className="text-white font-semibold">
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
-                    {v.plate && <div className="text-[13px]" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{v.plate}</div>}
+                    {v.plate && <div className="text-[13px] text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
                     {v.insuranceData?.companyName && <div className="text-[#d0d0d0] text-xs">🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
@@ -525,7 +509,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
                   if (bParticipant?.vehicle?.vehicleData) {
                     setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
-                    (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
+                    window.__boomVehicleB = bParticipant.vehicle.vehicleData;
                   }
                   if (bParticipant) setSessionBParticipant(bParticipant);
                 } catch (e) { /* ignore */ }
@@ -533,17 +517,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               }}
             />
             {/* Bouton partie B indisponible — toujours visible */}
-            <div className="mx-auto" style={{ padding: '0 20px 24px', maxWidth: 480 }}>
+            <div className="mx-auto max-w-[480px]"  style={{ padding: '0 20px 24px' }}>
               <button
                 onClick={() => setShowUnavailableModal(true)}
-                style={{
-                  width: '100%', padding: '14px', borderRadius: 12,
-                  border: '1.5px solid rgba(239,68,68,0.3)',
-                  background: 'rgba(239,68,68,0.05)',
-                  color: 'rgba(239,68,68,0.8)',
-                  cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                }}
+                className="w-full p-3.5 rounded-xl cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2" style={{ border: '1.5px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.05)', color: 'rgba(239,68,68,0.8)' }}
               >
                 ⚠️ La partie B est indisponible (blessé, fuite, refus…)
               </button>
@@ -557,39 +534,25 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <div className="text-center mb-7">
               <div className="text-5xl mb-2.5">🚶</div>
               <h2 className="text-lg font-extrabold m-0">Autre partie : piéton</h2>
-              <p className="text-[13px] mt-2" style={{ opacity: 0.75 }}>
+              <p className="text-[13px] mt-2 opacity-75">
                 Le piéton a-t-il un téléphone mobile pour scanner le QR code ?
               </p>
             </div>
             <button
               onClick={() => setPedestrianHasPhone(true)}
-              style={{
-                width: '100%', padding: '18px', borderRadius: 14, border: 'none',
-                background: 'var(--boom)', color: '#fff',
-                fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 12,
-              }}
+              className="w-full p-[18px] rounded-[14px] border-0 text-white font-bold cursor-pointer mb-3 text-[15px]" style={{ background: 'var(--boom)' }}
             >
               📱 Oui — il scanne le QR code
             </button>
             <button
               onClick={() => { setPedestrianHasPhone(false); setStep('pedestrian_form'); }}
-              style={{
-                width: '100%', padding: '18px', borderRadius: 14,
-                border: '1.5px solid rgba(255,255,255,0.15)',
-                background: 'transparent', color: 'var(--text)',
-                fontSize: 15, fontWeight: 700, cursor: 'pointer', marginBottom: 12,
-              }}
+              className="w-full p-[18px] rounded-[14px] bg-transparent font-bold cursor-pointer mb-3 text-[15px]" style={{ border: '1.5px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
             >
               📋 Non — je remplis ses coordonnées
             </button>
             <button
               onClick={() => { setPedestrianHasPhone(false); setStep('voice'); }}
-              style={{
-                width: '100%', padding: '14px', borderRadius: 14,
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'transparent', color: 'rgba(240,237,232,0.55)',
-                fontSize: 13, cursor: 'pointer',
-              }}
+              className="w-full p-3.5 rounded-[14px] bg-transparent text-[13px] cursor-pointer" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.55)' }}
             >
               Continuer sans coordonnées piéton
             </button>
@@ -695,7 +658,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onComplete={(vehiclePos, mapImageB64) => {
                 setSketchImage(mapImageB64);
                 // Stocker la position de A pour que B la voie sur sa carte
-                (window as any).__boomVehicleAPos = vehiclePos;
+                window.__boomVehicleAPos = vehiclePos;
                 if (sessionId && mapImageB64) {
                   updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
                 }
@@ -724,11 +687,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   />
             </Suspense>
             <div style={{ padding: '0 20px 20px' }}>
-              <button onClick={handleDiagramDone} style={{
-                width: '100%', padding: '16px', borderRadius: 10, border: 'none',
-                background: 'var(--boom)', color: '#fff', cursor: 'pointer',
-                fontSize: 15, fontWeight: 700,
-              }}>
+              <button onClick={handleDiagramDone} className="w-full p-4 rounded-[10px] border-0 text-white cursor-pointer font-bold text-[15px]" style={{ background: 'var(--boom)' }}>
                 {t('common.continue')}
               </button>
             </div>
@@ -739,43 +698,43 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <>
             {/* ── Résumé de relecture avant signature ── */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div className="text-[11px] font-bold uppercase mb-3" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'monospace' }}>
+              <div className="text-[11px] font-bold uppercase mb-3 opacity-70 tracking-[2px]" style={{ fontFamily: 'monospace' }}>
                 Vérifiez avant de signer
               </div>
 
               {/* Véhicule A */}
-              <div className="mb-2.5 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-                <div className="text-[11px] mb-1.5 font-semibold" style={{ opacity: 0.75 }}>🚗 Votre véhicule</div>
+              <div className="mb-2.5 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
+                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 Votre véhicule</div>
                 <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
                   {participantData.vehicle?.licensePlate && <span className="ml-2" style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{participantData.vehicle.licensePlate}</span>}
                 </div>
                 {participantData.insurance?.company && (
-                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 3 }}>🛡️ {participantData.insurance.company || participantData.insurance.companyName}</div>
+                  <div className="text-xs mt-[3px] opacity-75">🛡️ {participantData.insurance.company || participantData.insurance.companyName}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div className="text-xs mt-0.5 opacity-75">👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
                 {damagedZones.length > 0 && (
-                  <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
+                  <div className="text-[11px] mt-1 opacity-70" >💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
                 )}
               </div>
 
               {/* Accident */}
-              <div className="mb-2.5 rounded-[10px]" style={{ padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                <div className="text-[11px] mb-1 font-semibold" style={{ opacity: 0.75 }}>📍 Accident</div>
-                <div className="text-xs" style={{ opacity: 0.7 }}>
+              <div className="mb-2.5 rounded-[10px] px-3.5 py-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                <div className="text-[11px] mb-1 font-semibold opacity-75">📍 Accident</div>
+                <div className="text-xs opacity-70" >
                   {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
                 </div>
                 {accidentData.location?.city && (
-                  <div className="text-xs" style={{ opacity: 0.75 }}>{accidentData.location.city}, {accidentData.location.country || ''}</div>
+                  <div className="text-xs opacity-75">{accidentData.location.city}, {accidentData.location.country || ''}</div>
                 )}
               </div>
 
               {/* Bouton corriger */}
               <button
                 onClick={() => setStep('form')}
-                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2" style={{ padding: '10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
+                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2 p-2.5"  style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
               >
                 ✏️ Corriger mes informations
               </button>
@@ -806,13 +765,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <button
             onClick={() => setShowEmergency(true)}
             title="Numéros d'urgence"
-            style={{
-              position: 'fixed', bottom: 20, right: 16, zIndex: 500,
-              background: '#c00', border: 'none', borderRadius: '50%',
-              width: 48, height: 48, fontSize: 20, cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(200,0,0,0.5)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
+            className="fixed bottom-5 right-4 border-0 rounded-full w-12 h-12 text-xl cursor-pointer flex items-center justify-center bg-[#c00]" style={{ zIndex: 500, boxShadow: '0 4px 16px rgba(200,0,0,0.5)' }}
           >
             🆘
           </button>

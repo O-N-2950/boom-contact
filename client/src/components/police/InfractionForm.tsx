@@ -44,7 +44,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
 
   const updateInfraction = (index: number, field: keyof Infraction, value: string) => {
     const updated = [...infractions];
-    (updated[index] as any)[field] = value;
+    updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
 
@@ -79,7 +79,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
               className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors min-h-[44px] ${
                 isChecked
                   ? 'border-blue-500 bg-blue-500/10'
-                  : 'border-white/10 bg-white/5 hover:bg-white/8'
+                  : 'border-white/25 bg-white/5 hover:bg-white/8'
               }`}
             >
               <input
@@ -100,7 +100,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
         <div className="space-y-3 mt-4">
           <p className="text-xs text-white/50 uppercase tracking-wider">Details par infraction</p>
           {infractions.map((inf, i) => (
-            <div key={`${inf.code}-${i}`} className="p-3 rounded-lg border border-white/10 bg-white/5 space-y-2">
+            <div key={`${inf.code}-${i}`} className="p-3 rounded-lg border border-white/25 bg-white/5 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-white">{inf.description}</span>
                 <button
@@ -121,7 +121,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
                     value={inf.details || ''}
                     onChange={e => updateInfraction(i, 'details', e.target.value)}
                     placeholder="Details supplementaires..."
-                    className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+                    className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
                   />
                 </div>
                 <div className="w-full sm:w-40">
@@ -130,7 +130,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
                     id={`inf-party-${i}`}
                     value={inf.party}
                     onChange={e => updateInfraction(i, 'party', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white min-h-[44px]"
+                    className="w-full bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white min-h-[44px]"
                   >
                     <option value="A">Conducteur A</option>
                     <option value="B">Conducteur B</option>
@@ -152,7 +152,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
             value={customCode}
             onChange={e => setCustomCode(e.target.value)}
             placeholder="Code (ex: LCR 32)"
-            className="w-full sm:w-32 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+            className="w-full sm:w-32 bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
             aria-label="Code infraction libre"
           />
           <input
@@ -160,7 +160,7 @@ export function InfractionForm({ infractions, onChange }: Props) {
             value={customDesc}
             onChange={e => setCustomDesc(e.target.value)}
             placeholder="Description de l'infraction"
-            className="flex-1 bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
+            className="flex-1 bg-white/5 border border-white/25 rounded px-3 py-2 text-sm text-white placeholder-white/30 min-h-[44px]"
             aria-label="Description infraction libre"
           />
           <button

@@ -56,15 +56,10 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
 
   return (
     <div className="mb-1">
-      <div className="text-[11px] mb-2" style={{ opacity: 0.75 }}>{label}</div>
+      <div className="text-[11px] mb-2 opacity-75">{label}</div>
 
       {/* Color grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(7, 1fr)',
-        gap: 6,
-        marginBottom: 10,
-      }}>
+      <div className="grid gap-1.5 mb-2.5" style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}>
         {COLORS.map(c => {
           const isSelected = selectedColor?.hex === c.hex ||
                              value?.toLowerCase() === c.name.toLowerCase();
@@ -77,30 +72,14 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
               title={c.name}
               aria-label={c.name}
               aria-pressed={isSelected}
-              style={{
-                width: '100%',
-                aspectRatio: '1',
-                borderRadius: 8,
-                background: c.hex,
-                border: isSelected
+              className="w-full rounded-lg cursor-pointer relative" style={{ aspectRatio: '1', background: c.hex, border: isSelected
                   ? '2.5px solid var(--boom)'
                   : isLight
                     ? '1px solid rgba(0,0,0,0.15)'
-                    : '1px solid rgba(255,255,255,0.25)',
-                cursor: 'pointer',
-                position: 'relative',
-                transition: 'transform 0.1s, border 0.1s',
-                transform: isSelected ? 'scale(1.12)' : 'scale(1)',
-                boxShadow: isSelected ? '0 0 0 3px rgba(255,53,0,0.25)' : 'none',
-              }}
+                    : '1px solid rgba(255,255,255,0.25)', transition: 'transform 0.1s, border 0.1s', transform: isSelected ? 'scale(1.12)' : 'scale(1)', boxShadow: isSelected ? '0 0 0 3px rgba(255,53,0,0.25)' : 'none' }}
             >
               {isSelected && (
-                <span style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, color: isLight ? '#000' : '#fff',
-                  fontWeight: 800,
-                }}>✓</span>
+                <span className="absolute inset-0 flex items-center justify-center text-[11px] font-extrabold" style={{ color: isLight ? '#000' : '#fff' }}>✓</span>
               )}
             </button>
           );
@@ -109,26 +88,15 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
 
       {/* Selected color name badge */}
       {(selectedColor || isCustom) && (
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          padding: '6px 10px', borderRadius: 8,
-          background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(255,255,255,0.25)',
-          marginBottom: 8,
-        }}>
-          <div style={{
-            width: 20, height: 20, borderRadius: 4, flexShrink: 0,
-            background: selectedColor?.hex ?? '#888',
-            border: '1px solid rgba(255,255,255,0.15)',
-          }}/>
+        <div className="flex items-center gap-2 rounded-lg mb-2 px-2.5 py-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
+          <div className="w-5 h-5 rounded shrink-0" style={{ background: selectedColor?.hex ?? '#888', border: '1px solid rgba(255,255,255,0.15)' }}/>
           <span className="text-[13px] font-semibold">
             {selectedColor?.name ?? value}
           </span>
           <button
             onClick={() => onChange('')}
             aria-label="Effacer la couleur"
-            style={{ marginLeft: 'auto', background: 'none', border: 'none',
-              color: 'rgba(240,237,232,0.55)', cursor: 'pointer', fontSize: 14 }}
+            className="ml-auto bg-none border-0 cursor-pointer text-sm" style={{ color: 'rgba(240,237,232,0.55)' }}
           >✕</button>
         </div>
       )}
@@ -141,13 +109,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
           value={value ?? ''}
           onChange={e => onChange(e.target.value)}
           placeholder="Autre couleur (ex: Vert racing, Gris Nardo…)"
-          style={{
-            width: '100%', padding: '10px 13px', borderRadius: 8,
-            border: '1.5px solid rgba(255,255,255,0.25)',
-            background: 'rgba(255,255,255,0.04)',
-            color: 'var(--text)', fontSize: 13,
-            boxSizing: 'border-box', fontFamily: 'inherit',
-          }}
+          className="w-full rounded-lg text-[13px] box-border px-[13px] py-2.5" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'var(--text)', fontFamily: 'inherit' }}
           onFocus={e => { e.target.style.borderColor = 'rgba(255,53,0,0.5)'; e.target.style.outline = '2px solid var(--boom)'; }}
           onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.25)'; e.target.style.outline = 'none'; }}
         />

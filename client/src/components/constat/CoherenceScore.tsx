@@ -115,14 +115,9 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
 
   if (loading) {
     return (
-      <div style={{
-        margin: '0 20px 14px', padding: '12px 16px',
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.25)',
-        borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
-      }}>
-        <span className="text-base" style={{ opacity: 0.75 }}>🔍</span>
-        <span className="text-xs" style={{ opacity: 0.75 }}>Vérification de la cohérence des déclarations…</span>
+      <div className="rounded-[10px] flex items-center gap-2.5 px-4 py-3" style={{ margin: '0 20px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
+        <span className="text-base opacity-75">🔍</span>
+        <span className="text-xs opacity-75">Vérification de la cohérence des déclarations…</span>
       </div>
     );
   }
@@ -132,12 +127,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
   // Tout est OK
   if (issues.length === 0) {
     return (
-      <div style={{
-        margin: '0 20px 14px', padding: '11px 16px',
-        background: 'rgba(34,197,94,0.07)',
-        border: '1px solid rgba(34,197,94,0.25)',
-        borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
-      }}>
+      <div className="rounded-[10px] flex items-center gap-2.5 px-4 py-[11px]" style={{ margin: '0 20px 14px', background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.25)' }}>
         <span className="text-base" aria-hidden="true">✅</span>
         <span className="text-xs text-green-500 font-semibold">
           Déclarations cohérentes — aucune contradiction détectée
@@ -151,22 +141,13 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
   const hasWarnings = warnings.length > 0;
 
   return (
-    <div style={{
-      margin: '0 20px 14px',
-      border: `1px solid ${hasWarnings ? 'rgba(245,158,11,0.35)' : 'rgba(99,102,241,0.25)'}`,
-      borderRadius: 10, overflow: 'hidden',
-    }}>
+    <div className="rounded-[10px] overflow-hidden" style={{ margin: '0 20px 14px', border: `1px solid ${hasWarnings ? 'rgba(245,158,11,0.35)' : 'rgba(99,102,241,0.25)'}` }}>
       {/* Header */}
       <button
         onClick={() => setExpanded(v => !v)}
         aria-expanded={expanded}
         aria-label={hasWarnings ? 'Points à vérifier avant de signer' : 'Suggestions de vérification'}
-        style={{
-          width: '100%', padding: '11px 14px', border: 'none',
-          background: hasWarnings ? 'rgba(245,158,11,0.08)' : 'rgba(99,102,241,0.06)',
-          display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
-          color: 'inherit', font: 'inherit',
-        }}
+        className="w-full border-0 flex items-center gap-2.5 cursor-pointer px-3.5 py-[11px]" style={{ background: hasWarnings ? 'rgba(245,158,11,0.08)' : 'rgba(99,102,241,0.06)', color: 'inherit', font: 'inherit' }}
       >
         <span className="text-base">{hasWarnings ? '⚠️' : 'ℹ️'}</span>
         <span className="text-xs font-bold flex-1" style={{ color: hasWarnings ? '#f59e0b' : '#818cf8' }}>
@@ -174,26 +155,23 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
             ? `${warnings.length} point${warnings.length > 1 ? 's' : ''} à vérifier avant de signer`
             : `${infos.length} suggestion${infos.length > 1 ? 's' : ''}`}
         </span>
-        <span aria-hidden="true" className="text-sm" style={{ opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
+        <span aria-hidden="true" className="text-sm opacity-70 inline-block"  style={{ transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>›</span>
       </button>
 
       {/* Détail */}
       {expanded && (
-        <div className="flex flex-col gap-2" style={{ padding: '10px 14px 12px' }}>
+        <div className="flex flex-col gap-2 px-3.5 pt-2.5 pb-3">
           {issues.map((issue, i) => (
             <div key={i} className="flex items-start gap-2">
-              <span className="text-sm shrink-0" style={{ marginTop: 1 }}>
+              <span className="text-sm shrink-0 mt-px" >
                 {issue.type === 'warning' ? '⚠️' : 'ℹ️'}
               </span>
-              <span style={{
-                fontSize: 12, lineHeight: 1.5,
-                color: issue.type === 'warning' ? 'rgba(245,158,11,0.9)' : 'rgba(240,237,232,0.65)',
-              }}>
+              <span className="text-xs leading-normal" style={{ color: issue.type === 'warning' ? 'rgba(245,158,11,0.9)' : 'rgba(240,237,232,0.65)' }}>
                 {issue.message}
               </span>
             </div>
           ))}
-          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>
+          <div className="text-[11px] mt-1 opacity-70" >
             Ces points ne bloquent pas la signature — ils vous alertent pour que vous puissiez vérifier.
           </div>
         </div>
