@@ -458,6 +458,17 @@ io.use((socket, next) => {
 // ── Throttle map for socket update-data (300ms per session) ───
 const updateThrottles = new Map<string, { timer: ReturnType<typeof setTimeout>; latestData: unknown; latestRole: string }>();
 
+// ── Session existence cache with 30s TTL ───
+const sessionExistsCache = new Map<string, { exists: boolean; ts: number }>();
+const SESSION_CACHE_TTL = 30_000;
+
+function getCachedSessionExists(sessionId: string): boolean | null {
+  const entry = sessionExistsCache.get(sessionId);
+  if (entry && Date.now() - entry.ts < SESSION_CACHE_TTL) return entry.exists;
+  sessionExistsCache.delete(sessionId);
+  return null;
+}
+
 io.on('connection', (socket) => {
   logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
@@ -500,20 +511,35 @@ io.on('connection', (socket) => {
       existing.timer = setTimeout(async () => {
         updateThrottles.delete(key);
         try {
-          const { getSession } = await import('./services/session.service.js');
-          const session = await getSession(sessionId);
-          if (!session || session.status === 'expired') return;
+          // Check cache first
+          const cachedExists = getCachedSessionExists(sessionId);
+          let sessionValid = cachedExists !== null ? cachedExists : null;
+          if (sessionValid === null) {
+            const { getSession } = await import('./services/session.service.js');
+            const session = await getSession(sessionId);
+            sessionValid = !(!session || session.status === 'expired');
+            sessionExistsCache.set(sessionId, { exists: sessionValid, ts: Date.now() });
+          }
+          if (!sessionValid) return;
           socket.to(`session:${sessionId}`).emit('data-updated', { role: existing.latestRole, data: existing.latestData });
         } catch (e) {
           logger.error('Socket update-data validation error', { error: String(e) });
         }
       }, 300);
     } else {
-      // First emission: validate and send immediately, then set up throttle
+      // First emission: check cache before validating
       try {
-        const { getSession } = await import('./services/session.service.js');
-        const session = await getSession(sessionId);
-        if (!session || session.status === 'expired') {
+        let sessionValid = false;
+        const cachedExists = getCachedSessionExists(sessionId);
+        if (cachedExists !== null) {
+          sessionValid = cachedExists;
+        } else {
+          const { getSession } = await import('./services/session.service.js');
+          const session = await getSession(sessionId);
+          sessionValid = !(!session || session.status === 'expired');
+          sessionExistsCache.set(sessionId, { exists: sessionValid, ts: Date.now() });
+        }
+        if (!sessionValid) {
           socket.emit('error', { message: 'Session not found or expired' });
           return;
         }
