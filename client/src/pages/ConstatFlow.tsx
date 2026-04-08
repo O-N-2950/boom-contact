@@ -381,7 +381,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)',
         display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div style={{ width: 36, height: 36, flexShrink: 0 }}>
-          <img src="/logo.webp" alt="boom.contact" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
@@ -443,7 +443,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 <span style={{ fontSize: 24 }}>🚗</span>
                 <div style={{ textAlign: 'left' }}>
                   <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 14 }}>Utiliser un véhicule enregistré</div>
-                  <div style={{ color: '#666', fontSize: 12 }}>Pré-remplissage automatique — pas besoin de scanner</div>
+                  <div style={{ color: '#d0d0d0', fontSize: 12 }}>Pré-remplissage automatique — pas besoin de scanner</div>
                 </div>
                 <span style={{ color: '#4ade80', marginLeft: 'auto' }}>→</span>
               </button>
@@ -460,10 +460,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
                     {v.plate && <div style={{ color: '#FF3500', fontFamily: 'monospace', fontSize: 13 }}>{v.plate}</div>}
-                    {v.insuranceData?.companyName && <div style={{ color: '#666', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
+                    {v.insuranceData?.companyName && <div style={{ color: '#d0d0d0', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
-                <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 13 }}>
+                <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 13 }}>
                   Annuler
                 </button>
               </div>

@@ -54,13 +54,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
       {/* Header */}
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 13 }} aria-label="Retour">←</button>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 13 }} aria-label="Retour">←</button>
           <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 18 }}>💥 Admin</span>
-          <span style={{ background: '#1a1a1a', color: '#666', fontSize: 11, borderRadius: 4, padding: '2px 6px' }}>boom.contact</span>
+          <span style={{ background: '#1a1a1a', color: '#d0d0d0', fontSize: 11, borderRadius: 4, padding: '2px 6px' }}>boom.contact</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: autoRefresh ? '#4ade80' : '#555' }} />
-          <button onClick={() => setAuto(a => !a)} style={{ background: 'none', border: 'none', color: '#666', fontSize: 11, cursor: 'pointer' }}>
+          <button onClick={() => setAuto(a => !a)} style={{ background: 'none', border: 'none', color: '#d0d0d0', fontSize: 11, cursor: 'pointer' }}>
             {autoRefresh ? 'Live' : 'Paused'}
           </button>
           <button onClick={() => statsQ.refetch()} style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#ccc', padding: '4px 10px', fontSize: 12, cursor: 'pointer' }}>
@@ -129,13 +129,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
                     {['Pack', 'Ventes', 'Revenus', 'Crédits'].map(h => (
-                      <th key={h} style={{ padding: '10px 16px', textAlign: 'left' as const, color: '#555', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>{h.toUpperCase()}</th>
+                      <th key={h} style={{ padding: '10px 16px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {s.revenue.byPackage.length === 0 && (
-                    <tr><td colSpan={4} style={{ padding: '20px 16px', color: '#555', textAlign: 'center' as const }}>Aucune vente</td></tr>
+                    <tr><td colSpan={4} style={{ padding: '20px 16px', color: '#d0d0d0', textAlign: 'center' as const }}>Aucune vente</td></tr>
                   )}
                   {s.revenue.byPackage.map((p: any) => (
                     <tr key={p.packageId} style={{ borderBottom: '1px solid #111' }}>
@@ -154,13 +154,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
             <div style={{ background: '#0d1f2a', border: '1px solid #1a3a4a', borderRadius: 12, padding: 20, marginBottom: 24 }}>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const, alignItems: 'flex-end' }}>
                 <div>
-                  <div style={{ color: '#666', fontSize: 11, marginBottom: 4 }}>CRÉDITS</div>
+                  <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 4 }}>CRÉDITS</div>
                   <input type="number" aria-label="Crédits" min={1} max={100} value={giftCredits}
                     onChange={e => setGiftCredits(Number(e.target.value))}
                     style={{ ...inputSm, width: 70 }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 200 }}>
-                  <div style={{ color: '#666', fontSize: 11, marginBottom: 4 }}>EMAIL (optionnel)</div>
+                  <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 4 }}>EMAIL (optionnel)</div>
                   <input aria-label="Adresse email du destinataire" placeholder="destinataire@email.com" value={giftEmail}
                     onChange={e => setGiftEmail(e.target.value)}
                     style={inputSm} />
@@ -183,7 +183,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
                     {['ID', 'Statut', 'Date', 'Plaque A', 'Propriétaire'].map(h => (
-                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#555', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
@@ -197,9 +197,9 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                       <tr key={session.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                         <td style={td}><span style={{ fontFamily: 'monospace', color: '#FF3500', fontSize: 12 }}>{session.id}</span></td>
                         <td style={td}><span style={{ color: statusColor, fontSize: 12 }}>● {session.status}</span></td>
-                        <td style={{ ...td, color: '#666', fontSize: 12 }}>{date}</td>
+                        <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{date}</td>
                         <td style={{ ...td, fontFamily: 'monospace', fontSize: 12 }}>{plate}</td>
-                        <td style={{ ...td, color: '#666', fontSize: 12 }}>{session.ownerEmail || '—'}</td>
+                        <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{session.ownerEmail || '—'}</td>
                       </tr>
                     );
                   })}
@@ -218,21 +218,21 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                 <thead>
                   <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
                     {['Email', 'Pack', 'Montant', 'Crédits', 'Date'].map(h => (
-                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#555', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {s.revenue.recent.length === 0 && (
-                    <tr><td colSpan={5} style={{ padding: '24px', color: '#555', textAlign: 'center' as const }}>Aucun paiement</td></tr>
+                    <tr><td colSpan={5} style={{ padding: '24px', color: '#d0d0d0', textAlign: 'center' as const }}>Aucun paiement</td></tr>
                   )}
                   {s.revenue.recent.map((p: any) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td style={{ ...td, fontSize: 12 }}>{p.userEmail}</td>
                       <td style={td}><span style={{ background: '#1a1a1a', borderRadius: 4, padding: '2px 6px', fontSize: 11 }}>{p.packageLabel}</span></td>
-                      <td style={{ ...td, color: '#4ade80', fontWeight: 700 }}>{EUR(p.amountCents)} <span style={{ color: '#555', fontSize: 10 }}>{p.currency}</span></td>
+                      <td style={{ ...td, color: '#4ade80', fontWeight: 700 }}>{EUR(p.amountCents)} <span style={{ color: '#d0d0d0', fontSize: 10 }}>{p.currency}</span></td>
                       <td style={td}>{p.creditsGranted}</td>
-                      <td style={{ ...td, color: '#666', fontSize: 12 }}>{p.paidAt ? new Date(p.paidAt).toLocaleDateString('fr-CH') : <span style={{ color: '#555' }}>pending</span>}</td>
+                      <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{p.paidAt ? new Date(p.paidAt).toLocaleDateString('fr-CH') : <span style={{ color: '#d0d0d0' }}>pending</span>}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -258,13 +258,13 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         {tab === 'users' && (
           <>
             <SectionTitle>👥 Utilisateurs ({usersQ.data?.length || 0})</SectionTitle>
-            {usersQ.isLoading && <div style={{ color: '#555', padding: 32, textAlign: 'center' as const }}>Chargement...</div>}
+            {usersQ.isLoading && <div style={{ color: '#d0d0d0', padding: 32, textAlign: 'center' as const }}>Chargement...</div>}
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
                     {['Email', 'Rôle', 'Crédits', 'Pays', 'Inscrit', 'Dernière activité'].map(h => (
-                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#555', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
+                      <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
                   </tr>
                 </thead>
@@ -280,9 +280,9 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                       <td style={{ ...td, color: u.credits > 0 ? '#4ade80' : '#555', fontWeight: 700 }}>
                         {u.credits === 999999 ? '∞' : u.credits}
                       </td>
-                      <td style={{ ...td, color: '#666', fontSize: 12 }}>{u.country || '—'}</td>
-                      <td style={{ ...td, color: '#666', fontSize: 12 }}>{new Date(u.createdAt).toLocaleDateString('fr-CH')}</td>
-                      <td style={{ ...td, color: '#555', fontSize: 12 }}>{u.lastSeenAt ? new Date(u.lastSeenAt).toLocaleDateString('fr-CH') : '—'}</td>
+                      <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{u.country || '—'}</td>
+                      <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{new Date(u.createdAt).toLocaleDateString('fr-CH')}</td>
+                      <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{u.lastSeenAt ? new Date(u.lastSeenAt).toLocaleDateString('fr-CH') : '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -297,15 +297,15 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
 // ── Sub-components ────────────────────────────────────────────
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <div style={{ color: '#888', fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase' as const, marginBottom: 10, marginTop: 8 }}>{children}</div>;
+  return <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase' as const, marginBottom: 10, marginTop: 8 }}>{children}</div>;
 }
 
 function KPI({ label, value, sub, color }: { label: string; value: any; sub?: string; color?: string }) {
   return (
     <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: '16px 18px', flex: 1, minWidth: 100 }}>
-      <div style={{ color: '#555', fontSize: 11, marginBottom: 6, letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 6, letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
       <div style={{ color: color || '#fff', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>{value}</div>
-      {sub && <div style={{ color: '#555', fontSize: 11, marginTop: 4 }}>{sub}</div>}
+      {sub && <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 4 }}>{sub}</div>}
     </div>
   );
 }
@@ -313,7 +313,7 @@ function KPI({ label, value, sub, color }: { label: string; value: any; sub?: st
 function CostLine({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div>
-      <div style={{ color: '#555', fontSize: 11, marginBottom: 2 }}>{label}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 2 }}>{label}</div>
       <div style={{ color: highlight ? '#4ade80' : '#fff', fontWeight: highlight ? 700 : 400, fontSize: 15 }}>{value}</div>
     </div>
   );

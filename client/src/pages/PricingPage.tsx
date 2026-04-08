@@ -142,7 +142,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
             <div style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24', fontWeight: 700, fontSize: 14 }}>
               {authUser.credits > 0 ? `✅ ${authUser.credits} crédit${authUser.credits > 1 ? 's' : ''} disponible${authUser.credits > 1 ? 's' : ''}` : '⚡ Aucun crédit — rechargez maintenant'}
             </div>
-            <div style={{ color: '#666', fontSize: 12, marginTop: 2 }}>{authUser.email}</div>
+            <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>{authUser.email}</div>
           </div>
           {authUser.credits === 999999 && <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>∞</span>}
         </div>
@@ -150,7 +150,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
 
       {/* Currency selector */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ color: '#666', fontSize: 11, fontWeight: 600, letterSpacing: 1, marginBottom: 8 }}>
+        <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 1, marginBottom: 8 }}>
           DEVISE {detected && <span style={{ color: '#4ade80', marginLeft: 6 }}>✓ détectée auto</span>}
         </div>
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const }}>
@@ -191,7 +191,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 800, fontSize: 17 }}>{pkg.icon} {pkg.label}</div>
-                    <div style={{ color: '#888', fontSize: 12, marginTop: 2 }}>{pkg.desc}</div>
+                    <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>{pkg.desc}</div>
                     {!pkg.popular && pkg.savings && (
                       <div style={{ color: '#4ade80', fontSize: 11, marginTop: 4 }}>Économie {pkg.savings}</div>
                     )}
@@ -200,11 +200,11 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                     <div style={{ fontSize: 26, fontWeight: 900, color: pkg.popular ? '#FF3500' : '#fff' }}>
                       {currency === 'JPY' ? `¥${amountCents}` : priceStr}
                     </div>
-                    <div style={{ color: '#555', fontSize: 11 }}>
+                    <div style={{ color: '#d0d0d0', fontSize: 11 }}>
                       {currency !== 'JPY' ? symbol : ''}{' '}par pack
                     </div>
                     {pkg.credits > 1 && (
-                      <div style={{ color: '#666', fontSize: 10, marginTop: 2 }}>
+                      <div style={{ color: '#d0d0d0', fontSize: 10, marginTop: 2 }}>
                         ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} / constat
                       </div>
                     )}
@@ -212,7 +212,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 </div>
 
                 {pkg.marketing && (
-                  <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: '8px 12px', marginBottom: 12, color: '#888', fontSize: 12, lineHeight: 1.5 }}>
+                  <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: '8px 12px', marginBottom: 12, color: '#d0d0d0', fontSize: 12, lineHeight: 1.5 }}>
                     {pkg.marketing}
                   </div>
                 )}
@@ -254,14 +254,14 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         ].map((item, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: '8px 10px' }}>
             <span style={{ fontSize: 16 }}>{item.icon}</span>
-            <span style={{ color: '#666', fontSize: 11 }}>{item.text}</span>
+            <span style={{ color: '#d0d0d0', fontSize: 11 }}>{item.text}</span>
           </div>
         ))}
       </div>
 
       {/* Scenarios */}
       <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 14, padding: 16, marginBottom: 16 }}>
-        <div style={{ color: '#888', fontSize: 12, fontWeight: 700, marginBottom: 10, letterSpacing: 0.5 }}>
+        <div style={{ color: '#d0d0d0', fontSize: 12, fontWeight: 700, marginBottom: 10, letterSpacing: 0.5 }}>
           POURQUOI AVOIR DES CRÉDITS D'AVANCE ?
         </div>
         {[
@@ -273,7 +273,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
             <span style={{ fontSize: 20, flexShrink: 0 }}>{s.icon}</span>
             <div>
               <div style={{ color: '#ccc', fontWeight: 600, fontSize: 13 }}>{s.title}</div>
-              <div style={{ color: '#555', fontSize: 12, lineHeight: 1.5, marginTop: 2 }}>{s.text}</div>
+              <div style={{ color: '#d0d0d0', fontSize: 12, lineHeight: 1.5, marginTop: 2 }}>{s.text}</div>
             </div>
           </div>
         ))}
@@ -282,7 +282,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       <div style={{ color: '#333', fontSize: 11, textAlign: 'center' as const, lineHeight: 1.6 }}>
         boom.contact · PEP's Swiss SA · CHE-476.484.632<br/>
         Bellevue 7, 2950 Courgenay, Jura, Suisse<br/>
-        <a href="mailto:contact@boom.contact" style={{ color: '#555' }}>contact@boom.contact</a>
+        <a href="mailto:contact@boom.contact" style={{ color: '#d0d0d0' }}>contact@boom.contact</a>
       </div>
     </div>
   );

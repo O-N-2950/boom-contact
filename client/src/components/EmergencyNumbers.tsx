@@ -361,7 +361,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
 
   if (isLoading) return (
     <div style={{ background: '#111', border: '1px solid #222', borderRadius: 12, padding: 16 }}>
-      <div style={{ color: '#666', fontSize: 13, display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ color: '#d0d0d0', fontSize: 13, display: 'flex', alignItems: 'center', gap: 10 }}>
         <div style={{ width: 16, height: 16, border: '2px solid #333', borderTopColor: '#FF3500', borderRadius: '50%', flexShrink: 0 }} />
         Recherche des numéros d'urgence pour {countryName || countryCode}...
       </div>
@@ -371,7 +371,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
   if (!data || error) return (
     <div style={{ background: '#1a1010', border: '1px solid #3a1a1a', borderRadius: 12, padding: 14 }}>
       <div style={{ color: '#f87171', fontSize: 13 }}>⚠️ Numéros non trouvés pour {countryName || countryCode}</div>
-      <div style={{ color: '#555', fontSize: 12, marginTop: 4 }}>Composez le <strong style={{ color: '#fff' }}>112</strong> (valable dans 200+ pays).</div>
+      <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 4 }}>Composez le <strong style={{ color: '#fff' }}>112</strong> (valable dans 200+ pays).</div>
     </div>
   );
 
@@ -383,7 +383,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <div style={{ color: '#4ade80', fontWeight: 700 }}>🆘 {data.countryName}</div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          <span style={{ color: '#555', fontSize: 10 }}>{sourceLabel}</span>
+          <span style={{ color: '#d0d0d0', fontSize: 10 }}>{sourceLabel}</span>
           <span style={{ color: confidenceColor, fontSize: 10, fontWeight: 700 }}>{data.confidence.toUpperCase()}</span>
         </div>
       </div>
@@ -398,15 +398,15 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
             display: 'flex', flexDirection: 'column' as const, background: '#111',
             border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
           }}>
-            <div style={{ color: '#666', fontSize: 10, marginBottom: 2 }}>{item.label}</div>
+            <div style={{ color: '#d0d0d0', fontSize: 10, marginBottom: 2 }}>{item.label}</div>
             <div style={{ color: item.color, fontWeight: 900, fontSize: 18, fontFamily: 'monospace' }}>{item.number}</div>
-            {item.note && <div style={{ color: '#555', fontSize: 10, marginTop: 2 }}>{item.note}</div>}
+            {item.note && <div style={{ color: '#d0d0d0', fontSize: 10, marginTop: 2 }}>{item.note}</div>}
           </a>
         ))}
       </div>
       {data.universal && data.universal !== data.police && (
         <div style={{ marginTop: 10, background: '#111', border: '1px solid #222', borderRadius: 8, padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ color: '#888', fontSize: 12 }}>Urgences universel</span>
+          <span style={{ color: '#d0d0d0', fontSize: 12 }}>Urgences universel</span>
           <a href={`tel:${data.universal}`} style={{ color: '#fff', fontWeight: 900, fontSize: 18, fontFamily: 'monospace', textDecoration: 'none' }}>{data.universal}</a>
         </div>
       )}
@@ -512,7 +512,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
               <span style={{ fontSize: 18 }}>{TYPE_ICON[c.type]}</span>
               <div>
                 <div style={{ color: TYPE_COLOR[c.type], fontWeight: 700, fontSize: 14 }}>{c.number}</div>
-                <div style={{ color: '#666', fontSize: 11 }}>{c.name}</div>
+                <div style={{ color: '#d0d0d0', fontSize: 11 }}>{c.name}</div>
               </div>
             </a>
           ))}
@@ -526,7 +526,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
     <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', padding: 16 }}>
       <div style={{ maxWidth: 480, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          {onClose && <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 14 }}>← Retour</button>}
+          {onClose && <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 14 }}>← Retour</button>}
           <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>🆘 Urgences mondiales</div>
           <div style={{ width: 60 }} />
         </div>
@@ -595,7 +595,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {/* Dynamic country lookup */}
         <CountryEmergencySearch />
 
-        <div style={{ color: '#888', fontSize: 13, marginBottom: 12, marginTop: 16 }}>
+        <div style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 12, marginTop: 16 }}>
           {selected.flag} <strong style={{ color: '#fff' }}>{selected.name}</strong> — {contacts.length} numéro{contacts.length !== 1 ? 's' : ''}
         </div>
 
@@ -617,18 +617,18 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
               <div style={{ color: TYPE_COLOR[c.type], fontWeight: 900, fontSize: 20, fontFamily: 'monospace', letterSpacing: 1 }}>
                 {c.number}
               </div>
-              {c.note && <div style={{ color: '#555', fontSize: 11, marginTop: 2 }}>{c.note}</div>}
+              {c.note && <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 2 }}>{c.note}</div>}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'flex-end', gap: 4 }}>
               {c.free && <span style={{ background: '#0d2a0d', color: '#4ade80', fontSize: 10, fontWeight: 700, borderRadius: 4, padding: '2px 6px' }}>GRATUIT</span>}
-              <span style={{ color: '#555', fontSize: 18 }}>📞</span>
+              <span style={{ color: '#d0d0d0', fontSize: 18 }}>📞</span>
             </div>
           </a>
         ))}
 
         <div style={{ color: '#333', fontSize: 11, textAlign: 'center' as const, marginTop: 20, lineHeight: 1.6 }}>
           Appuyez pour appeler directement.<br />
-          Urgence vitale → toujours composer le <strong style={{ color: '#666' }}>112</strong> (Europe) ou <strong style={{ color: '#666' }}>911</strong> (Amériques).
+          Urgence vitale → toujours composer le <strong style={{ color: '#d0d0d0' }}>112</strong> (Europe) ou <strong style={{ color: '#d0d0d0' }}>911</strong> (Amériques).
         </div>
       </div>
     </div>

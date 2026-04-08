@@ -374,7 +374,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:16px;margin:0 0 20px;">
       <div style="font-weight:700;color:#166534;font-size:13px;margin-bottom:6px;">🟢 Votre assureur identifié par OCR</div>
       <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${params.insurerName}</div>
-      <div style="font-size:12px;color:#555;line-height:1.5;">
+      <div style="font-size:12px;color:#595959;line-height:1.5;">
         Contactez directement votre assureur. Coordonnées sur votre police ou leur site web.
       </div>
     </div>
@@ -418,7 +418,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
       <div style="font-size:32px;margin-bottom:6px;">📎</div>
       <div style="font-weight:700;font-size:15px;color:#111;">Le PDF est joint à cet email</div>
-      <div style="font-size:12px;color:#888;margin-top:4px;">constat-${params.sessionId}.pdf</div>
+      <div style="font-size:12px;color:#595959;margin-top:4px;">constat-${params.sessionId}.pdf</div>
     </div>
 
     ${insurerSection}
@@ -444,7 +444,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <!-- ═══ FEEDBACK ═══ -->
     <div style="text-align:center;margin-bottom:28px;">
       <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:6px;">${t.feedbackTitle}</div>
-      <div style="font-size:14px;color:#666;margin-bottom:16px;">${t.feedbackQ}</div>
+      <div style="font-size:14px;color:#595959;margin-bottom:16px;">${t.feedbackQ}</div>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
         <td style="padding:0 6px;">
           <a href="${BASE}/?feedback=good&session=${params.sessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#166534;font-weight:600;">${t.feedbackGood}</a>
@@ -462,7 +462,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <div style="text-align:center;margin-bottom:28px;">
       <div style="font-size:32px;margin-bottom:8px;">⭐</div>
       <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.googleTitle}</div>
-      <div style="font-size:13px;color:#666;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.googleText}</div>
+      <div style="font-size:13px;color:#595959;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.googleText}</div>
       <a href="${GOOGLE_REVIEW}" style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.googleBtn}</a>
     </div>
 
@@ -473,7 +473,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <div style="text-align:center;margin-bottom:28px;">
       <div style="font-size:32px;margin-bottom:8px;">📲</div>
       <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.shareTitle}</div>
-      <div style="font-size:13px;color:#666;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.shareText}</div>
+      <div style="font-size:13px;color:#595959;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.shareText}</div>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
         <td style="padding:0 4px;">
           <a href="https://wa.me/?text=${shareText}%20${shareUrl}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">WhatsApp</a>
@@ -505,7 +505,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
 
   <!-- ═══ FOOTER ═══ -->
   <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
-    <div style="font-size:11px;color:#aaa;line-height:1.8;text-align:center;">
+    <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
       ${t.footer}
     </div>
   </div>
@@ -578,9 +578,9 @@ export async function sendMagicLink(email: string, magicUrl: string): Promise<vo
   </div>
   <div style="padding:28px;">
     <h2 style="margin:0 0 12px;font-size:20px;color:#111;">Votre lien de connexion</h2>
-    <p style="color:#555;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
+    <p style="color:#595959;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
     <a href="${magicUrl}" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:16px;">Se connecter →</a>
-    <p style="color:#999;font-size:12px;margin-top:24px;">Si vous n'avez pas demandé ce lien, ignorez cet email.</p>
+    <p style="color:#595959;font-size:12px;margin-top:24px;">Si vous n'avez pas demandé ce lien, ignorez cet email.</p>
   </div>
 </div></body></html>`,
     });
@@ -609,9 +609,9 @@ export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: strin
   </div>
   <div style="padding:28px;">
     <h2 style="margin:0 0 12px;font-size:20px;color:#111;">🎁 ${credits} crédit${credits > 1 ? 's' : ''} offert${credits > 1 ? 's' : ''} !</h2>
-    <p style="color:#555;margin:0 0 24px;line-height:1.6;">Vous recevez <strong>${credits} crédit${credits > 1 ? 's' : ''}</strong> pour utiliser boom.contact gratuitement. Cliquez ci-dessous pour les réclamer.</p>
+    <p style="color:#595959;margin:0 0 24px;line-height:1.6;">Vous recevez <strong>${credits} crédit${credits > 1 ? 's' : ''}</strong> pour utiliser boom.contact gratuitement. Cliquez ci-dessous pour les réclamer.</p>
     <a href="${giftUrl}" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:16px;">Réclamer mes crédits →</a>
-    <p style="color:#999;font-size:12px;margin-top:24px;">Lien valable 7 jours. Un compte sera créé automatiquement si nécessaire.</p>
+    <p style="color:#595959;font-size:12px;margin-top:24px;">Lien valable 7 jours. Un compte sera créé automatiquement si nécessaire.</p>
   </div>
 </div></body></html>`,
     });

@@ -10,7 +10,10 @@ export default function OfflineBanner() {
   if (!isOffline) return null;
 
   return (
-    <div style={{
+    <div
+      role="alert"
+      aria-live="assertive"
+      style={{
       position: 'fixed',
       top: 0,
       left: 0,

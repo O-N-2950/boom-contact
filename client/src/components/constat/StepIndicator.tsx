@@ -9,7 +9,9 @@ interface Props {
 
 export const StepIndicator = React.memo(function StepIndicator({ steps, currentIndex, onStepClick }: Props) {
   return (
-    <div style={{ padding: '10px 16px', borderBottom: '1px solid rgba(240,237,232,0.06)',
+    <div
+      role="tablist"
+      style={{ padding: '10px 16px', borderBottom: '1px solid rgba(240,237,232,0.06)',
       display: 'flex', gap: 3, flexShrink: 0 }}>
       {steps.map((step, i) => {
         const done     = i < currentIndex;
@@ -18,16 +20,22 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
         const clickable = done && !!onStepClick;
 
         return (
-          <div
+          <button
             key={step.id}
+            role="tab"
+            aria-selected={active}
             onClick={clickable ? () => onStepClick!(step.id, i) : undefined}
             title={clickable ? `↩ ${step.label}` : undefined}
+            disabled={!clickable}
             style={{
               flex: 1, textAlign: 'center',
               cursor: clickable ? 'pointer' : 'default',
               borderRadius: 6, padding: '3px 1px',
               WebkitTapHighlightColor: 'transparent',
               position: 'relative',
+              background: 'none',
+              border: 'none',
+              font: 'inherit',
             } as React.CSSProperties}
           >
             {/* Barre colorée */}
@@ -66,7 +74,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
                 opacity: 0.7,
               }}/>
             )}
-          </div>
+          </button>
         );
       })}
     </div>

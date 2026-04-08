@@ -248,7 +248,7 @@ function MediaSection({ session }: { session: any }) {
                       />
                       <div style={{ padding: '5px 7px', background: 'rgba(0,0,0,0.6)', fontSize: 9, opacity: 0.8 }}>
                         {CATEGORIES[photo.category] || photo.category}
-                        {photo.caption && <span style={{ opacity: 0.6 }}> — {photo.caption}</span>}
+                        {photo.caption && <span style={{ opacity: 0.75 }}> — {photo.caption}</span>}
                       </div>
                     </div>
                   ))}
@@ -600,7 +600,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       {/* Header institutionnel */}
       <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src="/logo.webp" alt="boom.contact" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: '#e8eaf0' }}>Module Police</div>
             <div style={{ fontSize: 10, opacity: 0.75, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
@@ -617,7 +617,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
           {/* Agent info */}
           <div style={{ fontSize: 12, opacity: 0.7, textAlign: 'right' }}>
             <div style={{ fontWeight: 600 }}>{agent.firstName} {agent.lastName}</div>
-            {agent.badgeNumber && <div style={{ fontSize: 10, opacity: 0.6 }}>Badge: {agent.badgeNumber}</div>}
+            {agent.badgeNumber && <div style={{ fontSize: 10, opacity: 0.75 }}>Badge: {agent.badgeNumber}</div>}
           </div>
           <button
             onClick={onLogout}

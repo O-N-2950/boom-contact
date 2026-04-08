@@ -166,7 +166,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
           {['✅ Véhicules A & B','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ 2 signatures'].map((item, i) => (
-            <div key={i} style={{ fontSize: 11, opacity: 0.6 }}>{item}</div>
+            <div key={i} style={{ fontSize: 11, opacity: 0.75 }}>{item}</div>
           ))}
         </div>
       </div>
@@ -199,7 +199,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
             <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>
               💳 Payer sans créer de compte
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 12, lineHeight: 1.55 }}>
+            <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 12, lineHeight: 1.55 }}>
               1 constat — <strong>CHF 4.90 / €4.90</strong> · Paiement sécurisé Stripe<br/>
               Votre PDF vous sera envoyé par email après paiement.
             </div>
@@ -260,7 +260,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>
             🔒 1 crédit requis pour télécharger
           </div>
-          <div style={{ fontSize: 13, opacity: 0.65, lineHeight: 1.65, marginBottom: 14 }}>
+          <div style={{ fontSize: 13, opacity: 0.755, lineHeight: 1.65, marginBottom: 14 }}>
             Vous n'avez plus de crédit. Achetez un pack pour récupérer votre constat.
           </div>
           <button onClick={() => onBuyPack?.()} style={{
@@ -385,7 +385,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
         <div style={{ fontSize: 12, color: '#f59e0b', fontWeight: 700, marginBottom: 5 }}>
           ⏰ À transmettre à votre assureur
         </div>
-        <div style={{ fontSize: 12, opacity: 0.65, lineHeight: 1.65 }}>
+        <div style={{ fontSize: 12, opacity: 0.755, lineHeight: 1.65 }}>
           Transmettez ce document à <strong>votre propre assureur</strong> dans les délais prévus par votre contrat.
         </div>
       </div>
