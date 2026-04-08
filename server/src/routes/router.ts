@@ -57,7 +57,8 @@ import { vehicleRouter } from './vehicle.router.js';
 import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, marketingRouter } from './admin.router.js';
 
 // Import shared tRPC utilities
-import { router, publicProcedure, protectedProcedure, TRPCError, escapeHtml } from './trpc.js';
+import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml } from './trpc.js';
+import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput } from './output-schemas.js';
 
 /**
  * Main tRPC Router
@@ -87,6 +88,7 @@ export const appRouter = router({
     // Driver A creates session → gets QR code URL + participant tokens
     // SECURITY: tokenB is only embedded in the QR URL, never returned directly to Driver A
     create: publicProcedure
+      .output(sessionCreateOutput)
       .mutation(async () => {
         const session = await createSession();
         const qrUrl = getQRUrl(session.id, session.tokenB, CLIENT_URL);
@@ -96,6 +98,7 @@ export const appRouter = router({
     // Get session state
     get: publicProcedure
       .input(z.object({ sessionId: z.string(), participantToken: z.string() }))
+      .output(sessionGetOutput)
       .query(async ({ input }) => {
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found or expired' });
@@ -111,6 +114,7 @@ export const appRouter = router({
     // Driver B joins via QR scan — SECURITY: requires tokenB from QR code URL
     join: publicProcedure
       .input(z.object({ sessionId: z.string(), tokenB: z.string(), language: z.string().default('fr') }))
+      .output(sessionJoinOutput)
       .mutation(async ({ input }) => {
         // Verify tokenB before allowing join (timing-safe comparison)
         const validToken = await verifyParticipantToken(input.sessionId, input.tokenB, 'B');
@@ -480,6 +484,7 @@ export const appRouter = router({
         role: z.enum(['A', 'B', 'C', 'D', 'E']).default('A'),
         participantToken: z.string(),
       }))
+      .output(pdfGenerateOutput)
       .mutation(async ({ input }) => {
         // Verify participant token
         const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');

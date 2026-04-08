@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, policeProcedure, TRPCError } from './trpc.js';
 import { loginPoliceUser, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation } from '../services/police.service.js';
 import { getSession } from '../services/session.service.js';
+import { policeLoginOutput, policeDashboardOutput } from './output-schemas.js';
 
 export const policeRouter = router({
 
@@ -11,6 +12,7 @@ export const policeRouter = router({
       email:    z.string().email(),
       password: z.string().min(6),
     }))
+    .output(policeLoginOutput)
     .mutation(async ({ input }) => {
       const result = await loginPoliceUser(input.email, input.password);
       return result;
@@ -19,6 +21,7 @@ export const policeRouter = router({
   // Dashboard — sessions actives (token requis)
   dashboard: policeProcedure
     .input(z.object({ token: z.string() }))
+    .output(policeDashboardOutput)
     .query(async ({ ctx }) => {
       const payload = ctx.policeUser;
       const data = await getPoliceDashboard(payload.stationId);

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { Context } from '../middleware/context.js';
-import { router, protectedProcedure, TRPCError } from './trpc.js';
+import { router, adminProcedure, TRPCError } from './trpc.js';
+import { adminStatsOutput } from './output-schemas.js';
 import { generateDailyPosts, approvePost, markPosted, archivePost } from '../services/social-generator.service.js';
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
@@ -10,11 +11,9 @@ import { desc, gte, eq, count, sum, sql, isNull, and, inArray } from 'drizzle-or
 export const adminRouter = router({
 
   // GET admin.stats — full dashboard data, admin only
-  stats: protectedProcedure
-    .query(async ({ ctx }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-
-
+  stats: adminProcedure
+    .output(adminStatsOutput)
+    .query(async () => {
       const now = new Date();
       const since24h = new Date(now.getTime() - 24 * 3600 * 1000);
       const since7d  = new Date(now.getTime() - 7  * 24 * 3600 * 1000);
@@ -103,10 +102,9 @@ export const adminRouter = router({
     }),
 
   // GET admin.users — paginated user list
-  users: protectedProcedure
+  users: adminProcedure
     .input(z.object({ limit: z.number().default(50) }))
-    .query(async ({ ctx, input }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+    .query(async ({ input }) => {
       return db.query.users.findMany({
         orderBy: [desc(users.createdAt)],
         limit: input.limit,
@@ -118,11 +116,9 @@ export const adminRouter = router({
 
 // ── ADMIN MAINTENANCE PROCEDURES (top-level) ──────────────────────────────────
 
-export const adminDeleteUser = protectedProcedure
+export const adminDeleteUser = adminProcedure
   .input(z.object({ email: z.string().email() }))
-  .mutation(async ({ ctx, input }) => {
-    if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-
+  .mutation(async ({ input }) => {
     // Ne pas supprimer le compte admin
     if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
 
@@ -139,13 +135,12 @@ export const adminDeleteUser = protectedProcedure
   });
 
 // POST admin.setCredits — créditer directement un compte (admin only)
-export const adminSetCredits = protectedProcedure
+export const adminSetCredits = adminProcedure
   .input(z.object({
     email: z.string().email(),
     credits: z.number().min(0).max(999999),
   }))
-  .mutation(async ({ ctx, input }) => {
-    if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+  .mutation(async ({ input }) => {
     const emailLower = input.email.toLowerCase();
     const user = await db.query.users.findFirst({ where: eq(users.email, emailLower) });
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
@@ -154,13 +149,12 @@ export const adminSetCredits = protectedProcedure
   });
 
 // GET admin.listUsers — lister tous les utilisateurs
-export const adminListUsers = protectedProcedure
+export const adminListUsers = adminProcedure
   .input(z.object({
     limit: z.number().min(1).max(500).default(100),
     offset: z.number().min(0).default(0),
   }).default({ limit: 100, offset: 0 }))
-  .query(async ({ ctx, input }) => {
-    if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+  .query(async ({ input }) => {
     const all = await db.select({
       id: users.id,
       email: users.email,
@@ -171,9 +165,8 @@ export const adminListUsers = protectedProcedure
     return all;
   });
 
-export const adminCleanupSessions = protectedProcedure
-  .mutation(async ({ ctx }) => {
-    if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+export const adminCleanupSessions = adminProcedure
+  .mutation(async () => {
     const signing = await db.query.sessions.findMany({
       where: eq(sessions.status, 'signing'),
       columns: { id: true, participantA: true, participantB: true, accident: true, vehicleCount: true },
@@ -187,7 +180,7 @@ export const adminCleanupSessions = protectedProcedure
       const sigA = !!A?.signature;
       if (!sigA) continue;
       const bHasRealData = B && (B?.driver?.firstName || B?.vehicle?.licensePlate);
-      const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType) || B?.isPedestrian);
+      const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType as string) || B?.isPedestrian);
       const hasPartyBStatus = !!acc.partyBStatus;
       const isSolo = (s.vehicleCount ?? 2) === 1;
       if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {
@@ -201,9 +194,8 @@ export const adminCleanupSessions = protectedProcedure
     return { fixed: toComplete.length, total: signing.length };
   });
 
-export const adminFixOwnerEmails = protectedProcedure
-  .mutation(async ({ ctx }) => {
-    if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+export const adminFixOwnerEmails = adminProcedure
+  .mutation(async () => {
     const missing = await db.query.sessions.findMany({
       where: and(eq(sessions.status, 'completed'), isNull(sessions.ownerEmail)),
       columns: { id: true, participantA: true },
@@ -226,47 +218,42 @@ export const adminFixOwnerEmails = protectedProcedure
 
 export const marketingRouter = router({
 
-  posts: protectedProcedure
+  posts: adminProcedure
     .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
-    .query(async ({ ctx, input }: { ctx: Context; input: any }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
-      const conds: any[] = [];
+    .query(async ({ input }) => {
+      const conds: ReturnType<typeof eq>[] = [];
       if (input.platform) conds.push(eq(socialPosts.platform, input.platform));
       if (input.status)   conds.push(eq(socialPosts.status, input.status));
       const posts = await (conds.length > 0
-        ? (db as any).select().from(socialPosts).where(and(...conds)).orderBy(socialPosts.createdAt)
-        : (db as any).select().from(socialPosts).orderBy(socialPosts.createdAt));
-      return { posts: posts.map((p: any) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
+        ? db.select().from(socialPosts).where(and(...conds)).orderBy(socialPosts.createdAt)
+        : db.select().from(socialPosts).orderBy(socialPosts.createdAt));
+      return { posts: posts.map((p) => ({ ...p, hashtags: JSON.parse(p.hashtags || '[]') })) };
     }),
 
-  generate: protectedProcedure
+  generate: adminProcedure
     .input(z.object({ count: z.number().min(1).max(8).default(4) }))
-    .mutation(async ({ ctx }: { ctx: Context }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+    .mutation(async () => {
       const generated = await generateDailyPosts(4);
       return { generated };
     }),
 
-  approve: protectedProcedure
+  approve: adminProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+    .mutation(async ({ input }) => {
       await approvePost(input.id);
       return { ok: true };
     }),
 
-  markPosted: protectedProcedure
+  markPosted: adminProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+    .mutation(async ({ input }) => {
       await markPosted(input.id);
       return { ok: true };
     }),
 
-  archive: protectedProcedure
+  archive: adminProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input }: { ctx: Context; input: any }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+    .mutation(async ({ input }) => {
       await archivePost(input.id);
       return { ok: true };
     }),

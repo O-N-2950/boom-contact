@@ -15,6 +15,17 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   return next({ ctx: { ...ctx, authUser: ctx.authUser } });
 });
 
+// ── Admin procedure — requires valid JWT with role=admin ──────
+export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.authUser) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Connexion requise.' });
+  }
+  if (ctx.authUser.role !== 'admin') {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
+  }
+  return next({ ctx: { ...ctx, authUser: ctx.authUser } });
+});
+
 // ── Police procedure — requires valid police token in input ──────
 export const policeProcedure = t.procedure.use(async ({ ctx, next, rawInput }) => {
   const input = rawInput as { token?: string } | undefined;

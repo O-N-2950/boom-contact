@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
+import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError } from './trpc.js';
 import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { logger, maskEmail } from '../logger.js';
@@ -7,6 +7,7 @@ import { db } from '../db/index.js';
 import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
+import { authMeOutput, authLoginOutput } from './output-schemas.js';
 
 export const authRouter = router({
 
@@ -26,6 +27,7 @@ export const authRouter = router({
   // POST auth.login
   login: publicProcedure
     .input(z.object({ email: z.string().email(), password: z.string() }))
+    .output(authLoginOutput)
     .mutation(async ({ input }) => {
       try {
         const result = await loginWithPassword(input.email, input.password);
@@ -59,14 +61,15 @@ export const authRouter = router({
 
   // GET auth.me — returns null for unauthenticated, data for authenticated
   me: publicProcedure
+    .output(authMeOutput)
     .query(async ({ ctx }) => {
       if (!ctx.authUser) return null;
       const user = await db.query.users.findFirst({ where: eq(users.id, ctx.authUser.sub) });
       if (!user) return null;
       return { id: user.id, email: user.email, role: user.role, credits: user.credits,
-               firstName: (user as any).firstName || '', lastName: (user as any).lastName || '',
-               phone: (user as any).phone || '', company: (user as any).company || '',
-               address: (user as any).address || '' };
+               firstName: user.firstName || '', lastName: user.lastName || '',
+               phone: user.phone || '', company: user.company || '',
+               address: user.address || '' };
     }),
 
   // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
@@ -79,7 +82,7 @@ export const authRouter = router({
       address:   z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const updates: Record<string, any> = {};
+      const updates: Record<string, string | undefined> = {};
       if (input.firstName !== undefined) updates.firstName = input.firstName;
       if (input.lastName  !== undefined) updates.lastName  = input.lastName;
       if (input.phone     !== undefined) updates.phone     = input.phone;
@@ -128,14 +131,13 @@ export const authRouter = router({
     }),
 
   // POST auth.grantCredits — admin only
-  grantCredits: protectedProcedure
+  grantCredits: adminProcedure
     .input(z.object({
       credits: z.number().min(1).max(999999),
       recipientEmail: z.string().email().optional(),
       sendEmail: z.boolean().default(false),
     }))
     .mutation(async ({ ctx, input }) => {
-      if (ctx.authUser.role !== 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin requis.' });
       const token = await createGiftLink(input.credits, ctx.authUser.email);
       const giftUrl = `${CLIENT_URL}/?gift=${token}`;
       if (input.sendEmail && input.recipientEmail) {

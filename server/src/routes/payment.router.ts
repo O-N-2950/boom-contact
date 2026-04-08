@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
+import { paymentCreateCheckoutOutput } from './output-schemas.js';
 
 export const paymentRouter = router({
   // Retourner les packages disponibles
@@ -17,6 +18,7 @@ export const paymentRouter = router({
       countryCode:      z.string().optional(),
       constatSessionId: z.string().optional(), // pour retour direct après paiement one-shot
     }))
+    .output(paymentCreateCheckoutOutput)
     .mutation(async ({ input }) => {
       return createCheckoutSession(
         input.packageId,
