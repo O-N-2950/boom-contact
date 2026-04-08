@@ -136,7 +136,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             Suppression définitive
           </div>
 
-          <div style={{ color: '#aaa', fontSize: 14, lineHeight: 1.7, marginBottom: 20, textAlign: 'center' }}>
+          <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.7, marginBottom: 20, textAlign: 'center' }}>
             Tu es sur le point de supprimer le compte<br />
             <strong style={{ color: '#fff' }}>{emailToConfirm}</strong>
           </div>
@@ -161,7 +161,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
           {/* Confirmation par saisie email */}
           <div style={{ marginBottom: 20 }}>
-            <label htmlFor="delete-confirm" style={{ color: '#888', fontSize: 12, marginBottom: 8, display: 'block' }}>
+            <label htmlFor="delete-confirm" style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 8, display: 'block' }}>
               Pour confirmer, saisis ton adresse email :
             </label>
             <input
@@ -181,7 +181,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none',
               }}
             />
-            <div id="delete-confirm-help" style={{ fontSize: 11, color: '#666', marginTop: 4 }}>
+            <div id="delete-confirm-help" style={{ fontSize: 11, color: '#d0d0d0', marginTop: 4 }}>
               Ceci est irréversible.
             </div>
           </div>
@@ -218,7 +218,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 width: '100%', padding: '13px',
                 borderRadius: 12,
                 border: '1px solid rgba(255,255,255,0.1)',
-                background: 'transparent', color: '#888',
+                background: 'transparent', color: '#d0d0d0',
                 cursor: 'pointer', fontSize: 14, fontWeight: 600,
               }}
             >
@@ -236,7 +236,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
       <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
         <div style={{ maxWidth: 500, margin: '0 auto' }}>
           <button onClick={() => setScanning(false)} style={backBtn}>← Annuler</button>
-          <p style={{ color: '#888', fontSize: 13, marginBottom: 16 }}>
+          <p style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 16 }}>
             Photographiez votre <strong style={{ color: '#fff' }}>permis de circuler</strong> et/ou votre <strong style={{ color: '#fff' }}>carte verte</strong>.
           </p>
           <OCRScanner role="A" onComplete={handleScanComplete} />
@@ -254,7 +254,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
             {vehicleView === 'add' ? '➕ Ajouter un véhicule' : '✏️ Modifier le véhicule'}
           </h2>
-          <p style={{ color: '#666', fontSize: 13, marginBottom: 20 }}>
+          <p style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 20 }}>
             Scannez vos documents pour tout pré-remplir automatiquement.
           </p>
 
@@ -284,7 +284,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               <div style={{ background: '#0d2a0d', border: '1px solid #1a4a1a', borderRadius: 10, padding: 14 }}>
                 <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 13, marginBottom: 4 }}>🛡️ Assurance enregistrée</div>
                 {form.insuranceData.company && <div style={{ color: '#ccc', fontSize: 13 }}>{form.insuranceData.company}</div>}
-                {form.insuranceData.policyNumber && <div style={{ color: '#999', fontSize: 12 }}>Police n° {form.insuranceData.policyNumber}</div>}
+                {form.insuranceData.policyNumber && <div style={{ color: '#d0d0d0', fontSize: 12 }}>Police n° {form.insuranceData.policyNumber}</div>}
                 <button onClick={() => setScanning(true)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a4a2a', borderRadius: 8, padding: '6px 12px', color: '#4ade80', fontSize: 12, cursor: 'pointer' }}>
                   Mettre à jour →
                 </button>
@@ -315,7 +315,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* Profile card */}
         <div style={{ background: '#111', border: '1px solid #222', borderRadius: 16, padding: 20, marginBottom: 20 }}>
           <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>💥 boom.contact</div>
-          <div style={{ color: '#888', fontSize: 13, marginTop: 2 }}>{freshUser.email}</div>
+          <div style={{ color: '#d0d0d0', fontSize: 13, marginTop: 2 }}>{freshUser.email}</div>
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
             <StatBadge value={freshUser.credits === 999999 ? '∞' : freshUser.credits} label="crédits" highlight />
             <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
@@ -408,7 +408,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Crédits */}
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#888', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
+              <div style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
               <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
               <div style={{ color: '#8a8a8a', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
             </div>
@@ -417,11 +417,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: editingEmail ? 14 : 0 }}>
                 <div>
-                  <div style={{ color: '#666', fontSize: 11, fontWeight: 600, marginBottom: 3 }}>EMAIL</div>
+                  <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, marginBottom: 3 }}>EMAIL</div>
                   <div style={{ color: '#fff', fontSize: 14 }}>{freshUser.email || user.email}</div>
                 </div>
                 <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
-                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#888', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#d0d0d0', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
                   {editingEmail ? 'Annuler' : 'Modifier →'}
                 </button>
               </div>
@@ -464,7 +464,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     });
                     setEditingProfile(true);
                   }}
-                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#888', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#d0d0d0', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
                     Modifier →
                   </button>
                 )}
@@ -498,7 +498,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
                   <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
                     <button onClick={() => setEditingProfile(false)}
-                      style={{ flex: 1, background: 'none', border: '1px solid #2a2a2a', borderRadius: 10, color: '#888', padding: '11px', cursor: 'pointer', fontSize: 13 }}>
+                      style={{ flex: 1, background: 'none', border: '1px solid #2a2a2a', borderRadius: 10, color: '#d0d0d0', padding: '11px', cursor: 'pointer', fontSize: 13 }}>
                       Annuler
                     </button>
                     <button onClick={async () => {
@@ -523,7 +523,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {/* Partage viral */}
             <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 14, padding: 18 }}>
               <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Faire connaître boom.contact</div>
-              <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
+              <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
                 Partage l'app à tes proches, collègues et sur les réseaux. Aide-les avant qu'ils en aient besoin.
               </div>
               <button onClick={() => setShowShare(true)} style={{ ...primaryBtn, fontSize: 14 }}>
@@ -535,7 +535,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {/* Zone dangereuse — Suppression compte */}
             <div style={{ border: '1px solid rgba(239,68,68,0.2)', borderRadius: 14, padding: 18 }}>
               <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 13, marginBottom: 6 }}>⚠️ Zone dangereuse</div>
-              <div style={{ color: '#666', fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
+              <div style={{ color: '#d0d0d0', fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
                 Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.
               </div>
               <button
@@ -561,7 +561,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <div style={{ color: '#666', fontSize: 11, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{label.toUpperCase()}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{label.toUpperCase()}</div>
       <input aria-label={label} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
         style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, color: '#fff', padding: '11px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const }} />
     </div>
@@ -585,7 +585,7 @@ function FeedbackBanner({ msg }: { msg: string }) {
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 20 }}>
-      <div style={{ color: '#666', fontSize: 12, marginBottom: 4 }}>{label.toUpperCase()}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 4 }}>{label.toUpperCase()}</div>
       <div style={{ color: '#fff', fontSize: 15 }}>{value}</div>
     </div>
   );
@@ -596,7 +596,7 @@ function EmptyState({ icon, title, subtitle, children }: { icon: string; title: 
     <div style={{ background: '#111', border: '1px dashed #2a2a2a', borderRadius: 14, padding: 32, textAlign: 'center' as const }}>
       <div style={{ fontSize: 40, marginBottom: 12 }}>{icon}</div>
       <div style={{ color: '#fff', fontWeight: 700, marginBottom: 6 }}>{title}</div>
-      <div style={{ color: '#888', fontSize: 14, lineHeight: 1.6 }}>{subtitle}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.6 }}>{subtitle}</div>
       {children}
     </div>
   );

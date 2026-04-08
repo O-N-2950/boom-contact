@@ -28,7 +28,9 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
   };
 
   return (
-    <div style={{
+    <div
+      aria-label="Select language"
+      style={{
       display: 'flex',
       alignItems: 'center',
       gap: 4,
@@ -41,6 +43,7 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
             key={lang}
             onClick={() => handleChange(lang)}
             title={LANG_META[lang].label}
+            aria-label={LANG_META[lang].label}
             style={{
               display: 'flex',
               alignItems: 'center',

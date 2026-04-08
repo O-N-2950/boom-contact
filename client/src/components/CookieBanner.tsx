@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const COOKIE_KEY = 'boom_cookie_consent';
 
@@ -20,6 +20,7 @@ export function useCookieConsent() {
 export function CookieBanner() {
   const [visible, setVisible]   = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Show after 1.5s if no consent yet
@@ -28,6 +29,49 @@ export function CookieBanner() {
       return () => clearTimeout(t);
     }
   }, []);
+
+  useEffect(() => {
+    if (!visible || !bannerRef.current) return;
+
+    const getFocusableElements = () => {
+      const selector = 'button, a, [tabindex]:not([tabindex="-1"])';
+      return Array.from(bannerRef.current?.querySelectorAll(selector) || []) as HTMLElement[];
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements();
+      if (focusableElements.length === 0) return;
+
+      const activeElement = document.activeElement as HTMLElement;
+      const currentIndex = focusableElements.indexOf(activeElement);
+
+      if (e.shiftKey) {
+        // Shift+Tab: wrap from first to last
+        if (currentIndex === 0 || currentIndex === -1) {
+          e.preventDefault();
+          focusableElements[focusableElements.length - 1].focus();
+        }
+      } else {
+        // Tab: wrap from last to first
+        if (currentIndex === focusableElements.length - 1) {
+          e.preventDefault();
+          focusableElements[0].focus();
+        }
+      }
+    };
+
+    bannerRef.current.addEventListener('keydown', handleKeyDown);
+
+    // Focus first element on mount
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+
+    return () => bannerRef.current?.removeEventListener('keydown', handleKeyDown);
+  }, [visible]);
 
   if (!visible) return null;
 
@@ -46,7 +90,9 @@ export function CookieBanner() {
       padding: '0 0 env(safe-area-inset-bottom)',
       pointerEvents: 'none',
     }}>
-      <div style={{
+      <div
+        ref={bannerRef}
+        style={{
         maxWidth: 480,
         margin: '0 auto',
         background: '#0E0E18',

@@ -436,7 +436,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <span style={{ fontSize: 32, flexShrink: 0 }}>⚖️</span>
             <div>
               <h2 style={{ fontWeight: 700, fontSize: isDesktop ? 16 : 14, marginBottom: 6 }}>{t('landing.legal.title')}</h2>
-              <div style={{ fontSize: 13, opacity: 0.6, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
+              <div style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
             </div>
           </div>
         </Section>
@@ -564,7 +564,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                   <span style={{ color: 'var(--boom)', fontSize: 16, flexShrink: 0 }}>+</span>
                   {faq.q}
                 </summary>
-                <div style={{ padding: '0 18px 16px 46px', fontSize: 13, lineHeight: 1.7, opacity: 0.65 }}>
+                <div style={{ padding: '0 18px 16px 46px', fontSize: 13, lineHeight: 1.7, opacity: 0.755 }}>
                   {faq.a}
                 </div>
               </details>

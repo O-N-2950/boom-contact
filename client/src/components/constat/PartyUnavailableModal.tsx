@@ -187,7 +187,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <div style={{ fontWeight: 800, fontSize: 16 }}>Partie B indisponible</div>
-              <div style={{ fontSize: 11, opacity: 0.65, marginTop: 2 }}>
+              <div style={{ fontSize: 11, opacity: 0.755, marginTop: 2 }}>
                 {step === 'reason' && 'Sélectionnez la raison'}
                 {step === 'plate' && 'Photo de la plaque'}
                 {step === 'details' && 'Informations complémentaires'}
@@ -312,7 +312,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
                   {selected.plateMandatory ? '📸 Photo de la plaque *' : '📸 Photo de la plaque (recommandée)'}
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.65, marginBottom: 12 }}>
+                <div style={{ fontSize: 12, opacity: 0.755, marginBottom: 12 }}>
                   La photo est enregistrée dans le dossier et transmise à votre assurance
                 </div>
 
@@ -476,7 +476,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 border: '1px solid rgba(255,255,255,0.07)',
                 fontSize: 12, lineHeight: 1.7,
               }}>
-                <div style={{ fontWeight: 700, marginBottom: 6, opacity: 0.6 }}>RÉCAPITULATIF</div>
+                <div style={{ fontWeight: 700, marginBottom: 6, opacity: 0.75 }}>RÉCAPITULATIF</div>
                 <div>Raison : <strong>{selected.label}</strong></div>
                 {plateNumber && <div>Plaque : <strong style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{plateNumber}</strong></div>}
                 {vehicleDesc && <div>Véhicule : {vehicleDesc}</div>}

@@ -591,7 +591,7 @@ export const appRouter = router({
             <p><strong>Message :</strong></p>
             <p style="white-space:pre-wrap;">${safeMessage}</p>
             <hr>
-            <p style="color:#999;font-size:12px;">boom.contact Bug Report · ${new Date().toISOString()}</p>`,
+            <p style="color:#595959;font-size:12px;">boom.contact Bug Report · ${new Date().toISOString()}</p>`,
         });
         return { ok: true };
       }),

@@ -19,54 +19,67 @@ export const adminRouter = router({
       const since7d  = new Date(now.getTime() - 7  * 24 * 3600 * 1000);
       const since30d = new Date(now.getTime() - 30 * 24 * 3600 * 1000);
 
-      // Sessions stats
-      const [totalSessions]     = await db.select({ c: count() }).from(sessions);
-      const [completedSessions] = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'completed'));
-      const [activeSessions]    = await db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'active'));
-      const [sessions24h]       = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since24h));
-      const [sessions7d]        = await db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since7d));
-
-      // Recent sessions (last 30)
-      const recentSessions = await db.query.sessions.findMany({
-        orderBy: [desc(sessions.createdAt)],
-        limit: 30,
-        columns: { id: true, status: true, createdAt: true, ownerEmail: true, accident: true, participantA: true },
-      });
-
-      // Users stats
-      const [totalUsers]  = await db.select({ c: count() }).from(users);
-      const [users7d]     = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since7d));
-      const [users30d]    = await db.select({ c: count() }).from(users).where(gte(users.createdAt, since30d));
-
-      // Revenue stats
-      const [totalRevenue]   = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid'));
-      const [revenue30d]     = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since30d));
-      const [revenue7d]      = await db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since7d));
-      const [totalCredits]   = await db.select({ s: sum(payments.creditsGranted) }).from(payments).where(eq(payments.status, 'paid'));
-
-      // Revenue by package
-      const revenueByPack = await db.select({
-        packageId: payments.packageId,
-        count: count(),
-        revenue: sum(payments.amountCents),
-        credits: sum(payments.creditsGranted),
-      }).from(payments).where(eq(payments.status, 'paid')).groupBy(payments.packageId);
-
-      // Recent payments (last 20)
-      const recentPayments = await db.query.payments.findMany({
-        orderBy: [desc(payments.createdAt)],
-        limit: 20,
-        columns: { id: true, userEmail: true, packageId: true, packageLabel: true, amountCents: true, currency: true, status: true, paidAt: true, creditsGranted: true },
-      });
+      // Parallelize all independent queries
+      const [
+        [totalSessions],
+        [completedSessions],
+        [activeSessions],
+        [sessions24h],
+        [sessions7d],
+        recentSessions,
+        [totalUsers],
+        [users7d],
+        [users30d],
+        [totalRevenue],
+        [revenue30d],
+        [revenue7d],
+        [totalCredits],
+        revenueByPack,
+        recentPayments,
+        [giftsTotal],
+      ] = await Promise.all([
+        // Sessions stats
+        db.select({ c: count() }).from(sessions),
+        db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'completed')),
+        db.select({ c: count() }).from(sessions).where(eq(sessions.status, 'active')),
+        db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since24h)),
+        db.select({ c: count() }).from(sessions).where(gte(sessions.createdAt, since7d)),
+        db.query.sessions.findMany({
+          orderBy: [desc(sessions.createdAt)],
+          limit: 30,
+          columns: { id: true, status: true, createdAt: true, ownerEmail: true, accident: true, participantA: true },
+        }),
+        // Users stats
+        db.select({ c: count() }).from(users),
+        db.select({ c: count() }).from(users).where(gte(users.createdAt, since7d)),
+        db.select({ c: count() }).from(users).where(gte(users.createdAt, since30d)),
+        // Revenue stats
+        db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')),
+        db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since30d)),
+        db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since7d)),
+        db.select({ s: sum(payments.creditsGranted) }).from(payments).where(eq(payments.status, 'paid')),
+        // Revenue by package
+        db.select({
+          packageId: payments.packageId,
+          count: count(),
+          revenue: sum(payments.amountCents),
+          credits: sum(payments.creditsGranted),
+        }).from(payments).where(eq(payments.status, 'paid')).groupBy(payments.packageId),
+        // Recent payments (last 20)
+        db.query.payments.findMany({
+          orderBy: [desc(payments.createdAt)],
+          limit: 20,
+          columns: { id: true, userEmail: true, packageId: true, packageLabel: true, amountCents: true, currency: true, status: true, paidAt: true, creditsGranted: true },
+        }),
+        // Credit transactions (gifts sent)
+        db.select({ s: sum(creditTxns.delta) }).from(creditTxns).where(eq(creditTxns.reason, 'gift')),
+      ]);
 
       // IA costs estimate: OCR scans ≈ 0.003€/scan (Claude Sonnet Vision)
       // Each completed session uses ~2 OCR scans avg
       const ocrCostPerScan = 0.003;
       const estOcrScans    = (completedSessions.c || 0) * 2;
       const estOcrCost     = estOcrScans * ocrCostPerScan;
-
-      // Credit transactions (gifts sent)
-      const [giftsTotal] = await db.select({ s: sum(creditTxns.delta) }).from(creditTxns).where(eq(creditTxns.reason, 'gift'));
 
       return {
         sessions: {

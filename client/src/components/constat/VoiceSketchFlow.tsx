@@ -211,7 +211,7 @@ export function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '',
         {fmt(elapsed)}
       </div>
       <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 32 }}>Enregistrement en cours…</div>
-      <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 16, marginBottom: 24, fontSize: 13, opacity: 0.6, lineHeight: 1.6, textAlign: 'left' }}>
+      <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 16, marginBottom: 24, fontSize: 13, opacity: 0.75, lineHeight: 1.6, textAlign: 'left' }}>
         💡 Décrivez : la direction de chaque véhicule, le point d&apos;impact, les circonstances. Parlez calmement.
       </div>
       <button onClick={stopRecording} style={{ ...btnPrimary, background: '#ef4444' }}>

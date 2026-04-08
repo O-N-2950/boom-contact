@@ -7,10 +7,10 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
     <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', padding: '0 0 40px' }}>
       {/* Header */}
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14, position: 'sticky', top: 0, zIndex: 10 }}>
-        <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', fontSize: 18 }} aria-label="Retour">←</button>
+        <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 18 }} aria-label="Retour">←</button>
         <div>
           <div style={{ color: '#FF3500', fontWeight: 800, fontSize: 16 }}>💥 boom.contact</div>
-          <div style={{ color: '#555', fontSize: 11 }}>Mentions légales & Confidentialité</div>
+          <div style={{ color: '#d0d0d0', fontSize: 11 }}>Mentions légales & Confidentialité</div>
         </div>
       </div>
 
@@ -18,7 +18,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 
         {/* Version badge */}
         <div style={{ background: '#111', border: '1px solid #222', borderRadius: 8, padding: '8px 14px', marginBottom: 24, display: 'inline-block' }}>
-          <span style={{ color: '#555', fontSize: 11 }}>Version 1.0 · Mars 2026 · RGPD art. 13 · nLPD Suisse</span>
+          <span style={{ color: '#d0d0d0', fontSize: 11 }}>Version 1.0 · Mars 2026 · RGPD art. 13 · nLPD Suisse</span>
         </div>
 
         {/* MENTIONS LÉGALES */}
@@ -61,14 +61,14 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
           <SubprocessorRow name="Anthropic Inc." location="USA (SCCs)" purpose="OCR documents — sans conservation selon CGU Anthropic" privacy="anthropic.com/privacy" />
           <SubprocessorRow name="OpenAI Inc." location="USA (SCCs)" purpose="Transcription vocale Whisper — sans conservation" privacy="openai.com/privacy" />
           <SubprocessorRow name="Railway Corp." location="USA / EU West (Paris)" purpose="Hébergement serveur et base de données" privacy="railway.app/legal/privacy" />
-          <div style={{ marginTop: 10, color: '#555', fontSize: 12, lineHeight: 1.6 }}>
+          <div style={{ marginTop: 10, color: '#d0d0d0', fontSize: 12, lineHeight: 1.6 }}>
             Tous les sous-traitants sont liés par des Clauses Contractuelles Types (CCT) conformes à l'art. 46 RGPD et à l'art. 16 nLPD.
           </div>
         </Section>
 
         {/* COOKIES */}
         <Section title="🍪 Politique de cookies">
-          <p style={{ color: '#888', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
+          <p style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
             boom.contact utilise <strong style={{ color: '#fff' }}>uniquement des cookies strictement nécessaires</strong> au fonctionnement du service. Aucun cookie publicitaire, de tracking ou d'analyse comportementale n'est utilisé.
           </p>
           <CookieDetailTable rows={[
@@ -80,7 +80,7 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
             { name: 'boom_police_token', purpose: 'Authentification agents police', duration: '8 heures', type: 'Essentiel' },
             { name: 'i18nextLng', purpose: 'Préférence de langue', duration: '1 an', type: 'Essentiel' },
           ]} />
-          <div style={{ marginTop: 10, color: '#555', fontSize: 12 }}>
+          <div style={{ marginTop: 10, color: '#d0d0d0', fontSize: 12 }}>
             <strong>Stripe</strong> dépose ses propres cookies lors du paiement (nécessaires à la sécurité PCI-DSS) — voir stripe.com/cookies-policy.<br />
             <strong>Cloudflare</strong> peut déposer un cookie de sécurité (__cf_bm) pour protéger contre les bots.
           </div>
@@ -99,23 +99,23 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
             ].map(({ right, desc }) => (
               <div key={right} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px' }}>
                 <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 12 }}>{right}</div>
-                <div style={{ color: '#555', fontSize: 11, marginTop: 2 }}>{desc}</div>
+                <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 2 }}>{desc}</div>
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 14, color: '#888', fontSize: 13, lineHeight: 1.6 }}>
+          <div style={{ marginTop: 14, color: '#d0d0d0', fontSize: 13, lineHeight: 1.6 }}>
             Exercez vos droits par email : <a href="mailto:privacy@boom.contact" style={{ color: '#FF3500' }}>privacy@boom.contact</a> — réponse sous 30 jours.<br />
             <br />
             <strong style={{ color: '#ccc' }}>Autorités de contrôle :</strong><br />
-            🇨🇭 PFPDT (Suisse) — <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#555' }}>edoeb.admin.ch</a><br />
-            🇪🇺 CNIL (France) — <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" style={{ color: '#555' }}>cnil.fr</a><br />
-            🇧🇪 APD (Belgique) — <a href="https://www.dataprotectionauthority.be" target="_blank" rel="noopener noreferrer" style={{ color: '#555' }}>dataprotectionauthority.be</a>
+            🇨🇭 PFPDT (Suisse) — <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener noreferrer" style={{ color: '#d0d0d0' }}>edoeb.admin.ch</a><br />
+            🇪🇺 CNIL (France) — <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" style={{ color: '#d0d0d0' }}>cnil.fr</a><br />
+            🇧🇪 APD (Belgique) — <a href="https://www.dataprotectionauthority.be" target="_blank" rel="noopener noreferrer" style={{ color: '#d0d0d0' }}>dataprotectionauthority.be</a>
           </div>
         </Section>
 
         {/* SÉCURITÉ */}
         <Section title="🔒 Sécurité des données">
-          <ul style={{ color: '#888', fontSize: 13, lineHeight: 1.8, paddingLeft: 20, margin: 0 }}>
+          <ul style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.8, paddingLeft: 20, margin: 0 }}>
             <li>Chiffrement TLS 1.3 sur toutes les communications</li>
             <li>Base de données PostgreSQL avec chiffrement at-rest (Railway)</li>
             <li>Authentification JWT signée (algorithme HS256, secret rotatif)</li>
@@ -129,21 +129,21 @@ export function PrivacyPage({ onBack }: PrivacyPageProps) {
 
         {/* MISES À JOUR */}
         <Section title="📅 Modifications de la politique">
-          <p style={{ color: '#888', fontSize: 13, lineHeight: 1.6 }}>
+          <p style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6 }}>
             Cette politique peut être mise à jour. La version en vigueur est toujours disponible sur cette page. En cas de modification substantielle, les utilisateurs enregistrés seront informés par email.
           </p>
-          <div style={{ marginTop: 10, color: '#444', fontSize: 12 }}>
+          <div style={{ marginTop: 10, color: '#d0d0d0', fontSize: 12 }}>
             Version 1.0 — Mars 2026 · PEP's Swiss SA
           </div>
         </Section>
 
         {/* Contact */}
-        <div style={{ borderTop: '1px solid #1a1a1a', paddingTop: 20, textAlign: 'center' as const, color: '#444', fontSize: 11, lineHeight: 1.8 }}>
+        <div style={{ borderTop: '1px solid #1a1a1a', paddingTop: 20, textAlign: 'center' as const, color: '#d0d0d0', fontSize: 11, lineHeight: 1.8 }}>
           boom.contact · PEP's Swiss SA · CHE-476.484.632<br />
           Bellevue 7, 2950 Courgenay, Jura, Suisse<br />
-          <a href="mailto:privacy@boom.contact" style={{ color: '#555' }}>privacy@boom.contact</a>
+          <a href="mailto:privacy@boom.contact" style={{ color: '#d0d0d0' }}>privacy@boom.contact</a>
           {' · '}
-          <a href="mailto:contact@boom.contact" style={{ color: '#555' }}>contact@boom.contact</a>
+          <a href="mailto:contact@boom.contact" style={{ color: '#d0d0d0' }}>contact@boom.contact</a>
         </div>
       </div>
     </div>
@@ -165,7 +165,7 @@ function Section({ title, children, accent }: { title: string; children: React.R
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: 'flex', gap: 12, padding: '7px 0', borderBottom: '1px solid #111' }}>
-      <div style={{ color: '#666', fontSize: 12, minWidth: 140, flexShrink: 0 }}>{label}</div>
+      <div style={{ color: '#d0d0d0', fontSize: 12, minWidth: 140, flexShrink: 0 }}>{label}</div>
       <div style={{ color: '#ccc', fontSize: 12 }}>{value}</div>
     </div>
   );
@@ -178,7 +178,7 @@ function DataTable({ rows }: { rows: { data: string; purpose: string; legal: str
         <thead>
           <tr style={{ borderBottom: '1px solid #222' }}>
             {['Données', 'Finalité', 'Base légale', 'Durée'].map(h => (
-              <th key={h} style={{ textAlign: 'left' as const, color: '#555', padding: '8px 10px', fontWeight: 600, letterSpacing: 0.5, whiteSpace: 'nowrap' as const }}>{h}</th>
+              <th key={h} style={{ textAlign: 'left' as const, color: '#d0d0d0', padding: '8px 10px', fontWeight: 600, letterSpacing: 0.5, whiteSpace: 'nowrap' as const }}>{h}</th>
             ))}
           </tr>
         </thead>
@@ -186,9 +186,9 @@ function DataTable({ rows }: { rows: { data: string; purpose: string; legal: str
           {rows.map((r, i) => (
             <tr key={i} style={{ borderBottom: '1px solid #111' }}>
               <td style={{ padding: '8px 10px', color: '#fff', fontWeight: 500 }}>{r.data}</td>
-              <td style={{ padding: '8px 10px', color: '#888' }}>{r.purpose}</td>
+              <td style={{ padding: '8px 10px', color: '#d0d0d0' }}>{r.purpose}</td>
               <td style={{ padding: '8px 10px', color: '#60c8f0', whiteSpace: 'nowrap' as const }}>{r.legal}</td>
-              <td style={{ padding: '8px 10px', color: '#666', whiteSpace: 'nowrap' as const }}>{r.retention}</td>
+              <td style={{ padding: '8px 10px', color: '#d0d0d0', whiteSpace: 'nowrap' as const }}>{r.retention}</td>
             </tr>
           ))}
         </tbody>
@@ -204,11 +204,11 @@ function CookieDetailTable({ rows }: { rows: { name: string; purpose: string; du
         <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '8px 0', borderBottom: '1px solid #111' }}>
           <div>
             <div style={{ color: '#ccc', fontSize: 12, fontFamily: 'monospace' }}>{r.name}</div>
-            <div style={{ color: '#555', fontSize: 11 }}>{r.purpose}</div>
+            <div style={{ color: '#d0d0d0', fontSize: 11 }}>{r.purpose}</div>
           </div>
           <div style={{ textAlign: 'right' as const, flexShrink: 0, marginLeft: 12 }}>
             <div style={{ color: '#4ade80', fontSize: 10, fontWeight: 700 }}>{r.type}</div>
-            <div style={{ color: '#444', fontSize: 10 }}>{r.duration}</div>
+            <div style={{ color: '#d0d0d0', fontSize: 10 }}>{r.duration}</div>
           </div>
         </div>
       ))}
@@ -221,10 +221,10 @@ function SubprocessorRow({ name, location, purpose, privacy }: { name: string; l
     <div style={{ padding: '10px 0', borderBottom: '1px solid #111' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ color: '#fff', fontWeight: 600, fontSize: 13 }}>{name}</div>
-        <div style={{ color: '#555', fontSize: 11 }}>{location}</div>
+        <div style={{ color: '#d0d0d0', fontSize: 11 }}>{location}</div>
       </div>
-      <div style={{ color: '#888', fontSize: 12, marginTop: 2 }}>{purpose}</div>
-      <a href={`https://${privacy}`} target="_blank" rel="noopener noreferrer" style={{ color: '#444', fontSize: 11, textDecoration: 'underline' }}>{privacy}</a>
+      <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>{purpose}</div>
+      <a href={`https://${privacy}`} target="_blank" rel="noopener noreferrer" style={{ color: '#d0d0d0', fontSize: 11, textDecoration: 'underline' }}>{privacy}</a>
     </div>
   );
 }

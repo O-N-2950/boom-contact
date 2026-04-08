@@ -30,6 +30,12 @@ export default defineConfig({
           if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
             return 'i18n';
           }
+          if (id.includes('@sentry')) {
+            return 'vendor-sentry';
+          }
+          if (id.includes('posthog-js')) {
+            return 'vendor-posthog';
+          }
         },
       },
     },
