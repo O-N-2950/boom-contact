@@ -1,20 +1,28 @@
-import { LocationStep } from '../components/constat/LocationStep';
-import { PhotoCapture } from '../components/constat/PhotoCapture';
-import { MapVehiclePlacer } from '../components/constat/MapVehiclePlacer';
-import { VoiceSketchFlow } from '../components/constat/VoiceSketchFlow';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
 import type { SupportedLang } from '../i18n';
 import { trpc } from '../trpc';
 import { z } from 'zod';
-import { OCRScanner } from '../components/constat/OCRScanner';
-import { ConstatForm } from '../components/constat/ConstatForm';
-import { VehicleDiagram } from '../components/constat/VehicleDiagram';
-import { SignaturePad } from '../components/constat/SignaturePad';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
+import { ocrCategoryToVehicleType } from '../../../shared/utils/ocrCategoryToVehicleType';
 import type { OCRResult, ParticipantData, ScenePhoto, AccidentData, ParticipantRole } from '../../../shared/types';
+
+// ── Lazy-loaded heavy components (code-splitting) ──────────────
+const LocationStep = React.lazy(() => import('../components/constat/LocationStep').then(m => ({ default: m.LocationStep })));
+const PhotoCapture = React.lazy(() => import('../components/constat/PhotoCapture').then(m => ({ default: m.PhotoCapture })));
+const MapVehiclePlacer = React.lazy(() => import('../components/constat/MapVehiclePlacer').then(m => ({ default: m.MapVehiclePlacer })));
+const VoiceSketchFlow = React.lazy(() => import('../components/constat/VoiceSketchFlow').then(m => ({ default: m.VoiceSketchFlow })));
+const OCRScanner = React.lazy(() => import('../components/constat/OCRScanner').then(m => ({ default: m.OCRScanner })));
+const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm').then(m => ({ default: m.ConstatForm })));
+const VehicleDiagram = React.lazy(() => import('../components/constat/VehicleDiagram').then(m => ({ default: m.VehicleDiagram })));
+const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad').then(m => ({ default: m.SignaturePad })));
+
+// ── Loading fallback component ───────────────────────────────────
+function LazyLoading() {
+  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+}
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
 
@@ -57,20 +65,6 @@ function loadState(sessionId: string) {
 }
 
 
-function ocrCategoryToVehicleType(category?: string): any {
-  if (!category) return null;
-  const c = category.toLowerCase();
-  if (c.includes('tourisme') || c.includes('automobile') || c.includes('personenwagen') ||
-      c.includes('car') || c.includes('break') || c.includes('suv') || c.includes('voiture') ||
-      c.includes('pkw') || c === 'a') return 'car';
-  if (c.includes('moto') || c.includes('motorcycle') || c.includes('motorrad')) return 'motorcycle';
-  if (c.includes('scooter') || c.includes('cyclom')) return 'scooter';
-  if (c.includes('velom') || c.includes('mofa')) return 'moped';
-  if (c.includes('camion') || c.includes('truck') || c.includes('lkw')) return 'truck';
-  if (c.includes('fourgon') || c.includes('van') || c.includes('transporter')) return 'van';
-  if (c.includes('bus') || c.includes('autocar')) return 'bus';
-  return null;
-}
 
 interface JoinSessionProps {
   authUser?: { id: string; email: string; role: string; credits: number } | null;
@@ -478,6 +472,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         />
       )}
 
+      <Suspense fallback={<LazyLoading />}>
       <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} style={{ flex: 1, overflowY: 'auto' }}>
         {/* Location supprimée pour B — utilise automatiquement celle de A */}
 
@@ -616,6 +611,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           />
         )}
       </div>
+      </Suspense>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { PartyUnavailableModal } from '../components/constat/PartyUnavailableMod
 import { CoherenceScore } from '../components/constat/CoherenceScore';
 import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
+import { ocrCategoryToVehicleType } from '../../../shared/utils/ocrCategoryToVehicleType';
 
 // ── Lazy-loaded heavy components (code-splitting) ──────────────
 const OCRScanner = React.lazy(() => import('../components/constat/OCRScanner').then(m => ({ default: m.OCRScanner })));
@@ -47,28 +48,6 @@ const savedStateSchema = z.object({
   vehicleA: z.record(z.unknown()).nullable().optional(),
   ts: z.number().optional(),
 }).passthrough();
-
-// Mapping catégorie OCR → VehicleType
-// Le permis CH dit "Voiture de tourisme", "Motocycle", "Camion", etc.
-function ocrCategoryToVehicleType(category?: string): VehicleType | null {
-  if (!category) return null;
-  const c = category.toLowerCase();
-  if (c.includes('tourisme') || c.includes('automobile') || c.includes('personenwagen') ||
-      c.includes('car') || c.includes('break') || c.includes('suv') || c.includes('berline') ||
-      c.includes('voiture') || c.includes('pkw') || c.includes('1') || c === 'a') return 'car';
-  if (c.includes('moto') || c.includes('motorcycle') || c.includes('motorrad') ||
-      c.includes('motocycle')) return 'motorcycle';
-  if (c.includes('scooter') || c.includes('cyclom')) return 'scooter';
-  if (c.includes('velom') || c.includes('vélom') || c.includes('mofa')) return 'moped';
-  if (c.includes('camion') || c.includes('truck') || c.includes('lkw') ||
-      c.includes('poids lourd')) return 'truck';
-  if (c.includes('fourgon') || c.includes('van') || c.includes('utilitaire') ||
-      c.includes('transporter')) return 'van';
-  if (c.includes('bus') || c.includes('autocar') || c.includes('reisebus')) return 'bus';
-  if (c.includes('quad') || c.includes('buggy')) return 'quad';
-  if (c.includes('trottinette') || c.includes('edpm') || c.includes('e-scooter')) return 'escooter';
-  return null;
-}
 
 type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
 

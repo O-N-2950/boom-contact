@@ -1,7 +1,7 @@
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
 import { RouteAnnouncer } from './components/RouteAnnouncer';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useReducer, useCallback, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { applyDir } from './i18n';
 import { trpc } from './trpc';
@@ -62,17 +62,91 @@ function getInitialView(): AppView {
   return 'landing';
 }
 
+// ── App state reducer — single source of truth ──────────────
+interface AppState {
+  view: AppView;
+  routeAnnouncement: string;
+  accountInitialTab: 'garage' | 'history' | 'profile';
+  userEmail: string;
+  authUser: any;
+  authToken: string;
+  showAuthModal: boolean;
+  showCGU: boolean;
+  pendingAction: 'constat' | 'pricing' | 'garage' | null;
+  policeToken: string;
+  policeUser: unknown;
+  policeSessionId: string;
+  policeFlowToken: string;
+}
+
+type AppAction =
+  | { type: 'SET_VIEW'; view: AppView }
+  | { type: 'SET_ROUTE_ANNOUNCEMENT'; message: string }
+  | { type: 'SET_ACCOUNT_TAB'; tab: 'garage' | 'history' | 'profile' }
+  | { type: 'SET_AUTH'; token: string; user: any }
+  | { type: 'SET_USER_EMAIL'; email: string }
+  | { type: 'SHOW_AUTH_MODAL'; show: boolean }
+  | { type: 'SHOW_CGU'; show: boolean }
+  | { type: 'SET_PENDING_ACTION'; action: 'constat' | 'pricing' | 'garage' | null }
+  | { type: 'LOGOUT' }
+  | { type: 'POLICE_LOGIN'; token: string; user: unknown }
+  | { type: 'POLICE_VIEW_SESSION'; sessionId: string; token: string }
+  | { type: 'CGU_ACCEPT'; email: string };
+
+function appReducer(state: AppState, action: AppAction): AppState {
+  switch (action.type) {
+    case 'SET_VIEW':
+      return { ...state, view: action.view };
+    case 'SET_ROUTE_ANNOUNCEMENT':
+      return { ...state, routeAnnouncement: action.message };
+    case 'SET_ACCOUNT_TAB':
+      return { ...state, accountInitialTab: action.tab };
+    case 'SET_AUTH':
+      return { ...state, authToken: action.token, authUser: action.user, showAuthModal: false };
+    case 'SET_USER_EMAIL':
+      return { ...state, userEmail: action.email };
+    case 'SHOW_AUTH_MODAL':
+      return { ...state, showAuthModal: action.show };
+    case 'SHOW_CGU':
+      return { ...state, showCGU: action.show };
+    case 'SET_PENDING_ACTION':
+      return { ...state, pendingAction: action.action };
+    case 'LOGOUT':
+      return { ...state, authToken: '', authUser: null, view: 'landing' };
+    case 'POLICE_LOGIN':
+      return { ...state, policeToken: action.token, policeUser: action.user, view: 'police_dashboard' };
+    case 'POLICE_VIEW_SESSION':
+      return { ...state, policeSessionId: action.sessionId, policeFlowToken: action.token, view: 'police_flow' };
+    case 'CGU_ACCEPT':
+      return { ...state, userEmail: action.email, showCGU: false };
+    default:
+      return state;
+  }
+}
+
+function getInitialAppState(): AppState {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    view: getInitialView(),
+    routeAnnouncement: '',
+    accountInitialTab: 'garage',
+    userEmail: localStorage.getItem(EMAIL_KEY) || '',
+    authUser: (() => { try { return JSON.parse(localStorage.getItem(USER_DATA_KEY) || 'null'); } catch { return null; } })(),
+    authToken: localStorage.getItem(USER_TOKEN_KEY) || '',
+    showAuthModal: false,
+    showCGU: false,
+    pendingAction: null,
+    policeToken: localStorage.getItem('boom_police_token') || '',
+    policeUser: (() => { try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; } })(),
+    policeSessionId: params.get('session') || '',
+    policeFlowToken: params.get('token') || localStorage.getItem('boom_police_token') || '',
+  };
+}
+
 export default function App() {
   const { i18n } = useTranslation();
-  const [view, setView] = useState<AppView>(getInitialView);
-  const [routeAnnouncement, setRouteAnnouncement] = useState('');
-  const [accountInitialTab, setAccountInitialTab] = useState<'garage'|'history'|'profile'>('garage');
-  const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem(EMAIL_KEY) || '');
-  const [authUser, setAuthUser] = useState<any>(() => {
-    try { return JSON.parse(localStorage.getItem(USER_DATA_KEY) || 'null'); } catch { return null; }
-  });
-  const [authToken, setAuthToken] = useState<string>(() => localStorage.getItem(USER_TOKEN_KEY) || '');
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [state, dispatch] = useReducer(appReducer, undefined, getInitialAppState);
+  const { view, routeAnnouncement, accountInitialTab, userEmail, authUser, authToken, showAuthModal, showCGU, pendingAction, policeToken, policeUser, policeSessionId, policeFlowToken } = state;
 
   const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();
   const claimGiftMut    = trpc.auth.claimGift.useMutation();
@@ -88,9 +162,8 @@ export default function App() {
         onSuccess: (res) => {
           localStorage.setItem(USER_TOKEN_KEY, res.token);
           localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
-          setAuthUser(res.user);
-          setAuthToken(res.token);
-          setView('account');
+          dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
+          dispatch({ type: 'SET_VIEW', view: 'account' });
         },
         onError: () => alert('Lien de connexion invalide ou expiré.'),
       });
@@ -103,25 +176,21 @@ export default function App() {
           onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
         });
       } else {
-        // Store gift token and open auth modal — claim after login
         localStorage.setItem('boom_pending_gift', giftToken);
-        setShowAuthModal(true);
+        dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
       }
     }
   }, []);
 
-  const handleAuth = (token: string, user: any) => {
+  const handleAuth = useCallback((token: string, user: any) => {
     localStorage.setItem(USER_TOKEN_KEY, token);
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
-    setAuthToken(token);
-    setAuthUser(user);
-    setShowAuthModal(false);
-  };
+    dispatch({ type: 'SET_AUTH', token, user });
+  }, []);
 
   // Handle post-login redirect based on pendingAction (runs after authUser is set)
   useEffect(() => {
     if (!authUser) return;
-    // Claim pending gift if any
     const pendingGift = localStorage.getItem('boom_pending_gift');
     if (pendingGift) {
       localStorage.removeItem('boom_pending_gift');
@@ -130,39 +199,23 @@ export default function App() {
       });
     }
     if (pendingAction === 'garage') {
-      setAccountInitialTab('garage');
-      setView('account');
-      setPendingAction(null);
+      dispatch({ type: 'SET_ACCOUNT_TAB', tab: 'garage' });
+      dispatch({ type: 'SET_VIEW', view: 'account' });
+      dispatch({ type: 'SET_PENDING_ACTION', action: null });
     } else if (pendingAction === 'constat') {
-      setView('constat');
-      setPendingAction(null);
+      dispatch({ type: 'SET_VIEW', view: 'constat' });
+      dispatch({ type: 'SET_PENDING_ACTION', action: null });
     } else if (pendingAction === 'pricing') {
-      setView('pricing');
-      setPendingAction(null);
+      dispatch({ type: 'SET_VIEW', view: 'pricing' });
+      dispatch({ type: 'SET_PENDING_ACTION', action: null });
     }
   }, [authUser]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem(USER_TOKEN_KEY);
     localStorage.removeItem(USER_DATA_KEY);
-    setAuthToken('');
-    setAuthUser(null);
-    setView('landing');
-  };
-  const [showCGU, setShowCGU] = useState(false);
-  const [policeToken, setPoliceToken] = useState<string>(() => localStorage.getItem('boom_police_token') || '');
-  const [policeUser, setPoliceUser]   = useState<unknown>(() => {
-    try { return JSON.parse(localStorage.getItem('boom_police_user') || 'null'); } catch { return null; }
-  });
-  const [pendingAction, setPendingAction] = useState<'constat' | 'pricing' | 'garage' | null>(null);
-  const [policeSessionId, setPoliceSessionId] = useState<string>(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('session') || '';
-  });
-  const [policeFlowToken, setPoliceFlowToken] = useState<string>(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('token') || localStorage.getItem('boom_police_token') || '';
-  });
+    dispatch({ type: 'LOGOUT' });
+  }, []);
 
   // Apply RTL direction and lang attribute whenever language changes
   useEffect(() => {
@@ -186,7 +239,7 @@ export default function App() {
       police_dashboard: 'Tableau de bord police',
       police_flow: 'Flux police',
     };
-    setRouteAnnouncement(`Navigation vers ${viewLabels[view]}`);
+    dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: `Navigation vers ${viewLabels[view]}` });
   }, [view]);
 
   // Check post-payment success
@@ -213,7 +266,7 @@ export default function App() {
             const user = d?.result?.data;
             if (user) {
               localStorage.setItem('boom_user', JSON.stringify(user));
-              setAuthUser(user);
+              dispatch({ type: 'SET_AUTH', token: localStorage.getItem(USER_TOKEN_KEY) || '', user });
             }
           })
           .catch(() => {});
@@ -223,44 +276,42 @@ export default function App() {
 
   const hasAcceptedCGU = () => !!localStorage.getItem(CGU_KEY);
 
-  const handleCGUAccept = (email: string, _consentMarketing: boolean) => {
+  const handleCGUAccept = useCallback((email: string, _consentMarketing: boolean) => {
     localStorage.setItem(EMAIL_KEY, email);
     localStorage.setItem(CGU_KEY, 'true');
-    setUserEmail(email);
-    setShowCGU(false);
-    if (pendingAction === 'constat') setView('constat');
-    if (pendingAction === 'pricing') setView('pricing');
-    setPendingAction(null);
-  };
+    dispatch({ type: 'CGU_ACCEPT', email });
+    if (pendingAction === 'constat') dispatch({ type: 'SET_VIEW', view: 'constat' });
+    if (pendingAction === 'pricing') dispatch({ type: 'SET_VIEW', view: 'pricing' });
+    dispatch({ type: 'SET_PENDING_ACTION', action: null });
+  }, [pendingAction]);
 
-  const startConstat = () => {
+  const startConstat = useCallback(() => {
     if (!hasAcceptedCGU()) {
-      setPendingAction('constat');
-      setShowCGU(true);
+      dispatch({ type: 'SET_PENDING_ACTION', action: 'constat' });
+      dispatch({ type: 'SHOW_CGU', show: true });
     } else {
-      setView('constat');
+      dispatch({ type: 'SET_VIEW', view: 'constat' });
     }
-  };
+  }, []);
 
-  const goToPricing = () => {
+  const goToPricing = useCallback(() => {
     if (!hasAcceptedCGU()) {
-      setPendingAction('pricing');
-      setShowCGU(true);
+      dispatch({ type: 'SET_PENDING_ACTION', action: 'pricing' });
+      dispatch({ type: 'SHOW_CGU', show: true });
     } else {
-      setView('pricing');
+      dispatch({ type: 'SET_VIEW', view: 'pricing' });
     }
-  };
+  }, []);
 
-  const goToGarage = () => {
-    setAccountInitialTab('garage');
+  const goToGarage = useCallback(() => {
+    dispatch({ type: 'SET_ACCOUNT_TAB', tab: 'garage' });
     if (authUser) {
-      setView('account');
+      dispatch({ type: 'SET_VIEW', view: 'account' });
     } else {
-      // Pas encore connecté → ouvrir AuthModal, puis rediriger vers garage
-      setPendingAction('garage' as any);
-      setShowAuthModal(true);
+      dispatch({ type: 'SET_PENDING_ACTION', action: 'garage' });
+      dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
     }
-  };
+  }, [authUser]);
 
   return (
     <ErrorBoundary>
@@ -276,7 +327,7 @@ export default function App() {
         onStart={startConstat}
         onPricing={goToPricing}
         onGarage={goToGarage}
-        onAccount={() => authUser ? setView('account') : setShowAuthModal(true)}
+        onAccount={() => authUser ? dispatch({ type: 'SET_VIEW', view: 'account' }) : dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
         onLogout={handleLogout}
         authUser={authUser}
       />}
@@ -285,42 +336,37 @@ export default function App() {
           initialSessionId={undefined}
           authToken={authToken || undefined}
           authUser={authUser}
-          onShowAuth={() => setShowAuthModal(true)}
-          onAccount={() => authUser ? setView('account') : setShowAuthModal(true)}
-          onBuyPack={() => setView('pricing')}
+          onShowAuth={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
+          onAccount={() => authUser ? dispatch({ type: 'SET_VIEW', view: 'account' }) : dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
+          onBuyPack={() => dispatch({ type: 'SET_VIEW', view: 'pricing' })}
         />
       )}
       {view === 'join' && <JoinSession
         authUser={authUser}
         authToken={authToken || undefined}
-        onLogin={() => setShowAuthModal(true)}
-        onBuyPack={() => setView('pricing')}
+        onLogin={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
+        onBuyPack={() => dispatch({ type: 'SET_VIEW', view: 'pricing' })}
       />}
       {view === 'pricing'  && (
         <PricingPage
           userEmail={userEmail}
-          onBack={() => setView('landing')}
+          onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })}
           authUser={authUser}
           onAuthSuccess={() => {
-            // Refresh authUser credits after Stripe purchase
             trpc.auth.me.invalidate?.();
           }}
         />
       )}
 
       {view === 'police_login' && (
-        <PoliceLogin onLogin={(token, user) => { setPoliceToken(token); setPoliceUser(user); setView('police_dashboard'); }} />
+        <PoliceLogin onLogin={(token, user) => dispatch({ type: 'POLICE_LOGIN', token, user })} />
       )}
       {view === 'police_dashboard' && policeUser && (
         <PoliceDashboard
           token={policeToken}
           user={policeUser as any}
-          onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); setView('landing'); }}
-          onViewSession={(sessionId) => {
-            setPoliceSessionId(sessionId);
-            setPoliceFlowToken(policeToken);
-            setView('police_flow');
-          }}
+          onLogout={() => { localStorage.removeItem('boom_police_token'); localStorage.removeItem('boom_police_user'); dispatch({ type: 'SET_VIEW', view: 'landing' }); }}
+          onViewSession={(sessionId) => dispatch({ type: 'POLICE_VIEW_SESSION', sessionId, token: policeToken })}
         />
       )}
 
@@ -332,23 +378,23 @@ export default function App() {
           onLogout={() => {
             localStorage.removeItem('boom_police_token');
             localStorage.removeItem('boom_police_user');
-            setView('landing');
+            dispatch({ type: 'SET_VIEW', view: 'landing' });
           }}
         />
       )}
 
       {view === 'privacy' && (
-        <PrivacyPage onBack={() => setView('landing')} />
+        <PrivacyPage onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })} />
       )}
 
       {view === 'emergency' && (
-        <EmergencyNumbers mode="full" onClose={() => setView('landing')} />
+        <EmergencyNumbers mode="full" onClose={() => dispatch({ type: 'SET_VIEW', view: 'landing' })} />
       )}
 
       {view === 'admin' && authUser?.role === 'admin' && (
         <AdminDashboard
           token={authToken}
-          onBack={() => setView('landing')}
+          onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })}
         />
       )}
 
@@ -356,7 +402,7 @@ export default function App() {
         <AccountPage
           user={authUser}
           token={authToken}
-          onBack={() => setView('landing')}
+          onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })}
           onLogout={handleLogout}
           initialTab={accountInitialTab}
         />
@@ -365,14 +411,14 @@ export default function App() {
       {showAuthModal && (
         <AuthModal
           onAuth={handleAuth}
-          onSkip={() => setShowAuthModal(false)}
+          onSkip={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: false })}
         />
       )}
 
       {showCGU && (
         <CGUModal
           onAccept={handleCGUAccept}
-          onClose={() => { setShowCGU(false); setPendingAction(null); }}
+          onClose={() => { dispatch({ type: 'SHOW_CGU', show: false }); dispatch({ type: 'SET_PENDING_ACTION', action: null }); }}
         />
       )}
       <CookieBanner />

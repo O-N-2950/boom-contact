@@ -29,7 +29,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
 
   const { data: sessionData } = trpc.session.get.useQuery(
     { sessionId },
-    { enabled: !!sessionId && !partnerJoined, retry: false, staleTime: 0 }
+    { enabled: !!sessionId && !partnerJoined, retry: false, refetchInterval: 3000 }
   );
 
   useEffect(() => {
