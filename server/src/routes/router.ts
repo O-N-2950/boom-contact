@@ -674,8 +674,8 @@ export const appRouter = router({
         vehicleBModel:     z.string().max(100).optional(),
         vehicleBPlate:     z.string().max(50).optional(),
         mapImageBase64:    z.string().max(10_000_000).optional(),
-        width:             z.number().default(900),
-        height:            z.number().default(650),
+        width:             z.number().max(4096).default(900),
+        height:            z.number().max(4096).default(650),
       }))
       .output(sketchRenderOutput)
       .mutation(async ({ input }) => {

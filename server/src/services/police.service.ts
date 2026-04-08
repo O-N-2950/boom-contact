@@ -9,7 +9,9 @@ import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { BCRYPT_ROUNDS, POLICE_DASHBOARD_HOURS } from '../constants.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET not set'); })();
+const JWT_SECRET_BASE = process.env.JWT_SECRET || (() => { throw new Error('JWT_SECRET not set'); })();
+// Use a separate derived secret for police tokens to prevent cross-role token reuse
+const POLICE_JWT_SECRET = JWT_SECRET_BASE + ':police';
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -113,7 +115,7 @@ export async function loginPoliceUser(email: string, password: string) {
       country: station?.country || 'CH',
       mustChangePassword,
     },
-    JWT_SECRET,
+    POLICE_JWT_SECRET,
     { expiresIn: '8h', issuer: 'boom.contact', audience: 'boom.contact' }
   );
 
@@ -139,7 +141,7 @@ export async function loginPoliceUser(email: string, password: string) {
 
 export function verifyPoliceToken(token: string) {
   try {
-    return jwt.verify(token, JWT_SECRET, { issuer: 'boom.contact', audience: 'boom.contact' }) as {
+    return jwt.verify(token, POLICE_JWT_SECRET, { issuer: 'boom.contact', audience: 'boom.contact' }) as {
       userId: string;
       stationId: string;
       role: 'police';

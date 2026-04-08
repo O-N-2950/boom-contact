@@ -596,6 +596,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--black)', display: 'flex', flexDirection: 'column' }}>
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Dossier police — constat {sessionId}</h1>
 
       {/* Header institutionnel */}
       <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>

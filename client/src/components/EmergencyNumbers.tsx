@@ -360,9 +360,9 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
   );
 
   if (isLoading) return (
-    <div style={{ background: '#111', border: '1px solid #222', borderRadius: 12, padding: 16 }}>
+    <div style={{ background: '#111', border: '1px solid #444', borderRadius: 12, padding: 16 }}>
       <div style={{ color: '#d0d0d0', fontSize: 13, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 16, height: 16, border: '2px solid #333', borderTopColor: '#FF3500', borderRadius: '50%', flexShrink: 0 }} />
+        <div style={{ width: 16, height: 16, border: '2px solid #555', borderTopColor: '#FF3500', borderRadius: '50%', flexShrink: 0 }} />
         Recherche des numéros d'urgence pour {countryName || countryCode}...
       </div>
     </div>
@@ -396,7 +396,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
         ].map((item: any, i: number) => (
           <a key={i} href={`tel:${item.number.replace(/[\s().+]/g, '')}`} style={{
             display: 'flex', flexDirection: 'column' as const, background: '#111',
-            border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
+            border: '1px solid #3a3a3a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
           }}>
             <div style={{ color: '#d0d0d0', fontSize: 10, marginBottom: 2 }}>{item.label}</div>
             <div style={{ color: item.color, fontWeight: 900, fontSize: 18, fontFamily: 'monospace' }}>{item.number}</div>
@@ -405,7 +405,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
         ))}
       </div>
       {data.universal && data.universal !== data.police && (
-        <div style={{ marginTop: 10, background: '#111', border: '1px solid #222', borderRadius: 8, padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ marginTop: 10, background: '#111', border: '1px solid #444', borderRadius: 8, padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ color: '#d0d0d0', fontSize: 12 }}>Urgences universel</span>
           <a href={`tel:${data.universal}`} style={{ color: '#fff', fontWeight: 900, fontSize: 18, fontFamily: 'monospace', textDecoration: 'none' }}>{data.universal}</a>
         </div>
@@ -428,7 +428,7 @@ export function CountryEmergencySearch() {
   };
 
   return (
-    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 16 }}>
+    <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 14, padding: 16, marginBottom: 16 }}>
       <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12, fontSize: 14 }}>
         🌍 Urgences pour un autre pays
       </div>
@@ -439,7 +439,7 @@ export function CountryEmergencySearch() {
           value={code}
           onChange={e => setCode(e.target.value.toUpperCase().slice(0,3))}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-          style={{ width: 100, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 10px', fontSize: 14, boxSizing: 'border-box' as const }}
+          style={{ width: 100, background: '#1a1a1a', border: '1px solid #555', borderRadius: 8, color: '#fff', padding: '9px 10px', fontSize: 14, boxSizing: 'border-box' as const }}
         />
         <input
           aria-label="Nom du pays"
@@ -447,7 +447,7 @@ export function CountryEmergencySearch() {
           value={name}
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-          style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
+          style={{ flex: 1, background: '#1a1a1a', border: '1px solid #555', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
         />
         <button onClick={handleSubmit} disabled={!code.trim()} style={{
           background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8,
@@ -499,7 +499,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
             🆘 Urgences · {selected.flag} {selected.name}
           </div>
           <select aria-label="Sélectionner un pays" value={country} onChange={e => setCountry(e.target.value)}
-            style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#ccc', padding: '4px 8px', fontSize: 11 }}>
+            style={{ background: '#1a1a1a', border: '1px solid #555', borderRadius: 6, color: '#ccc', padding: '4px 8px', fontSize: 11 }}>
             {EMERGENCY_DATA.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
           </select>
         </div>
@@ -507,7 +507,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           {critical.map((c, i) => (
             <a key={i} href={`tel:${c.number.replace(/[\s().]/g, '')}`} style={{
               display: 'flex', alignItems: 'center', gap: 8, background: '#111',
-              border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
+              border: '1px solid #3a3a3a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
             }}>
               <span style={{ fontSize: 18 }}>{TYPE_ICON[c.type]}</span>
               <div>
@@ -536,7 +536,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           {REGIONS.map(r => (
             <button key={r} onClick={() => setRegion(r)} style={{
               background: region === r ? '#FF3500' : '#111',
-              border: '1px solid ' + (region === r ? '#FF3500' : '#222'),
+              border: '1px solid ' + (region === r ? '#FF3500' : '#444'),
               color: '#fff', borderRadius: 6, padding: '5px 10px',
               fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' as const, flexShrink: 0,
             }}>
@@ -550,7 +550,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           {filteredCountries.map(c => (
             <button key={c.code} onClick={() => setCountry(c.code)} style={{
               background: country === c.code ? '#FF3500' : '#111',
-              border: '1px solid ' + (country === c.code ? '#FF3500' : '#222'),
+              border: '1px solid ' + (country === c.code ? '#FF3500' : '#444'),
               color: '#fff', borderRadius: 8, padding: '7px 12px',
               fontSize: 13, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' as const, flexShrink: 0,
             }}>
@@ -564,7 +564,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           placeholder="Rechercher..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          style={{ background: '#111', border: '1px solid #222', borderRadius: 10, color: '#fff', padding: '10px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const, marginBottom: 12 }}
+          style={{ background: '#111', border: '1px solid #444', borderRadius: 10, color: '#fff', padding: '10px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const, marginBottom: 12 }}
           aria-label="Rechercher un numéro d'urgence"
         />
 
@@ -579,8 +579,8 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
             { key: 'insurance', label: '🛡️ Assurance' },
           ].map(f => (
             <button key={f.key} onClick={() => setFilter(f.key)} style={{
-              background: filter === f.key ? '#222' : 'none',
-              border: '1px solid ' + (filter === f.key ? '#444' : '#1a1a1a'),
+              background: filter === f.key ? '#444' : 'none',
+              border: '1px solid ' + (filter === f.key ? '#444' : '#3a3a3a'),
               color: filter === f.key ? '#fff' : '#d0d0d0',
               borderRadius: 6, padding: '5px 10px', fontSize: 12, cursor: 'pointer',
             }}>
@@ -602,7 +602,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {contacts.map((c, i) => (
           <a key={i} href={`tel:${c.number.replace(/[\s().]/g, '')}`} style={{
             display: 'flex', alignItems: 'center', gap: 14,
-            background: '#111', border: '1px solid #1a1a1a', borderRadius: 12,
+            background: '#111', border: '1px solid #3a3a3a', borderRadius: 12,
             padding: '14px 16px', marginBottom: 8, textDecoration: 'none',
           }}>
             <div style={{

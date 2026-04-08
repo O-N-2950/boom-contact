@@ -51,19 +51,20 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
   return (
     <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', fontFamily: 'system-ui, sans-serif' }}>
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Administration boom.contact</h1>
       {/* Header */}
-      <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
+      <div style={{ background: '#06060C', borderBottom: '1px solid #3a3a3a', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 13 }} aria-label="Retour">←</button>
           <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 18 }}>💥 Admin</span>
-          <span style={{ background: '#1a1a1a', color: '#d0d0d0', fontSize: 11, borderRadius: 4, padding: '2px 6px' }}>boom.contact</span>
+          <span style={{ background: '#3a3a3a', color: '#d0d0d0', fontSize: 11, borderRadius: 4, padding: '2px 6px' }}>boom.contact</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: autoRefresh ? '#4ade80' : '#555' }} />
           <button onClick={() => setAuto(a => !a)} style={{ background: 'none', border: 'none', color: '#d0d0d0', fontSize: 11, cursor: 'pointer' }}>
             {autoRefresh ? 'Live' : 'Paused'}
           </button>
-          <button onClick={() => statsQ.refetch()} style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 6, color: '#ccc', padding: '4px 10px', fontSize: 12, cursor: 'pointer' }}>
+          <button onClick={() => statsQ.refetch()} style={{ background: '#3a3a3a', border: '1px solid #555', borderRadius: 6, color: '#ccc', padding: '4px 10px', fontSize: 12, cursor: 'pointer' }}>
             ↻ Refresh
           </button>
         </div>
@@ -75,7 +76,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         <div style={{ display: 'flex', gap: 6, marginBottom: 24 }}>
           {(['overview', 'sessions', 'revenue', 'users'] as Tab[]).map(t => (
             <button key={t} onClick={() => setTab(t)} style={{
-              background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222'),
+              background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#444'),
               color: '#fff', borderRadius: 8, padding: '7px 14px', fontSize: 12, fontWeight: 700, cursor: 'pointer',
             }}>
               {t === 'overview' ? '📊 Vue d\'ensemble' : t === 'sessions' ? '📋 Sessions' : t === 'revenue' ? '💰 Revenus' : '👥 Utilisateurs'}
@@ -124,10 +125,10 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
             {/* Revenue by package */}
             <SectionTitle>📦 Revenus par pack</SectionTitle>
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
+            <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                  <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Pack', 'Ventes', 'Revenus', 'Crédits'].map(h => (
                       <th key={h} style={{ padding: '10px 16px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 1 }}>{h.toUpperCase()}</th>
                     ))}
@@ -178,10 +179,10 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         {tab === 'sessions' && s && (
           <>
             <SectionTitle>📋 Dernières sessions ({s.sessions.recent.length})</SectionTitle>
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, overflow: 'hidden' }}>
+            <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                  <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['ID', 'Statut', 'Date', 'Plaque A', 'Propriétaire'].map(h => (
                       <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
@@ -213,10 +214,10 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         {tab === 'revenue' && s && (
           <>
             <SectionTitle>💰 Derniers paiements ({s.revenue.recent.length})</SectionTitle>
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
+            <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                  <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Email', 'Pack', 'Montant', 'Crédits', 'Date'].map(h => (
                       <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
@@ -229,7 +230,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                   {s.revenue.recent.map((p: any) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td style={{ ...td, fontSize: 12 }}>{p.userEmail}</td>
-                      <td style={td}><span style={{ background: '#1a1a1a', borderRadius: 4, padding: '2px 6px', fontSize: 11 }}>{p.packageLabel}</span></td>
+                      <td style={td}><span style={{ background: '#3a3a3a', borderRadius: 4, padding: '2px 6px', fontSize: 11 }}>{p.packageLabel}</span></td>
                       <td style={{ ...td, color: '#4ade80', fontWeight: 700 }}>{EUR(p.amountCents)} <span style={{ color: '#d0d0d0', fontSize: 10 }}>{p.currency}</span></td>
                       <td style={td}>{p.creditsGranted}</td>
                       <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{p.paidAt ? new Date(p.paidAt).toLocaleDateString('fr-CH') : <span style={{ color: '#d0d0d0' }}>pending</span>}</td>
@@ -241,7 +242,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
             {/* AI cost breakdown */}
             <SectionTitle>🤖 Détail coûts IA</SectionTitle>
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: 20 }}>
+            <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, padding: 20 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <CostLine label="Sessions complétées" value={String(s.sessions.completed)} />
                 <CostLine label="Scans OCR estimés (×2/session)" value={String(s.ai.estOcrScans)} />
@@ -259,10 +260,10 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
           <>
             <SectionTitle>👥 Utilisateurs ({usersQ.data?.length || 0})</SectionTitle>
             {usersQ.isLoading && <div style={{ color: '#d0d0d0', padding: 32, textAlign: 'center' as const }}>Chargement...</div>}
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, overflow: 'hidden' }}>
+            <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
+                  <tr style={{ borderBottom: '1px solid #3a3a3a' }}>
                     {['Email', 'Rôle', 'Crédits', 'Pays', 'Inscrit', 'Dernière activité'].map(h => (
                       <th key={h} style={{ padding: '10px 14px', textAlign: 'left' as const, color: '#d0d0d0', fontSize: 11, letterSpacing: 0.8 }}>{h.toUpperCase()}</th>
                     ))}
@@ -273,7 +274,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     <tr key={u.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td style={{ ...td, fontSize: 13 }}>{u.email}</td>
                       <td style={td}>
-                        <span style={{ background: u.role === 'admin' ? '#FF3500' : '#1a1a1a', borderRadius: 4, padding: '2px 7px', fontSize: 11, color: u.role === 'admin' ? '#fff' : '#aaa' }}>
+                        <span style={{ background: u.role === 'admin' ? '#FF3500' : '#3a3a3a', borderRadius: 4, padding: '2px 7px', fontSize: 11, color: u.role === 'admin' ? '#fff' : '#aaa' }}>
                           {u.role}
                         </span>
                       </td>
@@ -302,7 +303,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function KPI({ label, value, sub, color }: { label: string; value: any; sub?: string; color?: string }) {
   return (
-    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: '16px 18px', flex: 1, minWidth: 100 }}>
+    <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 12, padding: '16px 18px', flex: 1, minWidth: 100 }}>
       <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 6, letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
       <div style={{ color: color || '#fff', fontSize: 22, fontWeight: 900, lineHeight: 1 }}>{value}</div>
       {sub && <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 4 }}>{sub}</div>}
@@ -322,4 +323,4 @@ function CostLine({ label, value, highlight }: { label: string; value: string; h
 // ── Styles ────────────────────────────────────────────────────
 const kpiRow: React.CSSProperties = { display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' as const };
 const td: React.CSSProperties = { padding: '11px 14px', color: '#ccc', fontSize: 13, borderBottom: '1px solid #0f0f0f' };
-const inputSm: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 13, width: '100%', boxSizing: 'border-box' as const };
+const inputSm: React.CSSProperties = { background: '#3a3a3a', border: '1px solid #555', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 13, width: '100%', boxSizing: 'border-box' as const };

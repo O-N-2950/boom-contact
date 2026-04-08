@@ -49,7 +49,7 @@ describe('Password Utilities', () => {
 describe('JWT Utilities', () => {
   it('should sign and verify a JWT', async () => {
     const { signJWT, verifyJWT } = await import('../services/auth.service.js');
-    const payload = { sub: 'u123', email: 'test@t.com', role: 'customer' };
+    const payload = { sub: 'u123', email: 'test@t.com', role: 'customer', tokenVersion: 0 };
     const token = signJWT(payload);
     expect(token.split('.')).toHaveLength(3);
     const v = verifyJWT(token);

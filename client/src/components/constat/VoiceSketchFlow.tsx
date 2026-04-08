@@ -196,7 +196,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
 
       <button onClick={onSkip} style={{
         width: '100%', marginTop: 12, padding: '12px', background: 'none',
-        border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: 13,
+        border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13,
       }}>
         Passer cette étape →
       </button>

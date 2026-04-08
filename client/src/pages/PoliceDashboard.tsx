@@ -56,6 +56,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
 
   return (
     <div style={{ minHeight:'100vh', background:'#06060C', color:'#F0EDE8' }}>
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Tableau de bord Police — boom.contact</h1>
 
       {/* Header */}
       <div style={{ background:'rgba(255,255,255,0.03)', borderBottom:'1px solid rgba(255,255,255,0.08)', padding:'16px 20px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>

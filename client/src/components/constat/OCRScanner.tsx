@@ -313,7 +313,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
         <button onClick={onSkip}
           style={{ width:'100%', padding:'13px', borderRadius:10, marginTop:10,
             border:'1px solid rgba(255,255,255,0.08)', background:'transparent',
-            cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.3)',
+            cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.6)',
             touchAction:'manipulation', WebkitTapHighlightColor:'transparent' }}>
           Passer — saisie manuelle →
         </button>

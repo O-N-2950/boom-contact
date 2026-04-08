@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { db } from '../db/index.js';
 import { users, magicTokens } from '../db/schema.js';
-import { eq, and, gt, isNull } from 'drizzle-orm';
+import { eq, and, gt, isNull, sql, count } from 'drizzle-orm';
 import { logger, maskEmail } from '../logger.js';
 import { BCRYPT_ROUNDS, MAGIC_LINK_TTL_MS, GIFT_LINK_TTL_MS, JWT_EXPIRES_DAYS } from '../constants.js';
 
@@ -73,18 +73,36 @@ export interface JWTPayload {
   sub: string;   // user id
   email: string;
   role: string;
+  tokenVersion: number;
 }
 
 export function signJWT(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES, issuer: 'boom.contact', audience: 'boom.contact' });
+  return jwt.sign(payload, JWT_SECRET!, { expiresIn: JWT_EXPIRES, issuer: 'boom.contact', audience: 'boom.contact' });
 }
 
 export function verifyJWT(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET, { issuer: 'boom.contact', audience: 'boom.contact' }) as JWTPayload;
+    return jwt.verify(token, JWT_SECRET!, { issuer: 'boom.contact', audience: 'boom.contact' }) as unknown as JWTPayload;
   } catch {
     return null;
   }
+}
+
+/** Verify JWT AND check tokenVersion against DB — for use in middleware */
+export async function verifyJWTWithRevocationCheck(token: string): Promise<JWTPayload | null> {
+  const payload = verifyJWT(token);
+  if (!payload) return null;
+  const user = await db.query.users.findFirst({ where: eq(users.id, payload.sub) });
+  if (!user) return null;
+  // Reject if tokenVersion doesn't match (token was revoked)
+  if ((payload.tokenVersion ?? -1) !== (user.tokenVersion ?? 0)) return null;
+  return payload;
+}
+
+/** Increment tokenVersion to revoke all existing tokens for a user */
+export async function revokeUserTokens(userId: string): Promise<void> {
+  await db.update(users).set({ tokenVersion: sql`${users.tokenVersion} + 1` }).where(eq(users.id, userId));
+  logger.info('Tokens revoked', { userId });
 }
 
 // ── Register ──────────────────────────────────────────────────
@@ -106,7 +124,7 @@ export async function registerUser(email: string, password: string): Promise<{ i
   });
 
   logger.info('User registered', { email: maskEmail(email) });
-  return { id, token: signJWT({ sub: id, email: email.toLowerCase(), role: 'customer' }) };
+  return { id, token: signJWT({ sub: id, email: email.toLowerCase(), role: 'customer', tokenVersion: 0 }) };
 }
 
 // ── Login with password ───────────────────────────────────────
@@ -126,18 +144,35 @@ export async function loginWithPassword(email: string, password: string): Promis
   }
 
   await db.update(users).set({ lastSeenAt: new Date() }).where(eq(users.id, user.id));
-  const token = signJWT({ sub: user.id, email: user.email, role: user.role || 'customer' });
+  const token = signJWT({ sub: user.id, email: user.email, role: user.role || 'customer', tokenVersion: user.tokenVersion ?? 0 });
   logger.info('User login', { email: maskEmail(email) });
   return { token, user: { id: user.id, email: user.email, role: user.role, credits: user.credits, firstName: user.firstName, lastName: user.lastName, phone: user.phone, address: user.address } };
 }
 
 // ── Magic link ────────────────────────────────────────────────
+const MAGIC_LINK_PER_EMAIL_MAX = 3;  // max 3 magic links per email per hour
+
 export async function createMagicToken(email: string): Promise<string> {
+  const emailLower = email.toLowerCase();
+
+  // Rate limit: max 3 magic link requests per email per hour
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const [{ c: recentCount }] = await db.select({ c: count() })
+    .from(magicTokens)
+    .where(and(
+      eq(magicTokens.email, emailLower),
+      eq(magicTokens.type, 'login'),
+      gt(magicTokens.createdAt, oneHourAgo),
+    ));
+  if (recentCount >= MAGIC_LINK_PER_EMAIL_MAX) {
+    throw new Error('MAGIC_LINK_RATE_LIMITED');
+  }
+
   const token = crypto.randomBytes(32).toString('hex');
   const id = nanoid(30);
   const expiresAt = new Date(Date.now() + MAGIC_TTL);
 
-  await db.insert(magicTokens).values({ id, email: email.toLowerCase(), token, type: 'login', expiresAt });
+  await db.insert(magicTokens).values({ id, email: emailLower, token, type: 'login', expiresAt });
   logger.info('Magic token created', { email: maskEmail(email) });
   return token;
 }
@@ -170,7 +205,7 @@ export async function verifyMagicToken(token: string): Promise<{ token: string; 
     await db.update(users).set({ lastSeenAt: new Date() }).where(eq(users.id, user.id));
   }
 
-  const jwtToken = signJWT({ sub: user!.id, email: user!.email, role: user!.role || 'customer' });
+  const jwtToken = signJWT({ sub: user!.id, email: user!.email, role: user!.role || 'customer', tokenVersion: user!.tokenVersion ?? 0 });
   logger.info('Magic token verified', { email });
   return { token: jwtToken, user: { id: user!.id, email: user!.email, role: user!.role, credits: user!.credits, firstName: user!.firstName, lastName: user!.lastName, phone: user!.phone, address: user!.address } };
 }

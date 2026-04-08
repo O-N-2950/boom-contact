@@ -66,7 +66,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}>
       <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" style={{
-        background: '#111', border: '1px solid #222', borderRadius: 20,
+        background: '#111', border: '1px solid #444', borderRadius: 20,
         padding: 32, width: '100%', maxWidth: 420, position: 'relative',
       }}>
         <div style={{ marginBottom: 24 }}>
@@ -84,14 +84,14 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
               📧 Connexion par lien email (recommandé)
             </button>
-            <button onClick={() => setMode('password')} style={btnStyle('#222')}>
+            <button onClick={() => setMode('password')} style={btnStyle('#444')}>
               🔑 Connexion avec mot de passe
             </button>
-            <button onClick={() => setMode('register')} style={btnStyle('#222')}>
+            <button onClick={() => setMode('register')} style={btnStyle('#444')}>
               ✨ Créer un compte
             </button>
-            <div style={{ borderTop: '1px solid #222', marginTop: 4 }} />
-            <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #333' }}>
+            <div style={{ borderTop: '1px solid #444', marginTop: 4 }} />
+            <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #555' }}>
               Continuer sans compte →
             </button>
             <p style={{ color: '#d0d0d0', fontSize: 11, textAlign: 'center', margin: 0 }}>
@@ -135,8 +135,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               Vérifiez votre boîte <strong style={{ color: '#fff' }}>{email}</strong>.<br />
               Le lien est valable 15 minutes.
             </div>
-            <div style={{ marginTop: 24, borderTop: '1px solid #222', paddingTop: 20 }}>
-              <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #333' }}>
+            <div style={{ marginTop: 24, borderTop: '1px solid #444', paddingTop: 20 }}>
+              <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #555' }}>
                 Continuer sans compte →
               </button>
             </div>
@@ -215,7 +215,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 }
 
 const inputStyle: React.CSSProperties = {
-  background: '#1a1a1a', border: '1px solid #333', borderRadius: 10,
+  background: '#1a1a1a', border: '1px solid #555', borderRadius: 10,
   color: '#fff', padding: '12px 14px', fontSize: 15, width: '100%',
   boxSizing: 'border-box',
   transition: 'border-color 0.15s, outline 0.15s',

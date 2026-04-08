@@ -5,6 +5,7 @@ interface PrivacyPageProps {
 export function PrivacyPage({ onBack }: PrivacyPageProps) {
   return (
     <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', padding: '0 0 40px' }}>
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Mentions légales et politique de confidentialité — boom.contact</h1>
       {/* Header */}
       <div style={{ background: '#06060C', borderBottom: '1px solid #1a1a1a', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14, position: 'sticky', top: 0, zIndex: 10 }}>
         <button onClick={onBack} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 18 }} aria-label="Retour">←</button>

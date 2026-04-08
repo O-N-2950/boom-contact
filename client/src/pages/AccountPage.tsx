@@ -204,7 +204,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 width: '100%', padding: '14px',
                 borderRadius: 12, border: 'none',
                 background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)',
-                color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.3)',
+                color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.6)',
                 cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed',
                 fontSize: 15, fontWeight: 700,
                 transition: 'all 0.2s',
@@ -309,7 +309,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
       <div style={{ maxWidth: 500, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <button onClick={onBack} style={backBtn}>← Retour</button>
-          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>Déconnexion</button>
+          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>Déconnexion</button>
         </div>
 
         {/* Profile card */}

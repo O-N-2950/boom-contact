@@ -125,6 +125,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
 
   return (
     <div style={{ maxWidth: 440, margin: '0 auto', padding: '24px 16px', minHeight: '100svh' }}>
+      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Tarifs — boom.contact</h1>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>

@@ -393,7 +393,7 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
       <button onClick={handleContinue} disabled={!canContinue} style={{
         width: '100%', padding: '16px', borderRadius: 12, border: 'none',
         background: canContinue ? 'var(--boom)' : 'rgba(255,255,255,0.08)',
-        color: canContinue ? '#fff' : 'rgba(255,255,255,0.3)',
+        color: canContinue ? '#fff' : 'rgba(255,255,255,0.6)',
         cursor: canContinue ? 'pointer' : 'not-allowed',
         fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
       }}>

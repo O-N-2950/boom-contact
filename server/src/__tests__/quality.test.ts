@@ -149,7 +149,7 @@ describe('JWT additional edge cases', () => {
 
   it('should preserve all payload fields through sign/verify cycle', async () => {
     const { signJWT, verifyJWT } = await import('../services/auth.service.js');
-    const payload = { sub: 'user-42', email: 'olivier@boom.contact', role: 'admin' };
+    const payload = { sub: 'user-42', email: 'olivier@boom.contact', role: 'admin', tokenVersion: 0 };
     const token = signJWT(payload);
     const decoded = verifyJWT(token);
     expect(decoded).not.toBeNull();

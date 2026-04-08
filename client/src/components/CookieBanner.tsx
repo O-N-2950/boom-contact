@@ -134,7 +134,7 @@ export function CookieBanner() {
         </button>
 
         {expanded && (
-          <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 10, padding: 14, marginBottom: 14 }}>
+          <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 10, padding: 14, marginBottom: 14 }}>
             <CookieRow
               name="boom_cgu_accepted"
               purpose="Session constat — obligatoire"
@@ -179,7 +179,7 @@ export function CookieBanner() {
             style={{
               flex: 1,
               background: 'none',
-              border: '1px solid #333',
+              border: '1px solid #555',
               borderRadius: 10,
               color: '#d0d0d0',
               padding: '11px 12px',
@@ -225,7 +225,7 @@ export function CookieBanner() {
 
 function CookieRow({ name, purpose, duration, type }: { name: string; purpose: string; duration: string; type: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '6px 0', borderBottom: '1px solid #1a1a1a' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '6px 0', borderBottom: '1px solid #3a3a3a' }}>
       <div>
         <div style={{ color: '#ccc', fontSize: 12, fontFamily: 'monospace' }}>{name}</div>
         <div style={{ color: '#d0d0d0', fontSize: 11 }}>{purpose}</div>

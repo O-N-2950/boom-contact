@@ -71,6 +71,7 @@ export const users = pgTable('users', {
   phone:            varchar('phone', { length: 30 }),
   company:          text('company'),
   address:          text('address'),
+  tokenVersion:     integer('token_version').notNull().default(0),
 }, (t) => ({
   emailIdx: index('users_email_idx').on(t.email),
 }));

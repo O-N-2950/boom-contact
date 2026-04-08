@@ -371,7 +371,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         style={{
           width: '100%', padding: '16px', borderRadius: 12, border: 'none',
           background: hasMinimum ? 'var(--boom)' : 'rgba(255,255,255,0.07)',
-          color: hasMinimum ? '#fff' : 'rgba(255,255,255,0.2)',
+          color: hasMinimum ? '#fff' : 'rgba(255,255,255,0.6)',
           cursor: hasMinimum ? 'pointer' : 'not-allowed',
           fontSize: 15, fontWeight: 700, marginBottom: 10, transition: 'all 0.2s',
         }}

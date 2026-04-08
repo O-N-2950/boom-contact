@@ -188,7 +188,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
                 <div key={photo.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: 'rgba(240,237,232,0.04)' }}>
                   <img
                     src={`data:image/jpeg;base64,${photo.base64}`}
-                    alt={cat?.label}
+                    alt={cat?.label || 'Photo du constat'}
                     style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }}
                   />
                   {/* Overlay top */}

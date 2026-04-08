@@ -252,7 +252,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                   width: '100%', padding: '15px', borderRadius: 12,
                   border: 'none', marginTop: 8,
                   background: selected ? 'var(--boom)' : 'rgba(255,255,255,0.06)',
-                  color: selected ? '#fff' : 'rgba(255,255,255,0.2)',
+                  color: selected ? '#fff' : 'rgba(255,255,255,0.6)',
                   cursor: selected ? 'pointer' : 'not-allowed',
                   fontSize: 15, fontWeight: 700,
                 }}
@@ -320,7 +320,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                   <div style={{ position: 'relative', marginBottom: 12 }}>
                     <img
                       src={`data:image/jpeg;base64,${platePhoto}`}
-                      alt="Plaque"
+                      alt="Photo de la plaque d'immatriculation"
                       style={{ width: '100%', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)' }}
                     />
                     <button onClick={() => { setPlatePhoto(null); setPlateNumber(''); fileRef.current?.click(); }}
@@ -406,7 +406,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     background: (selected.plateMandatory && !platePhoto && !plateNumber)
                       ? 'rgba(255,255,255,0.06)' : 'var(--boom)',
                     color: (selected.plateMandatory && !platePhoto && !plateNumber)
-                      ? 'rgba(255,255,255,0.2)' : '#fff',
+                      ? 'rgba(255,255,255,0.6)' : '#fff',
                     cursor: (selected.plateMandatory && !platePhoto && !plateNumber) ? 'not-allowed' : 'pointer',
                     fontSize: 14, fontWeight: 700,
                   }}

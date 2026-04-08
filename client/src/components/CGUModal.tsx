@@ -181,7 +181,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           <button onClick={handleSubmit} disabled={!canProceed || loading} style={{
             width: '100%', padding: '16px', borderRadius: 12, border: 'none',
             background: canProceed ? 'var(--boom)' : 'rgba(255,255,255,0.08)',
-            color: canProceed ? '#fff' : 'rgba(255,255,255,0.3)',
+            color: canProceed ? '#fff' : 'rgba(255,255,255,0.6)',
             cursor: canProceed ? 'pointer' : 'not-allowed',
             fontSize: 15, fontWeight: 700, transition: 'all 0.2s',
           }}>

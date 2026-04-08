@@ -1,12 +1,12 @@
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
-import { verifyJWT, type JWTPayload } from '../services/auth.service.js';
+import { verifyJWTWithRevocationCheck, type JWTPayload } from '../services/auth.service.js';
 
-export function createContext({ req, res }: CreateExpressContextOptions) {
-  // Extract JWT from Authorization header
+export async function createContext({ req, res }: CreateExpressContextOptions) {
+  // Extract JWT from Authorization header and verify with revocation check
   let authUser: JWTPayload | null = null;
   const authHeader = req.headers.authorization;
   if (authHeader?.startsWith('Bearer ')) {
-    authUser = verifyJWT(authHeader.slice(7));
+    authUser = await verifyJWTWithRevocationCheck(authHeader.slice(7));
   }
   return { req, res, authUser };
 }

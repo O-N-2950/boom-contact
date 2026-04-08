@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError } from './trpc.js';
-import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword } from '../services/auth.service.js';
+import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword, revokeUserTokens } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { logger, maskEmail } from '../logger.js';
 import { db } from '../db/index.js';
@@ -47,9 +47,17 @@ export const authRouter = router({
     .input(z.object({ email: z.string().email() }))
     .output(authMagicLinkRequestOutput)
     .mutation(async ({ input }) => {
-      const token = await createMagicToken(input.email);
-      const magicUrl = `${CLIENT_URL}/?magic=${token}`;
-      await sendMagicLink(input.email, magicUrl);
+      try {
+        const token = await createMagicToken(input.email);
+        const magicUrl = `${CLIENT_URL}/?magic=${token}`;
+        await sendMagicLink(input.email, magicUrl);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message === 'MAGIC_LINK_RATE_LIMITED') {
+          throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Trop de demandes de lien magique. Réessayez dans une heure.' });
+        }
+        throw err;
+      }
+      // Always return ok to avoid email enumeration
       return { ok: true };
     }),
 
@@ -174,6 +182,13 @@ export const authRouter = router({
 
       const hash = await hashPassword(input.password);
       await db.update(users).set({ passwordHash: hash, role: 'admin', credits: 999999 }).where(eq(users.email, 'contact@boom.contact'));
+      return { ok: true };
+    }),
+
+  // POST auth.logout — revoke all tokens for the current user
+  logout: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      await revokeUserTokens(ctx.authUser.sub);
       return { ok: true };
     }),
 

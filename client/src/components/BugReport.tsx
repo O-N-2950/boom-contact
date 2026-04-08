@@ -45,7 +45,7 @@ export function BugReport() {
             position:'fixed', bottom:76, right:16, zIndex:600,
             background:'rgba(6,6,12,0.8)', border:'1px solid rgba(255,255,255,0.1)',
             borderRadius:20, padding:'6px 11px',
-            color:'rgba(255,255,255,0.3)', cursor:'pointer',
+            color:'rgba(255,255,255,0.6)', cursor:'pointer',
             fontSize:11, fontFamily:'monospace',
             backdropFilter:'blur(6px)',
             touchAction:'manipulation', WebkitTapHighlightColor:'transparent',
@@ -97,7 +97,7 @@ export function BugReport() {
             style={{
               width:'100%', padding:'10px', borderRadius:8, border:'none',
               background: text.trim() ? 'var(--boom)' : 'rgba(255,255,255,0.06)',
-              color: text.trim() ? '#fff' : 'rgba(255,255,255,0.3)',
+              color: text.trim() ? '#fff' : 'rgba(255,255,255,0.6)',
               cursor: text.trim() ? 'pointer' : 'not-allowed',
               fontSize:13, fontWeight:700,
             }}>
