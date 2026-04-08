@@ -38,8 +38,8 @@ export const POLICE_DASHBOARD_HOURS = 24;
 // Vehicle types that do not require signatures
 export const NON_SIGNING_TYPES = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
 
-// Client URL for redirects and links
-export const CLIENT_URL = process.env.CLIENT_URL || '';
+// Client URL for redirects and links — re-exported from config for backwards compat
+export { CLIENT_URL } from './config.js';
 
 // ID generator — uses crypto.randomBytes for cryptographically secure random IDs
 export function makeId(size = 12): string {

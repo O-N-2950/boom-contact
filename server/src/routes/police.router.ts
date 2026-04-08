@@ -78,7 +78,7 @@ export const policeRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       const payload = ctx.policeUser;
-      const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data as any);
+      const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data);
       return { ok: true, id: result.id };
     }),
 
@@ -96,11 +96,11 @@ export const policeRouter = router({
       const [agentRow] = await db.select().from(policeUsers).where(eq(policeUsers.id, payload.userId)).limit(1);
       const [stationRow] = await db.select().from(policeStations).where(eq(policeStations.id, payload.stationId)).limit(1);
       const annotationData = annotation
-        ? { reportNumber: annotation.reportNumber || undefined, infractions: (annotation.infractions as any) || [], measures: (annotation.measures as any) || [], witnesses: (annotation.witnesses as any) || [], observations: annotation.observations || undefined }
-        : { infractions: [], measures: [], witnesses: [] };
+        ? { reportNumber: annotation.reportNumber || undefined, infractions: annotation.infractions || [], measures: annotation.measures || [], witnesses: annotation.witnesses || [], observations: annotation.observations || undefined }
+        : { infractions: [] as const, measures: [] as const, witnesses: [] as const };
       const { generatePoliceReport } = await import('../services/pdf.police.js');
       const pdfBytes = await generatePoliceReport(
-        session as any, annotationData,
+        session, annotationData,
         { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
         payload.country || 'CH'
       );

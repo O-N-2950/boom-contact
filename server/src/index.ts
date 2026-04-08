@@ -612,7 +612,7 @@ setInterval(async () => {
     const { lt, inArray, and } = await import('drizzle-orm');
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const result = await db.update(schema.sessions)
-      .set({ status: 'expired' } as any)
+      .set({ status: 'expired' })
       .where(
         and(
           inArray(schema.sessions.status, ['waiting', 'active', 'signing']),
@@ -621,7 +621,7 @@ setInterval(async () => {
       );
     // On ne log que si quelque chose a changé
   } catch (e) {
-    logger.debug('Session expiry cron failed (non-critical)', { error: String(e) });
+    logger.warn('Session expiry cron failed', { error: String(e) });
   }
 }, 60 * 60 * 1000); // toutes les heures
 

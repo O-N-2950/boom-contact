@@ -185,14 +185,14 @@ export async function getPoliceDashboard(stationId: string) {
       createdAt: s.createdAt,
       expiresAt: s.expiresAt,
       vehicleCount: s.vehicleCount,
-      location: (s.accident as any)?.location?.address || null,
-      city: (s.accident as any)?.location?.city || null,
-      hasInjuries: (s.accident as any)?.injuries || false,
+      location: s.accident?.location?.address || null,
+      city: s.accident?.location?.city || null,
+      hasInjuries: s.accident?.injuries || false,
       hasAnnotations: annotatedIds.has(s.id),
     })),
     stats: {
       total: activeSessions.length,
-      withInjuries: activeSessions.filter(s => (s.accident as any)?.injuries).length,
+      withInjuries: activeSessions.filter(s => s.accident?.injuries).length,
       signed: activeSessions.filter(s => s.status === 'signed' || s.status === 'completed').length,
       annotated: annotatedIds.size,
     }
@@ -288,9 +288,9 @@ export async function saveAnnotation(
     const [updated] = await db.update(policeAnnotations)
       .set({
         reportNumber: data.reportNumber,
-        infractions: data.infractions as any,
-        measures: data.measures as any,
-        witnesses: data.witnesses as any,
+        infractions: data.infractions,
+        measures: data.measures,
+        witnesses: data.witnesses,
         observations: data.observations,
         updatedAt: new Date(),
       })
@@ -307,9 +307,9 @@ export async function saveAnnotation(
     agentId,
     stationId,
     reportNumber: data.reportNumber,
-    infractions: data.infractions as any,
-    measures: data.measures as any,
-    witnesses: data.witnesses as any,
+    infractions: data.infractions,
+    measures: data.measures,
+    witnesses: data.witnesses,
     observations: data.observations,
     consultedAt: new Date(),
   }).returning();

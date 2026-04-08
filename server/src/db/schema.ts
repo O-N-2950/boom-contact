@@ -1,6 +1,32 @@
 import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index, serial } from 'drizzle-orm/pg-core';
 import type { AccidentData, ParticipantData } from '../../../shared/types/index.js';
 
+// ── JSONB column types for police annotations ────────────────
+export interface InfractionRecord {
+  code: string;
+  description: string;
+  party: 'A' | 'B' | 'both';
+}
+export interface MeasureRecord {
+  type: string;
+  description: string;
+  party?: 'A' | 'B' | 'both';
+}
+export interface WitnessRecord {
+  name: string;
+  address?: string;
+  phone?: string;
+  statement?: string;
+}
+
+// ── JSONB column types for vehicles ──────────────────────────
+export interface VehicleLicenseData {
+  [key: string]: string | number | boolean | null;
+}
+export interface VehicleInsuranceData {
+  [key: string]: string | number | boolean | null;
+}
+
 // ── Sessions — constats en cours ─────────────────────────────
 export const sessions = pgTable('sessions', {
   id:           varchar('id', { length: 20 }).primaryKey(),
@@ -139,9 +165,9 @@ export const policeAnnotations = pgTable('police_annotations', {
   country:      varchar('country', { length: 5 }).notNull().default('CH'), // pour template PDF
   // Contenu du rapport
   reportNumber: text('report_number'),                              // numéro PV officiel
-  infractions:  jsonb('infractions').notNull().default('[]'),      // [{code, description, party}]
-  measures:     jsonb('measures').notNull().default('[]'),          // [{type, description}]
-  witnesses:    jsonb('witnesses').notNull().default('[]'),         // [{name, address, phone, statement}]
+  infractions:  jsonb('infractions').$type<InfractionRecord[]>().notNull().default([]),
+  measures:     jsonb('measures').$type<MeasureRecord[]>().notNull().default([]),
+  witnesses:    jsonb('witnesses').$type<WitnessRecord[]>().notNull().default([]),
   observations: text('observations'),                               // texte libre
   // Audit trail RGPD
   createdAt:    timestamp('created_at').notNull().defaultNow(),
@@ -165,8 +191,8 @@ export const vehicles = pgTable('vehicles', {
   color:        text('color'),
   year:         text('year'),
   category:     text('category'),                          // ex: "Voiture de tourisme"
-  licenseData:  jsonb('license_data').notNull().default({}),   // raw OCR permis de circuler
-  insuranceData:jsonb('insurance_data').notNull().default({}), // raw OCR carte verte + mises à jour manuelles
+  licenseData:  jsonb('license_data').$type<VehicleLicenseData>().notNull().default({}),
+  insuranceData:jsonb('insurance_data').$type<VehicleInsuranceData>().notNull().default({}),
   createdAt:    timestamp('created_at').notNull().defaultNow(),
   updatedAt:    timestamp('updated_at').notNull().defaultNow(),
 }, (t) => ({

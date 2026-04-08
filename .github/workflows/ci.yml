@@ -23,5 +23,7 @@ jobs:
         run: npm run typecheck
       - name: Build (client + server)
         run: npm run build
+      - name: Run tests
+        run: npm run test
       - name: ✅ All checks passed
         run: echo "Ready for Railway deploy"
