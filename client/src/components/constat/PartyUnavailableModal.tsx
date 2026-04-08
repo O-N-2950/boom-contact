@@ -178,16 +178,16 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
         animation: 'slideUp 0.25s ease',
       }}>
         {/* Handle */}
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 0' }}>
+        <div className="flex justify-center" style={{ padding: '12px 0 0' }}>
           <div style={{ width: 36, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.25)' }} />
         </div>
 
         {/* Header */}
         <div style={{ padding: '14px 20px 12px', borderBottom: '1px solid rgba(255,255,255,0.25)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="flex items-center justify-between">
             <div>
-              <div style={{ fontWeight: 800, fontSize: 16 }}>Partie B indisponible</div>
-              <div style={{ fontSize: 11, opacity: 0.755, marginTop: 2 }}>
+              <div className="font-extrabold text-base">Partie B indisponible</div>
+              <div className="text-[11px]" style={{ opacity: 0.755, marginTop: 2 }}>
                 {step === 'reason' && 'Sélectionnez la raison'}
                 {step === 'plate' && 'Photo de la plaque'}
                 {step === 'details' && 'Informations complémentaires'}
@@ -200,7 +200,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
             }}>Annuler</button>
           </div>
           {/* Step dots */}
-          <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
+          <div className="flex gap-1.5 mt-3">
             {['reason', 'plate', 'details'].map((s, i) => (
               <div key={s} style={{
                 height: 3, flex: 1, borderRadius: 2,
@@ -213,12 +213,12 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
         </div>
 
         {/* Content */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px 24px' }}>
+        <div className="flex-1 overflow-y-auto" style={{ padding: '16px 20px 24px' }}>
 
           {/* ── STEP 1 : RAISON ── */}
           {step === 'reason' && (
             <div>
-              <div style={{ fontSize: 13, opacity: 0.7, marginBottom: 14, lineHeight: 1.5 }}>
+              <div className="text-[13px] leading-normal" style={{ opacity: 0.7, marginBottom: 14 }}>
                 Le constat sera établi en <strong style={{ color: 'var(--boom)' }}>déclaration unilatérale de sinistre</strong> — document légalement reconnu par les assurances dans toute l'Europe.
               </div>
               {REASONS.map(r => {
@@ -233,14 +233,14 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                     transition: 'all 0.15s',
                     display: 'flex', alignItems: 'center', gap: 14,
                   }}>
-                    <span style={{ fontSize: 24, flexShrink: 0 }}>{r.icon}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: isSelected ? c.text : 'var(--text)' }}>
+                    <span className="text-2xl shrink-0">{r.icon}</span>
+                    <div className="flex-1">
+                      <div className="text-sm font-bold" style={{ color: isSelected ? c.text : 'var(--text)' }}>
                         {r.label}
                       </div>
-                      <div style={{ fontSize: 12, opacity: 0.7, marginTop: 2 }}>{r.sub}</div>
+                      <div className="text-xs" style={{ opacity: 0.7, marginTop: 2 }}>{r.sub}</div>
                     </div>
-                    {isSelected && <span style={{ fontSize: 16, color: c.text }}>✓</span>}
+                    {isSelected && <span className="text-base" style={{ color: c.text }}>✓</span>}
                   </button>
                 );
               })}
@@ -271,20 +271,20 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                   padding: '14px 16px', borderRadius: 12, marginBottom: 18,
                   background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.3)',
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                    <span style={{ fontSize: 22, flexShrink: 0 }}>🚨</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: '#ef4444', marginBottom: 4 }}>
+                  <div className="flex items-start gap-2.5">
+                    <span className="text-[22px] shrink-0">🚨</span>
+                    <div className="flex-1">
+                      <div className="text-sm font-extrabold text-red-500 mb-1">
                         {selected.id === 'deceased' ? 'La police est obligatoire' : 'Appelez la police'}
                       </div>
-                      <div style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.5 }}>
+                      <div className="text-xs leading-normal" style={{ opacity: 0.7 }}>
                         {selected.id === 'deceased'
                           ? 'Un accident mortel nécessite obligatoirement l\'intervention des forces de l\'ordre.'
                           : selected.id === 'fled'
                           ? 'Un délit de fuite doit être signalé à la police dans les 24h. Sans rapport de police, votre assurance pourrait refuser la prise en charge.'
                           : 'En cas de blessé grave, la police et les secours doivent être alertés immédiatement.'}
                       </div>
-                      <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                      <div className="flex gap-2 mt-2.5">
                         <a href="tel:117" style={{
                           padding: '8px 14px', borderRadius: 8,
                           background: '#ef4444', color: '#fff',
@@ -308,20 +308,20 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               )}
 
               {/* Photo plaque */}
-              <div style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
+              <div className="mb-5">
+                <div className="text-[13px] font-bold mb-1.5">
                   {selected.plateMandatory ? '📸 Photo de la plaque *' : '📸 Photo de la plaque (recommandée)'}
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.755, marginBottom: 12 }}>
+                <div className="text-xs mb-3" style={{ opacity: 0.755 }}>
                   La photo est enregistrée dans le dossier et transmise à votre assurance
                 </div>
 
                 {platePhoto ? (
-                  <div style={{ position: 'relative', marginBottom: 12 }}>
+                  <div className="relative mb-3">
                     <img
                       src={`data:image/jpeg;base64,${platePhoto}`}
                       alt="Photo de la plaque d'immatriculation"
-                      style={{ width: '100%', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)' }}
+                      className="w-full rounded-[10px]" style={{ border: '1px solid rgba(255,255,255,0.25)' }}
                     />
                     <button onClick={() => { setPlatePhoto(null); setPlateNumber(''); fileRef.current?.click(); }}
                       aria-label="Reprendre la photo"
@@ -354,12 +354,12 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 )}
 
                 <input ref={fileRef} type="file" accept="image/*" capture="environment"
-                  style={{ display: 'none' }}
+                  className="hidden"
                   onChange={e => { if (e.target.files?.[0]) handlePhotoCapture(e.target.files[0]); }} />
 
                 {/* Numéro plaque */}
-                <div style={{ marginTop: 12 }}>
-                  <label htmlFor="party-unavail-plate" style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5, fontFamily: 'monospace' }}>
+                <div className="mt-3">
+                  <label htmlFor="party-unavail-plate" className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5, fontFamily: 'monospace' }}>
                     NUMÉRO DE PLAQUE {plateNumber ? '✓ lu automatiquement' : '(saisissez si non lisible)'}
                   </label>
                   <input
@@ -378,8 +378,8 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 </div>
 
                 {/* Description véhicule */}
-                <div style={{ marginTop: 12 }}>
-                  <label htmlFor="party-unavail-desc" style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                <div className="mt-3">
+                  <label htmlFor="party-unavail-desc" className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
                     DESCRIPTION DU VÉHICULE B (optionnel)
                   </label>
                   <input
@@ -393,7 +393,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="flex gap-2.5">
                 <button onClick={() => setStep('reason')} style={{
                   flex: 1, padding: '14px', borderRadius: 12,
                   border: '1px solid rgba(255,255,255,0.25)',
@@ -435,7 +435,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               {/* Référence police */}
               {selected.suggestPolice && (
                 <div style={{ marginBottom: 14 }}>
-                  <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+                  <label className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
                     RÉFÉRENCE DU RAPPORT DE POLICE (si disponible)
                   </label>
                   <input
@@ -449,8 +449,8 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               )}
 
               {/* Notes libres */}
-              <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 11, opacity: 0.7, marginBottom: 5, display: 'block', letterSpacing: 0.5 }}>
+              <div className="mb-5">
+                <label className="text-[11px] block" style={{ opacity: 0.7, marginBottom: 5, letterSpacing: 0.5 }}>
                   OBSERVATIONS (optionnel)
                 </label>
                 <textarea
@@ -478,7 +478,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 border: '1px solid rgba(255,255,255,0.25)',
                 fontSize: 12, lineHeight: 1.7,
               }}>
-                <div style={{ fontWeight: 700, marginBottom: 6, opacity: 0.75 }}>RÉCAPITULATIF</div>
+                <div className="font-bold mb-1.5" style={{ opacity: 0.75 }}>RÉCAPITULATIF</div>
                 <div>Raison : <strong>{selected.label}</strong></div>
                 {plateNumber && <div>Plaque : <strong style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{plateNumber}</strong></div>}
                 {vehicleDesc && <div>Véhicule : {vehicleDesc}</div>}
@@ -488,7 +488,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="flex gap-2.5">
                 <button onClick={() => setStep('plate')} style={{
                   flex: 1, padding: '14px', borderRadius: 12,
                   border: '1px solid rgba(255,255,255,0.25)',

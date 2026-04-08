@@ -205,17 +205,29 @@
     <link rel="preload" href="/fonts/dm-sans-400-600-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/oswald-600-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-    <!-- Prefetch main route chunks after idle — improves navigation speed -->
+    <!-- Prefetch main route chunks after idle — reads Vite manifest for hashed filenames -->
     <script>
       if ('requestIdleCallback' in window) {
         requestIdleCallback(function() {
-          ['ConstatFlow','JoinSession'].forEach(function(c) {
-            var l = document.createElement('link');
-            l.rel = 'prefetch';
-            l.href = '/assets/' + c + '.js';
-            l.as = 'script';
-            document.head.appendChild(l);
-          });
+          var chunks = ['ConstatFlow', 'JoinSession'];
+          fetch('/.vite/manifest.json')
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(manifest) {
+              if (!manifest) return;
+              Object.values(manifest).forEach(function(entry) {
+                var f = entry.file || '';
+                chunks.forEach(function(c) {
+                  if (f.indexOf(c) !== -1) {
+                    var l = document.createElement('link');
+                    l.rel = 'prefetch';
+                    l.href = '/' + f;
+                    l.as = 'script';
+                    document.head.appendChild(l);
+                  }
+                });
+              });
+            })
+            .catch(function() { /* manifest unavailable in dev — ignore */ });
         });
       }
     </script>

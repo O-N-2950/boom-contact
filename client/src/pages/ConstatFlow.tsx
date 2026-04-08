@@ -28,7 +28,7 @@ const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm')
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full" style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 // ── Zod schema for localStorage validation ─────────────────
@@ -123,13 +123,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [voiceTranscript, setVoiceTranscript] = useState<string>(saved?.voiceTranscript || '');
   const [vehicleCount, setVehicleCount] = useState<2|3|4>((saved?.vehicleCount as 2|3|4) || 2);
   // Données de tous les véhicules (enrichies au fur et à mesure des scans)
-  const [allVehicles, setAllVehicles] = useState<Record<string, any>>({
+  const [allVehicles, setAllVehicles] = useState<Record<string, unknown>>({
     A: saved?.vehicleA || null,
   });
   const [otherSigned, setOtherSigned] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
   // ── Piéton ────────────────────────────────────────────────
-  const [pedestrianData, setPedestrianData] = useState<Record<string, any> | null>(null);
+  const [pedestrianData, setPedestrianData] = useState<Record<string, unknown> | null>(null);
   const [pedestrianHasPhone, setPedestrianHasPhone] = useState<boolean | null>(null);
   // ── Partie B indisponible ──────────────────────────────────
   const [partyBStatus, setPartyBStatus] = useState<PartyBStatus | null>(null);
@@ -153,7 +153,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const savedVehicles = vehicleListQ.data || [];
   const [showVehiclePicker, setShowVehiclePicker] = useState(false);
 
-  const applyVehicle = (v: any) => {
+  const applyVehicle = (v: Record<string, unknown>) => {
     setShowVehiclePicker(false);
     const newData: Partial<ParticipantData> = {
       role: 'A',
@@ -230,7 +230,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       if (Object.keys(accidentData).length > 0) {
         updateAccidentMutation.mutate({
           sessionId: data.sessionId,
-          data: { ...accidentData, photos } as any,
+          data: { ...accidentData, photos },
         });
       }
     },
@@ -253,7 +253,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     return 'car';
   }
 
-  function ocrCategoryToType(cat?: string): any {
+  function ocrCategoryToType(cat?: string): string | null {
     if (!cat) return null;
     const c = cat.toLowerCase();
     if (c.includes('tourisme') || c.includes('automobile') || c.includes('personenwagen') ||
@@ -389,25 +389,25 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       display: 'flex', flexDirection: 'column' }}>
 
       {/* Header */}
-      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Constat amiable boom.contact</h1>
+      <h1 className="absolute p-0 overflow-hidden" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Constat amiable boom.contact</h1>
       <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)',
         display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-        <div style={{ width: 36, height: 36, flexShrink: 0 }}>
-          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        <div className="shrink-0" style={{ width: 36, height: 36 }}>
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="w-full h-full object-contain" />
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
-          <div style={{ fontSize: 10, opacity: 0.7, fontFamily: 'monospace', letterSpacing: 1 }}>
+          <div className="font-bold text-sm">boom.contact</div>
+          <div className="text-[10px]" style={{ opacity: 0.7, fontFamily: 'monospace', letterSpacing: 1 }}>
             {t('flow.header.role_a')}
           </div>
         </div>
         {/* Indicateur sauvegarde automatique */}
         {step !== 'ocr' && step !== 'done' && sessionId && (
-          <div style={{ fontSize: 9, opacity: 0.7, fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: 3 }}>
-            <span style={{ color: '#22c55e' }}>●</span> AUTO
+          <div className="text-[9px] flex items-center gap-[3px]" style={{ opacity: 0.7, fontFamily: 'monospace' }}>
+            <span className="text-green-500">●</span> AUTO
           </div>
         )}
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
             <button onClick={goBack} style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
@@ -419,7 +419,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           )}
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
-              style={{ fontSize: 11, opacity: 0.75, background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+              className="text-[11px] bg-transparent border-0 cursor-pointer" style={{ opacity: 0.75, color: 'inherit' }}
               aria-label="Réinitialiser le constat"
             >↺</button>
           )}
@@ -440,9 +440,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       )}
 
       {/* Main content */}
-      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} style={{ flex: 1, overflowY: 'auto' }}>
+      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} className="flex-1 overflow-y-auto">
         {step === 'ocr' && savedVehicles.length > 0 && (
-          <div style={{ marginBottom: 16 }}>
+          <div className="mb-4">
             {!showVehiclePicker ? (
               <button
                 onClick={() => setShowVehiclePicker(true)}
@@ -452,30 +452,30 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   display: 'flex', alignItems: 'center', gap: 12,
                 }}
               >
-                <span style={{ fontSize: 24 }}>🚗</span>
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 14 }}>Utiliser un véhicule enregistré</div>
-                  <div style={{ color: '#d0d0d0', fontSize: 12 }}>Pré-remplissage automatique — pas besoin de scanner</div>
+                <span className="text-2xl">🚗</span>
+                <div className="text-left">
+                  <div className="text-green-400 font-bold text-sm">Utiliser un véhicule enregistré</div>
+                  <div className="text-[#d0d0d0] text-xs">Pré-remplissage automatique — pas besoin de scanner</div>
                 </div>
-                <span style={{ color: '#4ade80', marginLeft: 'auto' }}>→</span>
+                <span className="text-green-400 ml-auto">→</span>
               </button>
             ) : (
-              <div style={{ background: '#111', border: '1px solid #1a5c1a', borderRadius: 12, padding: 16 }}>
-                <div style={{ color: '#4ade80', fontWeight: 700, marginBottom: 12 }}>Choisissez votre véhicule :</div>
-                {savedVehicles.map((v: any) => (
+              <div className="bg-[#111] rounded-xl p-4" style={{ border: '1px solid #1a5c1a' }}>
+                <div className="text-green-400 font-bold mb-3">Choisissez votre véhicule :</div>
+                {savedVehicles.map((v: Record<string, unknown>) => (
                   <button key={v.id} onClick={() => applyVehicle(v)} style={{
                     width: '100%', background: '#1a2a1a', border: '1px solid #2a4a2a',
                     borderRadius: 10, padding: '12px 14px', marginBottom: 8, cursor: 'pointer',
                     textAlign: 'left' as const,
                   }}>
-                    <div style={{ color: '#fff', fontWeight: 600 }}>
+                    <div className="text-white font-semibold">
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
-                    {v.plate && <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 13 }}>{v.plate}</div>}
-                    {v.insuranceData?.companyName && <div style={{ color: '#d0d0d0', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
+                    {v.plate && <div className="text-[13px]" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{v.plate}</div>}
+                    {v.insuranceData?.companyName && <div className="text-[#d0d0d0] text-xs">🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
-                <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 13 }}>
+                <button onClick={() => setShowVehiclePicker(false)} className="bg-transparent border-0 text-[#d0d0d0] cursor-pointer text-[13px]">
                   Annuler
                 </button>
               </div>
@@ -514,7 +514,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 if (sessionId) {
                   updateAccidentMutation.mutate({
                     sessionId,
-                    data: { vehicleCount: count } as any,
+                    data: { vehicleCount: count },
                   });
                 }
               }}
@@ -522,7 +522,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 // Charger les données véhicule B depuis la session
                 try {
                   const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
-                  const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
+                  const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
                   if (bParticipant?.vehicle?.vehicleData) {
                     setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
                     (window as any).__boomVehicleB = bParticipant.vehicle.vehicleData;
@@ -533,7 +533,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               }}
             />
             {/* Bouton partie B indisponible — toujours visible */}
-            <div style={{ padding: '0 20px 24px', maxWidth: 480, margin: '0 auto' }}>
+            <div className="mx-auto" style={{ padding: '0 20px 24px', maxWidth: 480 }}>
               <button
                 onClick={() => setShowUnavailableModal(true)}
                 style={{
@@ -553,11 +553,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {/* ── CAS PIÉTON : choix téléphone ou pas ── */}
         {step === 'qr' && sessionId && vehicleType === 'pedestrian' && pedestrianHasPhone === null && (
-          <div style={{ padding: 24, maxWidth: 480, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 28 }}>
-              <div style={{ fontSize: 48, marginBottom: 10 }}>🚶</div>
-              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Autre partie : piéton</h2>
-              <p style={{ fontSize: 13, opacity: 0.75, marginTop: 8 }}>
+          <div className="p-6 mx-auto max-w-[480px]">
+            <div className="text-center mb-7">
+              <div className="text-5xl mb-2.5">🚶</div>
+              <h2 className="text-lg font-extrabold m-0">Autre partie : piéton</h2>
+              <p className="text-[13px] mt-2" style={{ opacity: 0.75 }}>
                 Le piéton a-t-il un téléphone mobile pour scanner le QR code ?
               </p>
             </div>
@@ -605,7 +605,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             onPartnerJoined={async () => {
               try {
                 const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
-                const bParticipant = sessionData?.participants?.find((p: any) => p.role === 'B');
+                const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
                 if (bParticipant) setPedestrianData(bParticipant);
               } catch (e) { /* ignore */ }
               setStep('voice'); // piéton rejoint → vocal → formulaire → croquis → choc
@@ -701,7 +701,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 }
                 setParticipantData(prev => ({
                   ...prev,
-                  vehicle: { ...prev.vehicle, mapPosition: vehiclePos } as any,
+                  vehicle: { ...prev.vehicle, mapPosition: vehiclePos },
                 }));
                 setStep('diagram');
               }}
@@ -739,43 +739,43 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <>
             {/* ── Résumé de relecture avant signature ── */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.7, fontFamily: 'monospace', marginBottom: 12 }}>
+              <div className="text-[11px] font-bold uppercase mb-3" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'monospace' }}>
                 Vérifiez avant de signer
               </div>
 
               {/* Véhicule A */}
-              <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
-                <div style={{ fontSize: 13, fontWeight: 700 }}>
+              <div className="mb-2.5 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
+                <div className="text-[11px] mb-1.5 font-semibold" style={{ opacity: 0.75 }}>🚗 Votre véhicule</div>
+                <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
-                  {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: 'var(--boom)', marginLeft: 8 }}>{participantData.vehicle.licensePlate}</span>}
+                  {participantData.vehicle?.licensePlate && <span className="ml-2" style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{participantData.vehicle.licensePlate}</span>}
                 </div>
                 {participantData.insurance?.company && (
-                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company || (participantData.insurance as any).companyName}</div>
+                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 3 }}>🛡️ {participantData.insurance.company || participantData.insurance.companyName}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
                 {damagedZones.length > 0 && (
-                  <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
+                  <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
                 )}
               </div>
 
               {/* Accident */}
-              <div style={{ marginBottom: 10, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 4, fontWeight: 600 }}>📍 Accident</div>
-                <div style={{ fontSize: 12, opacity: 0.7 }}>
+              <div className="mb-2.5 rounded-[10px]" style={{ padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                <div className="text-[11px] mb-1 font-semibold" style={{ opacity: 0.75 }}>📍 Accident</div>
+                <div className="text-xs" style={{ opacity: 0.7 }}>
                   {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
                 </div>
-                {(accidentData as any).location?.city && (
-                  <div style={{ fontSize: 12, opacity: 0.75 }}>{(accidentData as any).location.city}, {(accidentData as any).location.country || ''}</div>
+                {accidentData.location?.city && (
+                  <div className="text-xs" style={{ opacity: 0.75 }}>{accidentData.location.city}, {accidentData.location.country || ''}</div>
                 )}
               </div>
 
               {/* Bouton corriger */}
               <button
                 onClick={() => setStep('form')}
-                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2" style={{ padding: '10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
               >
                 ✏️ Corriger mes informations
               </button>
@@ -824,7 +824,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               sessionId={sessionId!}
               role="A"
               driverEmail={participantData.driver?.email}
-              insurerName={participantData.insurance?.company || (participantData.insurance as any)?.companyName}
+              insurerName={participantData.insurance?.company || participantData.insurance?.companyName}
               driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
               authUser={authUser}
               authToken={authToken}
@@ -832,15 +832,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onBuyPack={onBuyPack || (() => {})}
             />
             <InsuranceAssistance
-              insurerA={participantData.insurance?.companyName || (participantData.insurance as any)?.company}
-              insurerB={(accidentData as any)?.insurerB}
-              countryCode={(accidentData as any)?.location?.country}
+              insurerA={participantData.insurance?.companyName || participantData.insurance?.company}
+              insurerB={accidentData?.insurerB}
+              countryCode={accidentData?.location?.country}
             />
-            {(accidentData as any)?.location?.country &&
-             !['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','JP','CN','IN','KR','SG','RU','AE','ZA','BR','NZ','MA','TR'].includes((accidentData as any)?.location?.country) && (
+            {accidentData?.location?.country &&
+             !['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','JP','CN','IN','KR','SG','RU','AE','ZA','BR','NZ','MA','TR'].includes(accidentData?.location?.country) && (
               <UnknownCountryLookup
-                countryCode={(accidentData as any).location.country}
-                countryName={(accidentData as any).location.countryName}
+                countryCode={accidentData.location.country}
+                countryName={accidentData.location.countryName}
               />
             )}
             <EmergencyNumbers mode="compact" />
@@ -858,11 +858,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               try {
                 await updateAccidentMutation.mutateAsync({
                   sessionId,
-                  data: { ...accidentData, partyBStatus: status } as any,
+                  data: { ...accidentData, partyBStatus: status },
                 });
               } catch { /* ignore */ }
             }
-            setAccidentData(prev => ({ ...prev, partyBStatus: status } as any));
+            setAccidentData(prev => ({ ...prev, partyBStatus: status }));
             // B indisponible → A continue seul : vocal puis formulaire puis croquis
             setStep('voice');
           }}

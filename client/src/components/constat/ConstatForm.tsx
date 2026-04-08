@@ -113,7 +113,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
     <div style={{ marginBottom: 14 }}>
       <label htmlFor={fieldId} style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.7,
         textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 6 }}>
-        {label}{required && <span style={{ color: 'var(--boom)', marginLeft: 4 }}>*</span>}
+        {label}{required && <span className="ml-1" style={{ color: 'var(--boom)' }}>*</span>}
       </label>
       <input
         id={fieldId}
@@ -140,10 +140,10 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div className="flex flex-col h-full">
 
       {/* Section tabs */}
-      <div role="tablist" aria-label="Sections du formulaire" style={{ display: 'flex', borderBottom: '1px solid rgba(240,237,232,0.08)', flexShrink: 0 }}>
+      <div role="tablist" aria-label="Sections du formulaire" className="flex shrink-0" style={{ borderBottom: '1px solid rgba(240,237,232,0.08)' }}>
         {sections.map(s => (
           <button key={s.id} id={`form-tab-${s.id}`} role="tab" aria-selected={s.id === section} aria-controls={`form-tabpanel-${s.id}`} onClick={() => setSection(s.id)} style={{
             flex: 1, padding: '12px 4px', border: 'none', cursor: 'pointer',
@@ -152,14 +152,14 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
             color: s.id === section ? 'var(--boom)' : 'var(--text)',
             transition: 'all 0.2s', fontSize: 11, fontWeight: 600,
           }}>
-            <div style={{ fontSize: 18, marginBottom: 2 }}>{s.icon}</div>
-            <div style={{ fontSize: 10, letterSpacing: 1, opacity: s.id === section ? 1 : 0.85 }}>{s.label}</div>
+            <div className="text-lg" style={{ marginBottom: 2 }}>{s.icon}</div>
+            <div className="text-[10px]" style={{ letterSpacing: 1, opacity: s.id === section ? 1 : 0.85 }}>{s.label}</div>
           </button>
         ))}
       </div>
 
       {/* Form fields */}
-      <div role="tabpanel" id={`form-tabpanel-${section}`} aria-labelledby={`form-tab-${section}`} style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
+      <div role="tabpanel" id={`form-tabpanel-${section}`} aria-labelledby={`form-tab-${section}`} className="flex-1 overflow-y-auto p-5">
 
         {section === 'vehicle' && <>
           <Field section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required />
@@ -178,7 +178,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         </>}
 
         {section === 'driver' && <>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
             <div>
               <Field section="driver" field="firstName" label="Prénom" required />
             </div>
@@ -187,7 +187,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
             </div>
           </div>
           <Field section="driver" field="address"       label="Adresse"         placeholder="Rue de la Paix 1" required />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 12 }}>
+          <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 2fr' }}>
             <div><Field section="driver" field="postalCode" label="NPA" placeholder="1000" /></div>
             <div><Field section="driver" field="city"       label="Localité" placeholder="Lausanne" required /></div>
           </div>
@@ -207,10 +207,10 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         </>}
 
         {section === 'circumstances' && <>
-          <p style={{ fontSize: 13, opacity: 0.75, marginBottom: 16, lineHeight: 1.6 }}>
+          <p className="text-[13px] mb-4 leading-relaxed" style={{ opacity: 0.75 }}>
             Cochez toutes les cases qui décrivent la situation de votre véhicule <strong>({role})</strong> au moment du choc.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="flex flex-col gap-2">
             {ACCIDENT_CIRCUMSTANCES.map(c => {
               const checked = data.circumstances?.includes(c.id);
               return (
@@ -221,7 +221,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
                   color: 'var(--text)', fontSize: 13, lineHeight: 1.5,
                   display: 'flex', alignItems: 'flex-start', gap: 10, transition: 'all 0.15s',
                 }}>
-                  <span aria-hidden="true" style={{ fontSize: 16, flexShrink: 0, marginTop: 1 }}>
+                  <span aria-hidden="true" className="text-base shrink-0" style={{ marginTop: 1 }}>
                     {checked ? '✅' : '⬜'}
                   </span>
                   <span>{c.label}</span>
@@ -229,46 +229,46 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
               );
             })}
           </div>
-          <div style={{ marginTop: 16, fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
+          <div className="mt-4 text-[11px] text-center" style={{ opacity: 0.7 }}>
             {data.circumstances?.length ?? 0} case{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''} cochée{(data.circumstances?.length ?? 0) !== 1 ? 's' : ''}
           </div>
         </>}
         {section === 'complement' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-            <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.6 }}>
+          <div className="flex flex-col" style={{ gap: 18 }}>
+            <p className="text-[13px] leading-relaxed" style={{ opacity: 0.75 }}>
               Informations complémentaires du constat — sections 11, 13 et 14.
             </p>
 
             {/* Date/heure éditable */}
             <div>
-              <label htmlFor="acc-date" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Date et heure de l'accident</label>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <label htmlFor="acc-date" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Date et heure de l'accident</label>
+              <div className="flex gap-2">
                 <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
-                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14 }} />
+                  className="flex-1 rounded-lg text-sm" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
                 <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
                   aria-label="Heure de l'accident"
-                  style={{ flex: 1, padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14 }} />
+                  className="flex-1 rounded-lg text-sm" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
               </div>
             </div>
 
             {/* Dégâts apparents section 11 */}
             <div>
-              <label htmlFor="visible-damage" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Dégâts apparents (section 11)</label>
+              <label htmlFor="visible-damage" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Dégâts apparents (section 11)</label>
               <textarea id="visible-damage" value={visibleDamage} onChange={e => setVisibleDamage(e.target.value)}
                 placeholder="Décrivez les dommages visibles sur votre véhicule..."
                 aria-label="Dégâts apparents"
                 rows={3}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
             </div>
 
             {/* Dégâts matériels à des tiers */}
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Dégâts matériels à des tiers (autres que A et B)</div>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="text-[11px] uppercase mb-2" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Dégâts matériels à des tiers (autres que A et B)</div>
+              <div className="flex gap-2">
                 {[{ val: false, label: '✅ Non', color: 'rgba(34,197,94,0.6)' }, { val: true, label: '⚠️ Oui', color: 'rgba(255,179,0,0.6)' }].map(opt => (
                   <button key={String(opt.val)} onClick={() => setThirdParty(opt.val)}
-                    style={{ flex: 1, padding: '12px', borderRadius: 8, border: `1.5px solid ${thirdParty === opt.val ? opt.color : 'rgba(240,237,232,0.08)'}`, background: thirdParty === opt.val ? `${opt.color}22` : 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}>
+                    className="flex-1 rounded-lg cursor-pointer text-sm font-semibold" style={{ padding: '12px', border: `1.5px solid ${thirdParty === opt.val ? opt.color : 'rgba(240,237,232,0.08)'}`, background: thirdParty === opt.val ? `${opt.color}22` : 'transparent', color: 'var(--text)' }}>
                     {opt.label}
                   </button>
                 ))}
@@ -277,18 +277,18 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
 
             {/* Témoins */}
             <div>
-              <label htmlFor="witnesses" style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8, display: 'block' }}>Témoins</label>
+              <label htmlFor="witnesses" className="text-[11px] uppercase mb-2 block" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Témoins</label>
               <textarea id="witnesses" value={witnesses} onChange={e => setWitnesses(e.target.value)}
                 placeholder="Nom, prénom, téléphone de chaque témoin..."
                 aria-label="Informations sur les témoins"
                 rows={3}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
             </div>
 
             {/* Déclaration vocale */}
             {sessionId && (
               <div>
-                <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 10 }}>
+                <div className="text-[11px] uppercase mb-2.5" style={{ letterSpacing: 1.5, opacity: 0.7 }}>
                   🎙️ Déclaration vocale (optionnel)
                 </div>
                 <VoiceRecorder
@@ -309,18 +309,18 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
 
             {/* Observations libres section 14 */}
             <div>
-              <label htmlFor="observations-field" style={{ display: 'block', fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 8 }}>Observations libres — conducteur {role} (section 14)</label>
+              <label htmlFor="observations-field" className="block text-[11px] uppercase mb-2" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Observations libres — conducteur {role} (section 14)</label>
               <textarea id="observations-field" aria-label="Observations libres" value={observations} onChange={e => setObservations(e.target.value)}
                 placeholder="Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques..."
                 rows={4}
-                style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }} />
+                className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }} />
             </div>
 
             {/* Preneur d'assurance différent du conducteur */}
-            <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
-              <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.7, textTransform: 'uppercase', marginBottom: 12 }}>Preneur d'assurance (si différent du conducteur)</div>
+            <div className="rounded-[10px]" style={{ padding: '14px', background: 'rgba(240,237,232,0.03)', border: '1px solid rgba(240,237,232,0.08)' }}>
+              <div className="text-[11px] uppercase mb-3" style={{ letterSpacing: 1.5, opacity: 0.7 }}>Preneur d'assurance (si différent du conducteur)</div>
               {(['insuranceHolder', 'insuranceHolderAddress'] as const).map(field => (
-                <div key={field} style={{ marginBottom: 10 }}>
+                <div key={field} className="mb-2.5">
                   <label htmlFor={`ins-${field}`} className="sr-only">{field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}</label>
                   <input
                     id={`ins-${field}`}
@@ -328,7 +328,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
                     aria-label={field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}
                     value={(data.insurance as any)?.[field] ?? ''}
                     onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
-                    style={{ width: '100%', padding: '11px 13px', borderRadius: 8, border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box' }}
+                    className="w-full rounded-lg text-sm box-border" style={{ padding: '11px 13px', border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }}
                   />
                 </div>
               ))}
@@ -338,7 +338,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       </div>
 
       {/* Save button */}
-      <div style={{ padding: '14px 20px', borderTop: '1px solid rgba(240,237,232,0.06)', flexShrink: 0 }}>
+      <div className="shrink-0" style={{ padding: '14px 20px', borderTop: '1px solid rgba(240,237,232,0.06)' }}>
         <button onClick={() => onSave(data, {
           date: accDate || undefined,
           time: accTime || undefined,

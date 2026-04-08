@@ -125,7 +125,7 @@ function getMarkerEmoji(vehicleType?: string): string {
 
 // ── Dessiner un marqueur véhicule sur canvas ──────────────────
 function drawVehicleMarker(
-  ctx: any,
+  ctx: CanvasRenderingContext2D,
   x: number, y: number, angle: number,
   color: string, label: string,
   vehicleType?: string
@@ -247,7 +247,7 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
       headers: { 'User-Agent': 'boom.contact/1.0 (contact@boom.contact)' },
       signal: AbortSignal.timeout(6000),
     });
-    const data = await res.json() as any[];
+    const data = await res.json() as Record<string, unknown>[];
     if (data?.length > 0) {
       return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
     }

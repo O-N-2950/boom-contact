@@ -40,7 +40,7 @@ export const paymentRouter = router({
   currencies: publicProcedure
     .output(paymentCurrenciesOutput)
     .query(() => {
-      const grid: Record<string, any> = {};
+      const grid: Record<string, unknown> = {};
       for (const pkgId of ['single','pack3','pack10'] as const) {
         grid[pkgId] = {};
         for (const cur of SUPPORTED_CURRENCIES) {

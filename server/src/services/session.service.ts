@@ -307,7 +307,7 @@ export async function signSession(
   const newStatus = allSigned ? 'completed' : 'signing';
 
   const [row] = await tx.update(schema.sessions)
-    .set({ [key]: updated, status: newStatus } as any)
+    .set({ [key]: updated, status: newStatus })
     .where(eq(schema.sessions.id, id))
     .returning();
 

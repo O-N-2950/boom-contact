@@ -47,20 +47,20 @@ export const InsuranceAssistance = React.memo(function InsuranceAssistance({ ins
   if (!insurerA && !insurerB) return null;
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 700, letterSpacing: 1.5, marginBottom: 10 }}>
+    <div className="mt-5">
+      <div className="text-[#d0d0d0] text-[11px] font-bold mb-2.5" style={{ letterSpacing: 1.5 }}>
         📞 NUMÉROS D'ASSISTANCE ASSURANCES
       </div>
 
       {loading && (
-        <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 20, height: 20, border: '2px solid #333', borderTopColor: '#FF3500', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-          <div style={{ color: '#d0d0d0', fontSize: 13 }}>Recherche des numéros d'assistance...</div>
+        <div className="bg-[#111] rounded-xl p-4 flex items-center gap-3" style={{ border: '1px solid #1a1a1a' }}>
+          <div className="rounded-full" style={{ width: 20, height: 20, border: '2px solid #333', borderTopColor: '#FF3500', animation: 'spin 0.8s linear infinite' }} />
+          <div className="text-[#d0d0d0] text-[13px]">Recherche des numéros d'assistance...</div>
         </div>
       )}
 
       {!loading && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="flex flex-col gap-2.5">
           {resultA && <AssistanceCard result={resultA} role="A" />}
           {resultB && <AssistanceCard result={resultB} role="B" />}
         </div>
@@ -89,22 +89,22 @@ export function InsuranceSearchWidget() {
   };
 
   return (
-    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16 }}>
-      <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12, fontSize: 14 }}>
+    <div className="bg-[#111] rounded-[14px] p-4" style={{ border: '1px solid #1a1a1a' }}>
+      <div className="text-white font-bold mb-3 text-sm">
         🔍 Trouver un numéro d'assistance
       </div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+      <div className="flex gap-2 mb-2.5">
         <input
           placeholder="Nom de l'assurance..."
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSearch()}
           aria-label="Nom de l'assurance"
-          style={{ flex: 1, background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
+          className="flex-1 rounded-lg text-white text-sm" style={{ background: '#1a1a1a', border: '1px solid #333', padding: '9px 12px' }}
         />
         <select value={country} onChange={e => setCountry(e.target.value)}
           aria-label="Sélectionner le pays"
-          style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, color: '#ccc', padding: '9px 10px', fontSize: 13 }}>
+          className="rounded-lg text-[13px]" style={{ background: '#1a1a1a', border: '1px solid #333', color: '#ccc', padding: '9px 10px' }}>
           {['CH','FR','BE','LU','DE','IT','ES','GB','NL','AT','US','CA','AU','NZ','JP','CN','IN','KR','SG','RU','AE','ZA','BR'].map(c => (
             <option key={c} value={c}>{c}</option>
           ))}
@@ -128,12 +128,12 @@ function AssistanceCard({ result, role }: { result: AssistanceResult; role?: 'A'
 
   if (result.source === 'not_found') {
     return (
-      <div style={{ background: '#1a1010', border: '1px solid #3a1a1a', borderRadius: 12, padding: 14 }}>
-        {role && <div style={{ color: '#d0d0d0', fontSize: 11, marginBottom: 6 }}>CONDUCTEUR {role}</div>}
-        <div style={{ color: '#f87171', fontSize: 13 }}>
+      <div className="rounded-xl p-3.5" style={{ background: '#1a1010', border: '1px solid #3a1a1a' }}>
+        {role && <div className="text-[#d0d0d0] text-[11px] mb-1.5">CONDUCTEUR {role}</div>}
+        <div className="text-[13px] text-[#f87171]">
           ⚠️ Numéro non trouvé pour <strong>{result.insurer}</strong>
         </div>
-        <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 4 }}>
+        <div className="text-[#d0d0d0] text-xs mt-1">
           Consultez votre police d'assurance ou le site de votre assureur.
         </div>
       </div>
@@ -141,18 +141,18 @@ function AssistanceCard({ result, role }: { result: AssistanceResult; role?: 'A'
   }
 
   return (
-    <div style={{ background: '#0d1a0d', border: '1px solid #1a3a1a', borderRadius: 12, padding: 14 }}>
+    <div className="rounded-xl p-3.5" style={{ background: '#0d1a0d', border: '1px solid #1a3a1a' }}>
       {role && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 700 }}>CONDUCTEUR {role}</div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <span style={{ color: '#d0d0d0', fontSize: 10 }}>{sourceLabel}</span>
-            <span style={{ color: confidenceColor, fontSize: 10, fontWeight: 700 }}>{result.confidence.toUpperCase()}</span>
+        <div className="flex justify-between mb-1.5">
+          <div className="text-[#d0d0d0] text-[11px] font-bold">CONDUCTEUR {role}</div>
+          <div className="flex gap-1.5">
+            <span className="text-[#d0d0d0] text-[10px]">{sourceLabel}</span>
+            <span className="text-[10px] font-bold" style={{ color: confidenceColor }}>{result.confidence.toUpperCase()}</span>
           </div>
         </div>
       )}
 
-      <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 15, marginBottom: 8 }}>
+      <div className="text-green-400 font-bold text-[15px] mb-2">
         🛡️ {result.insurer}
       </div>
 
@@ -162,14 +162,14 @@ function AssistanceCard({ result, role }: { result: AssistanceResult; role?: 'A'
           border: '1px solid #1a3a1a', borderRadius: 8, padding: '10px 12px',
           textDecoration: 'none', marginBottom: 6,
         }}>
-          <span style={{ fontSize: 20 }}>🔧</span>
+          <span className="text-xl">🔧</span>
           <div>
-            <div style={{ color: '#d0d0d0', fontSize: 10, marginBottom: 1 }}>DÉPANNAGE / ASSISTANCE 24h</div>
-            <div style={{ color: '#fbbf24', fontWeight: 900, fontSize: 20, fontFamily: 'monospace', letterSpacing: 0.5 }}>
+            <div className="text-[#d0d0d0] text-[10px]" style={{ marginBottom: 1 }}>DÉPANNAGE / ASSISTANCE 24h</div>
+            <div className="font-black text-xl" style={{ color: '#fbbf24', fontFamily: 'monospace', letterSpacing: 0.5 }}>
               {result.assistanceNumber}
             </div>
           </div>
-          <span style={{ color: '#d0d0d0', marginLeft: 'auto', fontSize: 18 }}>📞</span>
+          <span className="text-[#d0d0d0] ml-auto text-lg">📞</span>
         </a>
       )}
 
@@ -179,24 +179,24 @@ function AssistanceCard({ result, role }: { result: AssistanceResult; role?: 'A'
           border: '1px solid #1a1a1a', borderRadius: 8, padding: '8px 12px',
           textDecoration: 'none', marginBottom: 6,
         }}>
-          <span style={{ fontSize: 18 }}>📋</span>
+          <span className="text-lg">📋</span>
           <div>
-            <div style={{ color: '#d0d0d0', fontSize: 10, marginBottom: 1 }}>DÉCLARATION SINISTRE</div>
-            <div style={{ color: '#60c8f0', fontWeight: 700, fontSize: 17, fontFamily: 'monospace' }}>
+            <div className="text-[#d0d0d0] text-[10px]" style={{ marginBottom: 1 }}>DÉCLARATION SINISTRE</div>
+            <div className="font-bold" style={{ color: '#60c8f0', fontSize: 17, fontFamily: 'monospace' }}>
               {result.claimsNumber}
             </div>
           </div>
-          <span style={{ color: '#d0d0d0', marginLeft: 'auto', fontSize: 18 }}>📞</span>
+          <span className="text-[#d0d0d0] ml-auto text-lg">📞</span>
         </a>
       )}
 
       {result.website && (
-        <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 4 }}>
+        <div className="text-[#d0d0d0] text-xs mt-1">
           🌐 {result.website}
         </div>
       )}
       {result.note && (
-        <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 4, fontStyle: 'italic' }}>
+        <div className="text-[#d0d0d0] text-[11px] mt-1" style={{ fontStyle: 'italic' }}>
           {result.note}
         </div>
       )}

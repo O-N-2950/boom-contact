@@ -91,24 +91,24 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
   const catCount = (cat: PhotoCategory) => photos.filter(p => p.category === cat).length;
 
   return (
-    <div style={{ padding: '20px', maxWidth: 420, margin: '0 auto' }}>
+    <div className="mx-auto" style={{ padding: '20px', maxWidth: 420 }}>
 
       {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontWeight: 800, fontSize: 20, marginBottom: 6 }}>
+      <div className="mb-6">
+        <h2 className="font-extrabold text-xl mb-1.5">
           📸 Photos de la scène
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.5 }}>
+        <p className="text-[13px] leading-normal" style={{ opacity: 0.75 }}>
           Documentez l'accident en photos. {MAX_PHOTOS - photos.length} photo{MAX_PHOTOS - photos.length !== 1 ? 's' : ''} restante{MAX_PHOTOS - photos.length !== 1 ? 's' : ''}.
         </p>
       </div>
 
       {/* Category selector */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1, marginBottom: 10, textTransform: 'uppercase' }}>
+      <div className="mb-5">
+        <div className="text-[11px] font-bold mb-2.5 uppercase" style={{ opacity: 0.7, letterSpacing: 1 }}>
           Catégorie
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="flex flex-col gap-2">
           {CATEGORIES.map(cat => (
             <button
               key={cat.id}
@@ -121,10 +121,10 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
                 textAlign: 'left', color: 'inherit', transition: 'all 0.15s',
               }}
             >
-              <span style={{ fontSize: 22, flexShrink: 0 }}>{cat.icon}</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 700 }}>{cat.label}</div>
-                <div style={{ fontSize: 11, opacity: 0.7 }}>{cat.sub}</div>
+              <span className="text-[22px] shrink-0">{cat.icon}</span>
+              <div className="flex-1">
+                <div className="text-[13px] font-bold">{cat.label}</div>
+                <div className="text-[11px]" style={{ opacity: 0.7 }}>{cat.sub}</div>
               </div>
               {catCount(cat.id) > 0 && (
                 <span style={{
@@ -147,7 +147,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
         accept="image/*"
         aria-label="Prendre une photo de dégâts"
         capture="environment"
-        style={{ display: 'none' }}
+        className="hidden"
         onChange={handleCapture}
       />
       <button
@@ -170,33 +170,33 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
       </button>
 
       {error && (
-        <div style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid rgba(255,59,48,0.3)', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#ff3b30', marginBottom: 16 }}>
+        <div className="rounded-lg text-[13px] mb-4" style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid rgba(255,59,48,0.3)', padding: '10px 14px', color: '#ff3b30' }}>
           {error}
         </div>
       )}
 
       {/* Photo gallery */}
       {photos.length > 0 && (
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.7, letterSpacing: 1, marginBottom: 12, textTransform: 'uppercase' }}>
+        <div className="mb-6">
+          <div className="text-[11px] font-bold mb-3 uppercase" style={{ opacity: 0.7, letterSpacing: 1 }}>
             Photos prises ({photos.length}/{MAX_PHOTOS})
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <div className="grid gap-2.5" style={{ gridTemplateColumns: '1fr 1fr' }}>
             {photos.map(photo => {
               const cat = CATEGORIES.find(c => c.id === photo.category);
               return (
-                <div key={photo.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: 'rgba(240,237,232,0.04)' }}>
+                <div key={photo.id} className="relative rounded-[10px] overflow-hidden" style={{ background: 'rgba(240,237,232,0.04)' }}>
                   <img
                     src={`data:image/jpeg;base64,${photo.base64}`}
                     alt={cat?.label || 'Photo du constat'}
-                    style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }}
+                    className="w-full object-cover block" style={{ aspectRatio: '4/3' }}
                   />
                   {/* Overlay top */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '6px 8px', background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: 16 }}>{cat?.icon}</span>
+                  <div className="absolute flex justify-between items-start" style={{ top: 0, left: 0, right: 0, padding: '6px 8px', background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)' }}>
+                    <span className="text-base">{cat?.icon}</span>
                     <button
                       onClick={() => removePhoto(photo.id)}
-                      style={{ background: 'rgba(0,0,0,0.5)', border: 'none', color: '#fff', borderRadius: '50%', width: 22, height: 22, cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      className="border-0 text-white rounded-full cursor-pointer text-[13px] flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.5)', width: 22, height: 22 }}
                     >
                       ×
                     </button>
@@ -204,7 +204,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
                   {/* Caption */}
                   <div style={{ padding: '6px 8px' }}>
                     {editingCaption === photo.id ? (
-                      <div style={{ display: 'flex', gap: 4 }}>
+                      <div className="flex gap-1">
                         <input
                           autoFocus
                           value={captionValue}
@@ -212,14 +212,14 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
                           onKeyDown={e => { if (e.key === 'Enter') saveCaption(photo.id); if (e.key === 'Escape') setEditingCaption(null); }}
                           placeholder="Légende..."
                           aria-label="Légende de la photo"
-                          style={{ flex: 1, background: 'rgba(240,237,232,0.08)', border: 'none', borderRadius: 6, padding: '4px 8px', fontSize: 11, color: 'inherit', outline: '1px solid var(--boom)' }}
+                          className="flex-1 border-0 rounded-md text-[11px]" style={{ background: 'rgba(240,237,232,0.08)', padding: '4px 8px', color: 'inherit', outline: '1px solid var(--boom)' }}
                         />
-                        <button onClick={() => saveCaption(photo.id)} style={{ background: 'var(--boom)', border: 'none', color: '#fff', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', fontSize: 11 }} aria-label="Sauvegarder la légende">✓</button>
+                        <button onClick={() => saveCaption(photo.id)} className="border-0 text-white rounded-md cursor-pointer text-[11px]" style={{ background: 'var(--boom)', padding: '4px 8px' }} aria-label="Sauvegarder la légende">✓</button>
                       </div>
                     ) : (
                       <button
                         onClick={() => { setEditingCaption(photo.id); setCaptionValue(photo.caption || ''); }}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', opacity: 0.75, fontSize: 11, padding: 0, textAlign: 'left', width: '100%' }}
+                        className="bg-transparent border-0 cursor-pointer text-[11px] p-0 text-left w-full" style={{ color: 'inherit', opacity: 0.75 }}
                       >
                         {photo.caption || '+ Légende'}
                       </button>
@@ -248,7 +248,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
           : `Continuer avec ${photos.length} photo${photos.length > 1 ? 's' : ''} →`}
       </button>
 
-      <p style={{ fontSize: 12, opacity: 0.7, textAlign: 'center', marginTop: 8 }}>
+      <p className="text-xs text-center mt-2" style={{ opacity: 0.7 }}>
         {photos.length === 0
           ? 'Photos facultatives — fortement conseillées pour votre dossier'
           : 'Vous pouvez ajouter d\'autres photos ou continuer'}

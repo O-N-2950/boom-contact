@@ -34,8 +34,8 @@ interface VehicleForm {
   color?: string;
   year?: string;
   category?: string;
-  licenseData?: Record<string, any>;
-  insuranceData?: Record<string, any>;
+  licenseData?: Record<string, unknown>;
+  insuranceData?: Record<string, unknown>;
 }
 
 export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garage' }: AccountPageProps) {
@@ -72,7 +72,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const toast = (msg: string) => { setFeedback(msg); setTimeout(() => setFeedback(''), 4000); };
 
   const startAdd  = () => { setForm({}); setVehicleView('add'); };
-  const startEdit = (v: any) => { setForm({ ...v }); setVehicleView('edit'); };
+  const startEdit = (v: Record<string, unknown>) => { setForm({ ...v }); setVehicleView('edit'); };
 
   const handleScanComplete = (result: { registration: OCRResult; greenCard?: OCRResult }) => {
     setScanning(false);
@@ -102,14 +102,14 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
       await vehicleListQ.refetch();
       setVehicleView('list');
       toast('✅ Véhicule sauvegardé !');
-    } catch (e: any) { toast('Erreur : ' + e.message); }
+    } catch (e: unknown) { toast('Erreur : ' + e.message); }
     finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string, name?: string) => {
     if (!confirm('Supprimer ' + (name || 'ce véhicule') + ' ?')) return;
     try { await deleteMut.mutateAsync({ id }); await vehicleListQ.refetch(); }
-    catch (e: any) { toast('Erreur : ' + e.message); }
+    catch (e: unknown) { toast('Erreur : ' + e.message); }
   };
 
   // ── Modal suppression compte ────────────────────────────────
@@ -130,38 +130,38 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           borderRadius: 20, padding: 28,
         }}>
           {/* Icône warning */}
-          <div style={{ textAlign: 'center', fontSize: 48, marginBottom: 16 }}>⚠️</div>
+          <div className="text-center text-5xl mb-4">⚠️</div>
 
-          <div style={{ color: '#ef4444', fontWeight: 900, fontSize: 20, textAlign: 'center', marginBottom: 8 }}>
+          <div className="text-red-500 font-black text-xl text-center mb-2">
             Suppression définitive
           </div>
 
-          <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.7, marginBottom: 20, textAlign: 'center' }}>
+          <div className="text-[#d0d0d0] text-sm mb-5 text-center leading-[1.7]">
             Tu es sur le point de supprimer le compte<br />
-            <strong style={{ color: '#fff' }}>{emailToConfirm}</strong>
+            <strong className="text-white">{emailToConfirm}</strong>
           </div>
 
           {/* Ce qui sera supprimé */}
-          <div style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 12, padding: 16, marginBottom: 20 }}>
-            <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 12, marginBottom: 10 }}>CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
+          <div className="rounded-xl p-4 mb-5" style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.2)' }}>
+            <div className="text-red-500 font-bold text-xs mb-2.5">CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
             {[
               '🗑️ Ton compte et tes identifiants',
               '🚗 Tous tes véhicules enregistrés',
               '📋 Tout ton historique de constats',
               '💳 Tous tes crédits restants',
             ].map((item, i) => (
-              <div key={i} style={{ color: '#ccc', fontSize: 13, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div key={i} className="text-[13px] mb-1.5 flex items-center gap-2 text-[#ccc]">
                 {item}
               </div>
             ))}
-            <div style={{ color: '#ef4444', fontSize: 12, marginTop: 10, fontWeight: 600 }}>
+            <div className="text-red-500 text-xs mt-2.5 font-semibold">
               ⚠️ Cette action est irréversible. Aucune récupération possible.
             </div>
           </div>
 
           {/* Confirmation par saisie email */}
-          <div style={{ marginBottom: 20 }}>
-            <label htmlFor="delete-confirm" style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 8, display: 'block' }}>
+          <div className="mb-5">
+            <label htmlFor="delete-confirm" className="text-[#d0d0d0] text-xs mb-2 block">
               Pour confirmer, saisis ton adresse email :
             </label>
             <input
@@ -181,13 +181,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none',
               }}
             />
-            <div id="delete-confirm-help" style={{ fontSize: 11, color: '#d0d0d0', marginTop: 4 }}>
+            <div id="delete-confirm-help" className="text-[11px] text-[#d0d0d0] mt-1">
               Ceci est irréversible.
             </div>
           </div>
 
           {/* Boutons */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="flex flex-col gap-2.5">
             <button
               disabled={deleteConfirmText !== emailToConfirm || saving}
               onClick={async () => {
@@ -195,7 +195,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 try {
                   await deleteAccountMut.mutateAsync({});
                   onLogout();
-                } catch(e: any) {
+                } catch(e: unknown) {
                   setFeedback('❌ ' + (e.message || 'Erreur'));
                   setShowDeleteModal(false);
                 } finally { setSaving(false); }
@@ -233,11 +233,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   // ── OCR Scan overlay ─────────────────────────────────────────
   if (scanning) {
     return (
-      <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
-        <div style={{ maxWidth: 500, margin: '0 auto' }}>
+      <div className="min-h-screen bg-[#06060C] p-4">
+        <div className="mx-auto max-w-[500px]">
           <button onClick={() => setScanning(false)} style={backBtn}>← Annuler</button>
-          <p style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 16 }}>
-            Photographiez votre <strong style={{ color: '#fff' }}>permis de circuler</strong> et/ou votre <strong style={{ color: '#fff' }}>carte verte</strong>.
+          <p className="text-[#d0d0d0] text-[13px] mb-4">
+            Photographiez votre <strong className="text-white">permis de circuler</strong> et/ou votre <strong className="text-white">carte verte</strong>.
           </p>
           <OCRScanner role="A" onComplete={handleScanComplete} />
         </div>
@@ -248,44 +248,44 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   // ── Vehicle form ─────────────────────────────────────────────
   if (vehicleView !== 'list') {
     return (
-      <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
-        <div style={{ maxWidth: 500, margin: '0 auto' }}>
+      <div className="min-h-screen bg-[#06060C] p-4">
+        <div className="mx-auto max-w-[500px]">
           <button onClick={() => setVehicleView('list')} style={backBtn}>← Garage</button>
-          <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 800, marginBottom: 4 }}>
+          <h2 className="text-white text-xl font-extrabold mb-1">
             {vehicleView === 'add' ? '➕ Ajouter un véhicule' : '✏️ Modifier le véhicule'}
           </h2>
-          <p style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 20 }}>
+          <p className="text-[#d0d0d0] text-[13px] mb-5">
             Scannez vos documents pour tout pré-remplir automatiquement.
           </p>
 
           {feedback && <FeedbackBanner msg={feedback} />}
 
-          <button onClick={() => setScanning(true)} style={{ width: '100%', background: '#0d1f2a', border: '1px solid #1a4a6a', borderRadius: 12, padding: '14px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <span style={{ fontSize: 28 }}>📄</span>
-            <div style={{ textAlign: 'left' as const }}>
-              <div style={{ color: '#60c8f0', fontWeight: 700 }}>Scanner permis + carte verte</div>
-              <div style={{ color: '#8a8a8a', fontSize: 12 }}>Reconnaissance automatique · 50 langues</div>
+          <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5" style={{ background: '#0d1f2a', border: '1px solid #1a4a6a', padding: '14px 16px' }}>
+            <span className="text-[28px]">📄</span>
+            <div className="text-left">
+              <div className="font-bold text-[#60c8f0]">Scanner permis + carte verte</div>
+              <div className="text-xs text-[#8a8a8a]">Reconnaissance automatique · 50 langues</div>
             </div>
           </button>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <Field label="Surnom" placeholder='ex: "Ma Golf bleue"' value={form.nickname || ''} onChange={v => setForm(p => ({ ...p, nickname: v }))} />
             <Field label="Plaque" placeholder="JU 12345" value={form.plate || ''} onChange={v => setForm(p => ({ ...p, plate: v.toUpperCase() }))} />
-            <div style={{ display: 'flex', gap: 10 }}>
-              <div style={{ flex: 1 }}><Field label="Marque" placeholder="Volkswagen" value={form.make || ''} onChange={v => setForm(p => ({ ...p, make: v }))} /></div>
-              <div style={{ flex: 1 }}><Field label="Modèle" placeholder="Golf 8" value={form.model || ''} onChange={v => setForm(p => ({ ...p, model: v }))} /></div>
+            <div className="flex gap-2.5">
+              <div className="flex-1"><Field label="Marque" placeholder="Volkswagen" value={form.make || ''} onChange={v => setForm(p => ({ ...p, make: v }))} /></div>
+              <div className="flex-1"><Field label="Modèle" placeholder="Golf 8" value={form.model || ''} onChange={v => setForm(p => ({ ...p, model: v }))} /></div>
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <div style={{ flex: 1 }}><Field label="Couleur" placeholder="Bleue" value={form.color || ''} onChange={v => setForm(p => ({ ...p, color: v }))} /></div>
-              <div style={{ flex: 1 }}><Field label="Année" placeholder="2022" value={form.year || ''} onChange={v => setForm(p => ({ ...p, year: v }))} /></div>
+            <div className="flex gap-2.5">
+              <div className="flex-1"><Field label="Couleur" placeholder="Bleue" value={form.color || ''} onChange={v => setForm(p => ({ ...p, color: v }))} /></div>
+              <div className="flex-1"><Field label="Année" placeholder="2022" value={form.year || ''} onChange={v => setForm(p => ({ ...p, year: v }))} /></div>
             </div>
 
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
-              <div style={{ background: '#0d2a0d', border: '1px solid #1a4a1a', borderRadius: 10, padding: 14 }}>
-                <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 13, marginBottom: 4 }}>🛡️ Assurance enregistrée</div>
-                {form.insuranceData.company && <div style={{ color: '#ccc', fontSize: 13 }}>{form.insuranceData.company}</div>}
-                {form.insuranceData.policyNumber && <div style={{ color: '#d0d0d0', fontSize: 12 }}>Police n° {form.insuranceData.policyNumber}</div>}
-                <button onClick={() => setScanning(true)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a4a2a', borderRadius: 8, padding: '6px 12px', color: '#4ade80', fontSize: 12, cursor: 'pointer' }}>
+              <div className="rounded-[10px] p-3.5" style={{ background: '#0d2a0d', border: '1px solid #1a4a1a' }}>
+                <div className="text-green-400 font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
+                {form.insuranceData.company && <div className="text-[13px] text-[#ccc]">{form.insuranceData.company}</div>}
+                {form.insuranceData.policyNumber && <div className="text-[#d0d0d0] text-xs">Police n° {form.insuranceData.policyNumber}</div>}
+                <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-green-400 text-xs cursor-pointer" style={{ border: '1px dashed #2a4a2a', padding: '6px 12px' }}>
                   Mettre à jour →
                 </button>
               </div>
@@ -305,19 +305,19 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const history  = historyQ.data || [];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#06060C', padding: 16 }}>
-      <div style={{ maxWidth: 500, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+    <div className="min-h-screen bg-[#06060C] p-4">
+      <div className="mx-auto max-w-[500px]">
+        <div className="flex justify-between items-center mb-5">
           <button onClick={onBack} style={backBtn}>← Retour</button>
-          <button onClick={onLogout} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>Déconnexion</button>
+          <button onClick={onLogout} className="bg-transparent border-0 cursor-pointer text-[13px] font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Déconnexion</button>
         </div>
 
         {/* Profile card */}
-        <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>Mon compte boom.contact</h1>
-        <div style={{ background: '#111', border: '1px solid #222', borderRadius: 16, padding: 20, marginBottom: 20 }}>
-          <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>💥 boom.contact</div>
-          <div style={{ color: '#d0d0d0', fontSize: 13, marginTop: 2 }}>{freshUser.email}</div>
-          <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
+        <h1 className="absolute p-0 overflow-hidden" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Mon compte boom.contact</h1>
+        <div className="bg-[#111] rounded-2xl p-5 mb-5" style={{ border: '1px solid #222' }}>
+          <div className="text-[#FF3500] font-black text-xl">💥 boom.contact</div>
+          <div className="text-[#d0d0d0] text-[13px]" style={{ marginTop: 2 }}>{freshUser.email}</div>
+          <div className="flex gap-2.5" style={{ marginTop: 14 }}>
             <StatBadge value={freshUser.credits === 999999 ? '∞' : freshUser.credits} label="crédits" highlight />
             <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
             <StatBadge value={history.length || '—'} label="constats" />
@@ -327,9 +327,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {feedback && <FeedbackBanner msg={feedback} />}
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
+        <div className="flex gap-1.5 mb-5">
           {(['garage', 'history', 'profile'] as PageTab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{ flex: 1, background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222'), color: '#fff', borderRadius: 10, padding: '9px 6px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer" style={{ background: tab === t ? '#FF3500' : '#111', border: '1px solid ' + (tab === t ? '#FF3500' : '#222'), padding: '9px 6px' }}>
               {t === 'garage' ? '🚗 Garage' : t === 'history' ? '📋 Historique' : '👤 Profil'}
             </button>
           ))}
@@ -338,33 +338,33 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* GARAGE */}
         {tab === 'garage' && (
           <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <div style={{ color: '#fff', fontWeight: 700 }}>Mon garage ({vehicles.length})</div>
-              <button onClick={startAdd} style={{ background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>+ Ajouter</button>
+            <div className="flex justify-between items-center mb-3">
+              <div className="text-white font-bold">Mon garage ({vehicles.length})</div>
+              <button onClick={startAdd} className="bg-[#FF3500] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer" style={{ padding: '8px 14px' }}>+ Ajouter</button>
             </div>
             {vehicles.length === 0 && (
               <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
-                <button onClick={startAdd} style={{ ...primaryBtn, width: 'auto', padding: '11px 20px', marginTop: 16 }}>➕ Ajouter mon premier véhicule</button>
+                <button onClick={startAdd} className="mt-4" style={{ width: 'auto', padding: '11px 20px' }}>➕ Ajouter mon premier véhicule</button>
               </EmptyState>
             )}
             {vehicles.map((v: any) => (
-              <div key={v.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div key={v.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
+                <div className="flex justify-between">
                   <div>
                     <div>
-                      <div style={{ color: '#fff', fontWeight: 700 }}>{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
+                      <div className="text-white font-bold">{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
                     </div>
-                    {v.plate && <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 14 }}>{v.plate}</div>}
-                    <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                    {v.plate && <div className="text-sm" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{v.plate}</div>}
+                    <div className="text-xs" style={{ color: '#8a8a8a', marginTop: 2 }}>{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
-                  <div style={{ display: 'flex', gap: 6 }}>
+                  <div className="flex gap-1.5">
                     <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule">✏️</button>
                     <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn} aria-label="Supprimer le véhicule">🗑️</button>
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
-                  ? <div style={{ marginTop: 10, background: '#0d2a0d', borderRadius: 8, padding: '7px 12px', fontSize: 12, color: '#4ade80' }}>🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
-                  : <button onClick={() => startEdit(v)} style={{ marginTop: 8, background: 'none', border: '1px dashed #2a2a2a', borderRadius: 8, padding: '5px 10px', color: '#8a8a8a', fontSize: 11, cursor: 'pointer' }}>+ Ajouter assurance</button>
+                  ? <div className="mt-2.5 rounded-lg text-xs text-green-400" style={{ background: '#0d2a0d', padding: '7px 12px' }}>🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
+                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer" style={{ border: '1px dashed #2a2a2a', padding: '5px 10px', color: '#8a8a8a' }}>+ Ajouter assurance</button>
                 }
               </div>
             ))}
@@ -374,8 +374,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* HISTORY */}
         {tab === 'history' && (
           <>
-            <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12 }}>Mes constats ({history.length})</div>
-            {historyQ.isLoading && <div style={{ color: '#8a8a8a', textAlign: 'center', padding: 32 }}>Chargement...</div>}
+            <div className="text-white font-bold mb-3">Mes constats ({history.length})</div>
+            {historyQ.isLoading && <div className="text-center p-8 text-[#8a8a8a]">Chargement...</div>}
             {!historyQ.isLoading && history.length === 0 && (
               <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
@@ -385,16 +385,16 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               const date = new Date(s.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' });
               const statusIcon = s.status === 'completed' ? '✅' : s.status === 'signing' ? '✍️' : '⏳';
               return (
-                <div key={s.id} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 16, marginBottom: 10 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={s.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
+                  <div className="flex justify-between items-center">
                     <div>
-                      <div style={{ color: '#FF5533', fontFamily: 'monospace', fontSize: 12 }}>{s.id}</div>
-                      <div style={{ color: '#fff', fontWeight: 600, marginTop: 2 }}>Plaque : {plate}</div>
-                      <div style={{ color: '#8a8a8a', fontSize: 12, marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
-                      {s.accident?.location?.address && <div style={{ color: '#8a8a8a', fontSize: 11, marginTop: 4 }}>📍 {s.accident.location.address}</div>}
+                      <div className="text-xs" style={{ color: '#FF5533', fontFamily: 'monospace' }}>{s.id}</div>
+                      <div className="text-white font-semibold" style={{ marginTop: 2 }}>Plaque : {plate}</div>
+                      <div className="text-xs" style={{ color: '#8a8a8a', marginTop: 2 }}>{date} · {statusIcon} {s.status}</div>
+                      {s.accident?.location?.address && <div className="text-[11px] mt-1 text-[#8a8a8a]">📍 {s.accident.location.address}</div>}
                     </div>
                     {s.pdfUrl && (
-                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" style={{ background: '#1a1a1a', border: '1px solid #333', borderRadius: 8, padding: '7px 12px', color: '#ccc', fontSize: 12, textDecoration: 'none' }}>📄 PDF</a>
+                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg text-xs no-underline" style={{ background: '#1a1a1a', border: '1px solid #333', padding: '7px 12px', color: '#ccc' }}>📄 PDF</a>
                     )}
                   </div>
                 </div>
@@ -405,29 +405,29 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
         {/* PROFILE */}
         {tab === 'profile' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div className="flex flex-col gap-3.5">
 
             {/* Crédits */}
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 4 }}>CRÉDITS DISPONIBLES</div>
-              <div style={{ color: '#FF3500', fontSize: 32, fontWeight: 900 }}>{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
-              <div style={{ color: '#8a8a8a', fontSize: 12 }}>1 crédit = 1 constat amiable complet</div>
+            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
+              <div className="text-[#d0d0d0] text-xs mb-1">CRÉDITS DISPONIBLES</div>
+              <div className="text-[#FF3500] text-[32px] font-black">{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
+              <div className="text-xs text-[#8a8a8a]">1 crédit = 1 constat amiable complet</div>
             </div>
 
             {/* Email — changement */}
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: editingEmail ? 14 : 0 }}>
+            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
+              <div className="flex justify-between items-center" style={{ marginBottom: editingEmail ? 14 : 0 }}>
                 <div>
-                  <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, marginBottom: 3 }}>EMAIL</div>
-                  <div style={{ color: '#fff', fontSize: 14 }}>{freshUser.email || user.email}</div>
+                  <div className="text-[#d0d0d0] text-[11px] font-semibold" style={{ marginBottom: 3 }}>EMAIL</div>
+                  <div className="text-white text-sm">{freshUser.email || user.email}</div>
                 </div>
                 <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
-                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#d0d0d0', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer" style={{ border: '1px solid #2a2a2a', padding: '5px 10px' }}>
                   {editingEmail ? 'Annuler' : 'Modifier →'}
                 </button>
               </div>
               {editingEmail && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div className="flex flex-col gap-2.5">
                   <Field label="Nouvel email" placeholder="contact@example.com" value={newEmail} onChange={setNewEmail} />
                   <Field label="Mot de passe actuel (confirmation)" placeholder="••••••••" value={emailPassword} onChange={setEmailPassword} />
                   <button
@@ -439,7 +439,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         setFeedback('✅ Email modifié — reconnecte-toi avec le nouvel email');
                         setEditingEmail(false);
                         setTimeout(() => { onLogout(); }, 2500);
-                      } catch(e: any) {
+                      } catch(e: unknown) {
                         setFeedback('❌ ' + (e.message || 'Erreur'));
                       } finally { setSaving(false); }
                     }}
@@ -451,9 +451,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {/* Profil — infos personnelles */}
-            <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 18 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>👤 Informations personnelles</div>
+            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
+              <div className="flex justify-between items-center" style={{ marginBottom: 14 }}>
+                <div className="text-white font-bold text-sm">👤 Informations personnelles</div>
                 {!editingProfile && (
                   <button onClick={() => {
                     setProfileForm({
@@ -465,13 +465,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     });
                     setEditingProfile(true);
                   }}
-                  style={{ background: 'none', border: '1px solid #2a2a2a', borderRadius: 8, color: '#d0d0d0', fontSize: 12, padding: '5px 10px', cursor: 'pointer' }}>
+                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer" style={{ border: '1px solid #2a2a2a', padding: '5px 10px' }}>
                     Modifier →
                   </button>
                 )}
               </div>
               {!editingProfile ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div className="flex flex-col gap-2">
                   {[
                     ['Prénom', user.firstName],
                     ['Nom', user.lastName],
@@ -480,26 +480,26 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     ['Adresse', user.address],
                   ].map(([label, val]) => val ? (
                     <div key={label as string}>
-                      <div style={{ color: '#8a8a8a', fontSize: 11 }}>{label as string}</div>
-                      <div style={{ color: '#ccc', fontSize: 14 }}>{val as string}</div>
+                      <div className="text-[11px] text-[#8a8a8a]">{label as string}</div>
+                      <div className="text-sm text-[#ccc]">{val as string}</div>
                     </div>
                   ) : null)}
                   {!(user.firstName || user.phone) && (
-                    <div style={{ color: '#8a8a8a', fontSize: 13 }}>Aucune information — clique sur Modifier</div>
+                    <div className="text-[13px] text-[#8a8a8a]">Aucune information — clique sur Modifier</div>
                   )}
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    <div style={{ flex: 1 }}><Field label="Prénom" placeholder="Olivier" value={profileForm.firstName} onChange={v => setProfileForm(p => ({...p, firstName: v}))} /></div>
-                    <div style={{ flex: 1 }}><Field label="Nom" placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex gap-2.5">
+                    <div className="flex-1"><Field label="Prénom" placeholder="Olivier" value={profileForm.firstName} onChange={v => setProfileForm(p => ({...p, firstName: v}))} /></div>
+                    <div className="flex-1"><Field label="Nom" placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
                   </div>
                   <Field label="Téléphone" placeholder="+41 79 123 45 67" value={profileForm.phone} onChange={v => setProfileForm(p => ({...p, phone: v}))} />
                   <Field label="Société" placeholder="Acme SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
                   <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
-                  <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+                  <div className="flex gap-2 mt-1">
                     <button onClick={() => setEditingProfile(false)}
-                      style={{ flex: 1, background: 'none', border: '1px solid #2a2a2a', borderRadius: 10, color: '#d0d0d0', padding: '11px', cursor: 'pointer', fontSize: 13 }}>
+                      className="flex-1 bg-transparent rounded-[10px] text-[#d0d0d0] cursor-pointer text-[13px]" style={{ border: '1px solid #2a2a2a', padding: '11px' }}>
                       Annuler
                     </button>
                     <button onClick={async () => {
@@ -508,7 +508,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         await updateProfileMut.mutateAsync(profileForm);
                         setFeedback('✅ Profil mis à jour');
                         setEditingProfile(false);
-                      } catch(e: any) {
+                      } catch(e: unknown) {
                         setFeedback('❌ ' + (e.message || 'Erreur'));
                       } finally { setSaving(false); }
                     }}
@@ -522,21 +522,21 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {/* Partage viral */}
-            <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#FF5533', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Faire connaître boom.contact</div>
-              <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
+            <div className="rounded-[14px] p-[18px]" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
+              <div className="font-bold text-sm mb-1.5 text-[#FF5533]">📤 Faire connaître boom.contact</div>
+              <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3">
                 Partage l'app à tes proches, collègues et sur les réseaux. Aide-les avant qu'ils en aient besoin.
               </div>
-              <button onClick={() => setShowShare(true)} style={{ ...primaryBtn, fontSize: 14 }}>
+              <button onClick={() => setShowShare(true)} className="text-sm">
                 📤 Partager boom.contact
               </button>
             </div>
             {showShare && <ShareBoom onClose={() => setShowShare(false)} context="account" />}
 
             {/* Zone dangereuse — Suppression compte */}
-            <div style={{ border: '1px solid rgba(239,68,68,0.2)', borderRadius: 14, padding: 18 }}>
-              <div style={{ color: '#ef4444', fontWeight: 700, fontSize: 13, marginBottom: 6 }}>⚠️ Zone dangereuse</div>
-              <div style={{ color: '#d0d0d0', fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
+            <div className="rounded-[14px] p-[18px]" style={{ border: '1px solid rgba(239,68,68,0.2)' }}>
+              <div className="text-red-500 font-bold text-[13px] mb-1.5">⚠️ Zone dangereuse</div>
+              <div className="text-[#d0d0d0] text-xs leading-relaxed mb-3">
                 Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.
               </div>
               <button
@@ -562,42 +562,42 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 0.5, marginBottom: 4 }}>{label.toUpperCase()}</div>
+      <div className="text-[#d0d0d0] text-[11px] font-semibold mb-1" style={{ letterSpacing: 0.5 }}>{label.toUpperCase()}</div>
       <input aria-label={label} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-        style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, color: '#fff', padding: '11px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const }} />
+        className="rounded-[10px] text-white text-sm w-full" style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', padding: '11px 14px', boxSizing: 'border-box' as const }} />
     </div>
   );
 }
 
 function StatBadge({ value, label, highlight }: { value: any; label: string; highlight?: boolean }) {
   return (
-    <div style={{ background: '#1a1a1a', borderRadius: 10, padding: '8px 14px', textAlign: 'center' as const, flex: 1 }}>
-      <div style={{ color: highlight ? '#FF3500' : '#fff', fontSize: 20, fontWeight: 900 }}>{value}</div>
-      <div style={{ color: '#8a8a8a', fontSize: 11 }}>{label}</div>
+    <div className="rounded-[10px] flex-1" style={{ background: '#1a1a1a', padding: '8px 14px', textAlign: 'center' as const }}>
+      <div className="text-xl font-black" style={{ color: highlight ? '#FF3500' : '#fff' }}>{value}</div>
+      <div className="text-[11px] text-[#8a8a8a]">{label}</div>
     </div>
   );
 }
 
 function FeedbackBanner({ msg }: { msg: string }) {
   const ok = msg.startsWith('✅');
-  return <div style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a'), borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#ccc', fontSize: 14 }}>{msg}</div>;
+  return <div className="rounded-[10px] mb-4 text-sm" style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a'), padding: '12px 16px', color: '#ccc' }}>{msg}</div>;
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 14, padding: 20 }}>
-      <div style={{ color: '#d0d0d0', fontSize: 12, marginBottom: 4 }}>{label.toUpperCase()}</div>
-      <div style={{ color: '#fff', fontSize: 15 }}>{value}</div>
+    <div className="bg-[#111] rounded-[14px] p-5" style={{ border: '1px solid #1a1a1a' }}>
+      <div className="text-[#d0d0d0] text-xs mb-1">{label.toUpperCase()}</div>
+      <div className="text-white text-[15px]">{value}</div>
     </div>
   );
 }
 
 function EmptyState({ icon, title, subtitle, children }: { icon: string; title: string; subtitle: string; children?: React.ReactNode }) {
   return (
-    <div style={{ background: '#111', border: '1px dashed #2a2a2a', borderRadius: 14, padding: 32, textAlign: 'center' as const }}>
-      <div style={{ fontSize: 40, marginBottom: 12 }}>{icon}</div>
-      <div style={{ color: '#fff', fontWeight: 700, marginBottom: 6 }}>{title}</div>
-      <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.6 }}>{subtitle}</div>
+    <div className="bg-[#111] rounded-[14px] p-8" style={{ border: '1px dashed #2a2a2a', textAlign: 'center' as const }}>
+      <div className="text-[40px] mb-3">{icon}</div>
+      <div className="text-white font-bold mb-1.5">{title}</div>
+      <div className="text-[#d0d0d0] text-sm leading-relaxed">{subtitle}</div>
       {children}
     </div>
   );

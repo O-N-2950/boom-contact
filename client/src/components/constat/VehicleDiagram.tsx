@@ -136,8 +136,8 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
   return (
     <div style={{ padding: '20px 16px' }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 14 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+      <div className="text-center" style={{ marginBottom: 14 }}>
+        <h2 className="text-base font-bold mb-1">
           {diagramTitle}
         </h2>
         {/* Vehicle identity badge */}
@@ -153,32 +153,32 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
               flexShrink: 0,
             }}/>
           )}
-          {isPedestrian && <span style={{ fontSize: 14 }}>🚶</span>}
-          <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', background: roleColor, padding: '1px 6px', borderRadius: 4 }}>
+          {isPedestrian && <span className="text-sm">🚶</span>}
+          <span className="text-[10px] font-bold text-white rounded" style={{ background: roleColor, padding: '1px 6px' }}>
             {role}
           </span>
-          <span style={{ fontSize: 12, fontWeight: 600, color: roleColor }}>
+          <span className="text-xs font-semibold" style={{ color: roleColor }}>
             {vehicleName}
           </span>
           {bodyLabel && (
-            <span style={{ fontSize: 10, opacity: 0.75 }}>· {bodyLabel}</span>
+            <span className="text-[10px]" style={{ opacity: 0.75 }}>· {bodyLabel}</span>
           )}
           {identity.confidence === 'exact' && !isPedestrian && (
-            <span title="Modèle reconnu" style={{ fontSize: 10, color: '#22c55e' }}>✓</span>
+            <span title="Modèle reconnu" className="text-[10px] text-green-500">✓</span>
           )}
         </div>
-        <p style={{ fontSize: 11, opacity: 0.7, lineHeight: 1.5 }}>
+        <p className="text-[11px] leading-normal" style={{ opacity: 0.7 }}>
           {diagramHint}
         </p>
       </div>
 
       {/* SVG */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+      <div className="flex justify-center mb-2">
         <svg
           viewBox={`0 0 280 ${vbH}`}
           width="100%"
           role="img"
-          style={{ maxWidth: 300, display: 'block', userSelect: 'none', touchAction: 'none' }}
+          className="block" style={{ maxWidth: 300, userSelect: 'none', touchAction: 'none' }}
           aria-label={`Schéma interactif — ${vehicleName} vue de dessus — Conducteur ${role}`}
         >
           <text x="140" y="8" textAnchor="middle" fontSize="7"
@@ -218,12 +218,12 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
 
       {/* Selected chips */}
       {selected.length > 0 && (
-        <div style={{ marginBottom: 12 }}>
+        <div className="mb-3">
           <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7,
             textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>
             {selected.length} zone{selected.length > 1 ? 's' : ''} sélectionnée{selected.length > 1 ? 's' : ''}
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          <div className="flex flex-wrap gap-1.5">
             {selected.map(id => {
               const zone = zones.find(z => z.id === id);
               return zone ? (
@@ -233,7 +233,7 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
                   color: roleColor, cursor: 'pointer',
                   display: 'flex', alignItems: 'center', gap: 5,
                 }}>
-                  {zone.label} <span style={{ opacity: 0.7, fontSize: 10 }}>✕</span>
+                  {zone.label} <span className="text-[10px]" style={{ opacity: 0.7 }}>✕</span>
                 </button>
               ) : null;
             })}
@@ -242,7 +242,7 @@ export const VehicleDiagram = React.memo(function VehicleDiagram({ role, vehicle
       )}
 
       {selected.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 12, opacity: 0.7 }}>
+        <div className="text-center text-xs" style={{ padding: '8px 0', opacity: 0.7 }}>
           Aucune zone sélectionnée — touchez le schéma ci-dessus
         </div>
       )}

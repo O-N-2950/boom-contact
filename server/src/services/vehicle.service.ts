@@ -26,8 +26,8 @@ export async function saveVehicle(userId: string, input: {
   color?: string;
   year?: string;
   category?: string;
-  licenseData?: Record<string, any>;
-  insuranceData?: Record<string, any>;
+  licenseData?: Record<string, unknown>;
+  insuranceData?: Record<string, unknown>;
 }) {
   const now = new Date();
 

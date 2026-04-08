@@ -226,7 +226,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
         const session = data?.result?.data;
         if (!session) return;
         const positions: { role: string; pos: VehiclePosition; vehicleType?: string }[] = [];
-        const parts: Record<string, any> = {
+        const parts: Record<string, unknown> = {
           A: session.participantA,
           B: session.participantB,
           C: session.participantC,
@@ -259,7 +259,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       });
 
       // Listen for data updates (participant vehicle position changes)
-      socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: any }) => {
+      socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: Record<string, unknown> }) => {
         if (updatedRole === role) return; // skip own updates
         const pos = data?.vehicle?.mapPosition;
         if (pos?.x !== undefined && pos?.lat !== undefined) {
@@ -271,7 +271,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       });
 
       // Listen for accident updates (vehicleAPos changes)
-      socket.on('accident-updated', (data: any) => {
+      socket.on('accident-updated', (data: Record<string, unknown>) => {
         const vehicleAPos = data?.vehicleAPos;
         if (vehicleAPos && role !== 'A') {
           setLivePositions(prev => {
@@ -446,20 +446,20 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
 
   // ── Rendu JSX ────────────────────────────────────────────────
   if (geoStatus === 'loading') return (
-    <div role="status" aria-label="Chargement en cours" style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
-      <div style={{ fontSize: 36, marginBottom: 12, animation: 'spin 1s linear infinite', display:'inline-block' }} aria-hidden="true">🌍</div>
-      <div style={{ fontWeight: 700 }}>Localisation de l'accident…</div>
-      <div style={{ fontSize: 12, opacity: 0.75, marginTop: 6 }}>Géocodage de l'adresse</div>
+    <div role="status" aria-label="Chargement en cours" className="p-10 text-center" style={{ color: 'rgba(255,255,255,0.7)' }}>
+      <div className="text-4xl mb-3" style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }} aria-hidden="true">🌍</div>
+      <div className="font-bold">Localisation de l'accident…</div>
+      <div className="text-xs" style={{ opacity: 0.75, marginTop: 6 }}>Géocodage de l'adresse</div>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
   if (geoStatus === 'error') return (
-    <div style={{ padding: 24 }}>
-      <div style={{ padding: '14px', borderRadius: 10, background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', marginBottom: 14, fontSize: 13, color: 'rgba(255,200,100,0.9)' }}>
+    <div className="p-6">
+      <div className="rounded-[10px] text-[13px]" style={{ padding: '14px', background: 'rgba(255,100,0,0.08)', border: '1px solid rgba(255,100,0,0.2)', marginBottom: 14, color: 'rgba(255,200,100,0.9)' }}>
         ⚠️ Impossible de localiser l'adresse sur la carte. Vérifiez l'adresse saisie à l'étape Lieu.
       </div>
-      <button onClick={onSkip} style={{ width: '100%', padding: 12, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 13 }}>
+      <button onClick={onSkip} className="w-full p-3 rounded-[10px] cursor-pointer text-[13px]" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.6)' }}>
         Passer cette étape
       </button>
     </div>
@@ -471,42 +471,42 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   return (
     <div style={{ padding: '14px 18px' }}>
       {/* Header */}
-      <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
-        <div style={{ width:34, height:34, borderRadius:'50%', background:`${roleColor}22`, border:`2px solid ${roleColor}`, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:15, color:roleColor }}>
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="rounded-full flex items-center justify-center font-extrabold text-[15px]" style={{ width: 34, height: 34, background: `${roleColor}22`, border: `2px solid ${roleColor}`, color: roleColor }}>
           {role}
         </div>
         <div>
-          <div style={{ fontWeight:700, fontSize:14 }}>{roleLabel} — Positionner mon véhicule</div>
-          <div style={{ fontSize:11, opacity:0.7 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
+          <div className="font-bold text-sm">{roleLabel} — Positionner mon véhicule</div>
+          <div className="text-[11px]" style={{ opacity: 0.7 }}>{brand ? `${brand} · ` : ''}{vehicleType || 'Voiture'}</div>
         </div>
         {/* Toggle plan / satellite */}
         <button
           onClick={() => setSatellite(s => !s)}
-          style={{ marginLeft:'auto', padding:'5px 10px', borderRadius:16, border:`1px solid ${satellite ? '#f59e0b' : 'rgba(255,255,255,0.15)'}`, background: satellite ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.04)', color: satellite ? '#f59e0b' : 'rgba(255,255,255,0.55)', fontSize:11, cursor:'pointer', fontWeight:600, touchAction:'manipulation', whiteSpace:'nowrap' }}>
+          className="ml-auto rounded-2xl text-[11px] cursor-pointer font-semibold touch-manipulation whitespace-nowrap" style={{ padding: '5px 10px', border: `1px solid ${satellite ? '#f59e0b' : 'rgba(255,255,255,0.15)'}`, background: satellite ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.04)', color: satellite ? '#f59e0b' : 'rgba(255,255,255,0.55)' }}>
           {satellite ? '🛰 Satellite' : '🗺 Plan'}
         </button>
       </div>
 
       {/* Étapes */}
-      <div style={{ display:'flex', gap:6, marginBottom:10 }}>
+      <div className="flex gap-1.5 mb-2.5">
         {[['place','✋','1. Placer'],['rotate','↻','2. Orienter'],['confirm','✓','3. Valider']] .map(([s,icon,label]) => (
-          <div key={s} style={{ flex:1, padding:'5px 3px', borderRadius:8, textAlign:'center', background:step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border:`1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, fontSize:10, color:step===s?roleColor:'rgba(255,255,255,0.55)', fontWeight:step===s?700:400 }}>
+          <div key={s} className="flex-1 rounded-lg text-center text-[10px]" style={{ padding: '5px 3px', background: step===s?`${roleColor}20`:'rgba(255,255,255,0.03)', border: `1px solid ${step===s?roleColor:'rgba(255,255,255,0.07)'}`, color: step===s?roleColor:'rgba(255,255,255,0.55)', fontWeight: step===s?700:400 }}>
             {icon} {label}
           </div>
         ))}
       </div>
 
       {/* Canvas */}
-      <div style={{ borderRadius:12, overflow:'hidden', border:`2px solid ${roleColor}44`, marginBottom:12, position:'relative' }}>
+      <div className="rounded-xl overflow-hidden mb-3 relative" style={{ border: `2px solid ${roleColor}44` }}>
         {loadingTiles && (
-          <div style={{ position:'absolute', top:8, right:8, background:'rgba(0,0,0,0.6)', borderRadius:8, padding:'3px 8px', fontSize:10, color:'rgba(255,255,255,0.6)', zIndex:10 }}>
+          <div className="absolute rounded-lg text-[10px] z-10" style={{ top: 8, right: 8, background: 'rgba(0,0,0,0.6)', padding: '3px 8px', color: 'rgba(255,255,255,0.6)' }}>
             {tilesLoaded}/{totalTiles} tiles…
           </div>
         )}
         <canvas
           ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
           aria-label="Placement du véhicule sur le schéma"
-          style={{ width:'100%', display:'block', cursor:dragging?'grabbing':'grab', touchAction:'none' }}
+          className="w-full block" style={{ cursor: dragging?'grabbing':'grab', touchAction: 'none' }}
           onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
           onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
         />
@@ -514,14 +514,14 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
 
       {/* Slider rotation */}
       {step === 'rotate' && !confirmed && (
-        <div style={{ marginBottom:12 }}>
-          <div style={{ fontSize:11, opacity:0.85, textAlign:'center', marginBottom:6 }}>
+        <div className="mb-3">
+          <div className="text-[11px] text-center mb-1.5" style={{ opacity: 0.85 }}>
             Direction : {angle}° {angle<22?'→ Est':angle<67?'↘ SE':angle<112?'↓ Sud':angle<157?'↙ SO':angle<202?'← Ouest':angle<247?'↖ NO':angle<292?'↑ Nord':angle<337?'↗ NE':'→ Est'}
           </div>
           <input type="range" aria-label="Direction du véhicule" min={0} max={359} value={angle}
             onChange={e => setAngle(Number(e.target.value))}
-            style={{ width:'100%', accentColor:roleColor }} />
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, opacity:0.75, marginTop:2 }}>
+            className="w-full" style={{ accentColor: roleColor }} />
+          <div className="flex justify-between text-[9px]" style={{ opacity: 0.75, marginTop: 2 }}>
             <span>↑N</span><span>→E</span><span>↓S</span><span>←O</span>
           </div>
         </div>
@@ -529,18 +529,18 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
 
       {/* Boutons */}
       {!confirmed ? (
-        <div style={{ display:'flex', gap:8 }}>
+        <div className="flex gap-2">
           <button onClick={onSkip}
-            style={{ flex:1, padding:'11px', borderRadius:10, border:'1px solid rgba(255,255,255,0.25)', background:'transparent', cursor:'pointer', fontSize:13, color:'rgba(255,255,255,0.55)', touchAction:'manipulation' }}>
+            className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] touch-manipulation" style={{ padding: '11px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)' }}>
             Passer
           </button>
           <button onClick={step==='place' ? () => setStep('rotate') : confirm}
-            style={{ flex:2, padding:'13px', borderRadius:10, border:'none', background:roleColor, color:'#fff', cursor:'pointer', fontSize:14, fontWeight:700, touchAction:'manipulation' }}>
+            className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold touch-manipulation" style={{ flex: 2, padding: '13px', background: roleColor }}>
             {step==='place' ? 'Orienter →' : '✓ Valider ma position'}
           </button>
         </div>
       ) : (
-        <div style={{ padding:'13px', borderRadius:10, background:'rgba(34,197,94,0.09)', border:'1px solid rgba(34,197,94,0.28)', textAlign:'center', fontSize:14, color:'#22c55e', fontWeight:700 }}>
+        <div className="rounded-[10px] text-center text-sm text-green-500 font-bold" style={{ padding: '13px', background: 'rgba(34,197,94,0.09)', border: '1px solid rgba(34,197,94,0.28)' }}>
           ✅ Position enregistrée sur la carte
         </div>
       )}

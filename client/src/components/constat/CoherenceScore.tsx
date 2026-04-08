@@ -7,9 +7,9 @@ import React, { useState, useEffect } from 'react';
 
 interface Props {
   sessionId: string;
-  participantA: any;
-  participantB: any;
-  accidentData: any;
+  participantA: Record<string, unknown>;
+  participantB: Record<string, unknown>;
+  accidentData: Record<string, unknown>;
   onReady?: () => void; // appelé quand l'analyse est terminée
 }
 
@@ -121,8 +121,8 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
         border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 16, opacity: 0.75 }}>🔍</span>
-        <span style={{ fontSize: 12, opacity: 0.75 }}>Vérification de la cohérence des déclarations…</span>
+        <span className="text-base" style={{ opacity: 0.75 }}>🔍</span>
+        <span className="text-xs" style={{ opacity: 0.75 }}>Vérification de la cohérence des déclarations…</span>
       </div>
     );
   }
@@ -138,8 +138,8 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
         border: '1px solid rgba(34,197,94,0.25)',
         borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 16 }} aria-hidden="true">✅</span>
-        <span style={{ fontSize: 12, color: '#22c55e', fontWeight: 600 }}>
+        <span className="text-base" aria-hidden="true">✅</span>
+        <span className="text-xs text-green-500 font-semibold">
           Déclarations cohérentes — aucune contradiction détectée
         </span>
       </div>
@@ -168,21 +168,21 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
           color: 'inherit', font: 'inherit',
         }}
       >
-        <span style={{ fontSize: 16 }}>{hasWarnings ? '⚠️' : 'ℹ️'}</span>
-        <span style={{ fontSize: 12, fontWeight: 700, flex: 1, color: hasWarnings ? '#f59e0b' : '#818cf8' }}>
+        <span className="text-base">{hasWarnings ? '⚠️' : 'ℹ️'}</span>
+        <span className="text-xs font-bold flex-1" style={{ color: hasWarnings ? '#f59e0b' : '#818cf8' }}>
           {hasWarnings
             ? `${warnings.length} point${warnings.length > 1 ? 's' : ''} à vérifier avant de signer`
             : `${infos.length} suggestion${infos.length > 1 ? 's' : ''}`}
         </span>
-        <span aria-hidden="true" style={{ fontSize: 14, opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
+        <span aria-hidden="true" className="text-sm" style={{ opacity: 0.7, transform: expanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s', display: 'inline-block' }}>›</span>
       </button>
 
       {/* Détail */}
       {expanded && (
-        <div style={{ padding: '10px 14px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="flex flex-col gap-2" style={{ padding: '10px 14px 12px' }}>
           {issues.map((issue, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-              <span style={{ fontSize: 14, flexShrink: 0, marginTop: 1 }}>
+            <div key={i} className="flex items-start gap-2">
+              <span className="text-sm shrink-0" style={{ marginTop: 1 }}>
                 {issue.type === 'warning' ? '⚠️' : 'ℹ️'}
               </span>
               <span style={{
@@ -193,7 +193,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
               </span>
             </div>
           ))}
-          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>
+          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>
             Ces points ne bloquent pas la signature — ils vous alertent pour que vous puissiez vérifier.
           </div>
         </div>

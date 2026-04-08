@@ -55,8 +55,8 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
   const isCustom = value && !selectedColor && value.length > 0;
 
   return (
-    <div style={{ marginBottom: 4 }}>
-      <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 8 }}>{label}</div>
+    <div className="mb-1">
+      <div className="text-[11px] mb-2" style={{ opacity: 0.75 }}>{label}</div>
 
       {/* Color grid */}
       <div style={{
@@ -121,7 +121,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
             background: selectedColor?.hex ?? '#888',
             border: '1px solid rgba(255,255,255,0.15)',
           }}/>
-          <span style={{ fontSize: 13, fontWeight: 600 }}>
+          <span className="text-[13px] font-semibold">
             {selectedColor?.name ?? value}
           </span>
           <button
@@ -134,7 +134,7 @@ export const ColorPicker = React.memo(function ColorPicker({ value, onChange, la
       )}
 
       {/* Free text input for unlisted colors */}
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         <input
           type="text"
           aria-label="Couleur personnalisée"

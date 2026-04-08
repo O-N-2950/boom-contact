@@ -25,7 +25,7 @@ export async function initSentryFrontend() {
 }
 
 // ── PostHog Frontend ──────────────────────────────────────────
-let _ph: any = null;
+let _ph: unknown = null;
 
 export async function initPostHog() {
   const apiKey = import.meta.env.VITE_POSTHOG_KEY;

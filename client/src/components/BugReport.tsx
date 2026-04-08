@@ -34,7 +34,7 @@ export function BugReport() {
           boxShadow:'0 4px 20px rgba(0,0,0,0.4)', display:'flex', alignItems:'center', gap:8,
         }}>
           ✅ Merci !
-          <button onClick={() => setSent(false)} aria-label="Fermer le message" style={{ background:'none', border:'none', color:'#22c55e', cursor:'pointer', fontSize:14 }}>✕</button>
+          <button onClick={() => setSent(false)} aria-label="Fermer le message" className="bg-transparent border-0 text-green-500 cursor-pointer text-sm">✕</button>
         </div>
       )}
 
@@ -61,9 +61,9 @@ export function BugReport() {
           borderRadius:14, padding:16, width:272,
           boxShadow:'0 8px 32px rgba(0,0,0,0.6)',
         }}>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
-            <div style={{ fontWeight:700, fontSize:13 }}>🐛 Signaler un problème</div>
-            <button onClick={() => setOpen(false)} aria-label="Fermer le formulaire" style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:16 }}>✕</button>
+          <div className="flex justify-between items-center mb-2.5">
+            <div className="font-bold text-[13px]">🐛 Signaler un problème</div>
+            <button onClick={() => setOpen(false)} aria-label="Fermer le formulaire" className="bg-transparent border-0 cursor-pointer text-base" style={{ color: 'rgba(255,255,255,0.4)' }}>✕</button>
           </div>
           <textarea value={text} onChange={e => setText(e.target.value)}
             placeholder="Décrivez ce qui ne fonctionne pas…"

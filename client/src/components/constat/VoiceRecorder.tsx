@@ -147,37 +147,37 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
   const roleColor = { A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#EC4899' }[role];
 
   return (
-    <div style={{ borderRadius: 14, border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
+    <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.02)' }}>
 
       {/* Header */}
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 32, height: 32, borderRadius: '50%', background: `${roleColor}20`, border: `2px solid ${roleColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: roleColor }}>
+      <div className="flex items-center gap-2.5" style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-full flex items-center justify-center text-[13px] font-bold" style={{ width: 32, height: 32, background: `${roleColor}20`, border: `2px solid ${roleColor}`, color: roleColor }}>
           {role}
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 14 }}>{roleLabel} — Déclaration</div>
-          <div style={{ fontSize: 11, opacity: 0.7 }}>Version des faits selon {roleLabel.toLowerCase()}</div>
+          <div className="font-bold text-sm">{roleLabel} — Déclaration</div>
+          <div className="text-[11px]" style={{ opacity: 0.7 }}>Version des faits selon {roleLabel.toLowerCase()}</div>
         </div>
         {state === 'done' && (
-          <button onClick={reset} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', touchAction: 'manipulation', minHeight: 44, minWidth: 44 }}>
+          <button onClick={reset} className="ml-auto rounded-md bg-transparent cursor-pointer text-[11px] touch-manipulation" style={{ padding: '4px 10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)', minHeight: 44, minWidth: 44 }}>
             Refaire
           </button>
         )}
       </div>
 
-      <div style={{ padding: 16 }}>
+      <div className="p-4">
 
         {/* IDLE */}
         {state === 'idle' && (
           <>
-            <p style={{ fontSize: 13, opacity: 0.75, marginBottom: 16, lineHeight: 1.6 }}>
+            <p className="text-[13px] mb-4 leading-relaxed" style={{ opacity: 0.75 }}>
               Expliquez brièvement comment s&apos;est produit l&apos;accident selon vous. Parlez naturellement dans votre langue — l&apos;application transcrit automatiquement.
             </p>
             <button onClick={startRecording}
-              style={{ width: '100%', padding: '16px', borderRadius: 12, border: 'none', background: `linear-gradient(135deg, ${roleColor}cc, ${roleColor})`, color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as any }}>
-              <span style={{ fontSize: 22 }}>🎙️</span> Enregistrer ma déclaration
+              className="w-full rounded-xl border-0 text-white cursor-pointer text-[15px] font-bold flex items-center justify-center gap-2.5 touch-manipulation" style={{ padding: '16px', background: `linear-gradient(135deg, ${roleColor}cc, ${roleColor})`, WebkitTapHighlightColor: 'transparent' as string }}>
+              <span className="text-[22px]">🎙️</span> Enregistrer ma déclaration
             </button>
-            <div style={{ marginTop: 10, fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
+            <div className="mt-2.5 text-[11px] text-center" style={{ opacity: 0.7 }}>
               Max 3 minutes · 99 langues · Consentement: l&apos;enregistrement sera transcrit et intégré au PDF
             </div>
           </>
@@ -187,29 +187,29 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         {state === 'recording' && (
           <>
             {/* Visualisation */}
-            <div style={{ textAlign: 'center', marginBottom: 20 }}>
-              <div style={{ position: 'relative', display: 'inline-block' }}>
-                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'rgba(239,68,68,0.15)', border: '3px solid #ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, animation: 'pulse 1s ease infinite' }}>
+            <div className="text-center mb-5">
+              <div className="relative" style={{ display: 'inline-block' }}>
+                <div className="rounded-full flex items-center justify-center text-[32px]" style={{ width: 80, height: 80, background: 'rgba(239,68,68,0.15)', border: '3px solid #ef4444', animation: 'pulse 1s ease infinite' }}>
                   🎙️
                 </div>
-                <div style={{ position: 'absolute', top: -4, right: -4, width: 16, height: 16, borderRadius: '50%', background: '#ef4444', animation: 'blink 1s ease infinite' }} />
+                <div className="absolute rounded-full bg-red-500" style={{ top: -4, right: -4, width: 16, height: 16, animation: 'blink 1s ease infinite' }} />
               </div>
-              <div style={{ marginTop: 12, fontSize: 16, fontWeight: 700, color: '#ef4444' }}>{formatTime(elapsed)}</div>
-              <div style={{ fontSize: 12, opacity: 0.75 }}>Enregistrement en cours…</div>
+              <div className="mt-3 text-base font-bold text-red-500">{formatTime(elapsed)}</div>
+              <div className="text-xs" style={{ opacity: 0.75 }}>Enregistrement en cours…</div>
             </div>
 
             {/* Barre de progression */}
-            <div style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.08)', marginBottom: 16, overflow: 'hidden' }}>
-              <div style={{ height: '100%', borderRadius: 2, background: '#ef4444', width: `${progress}%`, transition: 'width 1s linear' }} />
+            <div className="mb-4 overflow-hidden" style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.08)' }}>
+              <div className="h-full bg-red-500" style={{ borderRadius: 2, width: `${progress}%`, transition: 'width 1s linear' }} />
             </div>
             {elapsed > MAX_DURATION_SEC - 30 && (
-              <div style={{ textAlign: 'center', fontSize: 12, color: '#f59e0b', marginBottom: 10 }}>
+              <div className="text-center text-xs mb-2.5 text-[#f59e0b]">
                 ⚠️ {MAX_DURATION_SEC - elapsed}s restantes
               </div>
             )}
 
             <button onClick={stopRecording}
-              style={{ width: '100%', padding: '14px', borderRadius: 12, border: '2px solid #ef4444', background: 'rgba(239,68,68,0.1)', color: '#ef4444', cursor: 'pointer', fontSize: 15, fontWeight: 700, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as any }}>
+              className="w-full rounded-xl text-red-500 cursor-pointer text-[15px] font-bold touch-manipulation" style={{ padding: '14px', border: '2px solid #ef4444', background: 'rgba(239,68,68,0.1)', WebkitTapHighlightColor: 'transparent' as string }}>
               ⏹ Arrêter l&apos;enregistrement
             </button>
             <style>{`
@@ -222,18 +222,18 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         {/* RECORDED — prêt à transcrire */}
         {state === 'recorded' && (
           <>
-            <div style={{ textAlign: 'center', marginBottom: 16 }}>
-              <div style={{ fontSize: 48, marginBottom: 8 }}>✅</div>
-              <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Enregistrement terminé</div>
-              <div style={{ fontSize: 13, opacity: 0.75 }}>{formatTime(elapsed)} enregistré</div>
+            <div className="text-center mb-4">
+              <div className="text-5xl mb-2">✅</div>
+              <div className="font-bold text-base mb-1">Enregistrement terminé</div>
+              <div className="text-[13px]" style={{ opacity: 0.75 }}>{formatTime(elapsed)} enregistré</div>
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="flex gap-2.5">
               <button onClick={reset}
-                style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1.5px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
+                className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-sm touch-manipulation" style={{ padding: '12px', border: '1.5px solid rgba(255,255,255,0.25)', color: 'var(--text)' }}>
                 Recommencer
               </button>
               <button onClick={transcribe}
-                style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: roleColor, color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 700, touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as any }}>
+                className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold touch-manipulation" style={{ flex: 2, padding: '12px', background: roleColor, WebkitTapHighlightColor: 'transparent' as string }}>
                 🔤 Transcrire →
               </button>
             </div>
@@ -242,10 +242,10 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
 
         {/* TRANSCRIBING */}
         {state === 'transcribing' && (
-          <div role="status" aria-label="Transcription en cours" style={{ textAlign: 'center', padding: '20px 0' }}>
-            <div style={{ fontSize: 40, marginBottom: 12, display: 'inline-block', animation: 'spin 1.5s linear infinite' }} aria-hidden="true">🔄</div>
-            <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Transcription en cours…</div>
-            <div style={{ fontSize: 12, opacity: 0.7 }}>OpenAI Whisper · Détection automatique de la langue</div>
+          <div role="status" aria-label="Transcription en cours" className="text-center" style={{ padding: '20px 0' }}>
+            <div className="text-[40px] mb-3" style={{ display: 'inline-block', animation: 'spin 1.5s linear infinite' }} aria-hidden="true">🔄</div>
+            <div className="font-bold text-[15px] mb-1.5">Transcription en cours…</div>
+            <div className="text-xs" style={{ opacity: 0.7 }}>OpenAI Whisper · Détection automatique de la langue</div>
             <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
           </div>
         )}
@@ -253,7 +253,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         {/* DONE */}
         {state === 'done' && transcript && (
           <>
-            <div style={{ marginBottom: 12, padding: '10px 12px', borderRadius: 8, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', fontSize: 12, color: '#22c55e', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div className="mb-3 rounded-lg text-xs text-green-500 flex items-center gap-2" style={{ padding: '10px 12px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
               ✅ Transcription automatique — vérifiez et corrigez si nécessaire
             </div>
             {isEditing ? (
@@ -264,7 +264,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
                 onBlur={() => { setIsEditing(false); onComplete?.(transcript, audioBase64); }}
                 autoFocus
                 rows={5}
-                style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: `1px solid ${roleColor}66`, background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: 14, boxSizing: 'border-box', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.6 }}
+                className="w-full rounded-lg text-sm box-border leading-relaxed" style={{ padding: '10px 12px', border: `1px solid ${roleColor}66`, background: 'rgba(255,255,255,0.05)', color: 'var(--text)', resize: 'vertical', fontFamily: 'inherit' }}
               />
             ) : (
               <div
@@ -272,12 +272,12 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsEditing(true); } }}
                 role="button"
                 tabIndex={0}
-                style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', fontSize: 14, lineHeight: 1.7, cursor: 'text', minHeight: 80, color: 'var(--text)' }}
+                className="rounded-[10px] text-sm" style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', lineHeight: 1.7, cursor: 'text', minHeight: 80, color: 'var(--text)' }}
               >
                 {transcript}
               </div>
             )}
-            <div style={{ fontSize: 11, opacity: 0.75, marginTop: 6, textAlign: 'right' }}>
+            <div className="text-[11px] text-right" style={{ opacity: 0.75, marginTop: 6 }}>
               Tapez pour modifier · Intégré au PDF du constat
             </div>
           </>
@@ -286,11 +286,11 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
         {/* ERROR */}
         {state === 'error' && (
           <>
-            <div style={{ padding: '12px 14px', borderRadius: 10, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontSize: 13, marginBottom: 14 }}>
+            <div className="rounded-[10px] text-red-500 text-[13px]" style={{ padding: '12px 14px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', marginBottom: 14 }}>
               ⚠️ {error}
             </div>
             <button onClick={reset}
-              style={{ width: '100%', padding: '12px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 14, touchAction: 'manipulation' }}>
+              className="w-full rounded-[10px] bg-transparent cursor-pointer text-sm touch-manipulation" style={{ padding: '12px', border: '1px solid rgba(255,255,255,0.25)', color: 'var(--text)' }}>
               Réessayer
             </button>
           </>

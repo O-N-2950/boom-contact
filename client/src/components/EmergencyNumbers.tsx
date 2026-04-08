@@ -360,18 +360,18 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
   );
 
   if (isLoading) return (
-    <div style={{ background: '#111', border: '1px solid #444', borderRadius: 12, padding: 16 }}>
-      <div style={{ color: '#d0d0d0', fontSize: 13, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 16, height: 16, border: '2px solid #555', borderTopColor: '#FF3500', borderRadius: '50%', flexShrink: 0 }} />
+    <div className="bg-[#111] rounded-xl p-4" style={{ border: '1px solid #444' }}>
+      <div className="text-[#d0d0d0] text-[13px] flex items-center gap-2.5">
+        <div className="rounded-full shrink-0" style={{ width: 16, height: 16, border: '2px solid #555', borderTopColor: '#FF3500' }} />
         Recherche des numéros d'urgence pour {countryName || countryCode}...
       </div>
     </div>
   );
 
   if (!data || error) return (
-    <div style={{ background: '#1a1010', border: '1px solid #3a1a1a', borderRadius: 12, padding: 14 }}>
-      <div style={{ color: '#f87171', fontSize: 13 }}>⚠️ Numéros non trouvés pour {countryName || countryCode}</div>
-      <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 4 }}>Composez le <strong style={{ color: '#fff' }}>112</strong> (valable dans 200+ pays).</div>
+    <div className="rounded-xl p-3.5" style={{ background: '#1a1010', border: '1px solid #3a1a1a' }}>
+      <div className="text-[13px] text-[#f87171]">⚠️ Numéros non trouvés pour {countryName || countryCode}</div>
+      <div className="text-[#d0d0d0] text-xs mt-1">Composez le <strong className="text-white">112</strong> (valable dans 200+ pays).</div>
     </div>
   );
 
@@ -379,35 +379,35 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
   const confidenceColor = data.confidence === 'high' ? '#4ade80' : data.confidence === 'medium' ? '#fbbf24' : '#f87171';
 
   return (
-    <div style={{ background: '#0d1a0d', border: '1px solid #1a3a1a', borderRadius: 12, padding: 14 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <div style={{ color: '#4ade80', fontWeight: 700 }}>🆘 {data.countryName}</div>
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          <span style={{ color: '#d0d0d0', fontSize: 10 }}>{sourceLabel}</span>
-          <span style={{ color: confidenceColor, fontSize: 10, fontWeight: 700 }}>{data.confidence.toUpperCase()}</span>
+    <div className="rounded-xl p-3.5" style={{ background: '#0d1a0d', border: '1px solid #1a3a1a' }}>
+      <div className="flex justify-between items-center mb-3">
+        <div className="text-green-400 font-bold">🆘 {data.countryName}</div>
+        <div className="flex gap-1.5 items-center">
+          <span className="text-[#d0d0d0] text-[10px]">{sourceLabel}</span>
+          <span className="text-[10px] font-bold" style={{ color: confidenceColor }}>{data.confidence.toUpperCase()}</span>
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+      <div className="grid gap-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
         {[
           { label: '🚔 Police', number: data.police, color: '#60c8f0' },
           { label: '🚑 Ambulance', number: data.ambulance, color: '#f87171' },
           { label: '🚒 Pompiers', number: data.fire, color: '#fb923c' },
           ...(data.roadside ? [{ label: '🔧 Dépannage', number: data.roadside, color: '#fbbf24', note: data.roadsideNote }] : []),
-        ].map((item: any, i: number) => (
+        ].map((item: Record<string, unknown>, i: number) => (
           <a key={i} href={`tel:${item.number.replace(/[\s().+]/g, '')}`} style={{
             display: 'flex', flexDirection: 'column' as const, background: '#111',
             border: '1px solid #3a3a3a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
           }}>
-            <div style={{ color: '#d0d0d0', fontSize: 10, marginBottom: 2 }}>{item.label}</div>
-            <div style={{ color: item.color, fontWeight: 900, fontSize: 18, fontFamily: 'monospace' }}>{item.number}</div>
-            {item.note && <div style={{ color: '#d0d0d0', fontSize: 10, marginTop: 2 }}>{item.note}</div>}
+            <div className="text-[#d0d0d0] text-[10px]" style={{ marginBottom: 2 }}>{item.label}</div>
+            <div className="font-black text-lg" style={{ color: item.color, fontFamily: 'monospace' }}>{item.number}</div>
+            {item.note && <div className="text-[#d0d0d0] text-[10px]" style={{ marginTop: 2 }}>{item.note}</div>}
           </a>
         ))}
       </div>
       {data.universal && data.universal !== data.police && (
-        <div style={{ marginTop: 10, background: '#111', border: '1px solid #444', borderRadius: 8, padding: '8px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ color: '#d0d0d0', fontSize: 12 }}>Urgences universel</span>
-          <a href={`tel:${data.universal}`} style={{ color: '#fff', fontWeight: 900, fontSize: 18, fontFamily: 'monospace', textDecoration: 'none' }}>{data.universal}</a>
+        <div className="mt-2.5 bg-[#111] rounded-lg flex justify-between items-center" style={{ border: '1px solid #444', padding: '8px 12px' }}>
+          <span className="text-[#d0d0d0] text-xs">Urgences universel</span>
+          <a href={`tel:${data.universal}`} className="text-white font-black text-lg no-underline" style={{ fontFamily: 'monospace' }}>{data.universal}</a>
         </div>
       )}
     </div>
@@ -428,18 +428,18 @@ export function CountryEmergencySearch() {
   };
 
   return (
-    <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 14, padding: 16, marginBottom: 16 }}>
-      <div style={{ color: '#fff', fontWeight: 700, marginBottom: 12, fontSize: 14 }}>
+    <div className="bg-[#111] rounded-[14px] p-4 mb-4" style={{ border: '1px solid #3a3a3a' }}>
+      <div className="text-white font-bold mb-3 text-sm">
         🌍 Urgences pour un autre pays
       </div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+      <div className="flex gap-2 mb-3">
         <input
           aria-label="Code pays"
           placeholder="Code pays (ex: MA, KE, VN...)"
           value={code}
           onChange={e => setCode(e.target.value.toUpperCase().slice(0,3))}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-          style={{ width: 100, background: '#1a1a1a', border: '1px solid #555', borderRadius: 8, color: '#fff', padding: '9px 10px', fontSize: 14, boxSizing: 'border-box' as const }}
+          className="rounded-lg text-white text-sm" style={{ width: 100, background: '#1a1a1a', border: '1px solid #555', padding: '9px 10px', boxSizing: 'border-box' as const }}
         />
         <input
           aria-label="Nom du pays"
@@ -447,7 +447,7 @@ export function CountryEmergencySearch() {
           value={name}
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-          style={{ flex: 1, background: '#1a1a1a', border: '1px solid #555', borderRadius: 8, color: '#fff', padding: '9px 12px', fontSize: 14 }}
+          className="flex-1 rounded-lg text-white text-sm" style={{ background: '#1a1a1a', border: '1px solid #555', padding: '9px 12px' }}
         />
         <button onClick={handleSubmit} disabled={!code.trim()} style={{
           background: '#FF3500', color: '#fff', border: 'none', borderRadius: 8,
@@ -459,7 +459,7 @@ export function CountryEmergencySearch() {
       {submitted && search && (
         <UnknownCountryLookup countryCode={submitted.code} countryName={submitted.name || undefined} />
       )}
-      <div style={{ color: '#b0b0b0', fontSize: 11, marginTop: 8 }}>
+      <div className="text-[11px] mt-2 text-[#b0b0b0]">
         ISO 3166-1 alpha-2 · Si non trouvé, une recherche IA est lancée automatiquement.
       </div>
     </div>
@@ -493,26 +493,26 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
   if (mode === 'compact') {
     const critical = selected.contacts.filter(c => ['police','ambulance','rescue'].includes(c.type)).slice(0, 4);
     return (
-      <div style={{ background: '#0d1a0d', border: '1px solid #1a3a1a', borderRadius: 12, padding: 16, marginTop: 16 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <div style={{ color: '#4ade80', fontWeight: 700, fontSize: 14 }}>
+      <div className="rounded-xl p-4 mt-4" style={{ background: '#0d1a0d', border: '1px solid #1a3a1a' }}>
+        <div className="flex justify-between items-center mb-3">
+          <div className="text-green-400 font-bold text-sm">
             🆘 Urgences · {selected.flag} {selected.name}
           </div>
           <select aria-label="Sélectionner un pays" value={country} onChange={e => setCountry(e.target.value)}
-            style={{ background: '#1a1a1a', border: '1px solid #555', borderRadius: 6, color: '#ccc', padding: '4px 8px', fontSize: 11 }}>
+            className="rounded-md text-[11px]" style={{ background: '#1a1a1a', border: '1px solid #555', color: '#ccc', padding: '4px 8px' }}>
             {EMERGENCY_DATA.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
           </select>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        <div className="grid gap-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
           {critical.map((c, i) => (
             <a key={i} href={`tel:${c.number.replace(/[\s().]/g, '')}`} style={{
               display: 'flex', alignItems: 'center', gap: 8, background: '#111',
               border: '1px solid #3a3a3a', borderRadius: 8, padding: '10px 12px', textDecoration: 'none',
             }}>
-              <span style={{ fontSize: 18 }}>{TYPE_ICON[c.type]}</span>
+              <span className="text-lg">{TYPE_ICON[c.type]}</span>
               <div>
-                <div style={{ color: TYPE_COLOR[c.type], fontWeight: 700, fontSize: 14 }}>{c.number}</div>
-                <div style={{ color: '#d0d0d0', fontSize: 11 }}>{c.name}</div>
+                <div className="font-bold text-sm" style={{ color: TYPE_COLOR[c.type] }}>{c.number}</div>
+                <div className="text-[#d0d0d0] text-[11px]">{c.name}</div>
               </div>
             </a>
           ))}
@@ -523,16 +523,16 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
 
   // ── Full page ─────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: '100vh', background: '#06060C', color: '#fff', padding: 16 }}>
-      <div style={{ maxWidth: 480, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          {onClose && <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#d0d0d0', cursor: 'pointer', fontSize: 14 }}>← Retour</button>}
-          <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>🆘 Urgences mondiales</div>
+    <div className="min-h-screen bg-[#06060C] text-white p-4">
+      <div className="mx-auto max-w-[480px]">
+        <div className="flex justify-between items-center mb-5">
+          {onClose && <button onClick={onClose} className="bg-transparent border-0 text-[#d0d0d0] cursor-pointer text-sm">← Retour</button>}
+          <div className="text-[#FF3500] font-black text-xl">🆘 Urgences mondiales</div>
           <div style={{ width: 60 }} />
         </div>
 
         {/* Region filter */}
-        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4, marginBottom: 10, scrollbarWidth: 'none' as const }}>
+        <div className="flex gap-1.5 overflow-x-auto mb-2.5" style={{ paddingBottom: 4, scrollbarWidth: 'none' as const }}>
           {REGIONS.map(r => (
             <button key={r} onClick={() => setRegion(r)} style={{
               background: region === r ? '#FF3500' : '#111',
@@ -546,7 +546,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         </div>
 
         {/* Country selector */}
-        <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4, marginBottom: 14, scrollbarWidth: 'none' as any }}>
+        <div className="flex gap-1.5 overflow-x-auto" style={{ paddingBottom: 4, marginBottom: 14, scrollbarWidth: 'none' as string }}>
           {filteredCountries.map(c => (
             <button key={c.code} onClick={() => setCountry(c.code)} style={{
               background: country === c.code ? '#FF3500' : '#111',
@@ -564,12 +564,12 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
           placeholder="Rechercher..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          style={{ background: '#111', border: '1px solid #444', borderRadius: 10, color: '#fff', padding: '10px 14px', fontSize: 14, width: '100%', boxSizing: 'border-box' as const, marginBottom: 12 }}
+          className="bg-[#111] rounded-[10px] text-white text-sm w-full mb-3" style={{ border: '1px solid #444', padding: '10px 14px', boxSizing: 'border-box' as const }}
           aria-label="Rechercher un numéro d'urgence"
         />
 
         {/* Type filter */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap' as const }}>
+        <div className="flex gap-1.5 mb-4" style={{ flexWrap: 'wrap' as const }}>
           {[
             { key: 'all', label: 'Tous' },
             { key: 'police', label: '🚔 Police' },
@@ -595,8 +595,8 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         {/* Dynamic country lookup */}
         <CountryEmergencySearch />
 
-        <div style={{ color: '#d0d0d0', fontSize: 13, marginBottom: 12, marginTop: 16 }}>
-          {selected.flag} <strong style={{ color: '#fff' }}>{selected.name}</strong> — {contacts.length} numéro{contacts.length !== 1 ? 's' : ''}
+        <div className="text-[#d0d0d0] text-[13px] mb-3 mt-4">
+          {selected.flag} <strong className="text-white">{selected.name}</strong> — {contacts.length} numéro{contacts.length !== 1 ? 's' : ''}
         </div>
 
         {contacts.map((c, i) => (
@@ -612,23 +612,23 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
             }}>
               {TYPE_ICON[c.type]}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ color: '#ccc', fontSize: 13, marginBottom: 2 }}>{c.name}</div>
-              <div style={{ color: TYPE_COLOR[c.type], fontWeight: 900, fontSize: 20, fontFamily: 'monospace', letterSpacing: 1 }}>
+            <div className="flex-1" style={{ minWidth: 0 }}>
+              <div className="text-[13px]" style={{ color: '#ccc', marginBottom: 2 }}>{c.name}</div>
+              <div className="font-black text-xl" style={{ color: TYPE_COLOR[c.type], fontFamily: 'monospace', letterSpacing: 1 }}>
                 {c.number}
               </div>
-              {c.note && <div style={{ color: '#d0d0d0', fontSize: 11, marginTop: 2 }}>{c.note}</div>}
+              {c.note && <div className="text-[#d0d0d0] text-[11px]" style={{ marginTop: 2 }}>{c.note}</div>}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'flex-end', gap: 4 }}>
-              {c.free && <span style={{ background: '#0d2a0d', color: '#4ade80', fontSize: 10, fontWeight: 700, borderRadius: 4, padding: '2px 6px' }}>GRATUIT</span>}
-              <span style={{ color: '#d0d0d0', fontSize: 18 }}>📞</span>
+            <div className="flex items-end gap-1" style={{ flexDirection: 'column' as const }}>
+              {c.free && <span className="text-green-400 text-[10px] font-bold rounded" style={{ background: '#0d2a0d', padding: '2px 6px' }}>GRATUIT</span>}
+              <span className="text-[#d0d0d0] text-lg">📞</span>
             </div>
           </a>
         ))}
 
-        <div style={{ color: '#b0b0b0', fontSize: 11, textAlign: 'center' as const, marginTop: 20, lineHeight: 1.6 }}>
+        <div className="text-[11px] mt-5 leading-relaxed" style={{ color: '#b0b0b0', textAlign: 'center' as const }}>
           Appuyez pour appeler directement.<br />
-          Urgence vitale → toujours composer le <strong style={{ color: '#d0d0d0' }}>112</strong> (Europe) ou <strong style={{ color: '#d0d0d0' }}>911</strong> (Amériques).
+          Urgence vitale → toujours composer le <strong className="text-[#d0d0d0]">112</strong> (Europe) ou <strong className="text-[#d0d0d0]">911</strong> (Amériques).
         </div>
       </div>
     </div>

@@ -69,7 +69,7 @@ function FieldBox({ label, value }: { label: string; value?: string | null }) {
 }
 
 // ── Section Incident ─────────────────────────────────────────
-function IncidentSection({ session }: { session: any }) {
+function IncidentSection({ session }: { session: Record<string, unknown> }) {
   const accident = session.accident || {};
   const loc = accident.location || {};
 
@@ -81,7 +81,7 @@ function IncidentSection({ session }: { session: any }) {
           <FieldBox label="Date" value={accident.date} />
           <FieldBox label="Heure" value={accident.time} />
         </div>
-        <div style={{ ...S.fieldBox, marginBottom: 8 }}>
+        <div className="mb-2">
           <div style={S.label}>Lieu</div>
           <div style={S.value}>{[loc.address, loc.city, loc.country].filter(Boolean).join(', ') || '—'}</div>
         </div>
@@ -90,23 +90,23 @@ function IncidentSection({ session }: { session: any }) {
           <FieldBox label="Nombre de vehicules" value={String(session.vehicleCount || 2)} />
         </div>
         {loc.lat && loc.lng && (
-          <div style={{ ...S.fieldBox, marginBottom: 8 }}>
+          <div className="mb-2">
             <div style={S.label}>Coordonnees GPS</div>
-            <div style={{ ...S.value, fontFamily: 'DM Mono, monospace', fontSize: 12 }}>
+            <div className="text-xs" style={{ fontFamily: 'DM Mono, monospace' }}>
               {Number(loc.lat).toFixed(6)}, {Number(loc.lng).toFixed(6)}
             </div>
             <a
               href={`https://maps.google.com/?q=${loc.lat},${loc.lng}`}
               target="_blank" rel="noopener noreferrer"
-              style={{ fontSize: 11, color: '#4a9eff', textDecoration: 'none', display: 'block', marginTop: 4 }}
+              className="text-[11px] no-underline block mt-1 text-[#4a9eff]"
             >
               ↗ Ouvrir dans Google Maps
             </a>
           </div>
         )}
         {accident.injuries && accident.injuryDetails && (
-          <div style={{ padding: '10px 12px', borderRadius: 6, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', marginBottom: 8 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', marginBottom: 6 }}>BLESSES — DETAILS</div>
+          <div className="rounded-md mb-2" style={{ padding: '10px 12px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+            <div className="text-[11px] font-bold text-red-500 mb-1.5">BLESSES — DETAILS</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Gravite" value={accident.injuryDetails.severity} />
               <FieldBox label="Ambulance" value={accident.injuryDetails.ambulance ? 'OUI' : 'NON'} />
@@ -126,7 +126,7 @@ function IncidentSection({ session }: { session: any }) {
 }
 
 // ── Section Conducteurs ───────────────────────────────────────
-function ParticipantCard({ label, participant, color }: { label: string; participant: any; color: string }) {
+function ParticipantCard({ label, participant, color }: { label: string; participant: Record<string, unknown>; color: string }) {
   const d = participant?.driver || {};
   const v = participant?.vehicle || {};
   const i = participant?.insurance || {};
@@ -134,16 +134,16 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
   const isEmpty = !d.lastName && !d.firstName && !v.plate;
 
   return (
-    <div style={{ marginBottom: 16 }}>
+    <div className="mb-4">
       <div style={S.sectionHeader(color)}>{label}</div>
       <div style={S.sectionBody}>
         {isEmpty ? (
-          <div style={{ padding: 12, textAlign: 'center', opacity: 0.7, fontSize: 13 }}>
+          <div className="p-3 text-center text-[13px]" style={{ opacity: 0.7 }}>
             Conducteur non encore enregistre
           </div>
         ) : (
           <>
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 8 }}>IDENTITE</div>
+            <div className="text-[11px] font-bold mb-2" style={{ opacity: 0.75, letterSpacing: 1 }}>IDENTITE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Nom" value={d.lastName} />
               <FieldBox label="Prenom" value={d.firstName} />
@@ -154,7 +154,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
             </div>
             <FieldBox label="Adresse" value={d.address} />
 
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>VEHICULE</div>
+            <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>VEHICULE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Plaque" value={v.plate} />
               <FieldBox label="Marque / Modele" value={[v.brand, v.model].filter(Boolean).join(' ')} />
@@ -164,7 +164,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
               <FieldBox label="Type" value={v.vehicleType} />
             </div>
 
-            <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ASSURANCE</div>
+            <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ASSURANCE</div>
             <div style={S.fieldGrid}>
               <FieldBox label="Assureur" value={i.company} />
               <FieldBox label="N\u00b0 police" value={i.policyNumber} />
@@ -172,10 +172,10 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.damagedZones?.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
+                <div className="flex flex-wrap gap-1">
                   {participant.damagedZones.map((z: string) => (
-                    <span key={z} style={{ padding: '3px 8px', borderRadius: 4, background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)', fontSize: 11, color: '#ff6633' }}>{z}</span>
+                    <span key={z} className="rounded text-[11px]" style={{ padding: '3px 8px', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)', color: '#ff6633' }}>{z}</span>
                   ))}
                 </div>
               </>
@@ -183,10 +183,10 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 
             {participant.circumstances?.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <div className="text-[11px] font-bold" style={{ opacity: 0.75, letterSpacing: 1, margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
+                <div className="flex flex-col gap-[3px]">
                   {participant.circumstances.map((c: string, i: number) => (
-                    <div key={i} style={{ fontSize: 12, padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>• {c}</div>
+                    <div key={i} className="text-xs" style={{ padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>• {c}</div>
                   ))}
                 </div>
               </>
@@ -198,7 +198,7 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
   );
 }
 
-function PartiesSection({ session }: { session: any }) {
+function PartiesSection({ session }: { session: Record<string, unknown> }) {
   return (
     <div>
       <ParticipantCard label="Conducteur A" participant={session.participantA} color="#1a3a6e" />
@@ -210,7 +210,7 @@ function PartiesSection({ session }: { session: any }) {
 }
 
 // ── Section Medias ────────────────────────────────────────────
-function MediaSection({ session }: { session: any }) {
+function MediaSection({ session }: { session: Record<string, unknown> }) {
   const photos = (session.accident?.photos || []) as Array<{
     id: string; category: string; base64: string; caption?: string; takenAt: string;
   }>;
@@ -230,23 +230,23 @@ function MediaSection({ session }: { session: any }) {
       <div style={S.sectionHeader()}>3. Photos et croquis</div>
       <div style={S.sectionBody}>
         {photos.length === 0 && !sketchImage ? (
-          <div style={{ textAlign: 'center', padding: 20, opacity: 0.7 }}>Aucun media enregistre</div>
+          <div className="text-center p-5" style={{ opacity: 0.7 }}>Aucun media enregistre</div>
         ) : (
           <>
             {photos.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 10 }}>
+                <div className="text-[11px] font-bold mb-2.5" style={{ opacity: 0.75, letterSpacing: 1 }}>
                   PHOTOS ({photos.length})
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
+                <div className="grid gap-2 mb-4" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
                   {photos.map((photo) => (
-                    <div key={photo.id} style={{ borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)' }}>
+                    <div key={photo.id} className="rounded-md overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
                       <img
                         src={`data:image/jpeg;base64,${photo.base64}`}
                         alt={CATEGORIES[photo.category] || photo.category}
-                        style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }}
+                        className="w-full object-cover block" style={{ aspectRatio: '4/3' }}
                       />
-                      <div style={{ padding: '5px 7px', background: 'rgba(0,0,0,0.6)', fontSize: 9, opacity: 0.8 }}>
+                      <div className="text-[9px]" style={{ padding: '5px 7px', background: 'rgba(0,0,0,0.6)', opacity: 0.8 }}>
                         {CATEGORIES[photo.category] || photo.category}
                         {photo.caption && <span style={{ opacity: 0.75 }}> — {photo.caption}</span>}
                       </div>
@@ -258,15 +258,14 @@ function MediaSection({ session }: { session: any }) {
 
             {sketchImage && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.75, letterSpacing: 1, marginBottom: 10 }}>
+                <div className="text-[11px] font-bold mb-2.5" style={{ opacity: 0.75, letterSpacing: 1 }}>
                   CROQUIS
                 </div>
-                <div style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)', marginBottom: 8 }}>
+                <div className="rounded-lg overflow-hidden mb-2" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
                   <img
                     src={sketchImage}
                     alt="Croquis de l'accident"
-                    style={{ width: '100%', display: 'block', background: '#fff' }}
-                  />
+                    className="w-full block bg-white" />
                 </div>
               </>
             )}
@@ -382,7 +381,7 @@ function AnnotationsSection({
       <div style={S.sectionHeader()}>Infractions constatees</div>
       <div style={S.sectionBody}>
         {ann.infractions.map((inf, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 1fr 80px 32px', gap: 6, marginBottom: 8, alignItems: 'center' }}>
+          <div key={i} className="grid gap-1.5 mb-2 items-center" style={{ gridTemplateColumns: '140px 1fr 80px 32px' }}>
             <input
               placeholder="Code (ex: LCR 36)"
               aria-label="Code infraction"
@@ -409,16 +408,16 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, infractions: a.infractions.filter((_, j) => j !== i) }))}
-              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, minHeight: 44, minWidth: 44 }}
+              className="rounded-md text-red-500 cursor-pointer text-sm" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', minHeight: 44, minWidth: 44 }}
               aria-label="Supprimer"
             >×</button>
           </div>
         ))}
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap' }}>
+        <div className="flex gap-2 flex-wrap" style={{ marginTop: 6 }}>
           <button
             onClick={() => addInfraction()}
-            style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 12 }}
+            className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
           >
             + Ajouter
           </button>
@@ -426,7 +425,7 @@ function AnnotationsSection({
             <button
               key={p.code}
               onClick={() => addInfraction(p)}
-              style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,179,0,0.06)', color: '#FFB300', cursor: 'pointer', fontSize: 11 }}
+              className="rounded-md cursor-pointer text-[11px]" style={{ padding: '4px 10px', border: '1px solid rgba(255,179,0,0.25)', background: 'rgba(255,179,0,0.06)', color: '#FFB300' }}
             >
               {p.code}
             </button>
@@ -438,7 +437,7 @@ function AnnotationsSection({
       <div style={S.sectionHeader()}>Mesures prises</div>
       <div style={S.sectionBody}>
         {ann.measures.map((m, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px 32px', gap: 6, marginBottom: 8, alignItems: 'center' }}>
+          <div key={i} className="grid gap-1.5 mb-2 items-center" style={{ gridTemplateColumns: '1fr 1fr 80px 32px' }}>
             <select
               aria-label="Type de mesure"
               value={m.type}
@@ -466,12 +465,12 @@ function AnnotationsSection({
             </select>
             <button
               onClick={() => setAnn(a => ({ ...a, measures: a.measures.filter((_, j) => j !== i) }))}
-              style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, color: '#ef4444', cursor: 'pointer', fontSize: 14, minHeight: 44, minWidth: 44 }}
+              className="rounded-md text-red-500 cursor-pointer text-sm" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', minHeight: 44, minWidth: 44 }}
               aria-label="Supprimer"
             >×</button>
           </div>
         ))}
-        <button onClick={addMeasure} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 12, marginTop: 4 }}>
+        <button onClick={addMeasure} className="rounded-md bg-transparent cursor-pointer text-xs mt-1" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
           + Ajouter une mesure
         </button>
       </div>
@@ -480,27 +479,27 @@ function AnnotationsSection({
       <div style={S.sectionHeader()}>Temoins</div>
       <div style={S.sectionBody}>
         {ann.witnesses.map((w, i) => (
-          <div key={i} style={{ padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 10, background: 'rgba(255,255,255,0.02)', position: 'relative' }}>
+          <div key={i} className="p-3 rounded-lg mb-2.5 relative" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.02)' }}>
             <button
               onClick={() => setAnn(a => ({ ...a, witnesses: a.witnesses.filter((_, j) => j !== i) }))}
-              style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 4, color: '#ef4444', cursor: 'pointer', fontSize: 12, padding: '2px 8px' }}
+              className="absolute rounded text-red-500 cursor-pointer text-xs" style={{ top: 8, right: 8, background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)', padding: '2px 8px' }}
             >Supprimer</button>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <div className="grid gap-2 mb-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
               <div>
-                <div style={{ ...S.label, marginBottom: 4 }}>Nom complet *</div>
+                <div className="mb-1">Nom complet *</div>
                 <input aria-label="Nom complet du témoin" value={w.name} onChange={e => { const n = [...ann.witnesses]; n[i].name = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
               </div>
               <div>
-                <div style={{ ...S.label, marginBottom: 4 }}>Telephone</div>
+                <div className="mb-1">Telephone</div>
                 <input aria-label="Téléphone du témoin" value={w.phone} onChange={e => { const n = [...ann.witnesses]; n[i].phone = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
               </div>
             </div>
-            <div style={{ marginBottom: 8 }}>
-              <div style={{ ...S.label, marginBottom: 4 }}>Adresse</div>
+            <div className="mb-2">
+              <div className="mb-1">Adresse</div>
               <input aria-label="Adresse du témoin" value={w.address} onChange={e => { const n = [...ann.witnesses]; n[i].address = e.target.value; setAnn(a => ({ ...a, witnesses: n })); }} style={inputStyle} />
             </div>
             <div>
-              <div style={{ ...S.label, marginBottom: 4 }}>Declaration</div>
+              <div className="mb-1">Declaration</div>
               <textarea
                 aria-label="Déclaration du témoin"
                 value={w.statement}
@@ -511,7 +510,7 @@ function AnnotationsSection({
             </div>
           </div>
         ))}
-        <button onClick={addWitness} style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 12 }}>
+        <button onClick={addWitness} className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}>
           + Ajouter un temoin
         </button>
       </div>
@@ -530,7 +529,7 @@ function AnnotationsSection({
       </div>
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+      <div className="flex gap-2.5 mt-2">
         <button
           onClick={handleSave}
           disabled={saving}
@@ -597,34 +596,34 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
   const stationCountry = agent.station?.country || 'CH';
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--black)', display: 'flex', flexDirection: 'column' }}>
-      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Dossier police — constat {sessionId}</h1>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--black)' }}>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Dossier police — constat {sessionId}</h1>
 
       {/* Header institutionnel */}
-      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ height: 32, objectFit: 'contain', opacity: 0.9 }} />
+      <div className="flex items-center gap-4 shrink-0" style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '12px 20px' }}>
+        <div className="flex items-center gap-2.5">
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain" style={{ height: 32, opacity: 0.9 }} />
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: '#e8eaf0' }}>Module Police</div>
-            <div style={{ fontSize: 10, opacity: 0.75, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+            <div className="font-bold text-sm text-[#e8eaf0]">Module Police</div>
+            <div className="text-[10px]" style={{ opacity: 0.75, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
               {agent.station?.name?.toUpperCase() || 'POSTE'} {agent.station?.canton ? `· ${agent.station.canton}` : ''}
             </div>
           </div>
         </div>
 
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div className="ml-auto flex items-center gap-4">
           {/* Session ID badge */}
-          <div style={{ padding: '4px 10px', borderRadius: 6, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', fontFamily: 'DM Mono, monospace', fontSize: 11 }}>
+          <div className="rounded-md text-[11px]" style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.25)', fontFamily: 'DM Mono, monospace' }}>
             Session: {sessionId}
           </div>
           {/* Agent info */}
-          <div style={{ fontSize: 12, opacity: 0.7, textAlign: 'right' }}>
-            <div style={{ fontWeight: 600 }}>{agent.firstName} {agent.lastName}</div>
-            {agent.badgeNumber && <div style={{ fontSize: 10, opacity: 0.75 }}>Badge: {agent.badgeNumber}</div>}
+          <div className="text-xs text-right" style={{ opacity: 0.7 }}>
+            <div className="font-semibold">{agent.firstName} {agent.lastName}</div>
+            {agent.badgeNumber && <div className="text-[10px]" style={{ opacity: 0.75 }}>Badge: {agent.badgeNumber}</div>}
           </div>
           <button
             onClick={onLogout}
-            style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 12 }}
+            className="rounded-md bg-transparent cursor-pointer text-xs" style={{ padding: '6px 12px', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.5)' }}
           >
             Deconnexion
           </button>
@@ -632,7 +631,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Tab bar */}
-      <div style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '0 20px', display: 'flex', gap: 0 }}>
+      <div className="flex" style={{ background: '#0d1b35', borderBottom: '1px solid rgba(255,255,255,0.25)', padding: '0 20px', gap: 0 }}>
         {TABS.map(tab => (
           <button
             key={tab.id}
@@ -647,7 +646,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
           >
             {tab.label}
             {tab.id === 'annotations' && (
-              <span style={{ marginLeft: 6, padding: '1px 6px', borderRadius: 10, background: '#1d4ed8', fontSize: 10, color: '#fff' }}>
+              <span className="rounded-[10px] text-[10px] text-white" style={{ marginLeft: 6, padding: '1px 6px', background: '#1d4ed8' }}>
                 Confidentiel
               </span>
             )}
@@ -671,15 +670,15 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px', maxWidth: 900, width: '100%', margin: '0 auto' }}>
+      <div className="flex-1 overflow-y-auto w-full mx-auto" style={{ padding: '20px', maxWidth: 900 }}>
         {isLoading && (
-          <div style={{ textAlign: 'center', padding: 60, opacity: 0.75 }}>
+          <div className="text-center" style={{ padding: 60, opacity: 0.75 }}>
             Chargement de la session...
           </div>
         )}
 
         {error && (
-          <div style={{ padding: 20, borderRadius: 8, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444' }}>
+          <div className="p-5 rounded-lg text-red-500" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
             Erreur : {error.message}
           </div>
         )}
@@ -704,7 +703,7 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       </div>
 
       {/* Bandeau confidentiel */}
-      <div style={{ padding: '6px', textAlign: 'center', background: '#0d1b35', borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 10, opacity: 0.7, letterSpacing: 1 }}>
+      <div className="text-center text-[10px]" style={{ padding: '6px', background: '#0d1b35', borderTop: '1px solid rgba(255,255,255,0.06)', opacity: 0.7, letterSpacing: 1 }}>
         DOCUMENT OFFICIEL — USAGE INTERNE EXCLUSIVEMENT — boom.contact Module Police
       </div>
     </div>

@@ -129,7 +129,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
   }) => {
     const fieldId = `ped-${k}`;
     return (
-      <div style={{ marginBottom: 12 }}>
+      <div className="mb-3">
         <label htmlFor={fieldId} style={lbl}>{label}</label>
         <input
           id={fieldId}
@@ -161,11 +161,11 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         background: open ? 'rgba(255,255,255,0.04)' : 'transparent',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+      <div className="flex items-center" style={{ gap: 9 }}>
         <span style={{ fontSize: 17 }}>{icon}</span>
-        <span style={{ fontSize: 13, fontWeight: 600 }}>{title}</span>
+        <span className="text-[13px] font-semibold">{title}</span>
         {badge}
-        {done && !open && <span style={{ fontSize: 11, color: '#22c55e' }}>✓</span>}
+        {done && !open && <span className="text-[11px] text-green-500">✓</span>}
       </div>
       <span style={{
         fontSize: 18, opacity: 0.7,
@@ -176,12 +176,12 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
   );
 
   return (
-    <div style={{ padding: '20px 20px 48px', maxWidth: 480, margin: '0 auto' }}>
+    <div className="mx-auto" style={{ padding: '20px 20px 48px', maxWidth: 480 }}>
 
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 22 }}>
-        <div style={{ fontSize: 42, marginBottom: 8 }}>{hasInjuries ? '🚑' : '🚶'}</div>
-        <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>
+      <div className="text-center" style={{ marginBottom: 22 }}>
+        <div className="mb-2" style={{ fontSize: 42 }}>{hasInjuries ? '🚑' : '🚶'}</div>
+        <h2 className="text-lg font-extrabold m-0">
           {filledByDriverA ? 'Coordonnées du piéton' : 'Vos coordonnées'}
         </h2>
 
@@ -196,7 +196,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
               : '🚑 Prenez le temps qu\'il faut — seuls votre nom et un contact suffisent'}
           </div>
         ) : (
-          <p style={{ fontSize: 13, opacity: 0.7, marginTop: 6 }}>
+          <p className="text-[13px]" style={{ opacity: 0.7, marginTop: 6 }}>
             {filledByDriverA
               ? 'Saisissez les infos du piéton ou scannez sa pièce d\'identité'
               : 'Pour recevoir votre copie PDF du constat'}
@@ -211,15 +211,15 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         border: `1px solid ${ocrDone ? 'rgba(34,197,94,0.25)' : 'rgba(255,53,0,0.15)'}`,
         display: 'flex', alignItems: 'center', gap: 11,
       }}>
-        <span style={{ fontSize: 22, flexShrink: 0 }}>{ocrDone ? '✅' : '📄'}</span>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 13, fontWeight: 700 }}>
+        <span className="text-[22px] shrink-0">{ocrDone ? '✅' : '📄'}</span>
+        <div className="flex-1">
+          <div className="text-[13px] font-bold">
             {ocrDone ? 'Document lu' : 'Scanner un document d\'identité'}
           </div>
-          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 1 }}>
+          <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 1 }}>
             {ocrDone ? 'Vérifiez les champs' : 'CI · Passeport · Permis — toutes nationalités'}
           </div>
-          {ocrError && <div style={{ fontSize: 11, color: '#ef4444', marginTop: 4 }}>⚠️ {ocrError}</div>}
+          {ocrError && <div className="text-[11px] text-red-500 mt-1">⚠️ {ocrError}</div>}
         </div>
         <button
           onClick={() => fileRef.current?.click()}
@@ -236,11 +236,11 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
       <input ref={fileRef} type="file" accept="image/*" capture="environment"
         aria-label="Télécharger une pièce d'identité"
-        style={{ display: 'none' }}
+        className="hidden"
         onChange={e => { if (e.target.files?.[0]) handleOCR(e.target.files[0]); }} />
 
       {/* === NIVEAU 1 — Essentiel === */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
+      <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
         <Field label="PRÉNOM" k="firstName" placeholder="Jean" />
         <Field label="NOM" k="lastName" placeholder="Dupont" />
       </div>
@@ -263,14 +263,14 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
           }}
         />
         {!data.email && (
-          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>
+          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>
             Optionnel — sans email, le PDF ne sera pas envoyé automatiquement
           </div>
         )}
       </div>
 
       {/* === NIVEAU 2 — Adresse === */}
-      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 10, overflow: 'hidden' }}>
+      <div className="rounded-xl mb-2.5 overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
         <AccordionHeader
           icon="🏠" title="Adresse"
           open={showAddress} onToggle={() => setShowAddress(v => !v)}
@@ -279,7 +279,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         {showAddress && (
           <div style={{ padding: '4px 16px 14px' }}>
             <Field label="RUE ET N°" k="address" placeholder="Rue de la Paix 12" />
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
+            <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
               <Field label="VILLE" k="city" placeholder="Genève" />
               <Field label="CODE POSTAL" k="postalCode" placeholder="1200" />
             </div>
@@ -316,16 +316,16 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
                 ⚠️ Le piéton est mineur — les coordonnées d'un parent ou tuteur sont importantes pour le dossier
               </div>
             )}
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
+            <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '0 10px' }}>
               <Field label="NOM DU PARENT / TUTEUR" k="parentName" placeholder="Marie Dupont" />
-              <div style={{ marginBottom: 12 }}>
+              <div className="mb-3">
                 <label htmlFor="ped-parentRelation" style={lbl}>LIEN</label>
                 <select
                   id="ped-parentRelation"
                   value={data.parentRelation || ''}
                   onChange={e => set('parentRelation', e.target.value)}
                   aria-label="Lien de parenté"
-                  style={{ ...inp, cursor: 'pointer' }}
+                  className="cursor-pointer"
                 >
                   <option value="">—</option>
                   <option value="père">Père</option>
@@ -342,7 +342,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
       </div>
 
       {/* === Pièce d'identité === */}
-      <div style={{ borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', marginBottom: 20, overflow: 'hidden' }}>
+      <div className="rounded-xl mb-5 overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
         <AccordionHeader
           icon="🪪" title="Pièce d'identité"
           open={showIdentity} onToggle={() => setShowIdentity(v => !v)}
@@ -351,7 +351,7 @@ export function PedestrianForm({ filledByDriverA = false, hasInjuries = false, o
         {showIdentity && (
           <div style={{ padding: '4px 16px 14px' }}>
             <Field label="DATE DE NAISSANCE" k="dateOfBirth" type="date" />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 10px' }}>
+            <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '0 10px' }}>
               <Field label="N° DOCUMENT" k="idNumber" placeholder="X 000000" />
               <Field label="NATIONALITÉ" k="nationality" placeholder="Suisse" />
             </div>

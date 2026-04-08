@@ -113,8 +113,8 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
       }}>
         <div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: '#fff' }}>{m.title}</div>
-          <div style={{ fontSize: 13, color: 'rgba(240,237,232,0.5)', marginTop: 4, lineHeight: 1.5, maxWidth: 280 }}>
+          <div className="text-[22px] font-black text-white">{m.title}</div>
+          <div className="text-[13px] mt-1 leading-normal" style={{ color: 'rgba(240,237,232,0.5)', maxWidth: 280 }}>
             {m.subtitle}
           </div>
         </div>
@@ -155,7 +155,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
               boxShadow: '0 6px 24px rgba(255,53,0,0.4)',
             }}
           >
-            <span style={{ fontSize: 20 }}>📤</span>
+            <span className="text-xl">📤</span>
             Partager maintenant
           </button>
         </div>
@@ -166,9 +166,9 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         display: 'flex', alignItems: 'center', gap: 12,
         padding: '16px 20px 0',
       }}>
-        <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
-        <div style={{ color: '#d0d0d0', fontSize: 11 }}>ou choisir</div>
-        <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
+        <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }} />
+        <div className="text-[#d0d0d0] text-[11px]">ou choisir</div>
+        <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }} />
       </div>
 
       {/* Grille canaux */}
@@ -201,7 +201,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
             }}>
               {ch.icon}
             </div>
-            <div style={{ fontSize: 10, color: 'rgba(240,237,232,0.6)', textAlign: 'center' }}>
+            <div className="text-[10px] text-center" style={{ color: 'rgba(240,237,232,0.6)' }}>
               {ch.label}
             </div>
           </button>
@@ -228,7 +228,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
           }}>
             {copied ? '✅' : '📋'}
           </div>
-          <div style={{ fontSize: 10, color: copied ? '#22c55e' : 'rgba(240,237,232,0.6)', textAlign: 'center' }}>
+          <div className="text-[10px] text-center" style={{ color: copied ? '#22c55e' : 'rgba(240,237,232,0.6)' }}>
             {copied ? 'Copié !' : 'Copier lien'}
           </div>
         </button>
@@ -247,9 +247,9 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
           ['5 min', 'pour un constat'],
           ['0€', 'pour essayer'],
         ].map(([val, label]) => (
-          <div key={label} style={{ textAlign: 'center' }}>
-            <div style={{ color: '#FF5533', fontWeight: 900, fontSize: 16 }}>{val}</div>
-            <div style={{ color: '#d0d0d0', fontSize: 10 }}>{label}</div>
+          <div key={label} className="text-center">
+            <div className="font-black text-base text-[#FF5533]">{val}</div>
+            <div className="text-[#d0d0d0] text-[10px]">{label}</div>
           </div>
         ))}
       </div>
@@ -262,9 +262,9 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         borderRadius: 10,
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 20 }}>🎵</span>
-        <div style={{ fontSize: 11, color: '#d0d0d0', lineHeight: 1.5 }}>
-          <strong style={{ color: '#fff' }}>TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !
+        <span className="text-xl">🎵</span>
+        <div className="text-[11px] text-[#d0d0d0] leading-normal">
+          <strong className="text-white">TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !
         </div>
       </div>
 

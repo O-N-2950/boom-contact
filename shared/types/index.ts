@@ -65,6 +65,10 @@ export interface VehicleData {
   color?: string;
   vin?: string;
   category?: string;               // catégorie permis
+  vehicleCategory?: string;        // alias OCR
+  bodyStyle?: string;
+  mapPosition?: { x: number; y: number; angle: number };
+  vehicleData?: Record<string, unknown>;
 }
 
 // ── Blessures ─────────────────────────────────────────────────
@@ -94,6 +98,7 @@ export interface DriverData {
 // ── Assurance ─────────────────────────────────────────────────
 export interface InsuranceData {
   company: string;
+  companyName?: string;             // Alias OCR
   policyNumber: string;
   agentName?: string;
   agentPhone?: string;
@@ -162,6 +167,7 @@ export interface AccidentLocation {
   address: string;
   city: string;
   country: string;
+  countryName?: string;
   lat?: number;
   lng?: number;
 }
@@ -181,6 +187,9 @@ export interface AccidentData {
   injuries?: boolean;
   injuryDetails?: InjuryData;
   thirdPartyDamage?: boolean;
+  partyBStatus?: string;
+  insurerB?: string;
+  vehicleAPos?: { x: number; y: number; angle: number };
   vehicleCount?: number;
 }
 

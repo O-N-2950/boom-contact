@@ -23,6 +23,13 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
+        chunkFileNames(chunkInfo) {
+          const routeChunks = ['ConstatFlow', 'JoinSession'];
+          if (routeChunks.includes(chunkInfo.name)) {
+            return `assets/${chunkInfo.name}.[hash].js`;
+          }
+          return 'assets/[name]-[hash].js';
+        },
         manualChunks(id) {
           if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
             return 'vendor';

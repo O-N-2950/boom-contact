@@ -47,9 +47,9 @@ export interface PdfLangConfig {
 }
 
 export function determineLangs(
-  participantA: any,
-  participantB: any,
-  accident: any
+  participantA: Record<string, unknown>,
+  participantB: Record<string, unknown>,
+  accident: Record<string, unknown>
 ): PdfLangConfig {
   // Pays du conducteur A : d'abord l'OCR du permis, sinon la langue choisie dans l'UI
   const countryA = participantA?.driver?.country

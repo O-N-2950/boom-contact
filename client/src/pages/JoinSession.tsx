@@ -21,7 +21,7 @@ const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}><div style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full" style={{ width: 24, height: 24, border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
@@ -137,7 +137,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     { sessionId },
     {
       enabled: joined && !!sessionId,
-      onSuccess: (data: any) => {
+      onSuccess: (data: Record<string, unknown>) => {
         if (data?.accident) {
           const acc = data.accident;
           const loc = acc.location || {};
@@ -187,7 +187,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   };
 
 
-  function ocrCategoryToType(cat?: string): any {
+  function ocrCategoryToType(cat?: string): string | null {
     if (!cat) return null;
     const c = cat.toLowerCase();
     if (c.includes('tourisme')||c.includes('automobile')||c.includes('personenwagen')||
@@ -232,7 +232,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     }
   };
 
-  const handleLocationComplete = (data: any) => {
+  const handleLocationComplete = (data: Record<string, unknown>) => {
     const { vehicleType: vt } = data;
     setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
     setStep('photos');
@@ -292,55 +292,55 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
   // ── LANDING ──────────────────────────────────────────────
   if (step === 'landing') return (
-    <div style={{ maxWidth: 420, margin: '0 auto', minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '32px 24px' }}>
+    <div className="mx-auto min-h-[100svh] flex flex-col justify-center" style={{ maxWidth: 420, padding: '32px 24px' }}>
 
       {/* Animated header */}
-      <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
-        <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: 32, letterSpacing: '-0.5px', marginBottom: 8 }}>
+      <div className="text-center" style={{ marginBottom: 36 }}>
+        <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain mb-4" style={{ width: 100, height: 100, display: 'inline-block', animation: joined ? 'bounceIn 0.5s ease' : 'explosion 0.7s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }} />
+        <h1 className="text-[32px] mb-2" style={{ fontFamily: 'Oswald, sans-serif', letterSpacing: '-0.5px' }}>
           <span style={{ color: 'var(--boom)' }}>boom</span>
           <span style={{ opacity: 0.7 }}>.</span>
           <span>contact</span>
         </h1>
-        <p style={{ fontSize: 14, opacity: 0.75, lineHeight: 1.65 }}>
+        <p className="text-sm" style={{ opacity: 0.75, lineHeight: 1.65 }}>
           Vous avez été invité à rejoindre un constat d'accident partagé.
         </p>
       </div>
 
       {/* Session badge */}
       {sessionId && (
-        <div style={{ padding: '16px 20px', borderRadius: 12, background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)', textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ fontSize: 10, letterSpacing: 2, opacity: 0.7, fontFamily: 'DM Mono, monospace', textTransform: 'uppercase', marginBottom: 6 }}>Session</div>
-          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: 2, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
+        <div className="rounded-xl text-center mb-6" style={{ padding: '16px 20px', background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)' }}>
+          <div className="text-[10px] uppercase mb-1.5" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>Session</div>
+          <div className="text-xl font-bold" style={{ letterSpacing: 2, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
         </div>
       )}
 
       {!sessionId && (
-        <div style={{ padding: 16, borderRadius: 12, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontSize: 14, textAlign: 'center', marginBottom: 24 }}>
+        <div className="p-4 rounded-xl text-red-500 text-sm text-center mb-6" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
           ⚠️ Lien invalide. Scannez à nouveau le QR code.
         </div>
       )}
 
       {/* What to expect */}
-      <div style={{ marginBottom: 24 }}>
+      <div className="mb-6">
         {[
           { icon: '📄', text: 'Vous scannez vos documents (2 photos)' },
           { icon: '📋', text: 'Vous remplissez vos infos sur votre téléphone' },
           { icon: '🚗', text: 'Vous indiquez les dégâts sur votre véhicule' },
           { icon: '✍️', text: 'Vous signez — PDF envoyé à votre assureur' },
         ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-            <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
-            <span style={{ fontSize: 13, opacity: 0.7 }}>{item.text}</span>
+          <div key={i} className="flex items-center gap-3" style={{ padding: '10px 0', borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+            <span className="text-xl shrink-0">{item.icon}</span>
+            <span className="text-[13px]" style={{ opacity: 0.7 }}>{item.text}</span>
           </div>
         ))}
       </div>
 
       {error && (
-        <div style={{ marginBottom: 14, padding: 16, borderRadius: 10, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', fontSize: 13, color: '#ef4444' }}>
-          <div style={{ fontWeight: 700, marginBottom: 6 }}>⚠️ {error}</div>
+        <div className="p-4 rounded-[10px] text-[13px] text-red-500" style={{ marginBottom: 14, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}>
+          <div className="font-bold mb-1.5">⚠️ {error}</div>
           {(error.includes('introuvable') || error.includes('expir') || error.includes('not found')) && (
-            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>
+            <div className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Le lien QR n'est valable que 7 jours. Demandez au Conducteur A de vous envoyer un nouveau QR code.
             </div>
           )}
@@ -348,11 +348,11 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       )}
 
       {/* Sélecteur de langue — chaque conducteur choisit sa propre langue */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 11, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: 10, textAlign: 'center' }}>
+      <div className="mb-5">
+        <div className="text-[11px] uppercase mb-2.5 text-center" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
           Votre langue / Your language / Ihre Sprache / La tua lingua
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+        <div className="flex justify-center gap-2">
           {getLangOrder(sessionStorage.getItem('boom_detected_country')).map(lang => {
             const isActive = lang === selectedLang;
             return (
@@ -373,7 +373,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                 }}
               >
                 <span>{LANG_META[lang].flag}</span>
-                <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 400, color: isActive ? 'var(--boom)' : 'rgba(255,255,255,0.5)' }}>
+                <span className="text-[10px]" style={{ fontWeight: isActive ? 700 : 400, color: isActive ? 'var(--boom)' : 'rgba(255,255,255,0.5)' }}>
                   {LANG_META[lang].label.split(' ')[0]}
                 </span>
               </button>
@@ -383,10 +383,10 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       </div>
 
       {/* Email conducteur B */}
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, opacity: 0.7, display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div className="mb-4">
+        <div className="text-xs font-semibold mb-2 flex items-center gap-1.5" style={{ opacity: 0.7 }}>
           📧 Votre email
-          <span style={{ opacity: 0.7, fontWeight: 400 }}>(pour recevoir le PDF)</span>
+          <span className="font-normal" style={{ opacity: 0.7 }}>(pour recevoir le PDF)</span>
         </div>
         <input
           type="email"
@@ -406,7 +406,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             fontSize: 15, boxSizing: 'border-box' as const, fontFamily: 'inherit',
           }}
         />
-        <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>
+        <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 6 }}>
           Optionnel — le PDF vous sera envoyé automatiquement après signature
         </div>
       </div>
@@ -420,15 +420,15 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         boxShadow: '0 8px 32px rgba(255,53,0,0.35)',
       }}>
         {joining ? (
-          <><span style={{ fontSize: 20, animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span> Connexion…</>
+          <><span className="text-xl" style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span> Connexion…</>
         ) : joined ? (
           <><span>🤝</span> Connecté ! Démarrage…</>
         ) : (
-          <><span style={{ fontSize: 20 }}>🤝</span> Rejoindre le constat</>
+          <><span className="text-xl">🤝</span> Rejoindre le constat</>
         )}
       </button>
 
-      <p style={{ textAlign: 'center', marginTop: 10, fontSize: 11, opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
+      <p className="text-center mt-2.5 text-[11px]" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>
         GRATUIT · SANS INSCRIPTION · CHIFFRÉ
       </p>
     </div>
@@ -436,19 +436,19 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
   // ── OCR → FORM → DIAGRAM → SIGN → DONE ─────────────────
   return (
-    <div style={{ maxWidth: 420, margin: '0 auto', minHeight: '100svh', display: 'flex', flexDirection: 'column' }}>
+    <div className="mx-auto min-h-[100svh] flex flex-col max-w-[420px]">
       {/* Header */}
-      <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-        <div style={{ width: 36, height: 36, flexShrink: 0 }}>
-          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+      <div className="flex items-center gap-3 shrink-0" style={{ padding: '14px 20px', borderBottom: '1px solid rgba(240,237,232,0.06)' }}>
+        <div className="shrink-0" style={{ width: 36, height: 36 }}>
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="w-full h-full object-contain" />
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 14 }}>boom.contact</div>
-          <div style={{ fontSize: 10, opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
+          <div className="font-bold text-sm">boom.contact</div>
+          <div className="text-[10px]" style={{ opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>
             CONDUCTEUR {urlRole} · SESSION {sessionId}
           </div>
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
             <button onClick={goBack} style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px',
@@ -473,7 +473,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       )}
 
       <Suspense fallback={<LazyLoading />}>
-      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} style={{ flex: 1, overflowY: 'auto' }}>
+      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} className="flex-1 overflow-y-auto">
         {/* Location supprimée pour B — utilise automatiquement celle de A */}
 
         {step === 'photos' && (
@@ -559,7 +559,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                   onChange={setDamagedZones}
                 />
             <div style={{ padding: '0 20px 20px' }}>
-              <button onClick={handleDiagramDone} style={{ width: '100%', padding: '16px', borderRadius: 10, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700 }}>
+              <button onClick={handleDiagramDone} className="w-full rounded-[10px] border-0 text-white cursor-pointer text-[15px] font-bold" style={{ padding: '16px', background: 'var(--boom)' }}>
                 Continuer → Signature
               </button>
             </div>
@@ -570,25 +570,25 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <>
             {/* Résumé avant signature B */}
             <div style={{ padding: '16px 20px 0' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', opacity: 0.7, fontFamily: 'monospace', marginBottom: 12 }}>
+              <div className="text-[11px] font-bold uppercase mb-3" style={{ letterSpacing: 2, opacity: 0.7, fontFamily: 'monospace' }}>
                 Vérifiez avant de signer
               </div>
-              <div style={{ marginBottom: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
-                <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, fontWeight: 600 }}>🚗 Votre véhicule</div>
-                <div style={{ fontSize: 13, fontWeight: 700 }}>
+              <div className="mb-2.5 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
+                <div className="text-[11px] mb-1.5 font-semibold" style={{ opacity: 0.75 }}>🚗 Votre véhicule</div>
+                <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
-                  {participantData.vehicle?.licensePlate && <span style={{ fontFamily: 'monospace', color: '#00E5FF', marginLeft: 8 }}>{(participantData.vehicle as any).licensePlate}</span>}
+                  {participantData.vehicle?.licensePlate && <span className="ml-2" style={{ fontFamily: 'monospace', color: '#00E5FF' }}>{(participantData.vehicle as any).licensePlate}</span>}
                 </div>
-                {(participantData.insurance as any)?.company && (
-                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 3 }}>🛡️ {(participantData.insurance as any).company}</div>
+                {participantData.insurance?.company && (
+                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 3 }}>🛡️ {participantData.insurance.company}</div>
                 )}
                 {participantData.driver?.firstName && (
-                  <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
+                  <div className="text-xs" style={{ opacity: 0.75, marginTop: 2 }}>👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
               </div>
               <button
                 onClick={() => setStep('form')}
-                style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12, marginBottom: 8 }}
+                className="w-full rounded-lg bg-transparent cursor-pointer text-xs mb-2" style={{ padding: '10px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.4)' }}
               >
                 ✏️ Corriger mes informations
               </button>
@@ -602,7 +602,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             sessionId={sessionId}
             role="B"
             driverEmail={participantData.driver?.email}
-            insurerName={(participantData.insurance as any)?.company || (participantData.insurance as any)?.companyName}
+            insurerName={participantData.insurance?.company || participantData.insurance?.companyName}
             driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
             authUser={authUser}
             authToken={authToken}

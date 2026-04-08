@@ -124,37 +124,37 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
   };
 
   return (
-    <div style={{ maxWidth: 440, margin: '0 auto', padding: '24px 16px', minHeight: '100svh' }}>
-      <h1 style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Tarifs — boom.contact</h1>
+    <div className="mx-auto min-h-[100svh]" style={{ maxWidth: 440, padding: '24px 16px' }}>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap" style={{ width: 1, height: 1, margin: -1, clip: 'rect(0,0,0,0)', border: 0 }}>Tarifs — boom.contact</h1>
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-        <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '8px 0', display: 'flex', alignItems: 'center', gap: 6, touchAction: 'manipulation' }}>← Retour←</button>
+      <div className="flex items-center gap-3 mb-6">
+        <button onClick={onBack} className="bg-transparent border-0 cursor-pointer text-[15px] font-semibold flex items-center gap-1.5 touch-manipulation" style={{ color: 'rgba(255,255,255,0.55)', padding: '8px 0' }}>← Retour←</button>
         <div>
-          <div style={{ fontWeight: 800, fontSize: 18 }}>Acheter des constats</div>
-          <div style={{ fontSize: 11, opacity: 0.7 }}>Crédits sans expiration · Partageables par WhatsApp</div>
+          <div className="font-extrabold text-lg">Acheter des constats</div>
+          <div className="text-[11px]" style={{ opacity: 0.7 }}>Crédits sans expiration · Partageables par WhatsApp</div>
         </div>
       </div>
 
       {/* Credits badge if logged in */}
       {authUser && (
-        <div style={{ background: authUser.credits > 0 ? '#0d2a0d' : '#1a1000', border: `1px solid ${authUser.credits > 0 ? '#1a4a1a' : '#3a2000'}`, borderRadius: 12, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="rounded-xl mb-4 flex justify-between items-center" style={{ background: authUser.credits > 0 ? '#0d2a0d' : '#1a1000', border: `1px solid ${authUser.credits > 0 ? '#1a4a1a' : '#3a2000'}`, padding: '12px 16px' }}>
           <div>
-            <div style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24', fontWeight: 700, fontSize: 14 }}>
+            <div className="font-bold text-sm" style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24' }}>
               {authUser.credits > 0 ? `✅ ${authUser.credits} crédit${authUser.credits > 1 ? 's' : ''} disponible${authUser.credits > 1 ? 's' : ''}` : '⚡ Aucun crédit — rechargez maintenant'}
             </div>
-            <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>{authUser.email}</div>
+            <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>{authUser.email}</div>
           </div>
-          {authUser.credits === 999999 && <span style={{ color: '#FF3500', fontWeight: 900, fontSize: 20 }}>∞</span>}
+          {authUser.credits === 999999 && <span className="text-[#FF3500] font-black text-xl">∞</span>}
         </div>
       )}
 
       {/* Currency selector */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ color: '#d0d0d0', fontSize: 11, fontWeight: 600, letterSpacing: 1, marginBottom: 8 }}>
-          DEVISE {detected && <span style={{ color: '#4ade80', marginLeft: 6 }}>✓ détectée auto</span>}
+      <div className="mb-5">
+        <div className="text-[#d0d0d0] text-[11px] font-semibold mb-2" style={{ letterSpacing: 1 }}>
+          DEVISE {detected && <span className="text-green-400" style={{ marginLeft: 6 }}>✓ détectée auto</span>}
         </div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const }}>
+        <div className="flex gap-1.5" style={{ flexWrap: 'wrap' as const }}>
           {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => (
             <button key={c} onClick={() => setCurrency(c)} style={{
               background: currency === c ? '#FF3500' : '#111',
@@ -170,7 +170,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       </div>
 
       {/* Packages */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+      <div className="flex flex-col gap-3 mb-6">
         {PACKAGES.map(pkg => {
           const amountCents = PRICES[pkg.id][currency];
           const priceStr    = formatPrice(amountCents, currency);
@@ -184,29 +184,29 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
               background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)',
             }}>
               {pkg.popular && (
-                <div style={{ background: '#FF3500', padding: '4px 16px', fontSize: 10, fontWeight: 700, letterSpacing: 1, color: '#fff' }}>
+                <div className="bg-[#FF3500] text-[10px] font-bold text-white" style={{ padding: '4px 16px', letterSpacing: 1 }}>
                   ⭐ PLUS POPULAIRE · ÉCONOMIE {pkg.savings}
                 </div>
               )}
 
               <div style={{ padding: '18px 20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                <div className="flex justify-between items-start mb-2.5">
                   <div>
-                    <div style={{ fontWeight: 800, fontSize: 17 }}>{pkg.icon} {pkg.label}</div>
-                    <div style={{ color: '#d0d0d0', fontSize: 12, marginTop: 2 }}>{pkg.desc}</div>
+                    <div className="font-extrabold" style={{ fontSize: 17 }}>{pkg.icon} {pkg.label}</div>
+                    <div className="text-[#d0d0d0] text-xs" style={{ marginTop: 2 }}>{pkg.desc}</div>
                     {!pkg.popular && pkg.savings && (
-                      <div style={{ color: '#4ade80', fontSize: 11, marginTop: 4 }}>Économie {pkg.savings}</div>
+                      <div className="text-green-400 text-[11px] mt-1">Économie {pkg.savings}</div>
                     )}
                   </div>
-                  <div style={{ textAlign: 'right' as const, flexShrink: 0 }}>
-                    <div style={{ fontSize: 26, fontWeight: 900, color: pkg.popular ? '#FF3500' : '#fff' }}>
+                  <div className="shrink-0" style={{ textAlign: 'right' as const }}>
+                    <div className="text-[26px] font-black" style={{ color: pkg.popular ? '#FF3500' : '#fff' }}>
                       {currency === 'JPY' ? `¥${amountCents}` : priceStr}
                     </div>
-                    <div style={{ color: '#d0d0d0', fontSize: 11 }}>
+                    <div className="text-[#d0d0d0] text-[11px]">
                       {currency !== 'JPY' ? symbol : ''}{' '}par pack
                     </div>
                     {pkg.credits > 1 && (
-                      <div style={{ color: '#d0d0d0', fontSize: 10, marginTop: 2 }}>
+                      <div className="text-[#d0d0d0] text-[10px]" style={{ marginTop: 2 }}>
                         ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} / constat
                       </div>
                     )}
@@ -214,7 +214,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                 </div>
 
                 {pkg.marketing && (
-                  <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: '8px 12px', marginBottom: 12, color: '#d0d0d0', fontSize: 12, lineHeight: 1.5 }}>
+                  <div className="rounded-lg mb-3 text-[#d0d0d0] text-xs leading-normal" style={{ background: 'rgba(255,255,255,0.04)', padding: '8px 12px' }}>
                     {pkg.marketing}
                   </div>
                 )}
@@ -239,13 +239,13 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       </div>
 
       {error && (
-        <div style={{ background: '#2a0a0a', border: '1px solid #5c1a1a', borderRadius: 10, padding: 12, marginBottom: 16, color: '#f87171', fontSize: 13 }}>
+        <div className="rounded-[10px] p-3 mb-4 text-[13px]" style={{ background: '#2a0a0a', border: '1px solid #5c1a1a', color: '#f87171' }}>
           ⚠️ {error}
         </div>
       )}
 
       {/* Trust badges */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 20 }}>
+      <div className="grid gap-2 mb-5" style={{ gridTemplateColumns: '1fr 1fr' }}>
         {[
           { icon: '🔒', text: 'Paiement Stripe sécurisé PCI-DSS' },
           { icon: '♾️', text: 'Crédits sans expiration' },
@@ -254,16 +254,16 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           { icon: '📄', text: 'Facture PDF automatique' },
           { icon: '🏢', text: 'Idéal flottes entreprise' },
         ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: '8px 10px' }}>
-            <span style={{ fontSize: 16 }}>{item.icon}</span>
-            <span style={{ color: '#d0d0d0', fontSize: 11 }}>{item.text}</span>
+          <div key={i} className="flex items-center gap-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 10px' }}>
+            <span className="text-base">{item.icon}</span>
+            <span className="text-[#d0d0d0] text-[11px]">{item.text}</span>
           </div>
         ))}
       </div>
 
       {/* Scenarios */}
-      <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 14, padding: 16, marginBottom: 16 }}>
-        <div style={{ color: '#d0d0d0', fontSize: 12, fontWeight: 700, marginBottom: 10, letterSpacing: 0.5 }}>
+      <div className="rounded-[14px] p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
+        <div className="text-[#d0d0d0] text-xs font-bold mb-2.5" style={{ letterSpacing: 0.5 }}>
           POURQUOI AVOIR DES CRÉDITS D'AVANCE ?
         </div>
         {[
@@ -271,20 +271,20 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
           { icon: '🚚', title: 'Véhicule de société', text: 'Votre livreur a un accrochage. Transférez-lui un crédit instantanément depuis votre mobile.' },
           { icon: '✈️', title: 'En voyage à l\'étranger', text: 'Accident en Allemagne, Australie ou Japon. Votre constat est reconnu dans 150+ pays.' },
         ].map((s, i) => (
-          <div key={i} style={{ display: 'flex', gap: 12, marginBottom: i < 2 ? 12 : 0 }}>
-            <span style={{ fontSize: 20, flexShrink: 0 }}>{s.icon}</span>
+          <div key={i} className="flex gap-3" style={{ marginBottom: i < 2 ? 12 : 0 }}>
+            <span className="text-xl shrink-0">{s.icon}</span>
             <div>
-              <div style={{ color: '#ccc', fontWeight: 600, fontSize: 13 }}>{s.title}</div>
-              <div style={{ color: '#d0d0d0', fontSize: 12, lineHeight: 1.5, marginTop: 2 }}>{s.text}</div>
+              <div className="font-semibold text-[13px] text-[#ccc]">{s.title}</div>
+              <div className="text-[#d0d0d0] text-xs leading-normal" style={{ marginTop: 2 }}>{s.text}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ color: '#b0b0b0', fontSize: 11, textAlign: 'center' as const, lineHeight: 1.6 }}>
+      <div className="text-[11px] leading-relaxed" style={{ color: '#b0b0b0', textAlign: 'center' as const }}>
         boom.contact · PEP's Swiss SA · CHE-476.484.632<br/>
         Bellevue 7, 2950 Courgenay, Jura, Suisse<br/>
-        <a href="mailto:contact@boom.contact" style={{ color: '#d0d0d0' }}>contact@boom.contact</a>
+        <a href="mailto:contact@boom.contact" className="text-[#d0d0d0]">contact@boom.contact</a>
       </div>
     </div>
   );

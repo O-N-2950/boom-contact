@@ -108,33 +108,33 @@ export function CookieBanner() {
         animation: 'slideUp 0.4s ease',
       }}>
         {/* Handle */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+        <div className="flex justify-center" style={{ marginBottom: 14 }}>
           <div style={{ width: 36, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
         </div>
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-          <span style={{ fontSize: 20 }} aria-hidden="true">🍪</span>
+        <div className="flex items-center gap-2.5 mb-3">
+          <span className="text-xl" aria-hidden="true">🍪</span>
           <div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>Cookies & confidentialité</div>
-            <div style={{ color: '#d0d0d0', fontSize: 11 }}>RGPD · nLPD · PEP's Swiss SA</div>
+            <div className="text-white font-bold text-sm">Cookies & confidentialité</div>
+            <div className="text-[#d0d0d0] text-[11px]">RGPD · nLPD · PEP's Swiss SA</div>
           </div>
         </div>
 
-        <div style={{ color: '#d0d0d0', fontSize: 13, lineHeight: 1.6, marginBottom: 14 }}>
-          boom.contact utilise uniquement des cookies <strong style={{ color: '#ccc' }}>strictement nécessaires</strong> au fonctionnement du service (session, préférences langue). Aucun cookie publicitaire ou de tracking.
+        <div className="text-[#d0d0d0] text-[13px] leading-relaxed" style={{ marginBottom: 14 }}>
+          boom.contact utilise uniquement des cookies <strong className="text-[#ccc]">strictement nécessaires</strong> au fonctionnement du service (session, préférences langue). Aucun cookie publicitaire ou de tracking.
         </div>
 
         {/* Expandable detail */}
         <button
           onClick={() => setExpanded(e => !e)}
-          style={{ background: 'none', border: 'none', color: '#d0d0d0', fontSize: 12, cursor: 'pointer', padding: 0, marginBottom: 12, textDecoration: 'underline' }}
+          className="bg-transparent border-0 text-[#d0d0d0] text-xs cursor-pointer p-0 mb-3 underline"
         >
           {expanded ? '▲ Moins de détails' : '▼ En savoir plus'}
         </button>
 
         {expanded && (
-          <div style={{ background: '#111', border: '1px solid #3a3a3a', borderRadius: 10, padding: 14, marginBottom: 14 }}>
+          <div className="bg-[#111] rounded-[10px] p-3.5" style={{ border: '1px solid #3a3a3a', marginBottom: 14 }}>
             <CookieRow
               name="boom_cgu_accepted"
               purpose="Session constat — obligatoire"
@@ -165,7 +165,7 @@ export function CookieBanner() {
               duration="1 an"
               type="Essentiel"
             />
-            <div style={{ marginTop: 10, color: '#c0c0c0', fontSize: 11, lineHeight: 1.5 }}>
+            <div className="mt-2.5 text-[11px] leading-normal text-[#c0c0c0]">
               Aucun cookie Google Analytics, Facebook Pixel, ou publicitaire n'est utilisé.<br/>
               Stripe.com dépose ses propres cookies lors du paiement (nécessaires à la sécurité PCI-DSS).
             </div>
@@ -173,7 +173,7 @@ export function CookieBanner() {
         )}
 
         {/* Buttons */}
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div className="flex gap-2">
           <button
             onClick={() => accept('essential')}
             style={{
@@ -208,11 +208,11 @@ export function CookieBanner() {
           </button>
         </div>
 
-        <div style={{ marginTop: 10, textAlign: 'center' as const, color: '#b0b0b0', fontSize: 10 }}>
+        <div className="mt-2.5 text-[10px]" style={{ textAlign: 'center' as const, color: '#b0b0b0' }}>
           En continuant sans choisir, seuls les cookies essentiels sont utilisés. ·{' '}
           <a
             href="/?privacy=true"
-            style={{ color: '#c0c0c0', textDecoration: 'underline' }}
+            className="underline text-[#c0c0c0]"
             onClick={e => { e.preventDefault(); accept('essential'); window.location.search = '?privacy=true'; }}
           >
             Politique de confidentialité
@@ -225,14 +225,14 @@ export function CookieBanner() {
 
 function CookieRow({ name, purpose, duration, type }: { name: string; purpose: string; duration: string; type: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '6px 0', borderBottom: '1px solid #3a3a3a' }}>
+    <div className="flex justify-between items-start" style={{ padding: '6px 0', borderBottom: '1px solid #3a3a3a' }}>
       <div>
-        <div style={{ color: '#ccc', fontSize: 12, fontFamily: 'monospace' }}>{name}</div>
-        <div style={{ color: '#d0d0d0', fontSize: 11 }}>{purpose}</div>
+        <div className="text-xs" style={{ color: '#ccc', fontFamily: 'monospace' }}>{name}</div>
+        <div className="text-[#d0d0d0] text-[11px]">{purpose}</div>
       </div>
-      <div style={{ textAlign: 'right' as const, flexShrink: 0, marginLeft: 10 }}>
-        <div style={{ color: '#4ade80', fontSize: 10, fontWeight: 700 }}>{type}</div>
-        <div style={{ color: '#c0c0c0', fontSize: 10 }}>{duration}</div>
+      <div className="shrink-0" style={{ textAlign: 'right' as const, marginLeft: 10 }}>
+        <div className="text-green-400 text-[10px] font-bold">{type}</div>
+        <div className="text-[10px] text-[#c0c0c0]">{duration}</div>
       </div>
     </div>
   );

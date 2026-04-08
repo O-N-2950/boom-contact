@@ -30,7 +30,7 @@ export default function OfflineBanner() {
       fontWeight: 600,
       boxShadow: '0 2px 12px rgba(255,53,0,0.4)',
     }}>
-      <span style={{ fontSize: 16 }}>📡</span>
+      <span className="text-base">📡</span>
       <span>
         Mode hors ligne — vos données sont sauvegardées localement
         {pendingCount > 0 && ` (${pendingCount} en attente de sync)`}

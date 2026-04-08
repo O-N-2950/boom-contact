@@ -134,20 +134,20 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
   const credits   = authUser?.credits ?? 0;
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="p-6">
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <div style={{ fontSize: 60, marginBottom: 10 }}>🎉</div>
-        <h2 style={{ fontSize: 21, fontWeight: 700, color: '#22c55e', marginBottom: 8 }}>
+      <div className="text-center mb-6">
+        <div className="mb-2.5" style={{ fontSize: 60 }}>🎉</div>
+        <h2 className="font-bold text-green-500 mb-2" style={{ fontSize: 21 }}>
           Constat finalisé !
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.7 }}>
+        <p className="text-[13px]" style={{ opacity: 0.75, lineHeight: 1.7 }}>
           Les deux parties ont signé. Le document numérique certifié est prêt.
         </p>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 8,
           padding: '5px 14px', borderRadius: 20,
           background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
-          <span style={{ fontSize: 10, fontFamily: 'monospace', letterSpacing: 1, color: '#22c55e' }}>
+          <span className="text-[10px] text-green-500" style={{ fontFamily: 'monospace', letterSpacing: 1 }}>
             SESSION {sessionId}
           </span>
         </div>
@@ -156,17 +156,17 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       {/* PDF card */}
       <div style={{ marginBottom: 16, padding: 14, borderRadius: 12,
         border: '1px solid rgba(255,53,0,0.2)', background: 'rgba(255,53,0,0.04)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+        <div className="flex items-center gap-3 mb-2.5">
           <div style={{ width: 38, height: 38, borderRadius: 8, background: 'var(--boom)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>📄</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 13 }}>Constat numérique — boom.contact</div>
-            <div style={{ fontSize: 11, opacity: 0.7 }}>Document certifié · 150+ pays</div>
+            <div className="font-bold text-[13px]">Constat numérique — boom.contact</div>
+            <div className="text-[11px]" style={{ opacity: 0.7 }}>Document certifié · 150+ pays</div>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
+        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 5 }}>
           {['✅ Véhicules A & B','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ 2 signatures'].map((item, i) => (
-            <div key={i} style={{ fontSize: 11, opacity: 0.75 }}>{item}</div>
+            <div key={i} className="text-[11px]" style={{ opacity: 0.75 }}>{item}</div>
           ))}
         </div>
       </div>
@@ -177,8 +177,8 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
           <div style={{ fontSize: 11, letterSpacing: 1.5, opacity: 0.75, textTransform: 'uppercase',
             fontFamily: 'monospace', marginBottom: 4 }}>Votre assureur</div>
-          <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>🟢 {insurerName}</div>
-          <div style={{ fontSize: 12, opacity: 0.75, lineHeight: 1.5 }}>
+          <div className="font-bold text-[15px] mb-1">🟢 {insurerName}</div>
+          <div className="text-xs leading-normal" style={{ opacity: 0.75 }}>
             Contactez votre assureur pour déclarer le sinistre.
           </div>
         </div>
@@ -192,14 +192,14 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
       {/* ── PAYWALL — pas connecté : 2 options ── */}
       {!authUser && (
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
           {/* Option 1 : Payer sans compte — one shot */}
           <div style={{ padding: 16, borderRadius: 12, marginBottom: 10,
             background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
-            <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>
+            <div className="font-bold text-sm mb-1">
               💳 Payer sans créer de compte
             </div>
-            <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 12, lineHeight: 1.55 }}>
+            <div className="text-xs mb-3" style={{ opacity: 0.75, lineHeight: 1.55 }}>
               1 constat — <strong>CHF 4.90 / €4.90</strong> · Paiement sécurisé Stripe<br/>
               Votre PDF vous sera envoyé par email après paiement.
             </div>
@@ -232,10 +232,10 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           </div>
 
           {/* Séparateur */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
-            <span style={{ fontSize: 11, opacity: 0.7 }}>ou</span>
-            <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }}/>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}/>
+            <span className="text-[11px]" style={{ opacity: 0.7 }}>ou</span>
+            <div className="flex-1" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}/>
           </div>
 
           {/* Option 2 : Se connecter (compte existant) */}
@@ -247,7 +247,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           }}>
             Se connecter (compte existant) →
           </button>
-          <div style={{ fontSize: 11, opacity: 0.7, textAlign: 'center', marginTop: 8 }}>
+          <div className="text-[11px] text-center mt-2" style={{ opacity: 0.7 }}>
             Pack 3 constats CHF 12.90 · Pack 10 constats CHF 34.90
           </div>
         </div>
@@ -257,10 +257,10 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       {authUser && !isAdmin && credits <= 0 && !creditUsed && showPaywall && (
         <div style={{ marginBottom: 16, padding: 16, borderRadius: 12,
           background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
-          <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>
+          <div className="font-bold text-sm mb-1.5">
             🔒 1 crédit requis pour télécharger
           </div>
-          <div style={{ fontSize: 13, opacity: 0.755, lineHeight: 1.65, marginBottom: 14 }}>
+          <div className="text-[13px]" style={{ opacity: 0.755, lineHeight: 1.65, marginBottom: 14 }}>
             Vous n'avez plus de crédit. Achetez un pack pour récupérer votre constat.
           </div>
           <button onClick={() => onBuyPack?.()} style={{
@@ -270,7 +270,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           }}>
             Acheter un pack →
           </button>
-          <div style={{ fontSize: 11, opacity: 0.7, textAlign: 'center' }}>
+          <div className="text-[11px] text-center" style={{ opacity: 0.7 }}>
             1 constat CHF 4.90 · 3 constats CHF 12.90 · 10 constats CHF 34.90
           </div>
         </div>
@@ -278,16 +278,16 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
       {/* ── ACTIONS — connecté avec crédit ── */}
       {authUser && (hasCredit || creditUsed) && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+        <div className="flex flex-col gap-2.5 mb-4">
 
           {/* Credit info */}
           {!isAdmin && !creditUsed && (
-            <div style={{ fontSize: 12, opacity: 0.75, textAlign: 'center', marginBottom: 2 }}>
+            <div className="text-xs text-center" style={{ opacity: 0.75, marginBottom: 2 }}>
               💳 {credits} crédit{credits > 1 ? 's' : ''} disponible{credits > 1 ? 's' : ''} · 1 sera utilisé
             </div>
           )}
           {creditUsed && (
-            <div style={{ fontSize: 12, color: '#22c55e', textAlign: 'center', marginBottom: 2 }}>
+            <div className="text-xs text-green-500 text-center" style={{ marginBottom: 2 }}>
               ✅ Crédit consommé
             </div>
           )}
@@ -319,7 +319,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
               {showEmailForm && (
                 <div style={{ marginTop: 8, padding: '14px', borderRadius: 10,
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                  <div style={{ fontSize: 12, opacity: 0.75, marginBottom: 8, lineHeight: 1.5 }}>
+                  <div className="text-xs mb-2 leading-normal" style={{ opacity: 0.75 }}>
                     Entrez votre email pour recevoir le PDF en pièce jointe.
                   </div>
                   <input type="email" aria-label="Adresse email" value={email} onChange={e => setEmail(e.target.value)}
@@ -332,7 +332,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
                     onKeyDown={e => e.key === 'Enter' && sendEmail()}
                   />
                   {emailError && (
-                    <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 8 }}>⚠️ {emailError}</div>
+                    <div className="text-xs text-red-500 mb-2">⚠️ {emailError}</div>
                   )}
                   <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} style={{
                     width: '100%', padding: '11px', borderRadius: 8, border: 'none',
@@ -357,7 +357,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
 
       {/* ── Si connecté mais paywall pas encore affiché ── */}
       {authUser && !isAdmin && credits <= 0 && !creditUsed && !showPaywall && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+        <div className="flex flex-col gap-2.5 mb-4">
           <button onClick={() => handleAction('download')} style={{
             padding: '16px', borderRadius: 10, border: 'none',
             background: 'var(--boom)', color: '#fff', cursor: 'pointer',
@@ -382,10 +382,10 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
       <div style={{ padding: 14, borderRadius: 10,
         background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)',
         marginBottom: 14 }}>
-        <div style={{ fontSize: 12, color: '#f59e0b', fontWeight: 700, marginBottom: 5 }}>
+        <div className="text-xs font-bold" style={{ color: '#f59e0b', marginBottom: 5 }}>
           ⏰ À transmettre à votre assureur
         </div>
-        <div style={{ fontSize: 12, opacity: 0.755, lineHeight: 1.65 }}>
+        <div className="text-xs" style={{ opacity: 0.755, lineHeight: 1.65 }}>
           Transmettez ce document à <strong>votre propre assureur</strong> dans les délais prévus par votre contrat.
         </div>
       </div>
@@ -406,14 +406,14 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
           textTransform: 'uppercase', marginBottom: 10, textAlign: 'center' }}>
           QR du constat — valable 7 jours
         </div>
-        <div style={{ textAlign: 'center', marginBottom: 10 }}>
+        <div className="text-center mb-2.5">
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(`${window.location.origin}/?session=${sessionId}`)}&bgcolor=0E0E18&color=F0EDE8&margin=2`}
             alt="QR du constat"
-            style={{ width: 140, height: 140, borderRadius: 8, display: 'inline-block' }}
+            className="rounded-lg" style={{ width: 140, height: 140, display: 'inline-block' }}
           />
         </div>
-        <div style={{ fontSize: 12, opacity: 0.7, textAlign: 'center', lineHeight: 1.6 }}>
+        <div className="text-xs text-center leading-relaxed" style={{ opacity: 0.7 }}>
           Si la police intervient, elle peut scanner ce QR<br/>pour accéder au constat.
         </div>
       </div>

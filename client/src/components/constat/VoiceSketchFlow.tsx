@@ -13,14 +13,14 @@ interface Props {
   sessionId: string;
   lang?: string;
   initialTranscript?: string;  // restored from localStorage on back navigation
-  preloadedAnalysis?: any;
-  vehicleAData?: any;
-  vehicleBData?: any;
-  vehicleCData?: any;
-  vehicleDData?: any;
+  preloadedAnalysis?: Record<string, unknown>;
+  vehicleAData?: Record<string, unknown>;
+  vehicleBData?: Record<string, unknown>;
+  vehicleCData?: Record<string, unknown>;
+  vehicleDData?: Record<string, unknown>;
   onComplete: (data: {
     transcript: string;
-    analysis: any;
+    analysis: Record<string, unknown>;
     sketchBase64: string;
   }) => void;
   onSkip: () => void;
@@ -126,26 +126,26 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
     width: '100%', padding: '16px', borderRadius: 12, border: 'none',
     background: `linear-gradient(135deg, ${roleColor}dd, ${roleColor})`,
     color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700,
-    touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as any,
+    touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' as string,
     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
   };
 
   // ── INTRO ──────────────────────────────────────────────────────
   if (flowState === 'intro') return (
-    <div style={{ padding: 24 }}>
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <div style={{ fontSize: 52, marginBottom: 10 }}>🎙️</div>
-        <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>
+    <div className="p-6">
+      <div className="text-center mb-6">
+        <div className="mb-2.5" style={{ fontSize: 52 }}>🎙️</div>
+        <h2 className="text-xl font-extrabold mb-2">
           Décrivez l&apos;accident
         </h2>
-        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.65, maxWidth: 320, margin: '0 auto' }}>
+        <p className="text-[13px] mx-auto" style={{ opacity: 0.75, lineHeight: 1.65, maxWidth: 320 }}>
           Optionnel — décrivez ce qui s&apos;est passé avec vos propres mots.
           Votre déclaration sera enregistrée dans le constat.
         </p>
       </div>
 
       {/* Mode selector */}
-      <div style={{ display: 'flex', marginBottom: 20, borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.25)' }}>
+      <div className="flex mb-5 rounded-[10px] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)' }}>
         <button onClick={() => setInputMode('voice')} style={{
           flex: 1, padding: '10px 0', background: inputMode === 'voice' ? `${roleColor}22` : 'transparent',
           border: 'none', cursor: 'pointer', color: inputMode === 'voice' ? roleColor : 'rgba(255,255,255,0.4)',
@@ -161,12 +161,12 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
       {inputMode === 'voice' ? (
         <>
           {error && (
-            <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: 12, marginBottom: 16, fontSize: 13, color: '#ef4444' }}>
+            <div className="rounded-[10px] p-3 mb-4 text-[13px] text-red-500" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
               {error}
             </div>
           )}
           <button onClick={startRecording} style={btnPrimary}>
-            <span style={{ fontSize: 22 }}>🎙️</span>
+            <span className="text-[22px]">🎙️</span>
             Commencer l&apos;enregistrement
           </button>
         </>
@@ -205,17 +205,17 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
 
   // ── RECORDING ──────────────────────────────────────────────────
   if (flowState === 'recording') return (
-    <div style={{ padding: 24, textAlign: 'center' }}>
-      <div style={{ fontSize: 60, marginBottom: 12, animation: 'pulse-red 1s infinite' }}>🔴</div>
-      <div style={{ fontSize: 22, fontWeight: 800, marginBottom: 4, color: roleColor }}>
+    <div className="p-6 text-center">
+      <div className="mb-3" style={{ fontSize: 60, animation: 'pulse-red 1s infinite' }}>🔴</div>
+      <div className="text-[22px] font-extrabold mb-1" style={{ color: roleColor }}>
         {fmt(elapsed)}
       </div>
-      <div style={{ fontSize: 13, opacity: 0.75, marginBottom: 32 }}>Enregistrement en cours…</div>
-      <div style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 16, marginBottom: 24, fontSize: 13, opacity: 0.75, lineHeight: 1.6, textAlign: 'left' }}>
+      <div className="text-[13px] mb-8" style={{ opacity: 0.75 }}>Enregistrement en cours…</div>
+      <div className="rounded-xl p-4 mb-6 text-[13px] leading-relaxed text-left" style={{ background: 'rgba(255,255,255,0.04)', opacity: 0.75 }}>
         💡 Décrivez : la direction de chaque véhicule, le point d&apos;impact, les circonstances. Parlez calmement.
       </div>
-      <button onClick={stopRecording} style={{ ...btnPrimary, background: '#ef4444' }}>
-        <span style={{ fontSize: 18 }}>⏹️</span>
+      <button onClick={stopRecording} className="bg-red-500">
+        <span className="text-lg">⏹️</span>
         Arrêter l&apos;enregistrement
       </button>
     </div>
@@ -223,10 +223,10 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
 
   // ── TRANSCRIBING ───────────────────────────────────────────────
   if (flowState === 'transcribing') return (
-    <div style={{ padding: 24, textAlign: 'center' }}>
-      <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
-      <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Transcription en cours…</div>
-      <div style={{ fontSize: 13, opacity: 0.75 }}>Votre enregistrement est traité</div>
+    <div className="p-6 text-center">
+      <div className="text-5xl mb-4">⏳</div>
+      <div className="text-base font-bold mb-2">Transcription en cours…</div>
+      <div className="text-[13px]" style={{ opacity: 0.75 }}>Votre enregistrement est traité</div>
     </div>
   );
 
@@ -234,20 +234,20 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
   if (flowState === 'done') {
     const currentText = transcript || manualText;
     return (
-      <div style={{ padding: 24 }}>
-        <div style={{ textAlign: 'center', marginBottom: 20 }}>
-          <div style={{ fontSize: 40, marginBottom: 8 }}>✅</div>
-          <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>Description enregistrée</h2>
-          <p style={{ fontSize: 13, opacity: 0.75 }}>Votre déclaration sera incluse dans le constat PDF</p>
+      <div className="p-6">
+        <div className="text-center mb-5">
+          <div className="text-[40px] mb-2">✅</div>
+          <h2 className="text-lg font-extrabold mb-1">Description enregistrée</h2>
+          <p className="text-[13px]" style={{ opacity: 0.75 }}>Votre déclaration sera incluse dans le constat PDF</p>
         </div>
 
         {/* Transcript — éditable */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase' as const }}>Votre déclaration</span>
+        <div className="mb-5">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-xs" style={{ opacity: 0.7, letterSpacing: 1, textTransform: 'uppercase' as const }}>Votre déclaration</span>
             <button
               onClick={() => setInputMode(inputMode === 'text' ? 'voice' : 'text')}
-              style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 6, padding: '3px 10px', cursor: 'pointer', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>
+              className="bg-transparent rounded-md cursor-pointer text-xs" style={{ border: '1px solid rgba(255,255,255,0.15)', padding: '3px 10px', color: 'rgba(255,255,255,0.5)' }}>
               ✏️ Modifier
             </button>
           </div>
@@ -278,9 +278,9 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div className="flex gap-2.5">
           <button onClick={() => { setTranscript(''); setManualText(''); setFlowState('intro'); setInputMode('voice'); }}
-            style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.25)', background: 'transparent', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: 14 }}>
+            className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-sm" style={{ padding: '13px', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.6)' }}>
             Recommencer
           </button>
           <button onClick={handleConfirm} style={{ ...btnPrimary, flex: 2 }}>

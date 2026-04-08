@@ -64,20 +64,20 @@ export function CGUModal({ onAccept, onClose }: Props) {
         animation: 'slideUp 0.3s ease',
       }}>
         {/* Handle */}
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 0' }}>
+        <div className="flex justify-center" style={{ padding: '12px 0 0' }}>
           <div style={{ width: 40, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
         </div>
 
         {/* Header */}
         <div style={{ padding: '16px 24px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>💥</div>
-            <div style={{ fontWeight: 800, fontSize: 16 }}>boom.contact</div>
+          <div className="flex items-center gap-2.5 mb-1">
+            <div className="flex items-center justify-center text-sm" style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--boom)' }}>💥</div>
+            <div className="font-extrabold text-base">boom.contact</div>
           </div>
-          <div style={{ fontSize: 11, opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1, marginBottom: 16 }}>{t('cgu.before_continue')}</div>
+          <div className="text-[11px] mb-4" style={{ opacity: 0.7, fontFamily: 'DM Mono, monospace', letterSpacing: 1 }}>{t('cgu.before_continue')}</div>
 
           {/* Tabs */}
-          <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.25)', marginBottom: 0 }}>
+          <div className="flex" style={{ borderBottom: '1px solid rgba(255,255,255,0.25)', marginBottom: 0 }}>
             {([['cgu', t('cgu.tab_cgu')], ['privacy', t('cgu.tab_privacy')]] as const).map(([id, label]) => (
               <button key={id} onClick={() => setTab(id)} style={{
                 padding: '8px 16px', background: 'none', border: 'none', cursor: 'pointer',
@@ -90,25 +90,25 @@ export function CGUModal({ onAccept, onClose }: Props) {
         </div>
 
         {/* Scrollable content */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px' }}>
+        <div className="flex-1 overflow-y-auto" style={{ padding: '16px 24px' }}>
           {tab === 'cgu' ? (
-            <div style={{ fontSize: 12, lineHeight: 1.75, color: 'rgba(240,237,232,0.75)' }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)', marginBottom: 8 }}>{t('cgu.cgu_title')}</div>
-              <div style={{ fontSize: 10, opacity: 0.7, marginBottom: 16, fontFamily: 'monospace' }}>{t('cgu.cgu_version')}</div>
+            <div className="text-xs" style={{ lineHeight: 1.75, color: 'rgba(240,237,232,0.75)' }}>
+              <div className="font-bold text-[13px] mb-2" style={{ color: 'var(--text)' }}>{t('cgu.cgu_title')}</div>
+              <div className="text-[10px] mb-4" style={{ opacity: 0.7, fontFamily: 'monospace' }}>{t('cgu.cgu_version')}</div>
               {cguSections.map((s, i) => (
-                <div key={i} style={{ marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 4, fontSize: 12 }}>{s.title}</div>
+                <div key={i} className="mb-4">
+                  <div className="font-bold mb-1 text-xs" style={{ color: 'var(--text)' }}>{s.title}</div>
                   <div>{s.text}</div>
                 </div>
               ))}
             </div>
           ) : (
-            <div style={{ fontSize: 12, lineHeight: 1.75, color: 'rgba(240,237,232,0.75)' }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--text)', marginBottom: 8 }}>{t('cgu.privacy_title')}</div>
-              <div style={{ fontSize: 10, opacity: 0.7, marginBottom: 16, fontFamily: 'monospace' }}>{t('cgu.privacy_version')}</div>
+            <div className="text-xs" style={{ lineHeight: 1.75, color: 'rgba(240,237,232,0.75)' }}>
+              <div className="font-bold text-[13px] mb-2" style={{ color: 'var(--text)' }}>{t('cgu.privacy_title')}</div>
+              <div className="text-[10px] mb-4" style={{ opacity: 0.7, fontFamily: 'monospace' }}>{t('cgu.privacy_version')}</div>
               {privacySections.map((s, i) => (
-                <div key={i} style={{ marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 4, fontSize: 12 }}>{s.title}</div>
+                <div key={i} className="mb-4">
+                  <div className="font-bold mb-1 text-xs" style={{ color: 'var(--text)' }}>{s.title}</div>
                   <div>{s.text}</div>
                 </div>
               ))}
@@ -117,34 +117,33 @@ export function CGUModal({ onAccept, onClose }: Props) {
         </div>
 
         {/* Bottom action area */}
-        <div style={{ padding: '16px 24px 32px', borderTop: '1px solid rgba(255,255,255,0.25)', flexShrink: 0 }}>
+        <div className="shrink-0" style={{ padding: '16px 24px 32px', borderTop: '1px solid rgba(255,255,255,0.25)' }}>
           {/* Email */}
           <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 6, letterSpacing: 0.5 }}>{t('cgu.email_label')}</div>
+            <div className="text-[11px] mb-1.5" style={{ opacity: 0.75, letterSpacing: 0.5 }}>{t('cgu.email_label')}</div>
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)}
               placeholder={t('cgu.email_placeholder')}
               aria-label="Adresse email"
-              className="input-boom" style={{ width: '100%' }}
-            />
+              className="input-boom w-full" />
           </div>
 
           {/* CGU consent (required) */}
-          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10, cursor: 'pointer' }}>
+          <label className="flex items-start gap-3 mb-2.5 cursor-pointer">
             <input type="checkbox" checked={consentCGU} onChange={() => setConsentCGU(!consentCGU)} aria-label="Accepter les conditions générales" required style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
               accentColor: 'var(--boom)', cursor: 'pointer',
             }} />
-            <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.8 }}>
+            <div className="text-xs leading-normal" style={{ opacity: 0.8 }}>
               {/* Parse the consent string with embedded <cgu> and <privacy> tags */}
               {t('cgu.consent_cgu').split(/(<cgu>.*?<\/cgu>|<privacy>.*?<\/privacy>)/g).map((part, i) => {
                 if (part.startsWith('<cgu>')) return (
-                  <span key={i} onClick={() => setTab('cgu')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTab('cgu'); } }} role="button" tabIndex={0} style={{ color: 'var(--boom)', cursor: 'pointer', textDecoration: 'underline' }}>
+                  <span key={i} onClick={() => setTab('cgu')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTab('cgu'); } }} role="button" tabIndex={0} className="cursor-pointer underline" style={{ color: 'var(--boom)' }}>
                     {part.replace(/<\/?cgu>/g, '')}
                   </span>
                 );
                 if (part.startsWith('<privacy>')) return (
-                  <span key={i} onClick={() => setTab('privacy')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTab('privacy'); } }} role="button" tabIndex={0} style={{ color: 'var(--boom)', cursor: 'pointer', textDecoration: 'underline' }}>
+                  <span key={i} onClick={() => setTab('privacy')} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setTab('privacy'); } }} role="button" tabIndex={0} className="cursor-pointer underline" style={{ color: 'var(--boom)' }}>
                     {part.replace(/<\/?privacy>/g, '')}
                   </span>
                 );
@@ -156,12 +155,12 @@ export function CGUModal({ onAccept, onClose }: Props) {
 
           {/* Marketing consent (optional) — Suisse uniquement */}
           {isSwiss && (
-          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16, cursor: 'pointer' }}>
+          <label className="flex items-start gap-3 mb-4 cursor-pointer">
             <input type="checkbox" checked={consentMarketing} onChange={() => setConsentMarketing(!consentMarketing)} aria-label="Consentement marketing" style={{
               width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
               accentColor: '#22c55e', cursor: 'pointer',
             }} />
-            <div style={{ fontSize: 12, lineHeight: 1.5, opacity: 0.75 }}>
+            <div className="text-xs leading-normal" style={{ opacity: 0.75 }}>
               {t('cgu.consent_marketing').split(/(<opt>.*?<\/opt>)/g).map((part, i) => {
                 if (part.startsWith('<opt>')) return (
                   <span key={i} style={{ opacity: 0.75 }}>{part.replace(/<\/?opt>/g, '')}</span>
@@ -173,7 +172,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           )}
 
           {error && (
-            <div role="alert" style={{ marginBottom: 10, padding: '8px 12px', borderRadius: 8, background: 'rgba(239,68,68,0.1)', fontSize: 12, color: '#ef4444' }}>
+            <div role="alert" className="mb-2.5 rounded-lg text-xs text-red-500" style={{ padding: '8px 12px', background: 'rgba(239,68,68,0.1)' }}>
               ⚠️ {error}
             </div>
           )}
@@ -187,7 +186,7 @@ export function CGUModal({ onAccept, onClose }: Props) {
           }}>
             {loading ? t('common.saving') : t('cgu.submit')}
           </button>
-          <div style={{ textAlign: 'center', marginTop: 8, fontSize: 10, opacity: 0.7 }}>
+          <div className="text-center mt-2 text-[10px]" style={{ opacity: 0.7 }}>
             {t('cgu.required_note')}
           </div>
         </div>

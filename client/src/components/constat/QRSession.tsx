@@ -80,12 +80,12 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
   };
 
   if (partnerJoined) return (
-    <div style={{ padding: 32, textAlign: 'center' }}>
-      <div style={{ fontSize: 64, marginBottom: 16, animation: 'bounceIn 0.5s ease' }}>🤝</div>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--boom)', marginBottom: 8 }}>
+    <div className="p-8 text-center">
+      <div className="text-[64px] mb-4" style={{ animation: 'bounceIn 0.5s ease' }}>🤝</div>
+      <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--boom)' }}>
         {vehicleCount > 2 ? `${joinedRoles.size} conducteur${joinedRoles.size > 1 ? 's' : ''} ont rejoint !` : "L'autre conducteur a rejoint !"}
       </h2>
-      <p style={{ fontSize: 14, opacity: 0.75 }}>Connexion établie. Passage au formulaire…</p>
+      <p className="text-sm" style={{ opacity: 0.75 }}>Connexion établie. Passage au formulaire…</p>
       <style>{`@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}`}</style>
     </div>
   );
@@ -93,22 +93,22 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
   const roles: ParticipantRole[] = ['B', 'C', 'D', 'E'].slice(0, vehicleCount - 1) as ParticipantRole[];
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Partagez le constat</h2>
-        <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.6 }}>Chaque conducteur scanne son QR pour rejoindre.</p>
+    <div className="p-5">
+      <div className="text-center mb-5">
+        <h2 className="text-xl font-bold mb-1.5">Partagez le constat</h2>
+        <p className="text-[13px] leading-relaxed" style={{ opacity: 0.75 }}>Chaque conducteur scanne son QR pour rejoindre.</p>
       </div>
 
       {/* Vehicle count */}
-      <div style={{ marginBottom: 20, padding: '14px 16px', borderRadius: 12, background: 'rgba(240,237,232,0.04)', border: '1px solid rgba(240,237,232,0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+      <div className="mb-5 rounded-xl" style={{ padding: '14px 16px', background: 'rgba(240,237,232,0.04)', border: '1px solid rgba(240,237,232,0.08)' }}>
+        <div className="flex items-center justify-between mb-2.5">
           <div>
-            <div style={{ fontSize: 13, fontWeight: 700 }}>Véhicules impliqués</div>
-            <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>Ajoutez si nécessaire (max {MAX_VEHICLES})</div>
+            <div className="text-[13px] font-bold">Véhicules impliqués</div>
+            <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 2 }}>Ajoutez si nécessaire (max {MAX_VEHICLES})</div>
           </div>
 
             {/* Type de partie adverse */}
-            <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <div className="mt-2.5 flex gap-1.5 flex-wrap">
               {([
                 { val: 'vehicle', icon: '🚗', label: 'Véhicule' },
                 { val: 'pedestrian', icon: '🚶', label: 'Piéton / Enfant' },
@@ -134,12 +134,12 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
             </div>
 
             {vehicleCount === 1 && (
-              <div style={{ marginTop: 10, padding: '12px 14px', borderRadius: 10, background: 'rgba(255,179,0,0.07)', border: '1px solid rgba(255,179,0,0.2)' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#f59e0b', marginBottom: 6 }}>
+              <div className="mt-2.5 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(255,179,0,0.07)', border: '1px solid rgba(255,179,0,0.2)' }}>
+                <div className="text-xs font-bold mb-1.5 text-[#f59e0b]">
                   {secondPartyType === 'pedestrian' ? '🚶 Piéton impliqué' :
                    secondPartyType === 'object' ? '🏗️ Aucun autre conducteur' : '🧍 Conducteur seul'}
                 </div>
-                <div style={{ fontSize: 11, opacity: 0.75, lineHeight: 1.6, marginBottom: 10 }}>
+                <div className="text-[11px] leading-relaxed mb-2.5" style={{ opacity: 0.75 }}>
                   {secondPartyType === 'pedestrian'
                     ? "Piéton sans téléphone? Continuez seul. Coordonnées saisies dans le formulaire. Appelez le 117 si blessé."
                     : secondPartyType === 'object'
@@ -147,24 +147,24 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
                     : "Vous êtes seul impliqué — continuez pour documenter."}
                 </div>
                 <button onClick={onPartnerJoined}
-                  style={{ width: '100%', padding: '11px', borderRadius: 8, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700, touchAction: 'manipulation' }}>
+                  className="w-full rounded-lg border-0 text-white cursor-pointer text-[13px] font-bold touch-manipulation" style={{ padding: '11px', background: 'var(--boom)' }}>
                   Continuer sans autre conducteur →
                 </button>
               </div>
             )}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="flex items-center gap-2.5">
             <button onClick={() => setVehicleCount(v => Math.max(1, v - 1))} disabled={vehicleCount <= 1}
-              style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: vehicleCount <= 2 ? 'rgba(240,237,232,0.05)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', fontSize: 18, fontWeight: 700, opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
-            <span style={{ fontSize: 22, fontWeight: 800, minWidth: 24, textAlign: 'center', color: 'var(--boom)' }}>{vehicleCount}</span>
+              className="rounded-lg border-0 text-lg font-bold" style={{ width: 32, height: 32, background: vehicleCount <= 2 ? 'rgba(240,237,232,0.05)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
+            <span className="text-[22px] font-extrabold text-center" style={{ minWidth: 24, color: 'var(--boom)' }}>{vehicleCount}</span>
             <button onClick={() => setVehicleCount(v => Math.min(MAX_VEHICLES, v + 1))} disabled={vehicleCount >= MAX_VEHICLES}
-              style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', color: '#fff', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', fontSize: 18, fontWeight: 700, opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
+              className="rounded-lg border-0 text-white text-lg font-bold" style={{ width: 32, height: 32, background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          <div style={{ padding: '4px 10px', borderRadius: 20, background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', fontSize: 11, fontWeight: 700, color: '#3B82F6' }}>A — Vous ✅</div>
+        <div className="flex gap-1.5 flex-wrap">
+          <div className="rounded-[20px] text-[11px] font-bold" style={{ padding: '4px 10px', background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)', color: '#3B82F6' }}>A — Vous ✅</div>
           {roles.map(role => (
             <button key={role} onClick={() => setActiveQR(role)}
-              style={{ padding: '4px 10px', borderRadius: 20, border: `1px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.15)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}20` : 'transparent', fontSize: 11, fontWeight: 700, color: joinedRoles.has(role) ? '#22c55e' : ROLE_COLORS[role], cursor: 'pointer' }}>
+              className="rounded-[20px] text-[11px] font-bold cursor-pointer" style={{ padding: '4px 10px', border: `1px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.15)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}20` : 'transparent', color: joinedRoles.has(role) ? '#22c55e' : ROLE_COLORS[role] }}>
               {role} {joinedRoles.has(role) ? '✅' : '⏳'}
             </button>
           ))}
@@ -172,32 +172,32 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
       </div>
 
       {/* QR for active role */}
-      <div style={{ textAlign: 'center', marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: ROLE_COLORS[activeQR], marginBottom: 10, letterSpacing: 1, textTransform: 'uppercase' }}>{ROLE_LABELS[activeQR]}</div>
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 16, background: '#06060C', borderRadius: 20, border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22`, minHeight: 180 }}>
+      <div className="text-center mb-4">
+        <div className="text-xs font-bold mb-2.5 uppercase" style={{ color: ROLE_COLORS[activeQR], letterSpacing: 1 }}>{ROLE_LABELS[activeQR]}</div>
+        <div className="flex justify-center p-4 bg-[#06060C] rounded-[20px]" style={{ border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22`, minHeight: 180 }}>
           {qrDataUrls[activeQR]
-            ? <img src={qrDataUrls[activeQR]} alt="Code QR pour inviter le conducteur B à rejoindre la session de constat" loading="lazy" style={{ width: 200, height: 200, borderRadius: 8 }} />
-            : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 200, height: 200 }}><div style={{ fontSize: 11, fontFamily: 'monospace', opacity: 0.7 }}>Génération…</div></div>
+            ? <img src={qrDataUrls[activeQR]} alt="Code QR pour inviter le conducteur B à rejoindre la session de constat" loading="lazy" className="rounded-lg" style={{ width: 200, height: 200 }} />
+            : <div className="flex items-center justify-center" style={{ width: 200, height: 200 }}><div style={{ fontSize: 11, fontFamily: 'monospace', opacity: 0.7 }}>Génération…</div></div>
           }
         </div>
-        <div style={{ marginTop: 8, fontSize: 11, fontFamily: 'monospace', opacity: 0.7 }}>SESSION {sessionId} · {activeQR}</div>
+        <div className="mt-2 text-[11px]" style={{ fontFamily: 'monospace', opacity: 0.7 }}>SESSION {sessionId} · {activeQR}</div>
       </div>
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: roles.length > 1 ? 12 : 20 }}>
-        <button onClick={() => shareLink(activeQR)} style={{ flex: 2, padding: '13px', borderRadius: 10, border: 'none', background: ROLE_COLORS[activeQR], color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+      <div className="flex gap-2" style={{ marginBottom: roles.length > 1 ? 12 : 20 }}>
+        <button onClick={() => shareLink(activeQR)} className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold flex items-center justify-center gap-2" style={{ flex: 2, padding: '13px', background: ROLE_COLORS[activeQR] }}>
           📤 Partager lien {activeQR}
         </button>
-        <button onClick={() => copyLink(activeQR)} style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1.5px solid rgba(240,237,232,0.15)', background: copied === activeQR ? 'rgba(34,197,94,0.15)' : 'transparent', color: copied === activeQR ? '#22c55e' : 'var(--text)', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+        <button onClick={() => copyLink(activeQR)} className="flex-1 rounded-[10px] cursor-pointer text-[13px] font-semibold" style={{ padding: '13px', border: '1.5px solid rgba(240,237,232,0.15)', background: copied === activeQR ? 'rgba(34,197,94,0.15)' : 'transparent', color: copied === activeQR ? '#22c55e' : 'var(--text)' }}>
           {copied === activeQR ? '✅' : '📋'}
         </button>
       </div>
 
       {roles.length > 1 && (
-        <div style={{ display: 'flex', gap: 6, marginBottom: 16, justifyContent: 'center' }}>
+        <div className="flex gap-1.5 mb-4 justify-center">
           {roles.map(role => (
             <button key={role} onClick={() => setActiveQR(role)}
-              style={{ padding: '7px 12px', borderRadius: 8, border: `1.5px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.1)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}15` : 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 12, fontWeight: activeQR === role ? 700 : 400 }}>
+              className="rounded-lg cursor-pointer text-xs" style={{ padding: '7px 12px', border: `1.5px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.1)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}15` : 'transparent', color: 'var(--text)', fontWeight: activeQR === role ? 700 : 400 }}>
               {role} {joinedRoles.has(role) ? '✅' : ''}
             </button>
           ))}
@@ -205,23 +205,23 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
       )}
 
       {/* Waiting */}
-      <div style={{ padding: '12px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b', animation: 'pulse 1.5s ease-in-out infinite', flexShrink: 0 }} />
+      <div className="rounded-[10px] flex items-center gap-3" style={{ padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="rounded-full shrink-0" style={{ width: 10, height: 10, background: '#f59e0b', animation: 'pulse 1.5s ease-in-out infinite' }} />
         <div>
-          <div style={{ fontSize: 13, fontWeight: 600 }}>En attente — {joinedRoles.size}/{vehicleCount - 1} rejoint{joinedRoles.size > 1 ? 's' : ''}</div>
-          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>Actualisation automatique toutes les 2s.</div>
+          <div className="text-[13px] font-semibold">En attente — {joinedRoles.size}/{vehicleCount - 1} rejoint{joinedRoles.size > 1 ? 's' : ''}</div>
+          <div className="text-[11px]" style={{ opacity: 0.7, marginTop: 2 }}>Actualisation automatique toutes les 2s.</div>
         </div>
         <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}`}</style>
       </div>
 
       {/* Témoin officiel */}
-      <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 10, background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 16 }}>👁️</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: '#a855f7' }}>Témoin officiel</span>
-          <span style={{ fontSize: 10, opacity: 0.7, marginLeft: 'auto' }}>Optionnel</span>
+      <div className="mt-3 rounded-[10px]" style={{ padding: '12px 14px', background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-base">👁️</span>
+          <span className="text-xs font-bold text-[#a855f7]">Témoin officiel</span>
+          <span className="text-[10px] ml-auto" style={{ opacity: 0.7 }}>Optionnel</span>
         </div>
-        <div style={{ fontSize: 11, opacity: 0.75, marginBottom: 8, lineHeight: 1.5 }}>
+        <div className="text-[11px] mb-2 leading-normal" style={{ opacity: 0.75 }}>
           Un témoin peut rejoindre le constat pour enregistrer sa déclaration. Son témoignage est joint au PDF.
         </div>
         <button

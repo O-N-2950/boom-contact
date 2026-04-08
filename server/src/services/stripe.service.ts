@@ -75,7 +75,7 @@ export type PackageId = keyof typeof PACKAGES;
 
 // Prix en centimes pour une devise
 export function getPrice(packageId: PackageId, currency: SupportedCurrency): number {
-  return (PACKAGES[packageId].prices as any)[currency] ?? PACKAGES[packageId].prices.EUR;
+  return (PACKAGES[packageId].prices as Record<string, number>)[currency] ?? PACKAGES[packageId].prices.EUR;
 }
 
 // Formatage lisible ex: "CHF 4.90" ou "¥750"
@@ -120,7 +120,7 @@ export async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     customer_email: userEmail,
-    locale: (locale as any) || 'fr',
+    locale: (locale as string) || 'fr',
     // ── Facture PDF automatique envoyée par Stripe ──────────
     invoice_creation: { enabled: true },
     // ── TVA automatique — activée si STRIPE_TAX_ENABLED=true (configurer dans Stripe Tax dashboard) ──

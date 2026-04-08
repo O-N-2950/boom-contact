@@ -124,12 +124,12 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
-          Signature — <span style={{ color: roleColor, fontWeight: 800 }}>Conducteur {role}</span>
+    <div className="p-5">
+      <div className="text-center mb-5">
+        <h2 className="text-base font-bold mb-1">
+          Signature — <span className="font-extrabold" style={{ color: roleColor }}>Conducteur {role}</span>
         </h2>
-        <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 10 }}>
+        <div className="flex gap-2.5 justify-center mt-2.5">
           {[
             { label: `Conducteur ${role}`, done: signed, isPrimary: true },
             {
@@ -182,41 +182,41 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
           onTouchEnd={endDraw}
         />
         {isEmpty && !signed && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-            <span style={{ fontSize: 13, opacity: 0.75, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-[13px]" style={{ opacity: 0.75, fontStyle: 'italic' }}>Signez ici avec votre doigt</span>
           </div>
         )}
         {signed && (
-          <div style={{ position: 'absolute', top: 8, right: 8, padding: '3px 8px', borderRadius: 4, background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontSize: 10, color: '#22c55e', fontFamily: 'monospace', letterSpacing: 1 }}>
+          <div className="absolute rounded text-[10px] text-green-500" style={{ top: 8, right: 8, padding: '3px 8px', background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace', letterSpacing: 1 }}>
             SIGNÉ ✓
           </div>
         )}
       </div>
 
       {!signed && (
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={clear} style={{ flex: 1, padding: '13px', borderRadius: 10, border: '1.5px solid rgba(240,237,232,0.12)', background: 'transparent', color: 'var(--text)', cursor: 'pointer', fontSize: 13 }}>
+        <div className="flex gap-2.5">
+          <button onClick={clear} className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px]" style={{ padding: '13px', border: '1.5px solid rgba(240,237,232,0.12)', color: 'var(--text)' }}>
             🗑 Effacer
           </button>
-          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} style={{ flex: 2, opacity: disabled ? 0.4 : 1, padding: '13px', borderRadius: 10, border: 'none', background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', color: '#fff', cursor: isEmpty ? 'not-allowed' : 'pointer', fontSize: 14, fontWeight: 700, transition: 'all 0.2s' }}>
+          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} className="rounded-[10px] border-0 text-white text-sm font-bold" style={{ flex: 2, opacity: disabled ? 0.4 : 1, padding: '13px', background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty ? 'not-allowed' : 'pointer', transition: 'all 0.2s' }}>
             {signing ? '⏳ Enregistrement…' : '✍️ Confirmer la signature'}
           </button>
         </div>
       )}
 
       {signed && !otherSigned && !isOtherPedestrian && (
-        <div style={{ padding: 14, borderRadius: 10, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', textAlign: 'center' }}>
-          <div style={{ fontSize: 22, marginBottom: 6 }}>⏳</div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#f59e0b' }}>En attente de la signature de l'autre conducteur…</div>
-          <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>Le PDF sera généré dès que les deux parties auront signé.</div>
+        <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <div className="text-[22px] mb-1.5">⏳</div>
+          <div className="text-[13px] font-semibold text-[#f59e0b]">En attente de la signature de l'autre conducteur…</div>
+          <div className="text-[11px] mt-1" style={{ opacity: 0.7 }}>Le PDF sera généré dès que les deux parties auront signé.</div>
         </div>
       )}
 
       {signed && (otherSigned || isOtherPedestrian) && (
-        <div style={{ padding: 14, borderRadius: 10, background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)', textAlign: 'center' }}>
-          <div style={{ fontSize: 36, marginBottom: 6 }}>🎉</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#22c55e' }}>Constat signé !</div>
-          <div style={{ fontSize: 12, opacity: 0.75, marginTop: 4 }}>Génération du PDF en cours…</div>
+        <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)' }}>
+          <div className="text-4xl mb-1.5">🎉</div>
+          <div className="text-[15px] font-bold text-green-500">Constat signé !</div>
+          <div className="text-xs mt-1" style={{ opacity: 0.75 }}>Génération du PDF en cours…</div>
         </div>
       )}
     </div>

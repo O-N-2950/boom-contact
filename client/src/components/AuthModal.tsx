@@ -29,7 +29,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
     try {
       await magicReqMut.mutateAsync({ email });
       setMode('magic_sent');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || 'Erreur');
     } finally { setLoading(false); }
   };
@@ -42,7 +42,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user_token', res.token);
       localStorage.setItem('boom_user', JSON.stringify(res.user));
       onAuth(res.token, res.user);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError('Email ou mot de passe incorrect.');
     } finally { setLoading(false); }
   };
@@ -55,7 +55,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user_token', res.token);
       localStorage.setItem('boom_user', JSON.stringify({ id: res.id, email, role: 'customer', credits: 0 }));
       onAuth(res.token, { id: res.id, email, role: 'customer', credits: 0 });
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || "Erreur lors de l'inscription.");
     } finally { setLoading(false); }
   };
@@ -69,18 +69,18 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         background: '#111', border: '1px solid #444', borderRadius: 20,
         padding: 32, width: '100%', maxWidth: 420, position: 'relative',
       }}>
-        <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
+        <div className="mb-6">
+          <h1 className="text-[28px] font-extrabold text-white mb-1.5">
             {title || '💥 boom.contact'}
           </h1>
-          <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.5 }}>
+          <div className="text-[#d0d0d0] text-sm leading-normal">
             {subtitle || 'Connectez-vous pour sauvegarder vos véhicules et ne plus rien saisir lors de vos constats.'}
           </div>
         </div>
 
         {/* MODE: choose */}
         {mode === 'choose' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <button onClick={() => setMode('magic')} style={btnStyle('#FF3500')}>
               📧 Connexion par lien email (recommandé)
             </button>
@@ -90,11 +90,11 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <button onClick={() => setMode('register')} style={btnStyle('#444')}>
               ✨ Créer un compte
             </button>
-            <div style={{ borderTop: '1px solid #444', marginTop: 4 }} />
-            <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #555' }}>
+            <div className="mt-1" style={{ borderTop: '1px solid #444' }} />
+            <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
               Continuer sans compte →
             </button>
-            <p style={{ color: '#d0d0d0', fontSize: 11, textAlign: 'center', margin: 0 }}>
+            <p className="text-[#d0d0d0] text-[11px] text-center m-0">
               Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.
             </p>
           </div>
@@ -102,8 +102,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 
         {/* MODE: magic link */}
         {mode === 'magic' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ color: '#ccc', fontSize: 14, marginBottom: 4 }}>
+          <div className="flex flex-col gap-3">
+            <div className="text-sm mb-1 text-[#ccc]">
               Entrez votre email — vous recevrez un lien de connexion valable 15 minutes.
             </div>
             <input
@@ -116,7 +116,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-describedby={error ? "error-magic" : undefined}
               style={inputStyle}
             />
-            {error && <div id="error-magic" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-magic" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#FF3500')}>
               {loading ? 'Envoi...' : 'Envoyer le lien'}
             </button>
@@ -126,17 +126,17 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 
         {/* MODE: magic sent */}
         {mode === 'magic_sent' && (
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }} aria-hidden="true">📧</div>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 8 }}>
+          <div className="text-center">
+            <div className="text-5xl mb-4" aria-hidden="true">📧</div>
+            <div className="text-white font-bold text-lg mb-2">
               Email envoyé !
             </div>
-            <div style={{ color: '#d0d0d0', fontSize: 14, lineHeight: 1.6 }}>
-              Vérifiez votre boîte <strong style={{ color: '#fff' }}>{email}</strong>.<br />
+            <div className="text-[#d0d0d0] text-sm leading-relaxed">
+              Vérifiez votre boîte <strong className="text-white">{email}</strong>.<br />
               Le lien est valable 15 minutes.
             </div>
-            <div style={{ marginTop: 24, borderTop: '1px solid #444', paddingTop: 20 }}>
-              <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#d0d0d0', border: '1px solid #555' }}>
+            <div className="mt-6 pt-5" style={{ borderTop: '1px solid #444' }}>
+              <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
                 Continuer sans compte →
               </button>
             </div>
@@ -145,7 +145,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 
         {/* MODE: password login */}
         {mode === 'password' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
@@ -164,7 +164,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div id="error-password" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-password" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Connexion...' : 'Se connecter'}
             </button>
@@ -177,8 +177,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
 
         {/* MODE: register */}
         {mode === 'register' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ color: '#ccc', fontSize: 13, lineHeight: 1.5 }}>
+          <div className="flex flex-col gap-3">
+            <div className="text-[13px] leading-normal text-[#ccc]">
               Créez votre compte pour sauvegarder vos véhicules et pré-remplir vos constats automatiquement.
             </div>
             <input
@@ -199,11 +199,11 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               aria-label="Mot de passe"
               style={inputStyle}
             />
-            {error && <div id="error-register" role="alert" style={{ color: '#ff6b6b', fontSize: 13 }}>{error}</div>}
+            {error && <div id="error-register" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Création...' : 'Créer mon compte'}
             </button>
-            <p style={{ color: '#d0d0d0', fontSize: 11, margin: 0, lineHeight: 1.5 }}>
+            <p className="text-[#d0d0d0] text-[11px] m-0 leading-normal">
               En créant un compte vous acceptez nos CGU. Vos données véhicule sont chiffrées et jamais partagées sans votre consentement.
             </p>
             <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>

@@ -97,38 +97,38 @@ function FloatingBadge({ icon, text, style }: { icon: string; text: string; styl
 
 function PhoneMockup() {
   return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: 280, margin: '0 auto' }}>
+    <div className="relative w-full mx-auto max-w-[280px]">
       <div style={{
         background: 'linear-gradient(160deg, rgba(255,53,0,0.15) 0%, rgba(0,0,0,0.6) 100%)',
         border: '1px solid rgba(255,255,255,0.25)',
         borderRadius: 28, padding: '18px 14px', backdropFilter: 'blur(20px)',
         boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,53,0,0.1)',
       }}>
-        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 18, padding: '14px 12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }} aria-hidden="true">💥</div>
+        <div className="rounded-[18px]" style={{ background: 'rgba(255,255,255,0.03)', padding: '14px 12px' }}>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="rounded-lg flex items-center justify-center text-sm" style={{ width: 28, height: 28, background: 'var(--boom)' }} aria-hidden="true">💥</div>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700 }}>boom.contact</div>
-              <div style={{ fontSize: 9, opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>SESSION ACTIVE</div>
+              <div className="text-[11px] font-bold">boom.contact</div>
+              <div className="text-[9px]" style={{ opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>SESSION ACTIVE</div>
             </div>
           </div>
-          <div style={{ background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 12, padding: '12px', marginBottom: 8 }}>
+          <div className="rounded-xl mb-2" style={{ background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)', padding: '12px' }}>
             <div style={S.sectionLabelAlt}>CONDUCTEUR A</div>
             <div style={S.boldSmall}>VW Golf · GE 123 456</div>
-            <div style={{ fontSize: 10, opacity: 0.75 }}>Zurich Insurance · ✅ OCR</div>
+            <div className="text-[10px]" style={{ opacity: 0.75 }}>Zurich Insurance · ✅ OCR</div>
           </div>
-          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 12, padding: '12px', marginBottom: 12 }}>
+          <div className="rounded-xl mb-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', padding: '12px' }}>
             <div style={S.sectionLabelAlt}>CONDUCTEUR B</div>
             <div style={S.boldSmall}>Audi A4 · BE 789 012</div>
-            <div style={{ fontSize: 10, opacity: 0.75 }}>AXA · ✅ Scanné</div>
+            <div className="text-[10px]" style={{ opacity: 0.75 }}>AXA · ✅ Scanné</div>
           </div>
-          <div style={{ background: 'var(--boom)', borderRadius: 10, padding: '10px', textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#fff' }}>
+          <div className="rounded-[10px] text-center text-xs font-bold text-white" style={{ background: 'var(--boom)', padding: '10px' }}>
             ✍️ Signer le constat
           </div>
         </div>
       </div>
-      <FloatingBadge icon="✅" text="PDF généré" style={{ bottom: -14, left: -20, fontSize: 11 }} />
-      <FloatingBadge icon="🌍" text="150+ pays" style={{ top: 20, right: -24, fontSize: 11 }} />
+      <FloatingBadge icon="✅" text="PDF généré" className="text-[11px]" style={{ bottom: -14, left: -20 }} />
+      <FloatingBadge icon="🌍" text="150+ pays" className="text-[11px]" style={{ top: 20, right: -24 }} />
     </div>
   );
 }
@@ -149,9 +149,9 @@ function FeatureCard({ icon, title, desc, delay = 0 }: { icon: string; title: st
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0)' : 'translateY(20px)',
     }}>
-      <div style={{ fontSize: 26, marginBottom: 10 }} aria-hidden="true">{icon}</div>
-      <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 5, margin: '0 0 5px 0' }}>{title}</h3>
-      <p style={{ fontSize: 12, lineHeight: 1.6, opacity: 0.85, margin: 0 }}>{desc}</p>
+      <div className="text-[26px] mb-2.5" aria-hidden="true">{icon}</div>
+      <h3 className="text-sm font-bold" style={{ marginBottom: 5, margin: '0 0 5px 0' }}>{title}</h3>
+      <p className="text-xs leading-relaxed m-0" style={{ opacity: 0.85 }}>{desc}</p>
     </article>
   );
 }
@@ -159,7 +159,7 @@ function FeatureCard({ icon, title, desc, delay = 0 }: { icon: string; title: st
 // ─── Max width container for desktop sections ────────────────
 function Section({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', ...style }}>
+    <div className="mx-auto max-w-[1200px]">
       {children}
     </div>
   );
@@ -185,27 +185,27 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
   ];
 
   return (
-    <div style={{ overflowX: 'hidden' }}>
+    <div className="overflow-x-hidden">
 
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <div style={{ minHeight: '100svh', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+      <div className="min-h-[100svh] flex flex-col relative overflow-hidden">
         <GridBG />
-        <div style={{ position: 'absolute', top: -100, left: '50%', transform: 'translateX(-50%)', width: isDesktop ? 900 : 600, height: 400, background: 'radial-gradient(ellipse, rgba(255,53,0,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="absolute pointer-events-none" style={{ top: -100, left: '50%', transform: 'translateX(-50%)', width: isDesktop ? 900 : 600, height: 400, background: 'radial-gradient(ellipse, rgba(255,53,0,0.12) 0%, transparent 70%)' }} />
 
         {/* NAV */}
         <header>
-        <nav style={{ padding: isDesktop ? '20px 48px' : '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10, maxWidth: isDesktop ? 1200 : 'none', margin: isDesktop ? '0 auto' : undefined, width: '100%', boxSizing: 'border-box' as const }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <img src="/logo.webp" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
+        <nav className="flex items-center justify-between relative z-10 w-full" style={{ padding: isDesktop ? '20px 48px' : '20px 24px', maxWidth: isDesktop ? 1200 : 'none', margin: isDesktop ? '0 auto' : undefined, boxSizing: 'border-box' as const }}>
+          <div className="flex items-center gap-3">
+            <img src="/logo.webp" alt="boom.contact" className="object-contain" style={{ width: 64, height: 64 }} />
             {isDesktop && (
-              <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: 22, letterSpacing: '-0.5px' }}>
+              <div className="text-[22px]" style={{ fontFamily: 'Oswald, sans-serif', letterSpacing: '-0.5px' }}>
                 <span style={S.boomColor}>boom</span>
                 <span style={{ opacity: 0.7 }}>.</span>
                 <span>contact</span>
               </div>
             )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 16 : 10 }}>
+          <div className="flex items-center" style={{ gap: isDesktop ? 16 : 10 }}>
             {isDesktop && (
               <>
                 <button onClick={onGarage} style={S.ghostBtn}
@@ -220,12 +220,12 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 </button>
               </>
             )}
-            <div style={{ fontSize: 10, letterSpacing: 2, padding: '5px 12px', borderRadius: 20, border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
+            <div className="text-[10px] rounded-[20px]" style={{ letterSpacing: 2, padding: '5px 12px', border: '1px solid rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)', color: '#FFB300', fontFamily: 'DM Mono, monospace' }}>
               RGPD · nLPD
             </div>
             <LanguageSwitcher compact />
             {isDesktop && (
-              <button onClick={onStart} style={{ padding: '9px 20px', borderRadius: 10, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 16px rgba(255,53,0,0.4)' }}>
+              <button onClick={onStart} className="rounded-[10px] border-0 text-white cursor-pointer font-bold text-[13px] flex items-center gap-2" style={{ padding: '9px 20px', background: 'var(--boom)', boxShadow: '0 4px 16px rgba(255,53,0,0.4)' }}>
                 💥 Démarrer
               </button>
             )}
@@ -251,26 +251,26 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           {/* LEFT — Text + CTAs */}
           <div style={{ flex: isDesktop ? '0 0 55%' : undefined }}>
             {/* Badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 100, background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.2)', width: 'fit-content', marginBottom: 20, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(10px)', transition: 'all 0.5s ease' }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--boom)', display: 'inline-block', animation: 'pulse-red 2s infinite' }} />
-              <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{t('landing.badge')}</span>
+            <div className="inline-flex items-center gap-2 rounded-full mb-5" style={{ padding: '6px 14px', background: 'rgba(255,53,0,0.1)', border: '1px solid rgba(255,53,0,0.2)', width: 'fit-content', opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(10px)', transition: 'all 0.5s ease' }}>
+              <span className="rounded-full" style={{ width: 6, height: 6, background: 'var(--boom)', display: 'inline-block', animation: 'pulse-red 2s infinite' }} />
+              <span className="text-[10px] font-semibold" style={{ letterSpacing: 1, textTransform: 'uppercase' as const, fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{t('landing.badge')}</span>
             </div>
 
             {/* Title */}
-            <h1 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 'clamp(56px,5vw,80px)' : 'clamp(48px,12vw,72px)', lineHeight: 0.95, letterSpacing: '-1px', marginBottom: 20, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(20px)', transition: 'all 0.6s ease 0.1s' }}>
+            <h1 className="mb-5" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 'clamp(56px,5vw,80px)' : 'clamp(48px,12vw,72px)', lineHeight: 0.95, letterSpacing: '-1px', opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(20px)', transition: 'all 0.6s ease 0.1s' }}>
               <span style={S.displayBlock}>{t('landing.hero.line1')}</span>
               <span style={S.displayBlock}>{t('landing.hero.line2').split(' ')[0]}&nbsp;<span style={{ color: 'var(--boom)', textShadow: '0 0 40px rgba(255,53,0,0.5)' }}>{t('landing.hero.line2').split(' ').slice(1).join(' ')}</span></span>
-              <span style={{ display: 'block', opacity: 0.7 }}>{t('landing.hero.line3')}</span>
+              <span className="block" style={{ opacity: 0.7 }}>{t('landing.hero.line3')}</span>
               <span style={S.displayBlock}>{t('landing.hero.line4')}</span>
             </h1>
 
             {/* SEO subtitle — keywords "constat amiable numérique" */}
-            <p style={{ fontSize: isDesktop ? 13 : 12, lineHeight: 1.5, opacity: heroVisible ? 0.55 : 0, marginBottom: 6, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(14px)', transition: 'all 0.6s ease 0.15s', fontFamily: 'DM Mono, monospace', letterSpacing: 0.5 }}>
+            <p className="leading-normal mb-1.5" style={{ fontSize: isDesktop ? 13 : 12, opacity: heroVisible ? 0.55 : 0, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(14px)', transition: 'all 0.6s ease 0.15s', fontFamily: 'DM Mono, monospace', letterSpacing: 0.5 }}>
               {t('landing.seoLine', { defaultValue: 'Le constat amiable numérique mondial · Digital accident report' })}
             </p>
 
             {/* Subtitle */}
-            <p style={{ fontSize: isDesktop ? 16 : 15, lineHeight: 1.65, opacity: heroVisible ? 0.6 : 0, marginBottom: 28, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.2s' }}>
+            <p className="mb-7" style={{ fontSize: isDesktop ? 16 : 15, lineHeight: 1.65, opacity: heroVisible ? 0.6 : 0, maxWidth: 440, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.2s' }}>
               {t('landing.subtitle')}
             </p>
 
@@ -278,15 +278,15 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all 0.6s ease 0.3s', marginBottom: isDesktop ? 0 : 44, maxWidth: isDesktop ? 440 : 'none' }}>
 
               {authUser && (
-                <div style={{ width: '100%', marginBottom: 10, borderRadius: 12, border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-                  <button onClick={onAccount} style={{ flex: 1, padding: '10px 14px', background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
-                    <span style={{ fontSize: 16 }}>👤</span>
-                    <span style={{ opacity: 0.7, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>{authUser.email}</span>
-                    <span style={{ marginLeft: 'auto', background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
+                <div className="w-full mb-2.5 rounded-xl flex items-center overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)' }}>
+                  <button onClick={onAccount} className="flex-1 bg-transparent border-0 cursor-pointer flex items-center gap-2.5 text-[13px]" style={{ padding: '10px 14px', color: 'var(--text)' }}>
+                    <span className="text-base">👤</span>
+                    <span className="overflow-hidden whitespace-nowrap" style={{ opacity: 0.7, textOverflow: 'ellipsis', maxWidth: 160 }}>{authUser.email}</span>
+                    <span className="ml-auto text-white rounded-[20px] text-[11px] font-bold shrink-0" style={{ background: 'var(--boom)', padding: '2px 10px' }}>
                       {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
                     </span>
                   </button>
-                  <button onClick={onLogout} title="Se déconnecter" style={{ padding: '10px 14px', background: 'none', border: 'none', borderLeft: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)', cursor: 'pointer', fontSize: 16, flexShrink: 0, transition: 'color 0.15s' }}
+                  <button onClick={onLogout} title="Se déconnecter" className="bg-transparent border-0 cursor-pointer text-base shrink-0" style={{ padding: '10px 14px', borderLeft: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.55)', transition: 'color 0.15s' }}
                     onMouseEnter={e => (e.currentTarget.style.color = '#FF3500')}
                     onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}>
                     ↩
@@ -294,29 +294,29 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 </div>
               )}
 
-              <button onClick={onStart} style={{ width: '100%', padding: '18px 24px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, boxShadow: '0 8px 32px rgba(255,53,0,0.45)', transition: 'transform 0.15s' }}
+              <button onClick={onStart} className="w-full text-base font-bold rounded-[14px] border-0 text-white cursor-pointer flex items-center justify-center gap-3" style={{ padding: '18px 24px', background: 'var(--boom)', boxShadow: '0 8px 32px rgba(255,53,0,0.45)', transition: 'transform 0.15s' }}
                 onMouseDown={e => (e.currentTarget.style.transform = 'scale(0.98)')}
                 onMouseUp={e => (e.currentTarget.style.transform = 'scale(1)')}>
-                <span style={{ fontSize: 20 }}>💥</span>
+                <span className="text-xl">💥</span>
                 {t('landing.cta.start')}
-                <span style={{ marginLeft: 'auto', fontSize: 20, opacity: 0.7 }}>→</span>
+                <span className="ml-auto text-xl" style={{ opacity: 0.7 }}>→</span>
               </button>
 
-              <button onClick={onGarage} style={{ width: '100%', marginTop: 10, padding: '14px 18px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.8)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, fontWeight: 600, transition: 'all 0.15s' }}
+              <button onClick={onGarage} className="w-full mt-2.5 rounded-xl cursor-pointer flex items-center gap-3 text-sm font-semibold" style={{ padding: '14px 18px', border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.04)', color: 'rgba(240,237,232,0.8)', transition: 'all 0.15s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,53,0,0.4)'; e.currentTarget.style.background = 'rgba(255,53,0,0.06)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}>
-                <span style={{ fontSize: 20 }}>🚗</span>
-                <div style={{ textAlign: 'left' as const, flex: 1 }}>
+                <span className="text-xl">🚗</span>
+                <div className="flex-1 text-left">
                   <div>Préparer mon garage</div>
-                  <div style={{ fontSize: 11, opacity: 0.7, fontWeight: 400, marginTop: 1 }}>Enregistre tes véhicules à l'avance · 30 sec par scan</div>
+                  <div className="text-[11px] font-normal" style={{ opacity: 0.7, marginTop: 1 }}>Enregistre tes véhicules à l'avance · 30 sec par scan</div>
                 </div>
-                <span style={{ opacity: 0.7, fontSize: 16 }}>›</span>
+                <span className="text-base" style={{ opacity: 0.7 }}>›</span>
               </button>
 
-              <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-                <p style={{ flex: 1, textAlign: 'center', fontSize: 11, opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>{t('landing.cta.from')}</p>
+              <div className="flex gap-2.5 mt-2.5">
+                <p className="flex-1 text-center text-[11px]" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>{t('landing.cta.from')}</p>
                 {onPricing && (
-                  <button onClick={() => { const el = document.getElementById('tarifs'); el ? el.scrollIntoView({ behavior: 'smooth' }) : onPricing?.(); }} style={{ fontSize: 11, opacity: 0.75, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
+                  <button onClick={() => { const el = document.getElementById('tarifs'); el ? el.scrollIntoView({ behavior: 'smooth' }) : onPricing?.(); }} className="text-[11px] bg-transparent border-0 cursor-pointer underline whitespace-nowrap" style={{ opacity: 0.75, color: 'var(--text)' }}>
                     {t('landing.cta.pricing')}
                   </button>
                 )}
@@ -324,14 +324,14 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
 
               {/* Badges desktop */}
               {isDesktop && (
-                <div style={{ display: 'flex', gap: 8, marginTop: 20, flexWrap: 'wrap' as const }}>
+                <div className="flex gap-2 mt-5" style={{ flexWrap: 'wrap' as const }}>
                   {[
                     { icon: '🔒', text: 'Chiffré SSL' },
                     { icon: '🌍', text: '50 langues' },
                     { icon: '⚡', text: '5 minutes' },
                     { icon: '📄', text: 'PDF certifié' },
                   ].map(b => (
-                    <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px', borderRadius: 20, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', fontSize: 11, opacity: 0.7 }}>
+                    <div key={b.text} className="flex items-center rounded-[20px] text-[11px]" style={{ gap: 5, padding: '5px 11px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)', opacity: 0.7 }}>
                       <span>{b.icon}</span><span>{b.text}</span>
                     </div>
                   ))}
@@ -341,7 +341,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
 
           {/* RIGHT — Phone mockup (desktop only inline, mobile below) */}
-          <div style={{ flex: isDesktop ? '0 0 40%' : undefined, opacity: heroVisible ? 1 : 0, transition: 'opacity 0.8s ease 0.5s', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: isDesktop ? 0 : 0 }}>
+          <div className="flex items-center justify-center" style={{ flex: isDesktop ? '0 0 40%' : undefined, opacity: heroVisible ? 1 : 0, transition: 'opacity 0.8s ease 0.5s', paddingTop: isDesktop ? 0 : 0 }}>
             <PhoneMockup />
           </div>
 
@@ -351,13 +351,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── STATS ─────────────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '52px 48px' : '44px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <Section>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: isDesktop ? 40 : 8 }}>
+          <div className="grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', gap: isDesktop ? 40 : 8 }}>
             {stats.map((stat, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 'clamp(36px,4vw,52px)' : 'clamp(22px,6vw,30px)', color: 'var(--boom)', lineHeight: 1, marginBottom: 8 }}>
+              <div key={i} className="text-center">
+                <div className="leading-none mb-2" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 'clamp(36px,4vw,52px)' : 'clamp(22px,6vw,30px)', color: 'var(--boom)' }}>
                   <Counter to={stat.val} suffix={stat.suffix} duration={2500} />
                 </div>
-                <div style={{ fontSize: isDesktop ? 13 : 10, opacity: 0.7, lineHeight: 1.4, letterSpacing: 0.3 }}>{stat.label}</div>
+                <div className="leading-snug" style={{ fontSize: isDesktop ? 13 : 10, opacity: 0.7, letterSpacing: 0.3 }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -367,38 +367,38 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── HOW IT WORKS ──────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '72px 48px' : '52px 24px' }}>
         <Section>
-          <div style={{ textAlign: 'center', marginBottom: isDesktop ? 52 : 36 }}>
+          <div className="text-center" style={{ marginBottom: isDesktop ? 52 : 36 }}>
             <div style={S.sectionLabel} id="how-works-label" role="doc-subtitle">{t('landing.how.label')}</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 30, letterSpacing: '-0.5px' }}>{t('landing.how.title')} <span style={S.boomColor}>{t('landing.how.title_accent')}</span></h2>
           </div>
 
           {isDesktop ? (
             /* Desktop: horizontal steps */
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 20 }}>
+            <div className="grid gap-5" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
               {howSteps.map((item, i) => (
-                <div key={i} style={{ position: 'relative', textAlign: 'center' }}>
+                <div key={i} className="relative text-center">
                   {i < howSteps.length - 1 && (
-                    <div style={{ position: 'absolute', top: 19, left: '60%', width: '80%', height: 1, background: 'linear-gradient(to right, rgba(255,53,0,0.3), transparent)' }} />
+                    <div className="absolute" style={{ top: 19, left: '60%', width: '80%', height: 1, background: 'linear-gradient(to right, rgba(255,53,0,0.3), transparent)' }} />
                   )}
                   <div style={{ ...S.boomCircle, margin: '0 auto 14px' }}>
                     {item.step}
                   </div>
-                  <div style={{ fontSize: 22, marginBottom: 8 }}>{item.icon}</div>
-                  <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>{item.title}</div>
-                  <div style={{ fontSize: 11, opacity: 0.75, lineHeight: 1.6 }}>{item.desc}</div>
+                  <div className="text-[22px] mb-2">{item.icon}</div>
+                  <div className="text-[13px] font-bold mb-1.5">{item.title}</div>
+                  <div className="text-[11px] leading-relaxed" style={{ opacity: 0.75 }}>{item.desc}</div>
                 </div>
               ))}
             </div>
           ) : (
             /* Mobile: vertical list */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <div className="flex flex-col" style={{ gap: 0 }}>
               {howSteps.map((item, i) => (
-                <div key={i} style={{ display: 'flex', gap: 16, position: 'relative', paddingBottom: i < howSteps.length - 1 ? 28 : 0 }}>
-                  {i < howSteps.length - 1 && <div style={{ position: 'absolute', left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
-                  <div style={{ ...S.boomCircle, flexShrink: 0 }}>{item.step}</div>
+                <div key={i} className="flex gap-4 relative" style={{ paddingBottom: i < howSteps.length - 1 ? 28 : 0 }}>
+                  {i < howSteps.length - 1 && <div className="absolute" style={{ left: 19, top: 42, width: 1, height: 'calc(100% - 10px)', background: 'linear-gradient(to bottom, rgba(255,53,0,0.25), transparent)' }} />}
+                  <div className="shrink-0">{item.step}</div>
                   <div style={{ paddingTop: 7 }}>
-                    <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 3 }}>{item.icon} {item.title}</div>
-                    <div style={{ fontSize: 12, opacity: 0.75, lineHeight: 1.6 }}>{item.desc}</div>
+                    <div className="text-sm font-bold" style={{ marginBottom: 3 }}>{item.icon} {item.title}</div>
+                    <div className="text-xs leading-relaxed" style={{ opacity: 0.75 }}>{item.desc}</div>
                   </div>
                 </div>
               ))}
@@ -410,8 +410,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── FEATURES ──────────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '0 48px 72px' : '0 24px 52px' }}>
         <Section>
-          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 28, textAlign: 'center', marginBottom: 32 }} id="features">{t('landing.features.title')}</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr 1fr', gap: isDesktop ? 16 : 10 }}>
+          <h2 className="text-center mb-8" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 28 }} id="features">{t('landing.features.title')}</h2>
+          <div className="grid" style={{ gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr 1fr', gap: isDesktop ? 16 : 10 }}>
             {features.map((f, i) => <FeatureCard key={i} {...f} delay={i * 80} />)}
           </div>
         </Section>
@@ -420,25 +420,25 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── COUNTRIES ─────────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '52px 48px' : '36px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <Section>
-          <div style={{ textAlign: 'center', marginBottom: 20 }}>
-            <div style={{ fontFamily: 'DM Mono, monospace', fontSize: 10, letterSpacing: 3, opacity: 0.7, textTransform: 'uppercase' as const, marginBottom: 8 }} role="doc-subtitle">{t('landing.coverage.label')}</div>
+          <div className="text-center mb-5">
+            <div className="text-[10px] mb-2" style={{ fontFamily: 'DM Mono, monospace', letterSpacing: 3, opacity: 0.7, textTransform: 'uppercase' as const }} role="doc-subtitle">{t('landing.coverage.label')}</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22 }}>{t('landing.coverage.title')}</h2>
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {flags.map((f, i) => <span key={i} style={{ fontSize: isDesktop ? 28 : 22, opacity: 0.7, cursor: 'default', transition: 'all 0.2s' }} onMouseEnter={e => { (e.target as HTMLElement).style.opacity = '1'; (e.target as HTMLElement).style.transform = 'scale(1.3)'; }} onMouseLeave={e => { (e.target as HTMLElement).style.opacity = '0.7'; (e.target as HTMLElement).style.transform = ''; }}>{f}</span>)}
+          <div className="flex gap-2.5 flex-wrap justify-center">
+            {flags.map((f, i) => <span key={i} className="cursor-default" style={{ fontSize: isDesktop ? 28 : 22, opacity: 0.7, transition: 'all 0.2s' }} onMouseEnter={e => { (e.target as HTMLElement).style.opacity = '1'; (e.target as HTMLElement).style.transform = 'scale(1.3)'; }} onMouseLeave={e => { (e.target as HTMLElement).style.opacity = '0.7'; (e.target as HTMLElement).style.transform = ''; }}>{f}</span>)}
           </div>
-          <p style={{ textAlign: 'center', marginTop: 14, fontSize: 11, opacity: 0.7 }}>{t('landing.coverage.more')}</p>
+          <p className="text-center text-[11px]" style={{ marginTop: 14, opacity: 0.7 }}>{t('landing.coverage.more')}</p>
         </Section>
       </div>
 
       {/* ── LEGAL ─────────────────────────────────────────────── */}
       <div style={{ padding: isDesktop ? '52px 48px' : '36px 24px' }}>
         <Section>
-          <div style={{ padding: isDesktop ? '28px 32px' : '22px', borderRadius: 14, background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.15)', display: 'flex', alignItems: isDesktop ? 'center' : 'flex-start', gap: 16 }}>
-            <span style={{ fontSize: 32, flexShrink: 0 }}>⚖️</span>
+          <div className="rounded-[14px] flex gap-4" style={{ padding: isDesktop ? '28px 32px' : '22px', background: 'rgba(255,179,0,0.06)', border: '1px solid rgba(255,179,0,0.15)', alignItems: isDesktop ? 'center' : 'flex-start' }}>
+            <span className="text-[32px] shrink-0">⚖️</span>
             <div>
-              <h2 style={{ fontWeight: 700, fontSize: isDesktop ? 16 : 14, marginBottom: 6 }}>{t('landing.legal.title')}</h2>
-              <div style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
+              <h2 className="font-bold mb-1.5" style={{ fontSize: isDesktop ? 16 : 14 }}>{t('landing.legal.title')}</h2>
+              <div className="text-[13px]" style={{ opacity: 0.75, lineHeight: 1.65 }}>{t('landing.legal.text')}</div>
             </div>
           </div>
         </Section>
@@ -446,47 +446,47 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── TARIFS ────────────────────────────────────────────── */}
       <div id="tarifs" style={{ padding: isDesktop ? '72px 48px' : '52px 20px', background: 'var(--dark)', borderTop: '1px solid var(--border)' }}>
         <Section>
-          <div style={{ textAlign: 'center', marginBottom: 36 }}>
-            <div style={{ display: 'inline-block', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', borderRadius: 20, padding: '4px 14px', fontSize: 11, fontWeight: 700, color: 'var(--boom)', letterSpacing: 1, marginBottom: 12 }} role="doc-subtitle">TARIFS</div>
-            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 26, fontWeight: 700, marginBottom: 8 }}>Simple, transparent, mondial</h2>
-            <p style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.6 }}>1 crédit = 1 constat complet · Valable dans 150+ pays · Sans abonnement</p>
+          <div className="text-center" style={{ marginBottom: 36 }}>
+            <div className="rounded-[20px] text-[11px] font-bold mb-3" style={{ display: 'inline-block', background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', padding: '4px 14px', color: 'var(--boom)', letterSpacing: 1 }} role="doc-subtitle">TARIFS</div>
+            <h2 className="font-bold mb-2" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 26 }}>Simple, transparent, mondial</h2>
+            <p className="text-[13px] leading-relaxed" style={{ opacity: 0.75 }}>1 crédit = 1 constat complet · Valable dans 150+ pays · Sans abonnement</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: isDesktop ? 16 : 12, maxWidth: isDesktop ? 'none' : 480, margin: '0 auto' }}>
+          <div className="grid mx-auto" style={{ gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: isDesktop ? 16 : 12, maxWidth: isDesktop ? 'none' : 480 }}>
             {[
               { id: 'single', icon: '📄', label: '1 constat',  price: '4.90', currency: 'CHF / EUR', desc: 'Pour un accident ponctuel', badge: null, savings: null },
               { id: 'pack3',  icon: '👨‍👩‍👧', label: '3 constats', price: '12.90', currency: 'CHF / EUR', desc: 'Pour toute la famille',    badge: '⭐ Populaire', savings: '-12%' },
               { id: 'pack10', icon: '🚗', label: '10 constats', price: '34.90', currency: 'CHF / EUR', desc: 'Pour flottes et courtiers', badge: null, savings: '-29%' },
             ].map((pkg) => (
-              <button key={pkg.id} onClick={onPricing} aria-label={`Acheter ${pkg.label}`} style={{ background: pkg.badge ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)', border: `1.5px solid ${pkg.badge ? 'rgba(255,53,0,0.35)' : 'var(--border)'}`, borderRadius: 16, padding: isDesktop ? '24px 20px' : '18px 20px', cursor: 'pointer', display: 'flex', flexDirection: isDesktop ? 'column' : 'row', alignItems: isDesktop ? 'flex-start' : 'center', gap: isDesktop ? 10 : 16, transition: 'all 0.15s', position: 'relative' as const, border: 'none' }}
+              <button key={pkg.id} onClick={onPricing} aria-label={`Acheter ${pkg.label}`} className="rounded-2xl cursor-pointer flex border-0" style={{ background: pkg.badge ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)', border: `1.5px solid ${pkg.badge ? 'rgba(255,53,0,0.35)' : 'var(--border)'}`, padding: isDesktop ? '24px 20px' : '18px 20px', flexDirection: isDesktop ? 'column' : 'row', alignItems: isDesktop ? 'flex-start' : 'center', gap: isDesktop ? 10 : 16, transition: 'all 0.15s', position: 'relative' as const }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
                 {pkg.badge && (
-                  <div style={{ position: 'absolute' as const, top: -10, left: 20, background: 'var(--boom)', color: '#fff', borderRadius: 20, padding: '2px 12px', fontSize: 10, fontWeight: 700 }}>{pkg.badge}</div>
+                  <div className="text-white rounded-[20px] text-[10px] font-bold" style={{ position: 'absolute' as const, top: -10, left: 20, background: 'var(--boom)', padding: '2px 12px' }}>{pkg.badge}</div>
                 )}
-                <span style={{ fontSize: isDesktop ? 36 : 28, flexShrink: 0 }}>{pkg.icon}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                    <span style={{ fontWeight: 700, fontSize: isDesktop ? 16 : 15 }}>{pkg.label}</span>
-                    {pkg.savings && <span style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', borderRadius: 20, padding: '1px 8px', fontSize: 11, fontWeight: 700 }}>{pkg.savings}</span>}
+                <span className="shrink-0" style={{ fontSize: isDesktop ? 36 : 28 }}>{pkg.icon}</span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2" style={{ marginBottom: 2 }}>
+                    <span className="font-bold" style={{ fontSize: isDesktop ? 16 : 15 }}>{pkg.label}</span>
+                    {pkg.savings && <span className="text-green-500 rounded-[20px] text-[11px] font-bold" style={{ background: 'rgba(34,197,94,0.15)', padding: '1px 8px' }}>{pkg.savings}</span>}
                   </div>
-                  <div style={{ fontSize: 12, opacity: 0.7 }}>{pkg.desc}</div>
+                  <div className="text-xs" style={{ opacity: 0.7 }}>{pkg.desc}</div>
                 </div>
-                <div style={{ textAlign: isDesktop ? 'left' : 'right' as const, flexShrink: 0, marginTop: isDesktop ? 8 : 0 }}>
-                  <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22, fontWeight: 700, color: pkg.badge ? 'var(--boom)' : 'var(--text)', lineHeight: 1 }}>{pkg.price}</div>
-                  <div style={{ fontSize: 10, opacity: 0.7, marginTop: 2 }}>{pkg.currency}</div>
+                <div className="shrink-0" style={{ textAlign: isDesktop ? 'left' : 'right' as const, marginTop: isDesktop ? 8 : 0 }}>
+                  <div className="font-bold leading-none" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 28 : 22, color: pkg.badge ? 'var(--boom)' : 'var(--text)' }}>{pkg.price}</div>
+                  <div className="text-[10px]" style={{ opacity: 0.7, marginTop: 2 }}>{pkg.currency}</div>
                 </div>
               </button>
             ))}
           </div>
 
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const, justifyContent: 'center', marginTop: 24 }}>
+          <div className="flex gap-2 justify-center mt-6" style={{ flexWrap: 'wrap' as const }}>
             {['✅ Sans abonnement', '✅ Crédits sans expiration', '✅ PDF certifié', '✅ 150+ pays'].map(g => (
-              <span key={g} style={{ fontSize: 11, opacity: 0.75, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 20, padding: '4px 10px' }}>{g}</span>
+              <span key={g} className="text-[11px] rounded-[20px]" style={{ opacity: 0.75, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', padding: '4px 10px' }}>{g}</span>
             ))}
           </div>
-          <div style={{ textAlign: 'center', marginTop: 24 }}>
-            <button onClick={onPricing} style={{ padding: '15px 40px', borderRadius: 12, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', fontSize: 15, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}>
+          <div className="text-center mt-6">
+            <button onClick={onPricing} className="rounded-xl border-0 text-white cursor-pointer text-[15px] font-bold inline-flex items-center gap-2.5" style={{ padding: '15px 40px', background: 'var(--boom)', boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}>
               Acheter des crédits →
             </button>
           </div>
@@ -496,28 +496,28 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── SOCIAL PROOF / TRUST ─────────────────────────────── */}
       <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px' }}>
         <Section>
-          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div className="text-center mb-8">
             <div style={S.sectionLabel}>ILS NOUS FONT CONFIANCE</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Utilisé dans <span style={S.boomColor}>150+ pays</span></h2>
           </div>
 
           {/* Testimonials */}
-          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: 16, marginBottom: 32 }}>
+          <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr' }}>
             {[
               { name: 'Sarah M.', loc: '🇨🇭 Zurich', text: "Accident à l'étranger, l'autre conducteur parlait italien. On a chacun rempli dans notre langue. PDF reçu en 4 minutes. Mon assureur a accepté immédiatement.", stars: 5 },
               { name: 'Thomas K.', loc: '🇩🇪 München', text: "Nie wieder Papierkram nach einem Unfall. QR-Code gescannt, Dokumente fotografiert, fertig. Der digitale Unfallbericht funktioniert einwandfrei.", stars: 5 },
               { name: 'Emma L.', loc: '🇬🇧 London', text: "Had a fender bender in France. No French, no paper form. boom.contact saved us — everything in English, signed digitally, PDF in my inbox.", stars: 5 },
             ].map((t, i) => (
-              <div key={i} style={{ padding: isDesktop ? '20px' : '16px', borderRadius: 14, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)' }}>
-                <div style={{ display: 'flex', gap: 4, marginBottom: 10 }}>
-                  {Array.from({ length: t.stars }).map((_, j) => <span key={j} style={{ color: '#FFB300', fontSize: 14 }}>★</span>)}
+              <div key={i} className="rounded-[14px]" style={{ padding: isDesktop ? '20px' : '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)' }}>
+                <div className="flex gap-1 mb-2.5">
+                  {Array.from({ length: t.stars }).map((_, j) => <span key={j} className="text-sm text-[#FFB300]">★</span>)}
                 </div>
-                <p style={{ fontSize: 13, lineHeight: 1.65, opacity: 0.7, marginBottom: 12, fontStyle: 'italic' }}>"{t.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,53,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: 'var(--boom)' }}>{t.name[0]}</div>
+                <p className="text-[13px] mb-3" style={{ lineHeight: 1.65, opacity: 0.7, fontStyle: 'italic' }}>"{t.text}"</p>
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full flex items-center justify-center text-sm font-bold" style={{ width: 32, height: 32, background: 'rgba(255,53,0,0.15)', color: 'var(--boom)' }}>{t.name[0]}</div>
                   <div>
                     <div style={S.boldSmall}>{t.name}</div>
-                    <div style={{ fontSize: 10, opacity: 0.7 }}>{t.loc}</div>
+                    <div className="text-[10px]" style={{ opacity: 0.7 }}>{t.loc}</div>
                   </div>
                 </div>
               </div>
@@ -525,7 +525,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
 
           {/* Trust badges */}
-          <div style={{ display: 'flex', gap: isDesktop ? 20 : 10, flexWrap: 'wrap' as const, justifyContent: 'center' }}>
+          <div className="flex justify-center" style={{ gap: isDesktop ? 20 : 10, flexWrap: 'wrap' as const }}>
             {[
               { icon: '🇨🇭', text: 'Made in Switzerland' },
               { icon: '🔒', text: 'Chiffrement SSL 256-bit' },
@@ -534,9 +534,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               { icon: '💳', text: 'Paiement Stripe sécurisé' },
               { icon: '🗑️', text: 'Données supprimées sous 30j' },
             ].map(b => (
-              <div key={b.text} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', fontSize: 11, opacity: 0.7 }}>
-                <span style={{ fontSize: 16 }}>{b.icon}</span>
-                <span style={{ fontWeight: 600 }}>{b.text}</span>
+              <div key={b.text} className="flex items-center gap-2 rounded-[10px] text-[11px]" style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', opacity: 0.7 }}>
+                <span className="text-base">{b.icon}</span>
+                <span className="font-semibold">{b.text}</span>
               </div>
             ))}
           </div>
@@ -546,12 +546,12 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── FAQ — SEO "constat amiable numérique" ─────────────── */}
       <div style={{ padding: isDesktop ? '60px 48px' : '40px 24px', background: 'var(--dark)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <Section>
-          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div className="text-center mb-8">
             <div style={S.sectionLabel}>FAQ</div>
             <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Questions fréquentes sur le <span style={S.boomColor}>constat amiable numérique</span></h2>
           </div>
 
-          <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="mx-auto flex flex-col gap-3 max-w-[720px]">
             {[
               { q: "Qu'est-ce qu'un constat amiable numérique ?", a: "Un constat amiable numérique remplace le formulaire papier traditionnel. Avec boom.contact, vous remplissez votre constat d'accident directement depuis votre téléphone en 5 minutes. L'OCR scanne vos documents automatiquement, les deux conducteurs signent digitalement, et un PDF certifié conforme au standard européen (CEA) est généré instantanément." },
               { q: "Le constat amiable numérique est-il accepté par les assureurs ?", a: "Oui. Le PDF généré par boom.contact est conforme au formulaire européen standardisé CEA (Constat Européen d'Accident). Il est accepté par les assureurs dans plus de 150 pays. Les signatures digitales sont horodatées et géolocalisées, ce qui leur confère une valeur probante supérieure au papier." },
@@ -561,12 +561,12 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               { q: "Que se passe-t-il si l'autre conducteur n'a pas boom.contact ?", a: "Aucun problème. Vous créez la session et un QR code s'affiche. L'autre conducteur scanne le QR avec son téléphone — boom.contact s'ouvre directement dans son navigateur. Pas d'inscription, pas de téléchargement. C'est prêt en 3 secondes." },
               { q: "Mes données sont-elles protégées ?", a: "boom.contact est développé en Suisse et conforme au RGPD européen et à la nLPD suisse. Les données sont chiffrées en transit (SSL 256-bit), les sessions sont automatiquement supprimées après 30 jours, et la police n'est jamais notifiée automatiquement." },
             ].map((faq, i) => (
-              <details key={i} style={{ borderRadius: 12, border: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
-                <summary style={{ padding: '16px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 12, listStyle: 'none' }}>
-                  <span style={{ color: 'var(--boom)', fontSize: 16, flexShrink: 0 }}>+</span>
+              <details key={i} className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)' }}>
+                <summary className="cursor-pointer text-sm font-bold flex items-center gap-3" style={{ padding: '16px 18px', listStyle: 'none' }}>
+                  <span className="text-base shrink-0" style={{ color: 'var(--boom)' }}>+</span>
                   {faq.q}
                 </summary>
-                <div style={{ padding: '0 18px 16px 46px', fontSize: 13, lineHeight: 1.7, opacity: 0.755 }}>
+                <div className="text-[13px]" style={{ padding: '0 18px 16px 46px', lineHeight: 1.7, opacity: 0.755 }}>
                   {faq.a}
                 </div>
               </details>
@@ -576,51 +576,51 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       </div>
 
       {/* ── FINAL CTA ─────────────────────────────────────────── */}
-      <div style={{ padding: isDesktop ? '80px 48px' : '44px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: 120, height: 120, objectFit: 'contain', marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
-          <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 40 : 28, marginBottom: 10 }}>{t('landing.finalCta.title')}</h2>
-          <p style={{ fontSize: 14, opacity: 0.75, lineHeight: 1.65, marginBottom: 28, maxWidth: 400, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
-          <button onClick={onStart} style={{ padding: '18px 44px', fontSize: 16, fontWeight: 700, borderRadius: 14, border: 'none', background: 'var(--boom)', color: '#fff', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
-            {t('landing.finalCta.button')} <span style={{ fontSize: 18 }}>→</span>
+      <div className="text-center relative overflow-hidden" style={{ padding: isDesktop ? '80px 48px' : '44px 24px 60px' }}>
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,53,0,0.08) 0%, transparent 70%)' }} />
+        <div className="relative" style={{ zIndex: 1 }}>
+          <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain" style={{ width: 120, height: 120, marginBottom: 14, display: 'inline-block', animation: 'float 4s ease-in-out infinite' }} />
+          <h2 className="mb-2.5" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 40 : 28 }}>{t('landing.finalCta.title')}</h2>
+          <p className="text-sm mb-7" style={{ opacity: 0.75, lineHeight: 1.65, maxWidth: 400, margin: '0 auto 28px' }}>{t('landing.finalCta.subtitle')}</p>
+          <button onClick={onStart} className="text-base font-bold rounded-[14px] border-0 text-white cursor-pointer inline-flex items-center gap-2.5" style={{ padding: '18px 44px', background: 'var(--boom)', boxShadow: '0 8px 32px rgba(255,53,0,0.5)' }}>
+            {t('landing.finalCta.button')} <span className="text-lg">→</span>
           </button>
-          <p style={{ marginTop: 12, fontSize: 10, opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>{t('landing.cta.free')}</p>
+          <p className="mt-3 text-[10px]" style={{ opacity: 0.7, letterSpacing: 1, fontFamily: 'DM Mono, monospace' }}>{t('landing.cta.free')}</p>
         </div>
       </div>
 
       {/* ── FOOTER ────────────────────────────────────────────── */}
       <footer style={{ padding: isDesktop ? '32px 48px' : '22px', borderTop: '1px solid var(--border)', background: 'var(--dark)' }}>
         <Section>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: isDesktop ? 0 : 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ height: 36, objectFit: 'contain' }} />
+          <div className="flex justify-between" style={{ alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: isDesktop ? 0 : 16 }}>
+            <div className="flex items-center gap-2.5">
+              <img src="/logo.webp" alt="boom.contact" loading="lazy" className="object-contain" style={{ height: 36 }} />
               {isDesktop && (
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.7 }}>boom.contact</div>
-                  <div style={{ fontSize: 10, opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>PEP's Swiss SA · CHE-476.484.632</div>
+                  <div className="text-xs font-bold" style={{ opacity: 0.7 }}>boom.contact</div>
+                  <div className="text-[10px]" style={{ opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>PEP's Swiss SA · CHE-476.484.632</div>
                 </div>
               )}
             </div>
-            <div style={{ display: 'flex', gap: isDesktop ? 20 : 12, flexWrap: 'wrap' as const, alignItems: 'center' }}>
+            <div className="flex items-center" style={{ gap: isDesktop ? 20 : 12, flexWrap: 'wrap' as const }}>
               {[
                 { label: 'Confidentialité', href: '/?privacy=true' },
                 { label: 'CGU', href: '#cgu', onClick: (e: React.MouseEvent) => { e.preventDefault(); setShowCGU(true); } },
                 { label: 'RGPD · nLPD', href: '/?privacy=true' },
                 { label: 'privacy@boom.contact', href: 'mailto:privacy@boom.contact' },
               ].map(({ label, href, onClick }) => (
-                <a key={label} href={href} onClick={onClick} style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}
+                <a key={label} href={href} onClick={onClick} className="text-[11px] no-underline" style={{ color: 'rgba(255,255,255,0.7)' }}
                   onMouseOver={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
                   onMouseOut={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.25)'}>
                   {label}
                 </a>
               ))}
             </div>
-            <div style={{ fontSize: 10, opacity: 0.7, lineHeight: 1.8, textAlign: isDesktop ? 'right' : 'left' as const }}>
+            <div className="text-[10px]" style={{ opacity: 0.7, lineHeight: 1.8, textAlign: isDesktop ? 'right' : 'left' as const }}>
               {t('landing.footer.address').split('\n').map((line, i) => <span key={i}>{line}{i === 0 ? <br/> : ''}</span>)}
             </div>
           </div>
-          <div style={{ marginTop: 16, fontSize: 10, opacity: 0.7, textAlign: 'center' }}>{t('landing.footer.copyright')}</div>
+          <div className="mt-4 text-[10px] text-center" style={{ opacity: 0.7 }}>{t('landing.footer.copyright')}</div>
         </Section>
       </footer>
 
