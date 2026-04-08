@@ -1,5 +1,6 @@
 import { logger } from '../logger.js';
 import { RESEND_API_KEY } from '../config.js';
+import { escapeHtml } from '../routes/trpc.js';
 /**
  * Email service — boom.contact
  *
@@ -365,16 +366,20 @@ function getTemplate(lang?: string) {
 
 function buildEmailHTML(params: SendPDFToDriverParams): string {
   const t = getTemplate(params.language);
+  // SECURITY: Escape all user-supplied data before inserting into HTML
+  const safeInsurerName = params.insurerName ? escapeHtml(params.insurerName) : undefined;
+  const safeSessionId = escapeHtml(params.sessionId);
+  const safeLang = escapeHtml(params.language || 'fr');
   const BASE = 'https://www.boom.contact';
   const GOOGLE_REVIEW = 'https://g.page/r/boom-contact/review'; // à personnaliser avec la vraie URL Google
   const shareUrl = encodeURIComponent(BASE);
   const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en 5 min, valable dans 150 pays');
   const isRegistered = !!params.driverEmail; // s'ils ont un email, peut-être pas encore de compte
 
-  const insurerSection = params.insurerName ? `
+  const insurerSection = safeInsurerName ? `
     <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:16px;margin:0 0 20px;">
       <div style="font-weight:700;color:#166534;font-size:13px;margin-bottom:6px;">🟢 Votre assureur identifié par OCR</div>
-      <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${params.insurerName}</div>
+      <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${safeInsurerName}</div>
       <div style="font-size:12px;color:#595959;line-height:1.5;">
         Contactez directement votre assureur. Coordonnées sur votre police ou leur site web.
       </div>
@@ -382,7 +387,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
   ` : '';
 
   return `<!DOCTYPE html>
-<html lang="${params.language || 'fr'}">
+<html lang="${safeLang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -400,7 +405,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
         <span style="vertical-align:middle;margin-left:12px;color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span>
       </td>
       <td align="right">
-        <span style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">SESSION ${params.sessionId}</span>
+        <span style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">SESSION ${safeSessionId}</span>
       </td>
     </tr></table>
 
@@ -419,7 +424,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
       <div style="font-size:32px;margin-bottom:6px;">📎</div>
       <div style="font-weight:700;font-size:15px;color:#111;">Le PDF est joint à cet email</div>
-      <div style="font-size:12px;color:#595959;margin-top:4px;">constat-${params.sessionId}.pdf</div>
+      <div style="font-size:12px;color:#595959;margin-top:4px;">constat-${safeSessionId}.pdf</div>
     </div>
 
     ${insurerSection}
@@ -448,10 +453,10 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
       <div style="font-size:14px;color:#595959;margin-bottom:16px;">${t.feedbackQ}</div>
       <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
         <td style="padding:0 6px;">
-          <a href="${BASE}/?feedback=good&session=${params.sessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#166534;font-weight:600;">${t.feedbackGood}</a>
+          <a href="${BASE}/?feedback=good&session=${safeSessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#166534;font-weight:600;">${t.feedbackGood}</a>
         </td>
         <td style="padding:0 6px;">
-          <a href="${BASE}/?feedback=bad&session=${params.sessionId}" style="display:inline-block;background:#fef2f2;border:2px solid #fca5a5;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#991b1b;font-weight:600;">${t.feedbackBad}</a>
+          <a href="${BASE}/?feedback=bad&session=${safeSessionId}" style="display:inline-block;background:#fef2f2;border:2px solid #fca5a5;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#991b1b;font-weight:600;">${t.feedbackBad}</a>
         </td>
       </tr></table>
     </div>
@@ -539,7 +544,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
       subject: t.subject,
       html,
       attachments: [{
-        filename: `constat-${params.sessionId}.pdf`,
+        filename: `constat-${safeSessionId}.pdf`,
         content: Buffer.from(params.pdfBase64, 'base64'),
       }],
     });
@@ -618,6 +623,4 @@ export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: strin
     });
     logger.email('gift-credits', recipientEmail, `${credits} credits gift sent`);
   } catch (err) {
-    logger.error('sendGiftCreditsLink failed', { error: String(err) });
-  }
-}
+    logger.error(

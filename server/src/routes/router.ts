@@ -58,7 +58,7 @@ import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCle
 
 // Import shared tRPC utilities
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml } from './trpc.js';
-import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput } from './output-schemas.js';
+import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput } from './output-schemas.js';
 
 // ── Helper: verify participant token for A-E ──────────────────
 async function verifyAnyParticipant(sessionId: string, participantToken: string): Promise<void> {
@@ -107,7 +107,7 @@ export const appRouter = router({
 
     // Get session state
     get: publicProcedure
-      .input(z.object({ sessionId: z.string(), participantToken: z.string() }))
+      .input(z.object({ sessionId: z.string().max(50), participantToken: z.string().max(500) }))
       .output(sessionGetOutput)
       .query(async ({ input }) => {
         const session = await getSession(input.sessionId);
@@ -123,7 +123,7 @@ export const appRouter = router({
 
     // Driver B joins via QR scan — SECURITY: requires tokenB from QR code URL
     join: publicProcedure
-      .input(z.object({ sessionId: z.string(), tokenB: z.string(), language: z.string().default('fr') }))
+      .input(z.object({ sessionId: z.string().max(50), tokenB: z.string().max(500), language: z.string().max(10).default('fr') }))
       .output(sessionJoinOutput)
       .mutation(async ({ input }) => {
         // Verify tokenB before allowing join (timing-safe comparison)
@@ -141,55 +141,56 @@ export const appRouter = router({
     // Update participant data (vehicle, driver, insurance)
     updateParticipant: publicProcedure
       .input(z.object({
-        sessionId: z.string(),
+        sessionId: z.string().max(50),
         role: z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string(),
+        participantToken: z.string().max(500),
         data: z.object({
           vehicle: z.object({
-            vehicleType: z.string().optional(),
-            licensePlate: z.string().optional(),
-            plate: z.string().optional(),
-            brand: z.string().optional(),
-            make: z.string().optional(),
-            model: z.string().optional(),
-            year: z.string().optional(),
-            color: z.string().optional(),
-            vin: z.string().optional(),
-            category: z.string().optional(),
-            bodyStyle: z.string().optional(),
-            type: z.string().optional(),
+            vehicleType: z.string().max(100).optional(),
+            licensePlate: z.string().max(50).optional(),
+            plate: z.string().max(50).optional(),
+            brand: z.string().max(100).optional(),
+            make: z.string().max(100).optional(),
+            model: z.string().max(100).optional(),
+            year: z.string().max(10).optional(),
+            color: z.string().max(50).optional(),
+            vin: z.string().max(50).optional(),
+            category: z.string().max(100).optional(),
+            bodyStyle: z.string().max(100).optional(),
+            type: z.string().max(100).optional(),
           }).optional(),
           driver: z.object({
-            firstName: z.string().optional(),
-            lastName: z.string().optional(),
-            address: z.string().optional(),
-            city: z.string().optional(),
-            postalCode: z.string().optional(),
-            country: z.string().optional(),
-            phone: z.string().optional(),
-            email: z.string().optional(),
-            licenseNumber: z.string().optional(),
-            licenseExpiry: z.string().optional(),
-            name: z.string().optional(),
+            firstName: z.string().max(200).optional(),
+            lastName: z.string().max(200).optional(),
+            address: z.string().max(500).optional(),
+            city: z.string().max(200).optional(),
+            postalCode: z.string().max(20).optional(),
+            country: z.string().max(100).optional(),
+            phone: z.string().max(50).optional(),
+            email: z.string().max(320).optional(),
+            licenseNumber: z.string().max(100).optional(),
+            licenseExpiry: z.string().max(50).optional(),
+            name: z.string().max(200).optional(),
           }).optional(),
           insurance: z.object({
-            company: z.string().optional(),
-            policyNumber: z.string().optional(),
-            agentName: z.string().optional(),
-            agentPhone: z.string().optional(),
-            agentEmail: z.string().optional(),
-            address: z.string().optional(),
-            greenCardNumber: z.string().optional(),
-            greenCardExpiry: z.string().optional(),
+            company: z.string().max(300).optional(),
+            policyNumber: z.string().max(100).optional(),
+            agentName: z.string().max(200).optional(),
+            agentPhone: z.string().max(50).optional(),
+            agentEmail: z.string().max(320).optional(),
+            address: z.string().max(500).optional(),
+            greenCardNumber: z.string().max(100).optional(),
+            greenCardExpiry: z.string().max(50).optional(),
           }).optional(),
-          damagedZones: z.array(z.string()).optional(),
-          circumstances: z.array(z.string()).optional(),
-          language:     z.string().optional(),
+          damagedZones: z.array(z.string().max(100)).max(50).optional(),
+          circumstances: z.array(z.string().max(200)).max(50).optional(),
+          language:     z.string().max(10).optional(),
           isPedestrian: z.boolean().optional(),
-          signature: z.string().optional(),
-          signedAt: z.string().optional(),
+          signature: z.string().max(10_000_000).optional(),
+          signedAt: z.string().max(50).optional(),
         }),
       }))
+      .output(sessionUpdateParticipantOutput)
       .mutation(async ({ input }) => {
         // Verify participant token — REQUIRED
         const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
@@ -209,49 +210,50 @@ export const appRouter = router({
     // Update shared accident data
     updateAccident: publicProcedure
       .input(z.object({
-        sessionId: z.string(),
-        participantToken: z.string(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
         data: z.object({
-          date:             z.string().optional(),
-          time:             z.string().optional(),
+          date:             z.string().max(50).optional(),
+          time:             z.string().max(50).optional(),
           location:         z.object({
-            address: z.string().optional(),
-            city: z.string().optional(),
-            country: z.string().optional(),
+            address: z.string().max(500).optional(),
+            city: z.string().max(200).optional(),
+            country: z.string().max(100).optional(),
             lat: z.number().optional(),
             lng: z.number().optional(),
-            postalCode: z.string().optional(),
-            canton: z.string().optional(),
+            postalCode: z.string().max(20).optional(),
+            canton: z.string().max(100).optional(),
           }).optional(),
-          description:      z.string().optional(),
+          description:      z.string().max(5000).optional(),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
-          witnesses:        z.string().optional(),
+          witnesses:        z.string().max(2000).optional(),
           policeReport:     z.boolean().optional(),
-          policeRef:        z.string().optional(),
+          policeRef:        z.string().max(200).optional(),
           injuries:         z.boolean().optional(),
-          sketchImage:      z.string().optional(),
+          sketchImage:      z.string().max(10_000_000).optional(),
           vehicleAPos:      z.object({
             x: z.number().optional(),
             y: z.number().optional(),
             rotation: z.number().optional(),
-            direction: z.string().optional(),
+            direction: z.string().max(50).optional(),
           }).optional(),
           vehicleCount:     z.number().optional(),
           partyBStatus:     z.object({
-            status: z.string().optional(),
-            reason: z.string().optional(),
-            description: z.string().optional(),
-            type: z.string().optional(),
+            status: z.string().max(100).optional(),
+            reason: z.string().max(1000).optional(),
+            description: z.string().max(2000).optional(),
+            type: z.string().max(100).optional(),
           }).optional(),
           photos:           z.array(z.object({
-            id:       z.string(),
+            id:       z.string().max(100),
             category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
             base64:   z.string().max(7_000_000),
-            caption:  z.string().optional(),
-            takenAt:  z.string(),
-          })).optional(),
+            caption:  z.string().max(500).optional(),
+            takenAt:  z.string().max(50),
+          })).max(20).optional(),
         }),
       }))
+      .output(sessionUpdateAccidentOutput)
       .mutation(async ({ input }) => {
         // Verify participant token — REQUIRED (either party can update accident)
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -276,11 +278,12 @@ export const appRouter = router({
     // Sign constat
     sign: publicProcedure
       .input(z.object({
-        sessionId:       z.string(),
+        sessionId:       z.string().max(50),
         role:            z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string(),
+        participantToken: z.string().max(500),
         signatureBase64: z.string().min(100).max(10_000_000),
       }))
+      .output(sessionSignOutput)
       .mutation(async ({ input }) => {
         // Verify participant token — REQUIRED
         const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
@@ -404,9 +407,9 @@ export const appRouter = router({
         imageBase64:  z.string().min(100).max(7_000_000),
         mediaType:    z.enum(['image/jpeg','image/png','image/webp','image/gif']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
-        country:      z.string().optional(),
-        sessionId: z.string(),
-        participantToken: z.string(),
+        country:      z.string().max(10).optional(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
@@ -427,8 +430,8 @@ export const appRouter = router({
     batchScan: publicProcedure
       .input(z.object({
         images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
-        sessionId: z.string(),
-        participantToken: z.string(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
@@ -454,8 +457,8 @@ export const appRouter = router({
       .input(z.object({
         registrationBase64: z.string().min(100).max(10_000_000),
         greenCardBase64:    z.string().min(100).max(10_000_000),
-        sessionId: z.string(),
-        participantToken: z.string(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         // SECURITY: Always require valid session context — no anonymous OCR
@@ -480,9 +483,9 @@ export const appRouter = router({
   pdf: router({
     generate: publicProcedure
       .input(z.object({
-        sessionId: z.string(),
+        sessionId: z.string().max(50),
         role: z.enum(['A', 'B', 'C', 'D', 'E']).default('A'),
-        participantToken: z.string(),
+        participantToken: z.string().max(500),
       }))
       .output(pdfGenerateOutput)
       .mutation(async ({ input }) => {
@@ -520,11 +523,11 @@ export const appRouter = router({
   email: router({
     sendToDriver: publicProcedure
       .input(z.object({
-        sessionId:        z.string(),
+        sessionId:        z.string().max(50),
         role:             z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string(),
-        driverEmail:      z.string().email(),
-        pdfBase64:        z.string().min(100),
+        participantToken: z.string().max(500),
+        driverEmail:      z.string().email().max(320),
+        pdfBase64:        z.string().min(100).max(20_000_000),
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
@@ -594,11 +597,11 @@ export const appRouter = router({
     transcribe: publicProcedure
       .input(z.object({
         audioBase64: z.string().min(100).max(10_000_000),
-        mimeType:    z.string().default('audio/webm'),
-        lang:        z.string().optional(),
-        sessionId:   z.string(),
+        mimeType:    z.string().max(100).default('audio/webm'),
+        lang:        z.string().max(10).optional(),
+        sessionId:   z.string().max(50),
         role:        z.enum(['A', 'B', 'C', 'D', 'E']),
-        participantToken: z.string(),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
@@ -613,10 +616,10 @@ export const appRouter = router({
 
     analyzeAccident: publicProcedure
       .input(z.object({
-        sessionId: z.string(),
-        participantToken: z.string(),
-        transcript:      z.string().min(1),
-        previousAnswers: z.record(z.string()).optional(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
+        transcript:      z.string().min(1).max(50_000),
+        previousAnswers: z.record(z.string().max(5000)).optional(),
       }))
       .mutation(async ({ input }) => {
         // Verify participant token
@@ -633,29 +636,29 @@ export const appRouter = router({
   sketch: router({
     render: publicProcedure
       .input(z.object({
-        sessionId:         z.string(),
-        participantToken:  z.string(),
-        scenario:          z.string().default('intersection_cross'),
+        sessionId:         z.string().max(50),
+        participantToken:  z.string().max(500),
+        scenario:          z.string().max(100).default('intersection_cross'),
         trafficSide:       z.enum(['right','left']).default('right'),
-        vehicleAType:      z.string().default('car'),
-        vehicleAColor:     z.string().default('bleu'),
-        vehicleADirection: z.string().default('east'),
-        vehicleAImpactZone:z.string().default('front'),
+        vehicleAType:      z.string().max(100).default('car'),
+        vehicleAColor:     z.string().max(50).default('bleu'),
+        vehicleADirection: z.string().max(50).default('east'),
+        vehicleAImpactZone:z.string().max(50).default('front'),
         vehicleAMoving:    z.boolean().default(true),
         vehicleAReversing: z.boolean().default(false),
-        vehicleABrand:     z.string().optional(),
-        vehicleAModel:     z.string().optional(),
-        vehicleAPlate:     z.string().optional(),
-        vehicleBType:      z.string().default('car'),
-        vehicleBColor:     z.string().default('rouge'),
-        vehicleBDirection: z.string().default('west'),
-        vehicleBImpactZone:z.string().default('front'),
+        vehicleABrand:     z.string().max(100).optional(),
+        vehicleAModel:     z.string().max(100).optional(),
+        vehicleAPlate:     z.string().max(50).optional(),
+        vehicleBType:      z.string().max(100).default('car'),
+        vehicleBColor:     z.string().max(50).default('rouge'),
+        vehicleBDirection: z.string().max(50).default('west'),
+        vehicleBImpactZone:z.string().max(50).default('front'),
         vehicleBMoving:    z.boolean().default(true),
         vehicleBReversing: z.boolean().default(false),
-        vehicleBBrand:     z.string().optional(),
-        vehicleBModel:     z.string().optional(),
-        vehicleBPlate:     z.string().optional(),
-        mapImageBase64:    z.string().optional(),
+        vehicleBBrand:     z.string().max(100).optional(),
+        vehicleBModel:     z.string().max(100).optional(),
+        vehicleBPlate:     z.string().max(50).optional(),
+        mapImageBase64:    z.string().max(10_000_000).optional(),
         width:             z.number().default(900),
         height:            z.number().default(650),
       }))
@@ -671,11 +674,11 @@ export const appRouter = router({
   emergency: router({
     insuranceLookup: publicProcedure
       .input(z.object({
-        insurerA: z.string().optional(),
-        insurerB: z.string().optional(),
-        countryCode: z.string().optional(),
-        sessionId: z.string(),
-        participantToken: z.string(),
+        insurerA: z.string().max(300).optional(),
+        insurerB: z.string().max(300).optional(),
+        countryCode: z.string().max(10).optional(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -690,9 +693,9 @@ export const appRouter = router({
     countryLookup: publicProcedure
       .input(z.object({
         countryCode: z.string().min(2).max(3),
-        countryName: z.string().optional(),
-        sessionId: z.string().optional(),
-        participantToken: z.string().optional(),
+        countryName: z.string().max(200).optional(),
+        sessionId: z.string().max(50).optional(),
+        participantToken: z.string().max(500).optional(),
       }))
       .query(async ({ input }) => {
         if (input.sessionId && input.participantToken) {
@@ -703,10 +706,10 @@ export const appRouter = router({
 
     singleLookup: publicProcedure
       .input(z.object({
-        insurer: z.string().min(2),
-        country: z.string().optional(),
-        sessionId: z.string(),
-        participantToken: z.string(),
+        insurer: z.string().min(2).max(300),
+        country: z.string().max(10).optional(),
+        sessionId: z.string().max(50),
+        participantToken: z.string().max(500),
       }))
       .mutation(async ({ input }) => {
         await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -726,11 +729,4 @@ export const appRouter = router({
   adminDeleteUser,
   adminSetCredits,
   adminListUsers,
-  adminCleanupSessions,
-  adminFixOwnerEmails,
-
-  // ── MARKETING ────────────────────────────────
-  marketing: marketingRouter,
-});
-
-export type AppRouter = typeof appRouter;
+  adminCl

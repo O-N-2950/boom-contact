@@ -129,7 +129,7 @@ export const adminRouter = router({
 // ── ADMIN MAINTENANCE PROCEDURES (top-level) ──────────────────────────────────
 
 export const adminDeleteUser = adminProcedure
-  .input(z.object({ email: z.string().email() }))
+  .input(z.object({ email: z.string().email().max(320) }))
   .mutation(async ({ input }) => {
     // Ne pas supprimer le compte admin
     if (input.email === 'contact@boom.contact') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer le compte admin principal.' });
@@ -149,7 +149,7 @@ export const adminDeleteUser = adminProcedure
 // POST admin.setCredits — créditer directement un compte (admin only)
 export const adminSetCredits = adminProcedure
   .input(z.object({
-    email: z.string().email(),
+    email: z.string().email().max(320),
     credits: z.number().min(0).max(999999),
   }))
   .mutation(async ({ input }) => {
@@ -233,7 +233,7 @@ export const adminFixOwnerEmails = adminProcedure
 export const marketingRouter = router({
 
   posts: adminProcedure
-    .input(z.object({ platform: z.string().optional(), status: z.string().optional() }))
+    .input(z.object({ platform: z.string().max(100).optional(), status: z.string().max(50).optional() }))
     .query(async ({ input }) => {
       const conds: ReturnType<typeof eq>[] = [];
       if (input.platform) conds.push(eq(socialPosts.platform, input.platform));

@@ -14,7 +14,7 @@ export const authRouter = router({
 
   // POST auth.register
   register: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string().min(8) }))
+    .input(z.object({ email: z.string().email().max(320), password: z.string().min(8).max(200) }))
     .output(authRegisterOutput)
     .mutation(async ({ input }) => {
       try {
@@ -28,7 +28,7 @@ export const authRouter = router({
 
   // POST auth.login
   login: publicProcedure
-    .input(z.object({ email: z.string().email(), password: z.string() }))
+    .input(z.object({ email: z.string().email().max(320), password: z.string().max(200) }))
     .output(authLoginOutput)
     .mutation(async ({ input }) => {
       try {
@@ -54,7 +54,7 @@ export const authRouter = router({
 
   // POST auth.magicLinkVerify
   magicLinkVerify: publicProcedure
-    .input(z.object({ token: z.string() }))
+    .input(z.object({ token: z.string().max(500) }))
     .mutation(async ({ input }) => {
       const result = await verifyMagicToken(input.token);
       if (!result) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Lien invalide ou expiré.' });
@@ -77,11 +77,11 @@ export const authRouter = router({
   // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
   updateProfile: protectedProcedure
     .input(z.object({
-      firstName: z.string().optional(),
-      lastName:  z.string().optional(),
-      phone:     z.string().optional(),
-      company:   z.string().optional(),
-      address:   z.string().optional(),
+      firstName: z.string().max(200).optional(),
+      lastName:  z.string().max(200).optional(),
+      phone:     z.string().max(50).optional(),
+      company:   z.string().max(300).optional(),
+      address:   z.string().max(500).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const updates: Record<string, string | undefined> = {};
@@ -150,7 +150,7 @@ export const authRouter = router({
     }),
 
   adminBootstrap: publicProcedure
-    .input(z.object({ secret: z.string(), password: z.string().min(8) }))
+    .input(z.object({ secret: z.string().max(500), password: z.string().min(8).max(200) }))
     .mutation(async ({ input }) => {
       const expected = process.env.ADMIN_BOOTSTRAP_SECRET;
       if (!expected) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret.' });
@@ -171,7 +171,7 @@ export const authRouter = router({
     }),
 
   claimGift: publicProcedure
-    .input(z.object({ token: z.string(), email: z.string().email() }))
+    .input(z.object({ token: z.string().max(500), email: z.string().email().max(320) }))
     .mutation(async ({ input }) => {
       const result = await claimGiftLink(input.token, input.email);
       return { ok: true, ...result };

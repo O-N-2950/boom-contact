@@ -258,7 +258,67 @@ async function setupRateLimiting() {
       },
     }));
 
-    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) session.updateParticipant(30/min) session.updateAccident(30/min) session.sign(5/min) payment(3/min) auth(15min) police(15min) email(5/h) bugReport(5/min) voice(10/min) sketch(10/min) emergency(5/min)');
+    // auth.magicLinkVerify — 10/15min per IP (brute force token guessing)
+    app.use('/trpc/auth.magicLinkVerify', rateLimit({
+      windowMs: 15 * 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit auth.magicLinkVerify', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives de vérification. Réessayez dans 15 minutes.' });
+      },
+    }));
+
+    // auth.claimGift — 5/h per IP (abuse prevention)
+    app.use('/trpc/auth.claimGift', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit auth.claimGift', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de réclamations. Réessayez dans 1 heure.' });
+      },
+    }));
+
+    // auth.adminBootstrap — 3/h per IP (critical endpoint)
+    app.use('/trpc/auth.adminBootstrap', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 3,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit auth.adminBootstrap', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de tentatives. Réessayez dans 1 heure.' });
+      },
+    }));
+
+    // voice.analyzeAccident — 10/min per IP (AI cost)
+    app.use('/trpc/voice.analyzeAccident', rateLimit({
+      windowMs: 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit voice.analyzeAccident', { ip: req.ip });
+        res.status(429).json({ error: 'Trop d\'analyses. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // pdf.generate — 10/min per IP (expensive rendering)
+    app.use('/trpc/pdf.generate', rateLimit({
+      windowMs: 60 * 1000, max: 10,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit pdf.generate', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de générations PDF. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    // session.get — 60/min per IP (frequent polling)
+    app.use('/trpc/session.get', rateLimit({
+      windowMs: 60 * 1000, max: 60,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit session.get', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de requêtes. Réessayez dans 1 minute.' });
+      },
+    }));
+
+    logger.info('🚦 Rate limiting active: OCR(10/min) session.create(5/min) session.join(10/min) session.get(60/min) session.updateParticipant(30/min) session.updateAccident(30/min) session.sign(5/min) payment(3/min) auth(15min) magicLinkVerify(10/15min) claimGift(5/h) adminBootstrap(3/h) police(15min) email(5/h) bugReport(5/min) voice(10/min) analyzeAccident(10/min) pdf(10/min) sketch(10/min) emergency(5/min)');
   } catch (e) {
     logger.warn('Rate limit not available', { error: String(e) });
   }
@@ -601,6 +661,9 @@ function getCachedSessionExists(sessionId: string): boolean | null {
 io.on('connection', (socket) => {
   logger.debug('Socket connected', { id: socket.id.slice(0, 8), authenticated: !!(socket as any).authUser });
 
+  // SECURITY: Track which sessions this socket has joined — prevent cross-session data injection
+  const joinedSessions = new Set<string>();
+
   socket.on('join-session', async (sessionId: string) => {
     // Validate sessionId exists in DB before joining room
     if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
@@ -615,6 +678,7 @@ io.on('connection', (socket) => {
         return;
       }
       socket.join(`session:${sessionId}`);
+      joinedSessions.add(sessionId);
       socket.to(`session:${sessionId}`).emit('participant-joined');
       logger.session('socket-join', sessionId);
     } catch (e) {
@@ -627,6 +691,13 @@ io.on('connection', (socket) => {
     // Validate sessionId exists before broadcasting
     if (!sessionId || typeof sessionId !== 'string' || sessionId.length > 20) {
       socket.emit('error', { message: 'Invalid session ID' });
+      return;
+    }
+
+    // SECURITY: Socket must have joined this session before sending data to it
+    if (!joinedSessions.has(sessionId)) {
+      logger.warn('Socket tried to update-data for session it has not joined', { id: socket.id.slice(0, 8), sessionId });
+      socket.emit('error', { message: 'You must join a session before sending data to it' });
       return;
     }
 
@@ -686,6 +757,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('signing-ready', ({ sessionId, role }: { sessionId: string; role: 'A' | 'B' }) => {
+    // SECURITY: Socket must have joined this session
+    if (!joinedSessions.has(sessionId)) {
+      socket.emit('error', { message: 'You must join a session before signaling readiness' });
+      return;
+    }
     socket.to(`session:${sessionId}`).emit('other-ready-to-sign', { role });
     logger.session('signing-ready', sessionId, role);
   });

@@ -12,11 +12,11 @@ export const paymentRouter = router({
   createCheckout: publicProcedure
     .input(z.object({
       packageId:        z.enum(['single', 'pack3', 'pack10']),
-      userEmail:        z.string().email(),
+      userEmail:        z.string().email().max(320),
       currency:         z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
-      locale:           z.string().default('fr'),
-      countryCode:      z.string().optional(),
-      constatSessionId: z.string().optional(), // pour retour direct après paiement one-shot
+      locale:           z.string().max(10).default('fr'),
+      countryCode:      z.string().max(10).optional(),
+      constatSessionId: z.string().max(50).optional(), // pour retour direct après paiement one-shot
     }))
     .output(paymentCreateCheckoutOutput)
     .mutation(async ({ input }) => {
@@ -54,7 +54,7 @@ export const paymentRouter = router({
 
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR
   useCredit: protectedProcedure
-    .input(z.object({ sessionId: z.string() }))
+    .input(z.object({ sessionId: z.string().max(50) }))
     .mutation(async ({ ctx, input }) => {
       const ok = await useCredit(ctx.authUser.email, input.sessionId);
       if (!ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
@@ -67,8 +67,8 @@ export const userRouter = router({
     .input(z.object({
       consentCGU:        z.boolean(),
       consentMarketing:  z.boolean(),
-      country:           z.string().optional(),
-      language:          z.string().optional(),
+      country:           z.string().max(100).optional(),
+      language:          z.string().max(10).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       await saveConsent(

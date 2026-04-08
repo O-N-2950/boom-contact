@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from './trpc.js';
+import { vehicleListOutput, vehicleSaveOutput, vehicleDeleteOutput } from './output-schemas.js';
 
 export const vehicleRouter = router({
 
   // GET vehicle.list
   list: protectedProcedure
+    .output(vehicleListOutput)
     .query(async ({ ctx }) => {
       const { listVehicles } = await import('../services/vehicle.service.js');
       return listVehicles(ctx.authUser.sub);
@@ -13,17 +15,18 @@ export const vehicleRouter = router({
   // POST vehicle.save — create or update
   save: protectedProcedure
     .input(z.object({
-      id:           z.string().optional(),
-      nickname:     z.string().optional(),
-      plate:        z.string().optional(),
-      make:         z.string().optional(),
-      model:        z.string().optional(),
-      color:        z.string().optional(),
-      year:         z.string().optional(),
-      category:     z.string().optional(),
+      id:           z.string().max(100).optional(),
+      nickname:     z.string().max(200).optional(),
+      plate:        z.string().max(50).optional(),
+      make:         z.string().max(100).optional(),
+      model:        z.string().max(100).optional(),
+      color:        z.string().max(50).optional(),
+      year:         z.string().max(10).optional(),
+      category:     z.string().max(100).optional(),
       licenseData:  z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
       insuranceData:z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
     }))
+    .output(vehicleSaveOutput)
     .mutation(async ({ ctx, input }) => {
       const { saveVehicle } = await import('../services/vehicle.service.js');
       return saveVehicle(ctx.authUser.sub, input);
@@ -31,7 +34,8 @@ export const vehicleRouter = router({
 
   // POST vehicle.delete
   delete: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string().max(100) }))
+    .output(vehicleDeleteOutput)
     .mutation(async ({ ctx, input }) => {
       const { deleteVehicle } = await import('../services/vehicle.service.js');
       return deleteVehicle(ctx.authUser.sub, input.id);

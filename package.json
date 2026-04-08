@@ -83,7 +83,7 @@
     "vitest": "^4.1.3"
   },
   "overrides": {
-    "esbuild": ">=0.25.0"
+    "esbuild": "$esbuild"
   },
   "engines": {
     "node": ">=20.0.0"
