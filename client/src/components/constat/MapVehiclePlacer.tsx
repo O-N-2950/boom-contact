@@ -446,8 +446,8 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
 
   // ── Rendu JSX ────────────────────────────────────────────────
   if (geoStatus === 'loading') return (
-    <div style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
-      <div style={{ fontSize: 36, marginBottom: 12, animation: 'spin 1s linear infinite', display:'inline-block' }}>🌍</div>
+    <div role="status" aria-label="Chargement en cours" style={{ padding: 40, textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>
+      <div style={{ fontSize: 36, marginBottom: 12, animation: 'spin 1s linear infinite', display:'inline-block' }} aria-hidden="true">🌍</div>
       <div style={{ fontWeight: 700 }}>Localisation de l'accident…</div>
       <div style={{ fontSize: 12, opacity: 0.75, marginTop: 6 }}>Géocodage de l'adresse</div>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
@@ -515,13 +515,13 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       {/* Slider rotation */}
       {step === 'rotate' && !confirmed && (
         <div style={{ marginBottom:12 }}>
-          <div style={{ fontSize:11, opacity:0.55, textAlign:'center', marginBottom:6 }}>
+          <div style={{ fontSize:11, opacity:0.85, textAlign:'center', marginBottom:6 }}>
             Direction : {angle}° {angle<22?'→ Est':angle<67?'↘ SE':angle<112?'↓ Sud':angle<157?'↙ SO':angle<202?'← Ouest':angle<247?'↖ NO':angle<292?'↑ Nord':angle<337?'↗ NE':'→ Est'}
           </div>
           <input type="range" aria-label="Direction du véhicule" min={0} max={359} value={angle}
             onChange={e => setAngle(Number(e.target.value))}
             style={{ width:'100%', accentColor:roleColor }} />
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, opacity:0.35, marginTop:2 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:9, opacity:0.75, marginTop:2 }}>
             <span>↑N</span><span>→E</span><span>↓S</span><span>←O</span>
           </div>
         </div>

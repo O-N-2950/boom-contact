@@ -41,7 +41,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       <div style={containerStyle}>
         {/* Accroche émotionnelle */}
         <div style={headerStyle}>
-          <div style={emojiStyle} aria-label="Boost d'efficacité">⚡</div>
+          <div style={emojiStyle} aria-hidden="true">⚡</div>
           <div>
             <div style={titleStyle}>La prochaine fois : 0 saisie</div>
             <div style={subtitleStyle}>Vos véhicules mémorisés une fois pour toujours</div>
@@ -100,11 +100,11 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
             <div>
               <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 16 }}>🔥 Pack famille</div>
-              <div style={{ color: '#888', fontSize: 12, marginTop: 2 }}>3 constats à partager avec vos proches</div>
+              <div style={{ color: '#aaa', fontSize: 12, marginTop: 2 }}>3 constats à partager avec vos proches</div>
             </div>
             <div style={{ textAlign: 'right' as const }}>
               <div style={{ color: '#fff', fontWeight: 900, fontSize: 22 }}>12.90</div>
-              <div style={{ color: '#666', fontSize: 11 }}>CHF / EUR</div>
+              <div style={{ color: '#aaa', fontSize: 11 }}>CHF / EUR</div>
             </div>
           </div>
 
@@ -141,7 +141,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
         <div style={{ background: '#0d1a0d', border: '1px solid #1a3a1a', borderRadius: 12, padding: 16, marginBottom: 16 }}>
           <div style={{ color: '#4ade80', fontWeight: 700, marginBottom: 10 }}>✅ Votre compte boom.contact</div>
-          <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6 }}>
+          <div style={{ color: '#aaa', fontSize: 13, lineHeight: 1.6 }}>
             Vos véhicules sont mémorisés. Lors de votre prochain accident, vous partez directement à l'étape QR — aucune saisie, aucun scan.
           </div>
           <button onClick={onAccount} style={{ ...ghostBtnStyle, marginTop: 10, padding: '8px 14px', fontSize: 12 }}>
@@ -154,7 +154,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 15, marginBottom: 6 }}>
             🎁 Offrez un constat par WhatsApp
           </div>
-          <div style={{ color: '#888', fontSize: 13, lineHeight: 1.6, marginBottom: 14 }}>
+          <div style={{ color: '#aaa', fontSize: 13, lineHeight: 1.6, marginBottom: 14 }}>
             Un de vos crédits = un lien unique à envoyer à <strong style={{ color: '#fff' }}>n'importe qui</strong>, sans que la personne ait besoin d'un compte.
           </div>
           <PackChoice onSelect={onBuyPack} />
@@ -177,7 +177,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       {/* Envoyer par WhatsApp */}
       <div style={{ background: '#0d1a1a', border: '1px solid #1a3a3a', borderRadius: 12, padding: 16, marginBottom: 12 }}>
         <div style={{ color: '#60c8f0', fontWeight: 700, marginBottom: 8 }}>📲 Offrir un constat par WhatsApp</div>
-        <div style={{ color: '#888', fontSize: 13, marginBottom: 12, lineHeight: 1.6 }}>
+        <div style={{ color: '#aaa', fontSize: 13, marginBottom: 12, lineHeight: 1.6 }}>
           En 1 clic, envoyez un lien à votre enfant, employé ou ami. Il fait son constat sans compte ni paiement — décompté de vos crédits.
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
@@ -189,7 +189,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           </button>
           <button onClick={() => sendGift(3)} disabled={grantMut.isPending || authUser.credits < 3} style={{
             flex: 1, background: authUser.credits >= 3 ? '#1da851' : '#1a1a1a',
-            color: authUser.credits >= 3 ? '#fff' : '#555',
+            color: authUser.credits >= 3 ? '#fff' : '#aaa',
             border: `1px solid ${authUser.credits >= 3 ? '#1da851' : '#333'}`,
             borderRadius: 8, padding: '11px 12px', fontWeight: 700, cursor: authUser.credits >= 3 ? 'pointer' : 'default', fontSize: 13,
           }}>
@@ -202,7 +202,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       {/* Partage viral — après constat */}
       <div style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', borderRadius: 12, padding: 14, marginBottom: 12 }}>
         <div style={{ color: '#FF3500', fontWeight: 700, fontSize: 14, marginBottom: 6 }}>📤 Partage boom.contact</div>
-        <div style={{ color: '#888', fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>
+        <div style={{ color: '#aaa', fontSize: 13, lineHeight: 1.5, marginBottom: 10 }}>
           Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.
         </div>
         <button onClick={() => setShowShare(true)} style={{
@@ -219,7 +219,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       {/* Garage */}
       <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 12, padding: 14, marginBottom: 12 }}>
         <div style={{ color: '#fff', fontWeight: 700, marginBottom: 6 }}>🚗 Mémorisez vos autres véhicules</div>
-        <div style={{ color: '#888', fontSize: 13, lineHeight: 1.5 }}>
+        <div style={{ color: '#aaa', fontSize: 13, lineHeight: 1.5 }}>
           Flotte d'entreprise, moto, camping-car ? Chaque véhicule scanné = plus jamais de saisie lors d'un accident.
         </div>
         <button onClick={onAccount} style={{ ...ghostBtnStyle, marginTop: 10, padding: '9px 14px', fontSize: 13 }}>
@@ -231,7 +231,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       {authUser.credits <= 2 && (
         <div style={{ background: '#1a1000', border: '1px solid #3a2000', borderRadius: 12, padding: 14 }}>
           <div style={{ color: '#fbbf24', fontWeight: 700, marginBottom: 6 }}>⚡ Il vous reste seulement {authUser.credits} crédit{authUser.credits > 1 ? 's' : ''}</div>
-          <div style={{ color: '#888', fontSize: 13, marginBottom: 10 }}>
+          <div style={{ color: '#aaa', fontSize: 13, marginBottom: 10 }}>
             Rechargez maintenant et profitez des remises sur les packs famille et entreprise.
           </div>
           <button onClick={onBuyPack} style={primaryBtnStyle}>
@@ -257,7 +257,7 @@ function Scenario({ icon, text }: { icon: string; text: string }) {
   return (
     <div style={{ background: '#111', borderRadius: 8, padding: '10px 12px', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
       <span style={{ fontSize: 16, flexShrink: 0 }}>{icon}</span>
-      <span style={{ color: '#888', fontSize: 12, lineHeight: 1.5 }}>{text}</span>
+      <span style={{ color: '#aaa', fontSize: 12, lineHeight: 1.5 }}>{text}</span>
     </div>
   );
 }
@@ -279,7 +279,7 @@ function PackChoice({ onSelect }: { onSelect: () => void }) {
           {p.star && <div style={{ color: '#fff', fontSize: 9, fontWeight: 700, marginBottom: 3 }}>⭐ POPULAIRE</div>}
           <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>{p.label}</div>
           <div style={{ color: p.star ? '#ffd0c0' : '#FF3500', fontWeight: 900, fontSize: 16 }}>CHF {p.price}</div>
-          <div style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#555', fontSize: 10, marginTop: 2 }}>{p.note}</div>
+          <div style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#aaa', fontSize: 10, marginTop: 2 }}>{p.note}</div>
         </button>
       ))}
     </div>
@@ -316,7 +316,7 @@ const titleStyle: React.CSSProperties = {
 };
 
 const subtitleStyle: React.CSSProperties = {
-  color: '#666',
+  color: '#aaa',
   fontSize: 13,
   marginTop: 3,
 };
@@ -356,7 +356,7 @@ const primaryBtnStyle: React.CSSProperties = {
 const ghostBtnStyle: React.CSSProperties = {
   width: '100%',
   background: 'none',
-  color: '#888',
+  color: '#aaa',
   border: '1px solid #333',
   borderRadius: 10,
   padding: '11px 16px',
@@ -374,5 +374,5 @@ const dividerStyle: React.CSSProperties = {
 };
 
 const dividerLine: React.CSSProperties = { flex: 1, height: 1, background: '#1a1a1a' };
-const dividerText: React.CSSProperties = { color: '#444', fontSize: 11, whiteSpace: 'nowrap' as const };
+const dividerText: React.CSSProperties = { color: '#999', fontSize: 11, whiteSpace: 'nowrap' as const };
 

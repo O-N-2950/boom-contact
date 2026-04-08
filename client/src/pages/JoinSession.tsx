@@ -478,7 +478,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         />
       )}
 
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} style={{ flex: 1, overflowY: 'auto' }}>
         {/* Location supprimée pour B — utilise automatiquement celle de A */}
 
         {step === 'photos' && (

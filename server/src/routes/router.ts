@@ -21,11 +21,11 @@ import { eq, desc } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
 
 // ── File upload validation helpers ──────────────────────────────
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
-const MAX_IMAGE_BASE64_SIZE = 7_000_000; // ~5MB in base64 (~4/3 ratio)
-const VALID_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+export const MAX_IMAGE_BASE64_SIZE = 7_000_000; // ~5MB in base64 (~4/3 ratio)
+export const VALID_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-function validateBase64Image(base64String: string, mediaType: string): { valid: boolean; error?: string } {
+export function validateBase64Image(base64String: string, mediaType: string): { valid: boolean; error?: string } {
   // Validate media type
   if (!VALID_MEDIA_TYPES.includes(mediaType)) {
     return { valid: false, error: `Invalid media type. Allowed: ${VALID_MEDIA_TYPES.join(', ')}` };

@@ -138,7 +138,7 @@ Maximum 3 issues. Si tout est cohérent réponds {"issues": []}.`;
         border: '1px solid rgba(34,197,94,0.25)',
         borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 16 }}>✅</span>
+        <span style={{ fontSize: 16 }} aria-hidden="true">✅</span>
         <span style={{ fontSize: 12, color: '#22c55e', fontWeight: 600 }}>
           Déclarations cohérentes — aucune contradiction détectée
         </span>

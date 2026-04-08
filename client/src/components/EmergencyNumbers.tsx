@@ -581,7 +581,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
             <button key={f.key} onClick={() => setFilter(f.key)} style={{
               background: filter === f.key ? '#222' : 'none',
               border: '1px solid ' + (filter === f.key ? '#444' : '#1a1a1a'),
-              color: filter === f.key ? '#fff' : '#666',
+              color: filter === f.key ? '#fff' : '#aaa',
               borderRadius: 6, padding: '5px 10px', fontSize: 12, cursor: 'pointer',
             }}>
               {f.label}

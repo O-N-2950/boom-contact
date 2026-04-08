@@ -460,7 +460,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       )}
 
       {/* Main content */}
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+      <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} style={{ flex: 1, overflowY: 'auto' }}>
         {step === 'ocr' && savedVehicles.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             {!showVehiclePicker ? (

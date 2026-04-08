@@ -205,8 +205,8 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
   // ── SCANNING ────────────────────────────────────────────────
   if (scanning) return (
-    <div style={{ padding:40, textAlign:'center' }}>
-      <div style={{ fontSize:52, marginBottom:20, display:'inline-block', animation:'spin 1.2s linear infinite' }}>🔍</div>
+    <div role="status" aria-label="Analyse en cours" style={{ padding:40, textAlign:'center' }}>
+      <div style={{ fontSize:52, marginBottom:20, display:'inline-block', animation:'spin 1.2s linear infinite' }} aria-hidden="true">🔍</div>
       <div style={{ fontWeight:700, fontSize:17, marginBottom:8 }}>Analyse en cours…</div>
       <div style={{ fontSize:13, opacity:0.75 }}>{docs.length} document{docs.length>1?'s':''} · identification automatique</div>
       <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
@@ -281,7 +281,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
 
       {/* Guide pays */}
       {docs.length === 0 && (
-        <div style={{ padding:'12px 14px', borderRadius:10, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.06)', fontSize:12, opacity:0.6, lineHeight:1.8, marginBottom:12 }}>
+        <div style={{ padding:'12px 14px', borderRadius:10, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.06)', fontSize:12, opacity:0.85, lineHeight:1.8, marginBottom:12 }}>
           <div style={{ fontWeight:600, marginBottom:4, opacity:0.8 }}>Quels documents scanner ?</div>
           🇨🇭 Permis de circulation + carte verte<br/>
           🇫🇷 Carte grise + carte verte / attestation<br/>

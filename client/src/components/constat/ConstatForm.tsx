@@ -145,7 +145,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       {/* Section tabs */}
       <div role="tablist" aria-label="Sections du formulaire" style={{ display: 'flex', borderBottom: '1px solid rgba(240,237,232,0.08)', flexShrink: 0 }}>
         {sections.map(s => (
-          <button key={s.id} role="tab" aria-selected={s.id === section} onClick={() => setSection(s.id)} style={{
+          <button key={s.id} id={`form-tab-${s.id}`} role="tab" aria-selected={s.id === section} aria-controls={`form-tabpanel-${s.id}`} onClick={() => setSection(s.id)} style={{
             flex: 1, padding: '12px 4px', border: 'none', cursor: 'pointer',
             background: s.id === section ? 'rgba(255,53,0,0.08)' : 'transparent',
             borderBottom: s.id === section ? '2px solid var(--boom)' : '2px solid transparent',
@@ -153,13 +153,13 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
             transition: 'all 0.2s', fontSize: 11, fontWeight: 600,
           }}>
             <div style={{ fontSize: 18, marginBottom: 2 }}>{s.icon}</div>
-            <div style={{ fontSize: 10, letterSpacing: 1, opacity: s.id === section ? 1 : 0.5 }}>{s.label}</div>
+            <div style={{ fontSize: 10, letterSpacing: 1, opacity: s.id === section ? 1 : 0.85 }}>{s.label}</div>
           </button>
         ))}
       </div>
 
       {/* Form fields */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
+      <div role="tabpanel" id={`form-tabpanel-${section}`} aria-labelledby={`form-tab-${section}`} style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
 
         {section === 'vehicle' && <>
           <Field section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required />

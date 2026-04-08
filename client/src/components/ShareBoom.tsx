@@ -122,7 +122,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
           <button onClick={onClose} aria-label="Fermer le partage" style={{
             background: 'rgba(255,255,255,0.08)', border: 'none',
             borderRadius: 20, width: 36, height: 36,
-            color: '#888', cursor: 'pointer', fontSize: 18, flexShrink: 0,
+            color: '#aaa', cursor: 'pointer', fontSize: 18, flexShrink: 0,
           }}>×</button>
         )}
       </div>
@@ -167,7 +167,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         padding: '16px 20px 0',
       }}>
         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
-        <div style={{ color: '#555', fontSize: 11 }}>ou choisir</div>
+        <div style={{ color: '#aaa', fontSize: 11 }}>ou choisir</div>
         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
       </div>
 
@@ -249,7 +249,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         ].map(([val, label]) => (
           <div key={label} style={{ textAlign: 'center' }}>
             <div style={{ color: '#FF3500', fontWeight: 900, fontSize: 16 }}>{val}</div>
-            <div style={{ color: '#555', fontSize: 10 }}>{label}</div>
+            <div style={{ color: '#aaa', fontSize: 10 }}>{label}</div>
           </div>
         ))}
       </div>
@@ -263,7 +263,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
         <span style={{ fontSize: 20 }}>🎵</span>
-        <div style={{ fontSize: 11, color: '#888', lineHeight: 1.5 }}>
+        <div style={{ fontSize: 11, color: '#aaa', lineHeight: 1.5 }}>
           <strong style={{ color: '#fff' }}>TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !
         </div>
       </div>

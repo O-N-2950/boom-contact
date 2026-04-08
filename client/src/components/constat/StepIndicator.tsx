@@ -23,8 +23,10 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
         return (
           <button
             key={step.id}
+            id={`tab-${step.id}`}
             role="tab"
             aria-selected={active}
+            aria-controls={`tabpanel-${step.id}`}
             onClick={clickable ? () => onStepClick!(step.id, i) : undefined}
             title={clickable ? `↩ ${step.label}` : undefined}
             disabled={!clickable}
@@ -50,7 +52,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
             <div style={{
               fontSize: active ? 15 : 13,
               marginBottom: 2,
-              opacity: pending ? 0.25 : 1,
+              opacity: pending ? 0.75 : 1,
             }}>
               {step.icon}
             </div>
@@ -59,7 +61,7 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
             <div style={{
               fontSize: 8, letterSpacing: 0.8,
               textTransform: 'uppercase', fontFamily: 'monospace',
-              opacity: active ? 1 : pending ? 0.2 : 0.55,
+              opacity: active ? 1 : pending ? 0.75 : 0.85,
               color: active ? 'var(--boom)' : done ? '#22c55e' : 'var(--text)',
               fontWeight: active ? 700 : done ? 600 : 400,
             }}>

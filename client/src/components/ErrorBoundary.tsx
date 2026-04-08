@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
             🔄 Recharger
           </button>
           {process.env.NODE_ENV !== 'production' && (
-            <details style={{ marginTop: 16, fontSize: 11, opacity: 0.65, textAlign: 'left', maxWidth: '100%', overflow: 'auto' }}>
+            <details style={{ marginTop: 16, fontSize: 11, opacity: 0.85, textAlign: 'left', maxWidth: '100%', overflow: 'auto' }}>
               <summary style={{ cursor: 'pointer' }}>Détail technique</summary>
               <pre style={{ marginTop: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                 {this.state.error.message}{'\n'}{this.state.error.stack}

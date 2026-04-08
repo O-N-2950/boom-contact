@@ -192,7 +192,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     const a   = session.participantA as any || {};
                     const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
                     const date = new Date(session.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-                    const statusColor = session.status === 'completed' ? '#4ade80' : session.status === 'active' ? '#60c8f0' : session.status === 'signing' ? '#fbbf24' : '#555';
+                    const statusColor = session.status === 'completed' ? '#4ade80' : session.status === 'active' ? '#60c8f0' : session.status === 'signing' ? '#fbbf24' : '#aaa';
                     return (
                       <tr key={session.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                         <td style={td}><span style={{ fontFamily: 'monospace', color: '#FF3500', fontSize: 12 }}>{session.id}</span></td>
@@ -273,11 +273,11 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                     <tr key={u.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td style={{ ...td, fontSize: 13 }}>{u.email}</td>
                       <td style={td}>
-                        <span style={{ background: u.role === 'admin' ? '#FF3500' : '#1a1a1a', borderRadius: 4, padding: '2px 7px', fontSize: 11, color: u.role === 'admin' ? '#fff' : '#888' }}>
+                        <span style={{ background: u.role === 'admin' ? '#FF3500' : '#1a1a1a', borderRadius: 4, padding: '2px 7px', fontSize: 11, color: u.role === 'admin' ? '#fff' : '#aaa' }}>
                           {u.role}
                         </span>
                       </td>
-                      <td style={{ ...td, color: u.credits > 0 ? '#4ade80' : '#555', fontWeight: 700 }}>
+                      <td style={{ ...td, color: u.credits > 0 ? '#4ade80' : '#aaa', fontWeight: 700 }}>
                         {u.credits === 999999 ? '∞' : u.credits}
                       </td>
                       <td style={{ ...td, color: '#d0d0d0', fontSize: 12 }}>{u.country || '—'}</td>

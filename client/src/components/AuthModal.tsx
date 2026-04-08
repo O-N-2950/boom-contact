@@ -73,7 +73,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
           <h1 style={{ fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
             {title || '💥 boom.contact'}
           </h1>
-          <div style={{ color: '#888', fontSize: 14, lineHeight: 1.5 }}>
+          <div style={{ color: '#aaa', fontSize: 14, lineHeight: 1.5 }}>
             {subtitle || 'Connectez-vous pour sauvegarder vos véhicules et ne plus rien saisir lors de vos constats.'}
           </div>
         </div>
@@ -91,10 +91,10 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               ✨ Créer un compte
             </button>
             <div style={{ borderTop: '1px solid #222', marginTop: 4 }} />
-            <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#888', border: '1px solid #333' }}>
+            <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#aaa', border: '1px solid #333' }}>
               Continuer sans compte →
             </button>
-            <p style={{ color: '#555', fontSize: 11, textAlign: 'center', margin: 0 }}>
+            <p style={{ color: '#aaa', fontSize: 11, textAlign: 'center', margin: 0 }}>
               Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.
             </p>
           </div>
@@ -127,16 +127,16 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: magic sent */}
         {mode === 'magic_sent' && (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>📧</div>
+            <div style={{ fontSize: 48, marginBottom: 16 }} aria-hidden="true">📧</div>
             <div style={{ color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 8 }}>
               Email envoyé !
             </div>
-            <div style={{ color: '#888', fontSize: 14, lineHeight: 1.6 }}>
+            <div style={{ color: '#aaa', fontSize: 14, lineHeight: 1.6 }}>
               Vérifiez votre boîte <strong style={{ color: '#fff' }}>{email}</strong>.<br />
               Le lien est valable 15 minutes.
             </div>
             <div style={{ marginTop: 24, borderTop: '1px solid #222', paddingTop: 20 }}>
-              <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#888', border: '1px solid #333' }}>
+              <button onClick={onSkip} style={{ ...btnStyle('transparent'), color: '#aaa', border: '1px solid #333' }}>
                 Continuer sans compte →
               </button>
             </div>
@@ -203,7 +203,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#FF3500')}>
               {loading ? 'Création...' : 'Créer mon compte'}
             </button>
-            <p style={{ color: '#555', fontSize: 11, margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: '#aaa', fontSize: 11, margin: 0, lineHeight: 1.5 }}>
               En créant un compte vous acceptez nos CGU. Vos données véhicule sont chiffrées et jamais partagées sans votre consentement.
             </p>
             <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>
@@ -231,7 +231,7 @@ function btnStyle(bg: string): React.CSSProperties {
 }
 
 const linkStyle: React.CSSProperties = {
-  background: 'none', border: 'none', color: '#666',
+  background: 'none', border: 'none', color: '#aaa',
   fontSize: 13, cursor: 'pointer', textDecoration: 'underline', padding: 0,
   textAlign: 'left' as const,
 };

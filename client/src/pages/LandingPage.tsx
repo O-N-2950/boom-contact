@@ -106,7 +106,7 @@ function PhoneMockup() {
       }}>
         <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 18, padding: '14px 12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>💥</div>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'var(--boom)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }} aria-hidden="true">💥</div>
             <div>
               <div style={{ fontSize: 11, fontWeight: 700 }}>boom.contact</div>
               <div style={{ fontSize: 9, opacity: 0.7, fontFamily: 'DM Mono, monospace' }}>SESSION ACTIVE</div>
@@ -135,24 +135,24 @@ function PhoneMockup() {
 
 function FeatureCard({ icon, title, desc, delay = 0 }: { icon: string; title: string; desc: string; delay?: number }) {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.2 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
   return (
-    <div ref={ref} style={{
+    <article ref={ref} style={{
       padding: '18px', borderRadius: 14,
       background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)',
       transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0,
       transform: visible ? 'translateY(0)' : 'translateY(20px)',
     }}>
-      <div style={{ fontSize: 26, marginBottom: 10 }}>{icon}</div>
-      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 5 }}>{title}</div>
-      <div style={{ fontSize: 12, lineHeight: 1.6, opacity: 0.75 }}>{desc}</div>
-    </div>
+      <div style={{ fontSize: 26, marginBottom: 10 }} aria-hidden="true">{icon}</div>
+      <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 5, margin: '0 0 5px 0' }}>{title}</h3>
+      <p style={{ fontSize: 12, lineHeight: 1.6, opacity: 0.85, margin: 0 }}>{desc}</p>
+    </article>
   );
 }
 
@@ -193,6 +193,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <div style={{ position: 'absolute', top: -100, left: '50%', transform: 'translateX(-50%)', width: isDesktop ? 900 : 600, height: 400, background: 'radial-gradient(ellipse, rgba(255,53,0,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         {/* NAV */}
+        <header>
         <nav style={{ padding: isDesktop ? '20px 48px' : '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10, maxWidth: isDesktop ? 1200 : 'none', margin: isDesktop ? '0 auto' : undefined, width: '100%', boxSizing: 'border-box' as const }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <img src="/logo.webp" alt="boom.contact" style={{ width: 64, height: 64, objectFit: 'contain' }} />
@@ -230,6 +231,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             )}
           </div>
         </nav>
+        </header>
 
         {/* HERO CONTENT */}
         <div style={{
@@ -588,7 +590,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       </div>
 
       {/* ── FOOTER ────────────────────────────────────────────── */}
-      <div style={{ padding: isDesktop ? '32px 48px' : '22px', borderTop: '1px solid var(--border)', background: 'var(--dark)' }}>
+      <footer style={{ padding: isDesktop ? '32px 48px' : '22px', borderTop: '1px solid var(--border)', background: 'var(--dark)' }}>
         <Section>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: isDesktop ? 0 : 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -607,7 +609,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 { label: 'RGPD · nLPD', href: '/?privacy=true' },
                 { label: 'privacy@boom.contact', href: 'mailto:privacy@boom.contact' },
               ].map(({ label, href, onClick }) => (
-                <a key={label} href={href} onClick={onClick} style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', textDecoration: 'none' }}
+                <a key={label} href={href} onClick={onClick} style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}
                   onMouseOver={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
                   onMouseOut={e => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.25)'}>
                   {label}
@@ -620,7 +622,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
           <div style={{ marginTop: 16, fontSize: 10, opacity: 0.7, textAlign: 'center' }}>{t('landing.footer.copyright')}</div>
         </Section>
-      </div>
+      </footer>
 
       {showShare && <ShareBoom onClose={() => setShowShare(false)} context="landing" />}
       {showCGU && <CGUModal onAccept={() => setShowCGU(false)} onClose={() => setShowCGU(false)} />}

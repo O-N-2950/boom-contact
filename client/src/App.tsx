@@ -25,8 +25,8 @@ const BugReport       = React.lazy(() => import('./components/BugReport').then(m
 
 function LoadingSpinner() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'var(--black, #06060C)' }}>
-      <div style={{ width: 32, height: 32, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+    <div role="status" aria-label="Chargement en cours" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'var(--black, #06060C)' }}>
+      <div aria-hidden="true" style={{ width: 32, height: 32, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--boom, #FF3500)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

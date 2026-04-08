@@ -242,8 +242,8 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
 
         {/* TRANSCRIBING */}
         {state === 'transcribing' && (
-          <div style={{ textAlign: 'center', padding: '20px 0' }}>
-            <div style={{ fontSize: 40, marginBottom: 12, display: 'inline-block', animation: 'spin 1.5s linear infinite' }}>🔄</div>
+          <div role="status" aria-label="Transcription en cours" style={{ textAlign: 'center', padding: '20px 0' }}>
+            <div style={{ fontSize: 40, marginBottom: 12, display: 'inline-block', animation: 'spin 1.5s linear infinite' }} aria-hidden="true">🔄</div>
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Transcription en cours…</div>
             <div style={{ fontSize: 12, opacity: 0.7 }}>OpenAI Whisper · Détection automatique de la langue</div>
             <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
