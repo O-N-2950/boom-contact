@@ -155,7 +155,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
           role="img"
           aria-label={`Zone de signature — Conducteur ${role}`}
           tabIndex={0}
-          className="block w-full touch-none" style={{ cursor: signed ? 'default' : 'crosshair', // CSS width — ResizeObserver gère le canvas interne }}
+          className="block w-full touch-none" style={{ cursor: signed ? 'default' : 'crosshair' /* CSS width — ResizeObserver gère le canvas interne */ }}
           onMouseDown={startDraw}
           onMouseMove={draw}
           onMouseUp={endDraw}

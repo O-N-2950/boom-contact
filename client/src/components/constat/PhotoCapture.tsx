@@ -217,7 +217,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
       {/* Continue */}
       <button
         onClick={onContinue}
-        className="w-full p-4 rounded-xl cursor-pointer font-bold text-[15px]" style={{ background: photos.length > 0 ? 'var(--boom)' : 'rgba(255,255,255,0.07)', color: photos.length > 0 ? '#fff' : 'rgba(240,237,232,0.6)', border: photos.length === 0 ? '1.5px solid rgba(255,255,255,0.12)' : 'none', } as React.CSSPropertie }}}
+        className="w-full p-4 rounded-xl cursor-pointer font-bold text-[15px]" style={{ background: photos.length > 0 ? 'var(--boom)' : 'rgba(255,255,255,0.07)', color: photos.length > 0 ? '#fff' : 'rgba(240,237,232,0.6)', border: photos.length === 0 ? '1.5px solid rgba(255,255,255,0.12)' : 'none', } as React.CSSProperties }}
       >
         {photos.length === 0
           ? '→ Continuer sans photo'
