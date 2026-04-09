@@ -579,7 +579,42 @@ app.get('/sitemap.xml', (_req, res) => {
 });
 
 
-// ââ Serve React app âââââââââââââââââââââââââââââââââââââââââââ
+
+// ── Social media — endpoint auto-publish (sécurisé) ─────────
+// Déclenché par cron-job.org ou Make.com toutes les 24h à 9h00 Europe/Zurich
+app.post('/social/auto-publish', express.json(), async (req, res) => {
+  const secret = req.body?.secret || req.query.secret;
+  if (secret !== process.env.SOCIAL_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  try {
+    const { publishToAllPlatforms } = await import('./services/social.service.js');
+    const results = await publishToAllPlatforms();
+    const ok = Object.values(results).filter((r: any) => r.success).length;
+    logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
+    res.json({ success: true, results, summary: `${ok}/${Object.keys(results).length} plateformes` });
+  } catch (err: any) {
+    logger.error('[SOCIAL] Auto-publish erreur', { error: err.message });
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Endpoint de santé social (sans auth)
+app.get('/social/health', async (_req, res) => {
+  try {
+    const { hasPostedToday } = await import('./services/social.service.js');
+    const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
+    const status: Record<string, boolean> = {};
+    for (const p of platforms) {
+      status[p] = await hasPostedToday(p);
+    }
+    res.json({ ok: true, today: status, ts: new Date().toISOString() });
+  } catch (err: any) {
+    res.json({ ok: false, error: err.message });
+  }
+});
+
+// ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');
   const assetsPath = path.join(distPath, 'assets');
@@ -988,6 +1023,22 @@ setInterval(async () => {
   }
 }, 60 * 60 * 1000).unref(); // toutes les heures
 
+
+
+// ── Cron marketing — génération automatique de posts sociaux ──
+// Tous les jours à 7h00 UTC : génère 4 posts (1 par pilier A/B/C/D)
+setInterval(async () => {
+  const now = new Date();
+  if (now.getUTCHours() === 5 && now.getUTCMinutes() < 15) { // 5h UTC = 7h CET
+    try {
+      const { generateDailyPosts } = await import('./services/social-generator.service.js');
+      const count = await generateDailyPosts(4);
+      logger.info('[Cron] Posts sociaux générés', { count });
+    } catch (e) {
+      logger.error('[Cron] Erreur génération posts', { error: String(e) });
+    }
+  }
+}, 15 * 60 * 1000); // toutes les 15 min (check heure)
 
 async function start() {
   logger.info('Starting boom.contact server...');
