@@ -259,6 +259,57 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
     if (constatSessionId && creditsInt >= 1) {
       await useCredit(userEmail, constatSessionId);
       logger.payment('credit-auto-used', userEmail, 'single', 1);
+
+      // Auto-generate PDF and email for completed sessions (solo one-shot flow)
+      setImmediate(async () => {
+        try {
+          const { getSession } = await import('./session.service.js');
+          const { generateConstatPDF } = await import('./pdf.service.js');
+          const { sendPDFToDriver } = await import('./email.service.js');
+
+          const fullSession = await getSession(constatSessionId);
+          if (!fullSession) {
+            logger.warn('Webhook auto-PDF: session not found', { sessionId: constatSessionId });
+            return;
+          }
+
+          // Only auto-send if session is completed (driver A has signed)
+          const aHasSigned = !!fullSession.participantA?.signature;
+          if (fullSession.status !== 'completed' && !aHasSigned) {
+            logger.info('Webhook auto-PDF: session not completed yet, skipping', { sessionId: constatSessionId, status: fullSession.status });
+            return;
+          }
+
+          const pdfBytes = await generateConstatPDF(fullSession, 'A');
+          const pdfB64 = Buffer.from(pdfBytes).toString('base64');
+          const nameA = [fullSession.participantA?.driver?.firstName, fullSession.participantA?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur';
+
+          await sendPDFToDriver({
+            driverEmail: userEmail,
+            driverName: nameA,
+            role: 'A',
+            sessionId: constatSessionId,
+            pdfBase64: pdfB64,
+            insurerName: fullSession.participantA?.insurance?.company,
+            language: fullSession.participantA?.language || 'fr',
+          });
+
+          // Store PDF URL in session
+          const { savePdfUrl } = await import('./session.service.js');
+          await savePdfUrl(constatSessionId, `data:application/pdf;base64,${pdfB64.slice(0, 50)}...`);
+
+          logger.info('Webhook auto-PDF sent successfully', {
+            sessionId: constatSessionId,
+            email: userEmail.replace(/(.{2}).*(@.*)/, '$1***$2'),
+          });
+        } catch (err) {
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          logger.error('Webhook auto-PDF failed — user can still download manually', {
+            sessionId: constatSessionId,
+            error: errorMsg,
+          });
+        }
+      });
     }
   }
 }

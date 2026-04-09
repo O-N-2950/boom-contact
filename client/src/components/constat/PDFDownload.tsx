@@ -4,6 +4,7 @@ import { trpc } from '../../trpc';
 interface Props {
   sessionId: string;
   role: string;
+  participantToken?: string;
   driverEmail?: string;
   insurerName?: string;
   driverName?: string;
@@ -13,7 +14,7 @@ interface Props {
   onBuyPack?: () => void;
 }
 
-export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
+export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, participantToken, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
   const [loading, setLoading]           = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfBase64, setPdfBase64]       = useState<string | null>(null);
@@ -83,7 +84,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
     }
 
     return new Promise((resolve) => {
-      pdfMutation.mutate({ sessionId }, {
+      pdfMutation.mutate({ sessionId, participantToken: participantToken || '' }, {
         onSuccess: (data) => { resolve(data.pdfBase64); },
         onError:   ()     => { resolve(null); },
       });
@@ -126,7 +127,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, dr
     if (!b64) return;
     setSendingEmail(true);
     setEmailError(null);
-    emailMutation.mutate({ sessionId, role, driverEmail: email, pdfBase64: b64 });
+    emailMutation.mutate({ sessionId, role, participantToken: participantToken || '', driverEmail: email, pdfBase64: b64 });
   };
 
   const isAdmin   = authUser?.role === 'admin';

@@ -30,6 +30,7 @@ const STORAGE_KEY = 'boom_flow_b';
 
 const savedStateBSchema = z.object({
   sessionId: z.string().optional(),
+  tokenB: z.string().optional(),
   step: z.string().optional(),
   joined: z.boolean().optional(),
   participantData: z.record(z.unknown()).optional(),
@@ -77,12 +78,15 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session') || '';
   const urlRole = (params.get('role') || 'B').toUpperCase() as ParticipantRole;
+  const urlTokenB = params.get('tokenB') || '';
   const saved = loadState(sessionId);
 
   const { i18n } = useTranslation();
   const [selectedLang, setSelectedLang] = useState<string>(() => {
     return saved?.lang || localStorage.getItem('boom_lang') || navigator.language?.split('-')[0] || 'fr';
   });
+  // participantToken for driver B — from QR URL or localStorage
+  const [tokenB, setTokenB] = useState<string>(urlTokenB || saved?.tokenB || '');
   const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'landing');
   const [joined, setJoined] = useState(saved?.joined || false);
   const [joining, setJoining] = useState(false);
@@ -117,7 +121,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   useEffect(() => {
     if (step === 'done' || step === 'landing') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, joined, participantData, damagedZones, photos, sketchImage, voiceTranscript, ts: Date.now(),
+      step, sessionId, tokenB, joined, participantData, damagedZones, photos, sketchImage, voiceTranscript, ts: Date.now(),
     }));
   }, [step, joined, participantData, damagedZones, photos, voiceTranscript]);
 
@@ -134,9 +138,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
   // Charger les données de la session (accident data de driver A)
   const sessionQuery = trpc.session.get.useQuery(
-    { sessionId },
+    { sessionId, participantToken: tokenB },
     {
-      enabled: joined && !!sessionId,
+      enabled: joined && !!sessionId && !!tokenB,
       onSuccess: (data: Record<string, unknown>) => {
         if (data?.accident) {
           const acc = data.accident;
@@ -183,7 +187,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     if (!sessionId || joining) return;
     setJoining(true);
     setError(null);
-    joinMutation.mutate({ sessionId, language: selectedLang });
+    joinMutation.mutate({ sessionId, tokenB, language: selectedLang });
   };
 
 
@@ -227,6 +231,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       updateMutation.mutate({
         sessionId,
         role: urlRole,
+        participantToken: tokenB,
         data: { vehicle: { ...vB, vehicleType: detectedType, vehicleData: bData } } as any,
       });
     }
@@ -249,9 +254,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: urlRole, data });
+      updateMutation.mutate({ sessionId, role: urlRole, participantToken: tokenB, data });
       if (accident && Object.keys(accident).length > 0) {
-        updateAccidentMutationB.mutate({ sessionId, data: accident });
+        updateAccidentMutationB.mutate({ sessionId, participantToken: tokenB, data: accident });
       }
     }
     setStep('voice');
@@ -265,7 +270,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
   const handleDiagramDone = async () => {
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: urlRole, data: { damagedZones } });
+      updateMutation.mutate({ sessionId, role: urlRole, participantToken: tokenB, data: { damagedZones } });
     }
     setStep('sign');
   };
@@ -287,7 +292,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   });
 
   const handleSign = (signatureBase64: string) => {
-    if (sessionId) signMutation.mutate({ sessionId, role: urlRole, signatureBase64 });
+    if (sessionId) signMutation.mutate({ sessionId, role: urlRole, participantToken: tokenB, signatureBase64 });
   };
 
   // ── LANDING ──────────────────────────────────────────────
@@ -509,7 +514,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
               setSketchImage(mapImageB64);
               if (sessionId) {
                 updateMutation.mutate({
-                  sessionId, role: urlRole,
+                  sessionId, role: urlRole, participantToken: tokenB,
                   data: { vehicle: { ...participantData.vehicle, mapPosition: vehiclePos } } as any,
                 });
               }
@@ -573,6 +578,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <PDFDownload
             sessionId={sessionId}
             role="B"
+            participantToken={tokenB}
             driverEmail={participantData.driver?.email}
             insurerName={participantData.insurance?.company || participantData.insurance?.companyName}
             driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}

@@ -35,6 +35,7 @@ function LazyLoading() {
 const savedStateSchema = z.object({
   step: z.string().optional(),
   sessionId: z.string().nullable().optional(),
+  tokenA: z.string().optional(),
   qrUrl: z.string().optional(),
   participantData: z.record(z.unknown()).optional(),
   damagedZones: z.array(z.string()).optional(),
@@ -87,9 +88,18 @@ interface ConstatFlowProps {
 
 export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth, onAccount, onBuyPack }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
-  const saved = initialSessionId ? null : loadState();
+
+  // Detect post-payment return: ?session=XXX&paid=1
+  const isPaidReturn = (() => {
+    const p = new URLSearchParams(window.location.search);
+    return p.get('paid') === '1' && !!initialSessionId;
+  })();
+
+  // Load saved state: when returning after payment, still load localStorage to get tokenA + participant data
+  const saved = (initialSessionId && !isPaidReturn) ? null : loadState();
 
   const [step, setStepRaw] = useState<FlowStep>(() => {
+    if (isPaidReturn) return 'done'; // Post-payment: go directly to done
     if (initialSessionId) return 'qr'; // Skip OCR, jump to QR step
     return saved?.step || 'ocr';
   });
@@ -126,6 +136,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [allVehicles, setAllVehicles] = useState<Record<string, unknown>>({
     A: saved?.vehicleA || null,
   });
+  // participantToken for driver A — required by all secure endpoints
+  const [tokenA, setTokenA] = useState<string>(saved?.tokenA || '');
   const [otherSigned, setOtherSigned] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
   // ── Piéton ────────────────────────────────────────────────
@@ -198,7 +210,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   useEffect(() => {
     if (step === 'done') return;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      step, sessionId, qrUrl, participantData, damagedZones, photos, sketchImage,
+      step, sessionId, tokenA, qrUrl, participantData, damagedZones, photos, sketchImage,
       vehicleCount, voiceAnalysis, voiceTranscript, ts: Date.now(),
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos, vehicleCount, voiceAnalysis, voiceTranscript]);
@@ -227,9 +239,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     onSuccess: (data) => {
       setSessionId(data.sessionId);
       setQrUrl(data.qrUrl);
+      if (data.tokenA) setTokenA(data.tokenA);
       if (Object.keys(accidentData).length > 0) {
         updateAccidentMutation.mutate({
           sessionId: data.sessionId,
+          participantToken: data.tokenA || '',
           data: { ...accidentData, photos },
         });
       }
@@ -308,7 +322,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     setAccidentData(accident);
     setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
     if (sessionId) {
-      updateAccidentMutation.mutate({ sessionId, data: accident });
+      updateAccidentMutation.mutate({ sessionId, participantToken: tokenA, data: accident });
     }
     setStep('photos');
   };
@@ -317,7 +331,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     const updatedAccident = { ...accidentData, photos };
     setAccidentData(updatedAccident);
     if (sessionId && photos.length > 0) {
-      updateAccidentMutation.mutate({ sessionId, data: { photos } });
+      updateAccidentMutation.mutate({ sessionId, participantToken: tokenA, data: { photos } });
     }
     setStep('qr'); // QR d'abord, puis vocal après que B rejoint
   }, [accidentData, photos, sessionId]);
@@ -325,9 +339,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: 'A', data });
+      updateMutation.mutate({ sessionId, role: 'A', participantToken: tokenA, data });
       if (accident && Object.keys(accident).length > 0) {
-        updateAccidentMutation.mutate({ sessionId, data: accident });
+        updateAccidentMutation.mutate({ sessionId, participantToken: tokenA, data: accident });
         setAccidentData(prev => ({ ...prev, ...accident }));
       }
     }
@@ -337,14 +351,14 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const handleSketchDone = (base64: string) => {
     setSketchImage(base64);
     if (sessionId && base64) {
-      updateAccidentMutation.mutate({ sessionId, data: { sketchImage: base64 } });
+      updateAccidentMutation.mutate({ sessionId, participantToken: tokenA, data: { sketchImage: base64 } });
     }
     setStep('diagram');
   };
 
   const handleDiagramDone = async () => {
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: 'A', data: { damagedZones } });
+      updateMutation.mutate({ sessionId, role: 'A', participantToken: tokenA, data: { damagedZones } });
     }
     setStep('sign'); // diagram est la dernière étape avant signature
   };
@@ -374,7 +388,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   });
 
   const handleSign = useCallback((signatureBase64: string) => {
-    if (sessionId) signMutation.mutate({ sessionId, role: 'A', signatureBase64 });
+    if (sessionId) signMutation.mutate({ sessionId, role: 'A', participantToken: tokenA, signatureBase64 });
   }, [sessionId]);
 
   const currentStepIdx = STEPS.findIndex(s => s.id === step);
@@ -498,6 +512,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 if (sessionId) {
                   updateAccidentMutation.mutate({
                     sessionId,
+                    participantToken: tokenA,
                     data: { vehicleCount: count },
                   });
                 }
@@ -505,7 +520,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onPartnerJoined={async () => {
                 // Charger les données véhicule B depuis la session
                 try {
-                  const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
+                  const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId!, participantToken: tokenA });
                   const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
                   if (bParticipant?.vehicle?.vehicleData) {
                     setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
@@ -567,7 +582,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             isPedestrianMode
             onPartnerJoined={async () => {
               try {
-                const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId! });
+                const sessionData = await trpcUtils.session.get.fetch({ sessionId: sessionId!, participantToken: tokenA });
                 const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
                 if (bParticipant) setPedestrianData(bParticipant);
               } catch (e) { /* ignore */ }
@@ -588,6 +603,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   await trpcUtils.client.session.updateParticipant.mutate({
                     sessionId,
                     role: 'B',
+                    participantToken: tokenA,
                     data: {
                       vehicle: { vehicleType: 'pedestrian' },
                       driver: {
@@ -660,7 +676,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 // Stocker la position de A pour que B la voie sur sa carte
                 window.__boomVehicleAPos = vehiclePos;
                 if (sessionId && mapImageB64) {
-                  updateAccidentMutation.mutate({ sessionId, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
+                  updateAccidentMutation.mutate({ sessionId, participantToken: tokenA, data: { sketchImage: mapImageB64, vehicleAPos: vehiclePos } });
                 }
                 setParticipantData(prev => ({
                   ...prev,
@@ -776,6 +792,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <PDFDownload
               sessionId={sessionId!}
               role="A"
+              participantToken={tokenA}
               driverEmail={participantData.driver?.email}
               insurerName={participantData.insurance?.company || participantData.insurance?.companyName}
               driverName={[participantData.driver?.firstName, participantData.driver?.lastName].filter(Boolean).join(' ')}
@@ -811,6 +828,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               try {
                 await updateAccidentMutation.mutateAsync({
                   sessionId,
+                  participantToken: tokenA,
                   data: { ...accidentData, partyBStatus: status },
                 });
               } catch { /* ignore */ }
