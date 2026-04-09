@@ -201,6 +201,7 @@ export async function runMigrations() {
         ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(30);
         ALTER TABLE users ADD COLUMN IF NOT EXISTS company TEXT;
         ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER NOT NULL DEFAULT 0;
       EXCEPTION WHEN duplicate_column THEN NULL;
       END $$;
     `);
