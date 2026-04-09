@@ -1,5 +1,18 @@
 // build-server.mjs — Compile server TypeScript → JavaScript using esbuild
 import { build } from 'esbuild';
+import { readFileSync } from 'fs';
+
+// Read package.json to get all dependencies
+const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
+const allDeps = [
+  ...Object.keys(pkg.dependencies || {}),
+  ...Object.keys(pkg.devDependencies || {}),
+];
+
+// Bundle zod into the server (zod 3.25 has no pre-built dist/, only src/)
+// All other deps remain external — installed separately in Docker production stage
+const BUNDLE_INTO_SERVER = ['zod'];
+const externalDeps = allDeps.filter(d => !BUNDLE_INTO_SERVER.includes(d));
 
 await build({
   entryPoints: ['server/src/index.ts'],
@@ -10,8 +23,9 @@ await build({
   outfile: 'dist/server/index.js',
   sourcemap: false,
   minify: false,
-  // Keep node_modules external — they're installed separately
-  packages: 'external',
+  external: externalDeps,
+  // Resolve zod from source TS (zod 3.25 exports @zod/source condition)
+  conditions: ['@zod/source', 'import', 'module', 'default'],
   banner: {
     // Fix __dirname / __filename for ESM
     js: `

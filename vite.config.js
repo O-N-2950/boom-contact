@@ -71,7 +71,9 @@ export default defineConfig({
   plugins: [react(), brotliCompressPlugin()],
   root: 'client',
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'client/src') }
+    alias: { '@': path.resolve(__dirname, 'client/src') },
+    // Zod 3.25 ships source TS only (no pre-built dist/) — use @zod/source condition
+    conditions: ['@zod/source', 'import', 'module', 'browser', 'default'],
   },
   server: {
     port: 5173,
