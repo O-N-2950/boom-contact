@@ -384,6 +384,24 @@ app.use(compression({
 // Brotli is typically handled by the CDN/reverse proxy (Railway, Cloudflare).
 // For direct brotli support, consider shrink-ray-current or a Brotli-capable proxy.
 
+// ââ Stripe Webhook â raw body âââââââââââââââââââââââââââââââââ
+app.post('/webhook/stripe',
+  express.raw({ type: 'application/json' }),
+  async (req, res) => {
+    const sig = req.headers['stripe-signature'] as string;
+    try {
+      const { handleStripeWebhook } = await import('./services/stripe.service.js');
+      await handleStripeWebhook(req.body, sig);
+      logger.info('Stripe webhook processed', { sig: sig?.slice(0, 20) });
+      res.json({ received: true });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Webhook error';
+      logger.error('Stripe webhook failed', { error: msg });
+      res.status(400).json({ error: msg });
+    }
+  }
+);
+
 // ââ Core middleware âââââââââââââââââââââââââââââââââââââââââââ
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 
@@ -466,25 +484,6 @@ app.use((req, _res, next) => {
   }
   next();
 });
-
-// ââ Stripe Webhook â raw body âââââââââââââââââââââââââââââââââ
-app.post('/webhook/stripe',
-  express.raw({ type: 'application/json' }),
-  async (req, res) => {
-    const sig = req.headers['stripe-signature'] as string;
-    try {
-      const { handleStripeWebhook } = await import('./services/stripe.service.js');
-      await handleStripeWebhook(req.body, sig);
-      logger.info('Stripe webhook processed', { sig: sig?.slice(0, 20) });
-      res.json({ received: true });
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Webhook error';
-      logger.error('Stripe webhook failed', { error: msg });
-      res.status(400).json({ error: msg });
-    }
-  }
-);
-
 // ââ tRPC router âââââââââââââââââââââââââââââââââââââââââââââââ
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routes/router.js';

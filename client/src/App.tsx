@@ -73,6 +73,11 @@ function getInitialView(): AppView {
     if (token) return 'police_flow';
   }
 
+  // Post-payment redirect: ?session=XXX&paid=1 → go directly to constat (not join)
+  if (params.get('session') && params.get('paid') === '1') {
+    return 'constat';
+  }
+
   // QR scan detection: if police is authenticated and ?session= is present, go to intervention
   if (params.get('session')) {
     const policeToken = localStorage.getItem('boom_police_token');
@@ -370,7 +375,7 @@ export default function App() {
       />}
       {view === 'constat' && (
         <ConstatFlow
-          initialSessionId={undefined}
+          initialSessionId={new URLSearchParams(window.location.search).get('session') || undefined}
           authToken={authToken || undefined}
           authUser={authUser}
           onShowAuth={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
