@@ -5,7 +5,10 @@ import { adminStatsOutput, adminUsersOutput, adminDeleteUserOutput, adminSetCred
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
-import { desc, gte, eq, count, sum, sql, isNull, and, inArray } from 'drizzle-orm';
+import { desc, gte, eq, count, sum, sql, isNull, and, inArray, or, ilike } from 'drizzle-orm';
+import { generateConstatPDF } from '../services/pdf.service.js';
+import { sendPDFToDriver } from '../services/email.service.js';
+import { getSession } from '../services/session.service.js';
 
 export const adminRouter = router({
 
@@ -230,6 +233,118 @@ export const adminFixOwnerEmails = adminProcedure
       ));
     }
     return { fixed: updates.length, total: missing.length };
+  });
+
+// ── ADMIN: List constats by email ──────────────────────────────
+export const adminListConstats = adminProcedure
+  .input(z.object({ email: z.string().email().max(320) }))
+  .query(async ({ input }) => {
+    const emailLower = input.email.toLowerCase();
+
+    // Search in ownerEmail (direct match) + inside participantA/B JSONB driver.email
+    const results = await db.select({
+      id: sessions.id,
+      status: sessions.status,
+      createdAt: sessions.createdAt,
+      ownerEmail: sessions.ownerEmail,
+      vehicleCount: sessions.vehicleCount,
+      participantA: sessions.participantA,
+      participantB: sessions.participantB,
+      pdfUrl: sessions.pdfUrl,
+    })
+    .from(sessions)
+    .where(
+      or(
+        ilike(sessions.ownerEmail, emailLower),
+        sql`lower(${sessions.participantA}->>'driver'->>'email') = ${emailLower}`,
+        sql`lower(${sessions.participantA}->'driver'->>'email') = ${emailLower}`,
+        sql`lower(${sessions.participantB}->'driver'->>'email') = ${emailLower}`,
+      )
+    )
+    .orderBy(desc(sessions.createdAt))
+    .limit(20);
+
+    return results.map(r => ({
+      id: r.id,
+      status: r.status,
+      createdAt: r.createdAt,
+      ownerEmail: r.ownerEmail,
+      vehicleCount: r.vehicleCount ?? 2,
+      driverAEmail: (r.participantA as any)?.driver?.email ?? null,
+      driverAName: [(r.participantA as any)?.driver?.firstName, (r.participantA as any)?.driver?.lastName].filter(Boolean).join(' ') || null,
+      driverBEmail: (r.participantB as any)?.driver?.email ?? null,
+      driverBName: [(r.participantB as any)?.driver?.firstName, (r.participantB as any)?.driver?.lastName].filter(Boolean).join(' ') || null,
+      hasPdf: !!r.pdfUrl,
+    }));
+  });
+
+// ── ADMIN: Re-generate and resend PDF ──────────────────────────
+export const adminResendPdf = adminProcedure
+  .input(z.object({
+    sessionId: z.string().max(50),
+    recipientEmail: z.string().email().max(320),
+    role: z.enum(['A', 'B']).default('A'),
+  }))
+  .mutation(async ({ input }) => {
+    const session = await getSession(input.sessionId);
+    if (!session) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: `Session ${input.sessionId} introuvable.` });
+    }
+
+    // Allow generating PDF for completed, signing (with A signed), or active sessions
+    const aHasSigned = !!session.participantA?.signature;
+    const canGenerate = session.status === 'completed'
+      || (session.status === 'signing' && aHasSigned)
+      || (session.status === 'active' && aHasSigned);
+
+    if (!canGenerate) {
+      throw new TRPCError({
+        code: 'PRECONDITION_FAILED',
+        message: `Session ${input.sessionId} n'est pas dans un état permettant la génération PDF (status: ${session.status}, signé A: ${aHasSigned}).`,
+      });
+    }
+
+    // Generate PDF
+    const pdfBytes = await generateConstatPDF(session, input.role);
+    const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+
+    // Determine driver info from session
+    const participant = input.role === 'A' ? session.participantA : session.participantB;
+    const driverName = [participant?.driver?.firstName, participant?.driver?.lastName]
+      .filter(Boolean).join(' ') || 'Conducteur';
+    const lang = participant?.language || 'fr';
+
+    // Send email
+    const result = await sendPDFToDriver({
+      driverEmail: input.recipientEmail,
+      driverName,
+      role: input.role,
+      sessionId: input.sessionId,
+      pdfBase64,
+      insurerName: participant?.insurance?.company,
+      language: lang,
+    });
+
+    if (!result.ok) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `Échec envoi email: ${result.error}`,
+      });
+    }
+
+    logger.info('Admin resend PDF', {
+      sessionId: input.sessionId,
+      recipientEmail: maskEmail(input.recipientEmail),
+      role: input.role,
+      messageId: result.messageId,
+    });
+
+    return {
+      ok: true,
+      sessionId: input.sessionId,
+      sentTo: input.recipientEmail,
+      messageId: result.messageId ?? null,
+    };
   });
 
 // ── MARKETING ROUTER ───────────────────────────────────────────
