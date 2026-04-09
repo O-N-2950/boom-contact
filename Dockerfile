@@ -40,9 +40,11 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     NODE_ENV=production \
     FORCE_COLOR=1
 
-# Copy only production deps
+# Copy production deps + native modules (canvas.node) from builder
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-fund --no-audit --ignore-scripts
+# Canvas native addon was compiled in builder stage — copy it over
+COPY --from=builder /app/node_modules/canvas/build ./node_modules/canvas/build
 
 # Copy built artifacts only (no source TypeScript needed)
 COPY --from=builder /app/dist ./dist
