@@ -71,7 +71,12 @@ export default defineConfig({
   plugins: [react(), brotliCompressPlugin()],
   root: 'client',
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'client/src') }
+    alias: {
+      '@': path.resolve(__dirname, 'client/src'),
+    },
+    // Zod 3.25 ships source TS without pre-built dist/; @zod/source condition
+    // tells the resolver to use src/index.ts which Vite can transpile directly
+    conditions: ['@zod/source', 'import', 'module', 'browser', 'default'],
   },
   server: {
     port: 5173,
