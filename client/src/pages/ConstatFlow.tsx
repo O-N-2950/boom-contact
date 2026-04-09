@@ -483,7 +483,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'ocr' && (
           <Suspense fallback={<LazyLoading />}>
-            <OCRScanner role="A" onComplete={handleOCRComplete} onSkip={() => setStep('location')} />
+            <OCRScanner role="A" onComplete={handleOCRComplete} onSkip={() => setStep('location')} sessionId={sessionId || undefined} participantToken={tokenA || undefined} />
           </Suspense>
         )}
 

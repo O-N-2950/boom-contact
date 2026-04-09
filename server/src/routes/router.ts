@@ -444,13 +444,15 @@ export const appRouter = router({
         mediaType:    z.enum(['image/jpeg','image/png','image/webp','image/gif']).default('image/jpeg'),
         documentType: z.enum(['vehicle_registration','green_card','drivers_license','auto']).default('auto'),
         country:      z.string().max(10).optional(),
-        sessionId: z.string().trim().max(50),
-        participantToken: z.string().trim().max(500),
+        sessionId: z.string().trim().max(50).optional(),
+        participantToken: z.string().trim().max(500).optional(),
       }))
       .output(ocrScanOutput)
       .mutation(async ({ input }) => {
-        // SECURITY: Always require valid session context — no anonymous OCR
-        await verifyAnyParticipant(input.sessionId, input.participantToken);
+        // SECURITY: If session context provided, verify it — allows pre-session OCR (initial scan, plate OCR)
+        if (input.sessionId && input.participantToken) {
+          await verifyAnyParticipant(input.sessionId, input.participantToken);
+        }
 
         // Validate image size and media type
         const validation = validateBase64Image(input.imageBase64, input.mediaType);
@@ -467,13 +469,15 @@ export const appRouter = router({
     batchScan: publicProcedure
       .input(z.object({
         images: z.array(z.string().min(100).max(10_000_000)).min(1).max(4),
-        sessionId: z.string().trim().max(50),
-        participantToken: z.string().trim().max(500),
+        sessionId: z.string().trim().max(50).optional(),
+        participantToken: z.string().trim().max(500).optional(),
       }))
       .output(ocrBatchScanOutput)
       .mutation(async ({ input }) => {
-        // SECURITY: Always require valid session context — no anonymous OCR
-        await verifyAnyParticipant(input.sessionId, input.participantToken);
+        // SECURITY: If session context provided, verify it — allows pre-session OCR (driver A initial scan)
+        if (input.sessionId && input.participantToken) {
+          await verifyAnyParticipant(input.sessionId, input.participantToken);
+        }
 
         // Validate each image before processing
         for (const imageBase64 of input.images) {
@@ -495,13 +499,15 @@ export const appRouter = router({
       .input(z.object({
         registrationBase64: z.string().min(100).max(10_000_000),
         greenCardBase64:    z.string().min(100).max(10_000_000),
-        sessionId: z.string().trim().max(50),
-        participantToken: z.string().trim().max(500),
+        sessionId: z.string().trim().max(50).optional(),
+        participantToken: z.string().trim().max(500).optional(),
       }))
       .output(ocrScanPairOutput)
       .mutation(async ({ input }) => {
-        // SECURITY: Always require valid session context — no anonymous OCR
-        await verifyAnyParticipant(input.sessionId, input.participantToken);
+        // SECURITY: If session context provided, verify it — allows pre-session OCR
+        if (input.sessionId && input.participantToken) {
+          await verifyAnyParticipant(input.sessionId, input.participantToken);
+        }
 
         // Validate both images
         const regValidation = validateBase64Image(input.registrationBase64, 'image/jpeg');

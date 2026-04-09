@@ -9,6 +9,8 @@ interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   onComplete: (result: { registration: OCRResult; greenCard?: OCRResult }) => void;
   onSkip?: () => void; // Passer sans scanner — saisie manuelle dans le formulaire
+  sessionId?: string;        // optionnel — absent au step 'ocr' de ConstatFlow (session pas encore créée)
+  participantToken?: string; // optionnel — idem
 }
 
 interface DocPhoto { id: string; base64: string; preview: string; }
@@ -56,7 +58,7 @@ function mergeResults(scans: OCRResult[]): { registration: OCRResult; greenCard?
   return { registration, greenCard };
 }
 
-export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onSkip }: Props) {
+export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onSkip, sessionId, participantToken }: Props) {
   const [docs, setDocs]           = useState<DocPhoto[]>([]);
   const [scanning, setScanning]   = useState(false);
   const [error, setError]         = useState<string | null>(null);
@@ -291,7 +293,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
       )}
 
       {docs.length > 0 && (
-        <button onClick={()=>{setScanning(true);setError(null);batchMut.mutate({images:docs.map(d=>d.base64)});}}
+        <button onClick={()=>{setScanning(true);setError(null);batchMut.mutate({images:docs.map(d=>d.base64), ...(sessionId ? {sessionId} : {}), ...(participantToken ? {participantToken} : {})});}}
           className="p-4 rounded-xl text-white mt-1 cursor-pointer font-bold touch-manipulation w-full text-[15px]" style={{ border:'none', background:'var(--boom)', WebkitTapHighlightColor:'transparent' }}>
           🔍 Analyser {docs.length} document{docs.length>1?'s':''}
         </button>

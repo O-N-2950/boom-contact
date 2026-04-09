@@ -462,7 +462,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="B" onComplete={handleOCRComplete} onSkip={() => setStep('photos')} />
+          <OCRScanner role="B" onComplete={handleOCRComplete} onSkip={() => setStep('photos')} sessionId={sessionId} participantToken={tokenB} />
         )}
 
         {step === 'form' && (
