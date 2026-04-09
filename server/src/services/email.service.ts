@@ -546,6 +546,7 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
     const t = getTemplate(params.language);
     const html = buildEmailHTML(params);
 
+    const safeSessionId = params.sessionId.replace(/[^a-zA-Z0-9_-]/g, '');
     const { data, error } = await resend.emails.send({
       from: 'boom.contact <contact@boom.contact>',
       to: params.driverEmail,

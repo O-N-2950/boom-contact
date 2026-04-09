@@ -29,7 +29,8 @@ export const StepIndicator = React.memo(function StepIndicator({ steps, currentI
             onClick={clickable ? () => onStepClick!(step.id, i) : undefined}
             title={clickable ? `↩ ${step.label}` : undefined}
             disabled={!clickable}
-            className="flex-1 text-center rounded-md min-h-[44px] min-w-[44px] relative bg-none border-0 px-px py-[3px]" style={{ cursor: clickable ? 'pointer' : 'default', WebkitTapHighlightColor: 'transparent', font: 'inherit', } as React.CSSPropertie }}}
+            className="flex-1 text-center rounded-md min-h-[44px] min-w-[44px] relative bg-none border-0 px-px py-[3px]"
+            style={{ cursor: clickable ? 'pointer' : 'default', WebkitTapHighlightColor: 'transparent', font: 'inherit' } as React.CSSProperties}
           >
             {/* Barre colorée */}
             <div className="h-[3px] rounded-sm mb-[5px]" style={{ transition: 'background 0.3s', background: done ? '#22c55e' : active ? 'var(--boom)' : 'rgba(240,237,232,0.1)' }}/>
