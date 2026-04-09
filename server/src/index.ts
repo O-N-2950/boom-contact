@@ -11,10 +11,10 @@ import morgan from 'morgan';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { runMigrations } from './db/migrate.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// __dirname is provided by the esbuild banner in build-server.mjs
+// Do NOT redeclare it here — causes "Identifier already declared" in ESM strict mode
 
 // Init Sentry ASAP (called once here, not duplicated below)
 initSentry().catch((e) => { logger.debug('Sentry init skipped', { error: String(e) }); });
