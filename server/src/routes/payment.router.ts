@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError, checkIdempotency, storeIdempotency } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
-import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, userSaveConsentOutput } from './output-schemas.js';
+import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, paymentVerifyCreditOutput, userSaveConsentOutput } from './output-schemas.js';
 
 export const paymentRouter = router({
   // Retourner les packages disponibles
@@ -59,6 +59,15 @@ export const paymentRouter = router({
     .query(async ({ ctx }) => {
       const credits = await getUserCredits(ctx.authUser.email);
       return { credits };
+    }),
+
+  // Vérifier si les crédits sont prêts après paiement (polling pour one-shot flow)
+  verifyCredit: publicProcedure
+    .input(z.object({ userEmail: z.string().trim().email().max(320), sessionId: z.string().trim().max(50).optional() }))
+    .output(paymentVerifyCreditOutput)
+    .query(async ({ input }) => {
+      const credits = await getUserCredits(input.userEmail);
+      return { ready: credits > 0, credits };
     }),
 
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR

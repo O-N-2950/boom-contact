@@ -332,6 +332,12 @@ export const appRouter = router({
               const fullSession = await getSession(input.sessionId);
               if (!fullSession) return;
 
+              // Dedup: if pdfUrl already set, PDF was already sent (by webhook auto-PDF)
+              if (fullSession.pdfUrl) {
+                logger.info('Sign auto-PDF: PDF already sent (dedup), skipping', { sessionId: input.sessionId });
+                return;
+              }
+
               const A = fullSession.participantA;
               const B = fullSession.participantB;
               const emailA = A?.driver?.email;
@@ -344,13 +350,14 @@ export const appRouter = router({
                   .where(eq(sessionsTable.id, input.sessionId));
               }
 
+              // Mark PDF as sent BEFORE emailing to prevent duplicates
+              const marker = `pdf-sent-${Date.now()}`;
+              await savePdfUrl(input.sessionId, marker);
+
               // Générer PDF pour A
               const pdfBytesA = await generateConstatPDF(fullSession, 'A');
               const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
               const filename = `constat-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
-
-              // Sauvegarder l'URL en DB
-              await savePdfUrl(input.sessionId, `data:application/pdf;base64,${pdfB64A.slice(0, 50)}...`);
 
               // Envoyer à conducteur A
               if (emailA) {

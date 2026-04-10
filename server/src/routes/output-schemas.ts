@@ -451,6 +451,7 @@ export const paymentCurrenciesOutput = z.object({
 });
 
 export const paymentCreditsOutput = z.object({ credits: z.number() });
+export const paymentVerifyCreditOutput = z.object({ ready: z.boolean(), credits: z.number() });
 export const paymentUseCreditOutput = okOutput;
 export const userSaveConsentOutput = okOutput;
 

@@ -260,54 +260,116 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
       await useCredit(userEmail, constatSessionId);
       logger.payment('credit-auto-used', userEmail, 'single', 1);
 
-      // Auto-generate PDF and email for completed sessions (solo one-shot flow)
+      // Auto-generate PDF and email with retry logic (handles race: payment before signature)
       setImmediate(async () => {
-        try {
-          const { getSession } = await import('./session.service.js');
-          const { generateConstatPDF } = await import('./pdf.service.js');
-          const { sendPDFToDriver } = await import('./email.service.js');
+        const MAX_RETRIES = 3;
+        const DELAYS = [0, 30_000, 60_000, 120_000]; // 0s, 30s, 60s, 120s
 
-          const fullSession = await getSession(constatSessionId);
-          if (!fullSession) {
-            logger.warn('Webhook auto-PDF: session not found', { sessionId: constatSessionId });
-            return;
+        for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+          if (attempt > 0) {
+            await new Promise(r => setTimeout(r, DELAYS[attempt] || 120_000));
           }
+          try {
+            const { getSession, savePdfUrl } = await import('./session.service.js');
+            const { generateConstatPDF } = await import('./pdf.service.js');
+            const { sendPDFToDriver } = await import('./email.service.js');
 
-          // Only auto-send if session is completed (driver A has signed)
-          const aHasSigned = !!fullSession.participantA?.signature;
-          if (fullSession.status !== 'completed' && !aHasSigned) {
-            logger.info('Webhook auto-PDF: session not completed yet, skipping', { sessionId: constatSessionId, status: fullSession.status });
-            return;
+            const fullSession = await getSession(constatSessionId);
+            if (!fullSession) {
+              logger.warn('Webhook auto-PDF: session not found', { sessionId: constatSessionId, attempt });
+              return; // no point retrying if session doesn't exist
+            }
+
+            // Dedup: if pdfUrl already set, PDF was already sent (by sign handler)
+            if (fullSession.pdfUrl) {
+              logger.info('Webhook auto-PDF: PDF already sent (dedup), skipping', { sessionId: constatSessionId });
+              return;
+            }
+
+            // Only auto-send if session is completed or A has signed
+            const aHasSigned = !!fullSession.participantA?.signature;
+            if (fullSession.status !== 'completed' && !aHasSigned) {
+              if (attempt < MAX_RETRIES) {
+                logger.info('Webhook auto-PDF: session not completed yet, will retry', { sessionId: constatSessionId, status: fullSession.status, attempt });
+                continue; // retry after delay — signature may arrive later
+              }
+              logger.info('Webhook auto-PDF: session not completed after all retries, giving up', { sessionId: constatSessionId, status: fullSession.status });
+              return;
+            }
+
+            // Mark PDF as sent BEFORE sending to prevent duplicates
+            const marker = `pdf-sent-${Date.now()}`;
+            await savePdfUrl(constatSessionId, marker);
+
+            const pdfBytesA = await generateConstatPDF(fullSession, 'A');
+            const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
+            const nameA = [fullSession.participantA?.driver?.firstName, fullSession.participantA?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur';
+
+            await sendPDFToDriver({
+              driverEmail: userEmail,
+              driverName: nameA,
+              role: 'A',
+              sessionId: constatSessionId,
+              pdfBase64: pdfB64A,
+              insurerName: fullSession.participantA?.insurance?.company,
+              language: fullSession.participantA?.language || 'fr',
+            });
+
+            logger.info('Webhook auto-PDF sent to A', {
+              sessionId: constatSessionId,
+              email: userEmail.replace(/(.{2}).*(@.*)/, '$1***$2'),
+            });
+
+            // Also send to conductor B if email available
+            const B = fullSession.participantB;
+            const emailB = B?.driver?.email;
+            if (emailB) {
+              const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
+              const bIsPedestrian = NON_SIGNING.includes(B?.vehicle?.vehicleType as string) || (B as any)?.isPedestrian;
+
+              if (!bIsPedestrian) {
+                const pdfBytesB = await generateConstatPDF(fullSession, 'B');
+                const pdfB64B = Buffer.from(pdfBytesB).toString('base64');
+                const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur B';
+                await sendPDFToDriver({
+                  driverEmail: emailB,
+                  driverName: nameB,
+                  role: 'B',
+                  sessionId: constatSessionId,
+                  pdfBase64: pdfB64B,
+                  insurerName: B?.insurance?.company,
+                  language: B?.language || 'fr',
+                });
+                logger.info('Webhook auto-PDF sent to B', { sessionId: constatSessionId });
+              } else {
+                const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Piéton';
+                await sendPDFToDriver({
+                  driverEmail: emailB,
+                  driverName: nameB,
+                  role: 'A',
+                  sessionId: constatSessionId,
+                  pdfBase64: pdfB64A,
+                  language: B?.language || 'fr',
+                });
+                logger.info('Webhook auto-PDF sent to pedestrian B', { sessionId: constatSessionId });
+              }
+            }
+
+            return; // success — exit retry loop
+          } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : String(err);
+            if (attempt < MAX_RETRIES) {
+              logger.warn(`Webhook auto-PDF attempt ${attempt + 1} failed, retrying...`, {
+                sessionId: constatSessionId,
+                error: errorMsg,
+              });
+            } else {
+              logger.error('Webhook auto-PDF failed after all retries — user can still download manually', {
+                sessionId: constatSessionId,
+                error: errorMsg,
+              });
+            }
           }
-
-          const pdfBytes = await generateConstatPDF(fullSession, 'A');
-          const pdfB64 = Buffer.from(pdfBytes).toString('base64');
-          const nameA = [fullSession.participantA?.driver?.firstName, fullSession.participantA?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur';
-
-          await sendPDFToDriver({
-            driverEmail: userEmail,
-            driverName: nameA,
-            role: 'A',
-            sessionId: constatSessionId,
-            pdfBase64: pdfB64,
-            insurerName: fullSession.participantA?.insurance?.company,
-            language: fullSession.participantA?.language || 'fr',
-          });
-
-          // Store PDF URL in session
-          const { savePdfUrl } = await import('./session.service.js');
-          await savePdfUrl(constatSessionId, `data:application/pdf;base64,${pdfB64.slice(0, 50)}...`);
-
-          logger.info('Webhook auto-PDF sent successfully', {
-            sessionId: constatSessionId,
-            email: userEmail.replace(/(.{2}).*(@.*)/, '$1***$2'),
-          });
-        } catch (err) {
-          const errorMsg = err instanceof Error ? err.message : String(err);
-          logger.error('Webhook auto-PDF failed — user can still download manually', {
-            sessionId: constatSessionId,
-            error: errorMsg,
-          });
         }
       });
     }
