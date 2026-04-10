@@ -78,8 +78,9 @@ export const paymentRouter = router({
 });
 
 export const userRouter = router({
-  saveConsent: protectedProcedure
+  saveConsent: publicProcedure
     .input(z.object({
+      email:             z.string().email().max(254),
       consentCGU:        z.boolean(),
       consentMarketing:  z.boolean(),
       country: z.string().trim().max(100).optional(),
@@ -87,8 +88,9 @@ export const userRouter = router({
     }))
     .output(userSaveConsentOutput)
     .mutation(async ({ ctx, input }) => {
+      const email = ctx.authUser?.email ?? input.email;
       await saveConsent(
-        ctx.authUser.email,
+        email,
         input.consentCGU,
         input.consentMarketing,
         input.country,
