@@ -44,6 +44,12 @@ export const sessions = pgTable('sessions', {
   ownerEmail:   text('owner_email'),
   tokenA:       text('token_a'),            // participant token for party A
   tokenB:       text('token_b'),            // participant token for party B
+  timestampProof: jsonb('timestamp_proof').$type<{
+    sha256: string;
+    otsProofBase64: string;
+    calendarUrl: string;
+    submittedAt: string;
+  }>(),
 }, (t) => ({
   statusIdx:     index('sessions_status_idx').on(t.status),
   createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),

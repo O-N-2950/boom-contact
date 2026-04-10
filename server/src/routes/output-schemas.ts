@@ -183,6 +183,25 @@ export const sessionJoinOutput = sessionGetOutput;
 export const pdfGenerateOutput = z.object({
   pdfBase64: z.string(),
   filename: z.string(),
+  timestamp: z.object({
+    sha256: z.string(),
+    otsProofBase64: z.string(),
+    calendarUrl: z.string(),
+    submittedAt: z.string(),
+  }).optional(),
+});
+
+// ── session.verifyProof ──────────────────────────────────────
+export const sessionVerifyProofOutput = z.object({
+  valid: z.boolean(),
+  sha256Provided: z.string(),
+  sha256Stored: z.string(),
+  timestampProof: z.object({
+    sha256: z.string(),
+    otsProofBase64: z.string(),
+    calendarUrl: z.string(),
+    submittedAt: z.string(),
+  }).nullable(),
 });
 
 // ── session.sign ─────────────────────────────────────────────

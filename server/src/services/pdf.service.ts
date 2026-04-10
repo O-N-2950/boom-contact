@@ -762,17 +762,20 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
 function buildFooter(ctx: PdfContext): void {
   const { page, normal, mono, rtlFonts, session, margin, width, isUnilateral } = ctx;
 
-  drawLine(page, margin, 48, width - margin, 48, C.border);
+  drawLine(page, margin, 56, width - margin, 56, C.border);
   const footerLine1 = isUnilateral
     ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
     : 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app';
-  drawText(page, footerLine1, margin, 38, normal, 7, C.mid, rtlFonts);
+  drawText(page, footerLine1, margin, 46, normal, 7, C.mid, rtlFonts);
   drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - CHE-476.484.632`,
-    margin, 28, mono, 6.5, C.mid, rtlFonts);
+    margin, 36, mono, 6.5, C.mid, rtlFonts);
   const footerLine3 = isUnilateral
     ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`
     : `boom.contact by PEP's Swiss SA · Document numerique certifie · Valable mondialement`;
-  drawText(page, footerLine3, margin, 18, normal, 6.5, C.mid, rtlFonts);
+  drawText(page, footerLine3, margin, 26, normal, 6.5, C.mid, rtlFonts);
+  // Blockchain timestamping badge
+  drawText(page, 'Horodatage cryptographique SHA-256 -- OpenTimestamps -- Preuve blockchain Bitcoin',
+    margin, 16, mono, 5.5, C.green, rtlFonts);
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
 }
 

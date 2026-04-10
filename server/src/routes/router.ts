@@ -8,6 +8,7 @@ import {
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
+import { timestampPDF } from '../services/timestamp.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
@@ -79,7 +80,8 @@ import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCle
 
 // Import shared tRPC utilities
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml, checkIdempotency, storeIdempotency } from './trpc.js';
-import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput, sessionHistoryOutput, ocrScanOutput, ocrBatchScanOutput, ocrScanPairOutput, emailSendToDriverOutput, emailBugReportOutput, voiceTranscribeOutput, voiceAnalyzeAccidentOutput, sketchRenderOutput, emergencyInsuranceLookupOutput, emergencyCountryLookupOutput, emergencySingleLookupOutput } from './output-schemas.js';
+import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput, sessionHistoryOutput, ocrScanOutput, ocrBatchScanOutput, ocrScanPairOutput, emailSendToDriverOutput, emailBugReportOutput, voiceTranscribeOutput, voiceAnalyzeAccidentOutput, sketchRenderOutput, emergencyInsuranceLookupOutput, emergencyCountryLookupOutput, emergencySingleLookupOutput, sessionVerifyProofOutput } from './output-schemas.js';
+import { verifyHash } from '../services/timestamp.service.js';
 
 // ── Helper: verify participant token for A-E ──────────────────
 async function verifyAnyParticipant(sessionId: string, participantToken: string): Promise<void> {
@@ -359,6 +361,19 @@ export const appRouter = router({
               const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
               const filename = `constat-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
 
+              // Blockchain timestamp (non-blocking — never prevents PDF delivery)
+              try {
+                const proof = await timestampPDF(Buffer.from(pdfBytesA));
+                if (proof.sha256) {
+                  await db.update(sessionsTable)
+                    .set({ timestampProof: proof as any })
+                    .where(eq(sessionsTable.id, input.sessionId));
+                  logger.info('[OTS] Timestamp proof stored for session', { sessionId: input.sessionId, sha256: proof.sha256.slice(0, 16) + '...' });
+                }
+              } catch (tsErr) {
+                logger.warn('[OTS] Timestamping failed (non-blocking)', { sessionId: input.sessionId, error: String(tsErr) });
+              }
+
               // Envoyer à conducteur A
               if (emailA) {
                 const nameA = [A?.driver?.firstName, A?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur A';
@@ -439,6 +454,45 @@ export const appRouter = router({
           limit,
           offset,
         });
+      }),
+
+    // Verify a PDF against its stored blockchain timestamp proof
+    verifyProof: publicProcedure
+      .input(z.object({
+        sessionId: z.string().trim().max(50),
+        pdfBase64: z.string().min(100).max(20_000_000),
+        participantToken: z.string().trim().max(500),
+      }))
+      .output(sessionVerifyProofOutput)
+      .mutation(async ({ input }) => {
+        // Verify participant token
+        await verifyAnyParticipant(input.sessionId, input.participantToken);
+
+        const [row] = await db.select()
+          .from(sessionsTable)
+          .where(eq(sessionsTable.id, input.sessionId))
+          .limit(1);
+
+        if (!row) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
+
+        const timestampProof = (row as any).timestampProof as {
+          sha256: string; otsProofBase64: string; calendarUrl: string; submittedAt: string;
+        } | null;
+
+        const pdfBuffer = Buffer.from(input.pdfBase64, 'base64');
+        const storedSha256 = timestampProof?.sha256 ?? '';
+        const valid = storedSha256 ? verifyHash(pdfBuffer, storedSha256) : false;
+
+        // Compute the hash of the provided PDF for comparison
+        const crypto = await import('crypto');
+        const providedSha256 = crypto.createHash('sha256').update(pdfBuffer).digest('hex');
+
+        return {
+          valid,
+          sha256Provided: providedSha256,
+          sha256Stored: storedSha256,
+          timestampProof: timestampProof ?? null,
+        };
       }),
 
   }),
@@ -567,7 +621,23 @@ export const appRouter = router({
         const pdfBytes = await generateConstatPDF(session, role);
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
         const filename = `constat-${session.id}-${role}-${new Date().toISOString().split('T')[0]}.pdf`;
-        return { pdfBase64, filename };
+
+        // Blockchain timestamp (non-blocking — graceful degradation)
+        let timestamp: { sha256: string; otsProofBase64: string; calendarUrl: string; submittedAt: string } | undefined;
+        try {
+          const proof = await timestampPDF(Buffer.from(pdfBytes));
+          if (proof.sha256) {
+            timestamp = proof;
+            // Store proof in DB if not already present
+            await db.update(sessionsTable)
+              .set({ timestampProof: proof as any })
+              .where(eq(sessionsTable.id, input.sessionId));
+          }
+        } catch (tsErr) {
+          logger.warn('[OTS] Timestamping failed in pdf.generate (non-blocking)', { error: String(tsErr) });
+        }
+
+        return { pdfBase64, filename, timestamp };
       }),
   }),
 

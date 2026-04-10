@@ -245,6 +245,14 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS idx_credit_txns_created_at ON credit_txns(created_at);
     `);
 
+    // ── Block 12 : Blockchain timestamp proof — OpenTimestamps ────────
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS timestamp_proof JSONB;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

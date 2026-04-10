@@ -305,6 +305,22 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
             const pdfB64A = Buffer.from(pdfBytesA).toString('base64');
             const nameA = [fullSession.participantA?.driver?.firstName, fullSession.participantA?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur';
 
+            // Blockchain timestamp (non-blocking — never prevents PDF delivery)
+            try {
+              const { timestampPDF } = await import('./timestamp.service.js');
+              const { schema: dbSchema } = await import('../db/index.js');
+              const { eq: eqOp } = await import('drizzle-orm');
+              const proof = await timestampPDF(Buffer.from(pdfBytesA));
+              if (proof.sha256) {
+                await db.update(dbSchema.sessions)
+                  .set({ timestampProof: proof as any })
+                  .where(eqOp(dbSchema.sessions.id, constatSessionId));
+                logger.info('[OTS] Timestamp proof stored (webhook)', { sessionId: constatSessionId, sha256: proof.sha256.slice(0, 16) + '...' });
+              }
+            } catch (tsErr) {
+              logger.warn('[OTS] Timestamping failed in webhook (non-blocking)', { sessionId: constatSessionId, error: String(tsErr) });
+            }
+
             await sendPDFToDriver({
               driverEmail: userEmail,
               driverName: nameA,
