@@ -35,10 +35,10 @@ export const CoherenceScore = React.memo(function CoherenceScore({ sessionId, pa
     const found: Issue[] = [];
 
     // ── Analyse locale (sans IA) — rapide et fiable ──────────
-    const circA: string[] = participantA?.circumstances || [];
-    const circB: string[] = participantB?.circumstances || [];
-    const zonesA: string[] = participantA?.damagedZones || [];
-    const zonesB: string[] = participantB?.damagedZones || [];
+    const circA: string[] = (participantA?.circumstances as string[]) || [];
+    const circB: string[] = (participantB?.circumstances as string[]) || [];
+    const zonesA: string[] = (participantA?.damagedZones as string[]) || [];
+    const zonesB: string[] = (participantB?.damagedZones as string[]) || [];
 
     // Vérification circonstances contradictoires connues
     const CONTRADICTIONS: [string[], string[], string][] = [
@@ -70,7 +70,7 @@ export const CoherenceScore = React.memo(function CoherenceScore({ sessionId, pa
     if (zonesA.length === 0) {
       found.push({ type: 'info', message: 'Conducteur A n\'a pas indiqué de zones endommagées' });
     }
-    if (zonesB.length === 0 && participantB?.vehicle?.vehicleType !== 'pedestrian') {
+    if (zonesB.length === 0 && (participantB?.vehicle as any)?.vehicleType !== 'pedestrian') {
       found.push({ type: 'info', message: 'Conducteur B n\'a pas indiqué de zones endommagées' });
     }
 
@@ -81,8 +81,8 @@ export const CoherenceScore = React.memo(function CoherenceScore({ sessionId, pa
 
     // ── Analyse IA — pour les cas complexes ──────────────────
     // Seulement si des données textuelles existent
-    const descA = participantA?.driver?.notes || '';
-    const descB = participantB?.driver?.notes || '';
+    const descA = (participantA?.driver as any)?.notes || '';
+    const descB = (participantB?.driver as any)?.notes || '';
     const hasTextDesc = descA.length > 20 || descB.length > 20;
 
     if (hasTextDesc || (circA.length > 0 && circB.length > 0)) {

@@ -51,7 +51,7 @@ const AccidentAnalysisSchema = z.object({
   language: z.string(),
   trafficSide: z.enum(['right', 'left']).optional(),
   country: z.string().optional(),
-  vehicleCount: z.enum([2, 3, 4] as const).default(2),
+  vehicleCount: z.union([z.literal(2), z.literal(3), z.literal(4)]).default(2),
   vehicleCountNote: z.string().optional().nullable(),
   questions: z.array(ClarifyQuestionSchema).optional().default([]),
 }).passthrough();
@@ -205,7 +205,7 @@ export async function analyzeAccidentTranscript(
     const text = response.content.find(b => b.type === 'text')?.text ?? '{}';
     const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
     const parsed = JSON.parse(clean);
-    const result = AccidentAnalysisSchema.parse(parsed) as AccidentSceneAnalysis;
+    const result = AccidentAnalysisSchema.parse(parsed) as unknown as AccidentSceneAnalysis;
 
     logger.info('Accident analysis success', {
       scenario: result.scenario,

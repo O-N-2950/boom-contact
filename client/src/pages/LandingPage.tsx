@@ -108,8 +108,8 @@ function PhoneMockup() {
           </div>
         </div>
       </div>
-      <FloatingBadge icon="✅" text="PDF généré" className="text-[11px] bottom-[-14px] left-[-20px]"  />
-      <FloatingBadge icon="🌍" text="150+ pays" className="text-[11px] top-5 right-[-24px]"  />
+      <FloatingBadge icon="✅" text="PDF généré" style={{ fontSize: '11px', bottom: '-14px', left: '-20px' }}  />
+      <FloatingBadge icon="🌍" text="150+ pays" style={{ fontSize: '11px', top: '20px', right: '-24px' }}  />
     </div>
   );
 }

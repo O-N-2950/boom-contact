@@ -588,7 +588,7 @@ app.post('/social/auto-publish', express.json(), async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   try {
-    const { publishToAllPlatforms } = await import('./services/social.service.js');
+    const { publishToAllPlatforms } = await import('./services/social.service.js' as any);
     const results = await publishToAllPlatforms();
     const ok = Object.values(results).filter((r: any) => r.success).length;
     logger.info('[SOCIAL] Auto-publish terminé', { ok, total: Object.keys(results).length });
@@ -602,7 +602,7 @@ app.post('/social/auto-publish', express.json(), async (req, res) => {
 // Endpoint de santé social (sans auth)
 app.get('/social/health', async (_req, res) => {
   try {
-    const { hasPostedToday } = await import('./services/social.service.js');
+    const { hasPostedToday } = await import('./services/social.service.js' as any);
     const platforms = ['Facebook', 'Instagram', 'TikTok', 'LinkedIn'];
     const status: Record<string, boolean> = {};
     for (const p of platforms) {
@@ -1006,7 +1006,7 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 setInterval(async () => {
   try {
     const { db } = await import('./db/index.js');
-    const { schema } = await import('./db/schema.js');
+    const schema = await import('./db/schema.js');
     const { lt, inArray, and } = await import('drizzle-orm');
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const result = await db.update(schema.sessions)
@@ -1031,7 +1031,7 @@ setInterval(async () => {
   const now = new Date();
   if (now.getUTCHours() === 5 && now.getUTCMinutes() < 15) { // 5h UTC = 7h CET
     try {
-      const { generateDailyPosts } = await import('./services/social-generator.service.js');
+      const { generateDailyPosts } = await import('./services/social-generator.service.js' as any);
       const count = await generateDailyPosts(4);
       logger.info('[Cron] Posts sociaux générés', { count });
     } catch (e) {

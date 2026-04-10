@@ -49,7 +49,7 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
     return `Il y a ${h}h${min % 60 > 0 ? String(min % 60).padStart(2,'0') : ''}`;
   };
 
-  const filtered = (data?.activeSessions || []).filter(s =>
+  const filtered = ((data as any)?.activeSessions || (data as any)?.sessions || []).filter((s: any) =>
     !searchId || s.id.toLowerCase().includes(searchId.toLowerCase()) ||
     (s.location || '').toLowerCase().includes(searchId.toLowerCase())
   );
@@ -84,9 +84,9 @@ export function PoliceDashboard({ token, user, onLogout, onViewSession }: Props)
         {data && (
           <div className="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
             {[
-              { label: 'Sessions actives', value: data.stats.total, icon: '📋', color: '#3b82f6' },
-              { label: 'Avec blessures', value: data.stats.withInjuries, icon: '🚑', color: '#ef4444' },
-              { label: 'Signés', value: data.stats.signed, icon: '✅', color: '#22c55e' },
+              { label: 'Sessions actives', value: (data as any).stats?.total ?? 0, icon: '📋', color: '#3b82f6' },
+              { label: 'Avec blessures', value: (data as any).stats?.withInjuries ?? 0, icon: '🚑', color: '#ef4444' },
+              { label: 'Signés', value: (data as any).stats?.signed ?? 0, icon: '✅', color: '#22c55e' },
             ].map(stat => (
               <div key={stat.label} className="rounded-xl text-center p-4"  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
                 <div className="text-[28px] mb-1.5">{stat.icon}</div>

@@ -121,7 +121,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize={type === 'email' || type === 'number' || field === 'licensePlate' || field === 'policyNumber' || field === 'vin' ? 'none' : 'words'}
-        value={(data[sec] as Record<string, unknown>)?.[field] ?? ''}
+        value={((data[sec] as Record<string, unknown>)?.[field] as string) ?? ''}
         onChange={e => update(sec, field, e.target.value)}
         placeholder={placeholder}
         aria-label={label}
@@ -307,7 +307,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
                     id={`ins-${field}`}
                     placeholder={field === 'insuranceHolder' ? 'Nom complet du preneur' : 'Adresse du preneur'}
                     aria-label={field === 'insuranceHolder' ? 'Nom du preneur d\'assurance' : 'Adresse du preneur d\'assurance'}
-                    value={(data.insurance as Record<string, unknown>)?.[field] ?? ''}
+                    value={((data.insurance as Record<string, unknown>)?.[field] as string) ?? ''}
                     onChange={e => setData(prev => ({ ...prev, insurance: { ...(prev.insurance ?? {}), [field]: e.target.value } }))}
                     className="w-full rounded-lg text-sm box-border px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }}
                   />

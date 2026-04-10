@@ -30,7 +30,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       const r = await grantMut.mutateAsync({ credits, sendEmail: false });
       window.open(r.waUrl, '_blank');
       setGiftResult(`✅ Lien créé — envoyez-le par WhatsApp !`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       setGiftResult('Erreur : ' + e.message);
     }
   };

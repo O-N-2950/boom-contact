@@ -57,8 +57,8 @@ export const adminRouter = router({
         db.select({ c: count() }).from(users).where(gte(users.createdAt, since30d)),
         // Revenue stats
         db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')),
-        db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since30d)),
-        db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')).where(gte(payments.paidAt, since7d)),
+        (db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')) as any).where(gte(payments.paidAt, since30d)),
+        (db.select({ s: sum(payments.amountCents) }).from(payments).where(eq(payments.status, 'paid')) as any).where(gte(payments.paidAt, since7d)),
         db.select({ s: sum(payments.creditsGranted) }).from(payments).where(eq(payments.status, 'paid')),
         // Revenue by package
         db.select({
@@ -200,7 +200,7 @@ export const adminCleanupSessions = adminProcedure
       const sigA = !!A?.signature;
       if (!sigA) continue;
       const bHasRealData = B && (B?.driver?.firstName || B?.vehicle?.licensePlate);
-      const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType as string) || B?.isPedestrian);
+      const bIsNonSigning = B && (NON_SIGNING.includes(B?.vehicle?.vehicleType as string) || (B as any)?.isPedestrian);
       const hasPartyBStatus = !!acc.partyBStatus;
       const isSolo = (s.vehicleCount ?? 2) === 1;
       if (isSolo || hasPartyBStatus || bIsNonSigning || !bHasRealData) {

@@ -16,7 +16,7 @@ export const authRouter = router({
   register: publicProcedure
     .input(z.object({ email: z.string().trim().email().max(320), password: z.string().trim().min(8).max(200) }))
     .output(authRegisterOutput)
-    .mutation(async ({ input }) => {
+    .mutation((async ({ input }: any) => {
       try {
         const result = await registerUser(input.email, input.password);
         return { ok: true, ...result };
@@ -24,7 +24,7 @@ export const authRouter = router({
         if (err instanceof Error && err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
         throw err;
       }
-    }),
+    }) as any),
 
   // POST auth.login
   login: publicProcedure

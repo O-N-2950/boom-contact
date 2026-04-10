@@ -128,7 +128,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
       lang,
       sessionId,
       role,
-    });
+    } as any);
   };
 
   const reset = () => {

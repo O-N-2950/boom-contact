@@ -28,6 +28,8 @@ export type VehicleShape =
   | 'train'
   | 'pedestrian'
   | 'quad'
+  | 'moped'
+  | 'cargo_bike'
   | 'other';
 
 export function bodyStyleToShape(bs?: BodyStyle): VehicleShape {

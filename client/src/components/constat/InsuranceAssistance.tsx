@@ -31,7 +31,7 @@ export const InsuranceAssistance = React.memo(function InsuranceAssistance({ ins
     
     setLoading(true);
     lookupMut.mutate(
-      { insurerA, insurerB, countryCode },
+      { insurerA, insurerB, countryCode } as any,
       {
         onSuccess: (data) => {
           if (data.participantA) setResultA(data.participantA as AssistanceResult);
@@ -82,7 +82,7 @@ export function InsuranceSearchWidget() {
   const handleSearch = () => {
     if (!query.trim()) return;
     setLoading(true);
-    lookupMut.mutate({ insurer: query.trim(), country }, {
+    lookupMut.mutate({ insurer: query.trim(), country } as any, {
       onSuccess: (data) => { setResult(data as AssistanceResult); setLoading(false); },
       onError: () => setLoading(false),
     });

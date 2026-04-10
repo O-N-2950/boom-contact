@@ -219,7 +219,7 @@ export async function fetchAccidentMapWithVehicles(
   for (const v of vehicles) {
     const { x, y } = latlngToPixel(v.lat, v.lng, centerLat, centerLng, zoom, W, H);
     const color = v.color || roleColors[v.label] || '#444';
-    drawVehicleMarker(ctx2, x, y, v.angle || 0, color, v.label);
+    drawVehicleMarker(ctx2 as any, x, y, v.angle || 0, color, v.label);
   }
 
   // 4. Légende en bas à gauche
@@ -249,11 +249,11 @@ export async function geocodeAddress(address: string): Promise<{ lat: number; ln
     });
     const data = await res.json() as Record<string, unknown>[];
     if (data?.length > 0) {
-      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+      return { lat: parseFloat(data[0].lat as string), lng: parseFloat(data[0].lon as string) };
     }
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
-    logger.warn('[osm-map] Geocode failed:', msg);
+    logger.warn('[osm-map] Geocode failed:', msg as any);
   }
   return null;
 }

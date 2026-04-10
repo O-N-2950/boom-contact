@@ -14,8 +14,8 @@ export function PoliceLogin({ onLogin }: Props) {
   const loginMutation = trpc.police.login.useMutation({
     onSuccess: (data) => {
       localStorage.setItem('boom_police_token', data.token);
-      localStorage.setItem('boom_police_user', JSON.stringify(data.user));
-      onLogin(data.token, data.user);
+      localStorage.setItem('boom_police_user', JSON.stringify((data as any).user || data.agent));
+      onLogin(data.token, (data as any).user || data.agent);
     },
     onError: (err) => setError(err.message),
   });

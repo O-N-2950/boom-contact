@@ -100,13 +100,15 @@ interface AppState {
   routeAnnouncement: string;
   accountInitialTab: 'garage' | 'history' | 'profile';
   userEmail: string;
-  authUser: Record<string, unknown> | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  authUser: any;
   authToken: string;
   showAuthModal: boolean;
   showCGU: boolean;
   pendingAction: 'constat' | 'pricing' | 'garage' | null;
   policeToken: string;
-  policeUser: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  policeUser: any;
   policeSessionId: string;
   policeFlowToken: string;
 }
@@ -115,13 +117,13 @@ type AppAction =
   | { type: 'SET_VIEW'; view: AppView }
   | { type: 'SET_ROUTE_ANNOUNCEMENT'; message: string }
   | { type: 'SET_ACCOUNT_TAB'; tab: 'garage' | 'history' | 'profile' }
-  | { type: 'SET_AUTH'; token: string; user: Record<string, unknown> }
+  | { type: 'SET_AUTH'; token: string; user: any }
   | { type: 'SET_USER_EMAIL'; email: string }
   | { type: 'SHOW_AUTH_MODAL'; show: boolean }
   | { type: 'SHOW_CGU'; show: boolean }
   | { type: 'SET_PENDING_ACTION'; action: 'constat' | 'pricing' | 'garage' | null }
   | { type: 'LOGOUT' }
-  | { type: 'POLICE_LOGIN'; token: string; user: unknown }
+  | { type: 'POLICE_LOGIN'; token: string; user: any }
   | { type: 'POLICE_VIEW_SESSION'; sessionId: string; token: string }
   | { type: 'POLICE_INTERVENTION'; sessionId: string }
   | { type: 'CGU_ACCEPT'; email: string };
@@ -198,7 +200,7 @@ export default function App() {
     if (magicToken) {
       window.history.replaceState({}, '', '/');
       magicVerifyMut.mutate({ token: magicToken }, {
-        onSuccess: (res) => {
+        onSuccess: (res: any) => {
           localStorage.setItem(USER_TOKEN_KEY, res.token);
           localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
           dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
@@ -395,7 +397,7 @@ export default function App() {
           onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })}
           authUser={authUser}
           onAuthSuccess={() => {
-            trpc.auth.me.invalidate?.();
+            (trpc.auth.me as any).invalidate?.();
           }}
         />
       )}

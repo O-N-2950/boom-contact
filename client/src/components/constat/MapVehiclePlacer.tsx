@@ -101,7 +101,8 @@ function drawVehicle(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, angleDeg: number,
   bodyColor: string, label: string, roleColor: string,
-  selected = false, length = 32, width = 16
+  selected = false, length = 32, width = 16,
+  _vehicleType?: string,
 ) {
   ctx.save();
   ctx.translate(x, y);
@@ -184,7 +185,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   const [satellite, setSatellite] = useState(false);
   const [centerLat, setCenterLat] = useState<number | null>(accidentLat || null);
   const [centerLng, setCenterLng] = useState<number | null>(accidentLng || null);
-  const [geoStatus, setGeoStatus] = useState<'loading'|'ok'|'error'>('loading');
+  const [geoStatus, setGeoStatus] = useState<'loading'|'ok'|'error'|'waiting'>('loading');
   const [tilesLoaded, setTilesLoaded] = useState(0);
   const [totalTiles, setTotalTiles] = useState(25);
   const [position, setPosition] = useState({ x: CANVAS_W/2, y: CANVAS_H/2 });
@@ -261,17 +262,17 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
       // Listen for data updates (participant vehicle position changes)
       socket.on('data-updated', ({ role: updatedRole, data }: { role: string; data: Record<string, unknown> }) => {
         if (updatedRole === role) return; // skip own updates
-        const pos = data?.vehicle?.mapPosition;
+        const pos = (data as any)?.vehicle?.mapPosition;
         if (pos?.x !== undefined && pos?.lat !== undefined) {
           setLivePositions(prev => {
             const updated = prev.filter(p => p.role !== updatedRole);
-            return [...updated, { role: updatedRole, pos, vehicleType: data?.vehicle?.vehicleType }];
+            return [...updated, { role: updatedRole, pos, vehicleType: (data as any)?.vehicle?.vehicleType }];
           });
         }
       });
 
       // Listen for accident updates (vehicleAPos changes)
-      socket.on('accident-updated', (data: Record<string, unknown>) => {
+      socket.on('accident-updated', (data: any) => {
         const vehicleAPos = data?.vehicleAPos;
         if (vehicleAPos && role !== 'A') {
           setLivePositions(prev => {

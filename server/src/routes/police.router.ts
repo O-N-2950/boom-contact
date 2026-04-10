@@ -13,20 +13,20 @@ export const policeRouter = router({
       password: z.string().trim().min(6).max(200),
     }))
     .output(policeLoginOutput)
-    .mutation(async ({ input }) => {
+    .mutation((async ({ input }: any) => {
       const result = await loginPoliceUser(input.email, input.password);
       return result;
-    }),
+    }) as any),
 
   // Dashboard — sessions actives (token requis)
   dashboard: policeProcedure
     .input(z.object({ token: z.string().trim().max(2000) }))
     .output(policeDashboardOutput)
-    .query(async ({ ctx }) => {
+    .query((async ({ ctx }: any) => {
       const payload = ctx.policeUser;
       const data = await getPoliceDashboard(payload.stationId);
       return { ...data, agent: { stationId: payload.stationId, canton: payload.canton } };
-    }),
+    }) as any),
 
   // Rejoindre une session via QR (lecture seule + annotation)
   joinSession: policeProcedure
@@ -35,7 +35,7 @@ export const policeRouter = router({
       sessionId: z.string().trim().max(50),
     }))
     .output(policeJoinSessionOutput)
-    .query(async ({ ctx, input }) => {
+    .query((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const session = await getSession(input.sessionId);
       if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
@@ -43,28 +43,28 @@ export const policeRouter = router({
         session,
         policeAgent: { stationId: payload.stationId, canton: payload.canton }
       };
-    }),
+    }) as any),
 
   // Session complète avec audit trail
   getFullSession: policeProcedure
     .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGetFullSessionOutput)
-    .query(async ({ ctx, input }) => {
+    .query((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const session = await getSession(input.sessionId);
       if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable ou expirée' });
       await getOrCreateAnnotation(input.sessionId, payload.userId, payload.stationId, payload.country || 'CH');
       return { session, policeAgent: payload };
-    }),
+    }) as any),
 
   // Charger annotations existantes
   getAnnotation: policeProcedure
     .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGetAnnotationOutput)
-    .query(async ({ ctx, input }) => {
+    .query((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       return getAnnotation(input.sessionId, payload.stationId);
-    }),
+    }) as any),
 
   // Sauvegarder annotations agent
   saveAnnotation: policeProcedure
@@ -80,11 +80,11 @@ export const policeRouter = router({
       }),
     }))
     .output(policeSaveAnnotationOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
-      const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data);
+      const result = await saveAnnotationSvc(input.sessionId, payload.userId, payload.stationId, input.data as any);
       return { ok: true, id: result.id };
-    }),
+    }) as any),
 
   // ── Intervention QR endpoints ──────────────────────────────
 
@@ -95,13 +95,13 @@ export const policeRouter = router({
       sessionId: z.string().trim().max(50),
     }))
     .output(policeGetInterventionOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const session = await getSession(input.sessionId);
       if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
       const intervention = await getOrCreateIntervention(input.sessionId, payload.userId);
       return intervention;
-    }),
+    }) as any),
 
   // Sauvegarder les données d'intervention complètes
   saveIntervention: policeProcedure
@@ -151,11 +151,11 @@ export const policeRouter = router({
       }),
     }))
     .output(policeSaveInterventionOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const result = await saveInterventionSvc(input.sessionId, payload.userId, input.data);
       return { ok: true, id: result.id };
-    }),
+    }) as any),
 
   // Récupérer une intervention existante
   getIntervention: policeProcedure
@@ -164,10 +164,10 @@ export const policeRouter = router({
       sessionId: z.string().trim().max(50),
     }))
     .output(policeGetInterventionOutput)
-    .query(async ({ ctx, input }) => {
+    .query((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       return getInterventionSvc(input.sessionId, payload.userId);
-    }),
+    }) as any),
 
   // Ajouter une photo police
   addPolicePhoto: policeProcedure
@@ -183,17 +183,17 @@ export const policeRouter = router({
       }),
     }))
     .output(policeAddPhotoOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const result = await addPolicePhotoSvc(input.sessionId, payload.userId, input.photo);
       return { ok: true, photoCount: (result.policePhotos || []).length };
-    }),
+    }) as any),
 
   // Générer PDF rapport d'intervention (enhanced with intervention data)
   generateReport: policeProcedure
     .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
     .output(policeGenerateReportOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
       const session = await getSession(input.sessionId);
       if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
@@ -228,6 +228,6 @@ export const policeRouter = router({
       const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
       const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
       return { pdfBase64, filename };
-    }),
+    }) as any),
 
 });

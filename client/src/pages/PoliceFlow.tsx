@@ -70,7 +70,7 @@ function FieldBox({ label, value }: { label: string; value?: string | null }) {
 
 // ── Section Incident ─────────────────────────────────────────
 function IncidentSection({ session }: { session: Record<string, unknown> }) {
-  const accident = session.accident || {};
+  const accident = (session as any).accident || {};
   const loc = accident.location || {};
 
   return (
@@ -117,8 +117,8 @@ function IncidentSection({ session }: { session: Record<string, unknown> }) {
           </div>
         )}
         <div style={S.fieldGrid}>
-          <FieldBox label="Statut session" value={session.status?.toUpperCase()} />
-          <FieldBox label="Session ID" value={session.id} />
+          <FieldBox label="Statut session" value={(session.status as string)?.toUpperCase()} />
+          <FieldBox label="Session ID" value={session.id as string} />
         </div>
       </div>
     </div>
@@ -126,10 +126,10 @@ function IncidentSection({ session }: { session: Record<string, unknown> }) {
 }
 
 // ── Section Conducteurs ───────────────────────────────────────
-function ParticipantCard({ label, participant, color }: { label: string; participant: Record<string, unknown>; color: string }) {
-  const d = participant?.driver || {};
-  const v = participant?.vehicle || {};
-  const i = participant?.insurance || {};
+function ParticipantCard({ label, participant, color }: { label: string; participant: any; color: string }) {
+  const d = participant?.driver || {} as any;
+  const v = participant?.vehicle || {} as any;
+  const i = participant?.insurance || {} as any;
 
   const isEmpty = !d.lastName && !d.firstName && !v.plate;
 
@@ -170,22 +170,22 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
               <FieldBox label="N\u00b0 police" value={i.policyNumber} />
             </div>
 
-            {participant.damagedZones?.length > 0 && (
+            {(participant.damagedZones as any)?.length > 0 && (
               <>
                 <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>ZONES ENDOMMAGEES</div>
                 <div className="flex flex-wrap gap-1">
-                  {participant.damagedZones.map((z: string) => (
+                  {(participant.damagedZones as string[]).map((z: string) => (
                     <span key={z} className="rounded text-[11px] px-2 py-[3px] text-[#ff6633]" style={{ background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.25)' }}>{z}</span>
                   ))}
                 </div>
               </>
             )}
 
-            {participant.circumstances?.length > 0 && (
+            {(participant.circumstances as any)?.length > 0 && (
               <>
                 <div className="text-[11px] font-bold opacity-75 tracking-[1px]" style={{ margin: '12px 0 8px' }}>CIRCONSTANCES DECLAREES</div>
                 <div className="flex flex-col gap-[3px]">
-                  {participant.circumstances.map((c: string, i: number) => (
+                  {(participant.circumstances as string[]).map((c: string, i: number) => (
                     <div key={i} className="text-xs" style={{ padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>• {c}</div>
                   ))}
                 </div>
@@ -199,22 +199,24 @@ function ParticipantCard({ label, participant, color }: { label: string; partici
 }
 
 function PartiesSection({ session }: { session: Record<string, unknown> }) {
+  const s = session as any;
   return (
     <div>
-      <ParticipantCard label="Conducteur A" participant={session.participantA} color="#1a3a6e" />
-      <ParticipantCard label="Conducteur B" participant={session.participantB} color="#1a3a6e" />
-      {session.participantC && <ParticipantCard label="Conducteur C" participant={session.participantC} color="#2d4a1a" />}
-      {session.participantD && <ParticipantCard label="Conducteur D" participant={session.participantD} color="#2d4a1a" />}
+      <ParticipantCard label="Conducteur A" participant={s.participantA} color="#1a3a6e" />
+      <ParticipantCard label="Conducteur B" participant={s.participantB} color="#1a3a6e" />
+      {s.participantC && <ParticipantCard label="Conducteur C" participant={s.participantC} color="#2d4a1a" />}
+      {s.participantD && <ParticipantCard label="Conducteur D" participant={s.participantD} color="#2d4a1a" />}
     </div>
   );
 }
 
 // ── Section Medias ────────────────────────────────────────────
 function MediaSection({ session }: { session: Record<string, unknown> }) {
-  const photos = (session.accident?.photos || []) as Array<{
+  const acc = (session as any).accident || {};
+  const photos = (acc.photos || []) as Array<{
     id: string; category: string; base64: string; caption?: string; takenAt: string;
   }>;
-  const sketchImage = session.accident?.sketchImage;
+  const sketchImage = acc.sketchImage as string | undefined;
 
   const CATEGORIES: Record<string, string> = {
     scene: 'Vue generale de scene',
@@ -313,9 +315,9 @@ function AnnotationsSection({
     if (existing) {
       setAnn({
         reportNumber: existing.reportNumber || '',
-        infractions: (existing.infractions as unknown[]) || [],
-        measures: (existing.measures as unknown[]) || [],
-        witnesses: (existing.witnesses as unknown[]) || [],
+        infractions: (existing.infractions as any[]) || [],
+        measures: (existing.measures as any[]) || [],
+        witnesses: (existing.witnesses as any[]) || [],
         observations: existing.observations || '',
       });
     }
@@ -663,9 +665,9 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
 
         {data && (
           <>
-            {activeTab === 'incident'    && <IncidentSection session={data.session} />}
-            {activeTab === 'parties'     && <PartiesSection session={data.session} />}
-            {activeTab === 'media'       && <MediaSection session={data.session} />}
+            {activeTab === 'incident'    && <IncidentSection session={data.session as any} />}
+            {activeTab === 'parties'     && <PartiesSection session={data.session as any} />}
+            {activeTab === 'media'       && <MediaSection session={data.session as any} />}
             {activeTab === 'annotations' && (
               <AnnotationsSection
                 sessionId={sessionId}

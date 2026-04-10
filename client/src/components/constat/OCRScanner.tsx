@@ -68,7 +68,7 @@ export const OCRScanner = React.memo(function OCRScanner({ role, onComplete, onS
   const cameraRef = useRef<HTMLInputElement>(null);
 
   const batchMut = trpc.ocr.batchScan.useMutation({
-    onSuccess: (data: OCRResult[]) => {
+    onSuccess: (data: any) => {
       if (!data?.length) { setError('Aucun document reconnu. Vérifiez la qualité des photos.'); setScanning(false); return; }
       const merged = mergeResults(data);
       setResult(merged);

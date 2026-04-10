@@ -53,8 +53,8 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
     try {
       const res = await registerMut.mutateAsync({ email, password });
       localStorage.setItem('boom_user_token', res.token);
-      localStorage.setItem('boom_user', JSON.stringify({ id: res.id, email, role: 'customer', credits: 0 }));
-      onAuth(res.token, { id: res.id, email, role: 'customer', credits: 0 });
+      localStorage.setItem('boom_user', JSON.stringify({ id: (res as any).id, email, role: 'customer', credits: 0 }));
+      onAuth(res.token, { id: (res as any).id, email, role: 'customer', credits: 0 });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Erreur lors de l'inscription.");
     } finally { setLoading(false); }

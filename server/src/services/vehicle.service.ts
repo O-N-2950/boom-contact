@@ -47,8 +47,8 @@ export async function saveVehicle(userId: string, input: {
         color:        input.color         ?? existing.color,
         year:         input.year          ?? existing.year,
         category:     input.category      ?? existing.category,
-        licenseData:  input.licenseData   ?? existing.licenseData,
-        insuranceData:input.insuranceData ?? existing.insuranceData,
+        licenseData:  (input.licenseData   ?? existing.licenseData) as any,
+        insuranceData:(input.insuranceData ?? existing.insuranceData) as any,
         updatedAt: now,
       })
       .where(eq(vehicles.id, input.id));
@@ -68,8 +68,8 @@ export async function saveVehicle(userId: string, input: {
       color:        input.color,
       year:         input.year,
       category:     input.category,
-      licenseData:  input.licenseData  || {},
-      insuranceData:input.insuranceData || {},
+      licenseData:  (input.licenseData  || {}) as any,
+      insuranceData:(input.insuranceData || {}) as any,
       createdAt: now,
       updatedAt: now,
     });

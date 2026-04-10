@@ -20,7 +20,7 @@ export function useOffline() {
       // Déclencher sync si supporté
       if ('serviceWorker' in navigator && 'SyncManager' in window) {
         navigator.serviceWorker.ready.then((sw) => {
-          sw.sync.register('sync-session').catch((e) => { console.debug('Background sync registration failed', e); });
+          (sw as any).sync?.register('sync-session').catch((e: unknown) => { console.debug('Background sync registration failed', e); });
         });
       }
     };

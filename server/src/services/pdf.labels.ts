@@ -51,22 +51,25 @@ export function determineLangs(
   participantB: Record<string, unknown>,
   accident: Record<string, unknown>
 ): PdfLangConfig {
+  const pA = participantA as any;
+  const pB = participantB as any;
+  const acc = accident as any;
   // Pays du conducteur A : d'abord l'OCR du permis, sinon la langue choisie dans l'UI
-  const countryA = participantA?.driver?.country
-    || participantA?.vehicle?.country
+  const countryA = pA?.driver?.country
+    || pA?.vehicle?.country
     || null;
-  const langChosenA = participantA?.language as PdfLang | undefined;
+  const langChosenA = pA?.language as PdfLang | undefined;
   const langA: PdfLang = langChosenA ?? (countryA ? countryToLang(countryA) : 'fr');
 
   // Pays du conducteur B
-  const countryB = participantB?.driver?.country
-    || participantB?.vehicle?.country
+  const countryB = pB?.driver?.country
+    || pB?.vehicle?.country
     || null;
-  const langChosenB = participantB?.language as PdfLang | undefined;
+  const langChosenB = pB?.language as PdfLang | undefined;
   const langB: PdfLang = langChosenB ?? (countryB ? countryToLang(countryB) : langA);
 
   // Pays du lieu de l'accident
-  const accidentCountry = accident?.location?.country;
+  const accidentCountry = acc?.location?.country;
   const langAccident: PdfLang = accidentCountry ? countryToLang(accidentCountry) : langA;
 
   return { langA, langB, langAccident };

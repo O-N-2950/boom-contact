@@ -72,7 +72,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const toast = (msg: string) => { setFeedback(msg); setTimeout(() => setFeedback(''), 4000); };
 
   const startAdd  = () => { setForm({}); setVehicleView('add'); };
-  const startEdit = (v: Record<string, unknown>) => { setForm({ ...v }); setVehicleView('edit'); };
+  const startEdit = (v: Record<string, unknown>) => { setForm({ ...v } as any); setVehicleView('edit'); };
 
   const handleScanComplete = (result: { registration: OCRResult; greenCard?: OCRResult }) => {
     setScanning(false);
@@ -81,7 +81,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     setForm(prev => ({
       ...prev,
       plate:    reg.vehicle?.licensePlate || prev.plate,
-      make:     reg.vehicle?.make         || prev.make,
+      make:     (reg.vehicle as any)?.make         || prev.make,
       model:    reg.vehicle?.model        || prev.model,
       color:    reg.vehicle?.color        || prev.color,
       year:     reg.vehicle?.year         || prev.year,
@@ -98,18 +98,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     if (!form.plate && !form.make && !form.nickname) { toast('Ajoutez au moins une information.'); return; }
     setSaving(true);
     try {
-      await saveMut.mutateAsync(form);
+      await saveMut.mutateAsync(form as any);
       await vehicleListQ.refetch();
       setVehicleView('list');
       toast('✅ Véhicule sauvegardé !');
-    } catch (e: unknown) { toast('Erreur : ' + e.message); }
+    } catch (e: any) { toast('Erreur : ' + e.message); }
     finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string, name?: string) => {
     if (!confirm('Supprimer ' + (name || 'ce véhicule') + ' ?')) return;
     try { await deleteMut.mutateAsync({ id }); await vehicleListQ.refetch(); }
-    catch (e: unknown) { toast('Erreur : ' + e.message); }
+    catch (e: any) { toast('Erreur : ' + e.message); }
   };
 
   // ── Modal suppression compte ────────────────────────────────
@@ -178,7 +178,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 try {
                   await deleteAccountMut.mutateAsync({});
                   onLogout();
-                } catch(e: unknown) {
+                } catch(e: any) {
                   setFeedback('❌ ' + (e.message || 'Erreur'));
                   setShowDeleteModal(false);
                 } finally { setSaving(false); }
@@ -252,8 +252,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
               <div className="rounded-[10px] p-3.5 bg-[#0d2a0d]" style={{ border: '1px solid #1a4a1a' }}>
                 <div className="text-green-400 font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
-                {form.insuranceData.company && <div className="text-[13px] text-[#ccc]">{form.insuranceData.company}</div>}
-                {form.insuranceData.policyNumber && <div className="text-[#d0d0d0] text-xs">Police n° {form.insuranceData.policyNumber}</div>}
+                {(form.insuranceData as any)?.company && <div className="text-[13px] text-[#ccc]">{(form.insuranceData as any).company}</div>}
+                {(form.insuranceData as any)?.policyNumber && <div className="text-[#d0d0d0] text-xs">Police n° {(form.insuranceData as any).policyNumber}</div>}
                 <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-green-400 text-xs cursor-pointer px-3 py-1.5" style={{ border: '1px dashed #2a4a2a' }}>
                   Mettre à jour →
                 </button>
@@ -316,7 +316,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]">➕ Ajouter mon premier véhicule</button>
               </EmptyState>
             )}
-            {vehicles.map((v: Record<string, unknown>) => (
+            {vehicles.map((v: any) => (
               <div key={v.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
                 <div className="flex justify-between">
                   <div>
@@ -348,7 +348,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {!historyQ.isLoading && history.length === 0 && (
               <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
-            {history.map((s: Record<string, unknown>) => {
+            {history.map((s: any) => {
               const a = s.participantA || {};
               const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
               const date = new Date(s.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -408,7 +408,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         setFeedback('✅ Email modifié — reconnecte-toi avec le nouvel email');
                         setEditingEmail(false);
                         setTimeout(() => { onLogout(); }, 2500);
-                      } catch(e: unknown) {
+                      } catch(e: any) {
                         setFeedback('❌ ' + (e.message || 'Erreur'));
                       } finally { setSaving(false); }
                     }}
@@ -477,7 +477,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         await updateProfileMut.mutateAsync(profileForm);
                         setFeedback('✅ Profil mis à jour');
                         setEditingProfile(false);
-                      } catch(e: unknown) {
+                      } catch(e: any) {
                         setFeedback('❌ ' + (e.message || 'Erreur'));
                       } finally { setSaving(false); }
                     }}

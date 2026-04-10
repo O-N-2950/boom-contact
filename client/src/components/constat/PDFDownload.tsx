@@ -74,7 +74,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
     // Consume credit (idempotent — server ignores if already consumed for this session)
     if (!creditUsed && authUser && authUser.role !== 'admin') {
       try {
-        await creditMutation.mutateAsync({ email: authUser.email, sessionId });
+        await creditMutation.mutateAsync({ email: authUser.email, sessionId } as any);
         setCreditUsed(true);
       } catch {
         setLoading(false);
@@ -127,7 +127,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
     if (!b64) return;
     setSendingEmail(true);
     setEmailError(null);
-    emailMutation.mutate({ sessionId, role, participantToken: participantToken || '', driverEmail: email, pdfBase64: b64 });
+    emailMutation.mutate({ sessionId, role: role as any, participantToken: participantToken || '', driverEmail: email, pdfBase64: b64 });
   };
 
   const isAdmin   = authUser?.role === 'admin';

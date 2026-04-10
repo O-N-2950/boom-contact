@@ -36,7 +36,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
       const r = await grantMut.mutateAsync({ credits: giftCredits, recipientEmail: giftEmail || undefined, sendEmail: !!giftEmail });
       window.open(r.waUrl, '_blank');
       setGiftResult(`✅ Lien créé ! ${r.giftUrl}`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       setGiftResult('❌ ' + e.message);
     }
   };
@@ -135,7 +135,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                   {s.revenue.byPackage.length === 0 && (
                     <tr><td colSpan={4} className="text-[#d0d0d0] px-4 py-5 text-center">Aucune vente</td></tr>
                   )}
-                  {s.revenue.byPackage.map((p: Record<string, unknown>) => (
+                  {s.revenue.byPackage.map((p: any) => (
                     <tr key={p.packageId} style={{ borderBottom: '1px solid #111' }}>
                       <td style={td}><span className="text-white font-semibold">{p.packageId}</span></td>
                       <td style={td}>{p.count}</td>
@@ -186,8 +186,8 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {s.sessions.recent.map((session: Record<string, unknown>) => {
-                    const a   = (session.participantA || {}) as Record<string, unknown>;
+                  {s.sessions.recent.map((session: any) => {
+                    const a   = (session.participantA || {}) as any;
                     const plate = a.vehicle?.licensePlate || a.licensePlate || '—';
                     const date = new Date(session.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                     const statusColor = session.status === 'completed' ? '#4ade80' : session.status === 'active' ? '#60c8f0' : session.status === 'signing' ? '#fbbf24' : '#aaa';
@@ -224,7 +224,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                   {s.revenue.recent.length === 0 && (
                     <tr><td colSpan={5} className="text-[#d0d0d0] p-6 text-center">Aucun paiement</td></tr>
                   )}
-                  {s.revenue.recent.map((p: Record<string, unknown>) => (
+                  {s.revenue.recent.map((p: any) => (
                     <tr key={p.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td className="text-xs">{p.userEmail}</td>
                       <td style={td}><span className="rounded text-[11px] px-1.5 py-0.5 bg-[#3a3a3a]">{p.packageLabel}</span></td>
@@ -267,7 +267,7 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {(usersQ.data || []).map((u: Record<string, unknown>) => (
+                  {(usersQ.data || []).map((u: any) => (
                     <tr key={u.id} style={{ borderBottom: '1px solid #0f0f0f' }}>
                       <td className="text-[13px]">{u.email}</td>
                       <td style={td}>

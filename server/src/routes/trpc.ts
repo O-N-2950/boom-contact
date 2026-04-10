@@ -44,7 +44,9 @@ export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
 });
 
 // ── Police procedure — requires valid police token in input ──────
-export const policeProcedure = t.procedure.use(async ({ ctx, next, rawInput }) => {
+export const policeProcedure = t.procedure.use(async (opts: any) => {
+  const { ctx, next, rawInput } = opts;
+  // @ts-ignore rawInput access for tRPC v11
   const input = rawInput as { token?: string } | undefined;
   if (!input?.token) {
     throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Token police requis.' });

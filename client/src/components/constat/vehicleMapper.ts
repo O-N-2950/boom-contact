@@ -11,8 +11,8 @@ export type BodyStyle =
   | 'van_small' | 'van_medium' | 'van_large'
   | 'moto_naked' | 'moto_sport' | 'moto_touring'
   | 'scooter' | 'bicycle' | 'escooter'
-  | 'truck_rigid' | 'truck_semi' | 'bus' | 'tram'
-  | 'pedestrian' | 'unknown';
+  | 'truck_rigid' | 'truck_semi' | 'bus' | 'tram' | 'train'
+  | 'pedestrian' | 'cargo_bike' | 'moped' | 'unknown';
 
 // ── Couleurs OCR → hex ───────────────────────────────────────
 const COLOR_TABLE: [string[], string][] = [
@@ -535,8 +535,8 @@ export const BODY_STYLE_LABELS: Record<BodyStyle, string> = {
   moto_naked: 'Moto roadster', moto_sport: 'Moto sportive', moto_touring: 'Moto touring',
   scooter: 'Scooter', bicycle: 'Vélo', escooter: 'Trottinette électrique',
   truck_rigid: 'Camion porteur', truck_semi: 'Semi-remorque',
-  bus: 'Bus / Autocar', tram: 'Tramway / Train',
-  pedestrian: 'Piéton', unknown: 'Véhicule',
+  bus: 'Bus / Autocar', tram: 'Tramway / Train', train: 'Train',
+  pedestrian: 'Piéton', cargo_bike: 'Vélo cargo', moped: 'Vélomoteur', unknown: 'Véhicule',
 };
 
 export function identifyVehicle(brand?: string, model?: string, color?: string): VehicleIdentity {

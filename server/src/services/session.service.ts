@@ -263,10 +263,10 @@ export async function signSession(
 
   // ââ Types ne nÃ©cessitant pas de signature âââââââââââââââââ
   const isPedestrianOrNonSigning = (p: Partial<ParticipantData> | null | undefined) =>
-    NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle) ||
-    NON_SIGNING_TYPES.includes(p?.vehicle?.type) ||
-    NON_SIGNING_TYPES.includes(p?.vehicle?.vehicleType) ||
-    p?.isPedestrian === true;
+    NON_SIGNING_TYPES.includes(p?.vehicle?.bodyStyle as string) ||
+    NON_SIGNING_TYPES.includes((p?.vehicle as any)?.type as string) ||
+    NON_SIGNING_TYPES.includes(p?.vehicle?.vehicleType as string) ||
+    (p as any)?.isPedestrian === true;
 
   const participants = [
     role === 'A' ? updated : session.participantA,
@@ -277,8 +277,8 @@ export async function signSession(
   ].filter(Boolean) as (Partial<ParticipantData> | null)[];
 
   const presentParticipants = participants.filter((p) =>
-    p?.driver?.firstName || p?.vehicle?.licensePlate || p?.vehicle?.plate ||
-    p?.name || p?.vehicle?.brand || isPedestrianOrNonSigning(p)
+    p?.driver?.firstName || p?.vehicle?.licensePlate || (p?.vehicle as any)?.plate ||
+    (p as any)?.name || p?.vehicle?.brand || isPedestrianOrNonSigning(p)
   );
 
   const signingParticipants = presentParticipants.filter((p) => !isPedestrianOrNonSigning(p));

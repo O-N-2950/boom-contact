@@ -39,8 +39,8 @@ export const paymentRouter = router({
   // GET payment.currencies — return full pricing grid
   currencies: publicProcedure
     .output(paymentCurrenciesOutput)
-    .query(() => {
-      const grid: Record<string, unknown> = {};
+    .query((() => {
+      const grid: Record<string, any> = {};
       for (const pkgId of ['single','pack3','pack10'] as const) {
         grid[pkgId] = {};
         for (const cur of SUPPORTED_CURRENCIES) {
@@ -51,7 +51,7 @@ export const paymentRouter = router({
         }
       }
       return { packages: grid, currencies: SUPPORTED_CURRENCIES, countryMap: COUNTRY_TO_CURRENCY };
-    }),
+    }) as any),
 
   // Vérifier le solde de crédits (auth requise)
   credits: protectedProcedure

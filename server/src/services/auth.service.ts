@@ -268,7 +268,7 @@ export async function seedAdminUser(): Promise<void> {
     const existing = await db.query.users.findFirst({ where: eq(users.email, ADMIN_EMAIL) });
 
     if (!existing) {
-      const passwordHash = await hashPassword(ADMIN_PASSWORD);
+      const passwordHash = await hashPassword(ADMIN_PASSWORD!);
       await db.insert(users).values({
         id: 'admin_boom_contact_01',
         email: ADMIN_EMAIL,
@@ -286,7 +286,7 @@ export async function seedAdminUser(): Promise<void> {
       if ((existing.credits ?? 0) < 999999) updates.credits = 999999;
       // Only set password if user has no password hash at all
       if (!existing.passwordHash) {
-        updates.passwordHash = await hashPassword(ADMIN_PASSWORD);
+        updates.passwordHash = await hashPassword(ADMIN_PASSWORD!);
       }
       if (Object.keys(updates).length > 0) {
         await db.update(users).set(updates).where(eq(users.id, existing.id));

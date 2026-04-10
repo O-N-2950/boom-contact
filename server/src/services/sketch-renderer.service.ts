@@ -66,11 +66,11 @@ export async function renderSketch(input: SketchInput): Promise<string> {
     await page.setViewport({ width: W, height: H, deviceScaleFactor: 2 });
 
     // Capturer les erreurs JS dans la page
-    page.on('pageerror', (err) => logger.warn('[sketch] page error:', err.message.slice(0,200)));
+    page.on('pageerror', (err) => logger.warn('[sketch] page error:', err.message.slice(0,200) as any));
     page.on('console', (msg) => {
       const t = msg.type();
-      if (t === 'error') logger.warn('[sketch] console error:', msg.text().slice(0,200));
-      else if (t === 'log')  logger.info('[sketch] page log:', msg.text().slice(0,200));
+      if (t === 'error') logger.warn('[sketch] console error:', msg.text().slice(0,200) as any);
+      else if (t === 'log')  logger.info('[sketch] page log:', msg.text().slice(0,200) as any);
     });
 
     const html = buildHtml(input, W, H);

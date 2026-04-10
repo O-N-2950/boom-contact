@@ -84,7 +84,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
         const blob = new Blob(chunksRef.current, { type: mimeType || 'audio/webm' });
         const b64 = await blobToBase64(blob);
         setFlowState('transcribing');
-        transcribeMut.mutate({ audioBase64: b64, mimeType: mimeType || 'audio/webm', lang, sessionId, role });
+        transcribeMut.mutate({ audioBase64: b64, mimeType: mimeType || 'audio/webm', lang, sessionId, role } as any);
       };
       recorder.start(1000);
       setFlowState('recording');

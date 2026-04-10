@@ -27,10 +27,10 @@ export const vehicleRouter = router({
       insuranceData:z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
     }))
     .output(vehicleSaveOutput)
-    .mutation(async ({ ctx, input }) => {
+    .mutation((async ({ ctx, input }: any) => {
       const { saveVehicle } = await import('../services/vehicle.service.js');
       return saveVehicle(ctx.authUser.sub, input);
-    }),
+    }) as any),
 
   // POST vehicle.delete
   delete: protectedProcedure

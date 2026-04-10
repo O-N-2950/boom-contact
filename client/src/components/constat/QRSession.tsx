@@ -28,14 +28,14 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
   const [joinedRoles, setJoinedRoles] = useState<Set<string>>(new Set());
 
   const { data: sessionData } = trpc.session.get.useQuery(
-    { sessionId },
+    { sessionId } as any,
     { enabled: !!sessionId && !partnerJoined, retry: false, refetchInterval: 3000 }
   );
 
   useEffect(() => {
     if (!sessionData) return;
     const newJoined = new Set(joinedRoles);
-    const sd = sessionData as Record<string, Record<string, Record<string, unknown>> | undefined>;
+    const sd = sessionData as any;
     if (sd.participantB?.driver?.firstName) newJoined.add('B');
     if (sd.participantC?.driver?.firstName) newJoined.add('C');
     if (sd.participantD?.driver?.firstName) newJoined.add('D');

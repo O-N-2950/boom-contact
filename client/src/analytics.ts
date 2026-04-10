@@ -4,6 +4,13 @@
 
 const IS_PROD = window.location.hostname === 'www.boom.contact' || window.location.hostname === 'boom.contact';
 
+// Vite import.meta.env typing
+declare global {
+  interface ImportMeta {
+    readonly env: Record<string, string | undefined>;
+  }
+}
+
 // ── Sentry Frontend ───────────────────────────────────────────
 export async function initSentryFrontend() {
   const dsn = import.meta.env.VITE_SENTRY_DSN;
@@ -25,7 +32,7 @@ export async function initSentryFrontend() {
 }
 
 // ── PostHog Frontend ──────────────────────────────────────────
-let _ph: unknown = null;
+let _ph: { capture: (event: string, props?: Record<string, unknown>) => void; identify: (id: string, props?: Record<string, unknown>) => void; init: (...args: unknown[]) => void } | null = null;
 
 export async function initPostHog() {
   const apiKey = import.meta.env.VITE_POSTHOG_KEY;
@@ -40,7 +47,7 @@ export async function initPostHog() {
       persistence: 'localStorage',
       disable_session_recording: true,
     });
-    _ph = posthog;
+    _ph = posthog as typeof _ph;
   } catch (e) {
     console.warn('[Analytics] PostHog init failed', e);
   }

@@ -98,13 +98,13 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
   useEffect(() => {
     const intv = interventionQuery.data;
     if (intv) {
-      if (intv.infractions) setInfractions(intv.infractions as Infraction[]);
-      if (intv.driverStates) setDriverStates(intv.driverStates as DriverState[]);
-      if (intv.conditions) setConditions(intv.conditions as Conditions);
-      if (intv.witnesses) setWitnesses(intv.witnesses as Witness[]);
+      if (intv.infractions) setInfractions(intv.infractions as unknown as Infraction[]);
+      if (intv.driverStates) setDriverStates(intv.driverStates as unknown as DriverState[]);
+      if (intv.conditions) setConditions(intv.conditions as unknown as Conditions);
+      if (intv.witnesses) setWitnesses(intv.witnesses as unknown as Witness[]);
       if (intv.observations) setObservations(intv.observations as string);
       if (intv.responsibilityEstimate) setResponsibilityEstimate(intv.responsibilityEstimate as string);
-      if (intv.policePhotos) setPolicePhotos(intv.policePhotos as PolicePhoto[]);
+      if (intv.policePhotos) setPolicePhotos(intv.policePhotos as unknown as PolicePhoto[]);
     }
   }, [interventionQuery.data]);
 
@@ -293,10 +293,10 @@ export function PoliceIntervention({ sessionId, token, agent, onBack, onLogout }
         {tab === 'constat' && sessionData && (
           <div id="tabpanel-constat" role="tabpanel" aria-labelledby="tab-constat">
             <ConstatDataView
-              accident={sessionData.accident}
-              participantA={sessionData.participantA}
-              participantB={sessionData.participantB}
-              vehicleCount={sessionData.vehicleCount}
+              accident={sessionData.accident as any}
+              participantA={sessionData.participantA as any}
+              participantB={sessionData.participantB as any}
+              vehicleCount={sessionData.vehicleCount as any}
             />
           </div>
         )}

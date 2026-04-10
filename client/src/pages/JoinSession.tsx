@@ -87,7 +87,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   });
   // participantToken for driver B — from QR URL or localStorage
   const [tokenB, setTokenB] = useState<string>(urlTokenB || saved?.tokenB || '');
-  const [step, setStepRaw] = useState<FlowStep>(saved?.step || 'landing');
+  const [step, setStepRaw] = useState<FlowStep>((saved?.step as FlowStep) || 'landing');
   const [joined, setJoined] = useState(saved?.joined || false);
   const [joining, setJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -97,9 +97,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   // Données accident de driver A — pré-remplissage pour driver B
   const [sessionAccidentData, setSessionAccidentData] = useState<any>(null);
   const [damagedZones, setDamagedZones] = useState<string[]>(saved?.damagedZones || []);
-  const [photos, setPhotos] = useState<ScenePhoto[]>(saved?.photos || []);
-  const [sketchImage, setSketchImage] = useState<string>(saved?.sketchImage || '');
-  const [voiceTranscript, setVoiceTranscript] = useState<string>(saved?.voiceTranscript || '');
+  const [photos, setPhotos] = useState<ScenePhoto[]>((saved?.photos as ScenePhoto[]) || []);
+  const [sketchImage, setSketchImage] = useState<string>((saved?.sketchImage as string) || '');
+  const [voiceTranscript, setVoiceTranscript] = useState<string>((saved?.voiceTranscript as string) || '');
   const [otherSigned, setOtherSigned] = useState(false);
   const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
@@ -141,24 +141,26 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     { sessionId, participantToken: tokenB },
     {
       enabled: joined && !!sessionId && !!tokenB,
-      onSuccess: (data: Record<string, unknown>) => {
-        if (data?.accident) {
-          const acc = data.accident;
-          const loc = acc.location || {};
-          setSessionAccidentData({
-            date:       acc.date,
-            time:       acc.time,
-            address:    loc.address,
-            city:       loc.city,
-            country:    loc.country,
-            lat:        loc.lat,
-            lng:        loc.lng,
-            vehicleAPos: acc.vehicleAPos || null, // position véhicule A sur la carte
-          });
-        }
-      },
     }
   );
+
+  useEffect(() => {
+    const data = sessionQuery.data as any;
+    if (data?.accident) {
+      const acc = data.accident;
+      const loc = acc.location || {};
+      setSessionAccidentData({
+        date:       acc.date,
+        time:       acc.time,
+        address:    loc.address,
+        city:       loc.city,
+        country:    loc.country,
+        lat:        loc.lat,
+        lng:        loc.lng,
+        vehicleAPos: acc.vehicleAPos || null,
+      });
+    }
+  }, [sessionQuery.data]);
 
   const joinMutation = trpc.session.join.useMutation({
     onSuccess: () => {
@@ -215,7 +217,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       },
       driver:    result.registration.driver    ?? {},
       insurance: result.greenCard?.insurance   ?? result.registration.insurance ?? {},
-    }));
+    } as any));
     // Sauter la localisation — B utilise la même que A (déjà dans sessionAccidentData)
     setStep('photos');
 
@@ -238,8 +240,8 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   };
 
   const handleLocationComplete = (data: Record<string, unknown>) => {
-    const { vehicleType: vt } = data;
-    setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } }));
+    const { vehicleType: vt } = data as any;
+    setParticipantData(prev => ({ ...prev, vehicle: { ...prev.vehicle, vehicleType: vt } } as any));
     setStep('photos');
   };
 
@@ -254,9 +256,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
     setParticipantData({ ...data, damagedZones });
     if (sessionId) {
-      updateMutation.mutate({ sessionId, role: urlRole, participantToken: tokenB, data });
+      updateMutation.mutate({ sessionId, role: urlRole, participantToken: tokenB, data: data as any });
       if (accident && Object.keys(accident).length > 0) {
-        updateAccidentMutationB.mutate({ sessionId, participantToken: tokenB, data: accident });
+        updateAccidentMutationB.mutate({ sessionId, participantToken: tokenB, data: accident as any });
       }
     }
     setStep('voice');
@@ -462,7 +464,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="B" onComplete={handleOCRComplete} onSkip={() => setStep('photos')} sessionId={sessionId} participantToken={tokenB} />
+          <OCRScanner role="B" onComplete={handleOCRComplete as any} onSkip={() => setStep('photos')} sessionId={sessionId} participantToken={tokenB} />
         )}
 
         {step === 'form' && (
@@ -478,11 +480,11 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             onComplete={(data) => {
               setVoiceTranscript(data.transcript || '');
               setSketchImage(data.sketchBase64);
-              if (data.analysis?.circumstances?.length > 0) {
+              if ((data.analysis?.circumstances as any)?.length > 0) {
                 setParticipantData(prev => ({
                   ...prev,
                   circumstances: data.analysis.circumstances,
-                }));
+                } as any));
               }
               setStep('sketch');
             }}

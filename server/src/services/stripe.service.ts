@@ -120,7 +120,7 @@ export async function createCheckoutSession(
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     customer_email: userEmail,
-    locale: (locale as string) || 'fr',
+    locale: ((locale as string) || 'fr') as any,
     // ── Facture PDF automatique envoyée par Stripe ──────────
     invoice_creation: { enabled: true },
     // ── TVA automatique — activée si STRIPE_TAX_ENABLED=true (configurer dans Stripe Tax dashboard) ──

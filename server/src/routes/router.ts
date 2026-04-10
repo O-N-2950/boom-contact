@@ -224,7 +224,7 @@ export const appRouter = router({
         const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
         if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
 
-        const session = await updateParticipant(input.sessionId, input.role, input.data as any);
+        const session = await updateParticipant(input.sessionId, input.role as 'A' | 'B', input.data as any);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         // Sync to other party via WebSocket
@@ -377,7 +377,7 @@ export const appRouter = router({
               // Envoyer à conducteur B (si email disponible et pas piéton)
               const bVehicleType = B?.vehicle?.vehicleType;
               const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
-              const bIsPedestrian = NON_SIGNING.includes(bVehicleType) || B?.isPedestrian;
+              const bIsPedestrian = NON_SIGNING.includes(bVehicleType as string) || (B as any)?.isPedestrian;
 
               if (emailB && !bIsPedestrian) {
                 const pdfBytesB = await generateConstatPDF(fullSession, 'B');
@@ -470,7 +470,7 @@ export const appRouter = router({
         const hint = input.documentType !== 'auto' || input.country
           ? { documentType: input.documentType, country: input.country }
           : undefined;
-        return scanDocument(input.imageBase64, input.mediaType, hint);
+        return scanDocument(input.imageBase64, input.mediaType as any, hint);
       }),
 
     batchScan: publicProcedure
@@ -510,7 +510,7 @@ export const appRouter = router({
         participantToken: z.string().trim().max(500).optional(),
       }))
       .output(ocrScanPairOutput)
-      .mutation(async ({ input }) => {
+      .mutation((async ({ input }: any) => {
         // SECURITY: If session context provided, verify it — allows pre-session OCR
         if (input.sessionId && input.participantToken) {
           await verifyAnyParticipant(input.sessionId, input.participantToken);
@@ -528,7 +528,7 @@ export const appRouter = router({
         }
 
         return scanDocumentPair(input.registrationBase64, input.greenCardBase64);
-      }),
+      }) as any),
   }),
 
   // ── PDF ────────────────────────────────
@@ -552,9 +552,9 @@ export const appRouter = router({
         const isSolo = sessionVehicleCount === 1;
         const NON_SIGNING = ['pedestrian', 'bicycle', 'escooter', 'cargo_bike', 'moped'];
         const bIsNonSigning =
-          NON_SIGNING.includes(session.participantB?.vehicle?.vehicleType) ||
-          NON_SIGNING.includes(session.participantB?.vehicle?.bodyStyle) ||
-          session.participantB?.isPedestrian === true;
+          NON_SIGNING.includes(session.participantB?.vehicle?.vehicleType as string) ||
+          NON_SIGNING.includes(session.participantB?.vehicle?.bodyStyle as string) ||
+          (session.participantB as any)?.isPedestrian === true;
         const aHasSigned = !!session.participantA?.signature;
 
         const canGenerate =
@@ -602,7 +602,7 @@ export const appRouter = router({
         const result = await sendPDFToDriver({
           driverEmail:  input.driverEmail,
           driverName,
-          role:         input.role,
+          role:         input.role as 'A' | 'B',
           sessionId:    input.sessionId,
           pdfBase64:    input.pdfBase64,
           insurerName,

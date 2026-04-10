@@ -384,7 +384,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
         <div className="text-green-400 font-bold">🆘 {data.countryName}</div>
         <div className="flex gap-1.5 items-center">
           <span className="text-[#d0d0d0] text-[10px]">{sourceLabel}</span>
-          <span className="text-[10px] font-bold" style={{ color: confidenceColor }}>{data.confidence.toUpperCase()}</span>
+          <span className="text-[10px] font-bold" style={{ color: confidenceColor }}>{data.confidence!.toUpperCase()}</span>
         </div>
       </div>
       <div className="grid gap-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
@@ -393,7 +393,7 @@ export function UnknownCountryLookup({ countryCode, countryName }: { countryCode
           { label: '🚑 Ambulance', number: data.ambulance, color: '#f87171' },
           { label: '🚒 Pompiers', number: data.fire, color: '#fb923c' },
           ...(data.roadside ? [{ label: '🔧 Dépannage', number: data.roadside, color: '#fbbf24', note: data.roadsideNote }] : []),
-        ].map((item: Record<string, unknown>, i: number) => (
+        ].map((item: any, i: number) => (
           <a key={i} href={`tel:${item.number.replace(/[\s().+]/g, '')}`} className="flex rounded-lg no-underline px-3 py-2.5 bg-[#111]" style={{ flexDirection: 'column' as const, border: '1px solid #3a3a3a' }}>
             <div className="text-[#d0d0d0] text-[10px] mb-0.5" >{item.label}</div>
             <div className="font-black text-lg" style={{ color: item.color, fontFamily: 'monospace' }}>{item.number}</div>
@@ -532,7 +532,7 @@ export function EmergencyNumbers({ mode = 'full', initialCountry, onClose }: Eme
         </div>
 
         {/* Country selector */}
-        <div className="flex gap-1.5 overflow-x-auto pb-1 mb-3.5"  style={{ scrollbarWidth: 'none' as string }}>
+        <div className="flex gap-1.5 overflow-x-auto pb-1 mb-3.5"  style={{ scrollbarWidth: 'none' as any }}>
           {filteredCountries.map(c => (
             <button key={c.code} onClick={() => setCountry(c.code)} className="text-white rounded-lg text-[13px] font-semibold cursor-pointer shrink-0 px-3 py-[7px]" style={{ background: country === c.code ? '#D42D00' : '#111', border: '1px solid ' + (country === c.code ? '#D42D00' : '#444'), whiteSpace: 'nowrap' as const }}>
               {c.flag} {c.code}

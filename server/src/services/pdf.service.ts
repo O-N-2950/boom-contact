@@ -425,7 +425,7 @@ async function buildSignatureSection(ctx: PdfContext): Promise<void> {
   }
 
   // Embed signatures
-  const sigPairs: [typeof A, number][] = [[A, margin]];
+  const sigPairs: [typeof A | undefined, number][] = [[A, margin]];
   if (!isUnilateral) sigPairs.push([B, margin + colW + 8]);
   for (const [participant, xOff] of sigPairs) {
     if (participant?.signature) {
@@ -517,7 +517,7 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
               return await fetchAccidentMap(lat, lng, 900, 650, 18);
             } catch (e: unknown) {
               const msg = e instanceof Error ? e.message : String(e);
-              logger.warn('[pdf] OSM fetch failed:', msg);
+              logger.warn('[pdf] OSM fetch failed:', msg as any);
             }
           }
           const addr = [loc?.address, loc?.city, loc?.country].filter(Boolean).join(', ');
@@ -528,7 +528,7 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
               if (coords) return await fetchAccidentMap(coords.lat, coords.lng, 900, 650, 18);
             } catch (e: unknown) {
               const msg = e instanceof Error ? e.message : String(e);
-              logger.warn('[pdf] Geocode/OSM failed:', msg);
+              logger.warn('[pdf] Geocode/OSM failed:', msg as any);
             }
           }
           return undefined;
@@ -540,7 +540,7 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
     }
   } catch (sketchErr: unknown) {
     const msg = sketchErr instanceof Error ? sketchErr.message : String(sketchErr);
-    logger.warn('[pdf] Sketch Puppeteer fallback:', msg);
+    logger.warn('[pdf] Sketch Puppeteer fallback:', msg as any);
   }
 
   if (finalSketchBase64) {
@@ -654,7 +654,7 @@ export async function generateConstatPDF(
   const A = session.participantA;
   const B = session.participantB;
 
-  const { langA, langB, langAccident } = determineLangs(A, B, acc);
+  const { langA, langB, langAccident } = determineLangs(A as any, B as any, acc);
   const driverLang: PdfLang = forRole === 'A' ? langA : langB;
   const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
 
