@@ -234,6 +234,14 @@ body {
 }
 .input-boom::placeholder { opacity: 0.75; }
 
+/* Dark color-scheme for native date/time inputs */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  color-scheme: dark;
+  color: var(--text);
+}
+
 /* Focus visible for accessibility */
 *:focus-visible {
   outline: 2px solid var(--boom, #FF3500);

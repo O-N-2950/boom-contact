@@ -244,10 +244,10 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
               <div className="flex gap-2">
                 <input id="acc-date" type="date" value={accDate} max={new Date().toISOString().split('T')[0]} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
-                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
+                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', colorScheme: 'dark' }} />
                 <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
                   aria-label="Heure de l'accident"
-                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
+                  className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)', colorScheme: 'dark' }} />
               </div>
             </div>
 

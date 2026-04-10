@@ -222,12 +222,12 @@ export function LocationStep({ onComplete, initialVehicleType, initialAccidentDa
             <div style={{ flex: 2 }}>
               <div className="text-[11px] opacity-70 mb-[5px]" >{t('location.date_label')}</div>
               <input type="date" aria-label="Date de l'accident" value={accidentDate} max={new Date().toISOString().split('T')[0]}
-                onChange={e => setAccidentDate(e.target.value)} className="text-sm" />
+                onChange={e => setAccidentDate(e.target.value)} className="input-boom text-sm" style={{ colorScheme: 'dark' }} />
             </div>
             <div className="flex-1">
               <div className="text-[11px] opacity-70 mb-[5px]" >{t('location.time_label')}</div>
               <input type="time" aria-label="Heure de l'accident" value={accidentTime} onChange={e => setAccidentTime(e.target.value)}
-                className="text-sm" />
+                className="input-boom text-sm" style={{ colorScheme: 'dark' }} />
             </div>
           </div>
           <div className="text-[11px] leading-normal opacity-70 mt-1.5" >
