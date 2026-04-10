@@ -25,7 +25,6 @@ interface Props {
   onSkip: () => void;
 }
 
-const ZOOM = 18;
 const TILE_SIZE = 256;
 const CANVAS_W = 380;
 const CANVAS_H = 360;
@@ -102,8 +101,22 @@ function drawVehicle(
   x: number, y: number, angleDeg: number,
   bodyColor: string, label: string, roleColor: string,
   selected = false, length = 32, width = 16,
-  _vehicleType?: string,
+  vehicleType?: string,
 ) {
+  // Override dimensions based on vehicle type when provided
+  if (vehicleType) {
+    const vt = vehicleType.toLowerCase();
+    if (['truck', 'bus'].includes(vt)) { length = 52; width = 20; }
+    else if (['van', 'van_small'].includes(vt)) { length = 42; width = 18; }
+    else if (['motorcycle', 'moto_sport', 'moto_touring'].includes(vt)) { length = 28; width = 10; }
+    else if (['scooter', 'moped'].includes(vt)) { length = 24; width = 8; }
+    else if (['bicycle', 'cargo_bike'].includes(vt)) { length = 22; width = 6; }
+    else if (vt === 'escooter') { length = 20; width = 4; }
+    else if (vt === 'pedestrian') { length = 8; width = 8; }
+    else if (vt === 'quad') { length = 22; width = 14; }
+    else if (['tram', 'train'].includes(vt)) { length = 60; width = 22; }
+    // car/sedan/estate/suv_small/suv_large/mpv/pickup/coupe/convertible → default 32x16
+  }
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angleDeg * Math.PI / 180);
@@ -180,6 +193,13 @@ function drawVehicle(
 export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, required = true, sessionId, accidentLat, accidentLng, accidentAddress, accidentCity, accidentCountry, vehicleColor, vehicleType, brand, existingVehicles = [], onComplete, onSkip }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
+
+  // Zoom level — user-controllable (15–19)
+  const [zoom, setZoom] = useState(18);
+  const MIN_ZOOM = 15;
+  const MAX_ZOOM = 19;
+  const pinchStartDist = useRef<number | null>(null);
+  const pinchStartZoom = useRef<number>(18);
 
   // Plan OSM par défaut — pas de voitures sur la carte
   const [satellite, setSatellite] = useState(false);
@@ -329,7 +349,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     if (!centerLat || !centerLng) return;
     tilesRef.current.clear();
     setTilesLoaded(0);
-    const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, ZOOM);
+    const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, zoom);
     const pad = 2;
     const total = (pad*2+1)*(pad*2+1);
     setTotalTiles(total);
@@ -338,15 +358,15 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     for (let dy = -pad; dy <= pad; dy++) {
       for (let dx = -pad; dx <= pad; dx++) {
         const tx = cx+dx, ty = cy+dy;
-        const key = `${satellite?'sat':'osm'}/${ZOOM}/${ty}/${tx}`;
+        const key = `${satellite?'sat':'osm'}/${zoom}/${ty}/${tx}`;
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        img.src = getTileUrl(tx, ty, ZOOM, satellite);
+        img.src = getTileUrl(tx, ty, zoom, satellite);
         img.onload  = () => { tilesRef.current.set(key, img); loaded++; setTilesLoaded(loaded); };
         img.onerror = () => { loaded++; setTilesLoaded(loaded); };
       }
     }
-  }, [centerLat, centerLng, satellite]);
+  }, [centerLat, centerLng, satellite, zoom]);
 
   // ── Rendu ────────────────────────────────────────────────────
   const render = useCallback(() => {
@@ -355,16 +375,16 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     const ctx = canvas.getContext('2d')!;
     ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
 
-    const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, ZOOM);
+    const { x: cx, y: cy } = latlngToTile(centerLat, centerLng, zoom);
     const pad = 2;
     const latRad = centerLat * Math.PI / 180;
-    const originX = (centerLng + 180) / 360 * Math.pow(2, ZOOM) * TILE_SIZE;
-    const originY = (1 - Math.log(Math.tan(latRad) + 1/Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, ZOOM) * TILE_SIZE;
+    const originX = (centerLng + 180) / 360 * Math.pow(2, zoom) * TILE_SIZE;
+    const originY = (1 - Math.log(Math.tan(latRad) + 1/Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, zoom) * TILE_SIZE;
 
     for (let dy = -pad; dy <= pad; dy++) {
       for (let dx = -pad; dx <= pad; dx++) {
         const tx = cx+dx, ty = cy+dy;
-        const img = tilesRef.current.get(`${satellite?'sat':'osm'}/${ZOOM}/${ty}/${tx}`);
+        const img = tilesRef.current.get(`${satellite?'sat':'osm'}/${zoom}/${ty}/${tx}`);
         if (img) {
           const drawX = tx*TILE_SIZE - originX + CANVAS_W/2;
           const drawY = ty*TILE_SIZE - originY + CANVAS_H/2;
@@ -403,7 +423,7 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     ctx.fillRect(0, 0, satellite ? 195 : 205, 14);
     ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '8px sans-serif'; ctx.textAlign = 'left';
     ctx.fillText(satellite ? '© Esri, Maxar, Earthstar Geographics' : '© OpenStreetMap contributors', 4, 10);
-  }, [position, angle, bodyColor, role, roleColor, livePositions, step, tilesLoaded, centerLat, centerLng, satellite]);
+  }, [position, angle, bodyColor, role, roleColor, livePositions, step, tilesLoaded, centerLat, centerLng, satellite, zoom]);
 
   useEffect(() => { render(); }, [render]);
 
@@ -416,8 +436,25 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     return { x: ((e as React.MouseEvent).clientX - r.left)*sx, y: ((e as React.MouseEvent).clientY - r.top)*sy };
   };
 
+  // Pinch-to-zoom: compute distance between two touches
+  const getTouchDist = (e: React.TouchEvent) => {
+    if (e.touches.length < 2) return null;
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    return Math.hypot(dx, dy);
+  };
+
   const onStart = (e: React.TouchEvent | React.MouseEvent) => {
     e.preventDefault(); if (confirmed) return;
+    // Pinch-to-zoom start
+    if ('touches' in e && e.touches.length === 2) {
+      const dist = getTouchDist(e);
+      if (dist !== null) {
+        pinchStartDist.current = dist;
+        pinchStartZoom.current = zoom;
+      }
+      return;
+    }
     const p = getPos(e);
     const d = Math.hypot(p.x - position.x, p.y - position.y);
     if (d < 35) {
@@ -427,19 +464,35 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
     }
   };
   const onMove = (e: React.TouchEvent | React.MouseEvent) => {
-    e.preventDefault(); if (!dragging || !dragStart.current || confirmed) return;
+    e.preventDefault();
+    // Pinch-to-zoom move
+    if ('touches' in e && e.touches.length === 2 && pinchStartDist.current !== null) {
+      const dist = getTouchDist(e);
+      if (dist !== null) {
+        const ratio = dist / pinchStartDist.current;
+        // Each 50% change in finger distance = 1 zoom level
+        const delta = Math.round(Math.log2(ratio));
+        const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, pinchStartZoom.current + delta));
+        if (newZoom !== zoom) setZoom(newZoom);
+      }
+      return;
+    }
+    if (!dragging || !dragStart.current || confirmed) return;
     const p = getPos(e);
     setPosition({
       x: Math.max(20, Math.min(CANVAS_W-20, dragStart.current.posX + p.x - dragStart.current.x)),
       y: Math.max(20, Math.min(CANVAS_H-20, dragStart.current.posY + p.y - dragStart.current.y)),
     });
   };
-  const onEnd = () => { if (dragging) { setDragging(false); dragStart.current = null; setStep('rotate'); } };
+  const onEnd = () => {
+    pinchStartDist.current = null;
+    if (dragging) { setDragging(false); dragStart.current = null; setStep('rotate'); }
+  };
 
   const confirm = () => {
     if (!centerLat || !centerLng) return;
     const canvas = canvasRef.current!;
-    const gps = canvasPixelToLatlng(position.x, position.y, centerLat, centerLng, ZOOM);
+    const gps = canvasPixelToLatlng(position.x, position.y, centerLat, centerLng, zoom);
     const b64 = canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
     setConfirmed(true); setStep('confirm');
     onComplete({ x: position.x, y: position.y, angle, lat: gps.lat, lng: gps.lng }, b64);
@@ -504,6 +557,23 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
             {tilesLoaded}/{totalTiles} tiles…
           </div>
         )}
+        {/* Zoom controls */}
+        <div className="absolute z-10 flex flex-col gap-1" style={{ top: 8, right: 8 }}>
+          <button
+            aria-label="Zoom avant"
+            onClick={() => setZoom(z => Math.min(MAX_ZOOM, z + 1))}
+            disabled={zoom >= MAX_ZOOM}
+            className="flex items-center justify-center cursor-pointer font-bold touch-manipulation"
+            style={{ width: 32, height: 32, background: '#111', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, color: zoom >= MAX_ZOOM ? 'rgba(255,255,255,0.25)' : 'white', fontSize: 18, lineHeight: 1 }}
+          >+</button>
+          <button
+            aria-label="Zoom arrière"
+            onClick={() => setZoom(z => Math.max(MIN_ZOOM, z - 1))}
+            disabled={zoom <= MIN_ZOOM}
+            className="flex items-center justify-center cursor-pointer font-bold touch-manipulation"
+            style={{ width: 32, height: 32, background: '#111', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 6, color: zoom <= MIN_ZOOM ? 'rgba(255,255,255,0.25)' : 'white', fontSize: 18, lineHeight: 1 }}
+          >-</button>
+        </div>
         <canvas
           ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
           aria-label="Placement du véhicule sur le schéma"

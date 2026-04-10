@@ -15,141 +15,142 @@
     "unknown": "Naməlum"
   },
   "landing": {
-    "badge": "Première app mondiale",
+    "badge": "Dünyanın ilk tətbiqi",
     "hero": {
-      "line1": "APRÈS",
-      "line2": "LE BOOM",
-      "line3": "LE",
-      "line4": "CONTACT"
+      "line1": "BUMDAN",
+      "line2": "SONRA",
+      "line3": "ƏLAQƏ",
+      "line4": "QURUN"
     },
-    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "subtitle": "Rəqəmsal qəza hesabatını 5 dəqiqədə tamamlayın. Universal OCR, paylaşılan QR kod, ikili rəqəmsal imza, sertifikatlı PDF. 150+ ölkədə etibarlıdır.",
     "cta": {
       "start": "Qəza protokolunu başlat",
-      "pricing": "Voir les tarifs →",
-      "from": "À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT",
-      "free": "GRATUIT · SANS INSCRIPTION · RGPD"
+      "pricing": "Qiymətlərə baxın →",
+      "from": "CHF/€ 4.90-DAN BAŞLAYARAQ · DÜNYA MİQYASINDA ETİBARLI",
+      "free": "PULSUZ · QEYDİYYATSIZ · GDPR"
     },
     "mockup": {
-      "send": "Envoyer à l'assureur",
-      "done": "Constat finalisé !",
-      "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "send": "Sığortaçıya göndər",
+      "done": "Hesabat tamamlandı!",
+      "waiting": "Sessiya #8F2K · Gözləyir…",
+      "capture": "📸 Şəkil çəkin"
     },
     "badges": {
-      "languages": "50 langues",
-      "time": "5 min",
-      "encrypted": "Chiffré"
+      "languages": "50 dil",
+      "time": "5 dəq",
+      "encrypted": "Şifrələnmiş"
     },
     "stats": {
-      "accidents": "constats/an en Europe",
-      "languages": "langues supportées",
-      "time": "pour finaliser"
+      "accidents": "hesabat/il Avropada",
+      "languages": "dəstəklənən dillər",
+      "time": "tamamlamaq üçün"
     },
     "how": {
-      "label": "Comment ça marche",
-      "title": "5 étapes.",
-      "title_accent": "5 minutes.",
+      "label": "Necə işləyir",
+      "title": "5 addım.",
+      "title_accent": "5 dəqiqə.",
       "steps": [
         {
           "step": "01",
           "icon": "📸",
-          "title": "Scannez vos documents",
-          "desc": "Photographiez permis de circulation + carte verte. OCR automatique."
+          "title": "Sənədlərinizi skan edin",
+          "desc": "Qeydiyyat şəhadətnaməsi + yaşıl kartı şəkilə çəkin. Avtomatik OCR."
         },
         {
           "step": "02",
           "icon": "📱",
-          "title": "Partagez le QR code",
-          "desc": "L'autre conducteur scanne le QR. Session partagée en temps réel."
+          "title": "QR kodu paylaşın",
+          "desc": "Digər sürücü QR kodu skan edir. Real vaxtda paylaşılan sessiya."
         },
         {
           "step": "03",
           "icon": "📋",
-          "title": "Remplissez le formulaire",
-          "desc": "Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances."
+          "title": "Formanı doldurun",
+          "desc": "OCR ilə əvvəlcədən doldurulmuş universal forma. Şərtləri yoxlayın və işarələyin."
         },
         {
           "step": "04",
           "icon": "🚗",
-          "title": "Zones de choc",
-          "desc": "Cliquez sur le diagramme 18 zones pour indiquer les dommages."
+          "title": "Zərbə zonaları",
+          "desc": "Zərəri göstərmək üçün 18 zonalı diaqramda klikləyin."
         },
         {
           "step": "05",
           "icon": "✍️",
-          "title": "Signez & envoyez",
-          "desc": "Deux signatures digitales horodatées. PDF certifié instantanément."
+          "title": "İmzalayın və göndərin",
+          "desc": "İki vaxt damğalı rəqəmsal imza. Dərhal sertifikatlı PDF."
         }
       ]
     },
     "features": {
-      "title": "Tout ce dont vous avez besoin",
+      "title": "Sizə lazım olan hər şey",
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universel",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
+          "title": "Universal OCR",
+          "desc": "Claude Vision sənədlərinizi 50+ dildə oxuyur. Qeydiyyat şəhadətnaməsi, RC Book, 行驶证 — sıfır əl ilə daxiletmə."
         },
         {
           "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
+          "title": "5-ə qədər nəqliyyat vasitəsi",
+          "desc": "3, 4 və ya 5 nəqliyyat vasitəsi ilə qəza? Hər sürücü öz QR kodunu skan edir. Hamı üçün tək PDF."
         },
         {
           "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
+          "title": "Hadisə yeri şəkilləri",
+          "desc": "5 kateqoriya: yer, A zərəri, B zərəri, xəsarətlər, sənədlər. Sıxılmış və PDF-ə daxil edilmiş."
         },
         {
           "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
+          "title": "Sərbəst eskiz",
+          "desc": "Nəqliyyat vasitələrinin mövqeyini, istiqamət oxlarını, infrastrukturu çəkin. PNG eksportu PDF-ə daxil edilib."
         },
         {
           "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
+          "title": "Zərbə diaqramı",
+          "desc": "700+ model, uyğunlaşdırılmış siluet, real OCR rəngi. Zərər üçün 18 klikləyə bilən zona."
         },
         {
           "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police."
+          "title": "Çoxtərəfli imzalar",
+          "desc": "N eyni vaxtda toxunma imzası. 150+ ölkədə hüquqi qüvvə. Polis üçün 24 saat aktiv QR."
         },
         {
           "icon": "📄",
-          "title": "PDF certifié 150+ pays",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d'assurance."
+          "title": "150+ ölkədə sertifikatlı PDF",
+          "desc": "Tam rəqəmsal sənəd: şahidlər, üçüncü tərəf zərəri, müşahidələr, eskiz, şəkillər. Bütün sığorta şirkətləri tərəfindən tanınır."
         },
         {
           "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
+          "title": "Polis Modulu (tezliklə)",
+          "desc": "Zabitlər QR vasitəsilə sessiyaya qoşulur. Rəsmi rəqəmsal hesabat. Stansiya/rayon üzrə idarəetmə paneli."
         },
         {
           "icon": "🌍",
-          "title": "50 langues + RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
+          "title": "50 dil + RTL",
+          "desc": "5 milyard danışan. Ərəb, ibrani, fars, urdu yerli RTL-də. Geolokasiyalı təcili yardım."
         }
       ]
     },
     "coverage": {
-      "label": "Couverture mondiale",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
+      "label": "Qlobal əhatə",
+      "title": "İsveçrədən Çinə qədər",
+      "more": "+ 30 digər ölkə · İnteqrasiya olunmuş RTL dəstəyi"
     },
     "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
+      "title": "Beynəlxalq standart",
+      "text": "Rəqəmsal PDF-imiz 50-dən çox ölkədə sığorta şirkətləri tərəfindən tanınır. Kağız hesabatdan üstündür: vaxt damğalı, rəqəmsal imzalı, dəyişdirilməz."
     },
     "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
+      "title": "Qəza halında hazırsınız?",
+      "subtitle": "boom.contact-ı ana ekranınızda saxlayın. Hər şeyi tamamlamaq üçün 5 dəqiqə.",
+      "button": "Hesabat başlat"
     },
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    }
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, İsveçrə"
+    },
+    "seoLine": "Dünya miqyasında rəqəmsal qəza hesabatı · Constat amiable numérique"
   },
   "steps": {
     "scan": "Skan",
@@ -169,280 +170,280 @@
   },
   "ocr": {
     "idle": {
-      "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
-      "reg_label": "Permis de circulation / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+      "title": "Sənədlərinizi skan edin",
+      "subtitle": "Qeydiyyat sənədinizlə başlayın.\nSığorta sənədi <strong>tövsiyə olunur</strong>.",
+      "reg_label": "Qeydiyyat sənədi / Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi",
+      "reg_sub": "İsveçrə qeydiyyatı, fransız carte grise, Zulassung DE, V5C GB… — <strong>məcburi</strong>",
+      "tip": "💡 <strong>Sığorta sənədi tövsiyə olunur.</strong> Yaşıl kart (IMIC), sığorta şəhadətnaməsi, Insurance ID card — bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. Onsuz onları əl ilə daxil etməlisiniz."
     },
     "greencard": {
-      "scanned": "✅ Permis de circulation scanné",
-      "compressing": "· Compression…",
-      "title": "Document d'assurance ?",
-      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
-      "scan_btn": "Scanner le document d'assurance",
-      "scan_sub": "Carte verte, attestation, certificate, insurance card…",
-      "skip_btn": "Saisir manuellement les données d'assurance →"
+      "scanned": "✅ Qeydiyyat sənədi skan edildi",
+      "compressing": "· Sıxılır…",
+      "title": "Sığorta sənədi?",
+      "subtitle": "<strong>Yaşıl kartınızı (IMIC)</strong>, sığorta şəhadətnaməsini, Certificate of Motor Insurance və ya Insurance ID Card skan edin. Bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. <strong>Tövsiyə olunur</strong> — onsuz əl ilə daxiletmə tələb olunur.",
+      "scan_btn": "Sığorta sənədini skan edin",
+      "scan_sub": "Yaşıl kart, şəhadətnamə, sığorta kartı…",
+      "skip_btn": "Sığorta məlumatlarını əl ilə daxil edin →"
     },
     "scanning": {
-      "title": "Analyse en cours…",
-      "subtitle": "Claude Vision lit vos documents"
+      "title": "Təhlil davam edir…",
+      "subtitle": "Claude Vision sənədlərinizi oxuyur"
     },
     "review": {
-      "title_pair": "Documents analysés",
-      "title_single": "Permis analysé",
-      "confidence": "Confiance : {{pct}}%",
-      "skipped": "· Carte verte ignorée",
-      "warnings": "⚠️ {{count}} champ à vérifier",
-      "warnings_plural": "⚠️ {{count}} champs à vérifier",
-      "insurance_title": "🛡️ Données d'assurance — saisie manuelle",
-      "company_label": "Compagnie d'assurance *",
+      "title_pair": "Sənədlər təhlil edildi",
+      "title_single": "Lisenziya təhlil edildi",
+      "confidence": "Etibar: {{pct}}%",
+      "skipped": "· Yaşıl kart keçildi",
+      "warnings": "⚠️ {{count}} sahə yoxlanılmalıdır",
+      "warnings_plural": "⚠️ {{count}} sahə yoxlanılmalıdır",
+      "insurance_title": "🛡️ Sığorta məlumatları — əl ilə daxiletmə",
+      "company_label": "Sığorta şirkəti *",
       "company_placeholder": "Zurich, AXA, Helvetia, Mobilière…",
-      "policy_label": "N° de contrat / police *",
+      "policy_label": "Müqavilə / polis nömrəsi *",
       "policy_placeholder": "CH-2026-12345",
-      "section_vehicle": "🚗 Véhicule",
-      "section_driver": "👤 Conducteur",
-      "section_greencard": "🟢 Assurance (carte verte)",
-      "rescan": "🔄 Rescanner",
-      "confirm": "Confirmer →"
+      "section_vehicle": "🚗 Nəqliyyat vasitəsi",
+      "section_driver": "👤 Sürücü",
+      "section_greencard": "🟢 Sığorta (yaşıl kart)",
+      "rescan": "🔄 Yenidən skan et",
+      "confirm": "Təsdiq et →"
     }
   },
   "location": {
-    "vehicle_label": "Votre véhicule",
+    "vehicle_label": "Nəqliyyat vasitəniz",
     "groups": {
-      "light": "Véhicules légers",
-      "heavy": "Véhicules lourds",
-      "rail": "Transport en commun / rail",
-      "cycles": "Cycles",
-      "other": "Personne / Autre"
+      "light": "Yüngül nəqliyyat vasitələri",
+      "heavy": "Ağır nəqliyyat vasitələri",
+      "rail": "İctimai nəqliyyat / dəmiryol",
+      "cycles": "Velosipedlər",
+      "other": "Şəxs / Digər"
     },
     "vehicles": {
       "car": {
-        "label": "Voiture",
-        "sub": "Berline, SUV, break, 4×4, citadine"
+        "label": "Avtomobil",
+        "sub": "Sedan, SUV, universal, 4×4, şəhər avtomobili"
       },
       "van": {
-        "label": "Fourgon / Utilitaire",
-        "sub": "Camionnette, van, utilitaire léger"
+        "label": "Furqon / Yük avtomobili",
+        "sub": "Pikap, furqon, yüngül kommersiya avtomobili"
       },
       "motorcycle": {
-        "label": "Moto",
-        "sub": "Moto, motocyclette"
+        "label": "Motosiklet",
+        "sub": "Motosiklet, mototsikl"
       },
       "scooter": {
-        "label": "Scooter / Cyclomoteur",
-        "sub": "Scooter, 50cm³"
+        "label": "Skuter / Moped",
+        "sub": "Skuter, 50sm³"
       },
       "moped": {
-        "label": "Vélomoteur",
-        "sub": "2 roues <45km/h, 125cm³"
+        "label": "Moped",
+        "sub": "2 təkərli <45km/s, 125sm³"
       },
       "escooter": {
-        "label": "Trottinette électrique",
-        "sub": "EDPM, gyroroue, hoverboard"
+        "label": "Elektrik skuter",
+        "sub": "PLEV, monosikl, hoverboard"
       },
       "quad": {
-        "label": "Quad / Buggy",
-        "sub": "Véhicule tout-terrain motorisé"
+        "label": "Kvadrosikl / Baggi",
+        "sub": "Motorlu yolsuzluq nəqliyyat vasitəsi"
       },
       "truck": {
-        "label": "Camion / Poids lourd",
-        "sub": "Semi-remorque, porteur, benne"
+        "label": "Yük maşını / Ağır nəqliyyat",
+        "sub": "Yarımqoşqu, yük avtomobili, samosval"
       },
       "bus": {
-        "label": "Bus / Autocar",
-        "sub": "Bus urbain, car, minibus"
+        "label": "Avtobus",
+        "sub": "Şəhər avtobusu, avtobus, mikroavtobus"
       },
       "construction": {
-        "label": "Engin de chantier",
-        "sub": "Tractopelle, grue, pelleteuse, dumper"
+        "label": "Tikinti texnikası",
+        "sub": "Ekskavator-yükləyici, kran, ekskavator, damper"
       },
       "tractor": {
-        "label": "Tracteur agricole",
-        "sub": "Tracteur, engin agricole"
+        "label": "Kənd təsərrüfatı traktoru",
+        "sub": "Traktor, kənd təsərrüfatı texnikası"
       },
       "tram": {
-        "label": "Tramway",
-        "sub": "Tram, métro léger"
+        "label": "Tramvay",
+        "sub": "Tramvay, yüngül dəmiryol"
       },
       "train": {
-        "label": "Train / Métro",
-        "sub": "Train, RER, métro souterrain"
+        "label": "Qatar / Metro",
+        "sub": "Qatar, şəhərətrafı qatar, metro"
       },
       "bicycle": {
-        "label": "Vélo",
-        "sub": "Vélo classique, VAE, vélo électrique"
+        "label": "Velosiped",
+        "sub": "Adi velosiped, elektrik velosiped"
       },
       "cargo_bike": {
-        "label": "Vélo cargo",
-        "sub": "Bakfiets, triporteur, cargo électrique"
+        "label": "Yük velosipedi",
+        "sub": "Bakfiets, üçtəkərli, elektrik yük velosipedi"
       },
       "pedestrian": {
-        "label": "Piéton",
-        "sub": "Personne à pied, rollers, skateboard"
+        "label": "Piyada",
+        "sub": "Piyada, roller, skeytbord"
       },
       "boat": {
-        "label": "Bateau",
-        "sub": "Embarcation, jet-ski, canot"
+        "label": "Qayıq",
+        "sub": "Gəmi, jet-ski, şlyupka"
       },
       "other": {
-        "label": "Autre véhicule",
-        "sub": "Non listé — préciser dans observations"
+        "label": "Digər nəqliyyat vasitəsi",
+        "sub": "Siyahıda yoxdur — müşahidələrdə göstərin"
       }
     },
-    "datetime_label": "Date & heure de l'accident",
-    "date_label": "Date",
-    "time_label": "Heure",
-    "datetime_warning": "⚠️ Indiquez l'heure réelle de l'accident, pas l'heure actuelle.",
-    "geo_label": "Lieu de l'accident",
-    "gps_captured": "GPS capturé — {{lat}}, {{lng}}",
-    "gps_loading": "Localisation en cours…",
-    "gps_denied": "Accès GPS refusé — saisie manuelle",
-    "gps_missing": "Position GPS non capturée",
-    "gps_saved": "Coordonnées enregistrées dans le document",
-    "address_label": "Rue / Lieu-dit / Autoroute (ex: A1 sortie 12, Carrefour des Quatre-Routes)",
-    "address_placeholder": "Ex: Avenue de la Gare 4, A1 direction Berne km 47…",
-    "city_label": "Ville / Localité",
-    "city_placeholder": "Lausanne, Paris…",
-    "country_label": "Pays",
-    "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
-    "injuries_label": "Y a-t-il des blessés ?",
-    "no_injuries": "Non — aucun blessé",
-    "yes_injuries": "Oui — blessure(s)",
-    "injury_details_title": "🚑 Détails des blessures",
-    "severity_label": "Gravité apparente",
-    "severity_minor": "Légère",
-    "severity_moderate": "Modérée",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Description (zone du corps, douleurs, blessures visibles)",
-    "injury_desc_placeholder": "Ex: Douleur cervicale, contusion genou gauche, coupure front…",
-    "ambulance": "🚑 Prise en charge par ambulance / SMUR",
-    "hospitalized": "🏥 Hospitalisation nécessaire ou envisagée",
-    "injury_footer": "En cas de blessés graves, appelez le 112 (EU) ou 144 (CH) immédiatement. Ces informations seront incluses dans le document final.",
-    "cta_no_vehicle": "Sélectionnez votre type de véhicule",
-    "cta_no_injuries": "Indiquez s'il y a des blessés",
-    "cta_no_location": "Indiquez le lieu de l'accident",
-    "emergency_police": "🚔 Police · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Urgences · {{number}} {{label}}",
-    "emergency_voluntary": "Ces appels sont volontaires — la police n'est jamais prévenue automatiquement."
+    "datetime_label": "Qəzanın tarixi və vaxtı",
+    "date_label": "Tarix",
+    "time_label": "Vaxt",
+    "datetime_warning": "⚠️ Qəzanın faktiki vaxtını göstərin, cari vaxtı deyil.",
+    "geo_label": "Qəzanın yeri",
+    "gps_captured": "GPS alındı — {{lat}}, {{lng}}",
+    "gps_loading": "Yer təyin edilir…",
+    "gps_denied": "GPS girişi rədd edildi — əl ilə daxiletmə",
+    "gps_missing": "GPS mövqeyi alınmadı",
+    "gps_saved": "Koordinatlar sənəddə saxlanıldı",
+    "address_label": "Küçə / Yer / Magistral yol (məs: A1 çıxış 12, Dörd Yol Qovşağı)",
+    "address_placeholder": "Məs: Stansiya prospekti 4, A1 Bern istiqaməti km 47…",
+    "city_label": "Şəhər / Yaşayış yeri",
+    "city_placeholder": "Bakı, İstanbul…",
+    "country_label": "Ölkə",
+    "country_placeholder": "AZ, TR…",
+    "location_tip": "💡 <strong>Vacib:</strong> Nəqliyyat vasitələrini kənara çəksəniz belə, <strong>qəzanın dəqiq yerini</strong> göstərin. GPS <em>cari</em> mövqeyinizi alır — hərəkət etmisinizsə düzəldin.",
+    "injuries_label": "Xəsarət alanlar var?",
+    "no_injuries": "Xeyr — xəsarət yoxdur",
+    "yes_injuries": "Bəli — xəsarət(lər) var",
+    "injury_details_title": "🚑 Xəsarət təfərrüatları",
+    "severity_label": "Görünən ağırlıq dərəcəsi",
+    "severity_minor": "Yüngül",
+    "severity_moderate": "Orta",
+    "severity_serious": "Ağır",
+    "injury_desc_label": "Təsvir (bədən nahiyəsi, ağrılar, görünən xəsarətlər)",
+    "injury_desc_placeholder": "Məs: Boyun ağrısı, sol dizə göyərmə, alnda kəsik…",
+    "ambulance": "🚑 Təcili yardım / reanimasiya tərəfindən müdaxilə",
+    "hospitalized": "🏥 Hospitalizasiya tələb olunur və ya nəzərdə tutulur",
+    "injury_footer": "Ağır xəsarət halında dərhal 112 (AB) və ya 103 (AZ) zəng edin. Bu məlumat yekun sənədə daxil ediləcək.",
+    "cta_no_vehicle": "Nəqliyyat vasitənizin növünü seçin",
+    "cta_no_injuries": "Xəsarət olub-olmadığını göstərin",
+    "cta_no_location": "Qəzanın yerini göstərin",
+    "emergency_police": "🚔 Polis · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Təcili yardım · {{number}} {{label}}",
+    "emergency_voluntary": "Bu zənglər könüllüdür — polis heç vaxt avtomatik xəbərdar edilmir."
   },
   "cgu": {
-    "before_continue": "AVANT DE CONTINUER",
-    "tab_cgu": "CGU",
-    "tab_privacy": "Confidentialité",
-    "cgu_title": "Conditions Générales d'Utilisation",
-    "privacy_title": "Politique de Confidentialité & RGPD",
-    "cgu_version": "Version 1.0 — Mars 2026 · PEP's Swiss SA",
-    "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
-    "email_label": "Votre email (pour recevoir le PDF)",
-    "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
-    "required_note": "* Obligatoire pour utiliser le service",
-    "submit": "Continuer →",
-    "error_network": "Erreur réseau. Réessayez.",
+    "before_continue": "DAVAM ETMƏZDƏN ƏVVƏL",
+    "tab_cgu": "Şərtlər",
+    "tab_privacy": "Məxfilik",
+    "cgu_title": "İstifadə Şərtləri",
+    "privacy_title": "Məxfilik Siyasəti və GDPR",
+    "cgu_version": "Versiya 1.0 — Mart 2026 · PEP's Swiss SA",
+    "privacy_version": "AB GDPR 2016/679 və İsveçrə nFADP-yə uyğundur · Mart 2026",
+    "email_label": "E-poçtunuz (PDF almaq üçün)",
+    "email_placeholder": "siz@misal.com",
+    "consent_cgu": "<cgu>İstifadə Şərtlərini</cgu> və <privacy>Məxfilik Siyasətini</privacy> qəbul edirəm",
+    "consent_marketing": "PEP's Swiss SA-nın tətbiqlərinin əlavə xidmətlərini (iddia idarəetməsi, sığorta, maliyyə xidmətləri) təklif etmək üçün e-poçtumdan istifadə etməsinə razıyam. <opt>İstəyə bağlı — istənilən vaxt geri götürülə bilər.</opt>",
+    "required_note": "* Xidmətdən istifadə üçün məcburidir",
+    "submit": "Davam et →",
+    "error_network": "Şəbəkə xətası. Yenidən cəhd edin.",
     "cgu_sections": [
       {
-        "title": "1. Objet",
-        "text": "boom.contact est un service numérique édité par PEP's Swiss SA (ci-après \"PEP's Swiss\"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l'établissement de constats amiables d'accident numériques, utilisables dans le monde entier."
+        "title": "1. Məqsəd",
+        "text": "boom.contact PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, İsveçrə tərəfindən nəşr olunan rəqəmsal xidmətdir. Dünya miqyasında istifadə edilə bilən rəqəmsal razılaşmalı qəza hesabatlarının yaradılmasını təmin edir."
       },
       {
-        "title": "2. Acceptation",
-        "text": "L'utilisation du service implique l'acceptation des présentes CGU. Toute utilisation à des fins illicites, frauduleuses ou contraires à l'ordre public est strictement interdite."
+        "title": "2. Qəbul",
+        "text": "Xidmətdən istifadə bu Şərtlərin qəbulunu nəzərdə tutur. Qeyri-qanuni, fırıldaqçı və ya qanuna zidd məqsədlər üçün istifadə qəti qadağandır."
       },
       {
-        "title": "3. Description du service",
-        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+        "title": "3. Xidmətin təsviri",
+        "text": "boom.contact aşağıdakıları təmin edir: (a) OCR vasitəsilə sənədlərin tutulması (qeydiyyat, yaşıl kart); (b) QR kod vasitəsilə sürücülər arasında real vaxtda sessiya paylaşımı; (c) rəqəmsal imzalı sertifikatlı PDF-in yaradılması; (d) PDF-in hər sürücüyə e-poçtla göndərilməsi. Xidmət hər sürücünün müqavilə müddətləri daxilində qəzanı öz sığortaçısına bildirmək qanuni öhdəliyini əvəz etmir."
       },
       {
-        "title": "4. Tarification",
-        "text": "L'accès au service est payant selon les packages disponibles au moment de l'achat. Les prix sont affichés TTC. Le paiement s'effectue via Stripe, prestataire certifié PCI-DSS. Chaque package correspond à un nombre de crédits permettant d'initier des constats. Les crédits n'ont pas de date d'expiration. Aucun remboursement ne peut être accordé une fois un constat finalisé et le PDF généré."
+        "title": "4. Qiymətləndirmə",
+        "text": "Xidmətə giriş alış zamanı mövcud olan paketlərə uyğun ödənişlidir. Qiymətlər vergi daxil göstərilir. Ödəniş PCI-DSS sertifikatlı provayder Stripe vasitəsilə həyata keçirilir. Hər paket hesabatları başlatmaq üçün müəyyən sayda kreditlərə uyğundur. Kreditlərin istifadə müddəti yoxdur. Hesabat tamamlandıqdan və PDF yaradıldıqdan sonra geri ödəniş edilmir."
       },
       {
-        "title": "5. Valeur légale",
-        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+        "title": "5. Hüquqi qüvvə",
+        "text": "boom.contact tərəfindən yaradılan rəqəmsal sənəd sığorta şirkətləri tərəfindən tanınan razılaşmalı qəza hesabatıdır. PEP's Swiss SA sənədin bütün ölkələrdə qəbuluna zəmanət vermir və qanuni müddətlər daxilində sığortaçınıza təqdim etməyi tövsiyə edir."
       },
       {
-        "title": "6. Responsabilité",
-        "text": "PEP's Swiss SA ne saurait être tenue responsable : (a) des erreurs de saisie ou d'OCR non corrigées par l'utilisateur ; (b) du refus d'un assureur d'accepter le constat ; (c) de tout litige entre les conducteurs. La responsabilité de PEP's Swiss SA est limitée au montant payé pour le service."
+        "title": "6. Məsuliyyət",
+        "text": "PEP's Swiss SA aşağıdakılara görə məsuliyyət daşımır: (a) istifadəçi tərəfindən düzəldilməmiş daxiletmə və ya OCR xətaları; (b) sığortaçının hesabatı qəbul etməkdən imtina etməsi; (c) sürücülər arasında hər hansı mübahisə. PEP's Swiss SA-nın məsuliyyəti xidmət üçün ödənilmiş məbləğlə məhdudlaşır."
       },
       {
-        "title": "7. Propriété intellectuelle",
-        "text": "Le logiciel, les marques, logos et contenus de boom.contact sont la propriété exclusive de PEP's Swiss SA. Toute reproduction sans autorisation est interdite."
+        "title": "7. Əqli mülkiyyət",
+        "text": "boom.contact-ın proqram təminatı, ticarət nişanları, loqoları və məzmunu PEP's Swiss SA-nın müstəsna mülkiyyətidir. İcazəsiz hər hansı çoxaltma qadağandır."
       },
       {
-        "title": "8. Droit applicable",
-        "text": "Les présentes CGU sont soumises au droit suisse. Tout litige sera soumis à la juridiction exclusive des tribunaux du canton du Jura, Suisse."
+        "title": "8. Tətbiq olunan qanun",
+        "text": "Bu Şərtlər İsveçrə qanunvericiliyinə tabedir. Hər hansı mübahisə İsveçrənin Jura kantonunun məhkəmələrinin müstəsna yurisdiksiyasına tabe olacaq."
       }
     ],
     "privacy_sections": [
       {
-        "title": "Responsable de traitement",
-        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. Contact DPO : privacy@boom.contact"
+        "title": "Məlumat nəzarətçisi",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, İsveçrə. DPO əlaqə: privacy@boom.contact"
       },
       {
-        "title": "Données collectées",
-        "text": "Dans le cadre du service : adresse email, nom/prénom, adresse (extraits des documents OCR), plaque d'immatriculation, données du véhicule, coordonnées GPS de l'accident, signatures digitales, données d'assurance (nom de la compagnie, numéro de police). Ces données sont strictement nécessaires à la prestation du service."
+        "title": "Toplanılan məlumatlar",
+        "text": "Xidmət çərçivəsində: e-poçt ünvanı, ad, ünvan (OCR sənədlərindən çıxarılmış), dövlət nömrəsi, nəqliyyat vasitəsi məlumatları, qəzanın GPS koordinatları, rəqəmsal imzalar, sığorta məlumatları (şirkət adı, polis nömrəsi). Bu məlumatlar xidmətin göstərilməsi üçün zəruri şəkildə tələb olunur."
       },
       {
-        "title": "Base légale",
-        "text": "Traitement nécessaire à l'exécution du contrat (art. 6.1.b RGPD) pour les données du constat. Consentement explicite (art. 6.1.a RGPD) pour toute utilisation commerciale secondaire."
+        "title": "Hüquqi əsas",
+        "text": "Qəza hesabatı məlumatları üçün müqavilənin icrası üçün zəruri emal (GDPR Maddə 6.1.b). Hər hansı ikincili kommersiya istifadəsi üçün açıq razılıq (GDPR Maddə 6.1.a)."
       },
       {
-        "title": "Durée de conservation",
-        "text": "Sessions actives : 2 heures. PDFs et données de constat : 30 jours puis suppression automatique. Données comptables (paiements) : 10 ans (obligation légale). Email et consentements : jusqu'à retrait du consentement."
+        "title": "Saxlama müddəti",
+        "text": "Aktiv sessiyalar: 2 saat. PDF-lər və hesabat məlumatları: 30 gün, sonra avtomatik silinmə. Mühasibat məlumatları (ödənişlər): 10 il (qanuni öhdəlik). E-poçt və razılıqlar: razılıq geri götürülənə qədər."
       },
       {
-        "title": "Partage des données",
-        "text": "Vos données ne sont JAMAIS vendues à des tiers. Elles peuvent être partagées avec : (a) Stripe Inc. pour le traitement des paiements ; (b) Resend Inc. pour l'envoi des emails transactionnels ; (c) Anthropic Inc. pour l'analyse OCR des documents (données traitées sans conservation selon les CGU Anthropic). Si vous y consentez expressément (case optionnelle ci-dessous), PEP's Swiss SA pourra utiliser votre email pour vous proposer des services complémentaires de ses applications (gestion de sinistres, conseil en assurance, services financiers)."
+        "title": "Məlumatların paylaşılması",
+        "text": "Məlumatlarınız HEÇ VAXT üçüncü tərəflərə satılmır. Aşağıdakılarla paylaşıla bilər: (a) ödəniş emalı üçün Stripe Inc.; (b) tranzaksiya e-poçtlarının göndərilməsi üçün Resend Inc.; (c) sənədlərin OCR təhlili üçün Anthropic Inc. (məlumatlar Anthropic Şərtlərinə uyğun olaraq saxlanmadan emal edilir). Açıq razılıq versəniz (aşağıdakı isteğe bağlı qutu), PEP's Swiss SA tətbiqlərinin əlavə xidmətlərini təklif etmək üçün e-poçtunuzdan istifadə edə bilər."
       },
       {
-        "title": "Vos droits",
-        "text": "Accès, rectification, effacement, portabilité, opposition. Demande à : privacy@boom.contact. Réponse sous 30 jours. Droit de recours auprès du PFPDT (Suisse) ou de votre autorité nationale de protection des données."
+        "title": "Hüquqlarınız",
+        "text": "Giriş, düzəliş, silinmə, daşınma, etiraz. Müraciət: privacy@boom.contact. 30 gün ərzində cavab. FDPIC (İsveçrə) və ya milli məlumat qoruma orqanınıza şikayət hüququ."
       }
     ]
   },
   "pricing": {
-    "title": "Choisir un package",
-    "subtitle": "Achetez vos crédits à l'avance — payez une seule fois",
-    "popular_badge": "⭐ Populaire",
-    "economy": "Économie {{pct}}",
-    "credits_label": "Crédits",
-    "per_report": "Par constat",
-    "validity": "Validité",
-    "no_expiry": "Sans limite",
-    "buy_btn": "Acheter — {{symbol}} {{price}}",
-    "redirecting": "Redirection Stripe…",
-    "error_missing_url": "URL Stripe manquante",
+    "title": "Paket seçin",
+    "subtitle": "Kreditlərinizi əvvəlcədən alın — bir dəfə ödəyin",
+    "popular_badge": "⭐ Populyar",
+    "economy": "Qənaət {{pct}}",
+    "credits_label": "Kreditlər",
+    "per_report": "Hər hesabat üçün",
+    "validity": "Etibarlılıq",
+    "no_expiry": "Müddətsiz",
+    "buy_btn": "Al — {{symbol}} {{price}}",
+    "redirecting": "Stripe-a yönləndirilir…",
+    "error_missing_url": "Stripe URL-i tapılmadı",
     "trust": {
-      "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
-      "no_expiry": "📄 Crédits sans date d'expiration",
-      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
-      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
+      "stripe": "🔒 Stripe vasitəsilə təhlükəsiz ödəniş (PCI-DSS)",
+      "no_expiry": "📄 İstifadə müddəti olmayan kreditlər",
+      "worldwide": "🌍 Sertifikatlı rəqəmsal sənəd · 150+ ölkədə etibarlı",
+      "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, İsveçrə"
     },
-    "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
+    "legal": "Satın almaqla boom.contact-ın İstifadə Şərtlərini qəbul edirsiniz.\nPDF yaradıldıqdan sonra geri ödəniş mümkün deyil.",
     "packages": {
       "single": {
-        "label": "1 constat",
-        "description": "Pour un accident ponctuel"
+        "label": "1 hesabat",
+        "description": "Bir dəfəlik qəza üçün"
       },
       "pack3": {
-        "label": "3 constats",
-        "description": "Pour la famille"
+        "label": "3 hesabat",
+        "description": "Ailə üçün"
       },
       "pack10": {
-        "label": "10 constats",
-        "description": "Courtiers, flottes d'entreprise"
+        "label": "10 hesabat",
+        "description": "Brokerlər, korporativ parklar"
       }
     }
   },
   "offline": {
-    "banner": "Hors ligne — {{count}} session(s) en attente",
-    "banner_0": "Vous êtes hors ligne"
+    "banner": "Oflayn — {{count}} sessiya gözləyir",
+    "banner_0": "Siz oflaynsınız"
   },
   "language": {
-    "select": "Langue",
-    "switch_tooltip": "Changer de langue"
+    "select": "Dil",
+    "switch_tooltip": "Dili dəyişdirin"
   }
 }

@@ -229,6 +229,29 @@ export const policeAnnotations = pgTable('police_annotations', {
 }));
 
 
+// ── Police corrections — audit trail for driver data modifications ──
+// When police corrects driver-submitted data, every change is tracked here
+export interface PoliceFieldCorrection {
+  fieldPath: string;         // e.g. "driver.lastName", "vehicle.plate"
+  oldValue: string | null;
+  newValue: string | null;
+  party: 'A' | 'B';
+}
+
+export const policeCorrections = pgTable('police_corrections', {
+  id:            varchar('id', { length: 30 }).primaryKey(),
+  sessionId:     varchar('session_id', { length: 20 }).notNull(),
+  agentId:       varchar('agent_id', { length: 20 }).notNull().references(() => policeUsers.id),
+  stationId:     varchar('station_id', { length: 20 }).notNull().references(() => policeStations.id),
+  party:         varchar('party', { length: 2 }).notNull(),              // 'A' or 'B'
+  corrections:   jsonb('corrections').$type<PoliceFieldCorrection[]>().notNull().default([]),
+  reason:        text('reason'),                                          // optional justification
+  createdAt:     timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  sessionIdx: index('police_corrections_session_idx').on(t.sessionId),
+  agentIdx:   index('police_corrections_agent_idx').on(t.agentId),
+}));
+
 // ── Vehicles — garage personnel ───────────────────────────────
 export const vehicles = pgTable('vehicles', {
   id:           varchar('id', { length: 20 }).primaryKey(),

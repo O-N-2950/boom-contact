@@ -339,6 +339,122 @@ export async function getAnnotation(sessionId: string, stationId: string) {
   return annotation || null;
 }
 
+// ── Corrections (audit trail) ────────────────────────────────
+
+import { policeCorrections, type PoliceFieldCorrection } from '../db/schema.js';
+
+export interface DriverDataCorrection {
+  party: 'A' | 'B';
+  fields: Record<string, string | null>;  // fieldPath → newValue
+  reason?: string;
+}
+
+/**
+ * Record police corrections to driver data and apply them to the session.
+ * Stores old/new values for full audit trail, then patches the session.
+ */
+export async function correctDriverData(
+  sessionId: string,
+  agentId: string,
+  stationId: string,
+  correction: DriverDataCorrection,
+) {
+  // 1. Fetch the current session to capture old values
+  const { getSession, updateParticipant } = await import('./session.service.js');
+  const session = await getSession(sessionId);
+  if (!session) throw new Error('Session introuvable');
+
+  const participant = correction.party === 'A' ? session.participantA : session.participantB;
+  if (!participant) throw new Error(`Participant ${correction.party} non trouvé`);
+
+  // 2. Build correction records with old values
+  const corrections: PoliceFieldCorrection[] = [];
+  const patchDriver: Record<string, string | null> = {};
+  const patchVehicle: Record<string, string | null> = {};
+  const patchInsurance: Record<string, string | null> = {};
+
+  for (const [fieldPath, newValue] of Object.entries(correction.fields)) {
+    const [section, ...rest] = fieldPath.split('.');
+    const key = rest.join('.');
+
+    let oldValue: string | null = null;
+    if (section === 'driver' && participant.driver) {
+      oldValue = (participant.driver as any)?.[key] ?? null;
+      patchDriver[key] = newValue;
+    } else if (section === 'vehicle' && participant.vehicle) {
+      oldValue = (participant.vehicle as any)?.[key] ?? null;
+      patchVehicle[key] = newValue;
+    } else if (section === 'insurance' && participant.insurance) {
+      oldValue = (participant.insurance as any)?.[key] ?? null;
+      patchInsurance[key] = newValue;
+    }
+
+    corrections.push({
+      fieldPath,
+      oldValue,
+      newValue,
+      party: correction.party,
+    });
+  }
+
+  // 3. Store the audit record
+  const id = generateId('pcor');
+  const [record] = await db.insert(policeCorrections).values({
+    id,
+    sessionId,
+    agentId,
+    stationId,
+    party: correction.party,
+    corrections,
+    reason: correction.reason || null,
+  }).returning();
+
+  // 4. Apply corrections to the session participant data
+  const patch: any = {};
+  if (Object.keys(patchDriver).length > 0) {
+    patch.driver = { ...(participant.driver || {}), ...patchDriver };
+  }
+  if (Object.keys(patchVehicle).length > 0) {
+    patch.vehicle = { ...(participant.vehicle || {}), ...patchVehicle };
+  }
+  if (Object.keys(patchInsurance).length > 0) {
+    patch.insurance = { ...(participant.insurance || {}), ...patchInsurance };
+  }
+
+  if (Object.keys(patch).length > 0) {
+    await updateParticipant(sessionId, correction.party, patch);
+  }
+
+  return record;
+}
+
+/**
+ * Get all corrections for a session (for PDF rendering and audit display).
+ */
+export async function getCorrections(sessionId: string) {
+  return db
+    .select()
+    .from(policeCorrections)
+    .where(eq(policeCorrections.sessionId, sessionId))
+    .orderBy(desc(policeCorrections.createdAt));
+}
+
+/**
+ * Get a set of corrected field paths for a session+party, for PDF annotation.
+ */
+export async function getCorrectedFieldPaths(sessionId: string): Promise<Map<string, PoliceFieldCorrection[]>> {
+  const rows = await getCorrections(sessionId);
+  const map = new Map<string, PoliceFieldCorrection[]>();
+  for (const row of rows) {
+    for (const c of (row.corrections || [])) {
+      const key = `${c.party}.${c.fieldPath}`;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(c);
+    }
+  }
+  return map;
+}
+
 // ── Interventions (module QR complet) ────────────────────────
 
 import { policeInterventions, type DriverStateRecord, type ConditionsRecord, type PolicePhotoRecord } from '../db/schema.js';

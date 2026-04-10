@@ -48,6 +48,8 @@ COPY --from=builder /app/node_modules/canvas/build ./node_modules/canvas/build
 
 # Copy built artifacts only (no source TypeScript needed)
 COPY --from=builder /app/dist ./dist
+# Copy embedded fonts for PDF RTL support (Arabic, Hebrew)
+COPY --from=builder /app/server/src/services/fonts ./dist/server/fonts
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=builder /app/build-server.mjs ./build-server.mjs
 

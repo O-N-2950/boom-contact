@@ -88,6 +88,8 @@ interface ConstatFlowProps {
 
 export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth, onAccount, onBuyPack }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
+  const [showExpiryWarning, setShowExpiryWarning] = useState(false);
+  const [expiryTime, setExpiryTime] = useState<string>('');
 
   // Detect post-payment return: ?session=XXX&paid=1
   const isPaidReturn = (() => {
@@ -215,6 +217,33 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       vehicleCount, voiceAnalysis, voiceTranscript, ts: Date.now(),
     }));
   }, [step, sessionId, qrUrl, participantData, damagedZones, photos, vehicleCount, voiceAnalysis, voiceTranscript]);
+
+  // ── Session expiry warning (15 min before 2h TTL) ──────────
+  useEffect(() => {
+    if (step === 'done') return;
+    const WARNING_THRESHOLD = 105 * 60 * 1000; // 1h45m
+    const TTL = 2 * 60 * 60 * 1000; // 2h
+    const check = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed.ts) return;
+        const elapsed = Date.now() - parsed.ts;
+        if (elapsed > WARNING_THRESHOLD) {
+          setShowExpiryWarning(true);
+          const remainingMs = Math.max(0, TTL - elapsed);
+          const mins = Math.ceil(remainingMs / 60000);
+          setExpiryTime(`${mins} min`);
+        } else {
+          setShowExpiryWarning(false);
+        }
+      } catch { /* ignore */ }
+    };
+    check();
+    const interval = setInterval(check, 60_000);
+    return () => clearInterval(interval);
+  }, [step]);
 
   // Steps with translated labels — memoized to avoid recreating on every render
   const STEPS = useMemo<{ id: FlowStep; icon: string; label: string }[]>(() => [
@@ -432,6 +461,15 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           )}
         </div>
       </div>
+
+      {/* Session expiry warning */}
+      {showExpiryWarning && step !== 'done' && (
+        <div role="alert" className="shrink-0 flex items-center gap-2 text-[12px] font-semibold px-4 py-2.5" style={{ background: 'rgba(234,179,8,0.15)', borderBottom: '1px solid rgba(234,179,8,0.3)', color: '#eab308' }}>
+          <span aria-hidden="true">⚠️</span>
+          <span>Votre session expire bientôt. Sauvegardez vos données.</span>
+          <span className="ml-auto text-[11px] opacity-80" style={{ fontFamily: 'monospace' }}>~{expiryTime}</span>
+        </div>
+      )}
 
       {/* Step indicator */}
       {step !== 'done' && (

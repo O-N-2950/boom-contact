@@ -548,6 +548,35 @@ export const policeGenerateReportOutput = z.object({
   filename: z.string(),
 });
 
+// ── police correction outputs ──────────────────────────────
+export const policeCorrectDriverOutput = z.object({
+  ok: z.boolean(),
+  id: z.string(),
+  correctedFields: z.number(),
+});
+
+export const policeGetCorrectionsOutput = z.array(z.object({
+  id: z.string(),
+  sessionId: z.string(),
+  agentId: z.string(),
+  stationId: z.string(),
+  party: z.string(),
+  corrections: z.array(z.object({
+    fieldPath: z.string(),
+    oldValue: z.string().nullable(),
+    newValue: z.string().nullable(),
+    party: z.string(),
+  })),
+  reason: z.string().nullable().optional(),
+  createdAt: z.union([z.string(), z.date()]),
+}));
+
+export const policeSendReportOutput = z.object({
+  ok: z.boolean(),
+  messageId: z.string().optional(),
+  error: z.string().optional(),
+});
+
 // ── admin misc outputs ──────────────────────────────────────
 export const adminUsersOutput = z.array(z.object({
   id: z.string(),

@@ -2,11 +2,110 @@ import { renderSketch } from './sketch-renderer.service.js';
 import { fetchAccidentMap, fetchAccidentMapWithVehicles, geocodeAddress } from './osm-map.service.js';
 import { logger } from '../logger.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit';
+import { readFileSync, existsSync, statSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import {
   determineLangs, getBilingualLabels, getLabels, countryToLang,
   type PdfLang, type PdfLabels,
 } from './pdf.labels.js';
 import type { ConstatSession } from '../../../shared/types';
+
+// ── RTL / Unicode font support ───────────────────────────────
+// Resolve fonts directory — works in both dev (tsx) and production (esbuild bundle).
+// Dev:  server/src/services/fonts/
+// Prod: dist/server/fonts/ (copied by build-server.mjs)
+const __fontDir = (() => {
+  const candidates: string[] = [];
+  try {
+    const thisFile = typeof __filename !== 'undefined' ? __filename : fileURLToPath(import.meta.url);
+    const thisDir = dirname(thisFile);
+    // Dev layout: this file is at server/src/services/pdf.service.ts, fonts at server/src/services/fonts/
+    candidates.push(join(thisDir, 'fonts'));
+    // Production layout: dist/server/index.js → dist/server/fonts/
+    candidates.push(join(thisDir, 'fonts'));
+  } catch { /* ignore */ }
+  // Fallback: cwd-relative paths
+  candidates.push(join(process.cwd(), 'server', 'src', 'services', 'fonts'));
+  candidates.push(join(process.cwd(), 'dist', 'server', 'fonts'));
+
+  // Return first candidate that actually exists
+  for (const dir of candidates) {
+    try {
+      if (existsSync(dir) && statSync(dir).isDirectory()) return dir;
+    } catch { /* skip */ }
+  }
+  // Fallback to first candidate — loadFontBytes will log if files not found
+  return candidates[0] ?? join(process.cwd(), 'server', 'src', 'services', 'fonts');
+})();
+
+// Lazy-load font bytes (cached after first read)
+let _fontCache: Record<string, Uint8Array> = {};
+function loadFontBytes(filename: string): Uint8Array {
+  if (!_fontCache[filename]) {
+    try {
+      const buf = readFileSync(join(__fontDir, filename));
+      _fontCache[filename] = new Uint8Array(buf);
+      logger.info(`[PDF] Loaded font: ${filename} (${buf.length} bytes)`);
+    } catch (e) {
+      logger.warn(`[PDF] Font not found: ${filename} in ${__fontDir}`, { error: String(e) });
+      throw e;
+    }
+  }
+  return _fontCache[filename];
+}
+
+// ── Script detection helpers ─────────────────────────────────
+const ARABIC_RE  = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const HEBREW_RE  = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
+const RTL_RE     = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB1D-\uFB4F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+
+type ScriptType = 'arabic' | 'hebrew' | 'latin';
+
+function detectScript(text: string): ScriptType {
+  if (ARABIC_RE.test(text)) return 'arabic';
+  if (HEBREW_RE.test(text)) return 'hebrew';
+  return 'latin';
+}
+
+function isRTL(text: string): boolean {
+  return RTL_RE.test(text);
+}
+
+/**
+ * Reverse the visual order of RTL text for pdf-lib rendering.
+ * pdf-lib draws glyphs left-to-right; for RTL scripts we reverse
+ * the character order so the visual result reads right-to-left.
+ */
+function reverseRTLSegments(text: string): string {
+  if (!isRTL(text)) return text;
+  // Split into RTL and LTR runs, reverse RTL runs
+  const segments: { text: string; rtl: boolean }[] = [];
+  let current = '';
+  let currentRtl = false;
+  for (const char of text) {
+    const charRtl = RTL_RE.test(char);
+    if (current.length === 0) {
+      current = char;
+      currentRtl = charRtl;
+    } else if (charRtl === currentRtl || char === ' ') {
+      current += char;
+    } else {
+      segments.push({ text: current, rtl: currentRtl });
+      current = char;
+      currentRtl = charRtl;
+    }
+  }
+  if (current) segments.push({ text: current, rtl: currentRtl });
+
+  // Reverse RTL segments' characters, then reverse overall segment order
+  const reversed = segments.map(s =>
+    s.rtl ? { ...s, text: [...s.text].reverse().join('') } : s
+  );
+  reversed.reverse();
+  return reversed.map(s => s.text).join('');
+}
 
 // ── Format de date selon le pays ──────────────────────────────
 // ISO input: YYYY-MM-DD → format local
@@ -54,8 +153,12 @@ const C = {
 // ─────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────
-function sanitize(text: string): string {
-  // WinAnsi charset: replace chars outside latin-1 range with ASCII equivalents
+/**
+ * Sanitize text for WinAnsi (Helvetica) rendering.
+ * Only used for Latin-script text drawn with StandardFonts.
+ * Arabic/Hebrew text bypasses this and uses embedded Noto fonts.
+ */
+function sanitizeForWinAnsi(text: string): string {
   return text
     .replace(/[\u0100-\uFFFF]/g, (c) => {
       const map: Record<string, string> = {
@@ -78,17 +181,49 @@ function sanitize(text: string): string {
     });
 }
 
+/**
+ * Draw text on a PDF page with automatic script detection.
+ * - Latin text: uses the provided font (Helvetica) with WinAnsi sanitization
+ * - Arabic text: uses embedded Noto Sans Arabic with RTL reordering
+ * - Hebrew text: uses embedded Noto Sans Hebrew with RTL reordering
+ *
+ * The optional `rtlFonts` parameter provides embedded Unicode fonts.
+ * If not available, falls back to Helvetica with transliteration.
+ */
 function drawText(
   page: PDFPage, text: string, x: number, y: number,
-  font: PDFFont, size: number, color = C.black
+  font: PDFFont, size: number, color = C.black,
+  rtlFonts?: { arabic?: PDFFont; hebrew?: PDFFont; notoRegular?: PDFFont; notoBold?: PDFFont }
 ) {
   if (!text) return;
+
+  const script = detectScript(text);
+
   try {
-    page.drawText(sanitize(text), { x, y, font, size, color });
-  } catch {
-    // Fallback: strip everything non-ASCII
-    const safe = text.replace(/[^\x20-\x7E]/g, '?');
-    if (safe.trim()) page.drawText(safe, { x, y, font, size, color });
+    if (script === 'arabic' && rtlFonts?.arabic) {
+      // Arabic: use Noto Sans Arabic + RTL visual reordering
+      const reordered = reverseRTLSegments(text);
+      // Right-align: calculate text width and draw from right edge
+      const textWidth = rtlFonts.arabic.widthOfTextAtSize(reordered, size);
+      const rtlX = x + textWidth; // For RTL, we shift x to place text correctly
+      page.drawText(reordered, { x, y, font: rtlFonts.arabic, size, color });
+    } else if (script === 'hebrew' && rtlFonts?.hebrew) {
+      // Hebrew: use Noto Sans Hebrew + RTL visual reordering
+      const reordered = reverseRTLSegments(text);
+      page.drawText(reordered, { x, y, font: rtlFonts.hebrew, size, color });
+    } else {
+      // Latin or no RTL font available: use standard font with WinAnsi sanitization
+      page.drawText(sanitizeForWinAnsi(text), { x, y, font, size, color });
+    }
+  } catch (e) {
+    // Fallback: strip everything non-ASCII if font embedding fails
+    logger.warn('[PDF] drawText fallback for script=' + script, { error: String(e), text: text.slice(0, 50) });
+    try {
+      const safe = text.replace(/[^\x20-\x7E]/g, '?');
+      if (safe.trim()) page.drawText(safe, { x, y, font, size, color });
+    } catch {
+      // Complete failure — silently skip this text
+    }
   }
 }
 
@@ -107,11 +242,12 @@ function drawLine(page: PDFPage, x1: number, y1: number, x2: number, y2: number,
 function labelValue(
   page: PDFPage, label: string, value: string,
   x: number, y: number, w: number,
-  labelFont: PDFFont, valueFont: PDFFont
+  labelFont: PDFFont, valueFont: PDFFont,
+  rtlFonts?: RtlFonts
 ) {
   drawRect(page, x, y - 18, w, 22, C.white, C.border, 0.5);
-  drawText(page, label, x + 4, y - 13, labelFont, 6, C.mid);
-  drawText(page, value || '-', x + 4, y - 22, valueFont, 9, C.black);
+  drawText(page, label, x + 4, y - 13, labelFont, 6, C.mid, rtlFonts);
+  drawText(page, value || '-', x + 4, y - 22, valueFont, 9, C.black, rtlFonts);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -124,12 +260,20 @@ interface PartyBStatus {
   notes?: string; recordedAt: string;
 }
 
+interface RtlFonts {
+  arabic?: PDFFont;
+  hebrew?: PDFFont;
+  notoRegular?: PDFFont;
+  notoBold?: PDFFont;
+}
+
 interface PdfContext {
   doc: PDFDocument;
   page: PDFPage;
   bold: PDFFont;
   normal: PDFFont;
   mono: PDFFont;
+  rtlFonts: RtlFonts;
   session: ConstatSession;
   A: ConstatSession['participantA'];
   B: ConstatSession['participantB'];
@@ -147,32 +291,32 @@ interface PdfContext {
 
 // ── Sub-function: Header ────────────────────────────────────
 function buildHeader(ctx: PdfContext): void {
-  const { page, bold, normal, mono, margin, width, height, isUnilateral, L, session, acc, formattedDate } = ctx;
+  const { page, bold, normal, mono, rtlFonts, margin, width, height, isUnilateral, L, session, acc, formattedDate } = ctx;
 
   const headerColor = isUnilateral ? rgb(0.6, 0.35, 0.0) : C.boom;
   page.drawRectangle({ x: 0, y: height - 52, width, height: 52, color: headerColor });
 
-  drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white);
+  drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white, rtlFonts);
   const pdfTitle = isUnilateral ? 'Declaration Unilaterale de Sinistre' : L.title;
   const pdfSubtitle = isUnilateral
     ? 'Document valable aupres des assurances — Convention Europeenne 46 pays'
     : L.subtitle;
-  drawText(page, pdfTitle, margin, height - 34, normal, 9, rgb(1, 0.9, 0.7));
-  drawText(page, pdfSubtitle, margin, height - 44, normal, 6.5, rgb(1, 0.85, 0.6));
+  drawText(page, pdfTitle, margin, height - 34, normal, 9, rgb(1, 0.9, 0.7), rtlFonts);
+  drawText(page, pdfSubtitle, margin, height - 44, normal, 6.5, rgb(1, 0.85, 0.6), rtlFonts);
 
   const sessionText = `Session: ${session.id}`;
   const sessionW = mono.widthOfTextAtSize(sessionText, 7);
-  drawText(page, sessionText, width - margin - sessionW, height - 18, mono, 7, C.white);
+  drawText(page, sessionText, width - margin - sessionW, height - 18, mono, 7, C.white, rtlFonts);
   const dateStr = acc.date && acc.time ? `${formattedDate} ${acc.time}` : new Date(session.createdAt).toLocaleString('fr-CH');
   const dateW = normal.widthOfTextAtSize(dateStr, 7);
-  drawText(page, dateStr, width - margin - dateW, height - 30, normal, 7, rgb(1, 0.85, 0.8));
+  drawText(page, dateStr, width - margin - dateW, height - 30, normal, 7, rgb(1, 0.85, 0.8), rtlFonts);
 
   ctx.y = height - 64;
 }
 
 // ── Sub-function: Unilateral banner ─────────────────────────
 async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
-  const { doc, page, bold, normal, margin, width, isUnilateral, partyBStatus } = ctx;
+  const { doc, page, bold, normal, rtlFonts, margin, width, isUnilateral, partyBStatus } = ctx;
   if (!isUnilateral || !partyBStatus) return;
   let y = ctx.y;
 
@@ -183,24 +327,24 @@ async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
     borderWidth: 1,
   });
 
-  drawText(page, 'DECLARATION UNILATERALE DE SINISTRE', margin + 8, y - 12, bold, 9, rgb(0.95, 0.72, 0.1));
+  drawText(page, 'DECLARATION UNILATERALE DE SINISTRE', margin + 8, y - 12, bold, 9, rgb(0.95, 0.72, 0.1), rtlFonts);
   drawText(page,
     `Raison : ${partyBStatus.reasonLabel}  |  Enregistre le : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`,
-    margin + 8, y - 24, normal, 7.5, rgb(0.9, 0.75, 0.4)
+    margin + 8, y - 24, normal, 7.5, rgb(0.9, 0.75, 0.4), rtlFonts
   );
 
   if (partyBStatus.plateNumber) {
-    drawText(page, `Plaque partie B : ${partyBStatus.plateNumber}`, margin + 8, y - 36, bold, 8, rgb(0.95, 0.72, 0.1));
+    drawText(page, `Plaque partie B : ${partyBStatus.plateNumber}`, margin + 8, y - 36, bold, 8, rgb(0.95, 0.72, 0.1), rtlFonts);
   }
   if (partyBStatus.vehicleDescription) {
-    drawText(page, `Vehicule B : ${partyBStatus.vehicleDescription}`, margin + 8, y - 46, normal, 7, rgb(0.85, 0.7, 0.4));
+    drawText(page, `Vehicule B : ${partyBStatus.vehicleDescription}`, margin + 8, y - 46, normal, 7, rgb(0.85, 0.7, 0.4), rtlFonts);
   }
   if (partyBStatus.policeReportRef) {
-    drawText(page, `Ref. police : ${partyBStatus.policeReportRef}`, margin + 240, y - 36, normal, 7, rgb(0.85, 0.7, 0.4));
+    drawText(page, `Ref. police : ${partyBStatus.policeReportRef}`, margin + 240, y - 36, normal, 7, rgb(0.85, 0.7, 0.4), rtlFonts);
   }
   if (partyBStatus.notes) {
     const notesShort = partyBStatus.notes.length > 80 ? partyBStatus.notes.slice(0, 80) + '...' : partyBStatus.notes;
-    drawText(page, `Observations : ${notesShort}`, margin + 8, y - 56, normal, 6.5, rgb(0.75, 0.62, 0.35));
+    drawText(page, `Observations : ${notesShort}`, margin + 8, y - 56, normal, 6.5, rgb(0.75, 0.62, 0.35), rtlFonts);
   }
 
   if (partyBStatus.platePhoto) {
@@ -228,43 +372,43 @@ async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
 
 // ── Sub-function: Vehicle + Driver + Insurance sections ─────
 function buildPartySection(ctx: PdfContext): void {
-  const { page, bold, normal, A, B, L, margin, width, colW } = ctx;
+  const { page, bold, normal, rtlFonts, A, B, L, margin, width, colW } = ctx;
   let y = ctx.y;
 
   // Accident info
   drawRect(page, margin, y - 38, width - margin * 2, 42, C.section, C.border);
-  drawText(page, L.s1, margin + 6, y - 10, bold, 8, C.boom);
+  drawText(page, L.s1, margin + 6, y - 10, bold, 8, C.boom, rtlFonts);
 
   const fieldW = (width - margin * 2 - 16) / 4;
-  labelValue(page, L.date, ctx.formattedDate, margin + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, L.time, ctx.acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold);
-  labelValue(page, L.country, ctx.acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold);
-  labelValue(page, L.injuries, ctx.acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold);
+  labelValue(page, L.date, ctx.formattedDate, margin + 4, y - 12, fieldW, normal, bold, rtlFonts);
+  labelValue(page, L.time, ctx.acc.time ?? '', margin + 4 + fieldW + 4, y - 12, fieldW, normal, bold, rtlFonts);
+  labelValue(page, L.country, ctx.acc.location?.country ?? '', margin + 4 + (fieldW + 4) * 2, y - 12, fieldW, normal, bold, rtlFonts);
+  labelValue(page, L.injuries, ctx.acc.injuries ? L.yes : L.no, margin + 4 + (fieldW + 4) * 3, y - 12, fieldW, normal, bold, rtlFonts);
   y -= 42;
 
   // Location
   drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-  drawText(page, L.location, margin + 4, y - 8, normal, 6, C.mid);
+  drawText(page, L.location, margin + 4, y - 8, normal, 6, C.mid, rtlFonts);
   const locationStr = [ctx.acc.location?.address, ctx.acc.location?.city, ctx.acc.location?.country].filter(Boolean).join(', ');
-  drawText(page, locationStr || '-', margin + 6, y - 18, bold, 9, C.black);
+  drawText(page, locationStr || '-', margin + 6, y - 18, bold, 9, C.black, rtlFonts);
   y -= 28;
 
   // Vehicle headers
   y -= 6;
   page.drawRectangle({ x: margin, y: y - 22, width: colW, height: 22, color: C.black });
-  drawText(page, L.vehicleA, margin + 6, y - 8, bold, 8, C.white);
+  drawText(page, L.vehicleA, margin + 6, y - 8, bold, 8, C.white, rtlFonts);
   drawText(page, `${L.driver} : ${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim() || '-',
-    margin + 6, y - 17, normal, 7, C.light);
+    margin + 6, y - 17, normal, 7, C.light, rtlFonts);
   page.drawRectangle({ x: margin + colW + 8, y: y - 22, width: colW, height: 22, color: C.dark });
-  drawText(page, L.vehicleB, margin + colW + 14, y - 8, bold, 8, C.white);
+  drawText(page, L.vehicleB, margin + colW + 14, y - 8, bold, 8, C.white, rtlFonts);
   drawText(page, `${L.driver} : ${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim() || '-',
-    margin + colW + 14, y - 17, normal, 7, C.light);
+    margin + colW + 14, y - 17, normal, 7, C.light, rtlFonts);
   y -= 28;
 
   // Vehicle data side-by-side helper
   const drawSideBySide = (labelA: string, valA: string, labelB: string, valB: string, rowH = 26) => {
-    labelValue(page, labelA, valA, margin, y, colW, normal, bold);
-    labelValue(page, labelB, valB, margin + colW + 8, y, colW, normal, bold);
+    labelValue(page, labelA, valA, margin, y, colW, normal, bold, rtlFonts);
+    labelValue(page, labelB, valB, margin + colW + 8, y, colW, normal, bold, rtlFonts);
     y -= rowH;
   };
 
@@ -275,7 +419,7 @@ function buildPartySection(ctx: PdfContext): void {
 
   // Driver data
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, L.s2, margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s2, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
   y -= 18;
   drawSideBySide(L.name, `${A?.driver?.firstName ?? ''} ${A?.driver?.lastName ?? ''}`.trim(), L.name, `${B?.driver?.firstName ?? ''} ${B?.driver?.lastName ?? ''}`.trim());
   drawSideBySide(L.address, `${A?.driver?.address ?? ''} ${A?.driver?.city ?? ''}`.trim(), L.address, `${B?.driver?.address ?? ''} ${B?.driver?.city ?? ''}`.trim());
@@ -285,7 +429,7 @@ function buildPartySection(ctx: PdfContext): void {
 
   // Insurance data
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, L.s3, margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s3, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
   y -= 18;
   drawSideBySide(L.insurer, A?.insurance?.company ?? '', L.insurer, B?.insurance?.company ?? '');
   drawSideBySide('N° DE POLICE', A?.insurance?.policyNumber ?? '', 'N° DE POLICE', B?.insurance?.policyNumber ?? '');
@@ -297,12 +441,20 @@ function buildPartySection(ctx: PdfContext): void {
 
 // ── Sub-function: Circumstances, zones, witnesses, fault, description
 function buildDetailsSection(ctx: PdfContext): void {
-  const { page, bold, normal, mono, A, B, L, acc, margin, width, colW } = ctx;
+  const { page, bold, normal, mono, rtlFonts, A, B, L, acc, margin, width, colW } = ctx;
   let y = ctx.y;
+
+  // Helper to get the best font for measuring text width (handles RTL fonts)
+  const measureFont = (text: string, baseFont: PDFFont): PDFFont => {
+    const script = detectScript(text);
+    if (script === 'arabic' && rtlFonts.arabic) return rtlFonts.arabic;
+    if (script === 'hebrew' && rtlFonts.hebrew) return rtlFonts.hebrew;
+    return baseFont;
+  };
 
   // Circumstances
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, L.s4, margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s4, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
   y -= 18;
   const circA = A?.circumstances ?? [];
   const circB = B?.circumstances ?? [];
@@ -315,28 +467,28 @@ function buildDetailsSection(ctx: PdfContext): void {
     const cy = y - row * 14;
     const inA = circA.includes(id);
     const inB = circB.includes(id);
-    drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${L.circ[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black);
+    drawText(page, `${inA ? '[A] ' : '   '}${inB ? '[B] ' : '   '}${L.circ[id] ?? id}`, cx + 4, cy - 10, normal, 7, C.black, rtlFonts);
   });
   y -= Math.ceil(circItems.length / 2) * 14 + 8;
 
   // Damaged zones
   page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, L.s5, margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s5, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
   y -= 18;
   const zonesA = (A?.damagedZones ?? []).join(', ') || '-';
   const zonesB = (B?.damagedZones ?? []).join(', ') || '-';
   drawRect(page, margin, y - 22, colW, 26, C.white, C.border);
-  drawText(page, L.vehicleA, margin + 4, y - 8, normal, 6, C.mid);
-  drawText(page, zonesA, margin + 4, y - 18, bold, 8, C.black);
+  drawText(page, L.vehicleA, margin + 4, y - 8, normal, 6, C.mid, rtlFonts);
+  drawText(page, zonesA, margin + 4, y - 18, bold, 8, C.black, rtlFonts);
   drawRect(page, margin + colW + 8, y - 22, colW, 26, C.white, C.border);
-  drawText(page, L.vehicleB, margin + colW + 12, y - 8, normal, 6, C.mid);
-  drawText(page, zonesB, margin + colW + 12, y - 18, bold, 8, C.black);
+  drawText(page, L.vehicleB, margin + colW + 12, y - 8, normal, 6, C.mid, rtlFonts);
+  drawText(page, zonesB, margin + colW + 12, y - 18, bold, 8, C.black, rtlFonts);
   y -= 30;
 
   // Witnesses
   if (acc.witnesses) {
     page.drawRectangle({ x: margin, y: y - 14, width: width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-    drawText(page, L.witnesses, margin + 4, y - 9, bold, 7.5, C.boom);
+    drawText(page, L.witnesses, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
     y -= 18;
     drawRect(page, margin, y - 26, width - margin * 2, 30, C.white, C.border);
     const wWords = acc.witnesses.split(' ');
@@ -344,20 +496,21 @@ function buildDetailsSection(ctx: PdfContext): void {
     let wY = y - 10;
     for (const word of wWords) {
       const test = wLine ? `${wLine} ${word}` : word;
-      if (normal.widthOfTextAtSize(test, 8) > width - margin * 2 - 12) {
-        drawText(page, wLine, margin + 4, wY, normal, 8, C.black);
+      const mFont = measureFont(test, normal);
+      if (mFont.widthOfTextAtSize(sanitizeForWinAnsi(test), 8) > width - margin * 2 - 12) {
+        drawText(page, wLine, margin + 4, wY, normal, 8, C.black, rtlFonts);
         wLine = word; wY -= 10;
       } else { wLine = test; }
     }
-    if (wLine) drawText(page, wLine, margin + 4, wY, normal, 8, C.black);
+    if (wLine) drawText(page, wLine, margin + 4, wY, normal, 8, C.black, rtlFonts);
     y -= 34;
   }
 
   // Third party damage
   if (acc.thirdPartyDamage !== undefined) {
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-    drawText(page, L.thirdParty, margin + 4, y - 8, normal, 6, C.mid);
-    drawText(page, acc.thirdPartyDamage ? L.thirdPartyYes : L.no, margin + 4, y - 18, bold, 9, C.black);
+    drawText(page, L.thirdParty, margin + 4, y - 8, normal, 6, C.mid, rtlFonts);
+    drawText(page, acc.thirdPartyDamage ? L.thirdPartyYes : L.no, margin + 4, y - 18, bold, 9, C.black, rtlFonts);
     y -= 30;
   }
 
@@ -367,26 +520,27 @@ function buildDetailsSection(ctx: PdfContext): void {
       A: L.fault_A, B: L.fault_B, shared: L.fault_shared, unknown: L.fault_unknown,
     };
     drawRect(page, margin, y - 22, width - margin * 2, 26, C.white, C.border);
-    drawText(page, L.s6, margin + 4, y - 8, bold, 7, C.boom);
-    drawText(page, faultMap[acc.faultDeclaration] ?? '-', margin + 4, y - 18, bold, 9, C.black);
+    drawText(page, L.s6, margin + 4, y - 8, bold, 7, C.boom, rtlFonts);
+    drawText(page, faultMap[acc.faultDeclaration] ?? '-', margin + 4, y - 18, bold, 9, C.black, rtlFonts);
     y -= 30;
   }
 
   // Description
   if (acc.description) {
     drawRect(page, margin, y - 36, width - margin * 2, 40, C.white, C.border);
-    drawText(page, L.s7, margin + 4, y - 8, bold, 7, C.boom);
+    drawText(page, L.s7, margin + 4, y - 8, bold, 7, C.boom, rtlFonts);
     const words = acc.description.split(' ');
     let line = '';
     let lineY = y - 18;
     for (const word of words) {
       const test = line ? `${line} ${word}` : word;
-      if (normal.widthOfTextAtSize(test, 8) > width - margin * 2 - 12) {
-        drawText(page, line, margin + 4, lineY, normal, 8, C.black);
+      const mFont = measureFont(test, normal);
+      if (mFont.widthOfTextAtSize(sanitizeForWinAnsi(test), 8) > width - margin * 2 - 12) {
+        drawText(page, line, margin + 4, lineY, normal, 8, C.black, rtlFonts);
         line = word; lineY -= 11;
       } else { line = test; }
     }
-    if (line) drawText(page, line, margin + 4, lineY, normal, 8, C.black);
+    if (line) drawText(page, line, margin + 4, lineY, normal, 8, C.black, rtlFonts);
     y -= 44;
   }
 
@@ -395,33 +549,33 @@ function buildDetailsSection(ctx: PdfContext): void {
 
 // ── Sub-function: Signatures ────────────────────────────────
 async function buildSignatureSection(ctx: PdfContext): Promise<void> {
-  const { doc, page, bold, normal, A, B, L, margin, colW, isUnilateral, partyBStatus } = ctx;
+  const { doc, page, bold, normal, rtlFonts, A, B, L, margin, colW, isUnilateral, partyBStatus } = ctx;
   let y = ctx.y;
 
   y -= 6;
   page.drawRectangle({ x: margin, y: y - 14, width: ctx.width - margin * 2, height: 14, color: rgb(0.94, 0.93, 0.91) });
-  drawText(page, L.s8, margin + 4, y - 9, bold, 7.5, C.boom);
+  drawText(page, L.s8, margin + 4, y - 9, bold, 7.5, C.boom, rtlFonts);
   y -= 18;
 
   const sigH = 60;
 
   drawRect(page, margin, y - sigH, colW, sigH + 20, C.white, C.border);
-  drawText(page, L.sigA, margin + 4, y - 8, normal, 6.5, C.mid);
+  drawText(page, L.sigA, margin + 4, y - 8, normal, 6.5, C.mid, rtlFonts);
 
   if (isUnilateral && partyBStatus) {
     page.drawRectangle({
       x: margin + colW + 8, y: y - sigH, width: colW, height: sigH + 20,
       color: rgb(0.18, 0.12, 0.0), borderColor: rgb(0.6, 0.4, 0.0), borderWidth: 1,
     });
-    drawText(page, 'Partie B — Non signataire', margin + colW + 12, y - 8, normal, 6.5, rgb(0.75, 0.55, 0.1));
-    drawText(page, partyBStatus.reasonLabel, margin + colW + 12, y - 22, bold, 8, rgb(0.95, 0.72, 0.1));
+    drawText(page, 'Partie B — Non signataire', margin + colW + 12, y - 8, normal, 6.5, rgb(0.75, 0.55, 0.1), rtlFonts);
+    drawText(page, partyBStatus.reasonLabel, margin + colW + 12, y - 22, bold, 8, rgb(0.95, 0.72, 0.1), rtlFonts);
     if (partyBStatus.plateNumber) {
-      drawText(page, `Plaque : ${partyBStatus.plateNumber}`, margin + colW + 12, y - 34, normal, 7.5, rgb(0.85, 0.7, 0.4));
+      drawText(page, `Plaque : ${partyBStatus.plateNumber}`, margin + colW + 12, y - 34, normal, 7.5, rgb(0.85, 0.7, 0.4), rtlFonts);
     }
-    drawText(page, `Enregistre : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`, margin + colW + 12, y - sigH + 4, normal, 6, rgb(0.65, 0.5, 0.2));
+    drawText(page, `Enregistre : ${new Date(partyBStatus.recordedAt).toLocaleString('fr-CH')}`, margin + colW + 12, y - sigH + 4, normal, 6, rgb(0.65, 0.5, 0.2), rtlFonts);
   } else {
     drawRect(page, margin + colW + 8, y - sigH, colW, sigH + 20, C.white, C.border);
-    drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid);
+    drawText(page, L.sigB, margin + colW + 12, y - 8, normal, 6.5, C.mid, rtlFonts);
   }
 
   // Embed signatures
@@ -440,9 +594,9 @@ async function buildSignatureSection(ctx: PdfContext): Promise<void> {
 
   const signedAtA = A?.signedAt ? new Date(A.signedAt).toLocaleString('fr-CH') : '-';
   const signedAtB = B?.signedAt ? new Date(B.signedAt).toLocaleString('fr-CH') : '-';
-  drawText(page, `${L.signedAt} : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid);
+  drawText(page, `${L.signedAt} : ${signedAtA}`, margin + 4, y - sigH + 4, normal, 7, C.mid, rtlFonts);
   if (!isUnilateral) {
-    drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid);
+    drawText(page, `${L.signedAt} : ${signedAtB}`, margin + colW + 12, y - sigH + 4, normal, 7, C.mid, rtlFonts);
   }
 
   ctx.y = y - sigH - 28;
@@ -450,7 +604,7 @@ async function buildSignatureSection(ctx: PdfContext): Promise<void> {
 
 // ── Sub-function: Sketch page ───────────────────────────────
 async function buildSketchSection(ctx: PdfContext): Promise<void> {
-  const { doc, session, A, B, L, acc, margin, mono, bold, normal } = ctx;
+  const { doc, session, A, B, L, acc, margin, mono, bold, normal, rtlFonts } = ctx;
 
   let finalSketchBase64 = acc.sketchImage || null;
   try {
@@ -547,9 +701,9 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
     try {
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-      drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom);
-      drawText(sketchPage, `Position des véhicules A & B  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid);
-      drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light);
+      drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom, rtlFonts);
+      drawText(sketchPage, `Position des véhicules A & B  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid, rtlFonts);
+      drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light, rtlFonts);
       const sketchBytes = Buffer.from(finalSketchBase64, 'base64');
       const isJpeg = sketchBytes[0] === 0xFF && sketchBytes[1] === 0xD8;
       const sketchImg = isJpeg ? await doc.embedJpg(sketchBytes) : await doc.embedPng(sketchBytes);
@@ -560,21 +714,21 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
         x: margin, y: 820 - 10 - sketchImg.height * scale,
         width: sketchImg.width * scale, height: sketchImg.height * scale,
       });
-      drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid);
+      drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid, rtlFonts);
     } catch (e) { logger.warn('[PDF] Sketch embed failed', { error: String(e) }); }
   }
 }
 
 // ── Sub-function: Photos page ───────────────────────────────
 async function buildPhotosSection(ctx: PdfContext): Promise<void> {
-  const { doc, session, acc, L, margin, bold, mono, normal } = ctx;
+  const { doc, session, acc, L, margin, bold, mono, normal, rtlFonts } = ctx;
 
   if (!acc.photos || acc.photos.length === 0) return;
   try {
     const photoPage = doc.addPage([595, 842]);
     photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-    drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom);
-    drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid);
+    drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom, rtlFonts);
+    drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid, rtlFonts);
 
     const cols = 2;
     const photoW = (595 - margin * 2 - 10) / cols;
@@ -592,33 +746,33 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
         const ih = img.height * scale;
         photoPage.drawImage(img, { x: px + (photoW - iw) / 2, y: py - photoH + (photoH - ih), width: iw, height: ih });
         const catLabel = photo.category.toUpperCase();
-        drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom);
-        if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black);
+        drawText(photoPage, catLabel, px + 2, py - photoH - 8, bold, 7, C.boom, rtlFonts);
+        if (photo.caption) drawText(photoPage, photo.caption, px + 2, py - photoH - 18, normal, 7, C.black, rtlFonts);
         photoPage.drawRectangle({ x: px, y: py - photoH, width: photoW, height: photoH, borderColor: rgb(0.85, 0.85, 0.85), borderWidth: 0.5, color: undefined as any });
       } catch (e) { logger.warn('[PDF] Photo embed failed', { index: i, error: String(e) }); }
 
       if (i % cols === cols - 1) { px = margin; py -= photoH + 30; }
       else { px += photoW + 10; }
     }
-    drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid);
+    drawText(photoPage, L.footer, margin, 18, normal, 7, C.mid, rtlFonts);
   } catch (e) { logger.warn('[PDF] Photos page failed', { error: String(e) }); }
 }
 
 // ── Sub-function: Footer ────────────────────────────────────
 function buildFooter(ctx: PdfContext): void {
-  const { page, normal, mono, session, margin, width, isUnilateral } = ctx;
+  const { page, normal, mono, rtlFonts, session, margin, width, isUnilateral } = ctx;
 
   drawLine(page, margin, 48, width - margin, 48, C.border);
   const footerLine1 = isUnilateral
     ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
     : 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app';
-  drawText(page, footerLine1, margin, 38, normal, 7, C.mid);
+  drawText(page, footerLine1, margin, 38, normal, 7, C.mid, rtlFonts);
   drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - CHE-476.484.632`,
-    margin, 28, mono, 6.5, C.mid);
+    margin, 28, mono, 6.5, C.mid, rtlFonts);
   const footerLine3 = isUnilateral
     ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`
     : `boom.contact by PEP's Swiss SA · Document numerique certifie · Valable mondialement`;
-  drawText(page, footerLine3, margin, 18, normal, 6.5, C.mid);
+  drawText(page, footerLine3, margin, 18, normal, 6.5, C.mid, rtlFonts);
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
 }
 
@@ -630,6 +784,9 @@ export async function generateConstatPDF(
   forRole: 'A' | 'B' = 'A'
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
+
+  // Register fontkit to enable custom font embedding (Arabic, Hebrew, etc.)
+  doc.registerFontkit(fontkit);
 
   const acc = session.accident;
   const partyBStatus = (acc as any)?.partyBStatus as PartyBStatus | undefined;
@@ -651,6 +808,34 @@ export async function generateConstatPDF(
   const normal = await doc.embedFont(StandardFonts.Helvetica);
   const mono   = await doc.embedFont(StandardFonts.Courier);
 
+  // ── Embed RTL / Unicode fonts ──────────────────────────────
+  // These fonts enable native Arabic and Hebrew text rendering in the PDF.
+  // They are loaded lazily and cached in memory after first use.
+  const rtlFonts: RtlFonts = {};
+  try {
+    const arabicBytes = loadFontBytes('NotoSansArabic-Regular.ttf');
+    rtlFonts.arabic = await doc.embedFont(arabicBytes, { subset: true });
+    logger.info('[PDF] Embedded Noto Sans Arabic font');
+  } catch (e) {
+    logger.warn('[PDF] Could not embed Arabic font — Arabic text will be transliterated', { error: String(e) });
+  }
+  try {
+    const hebrewBytes = loadFontBytes('NotoSansHebrew-Regular.ttf');
+    rtlFonts.hebrew = await doc.embedFont(hebrewBytes, { subset: true });
+    logger.info('[PDF] Embedded Noto Sans Hebrew font');
+  } catch (e) {
+    logger.warn('[PDF] Could not embed Hebrew font — Hebrew text will be transliterated', { error: String(e) });
+  }
+  try {
+    const notoRegularBytes = loadFontBytes('NotoSans-Regular.ttf');
+    rtlFonts.notoRegular = await doc.embedFont(notoRegularBytes, { subset: true });
+    const notoBoldBytes = loadFontBytes('NotoSans-Bold.ttf');
+    rtlFonts.notoBold = await doc.embedFont(notoBoldBytes, { subset: true });
+    logger.info('[PDF] Embedded Noto Sans Regular/Bold fonts');
+  } catch (e) {
+    logger.warn('[PDF] Could not embed Noto Sans fonts', { error: String(e) });
+  }
+
   const A = session.participantA;
   const B = session.participantB;
 
@@ -664,7 +849,7 @@ export async function generateConstatPDF(
   const formattedDate = formatDateForCountry(acc.date ?? '', country);
 
   const ctx: PdfContext = {
-    doc, page, bold, normal, mono, session, A, B, L, acc, margin, colW,
+    doc, page, bold, normal, mono, rtlFonts, session, A, B, L, acc, margin, colW,
     width, height, isUnilateral, partyBStatus, formattedDate,
     y: height - margin,
   };

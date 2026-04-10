@@ -33,6 +33,8 @@ const ACCIDENT_CIRCUMSTANCES = [
   { id: 'c17', label: 'Autre situation — préciser dans les observations' },
 ];
 
+const NON_REGISTERED_TYPES = ['bicycle', 'pedestrian', 'escooter', 'cargo_bike', 'moped'];
+
 type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances' | 'complement';
 
 export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
@@ -46,6 +48,8 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
     circumstances:prefilled?.circumstances ?? [],
     language:     prefilled?.language     ?? 'fr',
   });
+
+  const isNonRegistered = NON_REGISTERED_TYPES.includes(data.vehicle?.vehicleType as string ?? '');
 
   // Resynchroniser si prefilled change (retour depuis "Corriger" après OCR ou après signature)
   const prevPrefilled = useRef(prefilled);
@@ -98,6 +102,8 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
     });
   };
 
+  const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+
   const Field = ({ section: sec, field, label, placeholder, type = 'text', required = false }: {
     section: 'vehicle' | 'driver' | 'insurance';
     field: string; label: string; placeholder?: string; type?: string; required?: boolean;
@@ -109,6 +115,10 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       type === 'tel'    ? 'tel' :
       type === 'email'  ? 'email' : 'text';
     const fieldId = `${sec}-${field}`;
+    const value = ((data[sec] as Record<string, unknown>)?.[field] as string) ?? '';
+    const isTouched = touchedFields.has(fieldId);
+    const hasError = required && isTouched && !value.trim();
+    const errorId = `${fieldId}-error`;
     return (
     <div className="mb-3.5">
       <label htmlFor={fieldId} className="block text-[11px] opacity-70 uppercase mb-1.5 tracking-[1.5px]" style={{ fontFamily: 'monospace' }}>
@@ -121,13 +131,21 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize={type === 'email' || type === 'number' || field === 'licensePlate' || field === 'policyNumber' || field === 'vin' ? 'none' : 'words'}
-        value={((data[sec] as Record<string, unknown>)?.[field] as string) ?? ''}
+        value={value}
         onChange={e => update(sec, field, e.target.value)}
+        onBlur={() => setTouchedFields(prev => new Set(prev).add(fieldId))}
         placeholder={placeholder}
         aria-label={label}
         aria-required={required}
-        className="w-full rounded-lg text-sm px-3.5 py-3" style={{ border: `1.5px solid ${(data[sec] as Record<string, unknown>)?.[field] ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`, background: 'rgba(255,255,255,0.04)', color: 'var(--text)', fontFamily: 'inherit', transition: 'border-color 0.2s' }}
+        aria-invalid={hasError || undefined}
+        aria-describedby={hasError ? errorId : undefined}
+        className="w-full rounded-lg text-sm px-3.5 py-3" style={{ border: `1.5px solid ${hasError ? 'rgba(239,68,68,0.5)' : value ? 'rgba(34,197,94,0.3)' : 'rgba(240,237,232,0.12)'}`, background: 'rgba(255,255,255,0.04)', color: 'var(--text)', fontFamily: 'inherit', transition: 'border-color 0.2s' }}
       />
+      {hasError && (
+        <div id={errorId} role="alert" className="text-[11px] mt-1 opacity-90" style={{ color: '#ef4444' }}>
+          Ce champ est requis
+        </div>
+      )}
     </div>
     );
   };
@@ -149,7 +167,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       <div role="tabpanel" id={`form-tabpanel-${section}`} aria-labelledby={`form-tab-${section}`} className="flex-1 overflow-y-auto p-5">
 
         {section === 'vehicle' && <>
-          <Field section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required />
+          <Field section="vehicle" field="licensePlate" label="Immatriculation" placeholder="VD 123456" required={!isNonRegistered} />
           <Field section="vehicle" field="brand"        label="Marque"          placeholder="Toyota, VW, Peugeot..." required />
           <Field section="vehicle" field="model"        label="Modèle"          placeholder="Yaris, Golf, 208..." />
           <Field section="vehicle" field="year"         label="Année"           placeholder="2019" type="number" />
@@ -181,12 +199,12 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
           <Field section="driver" field="country"       label="Pays"            placeholder="CH, FR, DE..." />
           <Field section="driver" field="phone"         label="Téléphone"       placeholder="+41 79 123 45 67" type="tel" required />
           <Field section="driver" field="email"         label="Email"           placeholder="nom@email.com" type="email" />
-          <Field section="driver" field="licenseNumber" label="N° permis de conduire" required />
+          <Field section="driver" field="licenseNumber" label="N° permis de conduire" required={!isNonRegistered} />
         </>}
 
         {section === 'insurance' && <>
-          <Field section="insurance" field="company"         label="Compagnie d'assurance" placeholder="Zurich, AXA, Allianz..." required />
-          <Field section="insurance" field="policyNumber"    label="N° de police"          placeholder="CH-2026-12345" required />
+          <Field section="insurance" field="company"         label="Compagnie d'assurance" placeholder="Zurich, AXA, Allianz..." required={!isNonRegistered} />
+          <Field section="insurance" field="policyNumber"    label="N° de police"          placeholder="CH-2026-12345" required={!isNonRegistered} />
           <Field section="insurance" field="greenCardNumber" label="N° carte verte"        placeholder="..." />
           <Field section="insurance" field="greenCardExpiry" label="Validité carte verte"  placeholder="12/2026" />
           <Field section="insurance" field="agentName"       label="Agent / Courtier"      placeholder="Nom de l'agent" />

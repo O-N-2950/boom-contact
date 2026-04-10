@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { router, publicProcedure, policeProcedure, TRPCError } from './trpc.js';
-import { loginPoliceUser, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation, getOrCreateIntervention, saveIntervention as saveInterventionSvc, getIntervention as getInterventionSvc, addPolicePhoto as addPolicePhotoSvc } from '../services/police.service.js';
+import { loginPoliceUser, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation, getOrCreateIntervention, saveIntervention as saveInterventionSvc, getIntervention as getInterventionSvc, addPolicePhoto as addPolicePhotoSvc, correctDriverData as correctDriverDataSvc, getCorrections as getCorrectionsSvc } from '../services/police.service.js';
 import { getSession } from '../services/session.service.js';
-import { policeLoginOutput, policeDashboardOutput, policeJoinSessionOutput, policeGetFullSessionOutput, policeGetAnnotationOutput, policeSaveAnnotationOutput, policeGenerateReportOutput, policeGetInterventionOutput, policeSaveInterventionOutput, policeAddPhotoOutput } from './output-schemas.js';
+import { policeLoginOutput, policeDashboardOutput, policeJoinSessionOutput, policeGetFullSessionOutput, policeGetAnnotationOutput, policeSaveAnnotationOutput, policeGenerateReportOutput, policeSendReportOutput, policeGetInterventionOutput, policeSaveInterventionOutput, policeAddPhotoOutput, policeCorrectDriverOutput, policeGetCorrectionsOutput } from './output-schemas.js';
 
 export const policeRouter = router({
 
@@ -191,7 +191,7 @@ export const policeRouter = router({
 
   // Générer PDF rapport d'intervention (enhanced with intervention data)
   generateReport: policeProcedure
-    .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50) }))
+    .input(z.object({ token: z.string().trim().max(2000), sessionId: z.string().trim().max(50), locale: z.enum(['fr', 'de', 'it', 'en']).optional() }))
     .output(policeGenerateReportOutput)
     .mutation((async ({ ctx, input }: any) => {
       const payload = ctx.policeUser;
@@ -218,16 +218,136 @@ export const policeRouter = router({
             policePhotos: intervention.policePhotos || [],
           }
         : undefined;
+      // Fetch correction audit trail for PDF annotations
+      const { getCorrectedFieldPaths } = await import('../services/police.service.js');
+      const correctedFields = await getCorrectedFieldPaths(input.sessionId);
       const { generatePoliceReport } = await import('../services/pdf.police.js');
       const pdfBytes = await generatePoliceReport(
         session, annotationData,
         { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
         payload.country || 'CH',
-        interventionData
+        interventionData,
+        correctedFields,
+        input.locale
       );
       const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
       const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
       return { pdfBase64, filename };
+    }) as any),
+
+  // Envoyer le rapport d'intervention par email
+  sendReport: policeProcedure
+    .input(z.object({
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
+      recipientEmail: z.string().trim().email().max(320),
+      locale: z.enum(['fr', 'de', 'it', 'en']).optional(),
+    }))
+    .output(policeSendReportOutput)
+    .mutation((async ({ ctx, input }: any) => {
+      const payload = ctx.policeUser;
+
+      // 1. Verify session exists
+      const session = await getSession(input.sessionId);
+      if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
+
+      // 2. Generate the PDF (same logic as generateReport)
+      const annotation = await getAnnotation(input.sessionId, payload.stationId);
+      const intervention = await getInterventionSvc(input.sessionId, payload.userId);
+
+      const { db } = await import('../db/index.js');
+      const { policeUsers, policeStations } = await import('../db/schema.js');
+      const { eq } = await import('drizzle-orm');
+
+      const [agentRow] = await db.select().from(policeUsers).where(eq(policeUsers.id, payload.userId)).limit(1);
+      const [stationRow] = await db.select().from(policeStations).where(eq(policeStations.id, payload.stationId)).limit(1);
+
+      const annotationData = annotation
+        ? { reportNumber: annotation.reportNumber || undefined, infractions: (annotation.infractions || []) as any[], measures: (annotation.measures || []) as any[], witnesses: (annotation.witnesses || []) as any[], observations: annotation.observations || undefined }
+        : { infractions: [] as any[], measures: [] as any[], witnesses: [] as any[] };
+
+      const interventionData = intervention
+        ? {
+            infractions: intervention.infractions || [],
+            driverStates: intervention.driverStates || [],
+            conditions: intervention.conditions || undefined,
+            witnesses: intervention.witnesses || [],
+            observations: intervention.observations || undefined,
+            responsibilityEstimate: intervention.responsibilityEstimate || undefined,
+            policePhotos: intervention.policePhotos || [],
+          }
+        : undefined;
+
+      // Fetch correction audit trail for PDF annotations
+      const { getCorrectedFieldPaths: getCorrectedFieldPaths2 } = await import('../services/police.service.js');
+      const correctedFields2 = await getCorrectedFieldPaths2(input.sessionId);
+      const { generatePoliceReport } = await import('../services/pdf.police.js');
+      const pdfBytes = await generatePoliceReport(
+        session, annotationData,
+        { firstName: agentRow?.firstName || 'Agent', lastName: agentRow?.lastName || '', badgeNumber: agentRow?.badgeNumber || undefined, stationName: stationRow?.name || payload.stationId, canton: payload.canton },
+        payload.country || 'CH',
+        interventionData,
+        correctedFields2,
+        input.locale
+      );
+
+      const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
+      const filename = `rapport-intervention-${input.sessionId}-${new Date().toISOString().split('T')[0]}.pdf`;
+      const agentName = `${agentRow?.firstName || 'Agent'} ${agentRow?.lastName || ''}`.trim();
+      const stationName = stationRow?.name || payload.stationId;
+
+      // 3. Send via email
+      const { sendPoliceReportEmail } = await import('../services/email.service.js');
+      const result = await sendPoliceReportEmail({
+        recipientEmail: input.recipientEmail,
+        sessionId: input.sessionId,
+        pdfBase64,
+        filename,
+        agentName,
+        stationName,
+      });
+
+      if (!result.ok) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: result.error || 'Échec de l\'envoi de l\'email' });
+      }
+
+      return { ok: true, messageId: result.messageId };
+    }) as any),
+
+  // ── Correction de données conducteur (audit trail) ─────────
+
+  // Corriger des champs conducteur — enregistre l'ancien/nouveau + applique le patch
+  correctDriverData: policeProcedure
+    .input(z.object({
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
+      party: z.enum(['A', 'B']),
+      fields: z.record(z.string().max(200), z.string().max(2000).nullable()),
+      reason: z.string().max(2000).optional(),
+    }))
+    .output(policeCorrectDriverOutput)
+    .mutation((async ({ ctx, input }: any) => {
+      const payload = ctx.policeUser;
+      const session = await getSession(input.sessionId);
+      if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session introuvable' });
+      const result = await correctDriverDataSvc(
+        input.sessionId,
+        payload.userId,
+        payload.stationId,
+        { party: input.party, fields: input.fields, reason: input.reason }
+      );
+      return { ok: true, id: result.id, correctedFields: Object.keys(input.fields).length };
+    }) as any),
+
+  // Récupérer l'historique des corrections pour une session
+  getCorrections: policeProcedure
+    .input(z.object({
+      token: z.string().trim().max(2000),
+      sessionId: z.string().trim().max(50),
+    }))
+    .output(policeGetCorrectionsOutput)
+    .query((async ({ ctx, input }: any) => {
+      return getCorrectionsSvc(input.sessionId);
     }) as any),
 
 });

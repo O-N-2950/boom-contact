@@ -633,3 +633,122 @@ export async function sendGiftCreditsLink(recipientEmail: string, giftUrl: strin
     logger.error('Failed to send gift credits email', { error: String(err) });
   }
 }
+
+// ── Police report email ────────────────────────────────────────
+
+interface SendPoliceReportParams {
+  recipientEmail: string;
+  sessionId: string;
+  pdfBase64: string;
+  filename: string;
+  agentName: string;
+  stationName: string;
+}
+
+export async function sendPoliceReportEmail(params: SendPoliceReportParams): Promise<EmailResult> {
+  const RESEND_KEY = RESEND_API_KEY;
+
+  if (!RESEND_KEY) {
+    logger.warn('RESEND_API_KEY not set — police report email not sent');
+    return { ok: false, error: 'Email service not configured (RESEND_API_KEY missing)' };
+  }
+
+  try {
+    const resend = await getResendClient();
+    const safeSessionId = params.sessionId.replace(/[^a-zA-Z0-9_-]/g, '');
+    const safeAgentName = escapeHtml(params.agentName);
+    const safeStationName = escapeHtml(params.stationName);
+    const date = new Date().toLocaleDateString('fr-CH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    const subject = `Rapport d'intervention police — Session ${safeSessionId} · boom.contact`;
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="max-width:580px;margin:0 auto;padding:24px 16px 48px;">
+
+  <!-- HEADER -->
+  <div style="background:#06060C;border-radius:16px 16px 0 0;padding:28px 32px 24px;">
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td>
+        <div style="background:#FF3500;border-radius:10px;width:44px;height:44px;text-align:center;line-height:44px;font-size:22px;display:inline-block;vertical-align:middle;">💥</div>
+        <span style="vertical-align:middle;margin-left:12px;color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span>
+      </td>
+      <td align="right">
+        <span style="color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:monospace;">POLICE</span>
+      </td>
+    </tr></table>
+
+    <div style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:10px;padding:16px;margin-top:20px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:6px;">🚔</div>
+      <div style="color:#93c5fd;font-size:18px;font-weight:700;">Rapport d'intervention police</div>
+      <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-top:4px;">Session ${safeSessionId}</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div style="background:#ffffff;padding:28px 32px;">
+
+    <div style="background:#f0f9ff;border:2px solid #3b82f6;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:6px;">📎</div>
+      <div style="font-weight:700;font-size:15px;color:#111;">Le rapport PDF est joint à cet email</div>
+      <div style="font-size:12px;color:#595959;margin-top:4px;">${escapeHtml(params.filename)}</div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;color:#3b82f6;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">DÉTAILS</div>
+      <table style="width:100%;font-size:14px;color:#333;line-height:1.8;">
+        <tr><td style="font-weight:600;width:140px;">Agent</td><td>${safeAgentName}</td></tr>
+        <tr><td style="font-weight:600;">Poste</td><td>${safeStationName}</td></tr>
+        <tr><td style="font-weight:600;">Session</td><td><code style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px;">${safeSessionId}</code></td></tr>
+        <tr><td style="font-weight:600;">Date d'envoi</td><td>${date}</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:20px;">
+      <div style="font-size:13px;color:#92400e;line-height:1.5;">Ce rapport est généré automatiquement par boom.contact et contient les données du constat ainsi que les annotations de l'agent intervenant.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
+    <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
+      boom.contact · PEP's Swiss SA · IDE CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Suisse<br>
+      Document confidentiel — Rapport d'intervention police
+    </div>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+    const { data, error } = await resend.emails.send({
+      from: 'boom.contact <contact@boom.contact>',
+      to: params.recipientEmail,
+      subject,
+      html,
+      attachments: [{
+        filename: params.filename,
+        content: Buffer.from(params.pdfBase64, 'base64'),
+      }],
+    });
+
+    if (error) {
+      logger.error('Police report email send failed', { error: error.message });
+      return { ok: false, error: error.message };
+    }
+
+    logger.email('police-report', params.recipientEmail, subject);
+    return { ok: true, messageId: data?.id };
+
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'Unknown email error';
+    logger.error('Police report email error', { error: msg });
+    return { ok: false, error: msg };
+  }
+}

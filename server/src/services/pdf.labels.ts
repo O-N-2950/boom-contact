@@ -571,6 +571,505 @@ export function getLabels(lang: PdfLang): PdfLabels {
   return LABELS[lang] ?? LABELS.fr;
 }
 
+// ── Police report labels ──────────────────────────────────────
+// Labels for the police intervention report PDF (Module Police)
+
+export interface PoliceLabels {
+  // Header
+  reportTitle: string;
+  reportTitleCont: string;
+  reportTitleField: string;
+  countryLabels: Record<string, string>;
+  confidential: string;
+  doNotShare: string;
+  // Report metadata
+  reportNumber: string;
+  reportNumberNone: string;
+  reportDate: string;
+  // Section 1 — Accident
+  s1: string;
+  accidentDate: string;
+  accidentTime: string;
+  injuries: string;
+  injuriesYes: string;
+  injuriesNo: string;
+  vehicleCount: string;
+  accidentLocation: string;
+  gpsCoords: string;
+  // Section 2 — Drivers
+  driverA: string;
+  driverB: string;
+  driverBMissing: string;
+  nameLabel: string;
+  birthDate: string;
+  addressLabel: string;
+  plate: string;
+  brandModel: string;
+  color: string;
+  insurer: string;
+  policyNo: string;
+  // Section 3 — Infractions
+  s3: string;
+  infrCode: string;
+  infrDescription: string;
+  infrParty: string;
+  noInfractions: string;
+  // Section 4 — Measures
+  s4: string;
+  measureLabels: Record<string, string>;
+  partyLabel: string;
+  noMeasures: string;
+  // Section 5 — Witnesses
+  s5: string;
+  phone: string;
+  declaration: string;
+  noWitnesses: string;
+  // Section 6 — Observations
+  s6: string;
+  noObservations: string;
+  // Section 7 — Agent signature block
+  agentAuthor: string;
+  badge: string;
+  signatureStamp: string;
+  signatureRequired: string;
+  // Section 7b — Driver states (intervention page)
+  s7: string;
+  driverLabel: string;
+  stateLabels: Record<string, string>;
+  apparentState: string;
+  alcoholTestYes: string;
+  alcoholTestNo: string;
+  alcoholPositive: string;
+  alcoholNegative: string;
+  alcoholRate: string;
+  drugTestYes: string;
+  drugTestNo: string;
+  drugPositive: string;
+  drugNegative: string;
+  testRefused: string;
+  noData: string;
+  // Section 8 — Conditions
+  s8: string;
+  weatherLabels: Record<string, string>;
+  visibilityLabels: Record<string, string>;
+  roadLabels: Record<string, string>;
+  signageLabels: Record<string, string>;
+  weatherLabel: string;
+  visibilityLabel: string;
+  roadStateLabel: string;
+  signageLabel: string;
+  signageDetails: string;
+  speedLimit: string;
+  noConditions: string;
+  // Section 9 — Responsibility
+  s9: string;
+  respLabels: Record<string, string>;
+  respNone: string;
+  // Section 10 — Police photos
+  s10: string;
+  photoCount: string;
+  photoCatLabels: Record<string, string>;
+  // Footer
+  footerGenerated: string;
+  footerConfidential: string;
+  footerModule: string;
+  footerAuthor: string;
+  page: string;
+  // Page 3 header
+  reportTitleFieldData: string;
+  fieldObservations: string;
+  annotationsCont: string;
+}
+
+const POLICE_LABELS: Record<'fr' | 'de' | 'it' | 'en', PoliceLabels> = {
+
+  fr: {
+    reportTitle: 'RAPPORT D\'INTERVENTION',
+    reportTitleCont: 'RAPPORT D\'INTERVENTION - SUITE',
+    reportTitleField: 'RAPPORT D\'INTERVENTION - DONNEES TERRAIN',
+    countryLabels: { CH: 'Confederation Helvetique', FR: 'Republique Francaise', BE: 'Royaume de Belgique', LU: 'Grand-Duche de Luxembourg' },
+    confidential: 'CONFIDENTIEL - USAGE OFFICIEL',
+    doNotShare: 'Ne pas diffuser aux parties',
+    reportNumber: 'N\xB0 DE RAPPORT',
+    reportNumberNone: '(non attribue)',
+    reportDate: 'DATE DE REDACTION',
+    s1: '1. CIRCONSTANCES DE L\'ACCIDENT',
+    accidentDate: 'DATE DE L\'ACCIDENT',
+    accidentTime: 'HEURE',
+    injuries: 'BLESSES',
+    injuriesYes: 'OUI',
+    injuriesNo: 'NON',
+    vehicleCount: 'NB VEHICULES',
+    accidentLocation: 'LIEU DE L\'ACCIDENT',
+    gpsCoords: 'COORDONNEES GPS',
+    driverA: 'CONDUCTEUR A',
+    driverB: 'CONDUCTEUR B',
+    driverBMissing: 'Conducteur B non encore enregistre dans la session',
+    nameLabel: 'NOM / PRENOM',
+    birthDate: 'DATE DE NAISSANCE',
+    addressLabel: 'ADRESSE',
+    plate: 'PLAQUE',
+    brandModel: 'MARQUE / MODELE',
+    color: 'COULEUR',
+    insurer: 'ASSUREUR',
+    policyNo: 'N\xB0 POLICE',
+    s3: '3. INFRACTIONS CONSTATEES',
+    infrCode: 'CODE',
+    infrDescription: 'DESCRIPTION',
+    infrParty: 'PARTIE',
+    noInfractions: 'Aucune infraction constatee',
+    s4: '4. MESURES PRISES',
+    measureLabels: { alcotest: 'Alcotest', drug_test: 'Test stupefiants', licence_seized: 'Permis saisi', vehicle_towed: 'Vehicule deplace / evacue', pv_issued: 'PV dresse', warning: 'Avertissement verbal', other: 'Autre mesure' },
+    partyLabel: 'Partie',
+    noMeasures: 'Aucune mesure prise',
+    s5: '5. TEMOINS',
+    phone: 'Tel',
+    declaration: 'Declaration:',
+    noWitnesses: 'Aucun temoin enregistre',
+    s6: '6. OBSERVATIONS DE L\'AGENT',
+    noObservations: '(aucune observation)',
+    agentAuthor: 'AGENT REDACTEUR',
+    badge: 'Badge',
+    signatureStamp: 'SIGNATURE ET CACHET OFFICIEL',
+    signatureRequired: '(signature manuscrite requise)',
+    s7: '7. ETAT DES CONDUCTEURS',
+    driverLabel: 'CONDUCTEUR',
+    stateLabels: { normal: 'Normal', shocked: 'Choque', minor_injury: 'Blesse leger', serious_injury: 'Blesse grave', under_influence: 'Sous influence apparente' },
+    apparentState: 'Etat apparent',
+    alcoholTestYes: 'Alcotest: OUI - Resultat',
+    alcoholTestNo: 'Alcotest: NON effectue',
+    alcoholPositive: 'Positif',
+    alcoholNegative: 'Negatif',
+    alcoholRate: 'Taux',
+    drugTestYes: 'Test stupefiants: OUI - Resultat',
+    drugTestNo: 'Test stupefiants: NON effectue',
+    drugPositive: 'Positif',
+    drugNegative: 'Negatif',
+    testRefused: 'REFUS DE SE SOUMETTRE AU TEST',
+    noData: 'Aucune donnee saisie',
+    s8: '8. CONDITIONS DE L\'ACCIDENT',
+    weatherLabels: { clear: 'Beau temps', rain: 'Pluie', fog: 'Brouillard', snow_ice: 'Neige/Verglas', strong_wind: 'Vent fort' },
+    visibilityLabels: { good: 'Bonne', reduced: 'Reduite', night_no_light: 'Nuit sans eclairage', night_with_light: 'Nuit avec eclairage' },
+    roadLabels: { dry: 'Seche', wet: 'Mouillee', icy: 'Verglacee', gravel: 'Gravillons', construction: 'Travaux' },
+    signageLabels: { compliant: 'Conforme', defective: 'Defaillante', missing: 'Absente' },
+    weatherLabel: 'METEO',
+    visibilityLabel: 'VISIBILITE',
+    roadStateLabel: 'ETAT DE LA CHAUSSEE',
+    signageLabel: 'SIGNALISATION',
+    signageDetails: 'DETAILS SIGNALISATION',
+    speedLimit: 'LIMITATION DE VITESSE SUR ZONE',
+    noConditions: 'Aucune condition saisie',
+    s9: '9. ESTIMATION DE RESPONSABILITE (INDICATIF)',
+    respLabels: { A_responsible: 'Conducteur A responsable', B_responsible: 'Conducteur B responsable', shared: 'Responsabilite partagee', undetermined: 'Indeterminee' },
+    respNone: '(non renseignee)',
+    s10: '10. PHOTOS POLICE',
+    photoCount: 'photo(s) prises par l\'agent',
+    photoCatLabels: { overview: 'Vue globale', tracks: 'Detail traces', signage: 'Signalisation', other: 'Autre' },
+    footerGenerated: 'Document genere le',
+    footerConfidential: 'Ce document est confidentiel et a usage interne exclusivement',
+    footerModule: 'boom.contact - Module Police | police.boom.contact',
+    footerAuthor: 'Redige par',
+    page: 'Page',
+    reportTitleFieldData: 'RAPPORT D\'INTERVENTION - DONNEES TERRAIN',
+    fieldObservations: 'Constatations sur les lieux - CONFIDENTIEL',
+    annotationsCont: 'Annotations de l\'agent - CONFIDENTIEL',
+  },
+
+  de: {
+    reportTitle: 'INTERVENTIONSBERICHT',
+    reportTitleCont: 'INTERVENTIONSBERICHT - FORTSETZUNG',
+    reportTitleField: 'INTERVENTIONSBERICHT - FELDDATEN',
+    countryLabels: { CH: 'Schweizerische Eidgenossenschaft', FR: 'Franzoesische Republik', BE: 'Koenigreich Belgien', LU: 'Grossherzogtum Luxemburg', DE: 'Bundesrepublik Deutschland', AT: 'Republik Oesterreich', LI: 'Fuerstentum Liechtenstein' },
+    confidential: 'VERTRAULICH - DIENSTGEBRAUCH',
+    doNotShare: 'Nicht an die Parteien weitergeben',
+    reportNumber: 'BERICHTSNUMMER',
+    reportNumberNone: '(nicht zugewiesen)',
+    reportDate: 'ERSTELLUNGSDATUM',
+    s1: '1. UNFALLUMSTAENDE',
+    accidentDate: 'UNFALLDATUM',
+    accidentTime: 'UHRZEIT',
+    injuries: 'VERLETZTE',
+    injuriesYes: 'JA',
+    injuriesNo: 'NEIN',
+    vehicleCount: 'ANZ. FAHRZEUGE',
+    accidentLocation: 'UNFALLORT',
+    gpsCoords: 'GPS-KOORDINATEN',
+    driverA: 'FAHRER A',
+    driverB: 'FAHRER B',
+    driverBMissing: 'Fahrer B noch nicht in der Sitzung registriert',
+    nameLabel: 'NAME / VORNAME',
+    birthDate: 'GEBURTSDATUM',
+    addressLabel: 'ADRESSE',
+    plate: 'KENNZEICHEN',
+    brandModel: 'MARKE / MODELL',
+    color: 'FARBE',
+    insurer: 'VERSICHERUNG',
+    policyNo: 'POLICEN-NR.',
+    s3: '3. FESTGESTELLTE VERSTOESSE',
+    infrCode: 'CODE',
+    infrDescription: 'BESCHREIBUNG',
+    infrParty: 'PARTEI',
+    noInfractions: 'Keine Verstoesse festgestellt',
+    s4: '4. ERGRIFFENE MASSNAHMEN',
+    measureLabels: { alcotest: 'Atemalkoholtest', drug_test: 'Drogentest', licence_seized: 'Fuehrerschein eingezogen', vehicle_towed: 'Fahrzeug abgeschleppt', pv_issued: 'Bussgeld erteilt', warning: 'Muendliche Verwarnung', other: 'Andere Massnahme' },
+    partyLabel: 'Partei',
+    noMeasures: 'Keine Massnahmen ergriffen',
+    s5: '5. ZEUGEN',
+    phone: 'Tel',
+    declaration: 'Aussage:',
+    noWitnesses: 'Keine Zeugen erfasst',
+    s6: '6. BEMERKUNGEN DES BEAMTEN',
+    noObservations: '(keine Bemerkungen)',
+    agentAuthor: 'VERFASSENDER BEAMTER',
+    badge: 'Dienstnr.',
+    signatureStamp: 'UNTERSCHRIFT UND DIENSTSIEGEL',
+    signatureRequired: '(Handunterschrift erforderlich)',
+    s7: '7. ZUSTAND DER FAHRER',
+    driverLabel: 'FAHRER',
+    stateLabels: { normal: 'Normal', shocked: 'Unter Schock', minor_injury: 'Leicht verletzt', serious_injury: 'Schwer verletzt', under_influence: 'Offensichtlich beeinflusst' },
+    apparentState: 'Erkennbarer Zustand',
+    alcoholTestYes: 'Atemalkoholtest: JA - Ergebnis',
+    alcoholTestNo: 'Atemalkoholtest: NICHT durchgefuehrt',
+    alcoholPositive: 'Positiv',
+    alcoholNegative: 'Negativ',
+    alcoholRate: 'Wert',
+    drugTestYes: 'Drogentest: JA - Ergebnis',
+    drugTestNo: 'Drogentest: NICHT durchgefuehrt',
+    drugPositive: 'Positiv',
+    drugNegative: 'Negativ',
+    testRefused: 'TESTVERWEIGERUNG',
+    noData: 'Keine Daten erfasst',
+    s8: '8. UNFALLBEDINGUNGEN',
+    weatherLabels: { clear: 'Schoen', rain: 'Regen', fog: 'Nebel', snow_ice: 'Schnee/Glatteis', strong_wind: 'Starker Wind' },
+    visibilityLabels: { good: 'Gut', reduced: 'Eingeschraenkt', night_no_light: 'Nacht ohne Beleuchtung', night_with_light: 'Nacht mit Beleuchtung' },
+    roadLabels: { dry: 'Trocken', wet: 'Nass', icy: 'Vereist', gravel: 'Schotter', construction: 'Baustelle' },
+    signageLabels: { compliant: 'Konform', defective: 'Defekt', missing: 'Fehlend' },
+    weatherLabel: 'WETTER',
+    visibilityLabel: 'SICHT',
+    roadStateLabel: 'FAHRBAHNZUSTAND',
+    signageLabel: 'SIGNALISATION',
+    signageDetails: 'SIGNALISATIONSDETAILS',
+    speedLimit: 'GESCHWINDIGKEITSBEGRENZUNG',
+    noConditions: 'Keine Bedingungen erfasst',
+    s9: '9. HAFTUNGSSCHAETZUNG (RICHTWERT)',
+    respLabels: { A_responsible: 'Fahrer A verantwortlich', B_responsible: 'Fahrer B verantwortlich', shared: 'Geteilte Haftung', undetermined: 'Unbestimmt' },
+    respNone: '(nicht angegeben)',
+    s10: '10. POLIZEIFOTOS',
+    photoCount: 'Foto(s) vom Beamten aufgenommen',
+    photoCatLabels: { overview: 'Uebersicht', tracks: 'Spurendetail', signage: 'Signalisation', other: 'Sonstiges' },
+    footerGenerated: 'Dokument erstellt am',
+    footerConfidential: 'Dieses Dokument ist vertraulich und nur fuer den internen Gebrauch',
+    footerModule: 'boom.contact - Polizeimodul | police.boom.contact',
+    footerAuthor: 'Erstellt von',
+    page: 'Seite',
+    reportTitleFieldData: 'INTERVENTIONSBERICHT - FELDDATEN',
+    fieldObservations: 'Feststellungen vor Ort - VERTRAULICH',
+    annotationsCont: 'Bemerkungen des Beamten - VERTRAULICH',
+  },
+
+  it: {
+    reportTitle: 'RAPPORTO D\'INTERVENTO',
+    reportTitleCont: 'RAPPORTO D\'INTERVENTO - SEGUITO',
+    reportTitleField: 'RAPPORTO D\'INTERVENTO - DATI SUL CAMPO',
+    countryLabels: { CH: 'Confederazione Svizzera', FR: 'Repubblica Francese', BE: 'Regno del Belgio', LU: 'Granducato di Lussemburgo', IT: 'Repubblica Italiana', SM: 'Repubblica di San Marino' },
+    confidential: 'RISERVATO - USO UFFICIALE',
+    doNotShare: 'Non divulgare alle parti',
+    reportNumber: 'N. DI RAPPORTO',
+    reportNumberNone: '(non assegnato)',
+    reportDate: 'DATA DI REDAZIONE',
+    s1: '1. CIRCOSTANZE DELL\'INCIDENTE',
+    accidentDate: 'DATA DELL\'INCIDENTE',
+    accidentTime: 'ORA',
+    injuries: 'FERITI',
+    injuriesYes: 'SI',
+    injuriesNo: 'NO',
+    vehicleCount: 'N. VEICOLI',
+    accidentLocation: 'LUOGO DELL\'INCIDENTE',
+    gpsCoords: 'COORDINATE GPS',
+    driverA: 'CONDUCENTE A',
+    driverB: 'CONDUCENTE B',
+    driverBMissing: 'Conducente B non ancora registrato nella sessione',
+    nameLabel: 'COGNOME / NOME',
+    birthDate: 'DATA DI NASCITA',
+    addressLabel: 'INDIRIZZO',
+    plate: 'TARGA',
+    brandModel: 'MARCA / MODELLO',
+    color: 'COLORE',
+    insurer: 'ASSICURATORE',
+    policyNo: 'N. POLIZZA',
+    s3: '3. INFRAZIONI RISCONTRATE',
+    infrCode: 'CODICE',
+    infrDescription: 'DESCRIZIONE',
+    infrParty: 'PARTE',
+    noInfractions: 'Nessuna infrazione riscontrata',
+    s4: '4. PROVVEDIMENTI ADOTTATI',
+    measureLabels: { alcotest: 'Etilometro', drug_test: 'Test antidroga', licence_seized: 'Patente ritirata', vehicle_towed: 'Veicolo rimosso', pv_issued: 'Verbale emesso', warning: 'Ammonimento verbale', other: 'Altro provvedimento' },
+    partyLabel: 'Parte',
+    noMeasures: 'Nessun provvedimento adottato',
+    s5: '5. TESTIMONI',
+    phone: 'Tel',
+    declaration: 'Dichiarazione:',
+    noWitnesses: 'Nessun testimone registrato',
+    s6: '6. OSSERVAZIONI DELL\'AGENTE',
+    noObservations: '(nessuna osservazione)',
+    agentAuthor: 'AGENTE REDATTORE',
+    badge: 'Distintivo',
+    signatureStamp: 'FIRMA E TIMBRO UFFICIALE',
+    signatureRequired: '(firma autografa richiesta)',
+    s7: '7. STATO DEI CONDUCENTI',
+    driverLabel: 'CONDUCENTE',
+    stateLabels: { normal: 'Normale', shocked: 'Sotto shock', minor_injury: 'Ferito lieve', serious_injury: 'Ferito grave', under_influence: 'Apparentemente alterato' },
+    apparentState: 'Stato apparente',
+    alcoholTestYes: 'Etilometro: SI - Risultato',
+    alcoholTestNo: 'Etilometro: NON effettuato',
+    alcoholPositive: 'Positivo',
+    alcoholNegative: 'Negativo',
+    alcoholRate: 'Tasso',
+    drugTestYes: 'Test antidroga: SI - Risultato',
+    drugTestNo: 'Test antidroga: NON effettuato',
+    drugPositive: 'Positivo',
+    drugNegative: 'Negativo',
+    testRefused: 'RIFIUTO DI SOTTOPORSI AL TEST',
+    noData: 'Nessun dato inserito',
+    s8: '8. CONDIZIONI DELL\'INCIDENTE',
+    weatherLabels: { clear: 'Sereno', rain: 'Pioggia', fog: 'Nebbia', snow_ice: 'Neve/Ghiaccio', strong_wind: 'Vento forte' },
+    visibilityLabels: { good: 'Buona', reduced: 'Ridotta', night_no_light: 'Notte senza illuminazione', night_with_light: 'Notte con illuminazione' },
+    roadLabels: { dry: 'Asciutta', wet: 'Bagnata', icy: 'Ghiacciata', gravel: 'Ghiaia', construction: 'Lavori in corso' },
+    signageLabels: { compliant: 'Conforme', defective: 'Difettosa', missing: 'Assente' },
+    weatherLabel: 'METEO',
+    visibilityLabel: 'VISIBILITA',
+    roadStateLabel: 'STATO DEL MANTO STRADALE',
+    signageLabel: 'SEGNALETICA',
+    signageDetails: 'DETTAGLI SEGNALETICA',
+    speedLimit: 'LIMITE DI VELOCITA NELLA ZONA',
+    noConditions: 'Nessuna condizione inserita',
+    s9: '9. STIMA DI RESPONSABILITA (INDICATIVA)',
+    respLabels: { A_responsible: 'Conducente A responsabile', B_responsible: 'Conducente B responsabile', shared: 'Responsabilita condivisa', undetermined: 'Indeterminata' },
+    respNone: '(non indicata)',
+    s10: '10. FOTO POLIZIA',
+    photoCount: 'foto scattate dall\'agente',
+    photoCatLabels: { overview: 'Vista d\'insieme', tracks: 'Dettaglio tracce', signage: 'Segnaletica', other: 'Altro' },
+    footerGenerated: 'Documento generato il',
+    footerConfidential: 'Questo documento e riservato e ad uso esclusivamente interno',
+    footerModule: 'boom.contact - Modulo Polizia | police.boom.contact',
+    footerAuthor: 'Redatto da',
+    page: 'Pagina',
+    reportTitleFieldData: 'RAPPORTO D\'INTERVENTO - DATI SUL CAMPO',
+    fieldObservations: 'Constatazioni sul luogo - RISERVATO',
+    annotationsCont: 'Annotazioni dell\'agente - RISERVATO',
+  },
+
+  en: {
+    reportTitle: 'INTERVENTION REPORT',
+    reportTitleCont: 'INTERVENTION REPORT - CONTINUED',
+    reportTitleField: 'INTERVENTION REPORT - FIELD DATA',
+    countryLabels: { CH: 'Swiss Confederation', FR: 'French Republic', BE: 'Kingdom of Belgium', LU: 'Grand Duchy of Luxembourg', GB: 'United Kingdom', US: 'United States', DE: 'Federal Republic of Germany', AT: 'Republic of Austria' },
+    confidential: 'CONFIDENTIAL - OFFICIAL USE',
+    doNotShare: 'Do not share with the parties',
+    reportNumber: 'REPORT NUMBER',
+    reportNumberNone: '(not assigned)',
+    reportDate: 'DATE OF ISSUE',
+    s1: '1. ACCIDENT CIRCUMSTANCES',
+    accidentDate: 'ACCIDENT DATE',
+    accidentTime: 'TIME',
+    injuries: 'INJURIES',
+    injuriesYes: 'YES',
+    injuriesNo: 'NO',
+    vehicleCount: 'NO. OF VEHICLES',
+    accidentLocation: 'ACCIDENT LOCATION',
+    gpsCoords: 'GPS COORDINATES',
+    driverA: 'DRIVER A',
+    driverB: 'DRIVER B',
+    driverBMissing: 'Driver B not yet registered in the session',
+    nameLabel: 'LAST NAME / FIRST NAME',
+    birthDate: 'DATE OF BIRTH',
+    addressLabel: 'ADDRESS',
+    plate: 'REGISTRATION',
+    brandModel: 'MAKE / MODEL',
+    color: 'COLOUR',
+    insurer: 'INSURER',
+    policyNo: 'POLICY NO.',
+    s3: '3. OBSERVED INFRACTIONS',
+    infrCode: 'CODE',
+    infrDescription: 'DESCRIPTION',
+    infrParty: 'PARTY',
+    noInfractions: 'No infractions observed',
+    s4: '4. MEASURES TAKEN',
+    measureLabels: { alcotest: 'Breathalyser test', drug_test: 'Drug test', licence_seized: 'Licence seized', vehicle_towed: 'Vehicle towed', pv_issued: 'Fine issued', warning: 'Verbal warning', other: 'Other measure' },
+    partyLabel: 'Party',
+    noMeasures: 'No measures taken',
+    s5: '5. WITNESSES',
+    phone: 'Phone',
+    declaration: 'Statement:',
+    noWitnesses: 'No witnesses recorded',
+    s6: '6. OFFICER\'S OBSERVATIONS',
+    noObservations: '(no observations)',
+    agentAuthor: 'REPORTING OFFICER',
+    badge: 'Badge',
+    signatureStamp: 'SIGNATURE AND OFFICIAL STAMP',
+    signatureRequired: '(handwritten signature required)',
+    s7: '7. DRIVER CONDITION',
+    driverLabel: 'DRIVER',
+    stateLabels: { normal: 'Normal', shocked: 'In shock', minor_injury: 'Minor injury', serious_injury: 'Serious injury', under_influence: 'Apparently under the influence' },
+    apparentState: 'Apparent state',
+    alcoholTestYes: 'Breathalyser: YES - Result',
+    alcoholTestNo: 'Breathalyser: NOT performed',
+    alcoholPositive: 'Positive',
+    alcoholNegative: 'Negative',
+    alcoholRate: 'Level',
+    drugTestYes: 'Drug test: YES - Result',
+    drugTestNo: 'Drug test: NOT performed',
+    drugPositive: 'Positive',
+    drugNegative: 'Negative',
+    testRefused: 'REFUSED TO SUBMIT TO TEST',
+    noData: 'No data entered',
+    s8: '8. ACCIDENT CONDITIONS',
+    weatherLabels: { clear: 'Clear', rain: 'Rain', fog: 'Fog', snow_ice: 'Snow/Ice', strong_wind: 'Strong wind' },
+    visibilityLabels: { good: 'Good', reduced: 'Reduced', night_no_light: 'Night without lighting', night_with_light: 'Night with lighting' },
+    roadLabels: { dry: 'Dry', wet: 'Wet', icy: 'Icy', gravel: 'Gravel', construction: 'Construction zone' },
+    signageLabels: { compliant: 'Compliant', defective: 'Defective', missing: 'Missing' },
+    weatherLabel: 'WEATHER',
+    visibilityLabel: 'VISIBILITY',
+    roadStateLabel: 'ROAD CONDITION',
+    signageLabel: 'SIGNAGE',
+    signageDetails: 'SIGNAGE DETAILS',
+    speedLimit: 'SPEED LIMIT IN ZONE',
+    noConditions: 'No conditions entered',
+    s9: '9. LIABILITY ESTIMATE (INDICATIVE)',
+    respLabels: { A_responsible: 'Driver A responsible', B_responsible: 'Driver B responsible', shared: 'Shared liability', undetermined: 'Undetermined' },
+    respNone: '(not specified)',
+    s10: '10. POLICE PHOTOS',
+    photoCount: 'photo(s) taken by the officer',
+    photoCatLabels: { overview: 'Overview', tracks: 'Track detail', signage: 'Signage', other: 'Other' },
+    footerGenerated: 'Document generated on',
+    footerConfidential: 'This document is confidential and for internal use only',
+    footerModule: 'boom.contact - Police Module | police.boom.contact',
+    footerAuthor: 'Prepared by',
+    page: 'Page',
+    reportTitleFieldData: 'INTERVENTION REPORT - FIELD DATA',
+    fieldObservations: 'On-site observations - CONFIDENTIAL',
+    annotationsCont: 'Officer annotations - CONFIDENTIAL',
+  },
+};
+
+export type PoliceLang = 'fr' | 'de' | 'it' | 'en';
+
+export function getPoliceLabels(lang: PoliceLang): PoliceLabels {
+  return POLICE_LABELS[lang] ?? POLICE_LABELS.fr;
+}
+
+/** Map a country code to the best police report language */
+export function countryToPoliceLocale(countryCode?: string): PoliceLang {
+  if (!countryCode) return 'fr';
+  const map: Record<string, PoliceLang> = {
+    CH: 'fr', FR: 'fr', BE: 'fr', LU: 'fr', MC: 'fr',
+    DE: 'de', AT: 'de', LI: 'de',
+    IT: 'it', SM: 'it', VA: 'it',
+    GB: 'en', US: 'en', AU: 'en', CA: 'en', NZ: 'en', IE: 'en',
+  };
+  return map[countryCode.toUpperCase()] ?? 'en';
+}
+
 // Construire un objet bilingue : chaque clé = "main / secondary" si différent
 export function getBilingualLabels(mainLang: PdfLang, secLang: PdfLang): PdfLabels {
   if (mainLang === secLang) return getLabels(mainLang);

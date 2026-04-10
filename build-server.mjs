@@ -1,6 +1,6 @@
 // build-server.mjs — Compile server TypeScript → JavaScript using esbuild
 import { build } from 'esbuild';
-import { readFileSync } from 'fs';
+import { readFileSync, mkdirSync, cpSync, existsSync } from 'fs';
 
 // Read package.json to get all dependencies
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
@@ -38,5 +38,14 @@ const require = __createRequire(import.meta.url);
 `,
   },
 });
+
+// Copy font files for PDF RTL support (Arabic, Hebrew, Unicode)
+const fontsDir = 'server/src/services/fonts';
+const distFontsDir = 'dist/server/fonts';
+if (existsSync(fontsDir)) {
+  mkdirSync(distFontsDir, { recursive: true });
+  cpSync(fontsDir, distFontsDir, { recursive: true });
+  console.log('✅ Fonts copied to dist/server/fonts');
+}
 
 console.log('✅ Server compiled to dist/server/index.js');
