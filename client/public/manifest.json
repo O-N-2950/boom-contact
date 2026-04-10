@@ -2,7 +2,9 @@
   "name": "boom.contact",
   "short_name": "boom.contact",
   "description": "Constat amiable numérique mondial",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#06060C",
   "theme_color": "#FF3500",
@@ -13,5 +15,6 @@
   ],
   "categories": ["utilities", "travel"],
   "lang": "fr",
+  "prefer_related_applications": false,
   "screenshots": []
 }
