@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "I-scan ang iyong mga dokumento",
-      "subtitle": "Magsimula sa iyong lisensya.\nDokumento ng insurance ay <strong>inirerekomenda</strong>.",
+      "subtitle": "Magsimula sa iyong lisensya.\nDokumento ng insurance ay inirerekomenda.",
       "reg_label": "Lisensya / Carte grise",
-      "reg_sub": "Lisensya CH, carte grise FR — <strong>kailangan</strong>",
-      "tip": "💡 <strong>Inirerekomenda ang insurance na dokumento.</strong> Green card, sertipiko — naglalaman ito ng company at numero ng polisya."
+      "reg_sub": "Lisensya CH, carte grise FR — kailangan",
+      "tip": "💡 Inirerekomenda ang insurance na dokumento. Green card, sertipiko — naglalaman ito ng company at numero ng polisya."
     },
     "greencard": {
       "scanned": "✅ Na-scan na ang lisensya",
       "compressing": "· Naglo-load…",
       "title": "Dokumento ng insurance?",
-      "subtitle": "I-scan ang <strong>green card (IMIC)</strong> o sertipiko ng insurance.",
+      "subtitle": "I-scan ang green card (IMIC) o sertipiko ng insurance.",
       "scan_btn": "I-scan ang dokumento ng insurance",
       "scan_sub": "Green card, sertipiko, card…",
       "skip_btn": "Mano-manong ilagay ang impormasyon ng insurance →"
@@ -218,24 +218,78 @@
       "other": "Tao / Iba pa"
     },
     "vehicles": {
-      "car": { "label": "Kotse", "sub": "Sedan, SUV, hatchback" },
-      "van": { "label": "Van / Utility", "sub": "Van, mini-truck" },
-      "motorcycle": { "label": "Motorsiklo", "sub": "Motorsiklo" },
-      "scooter": { "label": "Scooter", "sub": "Scooter, 50cc" },
-      "moped": { "label": "Moped", "sub": "2 gulong <45km/h" },
-      "escooter": { "label": "Electric scooter", "sub": "EDPM, hoverboard" },
-      "quad": { "label": "Quad / Buggy", "sub": "Off-road na sasakyan" },
-      "truck": { "label": "Trak", "sub": "Malaking trak, semi" },
-      "bus": { "label": "Bus", "sub": "Bus, minibus" },
-      "construction": { "label": "Makinarya ng konstruksyon", "sub": "Crane, bulldozer" },
-      "tractor": { "label": "Traktor", "sub": "Traktor sa bukid" },
-      "tram": { "label": "Tram", "sub": "Tram" },
-      "train": { "label": "Tren", "sub": "Tren, metro" },
-      "bicycle": { "label": "Bisikleta", "sub": "Bisikleta, e-bike" },
-      "cargo_bike": { "label": "Cargo bike", "sub": "Cargo bicycle" },
-      "pedestrian": { "label": "Taong naglalakad", "sub": "Tao sa paa" },
-      "boat": { "label": "Bangka", "sub": "Bangka, jet-ski" },
-      "other": { "label": "Iba pang sasakyan", "sub": "Hindi nakalista" }
+      "car": {
+        "label": "Kotse",
+        "sub": "Sedan, SUV, hatchback"
+      },
+      "van": {
+        "label": "Van / Utility",
+        "sub": "Van, mini-truck"
+      },
+      "motorcycle": {
+        "label": "Motorsiklo",
+        "sub": "Motorsiklo"
+      },
+      "scooter": {
+        "label": "Scooter",
+        "sub": "Scooter, 50cc"
+      },
+      "moped": {
+        "label": "Moped",
+        "sub": "2 gulong <45km/h"
+      },
+      "escooter": {
+        "label": "Electric scooter",
+        "sub": "EDPM, hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Off-road na sasakyan"
+      },
+      "truck": {
+        "label": "Trak",
+        "sub": "Malaking trak, semi"
+      },
+      "bus": {
+        "label": "Bus",
+        "sub": "Bus, minibus"
+      },
+      "construction": {
+        "label": "Makinarya ng konstruksyon",
+        "sub": "Crane, bulldozer"
+      },
+      "tractor": {
+        "label": "Traktor",
+        "sub": "Traktor sa bukid"
+      },
+      "tram": {
+        "label": "Tram",
+        "sub": "Tram"
+      },
+      "train": {
+        "label": "Tren",
+        "sub": "Tren, metro"
+      },
+      "bicycle": {
+        "label": "Bisikleta",
+        "sub": "Bisikleta, e-bike"
+      },
+      "cargo_bike": {
+        "label": "Cargo bike",
+        "sub": "Cargo bicycle"
+      },
+      "pedestrian": {
+        "label": "Taong naglalakad",
+        "sub": "Tao sa paa"
+      },
+      "boat": {
+        "label": "Bangka",
+        "sub": "Bangka, jet-ski"
+      },
+      "other": {
+        "label": "Iba pang sasakyan",
+        "sub": "Hindi nakalista"
+      }
     },
     "datetime_label": "Petsa at oras ng aksidente",
     "date_label": "Petsa",
@@ -253,7 +307,7 @@
     "city_placeholder": "Manila, Berne…",
     "country_label": "Bansa",
     "country_placeholder": "PH, CH…",
-    "location_tip": "💡 <strong>Mahalaga:</strong> Ilagay ang tunay na lugar ng aksidente.",
+    "location_tip": "💡 Mahalaga: Ilagay ang tunay na lugar ng aksidente.",
     "injuries_label": "May nasugatan?",
     "no_injuries": "Hindi — walang nasugatan",
     "yes_injuries": "Oo — may nasugatan",
@@ -284,28 +338,70 @@
     "privacy_version": "Sumusunod sa RGPD UE 2016/679 · Marso 2026",
     "email_label": "Ang iyong email (para matanggap ang PDF)",
     "email_placeholder": "ikaw@halimbawa.com",
-    "consent_cgu": "Tinatanggap ko ang <cgu>Mga Tuntunin</cgu> at <privacy>Patakaran sa Privacy</privacy>",
-    "consent_marketing": "Pinapayagan ko ang PEP's Swiss SA na gamitin ang aking email para sa karagdagang serbisyo. <opt>Opsyonal — maaaring bawiin anumang oras.</opt>",
+    "consent_cgu": "Tinatanggap ko ang Mga Tuntunin at Patakaran sa Privacy",
+    "consent_marketing": "Pinapayagan ko ang PEP's Swiss SA na gamitin ang aking email para sa karagdagang serbisyo. Opsyonal — maaaring bawiin anumang oras.",
     "required_note": "* Kailangan para sa paggamit",
     "submit": "Ituloy →",
     "error_network": "May error sa network. Subukan ulit.",
     "cgu_sections": [
-      { "title": "1. Layunin", "text": "Ang boom.contact ay isang digital na serbisyo ng PEP's Swiss SA. Tumutulong ito sa paghahanda ng digital na ulat ng aksidente sa buong mundo." },
-      { "title": "2. Pagtanggap", "text": "Ang paggamit ng serbisyo ay nangangahulugang pagtanggap sa mga tuntunin. Ang ilegal na paggamit ay ipinagbabawal." },
-      { "title": "3. Mga Serbisyo", "text": "Nagbibigay ang boom.contact ng: (a) OCR; (b) QR session; (c) Digital na lagda; (d) PDF email. Responsibilidad ng driver na abisuhan ang kanyang insurance." },
-      { "title": "4. Presyo", "text": "Ang serbisyo ay ibinebenta sa mga pakete. Bayad sa pamamagitan ng Stripe (PCI-DSS). Ang mga credit ay walang petsa ng pag-expire." },
-      { "title": "5. Legal na halaga", "text": "Tinatanggap ng mga insurance company ang PDF ng boom.contact. Hindi ginagarantiyahan ng PEP's Swiss SA ang pagtanggap sa lahat ng bansa." },
-      { "title": "6. Responsibilidad", "text": "Hindi responsable ang PEP's Swiss SA sa mga error ng OCR o pagtanggi ng insurance. Limitado ang responsibilidad sa halagang binayaran." },
-      { "title": "7. Intellectual na Ari-arian", "text": "Ang software, mga tatak, nilalaman ng boom.contact ay pag-aari ng PEP's Swiss SA." },
-      { "title": "8. Naaangkop na Batas", "text": "Ang batas ng Switzerland ang naaangkop. Ang mga hindi pagkakaunawaan ay ireresolba sa korte ng Jura." }
+      {
+        "title": "1. Layunin",
+        "text": "Ang boom.contact ay isang digital na serbisyo ng PEP's Swiss SA. Tumutulong ito sa paghahanda ng digital na ulat ng aksidente sa buong mundo."
+      },
+      {
+        "title": "2. Pagtanggap",
+        "text": "Ang paggamit ng serbisyo ay nangangahulugang pagtanggap sa mga tuntunin. Ang ilegal na paggamit ay ipinagbabawal."
+      },
+      {
+        "title": "3. Mga Serbisyo",
+        "text": "Nagbibigay ang boom.contact ng: (a) OCR; (b) QR session; (c) Digital na lagda; (d) PDF email. Responsibilidad ng driver na abisuhan ang kanyang insurance."
+      },
+      {
+        "title": "4. Presyo",
+        "text": "Ang serbisyo ay ibinebenta sa mga pakete. Bayad sa pamamagitan ng Stripe (PCI-DSS). Ang mga credit ay walang petsa ng pag-expire."
+      },
+      {
+        "title": "5. Legal na halaga",
+        "text": "Tinatanggap ng mga insurance company ang PDF ng boom.contact. Hindi ginagarantiyahan ng PEP's Swiss SA ang pagtanggap sa lahat ng bansa."
+      },
+      {
+        "title": "6. Responsibilidad",
+        "text": "Hindi responsable ang PEP's Swiss SA sa mga error ng OCR o pagtanggi ng insurance. Limitado ang responsibilidad sa halagang binayaran."
+      },
+      {
+        "title": "7. Intellectual na Ari-arian",
+        "text": "Ang software, mga tatak, nilalaman ng boom.contact ay pag-aari ng PEP's Swiss SA."
+      },
+      {
+        "title": "8. Naaangkop na Batas",
+        "text": "Ang batas ng Switzerland ang naaangkop. Ang mga hindi pagkakaunawaan ay ireresolba sa korte ng Jura."
+      }
     ],
     "privacy_sections": [
-      { "title": "Responsable sa Data", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
-      { "title": "Nakolektang Data", "text": "Email, pangalan, address, plate number, GPS, digital na lagda, impormasyon ng insurance." },
-      { "title": "Legal na Batayan", "text": "Pagtupad sa kontrata (Art. 6.1.b RGPD) para sa data ng ulat. Pahintulot para sa komersyal na paggamit." },
-      { "title": "Panahon ng Pag-iimbak", "text": "Mga session: 2 oras. PDF at data: 30 araw pagkatapos ay tinatanggal. Data ng bayad: 10 taon." },
-      { "title": "Pagbabahagi ng Data", "text": "Ang data ay hindi ibinebenta. Ginagamit lamang ng Stripe, Resend, Anthropic para sa serbisyo." },
-      { "title": "Iyong mga Karapatan", "text": "Tingnan, baguhin, burahin, ilipat. Sumulat sa privacy@boom.contact." }
+      {
+        "title": "Responsable sa Data",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact"
+      },
+      {
+        "title": "Nakolektang Data",
+        "text": "Email, pangalan, address, plate number, GPS, digital na lagda, impormasyon ng insurance."
+      },
+      {
+        "title": "Legal na Batayan",
+        "text": "Pagtupad sa kontrata (Art. 6.1.b RGPD) para sa data ng ulat. Pahintulot para sa komersyal na paggamit."
+      },
+      {
+        "title": "Panahon ng Pag-iimbak",
+        "text": "Mga session: 2 oras. PDF at data: 30 araw pagkatapos ay tinatanggal. Data ng bayad: 10 taon."
+      },
+      {
+        "title": "Pagbabahagi ng Data",
+        "text": "Ang data ay hindi ibinebenta. Ginagamit lamang ng Stripe, Resend, Anthropic para sa serbisyo."
+      },
+      {
+        "title": "Iyong mga Karapatan",
+        "text": "Tingnan, baguhin, burahin, ilipat. Sumulat sa privacy@boom.contact."
+      }
     ]
   },
   "pricing": {
@@ -328,9 +424,18 @@
     },
     "legal": "Sa pagbili, tinatanggap mo ang mga tuntunin ng boom.contact.\nWalang refund pagkatapos makuha ang PDF.",
     "packages": {
-      "single": { "label": "1 ulat", "description": "Para sa isang aksidente" },
-      "pack3": { "label": "3 ulat", "description": "Para sa pamilya" },
-      "pack10": { "label": "10 ulat", "description": "Mga ahente, kumpanya" }
+      "single": {
+        "label": "1 ulat",
+        "description": "Para sa isang aksidente"
+      },
+      "pack3": {
+        "label": "3 ulat",
+        "description": "Para sa pamilya"
+      },
+      "pack10": {
+        "label": "10 ulat",
+        "description": "Mga ahente, kumpanya"
+      }
     }
   },
   "offline": {

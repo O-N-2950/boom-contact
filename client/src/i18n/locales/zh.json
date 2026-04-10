@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "扫描您的文件",
-      "subtitle": "请从行驶证开始。\n保险文件<strong>推荐提供</strong>。",
+      "subtitle": "请从行驶证开始。\n保险文件推荐提供。",
       "reg_label": "行驶证 / 车辆登记证",
-      "reg_sub": "瑞士行驶证、法国车辆登记证、德国Zulassung、英国V5C… — <strong>必填</strong>",
-      "tip": "💡 <strong>推荐提供保险文件。</strong>绿卡（IMIC）、保险证明、Insurance ID card — 该文件包含您的保险公司和保单号码。若未提供，您需要手动输入。"
+      "reg_sub": "瑞士行驶证、法国车辆登记证、德国Zulassung、英国V5C… — 必填",
+      "tip": "💡 推荐提供保险文件。绿卡（IMIC）、保险证明、Insurance ID card — 该文件包含您的保险公司和保单号码。若未提供，您需要手动输入。"
     },
     "greencard": {
       "scanned": "✅ 行驶证已扫描",
       "compressing": "· 压缩中…",
       "title": "保险文件？",
-      "subtitle": "请扫描您的<strong>绿卡（IMIC）</strong>、保险证明、Certificate of Motor Insurance 或 Insurance ID Card。该文件包含您的保险公司和保单号码。<strong>推荐提供</strong> — 若未提供，需手动输入。",
+      "subtitle": "请扫描您的绿卡（IMIC）、保险证明、Certificate of Motor Insurance 或 Insurance ID Card。该文件包含您的保险公司和保单号码。推荐提供 — 若未提供，需手动输入。",
       "scan_btn": "扫描保险文件",
       "scan_sub": "绿卡、保险证明、certificate、insurance card…",
       "skip_btn": "手动输入保险信息 →"
@@ -233,7 +233,7 @@
     "city_placeholder": "洛桑，巴黎……",
     "country_label": "国家",
     "country_placeholder": "CH，FR……",
-    "location_tip": "💡 <strong>重要提示：</strong>请填写<strong>事故发生的确切地点</strong>，即使您已将车辆移到路边。GPS 获取的是您<em>当前</em>位置——如果您已移动，请手动修正。",
+    "location_tip": "💡 重要提示：请填写事故发生的确切地点，即使您已将车辆移到路边。GPS 获取的是您当前位置——如果您已移动，请手动修正。",
     "injuries_label": "是否有人员受伤？",
     "no_injuries": "否——无人受伤",
     "yes_injuries": "是——有人员受伤",
@@ -338,8 +338,8 @@
     "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
     "email_label": "Votre email (pour recevoir le PDF)",
     "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "consent_cgu": "J'accepte les CGU et la Politique de confidentialité",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). Optionnel — révocable à tout moment.",
     "required_note": "* Obligatoire pour utiliser le service",
     "submit": "Continuer →",
     "error_network": "Erreur réseau. Réessayez.",

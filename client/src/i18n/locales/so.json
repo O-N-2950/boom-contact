@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "Scan dukumiintadaada",
-      "subtitle": "Ka bilow ruqsaddaada.\nDukumiinta caymiska <strong>lagu talinayaa</strong>.",
+      "subtitle": "Ka bilow ruqsaddaada.\nDukumiinta caymiska lagu talinayaa.",
       "reg_label": "Ruqsadda darawalnimada / Carte grise",
-      "reg_sub": "Ruqsad CH, carte grise FR — <strong>waajib</strong>",
-      "tip": "💡 <strong>Dukumiinta caymiska lagu talinayaa.</strong> Kaarka cagaaran, shahaadada — waxaa ku jira shirkadda iyo lambarka polisiiga."
+      "reg_sub": "Ruqsad CH, carte grise FR — waajib",
+      "tip": "💡 Dukumiinta caymiska lagu talinayaa. Kaarka cagaaran, shahaadada — waxaa ku jira shirkadda iyo lambarka polisiiga."
     },
     "greencard": {
       "scanned": "✅ Ruqsadda scan la gareeya",
       "compressing": "· Waa la raraya…",
       "title": "Dukumiinta caymiska?",
-      "subtitle": "Scan <strong>kaarka cagaaran (IMIC)</strong> ama shahaadada caymiska.",
+      "subtitle": "Scan kaarka cagaaran (IMIC) ama shahaadada caymiska.",
       "scan_btn": "Scan dukumiinta caymiska",
       "scan_sub": "Kaarka cagaaran, shahaado, kaardhka…",
       "skip_btn": "Macluumaadka caymiska gacanta ku buuxi →"
@@ -218,24 +218,78 @@
       "other": "Qof / Kale"
     },
     "vehicles": {
-      "car": { "label": "Baabuur", "sub": "Sedan, SUV, hatchback" },
-      "van": { "label": "Van / Utility", "sub": "Van, van yar" },
-      "motorcycle": { "label": "Mootoorka", "sub": "Mootoor" },
-      "scooter": { "label": "Scooter", "sub": "Scooter, 50cc" },
-      "moped": { "label": "Moped", "sub": "2 gaadiid <45km/h" },
-      "escooter": { "label": "Scooter korontada", "sub": "EDPM, hoverboard" },
-      "quad": { "label": "Quad / Buggy", "sub": "Gaadiidka dhulka" },
-      "truck": { "label": "Gaari weyn", "sub": "Gaari culus, semi" },
-      "bus": { "label": "Bas", "sub": "Bas, minibus" },
-      "construction": { "label": "Mishiinka dhismaha", "sub": "Crane, bulldozer" },
-      "tractor": { "label": "Tiraaktar", "sub": "Tiraaktar beeraha" },
-      "tram": { "label": "Taramka", "sub": "Taram" },
-      "train": { "label": "Tareenka", "sub": "Tareen, metro" },
-      "bicycle": { "label": "Baaskiil", "sub": "Baaskiil, korontada" },
-      "cargo_bike": { "label": "Baaskiilka xamuulka", "sub": "Cargo bike" },
-      "pedestrian": { "label": "Socod-maashiinta", "sub": "Qof lugaha" },
-      "boat": { "label": "Doon", "sub": "Doon, jet-ski" },
-      "other": { "label": "Gaadiid kale", "sub": "Liiska ma jiro" }
+      "car": {
+        "label": "Baabuur",
+        "sub": "Sedan, SUV, hatchback"
+      },
+      "van": {
+        "label": "Van / Utility",
+        "sub": "Van, van yar"
+      },
+      "motorcycle": {
+        "label": "Mootoorka",
+        "sub": "Mootoor"
+      },
+      "scooter": {
+        "label": "Scooter",
+        "sub": "Scooter, 50cc"
+      },
+      "moped": {
+        "label": "Moped",
+        "sub": "2 gaadiid <45km/h"
+      },
+      "escooter": {
+        "label": "Scooter korontada",
+        "sub": "EDPM, hoverboard"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Gaadiidka dhulka"
+      },
+      "truck": {
+        "label": "Gaari weyn",
+        "sub": "Gaari culus, semi"
+      },
+      "bus": {
+        "label": "Bas",
+        "sub": "Bas, minibus"
+      },
+      "construction": {
+        "label": "Mishiinka dhismaha",
+        "sub": "Crane, bulldozer"
+      },
+      "tractor": {
+        "label": "Tiraaktar",
+        "sub": "Tiraaktar beeraha"
+      },
+      "tram": {
+        "label": "Taramka",
+        "sub": "Taram"
+      },
+      "train": {
+        "label": "Tareenka",
+        "sub": "Tareen, metro"
+      },
+      "bicycle": {
+        "label": "Baaskiil",
+        "sub": "Baaskiil, korontada"
+      },
+      "cargo_bike": {
+        "label": "Baaskiilka xamuulka",
+        "sub": "Cargo bike"
+      },
+      "pedestrian": {
+        "label": "Socod-maashiinta",
+        "sub": "Qof lugaha"
+      },
+      "boat": {
+        "label": "Doon",
+        "sub": "Doon, jet-ski"
+      },
+      "other": {
+        "label": "Gaadiid kale",
+        "sub": "Liiska ma jiro"
+      }
     },
     "datetime_label": "Taariikhda iyo saacadda shilka",
     "date_label": "Taariikhda",
@@ -253,7 +307,7 @@
     "city_placeholder": "Muqdisho, Berne…",
     "country_label": "Wadanka",
     "country_placeholder": "SO, CH…",
-    "location_tip": "💡 <strong>Muhiim:</strong> Geli goobta saxda ah ee shilka.",
+    "location_tip": "💡 Muhiim: Geli goobta saxda ah ee shilka.",
     "injuries_label": "Ma jiraan dhaawacyo?",
     "no_injuries": "Maya — dhaawac malaha",
     "yes_injuries": "Haa — dhaawac jira",
@@ -284,28 +338,70 @@
     "privacy_version": "RGPD UE 2016/679 waafaqsan · Maarso 2026",
     "email_label": "Emailkaaga (si aad PDF u hesho)",
     "email_placeholder": "adiga@tusaale.com",
-    "consent_cgu": "Waxaan aqbalayaa <cgu>Shuruudaha</cgu> iyo <privacy>Siyaasadda Sirta</privacy>",
-    "consent_marketing": "Waxaan u oggolaanayaa PEP's Swiss SA inay emailkayga u isticmaalaan adeegyada dheeraadka. <opt>Ikhtiyaari — waqtiga kasta la joojin karaa.</opt>",
+    "consent_cgu": "Waxaan aqbalayaa Shuruudaha iyo Siyaasadda Sirta",
+    "consent_marketing": "Waxaan u oggolaanayaa PEP's Swiss SA inay emailkayga u isticmaalaan adeegyada dheeraadka. Ikhtiyaari — waqtiga kasta la joojin karaa.",
     "required_note": "* Isticmaalka ayaa u baahan",
     "submit": "Sii wad →",
     "error_network": "Khalad network. Dib u isku day.",
     "cgu_sections": [
-      { "title": "1. Ujeeddada", "text": "boom.contact waa adeeg dhijitaal ah oo ay samaysay PEP's Swiss SA. Waxay kaalmeysaa diyaarinta warbixinta shilka dhijitaalka caalamiga ah." },
-      { "title": "2. Aqbalitaanka", "text": "Isticmaalka adeegga waxaa micnihiisu yahay aqbalitaanka shuruudaha. Isticmaal sharci darro ah waa mamnuuc." },
-      { "title": "3. Adeegyada", "text": "boom.contact waxay bixisaa: (a) OCR; (b) Session QR; (c) Saxeexyo dhijitaal; (d) PDF email. Darawalku mas'uul u yahay inuu shirkadda caymiskiisa u soo warbixiyo." },
-      { "title": "4. Qiimaha", "text": "Adeegga waxaa lagu iibinayaa xidmooyin. Lacag bixinta Stripe (PCI-DSS). Credits-ku waxay leeyihiin taariikhda dhamaadka." },
-      { "title": "5. Qiimaha sharci", "text": "PDF-ka boom.contact waxaa aqbalay shirkadaha caymiska. PEP's Swiss SA kuma dammaanad qaabanayso aqbalitaanka dhammaan wadamada." },
-      { "title": "6. Mas'uuliyadda", "text": "PEP's Swiss SA kama qaadato mas'uuliyadda khaladaadka OCR ama diidmada caymis. Mas'uuliyadda waxay ku xaddidan tahay lacagta la bixiyay." },
-      { "title": "7. Milkiilaha", "text": "Software, calaamadaha, waxyaabaha boom.contact waa hantida PEP's Swiss SA." },
-      { "title": "8. Sharciga", "text": "Sharciga Swiss ayaa dhaqan gala. Muran Maxkamadda Jura ayaa xaliya." }
+      {
+        "title": "1. Ujeeddada",
+        "text": "boom.contact waa adeeg dhijitaal ah oo ay samaysay PEP's Swiss SA. Waxay kaalmeysaa diyaarinta warbixinta shilka dhijitaalka caalamiga ah."
+      },
+      {
+        "title": "2. Aqbalitaanka",
+        "text": "Isticmaalka adeegga waxaa micnihiisu yahay aqbalitaanka shuruudaha. Isticmaal sharci darro ah waa mamnuuc."
+      },
+      {
+        "title": "3. Adeegyada",
+        "text": "boom.contact waxay bixisaa: (a) OCR; (b) Session QR; (c) Saxeexyo dhijitaal; (d) PDF email. Darawalku mas'uul u yahay inuu shirkadda caymiskiisa u soo warbixiyo."
+      },
+      {
+        "title": "4. Qiimaha",
+        "text": "Adeegga waxaa lagu iibinayaa xidmooyin. Lacag bixinta Stripe (PCI-DSS). Credits-ku waxay leeyihiin taariikhda dhamaadka."
+      },
+      {
+        "title": "5. Qiimaha sharci",
+        "text": "PDF-ka boom.contact waxaa aqbalay shirkadaha caymiska. PEP's Swiss SA kuma dammaanad qaabanayso aqbalitaanka dhammaan wadamada."
+      },
+      {
+        "title": "6. Mas'uuliyadda",
+        "text": "PEP's Swiss SA kama qaadato mas'uuliyadda khaladaadka OCR ama diidmada caymis. Mas'uuliyadda waxay ku xaddidan tahay lacagta la bixiyay."
+      },
+      {
+        "title": "7. Milkiilaha",
+        "text": "Software, calaamadaha, waxyaabaha boom.contact waa hantida PEP's Swiss SA."
+      },
+      {
+        "title": "8. Sharciga",
+        "text": "Sharciga Swiss ayaa dhaqan gala. Muran Maxkamadda Jura ayaa xaliya."
+      }
     ],
     "privacy_sections": [
-      { "title": "Mas'uulka xogta", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
-      { "title": "Xogta la uruuriyay", "text": "Email, magac, ciwaanka, lambarka gaarka, GPS, saxeexa dhijitaalka, macluumaadka caymiska." },
-      { "title": "Aasaaska sharci", "text": "Fulinta heshiiska (Art. 6.1.b RGPD) xogta warbixinta. Ogolaanshaha isticmaalka ganacsiga." },
-      { "title": "Mudada kaydinta", "text": "Sessions: 2 saacadood. PDF iyo xog: 30 maalmood ka dibna la tirtiraa. Xogta lacag bixinta: 10 sano." },
-      { "title": "La wadaagida xogta", "text": "Xogta kuma iibsan partida saddexaad. Stripe, Resend, Anthropic adeegyada kaliya ayay u isticmaalaan." },
-      { "title": "Xuquuqdaada", "text": "Fiirin, wax ka beddel, tirtir, wareejin. U qor privacy@boom.contact." }
+      {
+        "title": "Mas'uulka xogta",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact"
+      },
+      {
+        "title": "Xogta la uruuriyay",
+        "text": "Email, magac, ciwaanka, lambarka gaarka, GPS, saxeexa dhijitaalka, macluumaadka caymiska."
+      },
+      {
+        "title": "Aasaaska sharci",
+        "text": "Fulinta heshiiska (Art. 6.1.b RGPD) xogta warbixinta. Ogolaanshaha isticmaalka ganacsiga."
+      },
+      {
+        "title": "Mudada kaydinta",
+        "text": "Sessions: 2 saacadood. PDF iyo xog: 30 maalmood ka dibna la tirtiraa. Xogta lacag bixinta: 10 sano."
+      },
+      {
+        "title": "La wadaagida xogta",
+        "text": "Xogta kuma iibsan partida saddexaad. Stripe, Resend, Anthropic adeegyada kaliya ayay u isticmaalaan."
+      },
+      {
+        "title": "Xuquuqdaada",
+        "text": "Fiirin, wax ka beddel, tirtir, wareejin. U qor privacy@boom.contact."
+      }
     ]
   },
   "pricing": {
@@ -328,9 +424,18 @@
     },
     "legal": "Iibsashada, waxaad aqbalaysaa shuruudaha boom.contact.\nSoo noqod ma jirto PDF la sameeyay kaddib.",
     "packages": {
-      "single": { "label": "1 warbixin", "description": "Shil hal mar" },
-      "pack3": { "label": "3 warbixin", "description": "Qoyska" },
-      "pack10": { "label": "10 warbixin", "description": "Agents, shirkadaha" }
+      "single": {
+        "label": "1 warbixin",
+        "description": "Shil hal mar"
+      },
+      "pack3": {
+        "label": "3 warbixin",
+        "description": "Qoyska"
+      },
+      "pack10": {
+        "label": "10 warbixin",
+        "description": "Agents, shirkadaha"
+      }
     }
   },
   "offline": {

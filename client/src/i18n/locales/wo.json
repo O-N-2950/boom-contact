@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "Scan sa dokkumentey",
-      "subtitle": "Tambali ak sa permis.\nDokkument assurance <strong>dëkk na</strong>.",
+      "subtitle": "Tambali ak sa permis.\nDokkument assurance dëkk na.",
       "reg_label": "Permis / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR — <strong>waajib</strong>",
-      "tip": "💡 <strong>Dokkument assurance dëkk na.</strong> Carte verte, attestation — li la assurance ak numéro police."
+      "reg_sub": "Permis CH, carte grise FR — waajib",
+      "tip": "💡 Dokkument assurance dëkk na. Carte verte, attestation — li la assurance ak numéro police."
     },
     "greencard": {
       "scanned": "✅ Permis scanné",
       "compressing": "· Di yóbbu…",
       "title": "Dokkument assurance?",
-      "subtitle": "Scan <strong>carte verte (IMIC)</strong> walla dokkument assurance.",
+      "subtitle": "Scan carte verte (IMIC) walla dokkument assurance.",
       "scan_btn": "Scan dokkument assurance",
       "scan_sub": "Carte verte, attestation, carte…",
       "skip_btn": "Bind ci loxo xibaar assurance →"
@@ -218,24 +218,78 @@
       "other": "Nit / Yenn"
     },
     "vehicles": {
-      "car": { "label": "Wotëru", "sub": "Berline, SUV, citadine" },
-      "van": { "label": "Fourgon / Utilitaire", "sub": "Van, utilitaire" },
-      "motorcycle": { "label": "Moto", "sub": "Moto, motocyclette" },
-      "scooter": { "label": "Scooter", "sub": "Scooter, 50cm³" },
-      "moped": { "label": "Vélomoteur", "sub": "2 roue <45km/h" },
-      "escooter": { "label": "Trottinette électrique", "sub": "EDPM, gyroroue" },
-      "quad": { "label": "Quad / Buggy", "sub": "Véhicule tout-terrain" },
-      "truck": { "label": "Camion", "sub": "Camion lourd, semi" },
-      "bus": { "label": "Bus", "sub": "Bus, minibus" },
-      "construction": { "label": "Engin chantier", "sub": "Grue, bulldozer" },
-      "tractor": { "label": "Tracteur", "sub": "Tracteur agricole" },
-      "tram": { "label": "Tramway", "sub": "Tram" },
-      "train": { "label": "Train", "sub": "Train, métro" },
-      "bicycle": { "label": "Vélo", "sub": "Vélo, VAE" },
-      "cargo_bike": { "label": "Vélo cargo", "sub": "Cargo vélo" },
-      "pedestrian": { "label": "Piéton", "sub": "Nit bu dem ak tank" },
-      "boat": { "label": "Batoo", "sub": "Batoo, jet-ski" },
-      "other": { "label": "Wotëru bu bees", "sub": "Xamul" }
+      "car": {
+        "label": "Wotëru",
+        "sub": "Berline, SUV, citadine"
+      },
+      "van": {
+        "label": "Fourgon / Utilitaire",
+        "sub": "Van, utilitaire"
+      },
+      "motorcycle": {
+        "label": "Moto",
+        "sub": "Moto, motocyclette"
+      },
+      "scooter": {
+        "label": "Scooter",
+        "sub": "Scooter, 50cm³"
+      },
+      "moped": {
+        "label": "Vélomoteur",
+        "sub": "2 roue <45km/h"
+      },
+      "escooter": {
+        "label": "Trottinette électrique",
+        "sub": "EDPM, gyroroue"
+      },
+      "quad": {
+        "label": "Quad / Buggy",
+        "sub": "Véhicule tout-terrain"
+      },
+      "truck": {
+        "label": "Camion",
+        "sub": "Camion lourd, semi"
+      },
+      "bus": {
+        "label": "Bus",
+        "sub": "Bus, minibus"
+      },
+      "construction": {
+        "label": "Engin chantier",
+        "sub": "Grue, bulldozer"
+      },
+      "tractor": {
+        "label": "Tracteur",
+        "sub": "Tracteur agricole"
+      },
+      "tram": {
+        "label": "Tramway",
+        "sub": "Tram"
+      },
+      "train": {
+        "label": "Train",
+        "sub": "Train, métro"
+      },
+      "bicycle": {
+        "label": "Vélo",
+        "sub": "Vélo, VAE"
+      },
+      "cargo_bike": {
+        "label": "Vélo cargo",
+        "sub": "Cargo vélo"
+      },
+      "pedestrian": {
+        "label": "Piéton",
+        "sub": "Nit bu dem ak tank"
+      },
+      "boat": {
+        "label": "Batoo",
+        "sub": "Batoo, jet-ski"
+      },
+      "other": {
+        "label": "Wotëru bu bees",
+        "sub": "Xamul"
+      }
     },
     "datetime_label": "Bés ak waxt accident",
     "date_label": "Bés",
@@ -253,7 +307,7 @@
     "city_placeholder": "Dakar, Paris…",
     "country_label": "Réew",
     "country_placeholder": "SN, FR…",
-    "location_tip": "💡 <strong>Dëkk na:</strong> Bopp bu dëgg bu accident.",
+    "location_tip": "💡 Dëkk na: Bopp bu dëgg bu accident.",
     "injuries_label": "Am na blessé?",
     "no_injuries": "Déet — blessé amul",
     "yes_injuries": "Waaw — blessé am",
@@ -284,28 +338,70 @@
     "privacy_version": "RGPD UE 2016/679 · Mars 2026",
     "email_label": "Sa email (ngir PDF yëg)",
     "email_placeholder": "yow@exemple.com",
-    "consent_cgu": "Ma nangu <cgu>CGU</cgu> ak <privacy>Politique confidentialité</privacy>",
-    "consent_marketing": "Ma nangu PEP's Swiss SA jëfandikoo email bou ndanka. <opt>Ku bëgg — soppal ci kañ kañ.</opt>",
+    "consent_cgu": "Ma nangu CGU ak Politique confidentialité",
+    "consent_marketing": "Ma nangu PEP's Swiss SA jëfandikoo email bou ndanka. Ku bëgg — soppal ci kañ kañ.",
     "required_note": "* Waajib ngir jëfandikoo",
     "submit": "Jëfandikoo →",
     "error_network": "Njëg réseau. Jef ci kanam.",
     "cgu_sections": [
-      { "title": "1. Xam-xam", "text": "boom.contact mooy service numérik bu PEP's Swiss SA. Dëkk ci aduna ngir rapport numérik." },
-      { "title": "2. Nangu", "text": "Jëfandikoo service bi dañuy nangu règlement yi. Jëfandikoo bu xawtaan ampul." },
-      { "title": "3. Service", "text": "boom.contact jox na: (a) OCR; (b) Session QR; (c) Signatiir numérik; (d) PDF email. Shofër dafa waajib wax ci assurance bu xam." },
-      { "title": "4. Njëgël", "text": "Service bi dañuy jaay ci paquet. Fanaan ci Stripe (PCI-DSS). Crédit amul date expiration." },
-      { "title": "5. Dëkk ci dëkk", "text": "PDF bu boom.contact nangu ko assurance yi. PEP's Swiss SA xamul nangu ci réew yépp." },
-      { "title": "6. Jamoniku", "text": "PEP's Swiss SA amul jamoniku ci njëg OCR. Jamoniku ci prix bi lañu fay rekk." },
-      { "title": "7. Propriété", "text": "Software, marques, contenu bu boom.contact mooy PEP's Swiss SA." },
-      { "title": "8. Droit", "text": "Droit suisse dëkk na. Litiges ci tribunal bu Jura." }
+      {
+        "title": "1. Xam-xam",
+        "text": "boom.contact mooy service numérik bu PEP's Swiss SA. Dëkk ci aduna ngir rapport numérik."
+      },
+      {
+        "title": "2. Nangu",
+        "text": "Jëfandikoo service bi dañuy nangu règlement yi. Jëfandikoo bu xawtaan ampul."
+      },
+      {
+        "title": "3. Service",
+        "text": "boom.contact jox na: (a) OCR; (b) Session QR; (c) Signatiir numérik; (d) PDF email. Shofër dafa waajib wax ci assurance bu xam."
+      },
+      {
+        "title": "4. Njëgël",
+        "text": "Service bi dañuy jaay ci paquet. Fanaan ci Stripe (PCI-DSS). Crédit amul date expiration."
+      },
+      {
+        "title": "5. Dëkk ci dëkk",
+        "text": "PDF bu boom.contact nangu ko assurance yi. PEP's Swiss SA xamul nangu ci réew yépp."
+      },
+      {
+        "title": "6. Jamoniku",
+        "text": "PEP's Swiss SA amul jamoniku ci njëg OCR. Jamoniku ci prix bi lañu fay rekk."
+      },
+      {
+        "title": "7. Propriété",
+        "text": "Software, marques, contenu bu boom.contact mooy PEP's Swiss SA."
+      },
+      {
+        "title": "8. Droit",
+        "text": "Droit suisse dëkk na. Litiges ci tribunal bu Jura."
+      }
     ],
     "privacy_sections": [
-      { "title": "Jamoniku data", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
-      { "title": "Data yi dañu yóbbu", "text": "Email, tur, adresse, plaque, GPS, signatiir, xibaar assurance." },
-      { "title": "Fondement juridique", "text": "Exécution contrat (Art. 6.1.b RGPD). Consentement ngir utilisation commerciale." },
-      { "title": "Dëkk bi", "text": "Session: 2 waxt. PDF: fan 30 ci kanam. Données paiement: at 10." },
-      { "title": "Fàttale data", "text": "Data jaay ñu tiers amul. Stripe, Resend, Anthropic jëfandikoo ne waajib rekk." },
-      { "title": "Sa droit", "text": "Xool, soppal, sér, yóbbu. Bind privacy@boom.contact." }
+      {
+        "title": "Jamoniku data",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact"
+      },
+      {
+        "title": "Data yi dañu yóbbu",
+        "text": "Email, tur, adresse, plaque, GPS, signatiir, xibaar assurance."
+      },
+      {
+        "title": "Fondement juridique",
+        "text": "Exécution contrat (Art. 6.1.b RGPD). Consentement ngir utilisation commerciale."
+      },
+      {
+        "title": "Dëkk bi",
+        "text": "Session: 2 waxt. PDF: fan 30 ci kanam. Données paiement: at 10."
+      },
+      {
+        "title": "Fàttale data",
+        "text": "Data jaay ñu tiers amul. Stripe, Resend, Anthropic jëfandikoo ne waajib rekk."
+      },
+      {
+        "title": "Sa droit",
+        "text": "Xool, soppal, sér, yóbbu. Bind privacy@boom.contact."
+      }
     ]
   },
   "pricing": {
@@ -328,9 +424,18 @@
     },
     "legal": "Soggeel bi, dañu nangu CGU bu boom.contact.\nRemboursement amul PDF yëg.",
     "packages": {
-      "single": { "label": "Rapport 1", "description": "Ci accident bu dëgg" },
-      "pack3": { "label": "Rapport 3", "description": "Ngir mbokk" },
-      "pack10": { "label": "Rapport 10", "description": "Courtiers, flottes" }
+      "single": {
+        "label": "Rapport 1",
+        "description": "Ci accident bu dëgg"
+      },
+      "pack3": {
+        "label": "Rapport 3",
+        "description": "Ngir mbokk"
+      },
+      "pack10": {
+        "label": "Rapport 10",
+        "description": "Courtiers, flottes"
+      }
     }
   },
   "offline": {

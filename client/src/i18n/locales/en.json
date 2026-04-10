@@ -172,16 +172,16 @@
   "ocr": {
     "idle": {
       "title": "Scan your documents",
-      "subtitle": "Start with your registration document.\nThe insurance document is <strong>recommended</strong>.",
+      "subtitle": "Start with your registration document.\nThe insurance document is recommended.",
       "reg_label": "Registration document / Vehicle registration certificate",
-      "reg_sub": "Swiss registration, French carte grise, Zulassung DE, V5C GB… — <strong>required</strong>",
-      "tip": "💡 <strong>Insurance document recommended.</strong> Green card (IMIC), certificate of insurance, Insurance ID card — this document contains your insurer and policy number. Without it, you will need to enter them manually."
+      "reg_sub": "Swiss registration, French carte grise, Zulassung DE, V5C GB… — required",
+      "tip": "💡 Insurance document recommended. Green card (IMIC), certificate of insurance, Insurance ID card — this document contains your insurer and policy number. Without it, you will need to enter them manually."
     },
     "greencard": {
       "scanned": "✅ Registration document scanned",
       "compressing": "· Compressing…",
       "title": "Insurance document?",
-      "subtitle": "Scan your <strong>green card (IMIC)</strong>, certificate of insurance, Certificate of Motor Insurance or Insurance ID Card. This document contains your insurer and policy number. It is <strong>recommended</strong> — without it, manual entry will be required.",
+      "subtitle": "Scan your green card (IMIC), certificate of insurance, Certificate of Motor Insurance or Insurance ID Card. This document contains your insurer and policy number. It is recommended — without it, manual entry will be required.",
       "scan_btn": "Scan insurance document",
       "scan_sub": "Green card, certificate, insurance card…",
       "skip_btn": "Enter insurance details manually →"
@@ -234,7 +234,7 @@
     "city_placeholder": "Lausanne, Paris…",
     "country_label": "Country",
     "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important:</strong> Enter the <strong>exact location of the accident</strong>, even if you have moved the vehicles to the side. GPS captures your <em>current</em> position — correct it if you have moved.",
+    "location_tip": "💡 Important: Enter the exact location of the accident, even if you have moved the vehicles to the side. GPS captures your current position — correct it if you have moved.",
     "injuries_label": "Are there any injuries?",
     "no_injuries": "No — no injuries",
     "yes_injuries": "Yes — injury/injuries",
@@ -339,8 +339,8 @@
     "privacy_version": "Compliant with EU GDPR 2016/679 and Swiss nFADP · March 2026",
     "email_label": "Your email (to receive the PDF)",
     "email_placeholder": "you@example.com",
-    "consent_cgu": "I accept the <cgu>Terms & Conditions</cgu> and the <privacy>Privacy Policy</privacy>",
-    "consent_marketing": "I agree that PEP's Swiss SA may use my email to offer complementary services from its applications (claims management, insurance, financial services). <opt>Optional — revocable at any time.</opt>",
+    "consent_cgu": "I accept the Terms & Conditions and the Privacy Policy",
+    "consent_marketing": "I agree that PEP's Swiss SA may use my email to offer complementary services from its applications (claims management, insurance, financial services). Optional — revocable at any time.",
     "required_note": "* Required to use the service",
     "submit": "Continue →",
     "error_network": "Network error. Please try again.",

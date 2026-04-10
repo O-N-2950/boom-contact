@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "Sənədlərinizi skan edin",
-      "subtitle": "Qeydiyyat sənədinizlə başlayın.\nSığorta sənədi <strong>tövsiyə olunur</strong>.",
+      "subtitle": "Qeydiyyat sənədinizlə başlayın.\nSığorta sənədi tövsiyə olunur.",
       "reg_label": "Qeydiyyat sənədi / Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi",
-      "reg_sub": "İsveçrə qeydiyyatı, fransız carte grise, Zulassung DE, V5C GB… — <strong>məcburi</strong>",
-      "tip": "💡 <strong>Sığorta sənədi tövsiyə olunur.</strong> Yaşıl kart (IMIC), sığorta şəhadətnaməsi, Insurance ID card — bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. Onsuz onları əl ilə daxil etməlisiniz."
+      "reg_sub": "İsveçrə qeydiyyatı, fransız carte grise, Zulassung DE, V5C GB… — məcburi",
+      "tip": "💡 Sığorta sənədi tövsiyə olunur. Yaşıl kart (IMIC), sığorta şəhadətnaməsi, Insurance ID card — bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. Onsuz onları əl ilə daxil etməlisiniz."
     },
     "greencard": {
       "scanned": "✅ Qeydiyyat sənədi skan edildi",
       "compressing": "· Sıxılır…",
       "title": "Sığorta sənədi?",
-      "subtitle": "<strong>Yaşıl kartınızı (IMIC)</strong>, sığorta şəhadətnaməsini, Certificate of Motor Insurance və ya Insurance ID Card skan edin. Bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. <strong>Tövsiyə olunur</strong> — onsuz əl ilə daxiletmə tələb olunur.",
+      "subtitle": "Yaşıl kartınızı (IMIC), sığorta şəhadətnaməsini, Certificate of Motor Insurance və ya Insurance ID Card skan edin. Bu sənəd sığortaçınızı və polis nömrənizi ehtiva edir. Tövsiyə olunur — onsuz əl ilə daxiletmə tələb olunur.",
       "scan_btn": "Sığorta sənədini skan edin",
       "scan_sub": "Yaşıl kart, şəhadətnamə, sığorta kartı…",
       "skip_btn": "Sığorta məlumatlarını əl ilə daxil edin →"
@@ -307,7 +307,7 @@
     "city_placeholder": "Bakı, İstanbul…",
     "country_label": "Ölkə",
     "country_placeholder": "AZ, TR…",
-    "location_tip": "💡 <strong>Vacib:</strong> Nəqliyyat vasitələrini kənara çəksəniz belə, <strong>qəzanın dəqiq yerini</strong> göstərin. GPS <em>cari</em> mövqeyinizi alır — hərəkət etmisinizsə düzəldin.",
+    "location_tip": "💡 Vacib: Nəqliyyat vasitələrini kənara çəksəniz belə, qəzanın dəqiq yerini göstərin. GPS cari mövqeyinizi alır — hərəkət etmisinizsə düzəldin.",
     "injuries_label": "Xəsarət alanlar var?",
     "no_injuries": "Xeyr — xəsarət yoxdur",
     "yes_injuries": "Bəli — xəsarət(lər) var",
@@ -338,8 +338,8 @@
     "privacy_version": "AB GDPR 2016/679 və İsveçrə nFADP-yə uyğundur · Mart 2026",
     "email_label": "E-poçtunuz (PDF almaq üçün)",
     "email_placeholder": "siz@misal.com",
-    "consent_cgu": "<cgu>İstifadə Şərtlərini</cgu> və <privacy>Məxfilik Siyasətini</privacy> qəbul edirəm",
-    "consent_marketing": "PEP's Swiss SA-nın tətbiqlərinin əlavə xidmətlərini (iddia idarəetməsi, sığorta, maliyyə xidmətləri) təklif etmək üçün e-poçtumdan istifadə etməsinə razıyam. <opt>İstəyə bağlı — istənilən vaxt geri götürülə bilər.</opt>",
+    "consent_cgu": "İstifadə Şərtlərini və Məxfilik Siyasətini qəbul edirəm",
+    "consent_marketing": "PEP's Swiss SA-nın tətbiqlərinin əlavə xidmətlərini (iddia idarəetməsi, sığorta, maliyyə xidmətləri) təklif etmək üçün e-poçtumdan istifadə etməsinə razıyam. İstəyə bağlı — istənilən vaxt geri götürülə bilər.",
     "required_note": "* Xidmətdən istifadə üçün məcburidir",
     "submit": "Davam et →",
     "error_network": "Şəbəkə xətası. Yenidən cəhd edin.",

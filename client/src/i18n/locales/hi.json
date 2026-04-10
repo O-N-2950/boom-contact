@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "अपने दस्तावेज़ स्कैन करें",
-      "subtitle": "अपने पंजीकरण प्रमाण पत्र से शुरू करें।\nबीमा दस्तावेज़ <strong>अनुशंसित</strong> है।",
+      "subtitle": "अपने पंजीकरण प्रमाण पत्र से शुरू करें।\nबीमा दस्तावेज़ अनुशंसित है।",
       "reg_label": "पंजीकरण प्रमाण पत्र / ग्रे कार्ड",
-      "reg_sub": "CH परमिट, FR ग्रे कार्ड, DE Zulassung, GB V5C… — <strong>अनिवार्य</strong>",
-      "tip": "💡 <strong>बीमा दस्तावेज़ अनुशंसित है।</strong> ग्रीन कार्ड (IMIC), प्रमाण पत्र, Insurance ID card — इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। इसके बिना, आपको उन्हें मैन्युअल रूप से दर्ज करना होगा।"
+      "reg_sub": "CH परमिट, FR ग्रे कार्ड, DE Zulassung, GB V5C… — अनिवार्य",
+      "tip": "💡 बीमा दस्तावेज़ अनुशंसित है। ग्रीन कार्ड (IMIC), प्रमाण पत्र, Insurance ID card — इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। इसके बिना, आपको उन्हें मैन्युअल रूप से दर्ज करना होगा।"
     },
     "greencard": {
       "scanned": "✅ पंजीकरण प्रमाण पत्र स्कैन हो गया",
       "compressing": "· संपीड़न हो रहा है…",
       "title": "बीमा दस्तावेज़?",
-      "subtitle": "अपना <strong>ग्रीन कार्ड (IMIC)</strong>, बीमा प्रमाण पत्र, Certificate of Motor Insurance या Insurance ID Card स्कैन करें। इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। यह <strong>अनुशंसित</strong> है — इसके बिना मैन्युअल प्रविष्टि आवश्यक है।",
+      "subtitle": "अपना ग्रीन कार्ड (IMIC), बीमा प्रमाण पत्र, Certificate of Motor Insurance या Insurance ID Card स्कैन करें। इस दस्तावेज़ में आपका बीमाकर्ता और पॉलिसी नंबर होता है। यह अनुशंसित है — इसके बिना मैन्युअल प्रविष्टि आवश्यक है।",
       "scan_btn": "बीमा दस्तावेज़ स्कैन करें",
       "scan_sub": "ग्रीन कार्ड, प्रमाण पत्र, certificate, insurance card…",
       "skip_btn": "बीमा डेटा मैन्युअल रूप से दर्ज करें →"
@@ -233,7 +233,7 @@
     "city_placeholder": "लॉज़ेन, पेरिस…",
     "country_label": "देश",
     "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>महत्वपूर्ण :</strong> <strong>दुर्घटना का सटीक स्थान</strong> बताएं, भले ही आपने वाहनों को किनारे कर दिया हो। GPS आपकी <em>वर्तमान</em> स्थिति दर्ज करता है — यदि आप हट गए हों तो सुधारें।",
+    "location_tip": "💡 महत्वपूर्ण : दुर्घटना का सटीक स्थान बताएं, भले ही आपने वाहनों को किनारे कर दिया हो। GPS आपकी वर्तमान स्थिति दर्ज करता है — यदि आप हट गए हों तो सुधारें।",
     "injuries_label": "क्या कोई घायल है?",
     "no_injuries": "नहीं — कोई घायल नहीं",
     "yes_injuries": "हाँ — चोट(ें)",
@@ -322,8 +322,8 @@
     "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
     "email_label": "Votre email (pour recevoir le PDF)",
     "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "consent_cgu": "J'accepte les CGU et la Politique de confidentialité",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). Optionnel — révocable à tout moment.",
     "required_note": "* Obligatoire pour utiliser le service",
     "submit": "Continuer →",
     "error_network": "Erreur réseau. Réessayez.",

@@ -151,16 +151,16 @@
   "ocr": {
     "idle": {
       "title": "امسح مستنداتك ضوئياً",
-      "subtitle": "ابدأ برخصة تسيير المركبة.\nوثيقة التأمين <strong>موصى بها</strong>.",
+      "subtitle": "ابدأ برخصة تسيير المركبة.\nوثيقة التأمين موصى بها.",
       "reg_label": "رخصة تسيير المركبة / البطاقة الرمادية",
-      "reg_sub": "رخصة CH، البطاقة الرمادية FR، Zulassung DE، V5C GB… — <strong>إلزامي</strong>",
-      "tip": "💡 <strong>وثيقة التأمين موصى بها.</strong> البطاقة الخضراء (IMIC)، شهادة التأمين، بطاقة هوية التأمين — تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. بدونها، ستحتاج إلى إدخالها يدوياً."
+      "reg_sub": "رخصة CH، البطاقة الرمادية FR، Zulassung DE، V5C GB… — إلزامي",
+      "tip": "💡 وثيقة التأمين موصى بها. البطاقة الخضراء (IMIC)، شهادة التأمين، بطاقة هوية التأمين — تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. بدونها، ستحتاج إلى إدخالها يدوياً."
     },
     "greencard": {
       "scanned": "✅ تم مسح رخصة تسيير المركبة ضوئياً",
       "compressing": "· جارٍ الضغط…",
       "title": "وثيقة التأمين؟",
-      "subtitle": "امسح <strong>بطاقتك الخضراء (IMIC)</strong>، شهادة التأمين، Certificate of Motor Insurance أو Insurance ID Card ضوئياً. تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. إنها <strong>موصى بها</strong> — بدونها يلزم الإدخال اليدوي.",
+      "subtitle": "امسح بطاقتك الخضراء (IMIC)، شهادة التأمين، Certificate of Motor Insurance أو Insurance ID Card ضوئياً. تحتوي هذه الوثيقة على اسم شركة التأمين ورقم الوثيقة. إنها موصى بها — بدونها يلزم الإدخال اليدوي.",
       "scan_btn": "مسح وثيقة التأمين ضوئياً",
       "scan_sub": "البطاقة الخضراء، شهادة التأمين، certificate، بطاقة التأمين…",
       "skip_btn": "إدخال بيانات التأمين يدوياً ←"
@@ -213,7 +213,7 @@
     "city_placeholder": "لوزان، باريس…",
     "country_label": "البلد",
     "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>هام :</strong> حدد موقع <strong>الحادث بدقة</strong>، حتى لو قمت بتحريك المركبات جانبًا. يلتقط GPS موقعك <em>الحالي</em> — قم بالتصحيح إذا كنت قد تحركت.",
+    "location_tip": "💡 هام : حدد موقع الحادث بدقة، حتى لو قمت بتحريك المركبات جانبًا. يلتقط GPS موقعك الحالي — قم بالتصحيح إذا كنت قد تحركت.",
     "injuries_label": "هل يوجد مصابون؟",
     "no_injuries": "لا — لا يوجد مصابون",
     "yes_injuries": "نعم — يوجد إصابة (إصابات)",
@@ -318,8 +318,8 @@
     "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
     "email_label": "Votre email (pour recevoir le PDF)",
     "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "consent_cgu": "J'accepte les CGU et la Politique de confidentialité",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). Optionnel — révocable à tout moment.",
     "required_note": "* Obligatoire pour utiliser le service",
     "submit": "Continuer →",
     "error_network": "Erreur réseau. Réessayez.",

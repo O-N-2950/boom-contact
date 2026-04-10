@@ -172,16 +172,16 @@
   "ocr": {
     "idle": {
       "title": "Scannen Sie Ihre Dokumente",
-      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nDas Versicherungsdokument wird <strong>empfohlen</strong>.",
+      "subtitle": "Beginnen Sie mit Ihrem Fahrzeugausweis.\nDas Versicherungsdokument wird empfohlen.",
       "reg_label": "Fahrzeugausweis / Zulassungsbescheinigung",
-      "reg_sub": "Ausweis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatorisch</strong>",
-      "tip": "💡 <strong>Versicherungsdokument empfohlen.</strong> Grüne Karte (IMIC), Versicherungsbestätigung, Insurance ID card — dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Ohne dieses Dokument müssen Sie die Angaben manuell eingeben."
+      "reg_sub": "Ausweis CH, carte grise FR, Zulassung DE, V5C GB… — obligatorisch",
+      "tip": "💡 Versicherungsdokument empfohlen. Grüne Karte (IMIC), Versicherungsbestätigung, Insurance ID card — dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Ohne dieses Dokument müssen Sie die Angaben manuell eingeben."
     },
     "greencard": {
       "scanned": "✅ Fahrzeugausweis gescannt",
       "compressing": "· Komprimierung…",
       "title": "Versicherungsdokument?",
-      "subtitle": "Scannen Sie Ihre <strong>grüne Karte (IMIC)</strong>, Versicherungsbestätigung, Certificate of Motor Insurance oder Insurance ID Card. Dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Es wird <strong>empfohlen</strong> — ohne es ist eine manuelle Eingabe erforderlich.",
+      "subtitle": "Scannen Sie Ihre grüne Karte (IMIC), Versicherungsbestätigung, Certificate of Motor Insurance oder Insurance ID Card. Dieses Dokument enthält Ihren Versicherer und Ihre Polizzennummer. Es wird empfohlen — ohne es ist eine manuelle Eingabe erforderlich.",
       "scan_btn": "Versicherungsdokument scannen",
       "scan_sub": "Grüne Karte, Bestätigung, certificate, insurance card…",
       "skip_btn": "Versicherungsdaten manuell eingeben →"
@@ -234,7 +234,7 @@
     "city_placeholder": "Lausanne, Paris…",
     "country_label": "Land",
     "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Wichtig :</strong> Geben Sie den <strong>genauen Unfallort</strong> an, auch wenn Sie die Fahrzeuge auf die Seite gefahren haben. Das GPS erfasst Ihre <em>aktuelle</em> Position — korrigieren Sie diese, falls Sie sich bewegt haben.",
+    "location_tip": "💡 Wichtig : Geben Sie den genauen Unfallort an, auch wenn Sie die Fahrzeuge auf die Seite gefahren haben. Das GPS erfasst Ihre aktuelle Position — korrigieren Sie diese, falls Sie sich bewegt haben.",
     "injuries_label": "Gibt es Verletzte ?",
     "no_injuries": "Nein — keine Verletzten",
     "yes_injuries": "Ja — Verletzung(en)",
@@ -339,8 +339,8 @@
     "privacy_version": "Konform mit EU-DSGVO 2016/679 und Schweizer DSG · März 2026",
     "email_label": "Ihre E-Mail (zum Empfang des PDFs)",
     "email_placeholder": "sie@beispiel.com",
-    "consent_cgu": "Ich akzeptiere die <cgu>AGB</cgu> und die <privacy>Datenschutzerklärung</privacy>",
-    "consent_marketing": "Ich stimme zu, dass PEP's Swiss SA meine E-Mail-Adresse nutzen darf, um mir ergänzende Dienste anzubieten (Schadensverwaltung, Versicherungen, Finanzdienstleistungen). <opt>Optional — jederzeit widerrufbar.</opt>",
+    "consent_cgu": "Ich akzeptiere die AGB und die Datenschutzerklärung",
+    "consent_marketing": "Ich stimme zu, dass PEP's Swiss SA meine E-Mail-Adresse nutzen darf, um mir ergänzende Dienste anzubieten (Schadensverwaltung, Versicherungen, Finanzdienstleistungen). Optional — jederzeit widerrufbar.",
     "required_note": "* Pflichtfeld zur Nutzung des Dienstes",
     "submit": "Weiter →",
     "error_network": "Netzwerkfehler. Bitte erneut versuchen.",

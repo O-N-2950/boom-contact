@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "ሰነዶቻችሁን ስካን አድርጉ",
-      "subtitle": "ከሞተር ፍቃዱ ጀምሩ።\nየኢንሹራንስ ሰነድ <strong>ይመከራል</strong>።",
+      "subtitle": "ከሞተር ፍቃዱ ጀምሩ።\nየኢንሹራንስ ሰነድ ይመከራል።",
       "reg_label": "የሞተር ፍቃድ / ካርቴ ግሪዝ",
-      "reg_sub": "ፍቃድ CH፣ ካርቴ ግሪዝ FR — <strong>አስፈላጊ</strong>",
-      "tip": "💡 <strong>የኢንሹራንስ ሰነድ ይመከራል።</strong> ካርቴ ቨርቴ፣ የኢንሹራንስ ምስክርነት — ይህ ሰነድ ኩባንያና ፖሊሲ ቁጥር ይዟል።"
+      "reg_sub": "ፍቃድ CH፣ ካርቴ ግሪዝ FR — አስፈላጊ",
+      "tip": "💡 የኢንሹራንስ ሰነድ ይመከራል። ካርቴ ቨርቴ፣ የኢንሹራንስ ምስክርነት — ይህ ሰነድ ኩባንያና ፖሊሲ ቁጥር ይዟል።"
     },
     "greencard": {
       "scanned": "✅ የሞተር ፍቃድ ስካን ተደርጓል",
       "compressing": "· በመጫን ላይ…",
       "title": "የኢንሹራንስ ሰነድ?",
-      "subtitle": "የ<strong>ካርቴ ቨርቴ (IMIC)</strong> ወይም ሌላ የኢንሹራንስ ሰነድ ስካን አድርጉ።",
+      "subtitle": "የካርቴ ቨርቴ (IMIC) ወይም ሌላ የኢንሹራንስ ሰነድ ስካን አድርጉ።",
       "scan_btn": "የኢንሹራንስ ሰነድ ስካን አድርጉ",
       "scan_sub": "ካርቴ ቨርቴ፣ ምስክርነት፣ ካርድ…",
       "skip_btn": "የኢንሹራንስ መረጃ በእጅ ሙሉ →"
@@ -218,24 +218,78 @@
       "other": "ሰው / ሌላ"
     },
     "vehicles": {
-      "car": { "label": "መኪና", "sub": "ሰዳን፣ SUV፣ ሃቻባክ" },
-      "van": { "label": "ቫን / ጭነት", "sub": "ቫን፣ ሚኒ-ካሚዮን" },
-      "motorcycle": { "label": "ሞተርሳይክል", "sub": "ሞተርሳይክል" },
-      "scooter": { "label": "ስኩተር", "sub": "ስኩተር፣ 50cm³" },
-      "moped": { "label": "ሞፔድ", "sub": "2 ጎማ <45km/h" },
-      "escooter": { "label": "ኤሌክትሪክ ስኩተር", "sub": "EDPM፣ ሆቨርቦርድ" },
-      "quad": { "label": "ኳድ / ቡጊ", "sub": "የሜዳ ተሽከርካሪ" },
-      "truck": { "label": "ካሚዮን", "sub": "ካሚዮን፣ ሴሚ" },
-      "bus": { "label": "ባስ", "sub": "ባስ፣ ሚኒ-ባስ" },
-      "construction": { "label": "የግንባታ ማሽን", "sub": "ክሬን፣ ቡልዶዘር" },
-      "tractor": { "label": "ትራክተር", "sub": "የእርሻ ትራክተር" },
-      "tram": { "label": "ትራም", "sub": "ትራም" },
-      "train": { "label": "ባቡር", "sub": "ባቡር፣ ሜትሮ" },
-      "bicycle": { "label": "ብስክሌት", "sub": "ብስክሌት፣ ኤሌክትሪክ ብስክሌት" },
-      "cargo_bike": { "label": "ጭነት ብስክሌት", "sub": "ካርጎ ብስክሌት" },
-      "pedestrian": { "label": "እግረኛ", "sub": "ሰው በእግሩ" },
-      "boat": { "label": "ጀልባ", "sub": "ጀልባ፣ ጀት-ስኪ" },
-      "other": { "label": "ሌላ ተሽከርካሪ", "sub": "ያልተዘረዘረ" }
+      "car": {
+        "label": "መኪና",
+        "sub": "ሰዳን፣ SUV፣ ሃቻባክ"
+      },
+      "van": {
+        "label": "ቫን / ጭነት",
+        "sub": "ቫን፣ ሚኒ-ካሚዮን"
+      },
+      "motorcycle": {
+        "label": "ሞተርሳይክል",
+        "sub": "ሞተርሳይክል"
+      },
+      "scooter": {
+        "label": "ስኩተር",
+        "sub": "ስኩተር፣ 50cm³"
+      },
+      "moped": {
+        "label": "ሞፔድ",
+        "sub": "2 ጎማ <45km/h"
+      },
+      "escooter": {
+        "label": "ኤሌክትሪክ ስኩተር",
+        "sub": "EDPM፣ ሆቨርቦርድ"
+      },
+      "quad": {
+        "label": "ኳድ / ቡጊ",
+        "sub": "የሜዳ ተሽከርካሪ"
+      },
+      "truck": {
+        "label": "ካሚዮን",
+        "sub": "ካሚዮን፣ ሴሚ"
+      },
+      "bus": {
+        "label": "ባስ",
+        "sub": "ባስ፣ ሚኒ-ባስ"
+      },
+      "construction": {
+        "label": "የግንባታ ማሽን",
+        "sub": "ክሬን፣ ቡልዶዘር"
+      },
+      "tractor": {
+        "label": "ትራክተር",
+        "sub": "የእርሻ ትራክተር"
+      },
+      "tram": {
+        "label": "ትራም",
+        "sub": "ትራም"
+      },
+      "train": {
+        "label": "ባቡር",
+        "sub": "ባቡር፣ ሜትሮ"
+      },
+      "bicycle": {
+        "label": "ብስክሌት",
+        "sub": "ብስክሌት፣ ኤሌክትሪክ ብስክሌት"
+      },
+      "cargo_bike": {
+        "label": "ጭነት ብስክሌት",
+        "sub": "ካርጎ ብስክሌት"
+      },
+      "pedestrian": {
+        "label": "እግረኛ",
+        "sub": "ሰው በእግሩ"
+      },
+      "boat": {
+        "label": "ጀልባ",
+        "sub": "ጀልባ፣ ጀት-ስኪ"
+      },
+      "other": {
+        "label": "ሌላ ተሽከርካሪ",
+        "sub": "ያልተዘረዘረ"
+      }
     },
     "datetime_label": "የአደጋ ቀንና ሰዓት",
     "date_label": "ቀን",
@@ -253,7 +307,7 @@
     "city_placeholder": "አዲስ አበባ፣ Berne…",
     "country_label": "አገር",
     "country_placeholder": "ET, CH…",
-    "location_tip": "💡 <strong>አስፈላጊ:</strong> ትክክለኛ የአደጋ ቦታ ያስገቡ።",
+    "location_tip": "💡 አስፈላጊ: ትክክለኛ የአደጋ ቦታ ያስገቡ።",
     "injuries_label": "ቁስለቶች አሉ?",
     "no_injuries": "አይደለም — ቁስለት የለም",
     "yes_injuries": "አዎ — ቁስለት አለ",
@@ -284,28 +338,70 @@
     "privacy_version": "RGPD UE 2016/679 ተኳሃኝ · መጋቢት 2026",
     "email_label": "ኢሜይልዎ (PDF ለመቀበል)",
     "email_placeholder": "እርስዎ@ምሳሌ.com",
-    "consent_cgu": "የ<cgu>አጠቃቀም ሁኔታዎች</cgu>ን እና <privacy>የምስጢራዊነት ፖሊሲ</privacy>ን እቀበላለሁ",
-    "consent_marketing": "PEP's Swiss SA ኢሜይሌን ለሌሎች አገልግሎቶች እንዲጠቀምበት ፈቃድ እሰጣለሁ። <opt>አማራጭ — ማንኛውም ጊዜ ሊሰረዝ ይችላል።</opt>",
+    "consent_cgu": "የአጠቃቀም ሁኔታዎችን እና የምስጢራዊነት ፖሊሲን እቀበላለሁ",
+    "consent_marketing": "PEP's Swiss SA ኢሜይሌን ለሌሎች አገልግሎቶች እንዲጠቀምበት ፈቃድ እሰጣለሁ። አማራጭ — ማንኛውም ጊዜ ሊሰረዝ ይችላል።",
     "required_note": "* ለአጠቃቀም አስፈላጊ",
     "submit": "ቀጥል →",
     "error_network": "የኔትወርክ ስህተት። እንደገና ሞክር።",
     "cgu_sections": [
-      { "title": "1. ዓላማ", "text": "boom.contact የ PEP's Swiss SA ዲጂታል አገልግሎት ነው። ዓለም አቀፍ ዲጂታል የአደጋ ሪፖርት ለማዘጋጀት ይረዳል።" },
-      { "title": "2. ተቀባይነት", "text": "አገልግሎቱን መጠቀም የሁኔታዎቹን መቀበልን ያካትታል። ሕገ-ወጥ አጠቃቀም ክልክል ነው።" },
-      { "title": "3. አገልግሎቶች", "text": "boom.contact ያቀርባል: (a) OCR; (b) QR ሴሽን; (c) ዲጂታል ፊርማ; (d) PDF ኢሜይል። ሹፌሩ ለራሱ ኢንሹራንስ ሪፖርት የማድረግ ሕጋዊ ግዴታ አለበት።" },
-      { "title": "4. ዋጋ", "text": "አገልግሎቱ በፓኬጆች ይሸጣል። ክፍያ በ Stripe (PCI-DSS) ይፈጸማል። ክሬዲቶች ማብቂያ ቀን የላቸውም።" },
-      { "title": "5. ሕጋዊ ዋጋ", "text": "የ boom.contact PDF በኢንሹራንስ ኩባንያዎች ዘንድ ተቀባይነት አለው። PEP's Swiss SA በሁሉም አገሮች ተቀባይነትን አያረጋግጥም።" },
-      { "title": "6. ኃላፊነት", "text": "PEP's Swiss SA ለ OCR ስህተቶች ወይም ኢንሹራንስ ኩባንያ ውድቅ ኃላፊነት አልወስድም። ኃላፊነቱ ለተከፈለው ዋጋ ብቻ ነው።" },
-      { "title": "7. ምሁራዊ ንብረት", "text": "ሶፍትዌር፣ ምልክቶች፣ ይዘቶች የ PEP's Swiss SA ናቸው።" },
-      { "title": "8. ተፈጻሚ ህግ", "text": "የስዊስ ህግ ተፈጻሚ ነው። ክርክሮች በ Jura ፍርድ ቤት ይፈታሉ።" }
+      {
+        "title": "1. ዓላማ",
+        "text": "boom.contact የ PEP's Swiss SA ዲጂታል አገልግሎት ነው። ዓለም አቀፍ ዲጂታል የአደጋ ሪፖርት ለማዘጋጀት ይረዳል።"
+      },
+      {
+        "title": "2. ተቀባይነት",
+        "text": "አገልግሎቱን መጠቀም የሁኔታዎቹን መቀበልን ያካትታል። ሕገ-ወጥ አጠቃቀም ክልክል ነው።"
+      },
+      {
+        "title": "3. አገልግሎቶች",
+        "text": "boom.contact ያቀርባል: (a) OCR; (b) QR ሴሽን; (c) ዲጂታል ፊርማ; (d) PDF ኢሜይል። ሹፌሩ ለራሱ ኢንሹራንስ ሪፖርት የማድረግ ሕጋዊ ግዴታ አለበት።"
+      },
+      {
+        "title": "4. ዋጋ",
+        "text": "አገልግሎቱ በፓኬጆች ይሸጣል። ክፍያ በ Stripe (PCI-DSS) ይፈጸማል። ክሬዲቶች ማብቂያ ቀን የላቸውም።"
+      },
+      {
+        "title": "5. ሕጋዊ ዋጋ",
+        "text": "የ boom.contact PDF በኢንሹራንስ ኩባንያዎች ዘንድ ተቀባይነት አለው። PEP's Swiss SA በሁሉም አገሮች ተቀባይነትን አያረጋግጥም።"
+      },
+      {
+        "title": "6. ኃላፊነት",
+        "text": "PEP's Swiss SA ለ OCR ስህተቶች ወይም ኢንሹራንስ ኩባንያ ውድቅ ኃላፊነት አልወስድም። ኃላፊነቱ ለተከፈለው ዋጋ ብቻ ነው።"
+      },
+      {
+        "title": "7. ምሁራዊ ንብረት",
+        "text": "ሶፍትዌር፣ ምልክቶች፣ ይዘቶች የ PEP's Swiss SA ናቸው።"
+      },
+      {
+        "title": "8. ተፈጻሚ ህግ",
+        "text": "የስዊስ ህግ ተፈጻሚ ነው። ክርክሮች በ Jura ፍርድ ቤት ይፈታሉ።"
+      }
     ],
     "privacy_sections": [
-      { "title": "የዳታ ሃላፊ", "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact" },
-      { "title": "የሚሰበሰቡ ዳታዎች", "text": "ኢሜይል፣ ስም፣ አድራሻ፣ የሰሌዳ ቁጥር፣ GPS ቦታ፣ ዲጂታል ፊርማ፣ የኢንሹራንስ መረጃ።" },
-      { "title": "ህጋዊ መሰረት", "text": "የውል አፈጻጸም (Art. 6.1.b RGPD) ለሪፖርት ዳታ። ፈቃደኛ ፍቃድ ለሽያጭ ዓላማ።" },
-      { "title": "የማቆያ ጊዜ", "text": "ሴሽኖች: 2 ሰዓት። PDF እና ዳታ: 30 ቀናት ከዚያ ይሰረዛሉ። የክፍያ ዳታ: 10 ዓመት።" },
-      { "title": "የዳታ ማጋራት", "text": "ዳታ ለሶስተኛ ወገን አይሸጥም። Stripe, Resend, Anthropic ለአገልግሎት ዓላማ ብቻ ይጠቀሙታል።" },
-      { "title": "መብቶቻቸው", "text": "ማየት፣ ማስተካከል፣ መሰረዝ፣ ማውጣት። ወደ privacy@boom.contact ይፃፉ።" }
+      {
+        "title": "የዳታ ሃላፊ",
+        "text": "PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Suisse. privacy@boom.contact"
+      },
+      {
+        "title": "የሚሰበሰቡ ዳታዎች",
+        "text": "ኢሜይል፣ ስም፣ አድራሻ፣ የሰሌዳ ቁጥር፣ GPS ቦታ፣ ዲጂታል ፊርማ፣ የኢንሹራንስ መረጃ።"
+      },
+      {
+        "title": "ህጋዊ መሰረት",
+        "text": "የውል አፈጻጸም (Art. 6.1.b RGPD) ለሪፖርት ዳታ። ፈቃደኛ ፍቃድ ለሽያጭ ዓላማ።"
+      },
+      {
+        "title": "የማቆያ ጊዜ",
+        "text": "ሴሽኖች: 2 ሰዓት። PDF እና ዳታ: 30 ቀናት ከዚያ ይሰረዛሉ። የክፍያ ዳታ: 10 ዓመት።"
+      },
+      {
+        "title": "የዳታ ማጋራት",
+        "text": "ዳታ ለሶስተኛ ወገን አይሸጥም። Stripe, Resend, Anthropic ለአገልግሎት ዓላማ ብቻ ይጠቀሙታል።"
+      },
+      {
+        "title": "መብቶቻቸው",
+        "text": "ማየት፣ ማስተካከል፣ መሰረዝ፣ ማውጣት። ወደ privacy@boom.contact ይፃፉ።"
+      }
     ]
   },
   "pricing": {
@@ -328,9 +424,18 @@
     },
     "legal": "በመግዛት የ boom.contact ሁኔታዎቹን ትቀበላሃለህ።\nPDF ከተፈጠረ በኋላ ተመላሽ አይሆንም።",
     "packages": {
-      "single": { "label": "1 ሪፖርት", "description": "ለ አንድ አደጋ" },
-      "pack3": { "label": "3 ሪፖርቶች", "description": "ለቤተሰብ" },
-      "pack10": { "label": "10 ሪፖርቶች", "description": "ኤጀንቶች፣ ኩባንያ" }
+      "single": {
+        "label": "1 ሪፖርት",
+        "description": "ለ አንድ አደጋ"
+      },
+      "pack3": {
+        "label": "3 ሪፖርቶች",
+        "description": "ለቤተሰብ"
+      },
+      "pack10": {
+        "label": "10 ሪፖርቶች",
+        "description": "ኤጀንቶች፣ ኩባንያ"
+      }
     }
   },
   "offline": {

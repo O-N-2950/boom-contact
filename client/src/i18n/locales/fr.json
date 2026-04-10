@@ -172,16 +172,16 @@
   "ocr": {
     "idle": {
       "title": "Scannez vos documents",
-      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est <strong>recommandé</strong>.",
+      "subtitle": "Commencez par votre permis de circulation.\nLe document d'assurance est recommandé.",
       "reg_label": "Permis de circulation / Carte grise",
-      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obligatoire</strong>",
-      "tip": "💡 <strong>Document d'assurance recommandé.</strong> Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
+      "reg_sub": "Permis CH, carte grise FR, Zulassung DE, V5C GB… — obligatoire",
+      "tip": "💡 Document d'assurance recommandé. Carte verte (IMIC), attestation, Insurance ID card — ce document contient votre assureur et numéro de police. Sans lui, vous devrez les saisir manuellement."
     },
     "greencard": {
       "scanned": "✅ Permis de circulation scanné",
       "compressing": "· Compression…",
       "title": "Document d'assurance ?",
-      "subtitle": "Scannez votre <strong>carte verte (IMIC)</strong>, attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est <strong>recommandé</strong> — sans lui, saisie manuelle requise.",
+      "subtitle": "Scannez votre carte verte (IMIC), attestation d'assurance, Certificate of Motor Insurance ou Insurance ID Card. Ce document contient votre assureur et numéro de police. Il est recommandé — sans lui, saisie manuelle requise.",
       "scan_btn": "Scanner le document d'assurance",
       "scan_sub": "Carte verte, attestation, certificate, insurance card…",
       "skip_btn": "Saisir manuellement les données d'assurance →"
@@ -308,7 +308,7 @@
     "city_placeholder": "Lausanne, Paris…",
     "country_label": "Pays",
     "country_placeholder": "CH, FR…",
-    "location_tip": "💡 <strong>Important :</strong> Indiquez le lieu <strong>exact de l'accident</strong>, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position <em>actuelle</em> — corrigez si vous avez bougé.",
+    "location_tip": "💡 Important : Indiquez le lieu exact de l'accident, même si vous avez déplacé les véhicules sur le côté. Le GPS capture votre position actuelle — corrigez si vous avez bougé.",
     "injuries_label": "Y a-t-il des blessés ?",
     "no_injuries": "Non — aucun blessé",
     "yes_injuries": "Oui — blessure(s)",
@@ -339,8 +339,8 @@
     "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
     "email_label": "Votre email (pour recevoir le PDF)",
     "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "consent_cgu": "J'accepte les CGU et la Politique de confidentialité",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). Optionnel — révocable à tout moment.",
     "required_note": "* Obligatoire pour utiliser le service",
     "submit": "Continuer →",
     "error_network": "Erreur réseau. Réessayez.",

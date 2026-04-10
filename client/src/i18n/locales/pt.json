@@ -171,16 +171,16 @@
   "ocr": {
     "idle": {
       "title": "Digitalize os seus documentos",
-      "subtitle": "Comece pelo seu documento de registo de veículo.\nO documento de seguro é <strong>recomendado</strong>.",
+      "subtitle": "Comece pelo seu documento de registo de veículo.\nO documento de seguro é recomendado.",
       "reg_label": "Documento de registo / Título de registo",
-      "reg_sub": "Registo CH, carte grise FR, Zulassung DE, V5C GB… — <strong>obrigatório</strong>",
-      "tip": "💡 <strong>Documento de seguro recomendado.</strong> Carta verde (IMIC), comprovativo, Insurance ID card — este documento contém o seu segurador e número de apólice. Sem ele, terá de os introduzir manualmente."
+      "reg_sub": "Registo CH, carte grise FR, Zulassung DE, V5C GB… — obrigatório",
+      "tip": "💡 Documento de seguro recomendado. Carta verde (IMIC), comprovativo, Insurance ID card — este documento contém o seu segurador e número de apólice. Sem ele, terá de os introduzir manualmente."
     },
     "greencard": {
       "scanned": "✅ Documento de registo digitalizado",
       "compressing": "· A comprimir…",
       "title": "Documento de seguro?",
-      "subtitle": "Digitalize o seu <strong>cartão verde (IMIC)</strong>, comprovativo de seguro, Certificate of Motor Insurance ou Insurance ID Card. Este documento contém o seu segurador e número de apólice. É <strong>recomendado</strong> — sem ele, é necessária introdução manual.",
+      "subtitle": "Digitalize o seu cartão verde (IMIC), comprovativo de seguro, Certificate of Motor Insurance ou Insurance ID Card. Este documento contém o seu segurador e número de apólice. É recomendado — sem ele, é necessária introdução manual.",
       "scan_btn": "Digitalizar o documento de seguro",
       "scan_sub": "Cartão verde, comprovativo, certificate, insurance card…",
       "skip_btn": "Introduzir manualmente os dados do seguro →"
@@ -328,8 +328,8 @@
     "privacy_version": "Conforme RGPD UE 2016/679 et nLPD Suisse · Mars 2026",
     "email_label": "Votre email (pour recevoir le PDF)",
     "email_placeholder": "vous@exemple.com",
-    "consent_cgu": "J'accepte les <cgu>CGU</cgu> et la <privacy>Politique de confidentialité</privacy>",
-    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). <opt>Optionnel — révocable à tout moment.</opt>",
+    "consent_cgu": "J'accepte les CGU et la Politique de confidentialité",
+    "consent_marketing": "J'accepte que PEP's Swiss SA utilise mon email pour me proposer des services complémentaires de ses applications (gestion de sinistres, assurances, services financiers). Optionnel — révocable à tout moment.",
     "required_note": "* Obligatoire pour utiliser le service",
     "submit": "Continuer →",
     "error_network": "Erreur réseau. Réessayez.",
