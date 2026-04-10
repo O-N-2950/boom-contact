@@ -779,7 +779,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               <div className="mb-2.5 rounded-[10px] px-3.5 py-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
                 <div className="text-[11px] mb-1 font-semibold opacity-75">📍 Accident</div>
                 <div className="text-xs opacity-70" >
-                  {accidentData.date && accidentData.time ? `${accidentData.date} à ${accidentData.time}` : '—'}
+                  {accidentData.date && accidentData.time
+                    ? `${new Date(accidentData.date + 'T00:00').toLocaleDateString(undefined, { day: '2-digit', month: 'long', year: 'numeric' })} à ${accidentData.time}`
+                    : '—'}
                 </div>
                 {accidentData.location?.city && (
                   <div className="text-xs opacity-75">{accidentData.location.city}, {accidentData.location.country || ''}</div>

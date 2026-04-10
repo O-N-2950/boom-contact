@@ -67,8 +67,8 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
   }, [prefilled]);
 
   // Champs accident complémentaires (partagés — section 13-14)
-  const [accDate, setAccDate]           = useState(accidentData?.date ?? '');
-  const [accTime, setAccTime]           = useState(accidentData?.time ?? '');
+  const [accDate, setAccDate]           = useState(accidentData?.date || new Date().toISOString().split('T')[0]);
+  const [accTime, setAccTime]           = useState(accidentData?.time || new Date().toTimeString().slice(0, 5));
   const [witnesses, setWitnesses]       = useState(accidentData?.witnesses ?? '');
   const [thirdParty, setThirdParty]     = useState<boolean | null>(
     accidentData?.thirdPartyDamage !== undefined ? accidentData.thirdPartyDamage : null
@@ -242,7 +242,7 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
             <div>
               <label htmlFor="acc-date" className="text-[11px] uppercase mb-2 block opacity-70 tracking-[1.5px]">Date et heure de l'accident</label>
               <div className="flex gap-2">
-                <input id="acc-date" type="date" value={accDate} onChange={e => setAccDate(e.target.value)}
+                <input id="acc-date" type="date" value={accDate} max={new Date().toISOString().split('T')[0]} onChange={e => setAccDate(e.target.value)}
                   aria-label="Date de l'accident"
                   className="flex-1 rounded-lg text-sm px-[13px] py-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.1)', background: 'rgba(240,237,232,0.04)', color: 'var(--text)' }} />
                 <input id="acc-time" type="time" value={accTime} onChange={e => setAccTime(e.target.value)}
