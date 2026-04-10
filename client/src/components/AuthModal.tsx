@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { trpc } from '../trpc';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 
@@ -12,6 +13,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
+  const { t } = useTranslation();
   const [mode, setMode]         = useState<AuthMode>('choose');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       await magicReqMut.mutateAsync({ email });
       setMode('magic_sent');
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Erreur');
+      setError(e instanceof Error ? e.message : t('auth.generic_error'));
     } finally { setLoading(false); }
   };
 
@@ -43,7 +45,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user', JSON.stringify(res.user));
       onAuth(res.token, res.user);
     } catch (e: unknown) {
-      setError('Email ou mot de passe incorrect.');
+      setError(t('auth.login_error'));
     } finally { setLoading(false); }
   };
 
@@ -56,7 +58,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user', JSON.stringify({ id: (res as any).id, email, role: 'customer', credits: 0 }));
       onAuth(res.token, { id: (res as any).id, email, role: 'customer', credits: 0 });
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Erreur lors de l'inscription.");
+      setError(e instanceof Error ? e.message : t('auth.register_error'));
     } finally { setLoading(false); }
   };
 
@@ -68,7 +70,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             {title || '💥 boom.contact'}
           </h2>
           <div className="text-[#d0d0d0] text-sm leading-normal">
-            {subtitle || 'Connectez-vous pour sauvegarder vos véhicules et ne plus rien saisir lors de vos constats.'}
+            {subtitle || t('auth.default_subtitle')}
           </div>
         </div>
 
@@ -76,20 +78,20 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {mode === 'choose' && (
           <div className="flex flex-col gap-3">
             <button onClick={() => setMode('magic')} style={btnStyle('#D42D00')}>
-              📧 Connexion par lien email (recommandé)
+              {t('auth.magic_btn')}
             </button>
             <button onClick={() => setMode('password')} style={btnStyle('#444')}>
-              🔑 Connexion avec mot de passe
+              {t('auth.password_btn')}
             </button>
             <button onClick={() => setMode('register')} style={btnStyle('#444')}>
-              ✨ Créer un compte
+              {t('auth.register_btn')}
             </button>
             <div className="mt-1" style={{ borderTop: '1px solid #444' }} />
             <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
-              Continuer sans compte →
+              {t('auth.skip_btn')}
             </button>
             <p className="text-[#d0d0d0] text-[11px] text-center m-0">
-              Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.
+              {t('auth.skip_note')}
             </p>
           </div>
         )}
@@ -98,7 +100,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {mode === 'magic' && (
           <div className="flex flex-col gap-3">
             <div className="text-sm mb-1 text-[#ccc]">
-              Entrez votre email — vous recevrez un lien de connexion valable 15 minutes.
+              {t('auth.magic_instructions')}
             </div>
             <input
               type="email" placeholder="votre@email.com" value={email}
@@ -106,15 +108,15 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               onKeyDown={e => e.key === 'Enter' && handleMagicRequest()}
               onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
-              aria-label="Adresse email"
+              aria-label="Email"
               aria-describedby={error ? "error-magic" : undefined}
               style={inputStyle}
             />
             {error && <div id="error-magic" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#D42D00')}>
-              {loading ? 'Envoi...' : 'Envoyer le lien'}
+              {loading ? t('auth.sending') : t('auth.send_link')}
             </button>
-            <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>
+            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
           </div>
         )}
 
@@ -123,15 +125,15 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
           <div className="text-center">
             <div className="text-5xl mb-4" aria-hidden="true">📧</div>
             <div className="text-white font-bold text-lg mb-2">
-              Email envoyé !
+              {t('auth.email_sent_title')}
             </div>
+            <div className="text-[#d0d0d0] text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: t('auth.email_sent_desc', { email }) }} />
             <div className="text-[#d0d0d0] text-sm leading-relaxed">
-              Vérifiez votre boîte <strong className="text-white">{email}</strong>.<br />
-              Le lien est valable 15 minutes.
+              {t('auth.email_sent_validity')}
             </div>
             <div className="mt-6 pt-5" style={{ borderTop: '1px solid #444' }}>
               <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
-                Continuer sans compte →
+                {t('auth.skip_btn')}
               </button>
             </div>
           </div>
@@ -145,27 +147,27 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
               onChange={e => setEmail(e.target.value)}
               onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
-              aria-label="Adresse email"
+              aria-label="Email"
               aria-describedby={error ? "error-password" : undefined}
               style={inputStyle}
             />
             <input
-              type="password" placeholder="Mot de passe" value={password}
+              type="password" placeholder={t('auth.password_placeholder')} value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleLogin()}
               onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
-              aria-label="Mot de passe"
+              aria-label={t('auth.password_placeholder')}
               style={inputStyle}
             />
             {error && <div id="error-password" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
-              {loading ? 'Connexion...' : 'Se connecter'}
+              {loading ? t('auth.logging_in') : t('auth.login_btn')}
             </button>
             <button onClick={() => { setMode('magic'); setError(''); }} style={linkStyle}>
-              Mot de passe oublié ? Utiliser un lien email →
+              {t('auth.forgot_password')}
             </button>
-            <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>
+            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
           </div>
         )}
 
@@ -173,34 +175,34 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {mode === 'register' && (
           <div className="flex flex-col gap-3">
             <div className="text-[13px] leading-normal text-[#ccc]">
-              Créez votre compte pour sauvegarder vos véhicules et pré-remplir vos constats automatiquement.
+              {t('auth.register_desc')}
             </div>
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
               onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
-              aria-label="Adresse email"
+              aria-label="Email"
               aria-describedby={error ? "error-register" : undefined}
               style={inputStyle}
             />
             <input
-              type="password" placeholder="Mot de passe (min. 6 caractères)" value={password}
+              type="password" placeholder={t('auth.password_placeholder')} value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleRegister()}
               onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
-              aria-label="Mot de passe"
+              aria-label={t('auth.password_placeholder')}
               style={inputStyle}
             />
             {error && <div id="error-register" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
             <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
-              {loading ? 'Création...' : 'Créer mon compte'}
+              {loading ? t('auth.creating') : t('auth.create_btn')}
             </button>
             <p className="text-[#d0d0d0] text-[11px] m-0 leading-normal">
-              En créant un compte vous acceptez nos CGU. Vos données véhicule sont chiffrées et jamais partagées sans votre consentement.
+              {t('auth.register_legal')}
             </p>
-            <button onClick={() => setMode('choose')} style={linkStyle}>← Retour</button>
+            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
           </div>
         )}
       </div>

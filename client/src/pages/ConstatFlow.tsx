@@ -142,6 +142,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [tokenA, setTokenA] = useState<string>(saved?.tokenA || '');
   const [otherSigned, setOtherSigned] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   // ── Piéton ────────────────────────────────────────────────
   const [pedestrianData, setPedestrianData] = useState<Record<string, unknown> | null>(null);
   const [pedestrianHasPhone, setPedestrianHasPhone] = useState<boolean | null>(null);
@@ -197,6 +198,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
+    setErrorMsg('');
     if (s === 'done') {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -278,7 +280,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         });
       }
     },
-    onError: (err) => console.error('session.create failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Une erreur est survenue lors de la création de session'); console.error('session.create failed:', err.message); },
   });
 
   const createSession = () => createSessionMutation.mutate();
@@ -343,7 +345,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   };
 
   const updateAccidentMutation = trpc.session.updateAccident.useMutation({
-    onError: (err) => console.error('updateAccident failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la sauvegarde des données accident'); console.error('updateAccident failed:', err.message); },
   });
 
   const handleLocationComplete = (data: Partial<AccidentData> & { vehicleType: VehicleType }) => {
@@ -394,7 +396,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   };
 
   const updateMutation = trpc.session.updateParticipant.useMutation({
-    onError: (err) => console.error('updateParticipant failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la sauvegarde de vos informations'); console.error('updateParticipant failed:', err.message); },
   });
 
   // ── Cas où aucune signature de la partie adverse n'est requise ──
@@ -414,7 +416,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         setTimeout(() => setStep('done'), 1200);
       }
     },
-    onError: (err) => console.error('session.sign failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la signature — veuillez réessayer'); console.error('session.sign failed:', err.message); },
   });
 
   const handleSign = useCallback((signatureBase64: string) => {
@@ -482,6 +484,14 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             if (targetIdx < currentStepIdx) setStep(stepId as FlowStep);
           }}
         />
+      )}
+
+      {/* Error banner */}
+      {errorMsg && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, margin: '0 16px 12px' }}>
+          {errorMsg}
+          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+        </div>
       )}
 
       {/* Main content */}

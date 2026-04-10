@@ -308,6 +308,7 @@ function AnnotationsSection({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loadingPDF, setLoadingPDF] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Load existing annotations
   const { data: existing } = trpc.police.getAnnotation.useQuery({ token, sessionId });
@@ -324,8 +325,8 @@ function AnnotationsSection({
   }, [existing]);
 
   const saveMutation = trpc.police.saveAnnotation.useMutation({
-    onSuccess: () => { setSaving(false); setSaved(true); onSaved(); setTimeout(() => setSaved(false), 3000); },
-    onError: () => setSaving(false),
+    onSuccess: () => { setSaving(false); setSaved(true); setErrorMsg(''); onSaved(); setTimeout(() => setSaved(false), 3000); },
+    onError: (err) => { setSaving(false); setErrorMsg(err.message || 'Erreur lors de la sauvegarde des annotations'); console.error('saveAnnotation failed:', err.message); },
   });
 
   const handleSave = () => {
@@ -530,6 +531,14 @@ function AnnotationsSection({
         />
       </div>
 
+      {/* Annotation save error */}
+      {errorMsg && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, marginBottom: 12 }}>
+          {errorMsg}
+          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+        </div>
+      )}
+
       {/* Actions */}
       <div className="flex gap-2.5 mt-2">
         <button
@@ -555,6 +564,7 @@ function AnnotationsSection({
 export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('incident');
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState('');
 
   const { data, isLoading, error } = trpc.police.getFullSession.useQuery(
     { token, sessionId },
@@ -569,8 +579,9 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
       link.download = result.filename;
       link.click();
       setPdfLoading(false);
+      setPdfError('');
     },
-    onError: () => setPdfLoading(false),
+    onError: (err) => { setPdfLoading(false); setPdfError(err.message || 'Erreur lors de la génération du rapport PDF'); console.error('generateReport failed:', err.message); },
   });
 
   const handleGeneratePDF = () => {
@@ -648,6 +659,14 @@ export function PoliceFlow({ sessionId, token, agent, onLogout }: Props) {
           {pdfLoading ? 'Generation...' : 'Rapport PDF'}
         </button>
       </div>
+
+      {/* PDF generation error */}
+      {pdfError && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, margin: '12px 20px 0' }}>
+          {pdfError}
+          <button onClick={() => setPdfError('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto w-full mx-auto p-5 max-w-[900px]" >

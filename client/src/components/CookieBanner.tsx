@@ -81,7 +81,7 @@ export function CookieBanner() {
   };
 
   return (
-    <div aria-live="polite" className="fixed bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 9000, padding: '0 0 env(safe-area-inset-bottom)' }}>
+    <div aria-live="polite" className="fixed bottom-0 left-0 right-0 pointer-events-none" style={{ zIndex: 50, padding: '0 0 env(safe-area-inset-bottom)' }}>
       <div
         ref={bannerRef}
         role="dialog"

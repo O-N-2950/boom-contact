@@ -35,24 +35,6 @@ function formatPrice(amountCents: number, currency: CurrencyCode): string {
   return `${(amountCents / 100).toFixed(2)}`;
 }
 
-const PACKAGES = [
-  {
-    id: 'single', credits: 1, popular: false, savings: null, icon: '📄',
-    label: '1 constat', desc: 'Pour un accident ponctuel',
-    marketing: null,
-  },
-  {
-    id: 'pack3', credits: 3, popular: true, savings: '12%', icon: '👨‍👩‍👧',
-    label: '3 constats', desc: 'Pour toute la famille',
-    marketing: '🎁 Partagez par WhatsApp — votre enfant, votre employé, votre ami reçoit un lien instantané.',
-  },
-  {
-    id: 'pack10', credits: 10, popular: false, savings: '29%', icon: '🚗',
-    label: '10 constats', desc: 'Flottes & entreprises',
-    marketing: '🏢 Gérez toute votre flotte. Transférez à vos collaborateurs en 1 clic.',
-  },
-];
-
 // Detect country/currency from geo-IP
 async function detectCurrency(): Promise<CurrencyCode> {
   const COUNTRY_MAP: Record<string, CurrencyCode> = {
@@ -90,6 +72,24 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
   const [error, setError]       = useState<string | null>(null);
   const [detected, setDetected] = useState(false);
 
+  const PACKAGES = [
+    {
+      id: 'single', credits: 1, popular: false, savings: null, icon: '📄',
+      label: t('pricingPage.pkg_single_label'), desc: t('pricingPage.pkg_single_desc'),
+      marketing: null,
+    },
+    {
+      id: 'pack3', credits: 3, popular: true, savings: '12%', icon: '👨‍👩‍👧',
+      label: t('pricingPage.pkg_pack3_label'), desc: t('pricingPage.pkg_pack3_desc'),
+      marketing: t('pricingPage.pkg_pack3_marketing'),
+    },
+    {
+      id: 'pack10', credits: 10, popular: false, savings: '29%', icon: '🚗',
+      label: t('pricingPage.pkg_pack10_label'), desc: t('pricingPage.pkg_pack10_desc'),
+      marketing: t('pricingPage.pkg_pack10_marketing'),
+    },
+  ];
+
   // Auto-detect on mount
   useEffect(() => {
     detectCurrency().then(c => {
@@ -104,15 +104,15 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         // Store pending callback to refresh credits on return
         if (onAuthSuccess) localStorage.setItem('boom_refresh_credits', '1');
         window.location.href = data.url;
-      } else { setError('URL de paiement manquante'); setLoading(null); }
+      } else { setError(t('pricingPage.error_missing_url')); setLoading(null); }
     },
-    onError: (err) => { setError(err.message || 'Erreur'); setLoading(null); },
+    onError: (err) => { setError(err.message || t('pricingPage.error_generic')); setLoading(null); },
   });
 
   const effectiveEmail = authUser?.email || userEmail;
 
   const handleBuy = (packageId: string) => {
-    if (!effectiveEmail) { setError('Email requis pour acheter'); return; }
+    if (!effectiveEmail) { setError(t('pricingPage.error_email_required')); return; }
     setLoading(packageId);
     setError(null);
     checkoutMutation.mutate({
@@ -125,14 +125,14 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
 
   return (
     <div className="mx-auto min-h-[100svh] max-w-[440px] px-4 py-6">
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Tarifs — boom.contact</h1>
+      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>{t('pricingPage.sr_title')}</h1>
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={onBack} className="bg-transparent border-0 cursor-pointer text-[15px] font-semibold flex items-center gap-1.5 touch-manipulation" style={{ color: 'rgba(255,255,255,0.55)', padding: '8px 0' }}>← Retour←</button>
+        <button onClick={onBack} className="bg-transparent border-0 cursor-pointer text-[15px] font-semibold flex items-center gap-1.5 touch-manipulation" style={{ color: 'rgba(255,255,255,0.55)', padding: '8px 0' }}>{t('pricingPage.back')}</button>
         <div>
-          <div className="font-extrabold text-lg">Acheter des constats</div>
-          <div className="text-[11px] opacity-70" >Crédits sans expiration · Partageables par WhatsApp</div>
+          <div className="font-extrabold text-lg">{t('pricingPage.buy_reports')}</div>
+          <div className="text-[11px] opacity-70" >{t('pricingPage.credits_no_expiry')}</div>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
         <div className="rounded-xl mb-4 flex justify-between items-center" style={{ background: authUser.credits > 0 ? '#0d2a0d' : '#1a1000', border: `1px solid ${authUser.credits > 0 ? '#1a4a1a' : '#3a2000'}`, padding: '12px 16px' }}>
           <div>
             <div className="font-bold text-sm" style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24' }}>
-              {authUser.credits > 0 ? `✅ ${authUser.credits} crédit${authUser.credits > 1 ? 's' : ''} disponible${authUser.credits > 1 ? 's' : ''}` : '⚡ Aucun crédit — rechargez maintenant'}
+              {authUser.credits > 0 ? t('pricingPage.credits_available', { count: authUser.credits }) : t('pricingPage.no_credits')}
             </div>
             <div className="text-[#d0d0d0] text-xs mt-0.5" >{authUser.email}</div>
           </div>
@@ -152,7 +152,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       {/* Currency selector */}
       <div className="mb-5">
         <div className="text-[#d0d0d0] text-[11px] font-semibold mb-2 tracking-[1px]">
-          DEVISE {detected && <span className="text-green-400 ml-1.5" >✓ détectée auto</span>}
+          {t('pricingPage.currency_label')} {detected && <span className="text-green-400 ml-1.5" >{t('pricingPage.currency_detected')}</span>}
         </div>
         <div className="flex gap-1.5" style={{ flexWrap: 'wrap' as const }}>
           {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => (
@@ -175,7 +175,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
             <div key={pkg.id} className="rounded-2xl overflow-hidden" style={{ border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)', background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)' }}>
               {pkg.popular && (
                 <div className="bg-[#D42D00] text-[10px] font-bold text-white px-4 py-1 tracking-[1px]">
-                  ⭐ PLUS POPULAIRE · ÉCONOMIE {pkg.savings}
+                  {t('pricingPage.most_popular', { savings: pkg.savings })}
                 </div>
               )}
 
@@ -185,7 +185,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                     <div className="font-extrabold text-[17px]">{pkg.icon} {pkg.label}</div>
                     <div className="text-[#d0d0d0] text-xs mt-0.5" >{pkg.desc}</div>
                     {!pkg.popular && pkg.savings && (
-                      <div className="text-green-400 text-[11px] mt-1">Économie {pkg.savings}</div>
+                      <div className="text-green-400 text-[11px] mt-1">{t('pricingPage.economy', { savings: pkg.savings })}</div>
                     )}
                   </div>
                   <div className="shrink-0 text-right">
@@ -193,11 +193,11 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                       {currency === 'JPY' ? `¥${amountCents}` : priceStr}
                     </div>
                     <div className="text-[#d0d0d0] text-[11px]">
-                      {currency !== 'JPY' ? symbol : ''}{' '}par pack
+                      {currency !== 'JPY' ? symbol : ''} {t('pricingPage.per_pack')}
                     </div>
                     {pkg.credits > 1 && (
                       <div className="text-[#d0d0d0] text-[10px] mt-0.5" >
-                        ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} / constat
+                        ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} {t('pricingPage.per_report')}
                       </div>
                     )}
                   </div>
@@ -214,7 +214,7 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
                   disabled={!!loading}
                   className="w-full rounded-[10px] border-0 text-sm font-bold text-white transition-all duration-200 px-5 py-[13px]" style={{ cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? '#D42D00' : 'rgba(255,255,255,0.08)', opacity: loading ? 0.6 : 1 }}
                 >
-                  {isLoading ? '⏳ Redirection Stripe...' : `Acheter ${pkg.label} — ${currency === 'JPY' ? `¥${amountCents}` : `${symbol} ${priceStr}`}`}
+                  {isLoading ? t('pricingPage.redirecting_stripe') : t('pricingPage.buy_btn', { label: pkg.label, price: `${currency === 'JPY' ? `¥${amountCents}` : `${symbol} ${priceStr}`}` })}
                 </button>
               </div>
             </div>
@@ -231,12 +231,12 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       {/* Trust badges */}
       <div className="grid gap-2 mb-5" style={{ gridTemplateColumns: '1fr 1fr' }}>
         {[
-          { icon: '🔒', text: 'Paiement Stripe sécurisé PCI-DSS' },
-          { icon: '♾️', text: 'Crédits sans expiration' },
-          { icon: '🎁', text: 'Partageable par WhatsApp' },
-          { icon: '🌍', text: 'Valable dans 150+ pays' },
-          { icon: '📄', text: 'Facture PDF automatique' },
-          { icon: '🏢', text: 'Idéal flottes entreprise' },
+          { icon: '🔒', text: t('pricingPage.trust_stripe') },
+          { icon: '♾️', text: t('pricingPage.trust_no_expiry') },
+          { icon: '🎁', text: t('pricingPage.trust_whatsapp') },
+          { icon: '🌍', text: t('pricingPage.trust_worldwide') },
+          { icon: '📄', text: t('pricingPage.trust_invoice') },
+          { icon: '🏢', text: t('pricingPage.trust_fleet') },
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-2 rounded-lg px-2.5 py-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
             <span className="text-base">{item.icon}</span>
@@ -248,12 +248,12 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       {/* Scenarios */}
       <div className="rounded-[14px] p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
         <div className="text-[#d0d0d0] text-xs font-bold mb-2.5 tracking-[0.5px]">
-          POURQUOI AVOIR DES CRÉDITS D'AVANCE ?
+          {t('pricingPage.why_title')}
         </div>
         {[
-          { icon: '📱', title: 'Votre enfant a un accident', text: 'Il vous appelle. Vous lui envoyez un crédit par WhatsApp. Il établit son constat en 5 minutes.' },
-          { icon: '🚚', title: 'Véhicule de société', text: 'Votre livreur a un accrochage. Transférez-lui un crédit instantanément depuis votre mobile.' },
-          { icon: '✈️', title: 'En voyage à l\'étranger', text: 'Accident en Allemagne, Australie ou Japon. Votre constat est reconnu dans 150+ pays.' },
+          { icon: '📱', title: t('pricingPage.scenario_child_title'), text: t('pricingPage.scenario_child_text') },
+          { icon: '🚚', title: t('pricingPage.scenario_company_title'), text: t('pricingPage.scenario_company_text') },
+          { icon: '✈️', title: t('pricingPage.scenario_abroad_title'), text: t('pricingPage.scenario_abroad_text') },
         ].map((s, i) => (
           <div key={i} className="flex gap-3" style={{ marginBottom: i < 2 ? 12 : 0 }}>
             <span className="text-xl shrink-0">{s.icon}</span>
@@ -273,4 +273,3 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
     </div>
   );
 }
-

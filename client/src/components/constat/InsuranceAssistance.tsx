@@ -22,6 +22,7 @@ export const InsuranceAssistance = React.memo(function InsuranceAssistance({ ins
   const [resultB, setResultB] = useState<AssistanceResult | null>(null);
   const [loading, setLoading]  = useState(false);
   const [done, setDone]        = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const lookupMut = trpc.emergency.insuranceLookup.useMutation();
 
@@ -39,7 +40,7 @@ export const InsuranceAssistance = React.memo(function InsuranceAssistance({ ins
           setDone(true);
           setLoading(false);
         },
-        onError: () => setLoading(false),
+        onError: (err) => { setLoading(false); setErrorMsg(err.message || 'Erreur lors de la recherche des numéros d\'assistance'); console.error('insuranceLookup failed:', err.message); },
       }
     );
   }, [insurerA, insurerB]);
@@ -56,6 +57,12 @@ export const InsuranceAssistance = React.memo(function InsuranceAssistance({ ins
         <div className="bg-[#111] rounded-xl p-4 flex items-center gap-3" style={{ border: '1px solid #1a1a1a' }}>
           <div className="rounded-full w-5 h-5"  style={{ border: '2px solid #333', borderTopColor: '#FF3500', animation: 'spin 0.8s linear infinite' }} />
           <div className="text-[#d0d0d0] text-[13px]">Recherche des numéros d'assistance...</div>
+        </div>
+      )}
+
+      {errorMsg && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, marginBottom: 12 }}>
+          {errorMsg}
         </div>
       )}
 
@@ -76,15 +83,17 @@ export function InsuranceSearchWidget() {
   const [country, setCountry] = useState('CH');
   const [result, setResult]   = useState<AssistanceResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [searchError, setSearchError] = useState('');
 
   const lookupMut = trpc.emergency.singleLookup.useMutation();
 
   const handleSearch = () => {
     if (!query.trim()) return;
     setLoading(true);
+    setSearchError('');
     lookupMut.mutate({ insurer: query.trim(), country } as any, {
       onSuccess: (data) => { setResult(data as AssistanceResult); setLoading(false); },
-      onError: () => setLoading(false),
+      onError: (err) => { setLoading(false); setSearchError(err.message || 'Erreur lors de la recherche'); console.error('singleLookup failed:', err.message); },
     });
   };
 
@@ -113,6 +122,11 @@ export function InsuranceSearchWidget() {
           {loading ? '...' : '🔍'}
         </button>
       </div>
+      {searchError && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, marginBottom: 8 }}>
+          {searchError}
+        </div>
+      )}
       {result && <AssistanceCard result={result} />}
     </div>
   );

@@ -35,7 +35,7 @@ const BugReport       = React.lazy(() => import('./components/BugReport').then(m
 
 function LoadingSpinner() {
   return (
-    <div role="status" aria-label="Chargement en cours" className="flex items-center justify-center min-h-screen" style={{ background: 'var(--black, #06060C)' }}>
+    <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-screen" style={{ background: 'var(--black, #06060C)' }}>
       <div aria-hidden="true" className="rounded-full w-8 h-8"  style={{ border: '3px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
@@ -185,7 +185,7 @@ function getInitialAppState(): AppState {
 }
 
 export default function App() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [state, dispatch] = useReducer(appReducer, undefined, getInitialAppState);
   const { view, routeAnnouncement, accountInitialTab, userEmail, authUser, authToken, showAuthModal, showCGU, pendingAction, policeToken, policeUser, policeSessionId, policeFlowToken } = state;
 
@@ -206,7 +206,7 @@ export default function App() {
           dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
           dispatch({ type: 'SET_VIEW', view: 'account' });
         },
-        onError: () => alert('Lien de connexion invalide ou expiré.'),
+        onError: () => alert(t('app.magic_link_error')),
       });
     }
 
@@ -214,7 +214,7 @@ export default function App() {
       window.history.replaceState({}, '', '/');
       if (authUser?.email) {
         claimGiftMut.mutate({ token: giftToken, email: authUser.email }, {
-          onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
+          onSuccess: (res) => alert(t('app.gift_credits_added', { credits: res.credits })),
         });
       } else {
         localStorage.setItem('boom_pending_gift', giftToken);
@@ -266,24 +266,24 @@ export default function App() {
 
   // Announce view changes to screen readers + update document.title
   useEffect(() => {
-    const viewLabels: Record<AppView, string> = {
-      landing: 'Page d\'accueil',
-      cgu: 'Conditions d\'utilisation',
-      pricing: 'Tarification',
-      constat: 'Création de constat',
-      join: 'Rejoindre une session',
-      account: 'Compte utilisateur',
-      admin: 'Tableau de bord administrateur',
-      emergency: 'Numéros d\'urgence',
-      privacy: 'Politique de confidentialité',
-      police_login: 'Connexion police',
-      police_dashboard: 'Tableau de bord police',
-      police_flow: 'Flux police',
-      police_intervention: 'Intervention police',
+    const viewLabelKeys: Record<AppView, string> = {
+      landing: 'app.nav_landing',
+      cgu: 'app.nav_cgu',
+      pricing: 'app.nav_pricing',
+      constat: 'app.nav_constat',
+      join: 'app.nav_join',
+      account: 'app.nav_account',
+      admin: 'app.nav_admin',
+      emergency: 'app.nav_emergency',
+      privacy: 'app.nav_privacy',
+      police_login: 'app.nav_police_login',
+      police_dashboard: 'app.nav_police_dashboard',
+      police_flow: 'app.nav_police_flow',
+      police_intervention: 'app.nav_police_intervention',
     };
-    const label = viewLabels[view];
-    dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: `Navigation vers ${label}` });
-    document.title = view === 'landing' ? 'boom.contact — Constat amiable numérique' : `${label} — boom.contact`;
+    const label = t(viewLabelKeys[view]);
+    dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: t('app.nav_to', { label }) });
+    document.title = view === 'landing' ? t('app.title_default') : t('app.title_page', { label });
   }, [view]);
 
   // Check post-payment success

@@ -101,12 +101,14 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [sketchImage, setSketchImage] = useState<string>((saved?.sketchImage as string) || '');
   const [voiceTranscript, setVoiceTranscript] = useState<string>((saved?.voiceTranscript as string) || '');
   const [otherSigned, setOtherSigned] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [vehicleAPosition, setVehicleAPosition] = useState<{ x: number; y: number; angle: number; lat: number; lng: number } | null>(null);
 
 
 
   const setStep = (s: FlowStep) => {
     setStepRaw(s);
+    setErrorMsg('');
     if (s === 'done') localStorage.removeItem(STORAGE_KEY);
   };
 
@@ -250,7 +252,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   };
 
   const updateAccidentMutationB = trpc.session.updateAccident.useMutation({
-    onError: (err) => console.error('updateAccident B failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la sauvegarde des données accident'); console.error('updateAccident B failed:', err.message); },
   });
 
   const handleFormSave = async (data: Partial<ParticipantData>, accident?: Partial<AccidentData>) => {
@@ -278,7 +280,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   };
 
   const updateMutation = trpc.session.updateParticipant.useMutation({
-    onError: (err) => console.error('updateParticipant failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la sauvegarde de vos informations'); console.error('updateParticipant failed:', err.message); },
   });
 
   const signMutation = trpc.session.sign.useMutation({
@@ -290,7 +292,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         setStep('done');
       }
     },
-    onError: (err) => console.error('session.sign failed:', err.message),
+    onError: (err) => { setErrorMsg(err.message || 'Erreur lors de la signature — veuillez réessayer'); console.error('session.sign failed:', err.message); },
   });
 
   const handleSign = (signatureBase64: string) => {
@@ -449,6 +451,14 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             if (targetIdx < currentStepIdx) setStep(stepId as FlowStep);
           }}
         />
+      )}
+
+      {/* Error banner */}
+      {errorMsg && (
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, margin: '0 16px 12px' }}>
+          {errorMsg}
+          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+        </div>
       )}
 
       <Suspense fallback={<LazyLoading />}>

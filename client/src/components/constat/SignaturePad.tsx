@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   role: string;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SignaturePad = React.memo(function SignaturePad({ role, onSign, otherSigned, isOtherPedestrian = false, disabled = false }: Props) {
+  const { t } = useTranslation();
   const canvasRef    = useRef<HTMLCanvasElement>(null);
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const [signing, setSigning]   = useState(false);
@@ -127,19 +129,19 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
     <div className="p-5">
       <div className="text-center mb-5">
         <h2 className="text-base font-bold mb-1">
-          Signature — <span className="font-extrabold" style={{ color: roleColor }}>Conducteur {role}</span>
+          {t('signature.title')} — <span className="font-extrabold" style={{ color: roleColor }}>{t('signature.driver', { role })}</span>
         </h2>
         <div className="flex gap-2.5 justify-center mt-2.5">
           {[
-            { label: `Conducteur ${role}`, done: signed, isPrimary: true },
+            { label: t('signature.driver', { role }), done: signed, isPrimary: true },
             {
-              label: isOtherPedestrian ? 'Autre partie' : `Conducteur ${role === 'A' ? 'B' : 'A'}`,
+              label: isOtherPedestrian ? t('signature.other_party') : t('signature.driver', { role: role === 'A' ? 'B' : 'A' }),
               done: isOtherPedestrian ? true : otherSigned,
               noSig: isOtherPedestrian,
             },
           ].map((p, i) => (
             <div key={i} className="rounded-[20px] text-[11px] px-3 py-1" style={{ fontFamily: 'monospace', background: p.done ? 'rgba(34,197,94,0.15)' : i === 0 ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`, color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)' }}>
-              {p.done ? (p.noSig ? '✓' : '✅') : '⏳'} {p.label}{p.noSig ? ' — sans signature' : ''}
+              {p.done ? (p.noSig ? '✓' : '✅') : '⏳'} {p.label}{p.noSig ? ` — ${t('signature.no_signature')}` : ''}
             </div>
           ))}
         </div>
@@ -153,7 +155,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         <canvas
           ref={canvasRef}
           role="img"
-          aria-label={`Zone de signature — Conducteur ${role}`}
+          aria-label={t('signature.canvas_aria', { role })}
           tabIndex={0}
           className="block w-full touch-none" style={{ cursor: signed ? 'default' : 'crosshair' /* CSS width — ResizeObserver gère le canvas interne */ }}
           onMouseDown={startDraw}
@@ -166,12 +168,12 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
         />
         {isEmpty && !signed && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-[13px] italic opacity-75">Signez ici avec votre doigt</span>
+            <span className="text-[13px] italic opacity-75">{t('signature.sign_here')}</span>
           </div>
         )}
         {signed && (
           <div className="absolute rounded text-[10px] text-green-500 top-2 right-2 px-2 py-[3px] tracking-[1px]" style={{ background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace' }}>
-            SIGNÉ ✓
+            {t('signature.signed')}
           </div>
         )}
       </div>
@@ -179,10 +181,10 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       {!signed && (
         <div className="flex gap-2.5">
           <button onClick={clear} className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] p-[13px]"  style={{ border: '1.5px solid rgba(240,237,232,0.12)', color: 'var(--text)' }}>
-            🗑 Effacer
+            {t('signature.clear')}
           </button>
           <button onClick={confirmSign} disabled={isEmpty || signing || disabled} className="rounded-[10px] border-0 text-white text-sm font-bold p-[13px] transition-all duration-200"  style={{ flex: 2, opacity: disabled ? 0.4 : 1, background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty ? 'not-allowed' : 'pointer' }}>
-            {signing ? '⏳ Enregistrement…' : '✍️ Confirmer la signature'}
+            {signing ? t('signature.saving') : t('signature.confirm_signature')}
           </button>
         </div>
       )}
@@ -190,16 +192,16 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       {signed && !otherSigned && !isOtherPedestrian && (
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
           <div className="text-[22px] mb-1.5">⏳</div>
-          <div className="text-[13px] font-semibold text-[#f59e0b]">En attente de la signature de l'autre conducteur…</div>
-          <div className="text-[11px] mt-1 opacity-70" >Le PDF sera généré dès que les deux parties auront signé.</div>
+          <div className="text-[13px] font-semibold text-[#f59e0b]">{t('signature.waiting_other')}</div>
+          <div className="text-[11px] mt-1 opacity-70" >{t('signature.waiting_pdf')}</div>
         </div>
       )}
 
       {signed && (otherSigned || isOtherPedestrian) && (
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)' }}>
           <div className="text-4xl mb-1.5">🎉</div>
-          <div className="text-[15px] font-bold text-green-500">Constat signé !</div>
-          <div className="text-xs mt-1 opacity-75">Génération du PDF en cours…</div>
+          <div className="text-[15px] font-bold text-green-500">{t('signature.report_signed')}</div>
+          <div className="text-xs mt-1 opacity-75">{t('signature.generating_pdf')}</div>
         </div>
       )}
     </div>

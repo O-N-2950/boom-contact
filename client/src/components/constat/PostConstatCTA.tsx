@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShareBoom } from '../ShareBoom';
 import { trpc } from '../../trpc';
 
@@ -19,6 +20,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
   onAccount,
   onBuyPack,
 }: PostConstatCTAProps) {
+  const { t } = useTranslation();
   const [waLinkCopied, setWaLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [giftResult, setGiftResult]     = useState('');
@@ -29,9 +31,9 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
     try {
       const r = await grantMut.mutateAsync({ credits, sendEmail: false });
       window.open(r.waUrl, '_blank');
-      setGiftResult(`✅ Lien créé — envoyez-le par WhatsApp !`);
+      setGiftResult(t('postConstat.gift_link_created'));
     } catch (e: any) {
-      setGiftResult('Erreur : ' + e.message);
+      setGiftResult(t('auth.generic_error') + ' : ' + e.message);
     }
   };
 
@@ -43,25 +45,25 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div style={headerStyle}>
           <div style={emojiStyle} aria-hidden="true">⚡</div>
           <div>
-            <div style={titleStyle}>La prochaine fois : 0 saisie</div>
-            <div style={subtitleStyle}>Vos véhicules mémorisés une fois pour toujours</div>
+            <div style={titleStyle}>{t('postConstat.next_time_title')}</div>
+            <div style={subtitleStyle}>{t('postConstat.next_time_subtitle')}</div>
           </div>
         </div>
 
         {/* Avantages */}
         <div style={benefitsGrid}>
-          <Benefit icon="🚗" text="Permis + carte verte scannés une fois" />
-          <Benefit icon="⚡" text="Constat en 2 min au lieu de 10" />
-          <Benefit icon="🎁" text="Offrez un constat à vos proches en 1 clic" />
-          <Benefit icon="👨‍👩‍👧" text="Idéal famille : partagez vos crédits" />
+          <Benefit icon="🚗" text={t('postConstat.benefit_scanned')} />
+          <Benefit icon="⚡" text={t('postConstat.benefit_fast')} />
+          <Benefit icon="🎁" text={t('postConstat.benefit_gift')} />
+          <Benefit icon="👨‍👩‍👧" text={t('postConstat.benefit_family')} />
         </div>
 
         {/* CTA principal */}
         <button onClick={onLogin} style={primaryBtnStyle}>
-          Créer mon compte gratuit →
+          {t('postConstat.create_account')}
         </button>
         <button onClick={() => setShowShare(true)} className="w-full mt-2 p-3 rounded-[10px] bg-transparent cursor-pointer text-[13px] font-semibold flex items-center justify-center gap-2" style={{ border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(240,237,232,0.6)' }}>
-          <span>📤</span> Partager à mes proches
+          <span>📤</span> {t('postConstat.share_btn')}
         </button>
         {showShare && <ShareBoom onClose={() => setShowShare(false)} context="post_constat" />}
 
@@ -70,10 +72,10 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <span className="text-[22px]">🚗</span>
           <div className="flex-1">
             <div className="text-[13px] font-bold" style={{ color: 'rgba(240,237,232,0.9)' }}>
-              Ensuite, enregistre ton véhicule
+              {t('postConstat.register_vehicle_title')}
             </div>
             <div className="text-[11px] opacity-70 mt-0.5" >
-              Scan permis de circuler + carte verte · 30 sec · plus jamais à resaisir
+              {t('postConstat.register_vehicle_subtitle')}
             </div>
           </div>
           <span className="text-base opacity-70" >›</span>
@@ -81,7 +83,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
         <div style={dividerStyle}>
           <div style={dividerLine} />
-          <span style={dividerText}>ou passez directement</span>
+          <span style={dividerText}>{t('postConstat.or_skip')}</span>
           <div style={dividerLine} />
         </div>
 
@@ -89,8 +91,8 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div style={packCardStyle}>
           <div className="flex justify-between items-start mb-2.5">
             <div>
-              <div className="font-black text-base text-[#FF5533]">🔥 Pack famille</div>
-              <div className="text-[#d0d0d0] text-xs mt-0.5" >3 constats à partager avec vos proches</div>
+              <div className="font-black text-base text-[#FF5533]">{t('postConstat.family_pack')}</div>
+              <div className="text-[#d0d0d0] text-xs mt-0.5" >{t('postConstat.family_pack_desc')}</div>
             </div>
             <div className="text-right">
               <div className="text-white font-black text-[22px]">12.90</div>
@@ -100,18 +102,18 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
           {/* Scénarios marketing */}
           <div className="flex gap-1.5 mb-3.5"  style={{ flexDirection: 'column' as const }}>
-            <Scenario icon="📱" text="Votre enfant appelle — accident. Envoyez-lui un constat en 3 secondes sur son mobile." />
-            <Scenario icon="🏢" text="Employé avec véhicule société. Transférez un crédit par WhatsApp instantanément." />
-            <Scenario icon="👫" text="Ami en difficulté à l'étranger. Il reçoit un lien, pas de compte requis." />
+            <Scenario icon="📱" text={t('postConstat.scenario_child')} />
+            <Scenario icon="🏢" text={t('postConstat.scenario_employee')} />
+            <Scenario icon="👫" text={t('postConstat.scenario_friend')} />
           </div>
 
           <button onClick={onBuyPack} style={primaryBtnStyle}>
-            Acheter 3 constats — CHF/EUR 12.90 →
+            {t('postConstat.buy_3_reports')}
           </button>
         </div>
 
         <button onClick={onBuyPack} style={ghostBtnStyle}>
-          Voir tous les packs →
+          {t('postConstat.see_all_packs')}
         </button>
       </div>
     );
@@ -124,29 +126,27 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <div style={headerStyle}>
           <div style={emojiStyle} aria-label="Objectif atteint">🎯</div>
           <div>
-            <div style={titleStyle}>Prêt pour la prochaine fois</div>
-            <div style={subtitleStyle}>Rechargez maintenant, partagez quand vous voulez</div>
+            <div style={titleStyle}>{t('postConstat.ready_title')}</div>
+            <div style={subtitleStyle}>{t('postConstat.ready_subtitle')}</div>
           </div>
         </div>
 
         <div className="rounded-xl p-4 mb-4 bg-[#0d1a0d]" style={{ border: '1px solid #1a3a1a' }}>
-          <div className="text-green-400 font-bold mb-2.5">✅ Votre compte boom.contact</div>
+          <div className="text-green-400 font-bold mb-2.5">{t('postConstat.account_title')}</div>
           <div className="text-[#d0d0d0] text-[13px] leading-relaxed">
-            Vos véhicules sont mémorisés. Lors de votre prochain accident, vous partez directement à l'étape QR — aucune saisie, aucun scan.
+            {t('postConstat.account_desc')}
           </div>
           <button onClick={onAccount} className="mt-2.5 text-xs px-3.5 py-2">
-            Gérer mon garage →
+            {t('postConstat.manage_garage')}
           </button>
         </div>
 
         {/* Packs avec focus "offrir" */}
         <div style={packCardStyle}>
           <div className="font-black text-[15px] mb-1.5 text-[#FF5533]">
-            🎁 Offrez un constat par WhatsApp
+            {t('postConstat.gift_title')}
           </div>
-          <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3.5" >
-            Un de vos crédits = un lien unique à envoyer à <strong className="text-white">n'importe qui</strong>, sans que la personne ait besoin d'un compte.
-          </div>
+          <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3.5" dangerouslySetInnerHTML={{ __html: t('postConstat.gift_desc') }} />
           <PackChoice onSelect={onBuyPack} />
         </div>
       </div>
@@ -159,23 +159,23 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       <div style={headerStyle}>
         <div style={emojiStyle} aria-label="Force et puissance">💪</div>
         <div>
-          <div style={titleStyle}>{authUser.credits} crédit{authUser.credits > 1 ? 's' : ''} disponible{authUser.credits > 1 ? 's' : ''}</div>
-          <div style={subtitleStyle}>Partagez, protégez vos proches</div>
+          <div style={titleStyle}>{t('postConstat.credits_available', { count: authUser.credits })}</div>
+          <div style={subtitleStyle}>{t('postConstat.share_protect')}</div>
         </div>
       </div>
 
       {/* Envoyer par WhatsApp */}
       <div className="rounded-xl p-4 mb-3 bg-[#0d1a1a]" style={{ border: '1px solid #1a3a3a' }}>
-        <div className="font-bold mb-2 text-[#60c8f0]">📲 Offrir un constat par WhatsApp</div>
+        <div className="font-bold mb-2 text-[#60c8f0]">{t('postConstat.wa_gift_title')}</div>
         <div className="text-[#d0d0d0] text-[13px] mb-3 leading-relaxed">
-          En 1 clic, envoyez un lien à votre enfant, employé ou ami. Il fait son constat sans compte ni paiement — décompté de vos crédits.
+          {t('postConstat.wa_gift_desc')}
         </div>
         <div className="flex gap-2">
           <button onClick={() => sendGift(1)} disabled={grantMut.isPending} className="flex-1 text-white border-0 rounded-lg font-bold cursor-pointer text-[13px] px-3 py-[11px] bg-[#25D366]">
-            {grantMut.isPending ? '...' : '📲 Envoyer 1 constat'}
+            {grantMut.isPending ? '...' : t('postConstat.send_1')}
           </button>
           <button onClick={() => sendGift(3)} disabled={grantMut.isPending || authUser.credits < 3} className="flex-1 rounded-lg font-bold text-[13px]" style={{ background: authUser.credits >= 3 ? '#1da851' : '#1a1a1a', color: authUser.credits >= 3 ? '#fff' : '#aaa', border: `1px solid ${authUser.credits >= 3 ? '#1da851' : '#333'}`, padding: '11px 12px', cursor: authUser.credits >= 3 ? 'pointer' : 'default' }}>
-            📲 Envoyer 3 constats
+            {t('postConstat.send_3')}
           </button>
         </div>
         {giftResult && <div className="text-green-400 text-xs mt-2">{giftResult}</div>}
@@ -183,36 +183,36 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
 
       {/* Partage viral — après constat */}
       <div className="rounded-xl p-3.5 mb-3" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
-        <div className="font-bold text-sm mb-1.5 text-[#FF5533]">📤 Partage boom.contact</div>
+        <div className="font-bold text-sm mb-1.5 text-[#FF5533]">{t('postConstat.share_title')}</div>
         <div className="text-[#d0d0d0] text-[13px] leading-normal mb-2.5">
-          Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.
+          {t('postConstat.share_desc')}
         </div>
         <button onClick={() => setShowShare(true)} className="w-full p-[11px] rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold flex items-center justify-center gap-2" style={{ background: 'var(--boom)' }}>
-          <span className="text-lg">📤</span> Partager à mes proches
+          <span className="text-lg">📤</span> {t('postConstat.share_btn')}
         </button>
       </div>
       {showShare && <ShareBoom onClose={() => setShowShare(false)} context="post_constat" />}
 
       {/* Garage */}
       <div className="bg-[#111] rounded-xl p-3.5 mb-3" style={{ border: '1px solid #1a1a1a' }}>
-        <div className="text-white font-bold mb-1.5">🚗 Mémorisez vos autres véhicules</div>
+        <div className="text-white font-bold mb-1.5">{t('postConstat.memorize_vehicles')}</div>
         <div className="text-[#d0d0d0] text-[13px] leading-normal">
-          Flotte d'entreprise, moto, camping-car ? Chaque véhicule scanné = plus jamais de saisie lors d'un accident.
+          {t('postConstat.memorize_desc')}
         </div>
         <button onClick={onAccount} className="mt-2.5 text-[13px] px-3.5 py-[9px]">
-          Gérer mon garage →
+          {t('postConstat.manage_garage')}
         </button>
       </div>
 
       {/* Recharger si peu de crédits */}
       {authUser.credits <= 2 && (
         <div className="rounded-xl p-3.5 bg-[#1a1000]" style={{ border: '1px solid #3a2000' }}>
-          <div className="font-bold mb-1.5 text-[#fbbf24]">⚡ Il vous reste seulement {authUser.credits} crédit{authUser.credits > 1 ? 's' : ''}</div>
+          <div className="font-bold mb-1.5 text-[#fbbf24]">{t('postConstat.low_credits', { count: authUser.credits })}</div>
           <div className="text-[#d0d0d0] text-[13px] mb-2.5">
-            Rechargez maintenant et profitez des remises sur les packs famille et entreprise.
+            {t('postConstat.recharge_desc')}
           </div>
           <button onClick={onBuyPack} style={primaryBtnStyle}>
-            Recharger mes crédits →
+            {t('postConstat.recharge_btn')}
           </button>
         </div>
       )}
@@ -240,16 +240,17 @@ function Scenario({ icon, text }: { icon: string; text: string }) {
 }
 
 function PackChoice({ onSelect }: { onSelect: () => void }) {
+  const { t } = useTranslation();
   const packs = [
-    { id: 'single', label: '1 constat', price: '4.90', note: 'Usage ponctuel' },
-    { id: 'pack3', label: '3 constats', price: '12.90', note: 'Famille · économie 12%', star: true },
-    { id: 'pack10', label: '10 constats', price: '34.90', note: 'Entreprise · économie 29%' },
+    { id: 'single', label: t('postConstat.pack_single_label'), price: '4.90', note: t('postConstat.pack_single_note') },
+    { id: 'pack3', label: t('postConstat.pack_pack3_label'), price: '12.90', note: t('postConstat.pack_pack3_note'), star: true },
+    { id: 'pack10', label: t('postConstat.pack_pack10_label'), price: '34.90', note: t('postConstat.pack_pack10_note') },
   ];
   return (
     <div className="flex gap-2">
       {packs.map(p => (
         <button key={p.id} onClick={onSelect} className="flex-1 rounded-[10px] cursor-pointer" style={{ background: p.star ? '#D42D00' : '#1a1a1a', border: `1px solid ${p.star ? '#D42D00' : '#333'}`, padding: '10px 8px', textAlign: 'center' as const }}>
-          {p.star && <div className="text-white text-[9px] font-bold mb-[3px]" >⭐ POPULAIRE</div>}
+          {p.star && <div className="text-white text-[9px] font-bold mb-[3px]" >{t('postConstat.popular_badge')}</div>}
           <div className="text-white font-bold text-[13px]">{p.label}</div>
           <div className="font-black text-base" style={{ color: p.star ? '#ffd0c0' : '#FF5533' }}>CHF {p.price}</div>
           <div className="text-[10px] mt-0.5"  style={{ color: p.star ? 'rgba(255,255,255,0.6)' : '#aaa' }}>{p.note}</div>
@@ -348,4 +349,3 @@ const dividerStyle: React.CSSProperties = {
 
 const dividerLine: React.CSSProperties = { flex: 1, height: 1, background: '#1a1a1a' };
 const dividerText: React.CSSProperties = { color: '#c0c0c0', fontSize: 11, whiteSpace: 'nowrap' as const };
-

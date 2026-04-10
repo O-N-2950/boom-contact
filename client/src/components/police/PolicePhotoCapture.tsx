@@ -1,6 +1,7 @@
 // client/src/components/police/PolicePhotoCapture.tsx
 // Prise de photos categorisees par le policier
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface PolicePhoto {
   id: string;
@@ -10,11 +11,11 @@ export interface PolicePhoto {
   takenAt: string;
 }
 
-const CATEGORIES = [
-  { value: 'overview', label: 'Vue globale' },
-  { value: 'tracks', label: 'Detail traces' },
-  { value: 'signage', label: 'Signalisation' },
-  { value: 'other', label: 'Autre' },
+const CATEGORY_KEYS = [
+  { value: 'overview', key: 'police.photos.categories.overview' },
+  { value: 'tracks', key: 'police.photos.categories.tracks' },
+  { value: 'signage', key: 'police.photos.categories.signage' },
+  { value: 'other', key: 'police.photos.categories.other' },
 ] as const;
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function PolicePhotoCapture({ photos, onChange }: Props) {
+  const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCapture = (category: PolicePhoto['category']) => {
@@ -64,12 +66,14 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
   };
 
   const getCategoryLabel = (cat: string) =>
-    CATEGORIES.find(c => c.value === cat)?.label || cat;
+    CATEGORY_KEYS.find(c => c.value === cat)
+      ? t(CATEGORY_KEYS.find(c => c.value === cat)!.key)
+      : cat;
 
   return (
     <section className="space-y-4">
       <h3 className="text-sm font-semibold uppercase tracking-wider text-blue-400">
-        Photos police
+        {t('police.photos.title')}
       </h3>
 
       <input
@@ -84,7 +88,7 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
 
       {/* Capture buttons by category */}
       <div className="grid grid-cols-2 gap-2">
-        {CATEGORIES.map(cat => (
+        {CATEGORY_KEYS.map(cat => (
           <button
             key={cat.value}
             type="button"
@@ -95,7 +99,7 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            {cat.label}
+            {t(cat.key)}
           </button>
         ))}
       </div>
@@ -103,13 +107,13 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
       {/* Photo gallery */}
       {photos.length > 0 && (
         <div className="space-y-3">
-          <p className="text-xs text-white/50">{photos.length} photo(s) prise(s)</p>
+          <p className="text-xs text-white/50">{t('police.photos.count', { count: photos.length })}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {photos.map((photo, i) => (
               <div key={photo.id} className="relative rounded-lg border border-white/25 overflow-hidden bg-white/5">
                 <img
                   src={photo.base64}
-                  alt={`Photo police ${i + 1} - ${getCategoryLabel(photo.category)}`}
+                  alt={`${t('police.photos.photo_alt')} ${i + 1} - ${getCategoryLabel(photo.category)}`}
                   className="w-full h-32 object-cover"
                 />
                 <div className="p-2 space-y-1">
@@ -120,17 +124,17 @@ export function PolicePhotoCapture({ photos, onChange }: Props) {
                     type="text"
                     value={photo.caption || ''}
                     onChange={e => updateCaption(i, e.target.value)}
-                    placeholder="Legende..."
+                    placeholder={t('police.photos.caption_placeholder')}
                     className="w-full bg-transparent border-b border-white/25 text-xs text-white placeholder-white/30 py-1"
-                    aria-label={`Legende photo ${i + 1}`}
+                    aria-label={`${t('police.photos.caption_aria')} ${i + 1}`}
                   />
                 </div>
                 <button
                   type="button"
                   onClick={() => removePhoto(i)}
                   className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-red-400 text-xs flex items-center justify-center min-w-[44px] min-h-[44px]"
-                  aria-label={`Supprimer photo ${i + 1}`}
-                  
+                  aria-label={`${t('police.photos.remove')} ${i + 1}`}
+
                 >
                   X
                 </button>

@@ -7,11 +7,12 @@ export function BugReport() {
   const [text, setText]       = useState('');
   const [sent, setSent]       = useState(false);
   const [email, setEmail]     = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const dialogRef = useFocusTrap<HTMLDivElement>(() => setOpen(false));
 
   const sendMut = trpc.email.bugReport.useMutation({
-    onSuccess: () => { setSent(true); setOpen(false); },
-    onError:   () => { setSent(true); setOpen(false); }, // affiche succès même si erreur
+    onSuccess: () => { setSent(true); setErrorMsg(''); setOpen(false); },
+    onError:   (err) => { setErrorMsg(err.message || 'Erreur lors de l\'envoi du rapport'); console.error('bugReport failed:', err.message); },
   });
 
   const submit = () => {
@@ -62,6 +63,11 @@ export function BugReport() {
             onFocus={(e) => e.currentTarget.style.outline = '2px solid var(--boom)'}
             onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
+          {errorMsg && (
+            <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '8px 12px', color: '#ef4444', fontSize: 12, marginBottom: 8 }}>
+              {errorMsg}
+            </div>
+          )}
           <button onClick={submit} disabled={!text.trim() || sendMut.isPending}
             className="p-2.5 rounded-lg font-bold w-full text-[13px]" style={{ border:'none', background: text.trim() ? 'var(--boom)' : 'rgba(255,255,255,0.06)', color: text.trim() ? '#fff' : 'rgba(255,255,255,0.6)', cursor: text.trim() ? 'pointer' : 'not-allowed' }}>
             {sendMut.isPending ? '⏳ Envoi…' : 'Envoyer →'}
