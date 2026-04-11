@@ -1,7 +1,7 @@
 # boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
-> Dernière mise à jour : 26 Mars 2026 — Session 14
+> Dernière mise à jour : 11 Avril 2026 — Session 15
 
 ---
 
@@ -46,6 +46,8 @@
 8. **Tutoiement partout** sur les réseaux sociaux et dans les textes marketing
 9. **SEO SPA** : robots.txt + sitemap.xml = routes Express AVANT express.static (jamais fichiers dans /public)
 10. **Schema imports** : toujours importer les tables directement `{ sessions }` depuis `'../db/schema.js'` — pas `{ schema }` qui n'existe pas comme named export
+11. **Zod 3.25** : nécessite `"customConditions": ["@zod/source"]` dans tsconfig.json et alias dans vitest.config.ts
+12. **0 erreurs TypeScript, 44/44 tests** : vérifier avant chaque commit
 
 ---
 
@@ -53,22 +55,23 @@
 
 | Composant | Détail |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
+| Frontend | React 18 + Vite + TypeScript + TailwindCSS v4 + i18n 50 langues |
 | Backend | Express + tRPC v11 + Socket.io |
-| Base de données | PostgreSQL (Drizzle ORM) — sessions, participants, signatures, users, payments, credit_txns, vehicles, magic_tokens, police_stations, police_users, police_annotations, **social_posts** |
+| Base de données | PostgreSQL (Drizzle ORM) — sessions, participants, signatures, users, payments, credit_txns, vehicles, magic_tokens, police_stations, police_users, police_annotations, police_corrections, social_posts |
 | OCR | Claude Vision (Anthropic Sonnet) — 50+ langues |
 | Analyse accident | Claude Sonnet — transcript vocal → scénario structuré |
 | Transcription vocale | OpenAI Whisper-1 — 99 langues, $0.006/min |
-| PDF | pdf-lib server-side — 12 langues, JPEG+PNG auto-detect |
+| PDF | pdf-lib server-side — bilingue, polices Noto Sans embarquées (arabe/hébreu RTL) |
 | Email | Resend — contact@boom.contact, DKIM actif, domaine vérifié |
 | Paiement | Stripe live — CHF/EUR/GBP/AUD/USD/CAD/SGD/JPY, webhook, factures PDF auto |
 | Auth | JWT 30j + Magic Links 15min + scrypt passwords |
 | Hébergement | Railway Europe West — déploiement auto depuis GitHub |
 | Domaine | www.boom.contact — DNS + SSL actifs |
-| PWA | Service Worker actif, IndexedDB, Background Sync, offline-first |
-| Carte | OpenStreetMap (plan) + ESRI World Imagery (satellite) — sans clé |
+| PWA | Service Worker v5, IndexedDB, Background Sync, offline-first complet |
+| Carte | OpenStreetMap (plan) + ESRI World Imagery (satellite) — zoom +/- + pinch |
 | Géocodage | Nominatim OSM — fallback si lat/lng absent |
-| **Marketing** | **Générateur Claude automatique — cron 7h daily, 4 posts/jour, table social_posts** |
+| Horodatage | OpenTimestamps — SHA-256 ancré sur Bitcoin, preuve infalsifiable |
+| Marketing | Générateur Claude automatique — cron 7h daily, 4 posts/jour, table social_posts |
 
 ---
 
@@ -82,7 +85,8 @@ session.updateParticipant POST → { ok: true }
 session.join           POST  → session active
 session.sign           POST  → { ok, bothSigned }
 session.history        GET   → sessions par ownerEmail (auth requise)
-pdf.generate           POST  → { pdfBase64 }
+session.verifyProof    POST  → { valid, sha256, proof } (vérifie PDF vs hash blockchain)
+pdf.generate           POST  → { pdfBase64, timestamp }
 ocr.scan               POST  → résultat OCR
 voice.transcribe       POST  → { transcript }
 payment.packages       GET   → 3 packages
@@ -104,9 +108,14 @@ admin.users            GET   → liste utilisateurs (admin)
 emergency.countryLookup GET  → police/ambulance/dépannage par pays (DB + AI)
 emergency.insuranceLookup POST → assistance A+B depuis OCR (DB + AI)
 emergency.singleLookup POST  → recherche assureur manuel (DB + AI)
-police.*               ...   → module police (auth séparée)
+police.login           POST  → auth police
+police.generateReport  POST  → { pdfBase64 } (multilingue FR/DE/IT/EN)
+police.sendReport      POST  → { ok, messageId } (envoi email)
+police.correctDriverData POST → { ok, id, correctedFields } (audit trail)
+police.getCorrections  GET   → historique corrections
+police.*               ...   → module police complet
 winwin.createSession   POST  → { sessionId, directUrl }
-marketing.posts        GET   → liste posts sociaux (admin) — filtre platform/status
+marketing.posts        GET   → liste posts sociaux (admin)
 marketing.generate     POST  → déclenche génération manuelle (admin)
 marketing.approve      POST  → approuve un post (admin)
 marketing.markPosted   POST  → marque comme publié (admin)
@@ -115,7 +124,7 @@ marketing.archive      POST  → archive un post (admin)
 
 ---
 
-## Etat des fonctionnalités (26 Mars 2026)
+## État des fonctionnalités (11 Avril 2026)
 
 ### ✅ En production et fonctionnel
 
@@ -128,32 +137,41 @@ marketing.archive      POST  → archive un post (admin)
 | Transcription vocale | Whisper-1, 99 langues |
 | Analyse IA accident | Claude Sonnet → scénario + responsabilité |
 | Signature numérique | Canvas HTML5 |
-| Génération PDF | pdf-lib, 12 langues, carte OSM intégrée |
+| Génération PDF | pdf-lib, bilingue, RTL arabe/hébreu, polices Noto Sans |
+| Horodatage blockchain | SHA-256 + OpenTimestamps ancré sur Bitcoin |
 | Stripe international | 8 devises, factures PDF auto, webhook |
-| i18n | FR / DE / IT / EN complet |
-| PWA offline-first | Service Worker, IndexedDB, Background Sync |
+| i18n complète | 50 langues, lazy-loaded, tous composants traduits |
+| PWA offline-first | SW v5, IndexedDB mutation queue, Background Sync, replay auto |
 | Mode piéton/solo | Bypass QR si pas de 2e conducteur |
-| Carte OSM + satellite | MapVehiclePlacer — conducteur positionne son véhicule |
+| Carte OSM + satellite | MapVehiclePlacer — zoom +/-, pinch, véhicules proportionnels |
 | Auth complet | Magic links + password + JWT 30j |
 | Garage véhicules | CRUD + OCR scan + assurance par véhicule |
 | Admin dashboard | Stats temps réel, revenus, coûts IA |
 | Numéros d'urgence | 60+ pays DB + AI fallback mondial |
 | Insurance lookup | 100+ assureurs DB + AI fallback mondial |
 | PostConstatCTA | Conversion post-constat — 3 modes |
-| Cookie banner | RGPD/nLPD compliant |
+| Cookie banner | RGPD/nLPD compliant (z-index corrigé) |
 | Privacy page | Mentions légales + sous-traitants + droits |
 | WinWin | directUrl /constat/:id opérationnel |
 | Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ |
-| **SEO** | **robots.txt ✅ sitemap.xml ✅ — routes Express dédiées** |
-| **Générateur marketing** | **social-generator.service.ts + cron 7h + table social_posts** |
-| **60 posts réseaux sociaux** | **Kit Session 14 — 15×TikTok 15×IG 15×FB 15×LI — 4 piliers** |
+| SEO | robots.txt ✅ sitemap.xml ✅ og:image ✅ |
+| Générateur marketing | social-generator.service.ts + cron 7h + table social_posts |
+| 60 posts réseaux sociaux | Kit Session 14 — 15×TikTok 15×IG 15×FB 15×LI — 4 piliers |
+| Police multilingue | Rapport PDF FR/DE/IT/EN + envoi email + audit trail corrections |
+| Erreurs utilisateur visibles | Bandeaux rouges sur toutes les mutations critiques |
+| Date/heure auto | Pré-rempli avec date/heure actuelle, modifiable |
+| Expiration session | Avertissement countdown à 1h45 |
+| Accessibilité | aria-invalid, aria-describedby sur champs requis |
 
 ### ❌ Pas encore fait
 
 | Fonctionnalité | Priorité |
 |---|---|
-| PoliceFlow (police.boom.contact) | 🔴 CRITIQUE — pilote Jura |
-| PDF rapport police CH | 🔴 CRITIQUE |
+| API B2B pour assureurs | 🔴 — SDK + API keys + dashboard + doc |
+| IA estimation responsabilité (barème IDA/IRSA) | 🔴 — Claude + barème = % responsabilité |
+| Intégration dashcam (Tesla, Nexar) | 🟠 — extraction vidéo moment impact |
+| Marketplace réparation (garages partenaires) | 🟠 — commission mise en relation |
+| police.boom.contact subdomain Railway | 🔴 — pilote Jura |
 | Seed des 60 posts Session 14 en DB | 🟠 — script à lancer 1 fois |
 | Dashboard marketing admin (UI) | 🟠 — routes tRPC OK, UI manquante |
 | LinkedIn Page boom.contact séparée | 🟠 |
@@ -171,36 +189,46 @@ client/src/
   pages/
     ConstatFlow.tsx         — Flow principal conducteur A
     JoinSession.tsx         — Flow conducteur B
-    PricingPage.tsx         — Tarifs multi-devises
+    PricingPage.tsx         — Tarifs multi-devises (i18n complet)
     AccountPage.tsx         — Garage + Historique + Profil
     AdminDashboard.tsx      — Dashboard admin
     PrivacyPage.tsx         — Mentions légales RGPD
-    PoliceFlow.tsx          — Module police (en cours)
+    PoliceFlow.tsx          — Module police
   components/
-    AuthModal.tsx           — Login/register/magic link
-    CookieBanner.tsx        — RGPD cookie consent
+    AuthModal.tsx           — Login/register/magic link (i18n)
+    CookieBanner.tsx        — RGPD cookie consent (z-index: 50)
+    OfflineBanner.tsx       — Indicateur offline + compteur sync
     EmergencyNumbers.tsx    — Urgences mondiales + insurance search
     constat/
       InsuranceAssistance.tsx — Lookup assureur A+B post-constat
-      PostConstatCTA.tsx      — CTA conversion après constat
-      MapVehiclePlacer.tsx
-      OCRScanner.tsx
-      VoiceRecorder.tsx
+      PostConstatCTA.tsx      — CTA conversion (i18n)
+      MapVehiclePlacer.tsx    — Carte + zoom + véhicules proportionnels
+      OCRScanner.tsx          — Scan documents (i18n)
+      VoiceSketchFlow.tsx     — Description vocale (i18n)
+      SignaturePad.tsx        — Signature tactile (i18n)
+    police/                   — 7 composants police (tous i18n FR+EN)
 
 server/src/
-  routes/router.ts          — Toutes les routes tRPC (incl. marketing.*)
+  routes/
+    router.ts               — Toutes les routes tRPC (incl. marketing.*, session.verifyProof)
+    police.router.ts        — Routes police (multilingue, email, corrections)
   services/
     auth.service.ts
     vehicle.service.ts
     insurance-assistance.service.ts
     emergency-numbers.service.ts
-    stripe.service.ts
+    stripe.service.ts       — Webhook + retry + dedup + timestamping
     session.service.ts
-    pdf.service.ts
+    pdf.service.ts          — PDF bilingue + RTL + badge blockchain
+    pdf.police.ts           — Rapport police multilingue FR/DE/IT/EN
+    pdf.labels.ts           — Labels bilingues + police labels 4 langues
+    timestamp.service.ts    — OpenTimestamps SHA-256 Bitcoin
     ocr.service.ts
     voice.service.ts
-    police.service.ts
-    social-generator.service.ts  — ← NOUVEAU Session 14
+    police.service.ts       — Corrections audit trail
+    social-generator.service.ts
+  services/fonts/           — Noto Sans Regular/Bold + Arabic + Hebrew (TTF)
+  db/schema.ts              — 13 tables (+ police_corrections, timestampProof)
 ```
 
 ---
@@ -255,10 +283,17 @@ server/src/
 
 ---
 
-## Roadmap pilote Jura
+## Roadmap
 
-1. **M1-M3** : PoliceFlow + police.boom.contact + PDF rapport CH → démo Canton Jura
-2. **M3-M6** : Polices municipales FR + zone wallonne BE → premiers revenus B2G
-3. **M6** : Police Grand-Ducale LU
-4. **M6-M12** : TISPOL (31 polices européennes)
-5. **M12+** : Multi-tenant, assureurs CH (AXA, Baloise, Helvetia)
+### Court terme (Session 16)
+1. **API B2B pour assureurs** — SDK intégrable, API keys, dashboard partenaires
+2. **IA estimation responsabilité** — barème IDA/IRSA + Claude = % responsabilité auto
+3. **police.boom.contact** — subdomain Railway pour pilote Canton Jura
+
+### Moyen terme (M3-M6)
+4. **Intégration dashcam** — Tesla, Nexar, Viofo
+5. **Marketplace réparation** — garages partenaires géolocalisés
+6. **Score cohérence IA** — contradictions A vs B avant signature
+
+### Stratégie
+**Ne pas chercher 1M d'utilisateurs B2C. Closer 5 gros assureurs européens qui intègrent boom.contact dans leur app. Le B2C sert de preuve de concept pour le B2B.**

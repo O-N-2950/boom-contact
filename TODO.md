@@ -1,5 +1,5 @@
 # boom.contact — TODO.md
-> Mise à jour : 26 Mars 2026 — Fin Session 14
+> Mise à jour : 11 Avril 2026 — Fin Session 15
 
 ---
 
@@ -9,7 +9,7 @@
 - [x] Flow constat complet A+B (10 étapes)
 - [x] OCR Claude Vision 50 langues
 - [x] Stripe live CHF+EUR+GBP+AUD+USD+CAD+SGD+JPY — 3 packages
-- [x] PDF multilingue 12 langues + carte OSM + Puppeteer
+- [x] PDF multilingue 12 langues + carte OSM
 - [x] i18n FR/DE/IT/EN
 - [x] MapVehiclePlacer obligatoire avant signature
 - [x] Mode piéton/solo/objet
@@ -30,75 +30,115 @@
 ## ✅ FAIT — Session 14 (26 Mars 2026)
 
 ### SEO critique
-- [x] robots.txt — route Express AVANT express.static (corrige bug SPA)
-- [x] sitemap.xml — multilingue hreflang FR/DE/IT/EN, route Express dédiée
-- [x] LandingPage.tsx — fix syntax error TSX ligne 488 (ShareBoom orphan div)
-- [x] Build SUCCESS vérifié — health + robots.txt + sitemap.xml testés en prod
+- [x] robots.txt — route Express AVANT express.static
+- [x] sitemap.xml — multilingue hreflang FR/DE/IT/EN
+- [x] Build SUCCESS vérifié en prod
 
 ### Générateur marketing automatique
-- [x] `server/src/db/schema.ts` — table `social_posts` (platform, pillar, text, hashtags, staging, status, postedAt)
-- [x] `server/src/services/social-generator.service.ts` — génération Claude Sonnet, CRUD posts
-- [x] Routes tRPC `marketing.*` inlinées dans appRouter (posts/generate/approve/markPosted/archive)
-- [x] Cron quotidien 7h — génère 4 posts/jour par rotation plateforme/pilier
-- [x] Import schema corrigé — tables importées directement depuis `../db/schema.js`
-
-### Kit contenu réseaux sociaux
-- [x] 60 posts générés par Claude — 15 TikTok + 15 Instagram + 15 Facebook + 15 LinkedIn
-- [x] 4 piliers équilibrés (A=douleur B=démo C=éducation D=preuve) — 3-4 posts par pilier par plateforme
-- [x] Humanizer appliqué — ton direct, tutoiement, vrais chiffres, 0 bullet TikTok/IG
-- [x] Outil HTML interactif — filtres plateforme + pilier + copie 1 clic + note mise en scène
+- [x] Table `social_posts` + service `social-generator.service.ts`
+- [x] Routes tRPC `marketing.*` + cron quotidien 7h
+- [x] 60 posts générés — 15×TikTok 15×IG 15×FB 15×LI
 
 ---
 
-## 🔴 SESSION 15 — PRIORITÉ HAUTE
+## ✅ FAIT — Session 15 (11 Avril 2026)
 
-### Seed posts en DB (5 min)
-- [ ] Script one-shot : insérer les 60 posts Session 14 via `marketing.seed` tRPC
-- [ ] Vérifier via `marketing.posts` que les 60 posts apparaissent en statut `pending`
+### Audit complet + corrections (78 tests E2E)
+- [x] 202+ erreurs TypeScript → 0 erreurs
+- [x] 12/44 tests → 44/44 tests passés
+- [x] Post-paiement Stripe fiabilisé (retry, dedup, webhook one-shot)
+- [x] Zod 3.25 résolu (customConditions + alias vitest)
 
-### Dashboard marketing admin (UI)
-- [ ] Onglet "Marketing" dans AdminDashboard.tsx
-- [ ] Liste des posts pending avec aperçu texte + plateforme + pilier
-- [ ] Boutons : ✅ Approuver / 📤 Marquer publié / 🗄 Archiver
-- [ ] Filtre par plateforme et statut
-- [ ] Bouton "Générer 4 nouveaux posts" (appel `marketing.generate`)
-- [ ] Compteurs : pending / approved / posted cette semaine
+### 10 KO corrigés (audit 78 questions)
+- [x] Proportions véhicules sur carte (camion, moto, vélo, trottinette)
+- [x] Champs optionnels pour vélos/piétons (plaque, assurance)
+- [x] Zoom +/- et pinch-to-zoom sur la carte accident
+- [x] Support RTL PDF (arabe/hébreu) — polices Noto Sans embarquées
+- [x] Traduction azerbaïdjanaise complète (az.json)
+- [x] Rapport police multilingue (FR/DE/IT/EN) avec labels traduits
+- [x] Envoi email des rapports police (sendPoliceReportEmail)
+- [x] Traçabilité modifications police (policeCorrections + annotation PDF)
+- [x] Avertissement expiration session (countdown 1h45)
+- [x] Accessibilité aria-invalid/aria-describedby sur champs requis
 
-### PoliceFlow (pilote Canton Jura) — 🔴 CRITIQUE
+### Bugs d'affichage corrigés
+- [x] Balises HTML brutes dans traductions i18n (49 locales nettoyées)
+- [x] Date/heure accident pré-remplie (plus de carrés blancs)
+- [x] Affichage date lisible ("10 avril 2026" au lieu de "2026-04-10")
+
+### Qualité code
+- [x] Erreurs silencieuses → bandeaux rouges visibles (5 composants)
+- [x] BugReport ne montre plus "succès" en cas d'erreur
+- [x] z-index CookieBanner 9000 → 50 (ne bloque plus les modales)
+
+### i18n complète (50 langues)
+- [x] PricingPage — entièrement traduit FR+EN
+- [x] OCRScanner — entièrement traduit FR+EN
+- [x] PostConstatCTA — entièrement traduit FR+EN
+- [x] AuthModal — entièrement traduit FR+EN
+- [x] VoiceSketchFlow — entièrement traduit FR+EN
+- [x] SignaturePad — entièrement traduit FR+EN
+- [x] ConstatForm — labels traduits FR+EN
+- [x] App.tsx — alert() traduits
+- [x] 7 composants police — entièrement traduits FR+EN
+
+### Nouvelles fonctionnalités
+- [x] **PWA offline complet** — SW v5, IndexedDB mutation queue, Background Sync, replay auto
+- [x] **Horodatage blockchain** — SHA-256 + OpenTimestamps Bitcoin, route verifyProof, badge PDF
+
+---
+
+## 🔴 SESSION 16 — PRIORITÉ HAUTE
+
+### API B2B pour assureurs
+- [ ] API REST/tRPC avec API keys pour partenaires
+- [ ] SDK JavaScript intégrable dans apps assureurs
+- [ ] Dashboard partenaire (usage, facturation, stats)
+- [ ] Documentation API (OpenAPI/Swagger)
+- [ ] Webhooks pour notifier les assureurs (nouveau constat, PDF prêt)
+- [ ] Rate limiting par API key
+
+### IA estimation de responsabilité
+- [ ] Intégrer barème IDA/IRSA comme contexte Claude
+- [ ] Générer % responsabilité estimé à partir du croquis + dégâts + circonstances
+- [ ] Afficher dans le PDF et dans l'UI post-constat
+- [ ] Disclaimer légal ("estimation, non contractuelle")
+
+### PoliceFlow (pilote Canton Jura)
 - [ ] police.boom.contact subdomain Railway
-- [ ] PoliceFlow.tsx — 4 sections (résumé, conducteurs, médias, annotations)
-- [ ] PDF rapport d'intervention CH modulaire
 - [ ] Auth police login + JWT 8h
 - [ ] Audit trail RGPD consultations agents
 
-### Qualité produit
-- [ ] Champs CEA manquants (dates validité assurance, permis, date naissance, adresse preneur)
-- [ ] 50 silhouettes véhicules niveau 2 (hatchback, SUV small/large, pick-up...)
-- [ ] Tests iOS + Android réels
-- [ ] Dark mode (prefers-color-scheme)
+---
+
+## 🟠 SESSION 17+ — MOYEN TERME
+
+### Produit
+- [ ] Intégration dashcam (Tesla, Nexar, Viofo)
+- [ ] Marketplace réparation (garages partenaires géolocalisés)
 - [ ] Score cohérence IA (contradictions A vs B avant signature)
 - [ ] Mode Témoin officiel (3ème QR dans ConstatFlow)
+- [ ] 50 silhouettes véhicules niveau 2
+- [ ] Dark mode (prefers-color-scheme)
+- [ ] Champs CEA manquants
 
-### LinkedIn
-- [ ] Créer Page boom.contact séparée depuis ordi
-- [ ] Lier avec PEP's Swiss SA comme organisation mère
+### Marketing
+- [ ] Seed des 60 posts Session 14 en DB
+- [ ] Dashboard marketing admin (UI)
+- [ ] LinkedIn Page boom.contact séparée
 
 ---
 
-## 📊 ÉTAT TECHNIQUE ACTUEL
+## 📊 ÉTAT TECHNIQUE (11 Avril 2026)
 
 | Composant | État |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript + i18n FR/DE/IT/EN |
+| TypeScript | 0 erreurs strict mode |
+| Tests | 44/44 passés (vitest) |
+| Frontend | React 18 + Vite + TailwindCSS v4 + i18n 50 langues |
 | Backend | Express + tRPC v11 + Socket.io |
-| Base de données | PostgreSQL — 10 tables (+ social_posts Session 14) |
-| OCR | Claude Vision (Sonnet) — 50 langues |
-| PDF | pdf-lib server-side + Puppeteer Chrome headless |
-| Carte | OSM tiles server-side + GPS conducteur |
-| Email | Resend — DKIM actif |
-| Paiement | Stripe live 8 devises |
-| Auth | JWT 30j + Magic Links + scrypt |
-| Hébergement | Railway Europe West — SUCCESS |
-| SEO | robots.txt ✅ sitemap.xml ✅ og:image ✅ |
-| Réseaux sociaux | Facebook ✅ TikTok ✅ Instagram ✅ LinkedIn (partiel) |
-| **Générateur marketing** | **Cron 7h ✅ — 60 posts prêts — UI admin à faire** |
+| Base de données | PostgreSQL — 13 tables |
+| PDF | pdf-lib + Noto Sans (RTL arabe/hébreu) + badge blockchain |
+| PWA | SW v5 + IndexedDB + Background Sync (offline complet) |
+| Horodatage | OpenTimestamps SHA-256 Bitcoin |
+| Hébergement | Railway Europe West — auto-deploy depuis main |
