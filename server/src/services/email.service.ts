@@ -574,6 +574,117 @@ export async function sendPDFToDriver(params: SendPDFToDriverParams): Promise<Em
 }
 
 
+// ── B2B Outreach email ───────────────────────────────────────
+interface B2BOutreachResult {
+  ok: boolean;
+  messageId?: string;
+  error?: string;
+}
+
+export async function sendB2BOutreach(recipientEmail: string, recipientName?: string): Promise<B2BOutreachResult> {
+  const RESEND_KEY = RESEND_API_KEY;
+  if (!RESEND_KEY) {
+    logger.warn('RESEND_API_KEY not set — B2B outreach not sent');
+    return { ok: false, error: 'Email service not configured (RESEND_API_KEY missing)' };
+  }
+
+  try {
+    const resend = await getResendClient();
+    const safeName = recipientName ? escapeHtml(recipientName) : 'there';
+
+    const subject = 'Digitalize accident reports — boom.contact API';
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="max-width:580px;margin:0 auto;padding:24px 16px 48px;">
+
+  <!-- HEADER -->
+  <div style="background:#06060C;border-radius:16px 16px 0 0;padding:28px 32px 24px;">
+    <div style="background:#FF3500;border-radius:10px;width:44px;height:44px;text-align:center;line-height:44px;font-size:22px;display:inline-block;vertical-align:middle;">&#128165;</div>
+    <span style="vertical-align:middle;margin-left:12px;color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span>
+  </div>
+
+  <!-- BODY -->
+  <div style="background:#ffffff;padding:28px 32px;">
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">Hi ${safeName},</p>
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">
+      I'm reaching out because <strong>boom.contact</strong> is the world's first digital accident report platform, and we believe it could transform how your organization handles claims intake.
+    </p>
+
+    <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:12px;padding:20px;margin:24px 0;">
+      <div style="font-size:13px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">KEY RESULTS</div>
+      <table style="width:100%;font-size:14px;color:#333;line-height:2;">
+        <tr><td style="font-weight:600;">Claim processing time</td><td style="text-align:right;color:#FF3500;font-weight:700;">-80%</td></tr>
+        <tr><td style="font-weight:600;">Manual data entry</td><td style="text-align:right;color:#FF3500;font-weight:700;">-60%</td></tr>
+        <tr><td style="font-weight:600;">Data accuracy (OCR + AI)</td><td style="text-align:right;color:#FF3500;font-weight:700;">90%</td></tr>
+        <tr><td style="font-weight:600;">Languages supported</td><td style="text-align:right;font-weight:700;">50</td></tr>
+        <tr><td style="font-weight:600;">Countries covered</td><td style="text-align:right;font-weight:700;">150+</td></tr>
+      </table>
+    </div>
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">
+      <strong>How it works:</strong> Your policyholder opens boom.contact after an accident. Both drivers fill the digital report in 5 minutes (QR code pairing, OCR document scan, voice input). Your system receives structured JSON via webhook + certified PDF with blockchain timestamp.
+    </p>
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 24px;">
+      <strong>No paper. No re-keying. No delays.</strong> Compliant with European Accident Statement (CEA) standards. GDPR compliant. Works offline (PWA).
+    </p>
+
+    <div style="text-align:center;margin:32px 0;">
+      <a href="https://www.boom.contact/b2b" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;">See the B2B Platform &rarr;</a>
+    </div>
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">
+      I'd love to schedule a 30-minute demo to show you the API integration and white-label options. Would you have time this week or next?
+    </p>
+
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 4px;">Best regards,</p>
+    <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 4px;font-weight:700;">Olivier Juillerat</p>
+    <p style="font-size:13px;color:#595959;margin:0;">Founder & CEO, boom.contact<br>PEP's Swiss SA &middot; Bellevue 7, 2950 Courgenay, Switzerland</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
+    <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
+      boom.contact &middot; PEP's Swiss SA &middot; IDE CHE-476.484.632 &middot; Bellevue 7, 2950 Courgenay, Jura, Switzerland<br>
+      World's first digital accident report &middot; 50 languages &middot; 150+ countries
+    </div>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+    const { data, error } = await resend.emails.send({
+      from: 'boom.contact <contact@boom.contact>',
+      to: recipientEmail,
+      subject,
+      html,
+    });
+
+    if (error) {
+      logger.error('B2B outreach email send failed', { error: error.message, to: recipientEmail });
+      return { ok: false, error: error.message };
+    }
+
+    logger.email('b2b-outreach', recipientEmail, subject);
+    return { ok: true, messageId: data?.id };
+
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'Unknown email error';
+    logger.error('B2B outreach email error', { error: msg });
+    return { ok: false, error: msg };
+  }
+}
+
 // ── Magic link email ──────────────────────────────────────────
 export async function sendMagicLink(email: string, magicUrl: string): Promise<void> {
   const RESEND_KEY = RESEND_API_KEY;

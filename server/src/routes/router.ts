@@ -76,7 +76,7 @@ import { authRouter } from './auth.router.js';
 import { policeRouter } from './police.router.js';
 import { paymentRouter, userRouter } from './payment.router.js';
 import { vehicleRouter } from './vehicle.router.js';
-import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, adminListConstats, adminResendPdf, marketingRouter } from './admin.router.js';
+import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, adminListConstats, adminResendPdf, adminB2BOutreach, marketingRouter } from './admin.router.js';
 
 // Import shared tRPC utilities
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml, checkIdempotency, storeIdempotency, stripHtmlTags } from './trpc.js';
@@ -868,6 +868,7 @@ export const appRouter = router({
   adminFixOwnerEmails,
   adminListConstats,
   adminResendPdf,
+  adminB2BOutreach,
 
   // ── MARKETING ────────────────────────────────
   marketing: marketingRouter,

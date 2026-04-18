@@ -7,7 +7,7 @@ import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
 import { desc, gte, eq, count, sum, sql, isNull, and, inArray, or, ilike } from 'drizzle-orm';
 import { generateConstatPDF } from '../services/pdf.service.js';
-import { sendPDFToDriver } from '../services/email.service.js';
+import { sendPDFToDriver, sendB2BOutreach } from '../services/email.service.js';
 import { getSession } from '../services/session.service.js';
 
 export const adminRouter = router({
@@ -345,6 +345,33 @@ export const adminResendPdf = adminProcedure
       sentTo: input.recipientEmail,
       messageId: result.messageId ?? null,
     };
+  });
+
+// ── ADMIN: B2B Outreach — send pitch emails to insurance contacts ──────
+export const adminB2BOutreach = adminProcedure
+  .input(z.object({
+    contacts: z.array(z.object({
+      email: z.string().email().max(320),
+      name: z.string().max(200).optional(),
+    })).min(1).max(50),
+  }))
+  .mutation(async ({ input }) => {
+    const results: { email: string; ok: boolean; error?: string }[] = [];
+
+    for (const contact of input.contacts) {
+      const result = await sendB2BOutreach(contact.email, contact.name);
+      results.push({ email: contact.email, ok: result.ok, error: result.error });
+      // Small delay between sends to avoid rate limits
+      if (input.contacts.length > 1) {
+        await new Promise(r => setTimeout(r, 500));
+      }
+    }
+
+    const sent = results.filter(r => r.ok).length;
+    const failed = results.filter(r => !r.ok).length;
+    logger.info('B2B outreach batch completed', { sent, failed, total: input.contacts.length });
+
+    return { ok: true, sent, failed, total: input.contacts.length, results };
   });
 
 // ── MARKETING ROUTER ───────────────────────────────────────────

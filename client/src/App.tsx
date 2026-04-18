@@ -27,6 +27,7 @@ const AccountPage     = React.lazy(() => import('./pages/AccountPage').then(m =>
 const AdminDashboard       = React.lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 const PoliceIntervention   = React.lazy(() => import('./pages/PoliceIntervention').then(m => ({ default: m.PoliceIntervention })));
 const PrivacyPage          = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const B2BPage              = React.lazy(() => import('./pages/B2BPage').then(m => ({ default: m.B2BPage })));
 const EmergencyNumbers = React.lazy(() => import('./components/EmergencyNumbers').then(m => ({ default: m.EmergencyNumbers })));
 const AuthModal       = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const CGUModal        = React.lazy(() => import('./components/CGUModal').then(m => ({ default: m.CGUModal })));
@@ -42,7 +43,7 @@ function LoadingSpinner() {
   );
 }
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow' | 'police_intervention';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow' | 'police_intervention' | 'b2b';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -85,6 +86,7 @@ function getInitialView(): AppView {
     return 'join';
   }
 
+  if (pathname === '/b2b' || pathname === '/partners' || params.get('b2b') === 'true') return 'b2b';
   if (params.get('pricing') === 'true') return 'pricing';
   if (params.get('police') === 'true' || pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
@@ -280,6 +282,7 @@ export default function App() {
       police_dashboard: 'app.nav_police_dashboard',
       police_flow: 'app.nav_police_flow',
       police_intervention: 'app.nav_police_intervention',
+      b2b: 'app.nav_b2b',
     };
     const label = t(viewLabelKeys[view]);
     dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: t('app.nav_to', { label }) });
@@ -443,6 +446,10 @@ export default function App() {
 
       {view === 'privacy' && (
         <PrivacyPage onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })} />
+      )}
+
+      {view === 'b2b' && (
+        <B2BPage onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })} />
       )}
 
       {view === 'emergency' && (
