@@ -1,0 +1,70 @@
+name: Build iOS (.ipa)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (ex: 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: npm run build:client
+        env:
+          NODE_ENV: production
+
+      - name: Add iOS platform
+        run: npx cap add ios || true
+
+      - name: Sync Capacitor
+        run: npx cap sync ios
+
+      - name: Set version
+        run: |
+          cd ios/App/App
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ inputs.version }}" Info.plist
+          VERSION_CODE=$(echo "${{ inputs.version }}" | tr -d '.')
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION_CODE}" Info.plist
+
+      - name: Build iOS archive (unsigned)
+        run: |
+          cd ios/App
+          xcodebuild archive \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath ${{ runner.temp }}/boom-contact.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" | tail -20
+
+      - name: Create unsigned IPA
+        run: |
+          mkdir -p ${{ runner.temp }}/Payload
+          cp -r ${{ runner.temp }}/boom-contact.xcarchive/Products/Applications/*.app ${{ runner.temp }}/Payload/
+          cd ${{ runner.temp }}
+          zip -r boom-contact-${{ inputs.version }}.ipa Payload
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: boom-contact-ios-${{ inputs.version }}.ipa
+          path: ${{ runner.temp }}/boom-contact-*.ipa
+          retention-days: 30

@@ -1,0 +1,58 @@
+name: Build Android (.aab)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (ex: 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java (Android SDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: npm run build:client
+        env:
+          NODE_ENV: production
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Set version
+        run: |
+          cd android
+          sed -i "s/versionName \".*\"/versionName \"${{ inputs.version }}\"/" app/build.gradle
+          VERSION_CODE=$(echo "${{ inputs.version }}" | tr -d '.' | sed 's/^0*//')
+          sed -i "s/versionCode .*/versionCode ${VERSION_CODE}/" app/build.gradle
+
+      - name: Build AAB (release)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: boom-contact-${{ inputs.version }}.aab
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 30
