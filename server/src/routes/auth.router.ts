@@ -21,6 +21,10 @@ export const authRouter = router({
       try {
         const result = await registerUser(input.email, input.password);
         logAudit({ event: 'user.register', userId: result.id, ip: ctx.req?.ip, detail: { email: input.email } });
+        // Set httpOnly cookie (secure, SameSite=Strict) — backward compat: token still in body
+        if (ctx.res && result.token) {
+          ctx.res.cookie('boom_token', result.token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 30 * 24 * 60 * 60 * 1000, path: '/' });
+        }
         return { ok: true, ...result };
       } catch (err: unknown) {
         if (err instanceof Error && err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
@@ -36,6 +40,10 @@ export const authRouter = router({
       try {
         const result = await loginWithPassword(input.email, input.password);
         logAudit({ event: 'user.login', userId: result.user.id, ip: ctx.req?.ip, detail: { email: input.email } });
+        // Set httpOnly cookie
+        if (ctx.res && result.token) {
+          ctx.res.cookie('boom_token', result.token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 30 * 24 * 60 * 60 * 1000, path: '/' });
+        }
         return result;
       }
       catch (err: unknown) {
@@ -68,9 +76,13 @@ export const authRouter = router({
   magicLinkVerify: publicProcedure
     .input(z.object({ token: z.string().trim().max(500) }))
     .output(authMagicLinkVerifyOutput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const result = await verifyMagicToken(input.token);
       if (!result) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Lien invalide ou expiré.' });
+      // Set httpOnly cookie
+      if (ctx.res && result.token) {
+        ctx.res.cookie('boom_token', result.token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 30 * 24 * 60 * 60 * 1000, path: '/' });
+      }
       return { ok: true, ...result };
     }),
 

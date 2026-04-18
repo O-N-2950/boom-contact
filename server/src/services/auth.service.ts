@@ -126,8 +126,33 @@ export async function registerUser(email: string, password: string): Promise<{ i
     verificationToken,
   });
 
-  // Log verification token (email sending can be added later with Resend)
-  logger.info('User registered — verification token generated', { email: maskEmail(email), verificationToken: verificationToken.slice(0, 8) + '...' });
+  // Envoyer l'email de vérification (fire-and-forget)
+  const BASE_URL = process.env.BASE_URL || 'https://www.boom.contact';
+  const verifyLink = `${BASE_URL}?verify=${verificationToken}`;
+  import('./email.service.js').then(async ({ getResendClient }) => {
+    try {
+      const resend = await getResendClient();
+      await resend.emails.send({
+        from: 'boom.contact <noreply@boom.contact>',
+        to: email.toLowerCase(),
+        subject: 'Vérifiez votre email — boom.contact',
+        html: `<div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto;padding:20px">
+          <h2 style="color:#ff3500">boom.contact</h2>
+          <p>Bonjour,</p>
+          <p>Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>
+          <p style="text-align:center;margin:30px 0">
+            <a href="${verifyLink}" style="background:#ff3500;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:bold">Vérifier mon email</a>
+          </p>
+          <p style="font-size:12px;color:#888">Si vous n'avez pas créé de compte, ignorez cet email.</p>
+          <p style="font-size:11px;color:#aaa">PEP's Swiss SA · Bellevue 7, 2950 Courgenay</p>
+        </div>`,
+      });
+      logger.info('Verification email sent', { email: maskEmail(email) });
+    } catch (e) {
+      logger.warn('Verification email failed (non-blocking)', { error: String(e) });
+    }
+  }).catch(() => {});
+
   return { id, token: signJWT({ sub: id, email: email.toLowerCase(), role: 'customer', tokenVersion: 0 }) };
 }
 
