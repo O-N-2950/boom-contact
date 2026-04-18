@@ -780,15 +780,31 @@ function drawVehicle(ctx, cx, cy, angle, vehicleData, label) {
   const color = parseColor(vehicleData.color);
   const type = vehicleData.vehicleType || 'car';
   switch (type) {
-    case 'suv':        drawSUV(ctx,cx,cy,VW,VH,color,label,angle); break;
-    case 'truck':      drawTruck(ctx,cx,cy,VW,VH,color,label,angle); break;
-    case 'van':        drawVan(ctx,cx,cy,VW,VH,color,label,angle); break;
-    case 'motorcycle': drawMotorcycle(ctx,cx,cy,VW,VH,color,label,angle); break;
-    case 'scooter':    drawMotorcycle(ctx,cx,cy,VW*0.8,VH*0.8,color,label,angle); break;
-    case 'bicycle':    drawBicycle(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'sedan':      drawCar(ctx,cx,cy,VW*1.12,VH,color,label,angle); break;
+    case 'estate':     drawSUV(ctx,cx,cy,VW*1.1,VH*0.95,color,label,angle); break;
+    case 'coupe':      drawCar(ctx,cx,cy,VW*0.95,VH*0.9,color,label,angle); break;
+    case 'convertible':drawCar(ctx,cx,cy,VW*0.95,VH*0.88,color,label,angle); break;
+    case 'suv': case 'suv_small': case 'suv_medium': case 'suv_large':
+                       drawSUV(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'mpv': case 'minivan':
+                       drawVan(ctx,cx,cy,VW*0.95,VH,color,label,angle); break;
+    case 'pickup':     drawTruck(ctx,cx,cy,VW*1.1,VH,color,label,angle); break;
+    case 'truck': case 'truck_rigid': case 'truck_semi': case 'van_large':
+                       drawTruck(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'van': case 'van_small': case 'van_medium':
+                       drawVan(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'motorcycle': case 'moto_naked': case 'moto_sport': case 'moto_touring':
+                       drawMotorcycle(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'scooter': case 'moped':
+                       drawMotorcycle(ctx,cx,cy,VW*0.8,VH*0.8,color,label,angle); break;
+    case 'bicycle': case 'cargo_bike':
+                       drawBicycle(ctx,cx,cy,VW,VH,color,label,angle); break;
+    case 'escooter':   drawBicycle(ctx,cx,cy,VW*0.7,VH*0.7,color,label,angle); break;
     case 'pedestrian': drawPedestrian(ctx,cx,cy,VW,VH,color,label,angle); break;
-    case 'tram':       drawTram(ctx,cx,cy,VW*1.6,VH,color,label,angle); break;
+    case 'tram': case 'train':
+                       drawTram(ctx,cx,cy,VW*1.6,VH,color,label,angle); break;
     case 'bus':        drawTruck(ctx,cx,cy,VW*1.2,VH,'#2255aa',label,angle); break;
+    case 'quad':       drawSUV(ctx,cx,cy,VW*0.7,VH*0.85,color,label,angle); break;
     default:           drawCar(ctx,cx,cy,VW,VH,color,label,angle);
   }
 }

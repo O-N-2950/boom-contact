@@ -710,10 +710,51 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
       const maxW = 595 - margin * 2;
       const maxH = 700;
       const scale = Math.min(maxW / sketchImg.width, maxH / sketchImg.height, 1);
+      const sketchY = 820 - 10 - sketchImg.height * scale;
       sketchPage.drawImage(sketchImg, {
-        x: margin, y: 820 - 10 - sketchImg.height * scale,
+        x: margin, y: sketchY,
         width: sketchImg.width * scale, height: sketchImg.height * scale,
       });
+
+      // ── Légende véhicules sous le croquis ────────────────
+      const legendY = sketchY - 16;
+      const participants = [
+        { role: 'A', color: rgb(0.07, 0.27, 0.8), data: A },
+        { role: 'B', color: rgb(0.8, 0.2, 0.0), data: B },
+      ];
+
+      let ly = legendY;
+      for (const p of participants) {
+        if (!p.data) continue;
+        const v = p.data.vehicle;
+        const d = p.data.driver;
+        const vehicleDesc = [v?.brand, v?.model].filter(Boolean).join(' ') || `Véhicule ${p.role}`;
+        const colorName = v?.color || '';
+        const plate = v?.licensePlate || '';
+        const driverName = [d?.firstName, d?.lastName].filter(Boolean).join(' ') || '';
+        const vehicleType = v?.vehicleType || 'car';
+
+        // Carré couleur
+        const COLORS_MAP: Record<string, [number,number,number]> = {
+          'Blanc': [0.95,0.95,0.94], 'Argent': [0.77,0.77,0.77], 'Gris': [0.53,0.53,0.53],
+          'Noir': [0.1,0.09,0.09], 'Rouge': [0.8,0.07,0], 'Rouge vif': [0.93,0.13,0],
+          'Bordeaux': [0.48,0.08,0.19], 'Bleu': [0.13,0.4,0.8], 'Bleu marine': [0.04,0.07,0.18],
+          'Bleu foncé': [0.07,0.27,0.67], 'Vert': [0.1,0.4,0.13], 'Vert foncé': [0.07,0.27,0.07],
+          'Jaune': [0.87,0.67,0], 'Orange': [0.87,0.4,0], 'Marron': [0.42,0.23,0.13],
+          'Beige': [0.8,0.67,0.53], 'Blanc perle': [0.93,0.92,0.89], 'Gris anthracite': [0.24,0.24,0.24],
+        };
+        const cc = COLORS_MAP[colorName] || [0.5,0.5,0.5];
+
+        // Carré couleur véhicule
+        sketchPage.drawRectangle({ x: margin, y: ly - 3, width: 10, height: 10, color: rgb(cc[0], cc[1], cc[2]), borderColor: rgb(0.6,0.6,0.6), borderWidth: 0.5 });
+        // Rôle (A/B) en gras coloré
+        drawText(sketchPage, p.role, margin + 14, ly + 5, bold, 9, p.color, rtlFonts);
+        // Description véhicule
+        const desc = `${vehicleDesc}${colorName ? ` (${colorName})` : ''}${plate ? `  ·  ${plate}` : ''}${driverName ? `  —  ${driverName}` : ''}`;
+        drawText(sketchPage, desc, margin + 26, ly + 5, normal, 8, C.dark, rtlFonts);
+        ly -= 14;
+      }
+
       drawText(sketchPage, L.footer, margin, 18, normal, 7, C.mid, rtlFonts);
     } catch (e) { logger.warn('[PDF] Sketch embed failed', { error: String(e) }); }
   }
