@@ -112,6 +112,7 @@ export async function registerUser(email: string, password: string): Promise<{ i
 
   const passwordHash = await hashPassword(password);
   const id = nanoid();
+  const verificationToken = crypto.randomBytes(32).toString('hex');
 
   await db.insert(users).values({
     id,
@@ -121,10 +122,22 @@ export async function registerUser(email: string, password: string): Promise<{ i
     credits: 0,
     consentCGU: true,
     consentCGUAt: new Date(),
+    verified: false,
+    verificationToken,
   });
 
-  logger.info('User registered', { email: maskEmail(email) });
+  // Log verification token (email sending can be added later with Resend)
+  logger.info('User registered — verification token generated', { email: maskEmail(email), verificationToken: verificationToken.slice(0, 8) + '...' });
   return { id, token: signJWT({ sub: id, email: email.toLowerCase(), role: 'customer', tokenVersion: 0 }) };
+}
+
+// ── Email verification ───────────────────────────────────────
+export async function verifyEmail(token: string): Promise<boolean> {
+  const user = await db.query.users.findFirst({ where: eq(users.verificationToken, token) });
+  if (!user) return false;
+  await db.update(users).set({ verified: true, verificationToken: null }).where(eq(users.id, user.id));
+  logger.info('Email verified', { email: maskEmail(user.email) });
+  return true;
 }
 
 // ── Login with password ───────────────────────────────────────

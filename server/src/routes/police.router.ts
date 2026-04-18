@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, policeProcedure, TRPCError } from './trpc.js';
 import { loginPoliceUser, getPoliceDashboard, getOrCreateAnnotation, saveAnnotation as saveAnnotationSvc, getAnnotation, getOrCreateIntervention, saveIntervention as saveInterventionSvc, getIntervention as getInterventionSvc, addPolicePhoto as addPolicePhotoSvc, correctDriverData as correctDriverDataSvc, getCorrections as getCorrectionsSvc } from '../services/police.service.js';
 import { getSession } from '../services/session.service.js';
+import { logAudit } from '../services/audit.service.js';
 import { policeLoginOutput, policeDashboardOutput, policeJoinSessionOutput, policeGetFullSessionOutput, policeGetAnnotationOutput, policeSaveAnnotationOutput, policeGenerateReportOutput, policeSendReportOutput, policeGetInterventionOutput, policeSaveInterventionOutput, policeAddPhotoOutput, policeCorrectDriverOutput, policeGetCorrectionsOutput } from './output-schemas.js';
 
 export const policeRouter = router({
@@ -15,6 +16,7 @@ export const policeRouter = router({
     .output(policeLoginOutput)
     .mutation((async ({ input }: any) => {
       const result = await loginPoliceUser(input.email, input.password);
+      logAudit({ event: 'police.login', userId: result.user?.id, detail: { email: input.email } });
       return result;
     }) as any),
 

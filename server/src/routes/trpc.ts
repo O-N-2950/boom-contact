@@ -95,4 +95,10 @@ export function storeIdempotency(key: string | undefined, result: unknown): void
   idempotencyCache.set(key, { result, expiry: Date.now() + IDEMPOTENCY_TTL_MS });
 }
 
+// ── Server-side HTML tag stripping for user text inputs ─────
+// Applied as Zod .transform() on text fields to prevent stored XSS
+export function stripHtmlTags(val: string): string {
+  return val.replace(/<[^>]*>/g, '');
+}
+
 export { TRPCError };

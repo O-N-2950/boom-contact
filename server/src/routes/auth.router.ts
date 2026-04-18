@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError } from './trpc.js';
-import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword, revokeUserTokens } from '../services/auth.service.js';
+import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, createGiftLink, claimGiftLink, verifyPassword, hashPassword, revokeUserTokens, verifyEmail } from '../services/auth.service.js';
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { logger, maskEmail } from '../logger.js';
 import { db } from '../db/index.js';
@@ -9,6 +9,7 @@ import { users, vehicles, magicTokens } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
 import { authMeOutput, authLoginOutput, authRegisterOutput, authMagicLinkRequestOutput, authMagicLinkVerifyOutput, authUpdateProfileOutput, authUpdateEmailOutput, authDeleteAccountOutput, authGrantCreditsOutput, authAdminBootstrapOutput, authClaimGiftOutput } from './output-schemas.js';
+import { logAudit } from '../services/audit.service.js';
 
 export const authRouter = router({
 
@@ -16,9 +17,10 @@ export const authRouter = router({
   register: publicProcedure
     .input(z.object({ email: z.string().trim().email().max(320), password: z.string().trim().min(8).max(200) }))
     .output(authRegisterOutput)
-    .mutation((async ({ input }: any) => {
+    .mutation((async ({ input, ctx }: any) => {
       try {
         const result = await registerUser(input.email, input.password);
+        logAudit({ event: 'user.register', userId: result.id, ip: ctx.req?.ip, detail: { email: input.email } });
         return { ok: true, ...result };
       } catch (err: unknown) {
         if (err instanceof Error && err.message === 'EMAIL_EXISTS') throw new TRPCError({ code: 'CONFLICT', message: 'Cet email est déjà utilisé.' });
@@ -30,9 +32,10 @@ export const authRouter = router({
   login: publicProcedure
     .input(z.object({ email: z.string().trim().email().max(320), password: z.string().trim().max(200) }))
     .output(authLoginOutput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
         const result = await loginWithPassword(input.email, input.password);
+        logAudit({ event: 'user.login', userId: result.user.id, ip: ctx.req?.ip, detail: { email: input.email } });
         return result;
       }
       catch (err: unknown) {
@@ -81,7 +84,7 @@ export const authRouter = router({
       return { id: user.id, email: user.email, role: user.role, credits: user.credits,
                firstName: user.firstName || '', lastName: user.lastName || '',
                phone: user.phone || '', company: user.company || '',
-               address: user.address || '' };
+               address: user.address || '', verified: user.verified ?? false };
     }),
 
   // POST auth.updateProfile — modifier prénom, nom, tel, société, adresse
@@ -184,6 +187,7 @@ export const authRouter = router({
 
       const hash = await hashPassword(input.password);
       await db.update(users).set({ passwordHash: hash, role: 'admin', credits: 999999 }).where(eq(users.email, 'contact@boom.contact'));
+      logAudit({ event: 'admin.bootstrap', detail: { email: 'contact@boom.contact' } });
       return { ok: true };
     }),
 
@@ -198,9 +202,20 @@ export const authRouter = router({
   claimGift: publicProcedure
     .input(z.object({ token: z.string().trim().max(500), email: z.string().trim().email().max(320) }))
     .output(authClaimGiftOutput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const result = await claimGiftLink(input.token, input.email);
+      logAudit({ event: 'credit.gift_claimed', ip: ctx.req?.ip, detail: { email: input.email, credits: result.credits } });
       return { ok: true, ...result };
+    }),
+
+  // POST auth.verifyEmail — mark email as verified
+  verifyEmailToken: publicProcedure
+    .input(z.object({ token: z.string().trim().max(500) }))
+    .output(z.object({ ok: z.boolean() }))
+    .mutation(async ({ input }) => {
+      const ok = await verifyEmail(input.token);
+      if (!ok) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Token de vérification invalide ou expiré.' });
+      return { ok: true };
     }),
 
 });

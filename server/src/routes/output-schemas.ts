@@ -113,6 +113,7 @@ export const authMeOutput = z.object({
   phone: z.string(),
   company: z.string(),
   address: z.string(),
+  verified: z.boolean(),
 }).nullable();
 
 // ── auth.login ───────────────────────────────────────────────

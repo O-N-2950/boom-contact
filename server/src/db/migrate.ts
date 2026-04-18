@@ -253,6 +253,30 @@ export async function runMigrations() {
       END $$;
     `);
 
+    // ── Block 13 : Indexes + audit_log + user verification — Security hardening ──
+    await db.execute(`
+      CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
+
+      CREATE TABLE IF NOT EXISTS audit_log (
+        id          SERIAL PRIMARY KEY,
+        event       VARCHAR(100) NOT NULL,
+        user_id     VARCHAR(20),
+        session_id  VARCHAR(20),
+        ip          VARCHAR(45),
+        detail      JSONB DEFAULT '{}',
+        created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS idx_audit_log_event ON audit_log(event);
+      CREATE INDEX IF NOT EXISTS idx_audit_log_created_at ON audit_log(created_at);
+      CREATE INDEX IF NOT EXISTS idx_audit_log_user_id ON audit_log(user_id);
+
+      DO $$ BEGIN
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_token TEXT;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

@@ -53,6 +53,7 @@ export const sessions = pgTable('sessions', {
 }, (t) => ({
   statusIdx:     index('sessions_status_idx').on(t.status),
   createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),
+  expiresAtIdx:  index('sessions_expires_at_idx').on(t.expiresAt),
   ownerEmailIdx: index('sessions_owner_email_idx').on(t.ownerEmail),
   statusCreatedIdx: index('sessions_status_created_idx').on(t.status, t.createdAt),
 }));
@@ -78,6 +79,8 @@ export const users = pgTable('users', {
   company:          text('company'),
   address:          text('address'),
   tokenVersion:     integer('token_version').notNull().default(0),
+  verified:         boolean('verified').notNull().default(false),
+  verificationToken: text('verification_token'),
 }, (t) => ({
   emailIdx: index('users_email_idx').on(t.email),
 }));
@@ -277,6 +280,21 @@ export const vehicles = pgTable('vehicles', {
   userIdx: index('vehicles_user_idx').on(t.userId),
 }));
 
+
+// ── Audit log — security/compliance events ───────────────────
+export const auditLog = pgTable('audit_log', {
+  id:          serial('id').primaryKey(),
+  event:       varchar('event', { length: 100 }).notNull(),
+  userId:      varchar('user_id', { length: 20 }),
+  sessionId:   varchar('session_id', { length: 20 }),
+  ip:          varchar('ip', { length: 45 }),
+  detail:      jsonb('detail').$type<Record<string, unknown>>().default({}),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  eventIdx:     index('audit_log_event_idx').on(t.event),
+  createdAtIdx: index('audit_log_created_at_idx').on(t.createdAt),
+  userIdIdx:    index('audit_log_user_id_idx').on(t.userId),
+}));
 
 // ── Social posts (générateur marketing automatique) ──────────
 export const socialPosts = pgTable('social_posts', {

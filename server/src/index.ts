@@ -12,6 +12,7 @@ import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import path from 'path';
 import { runMigrations } from './db/migrate.js';
+import { startCleanupJobs } from './jobs/cleanup.js';
 
 // __dirname is provided by the esbuild banner in build-server.mjs
 // Do NOT redeclare it here — causes "Identifier already declared" in ESM strict mode
@@ -1045,6 +1046,7 @@ async function start() {
   await setupSecurity();
   await setupRateLimiting();
   await runMigrations();
+  startCleanupJobs();
   await startupCheck();
   startMonitoring(5);
   httpServer.listen(PORT, '0.0.0.0', () => {
@@ -1077,11 +1079,11 @@ async function gracefulShutdown(signal: string) {
       process.exit(0);
     });
   });
-  // Force exit after 10s if graceful shutdown hangs
+  // Force exit after 30s if graceful shutdown hangs
   setTimeout(() => {
-    logger.error('Forced shutdown after timeout');
+    logger.error('Forced shutdown after 30s timeout');
     process.exit(1);
-  }, 10_000).unref();
+  }, 30_000).unref();
 }
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError, checkIdempotency, storeIdempotency } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
 import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, paymentVerifyCreditOutput, userSaveConsentOutput } from './output-schemas.js';
+import { logAudit } from '../services/audit.service.js';
 
 export const paymentRouter = router({
   // Retourner les packages disponibles
@@ -33,6 +34,7 @@ export const paymentRouter = router({
         input.constatSessionId,
       );
       storeIdempotency(input.idempotencyKey, result);
+      logAudit({ event: 'credit.purchase', detail: { email: input.userEmail, packageId: input.packageId, currency: input.currency } });
       return result;
     }),
 

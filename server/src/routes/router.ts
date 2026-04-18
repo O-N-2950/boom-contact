@@ -79,7 +79,8 @@ import { vehicleRouter } from './vehicle.router.js';
 import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, adminListConstats, adminResendPdf, marketingRouter } from './admin.router.js';
 
 // Import shared tRPC utilities
-import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml, checkIdempotency, storeIdempotency } from './trpc.js';
+import { router, publicProcedure, protectedProcedure, adminProcedure, TRPCError, escapeHtml, checkIdempotency, storeIdempotency, stripHtmlTags } from './trpc.js';
+import { logAudit } from '../services/audit.service.js';
 import { sessionCreateOutput, sessionGetOutput, sessionJoinOutput, pdfGenerateOutput, sessionSignOutput, sessionUpdateParticipantOutput, sessionUpdateAccidentOutput, sessionHistoryOutput, ocrScanOutput, ocrBatchScanOutput, ocrScanPairOutput, emailSendToDriverOutput, emailBugReportOutput, voiceTranscribeOutput, voiceAnalyzeAccidentOutput, sketchRenderOutput, emergencyInsuranceLookupOutput, emergencyCountryLookupOutput, emergencySingleLookupOutput, sessionVerifyProofOutput } from './output-schemas.js';
 import { verifyHash } from '../services/timestamp.service.js';
 
@@ -132,6 +133,7 @@ export const appRouter = router({
         const qrUrl = getQRUrl(session.id, session.tokenB, CLIENT_URL);
         const result = { sessionId: session.id, qrUrl, status: session.status, tokenA: session.tokenA };
         storeIdempotency(iKey, result);
+        logAudit({ event: 'session.created', sessionId: session.id });
         return result;
       }),
 
@@ -190,10 +192,10 @@ export const appRouter = router({
             type: z.string().trim().max(100).optional(),
           }).optional(),
           driver: z.object({
-            firstName: z.string().trim().max(200).optional(),
-            lastName: z.string().trim().max(200).optional(),
-            address: z.string().trim().max(500).optional(),
-            city: z.string().trim().max(200).optional(),
+            firstName: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
+            lastName: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
+            address: z.string().trim().max(500).optional().transform(v => v ? stripHtmlTags(v) : v),
+            city: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
             postalCode: z.string().trim().max(20).optional(),
             country: z.string().trim().max(100).optional(),
             phone: z.string().trim().max(50).optional(),
@@ -254,9 +256,9 @@ export const appRouter = router({
             postalCode: z.string().trim().max(20).optional(),
             canton: z.string().trim().max(100).optional(),
           }).optional(),
-          description:      z.string().trim().max(5000).optional(),
+          description:      z.string().trim().max(5000).optional().transform(v => v ? stripHtmlTags(v) : v),
           faultDeclaration: z.enum(['A','B','shared','unknown']).optional(),
-          witnesses:        z.string().trim().max(2000).optional(),
+          witnesses:        z.string().trim().max(2000).optional().transform(v => v ? stripHtmlTags(v) : v),
           policeReport:     z.boolean().optional(),
           policeRef:        z.string().trim().max(200).optional(),
           injuries:         z.boolean().optional(),
@@ -324,6 +326,8 @@ export const appRouter = router({
 
         const { session, bothSigned } = result;
         io.to(`session:${input.sessionId}`).emit('signed', { role: input.role, bothSigned });
+
+        logAudit({ event: 'session.signed', sessionId: input.sessionId, detail: { role: input.role, bothSigned } });
 
         if (bothSigned) {
           io.to(`session:${input.sessionId}`).emit('constat-complete', { sessionId: input.sessionId });
@@ -637,6 +641,7 @@ export const appRouter = router({
           logger.warn('[OTS] Timestamping failed in pdf.generate (non-blocking)', { error: String(tsErr) });
         }
 
+        logAudit({ event: 'pdf.generated', sessionId: input.sessionId, detail: { role: input.role } });
         return { pdfBase64, filename, timestamp };
       }),
   }),
@@ -685,7 +690,7 @@ export const appRouter = router({
 
     bugReport: publicProcedure
       .input(z.object({
-        message: z.string().trim().min(5).max(2000),
+        message: z.string().trim().min(5).max(2000).transform(stripHtmlTags),
         userEmail: z.string().trim().email().optional(),
         page:     z.string().optional(),
         userAgent: z.string().optional(),
