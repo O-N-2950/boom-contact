@@ -5,6 +5,7 @@ import type { ParticipantRole } from '../../../../shared/types';
 interface Props {
   sessionId: string;
   qrUrl: string;
+  tokenA: string;
   onPartnerJoined: () => void;
   isPedestrianMode?: boolean;
   onVehicleCountChange?: (count: number) => void;
@@ -18,7 +19,7 @@ const ROLE_COLORS: Record<ParticipantRole, string> = {
   A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#F59E0B',
 };
 
-export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode = false, onVehicleCountChange }: Props) {
+export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestrianMode = false, onVehicleCountChange }: Props) {
   const [partnerJoined, setPartnerJoined] = useState(false);
   const [copied, setCopied] = useState<ParticipantRole | null>(null);
   const [vehicleCount, setVehicleCount] = useState(isPedestrianMode ? 1 : 2);
@@ -28,21 +29,22 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
   const [joinedRoles, setJoinedRoles] = useState<Set<string>>(new Set());
 
   const { data: sessionData } = trpc.session.get.useQuery(
-    { sessionId } as any,
-    { enabled: !!sessionId && !partnerJoined, retry: false, refetchInterval: 3000 }
+    { sessionId, participantToken: tokenA },
+    { enabled: !!sessionId && !!tokenA && !partnerJoined, retry: 3, refetchInterval: 2000 }
   );
 
   useEffect(() => {
     if (!sessionData) return;
     const newJoined = new Set(joinedRoles);
     const sd = sessionData as any;
-    if (sd.participantB?.driver?.firstName) newJoined.add('B');
-    if (sd.participantC?.driver?.firstName) newJoined.add('C');
-    if (sd.participantD?.driver?.firstName) newJoined.add('D');
-    if (sd.participantE?.driver?.firstName) newJoined.add('E');
+    // Détecter que B a REJOINT (pas forcément rempli son prénom)
+    if (sd.participantB) newJoined.add('B');
+    if (sd.participantC) newJoined.add('C');
+    if (sd.participantD) newJoined.add('D');
+    if (sd.participantE) newJoined.add('E');
     setJoinedRoles(newJoined);
     if (vehicleCount === 1) { onPartnerJoined(); return; }
-  const expectedRoles = ['B', 'C', 'D', 'E'].slice(0, vehicleCount - 1);
+    const expectedRoles = ['B', 'C', 'D', 'E'].slice(0, vehicleCount - 1);
     const allJoined = expectedRoles.every(r => newJoined.has(r));
     const status = sessionData.status;
     if (allJoined || status === 'active' || status === 'signing' || status === 'completed') {

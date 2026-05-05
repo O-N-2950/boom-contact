@@ -557,6 +557,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <QRSession
               sessionId={sessionId}
               qrUrl={qrUrl}
+              tokenA={tokenA}
               onVehicleCountChange={(count) => {
                 setVehicleCount(count as 2|3|4);
                 // Synchroniser vehicleCount vers la DB — critique pour solo
