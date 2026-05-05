@@ -75,16 +75,30 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
   const isNonRegistered = NON_REGISTERED_TYPES.includes(data.vehicle?.vehicleType as string ?? '');
 
   // Resynchroniser si prefilled change (retour depuis "Corriger" après OCR ou après signature)
+  // RÈGLE : les données OCR (prefilled) PRIMENT sur les champs vides existants
   const prevPrefilled = useRef(prefilled);
   useEffect(() => {
     if (prefilled && prefilled !== prevPrefilled.current) {
       prevPrefilled.current = prefilled;
+      // Merge : prefilled d'abord, puis SEULES les valeurs non-vides de prev par-dessus
+      const mergeSection = (pf: Record<string, any> | undefined, prev: Record<string, any> | undefined) => {
+        const base = { ...(pf ?? {}) };
+        // Garder les saisies manuelles existantes SEULEMENT si elles ont une vraie valeur
+        for (const [k, v] of Object.entries(prev ?? {})) {
+          if (v && v !== '' && v !== null && v !== undefined) {
+            // Saisie manuelle non-vide → garder (l'utilisateur a corrigé)
+            base[k] = v;
+          }
+          // Sinon : garder la valeur OCR (prefilled)
+        }
+        return base;
+      };
       setData(prev => ({
         ...prev,
-        vehicle:      { ...( prefilled.vehicle      ?? {}), ...(Object.fromEntries(Object.entries(prev.vehicle      ?? {}).filter(([,v]) => v))) },
-        driver:       { ...( prefilled.driver        ?? {}), ...(Object.fromEntries(Object.entries(prev.driver       ?? {}).filter(([,v]) => v))) },
-        insurance:    { ...( prefilled.insurance     ?? {}), ...(Object.fromEntries(Object.entries(prev.insurance    ?? {}).filter(([,v]) => v))) },
-        circumstances:prev.circumstances?.length ? prev.circumstances : (prefilled.circumstances ?? []),
+        vehicle:       mergeSection(prefilled.vehicle, prev.vehicle),
+        driver:        mergeSection(prefilled.driver, prev.driver),
+        insurance:     mergeSection(prefilled.insurance, prev.insurance),
+        circumstances: prev.circumstances?.length ? prev.circumstances : (prefilled.circumstances ?? []),
       }));
     }
   }, [prefilled]);
