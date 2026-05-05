@@ -262,8 +262,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   useEffect(() => {
     if (step === 'qr' && !sessionId) createSession();
+    // Ne PAS écraser qrUrl avec une URL sans tokenB !
+    // Si qrUrl est vide après refresh, recréer la session (le QR sans token est inutilisable)
     if (step === 'qr' && sessionId && !qrUrl) {
-      setQrUrl(`${window.location.origin}/?session=${sessionId}`);
+      createSession();
     }
   }, [step]);
 
