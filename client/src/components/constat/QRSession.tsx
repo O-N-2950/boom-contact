@@ -57,7 +57,17 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
       if (qrDataUrls[role]) return;
       try {
         const QRCode = await import('qrcode');
-        const joinUrl = `${window.location.origin}/join?session=${sessionId}&role=${role}`;
+        // B utilise le qrUrl du serveur (contient tokenB sécurisé)
+        // C/D/E utilisent le même tokenB (le serveur les accepte aussi)
+        let joinUrl: string;
+        if (role === 'B') {
+          joinUrl = qrUrl; // qrUrl du serveur = /join?session=xxx&tokenB=yyy
+        } else {
+          // Extraire tokenB de la qrUrl du serveur pour les rôles C/D/E
+          const urlObj = new URL(qrUrl, window.location.origin);
+          const tokenB = urlObj.searchParams.get('tokenB') || '';
+          joinUrl = `${window.location.origin}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+        }
         const url = await QRCode.toDataURL(joinUrl, {
           width: 240, margin: 2,
           color: { dark: ROLE_COLORS[role], light: '#06060C' },
@@ -66,16 +76,23 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         setQrDataUrls(prev => ({ ...prev, [role]: url }));
       } catch (e) { console.warn('[QRSession] QR generation failed', e); }
     });
-  }, [vehicleCount, sessionId]);
+  }, [vehicleCount, sessionId, qrUrl]);
+
+  const buildJoinUrl = (role: ParticipantRole): string => {
+    if (role === 'B') return qrUrl;
+    const urlObj = new URL(qrUrl, window.location.origin);
+    const tokenB = urlObj.searchParams.get('tokenB') || '';
+    return `${window.location.origin}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+  };
 
   const copyLink = async (role: ParticipantRole) => {
-    await navigator.clipboard.writeText(`${window.location.origin}/join?session=${sessionId}&role=${role}`);
+    await navigator.clipboard.writeText(buildJoinUrl(role));
     setCopied(role);
     setTimeout(() => setCopied(null), 2000);
   };
 
   const shareLink = async (role: ParticipantRole) => {
-    const joinUrl = `${window.location.origin}/join?session=${sessionId}&role=${role}`;
+    const joinUrl = buildJoinUrl(role);
     if (navigator.share) await navigator.share({ title: `boom.contact — Conducteur ${role}`, url: joinUrl });
     else copyLink(role);
   };
@@ -221,7 +238,7 @@ export function QRSession({ sessionId, qrUrl, onPartnerJoined, isPedestrianMode 
         <button
           onClick={async () => {
             try {
-              const witnessUrl = `${window.location.origin}/join?session=${sessionId}&role=W`;
+              const witnessUrl = buildJoinUrl('B').replace(/role=B/, 'role=W');
               if (navigator.share) {
                 await navigator.share({ title: 'boom.contact — Témoin', text: 'Rejoignez le constat en tant que témoin', url: witnessUrl });
               } else {
