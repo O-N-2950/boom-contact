@@ -333,7 +333,12 @@ export async function savePdfUrl(id: string, url: string): Promise<void> {
 // QR URL helper
 // âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export function getQRUrl(sessionId: string, tokenB: string, baseUrl: string): string {
-  return `${baseUrl}?session=${sessionId}&tokenB=${encodeURIComponent(tokenB)}`;
+  // baseUrl = CLIENT_URL (ex: https://www.boom.contact ou http://localhost:5173)
+  // On ajoute /join pour la page de jonction du conducteur B
+  const origin = baseUrl && baseUrl.startsWith('http')
+    ? baseUrl.replace(/\/+$/, '')
+    : 'https://www.boom.contact';
+  return `${origin}/join?session=${sessionId}&tokenB=${encodeURIComponent(tokenB)}`;
 }
 
 
