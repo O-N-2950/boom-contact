@@ -241,52 +241,70 @@ export async function scanDocument(
   hint?: { documentType?: string; country?: string }
 ): Promise<OCRResult> {
   const userPrompt = buildUserPrompt(hint);
+  const MAX_RETRIES = 2;
+  const RETRY_DELAYS = [2000, 5000]; // 2s, 5s
 
-  try {
-    const response = await anthropic.messages.create({
-      model: 'claude-opus-4-6',
-      max_tokens: 1500,
-      system: SYSTEM_PROMPT,
-      messages: [{
-        role: 'user',
-        content: [
-          {
-            type: 'image',
-            source: { type: 'base64', media_type: mediaType, data: imageBase64 },
-          },
-          {
-            type: 'text',
-            text: userPrompt,
-          },
-        ],
-      }],
-    });
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await anthropic.messages.create({
+        model: 'claude-opus-4-6',
+        max_tokens: 1500,
+        system: SYSTEM_PROMPT,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mediaType, data: imageBase64 },
+            },
+            {
+              type: 'text',
+              text: userPrompt,
+            },
+          ],
+        }],
+      });
 
-    const text = response.content.find(b => b.type === 'text')?.text ?? '{}';
-    const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
-    const parsed = JSON.parse(clean);
-    const raw = RawOCRResponseSchema.parse(parsed) as RawOCRResponse;
+      const text = response.content.find(b => b.type === 'text')?.text ?? '{}';
+      const clean = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+      const parsed = JSON.parse(clean);
+      const raw = RawOCRResponseSchema.parse(parsed) as RawOCRResponse;
 
-    logger.info('OCR scan success', {
-      docType: raw.documentType,
-      country: raw.country,
-      confidence: raw.overallConfidence,
-      hasInsurance: !!(raw.insurance?.company?.value),
-      hasPolicyNumber: !!(raw.insurance?.policyNumber?.value),
-    });
+      logger.info('OCR scan success', {
+        docType: raw.documentType,
+        country: raw.country,
+        confidence: raw.overallConfidence,
+        hasInsurance: !!(raw.insurance?.company?.value),
+        hasPolicyNumber: !!(raw.insurance?.policyNumber?.value),
+        attempt,
+      });
 
-    return mapToOCRResult(raw);
+      return mapToOCRResult(raw);
 
-  } catch (err) {
-    logger.error('OCR scan failed', { error: err instanceof Error ? err.message : String(err) });
-    return {
-      type: 'unknown',
-      confidence: 0,
-      rawText: '',
-      warnings: [`OCR failed: ${err instanceof Error ? err.message : String(err)}`],
-      lowConfidenceFields: [],
-    };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      const isRetryable = msg.includes('503') || msg.includes('529') || msg.includes('overloaded')
+        || msg.includes('rate') || msg.includes('timeout') || msg.includes('ECONNRESET');
+
+      if (isRetryable && attempt < MAX_RETRIES) {
+        logger.warn('OCR scan retrying', { error: msg, attempt: attempt + 1, delay: RETRY_DELAYS[attempt] });
+        await new Promise(r => setTimeout(r, RETRY_DELAYS[attempt]));
+        continue;
+      }
+
+      logger.error('OCR scan failed', { error: msg, attempt });
+      return {
+        type: 'unknown',
+        confidence: 0,
+        rawText: '',
+        warnings: [`OCR failed: ${msg}`],
+        lowConfidenceFields: [],
+      };
+    }
   }
+
+  // Unreachable but TypeScript needs it
+  return { type: 'unknown', confidence: 0, rawText: '', warnings: ['OCR exhausted retries'], lowConfidenceFields: [] };
 }
 
 // ─────────────────────────────────────────────────────────────
