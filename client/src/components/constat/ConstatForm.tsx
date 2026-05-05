@@ -59,7 +59,7 @@ const NON_REGISTERED_TYPES = ['bicycle', 'pedestrian', 'escooter', 'cargo_bike',
 
 type Section = 'vehicle' | 'driver' | 'insurance' | 'circumstances' | 'complement';
 
-export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
+export function ConstatForm({ role, prefilled, accidentData, onSave, sessionId, language }: Props) {
   const { t } = useTranslation();
   const [section, setSection] = useState<Section>('vehicle');
   const [data, setData] = useState<Partial<ParticipantData>>({
@@ -385,4 +385,4 @@ export const ConstatForm = React.memo(function ConstatForm({ role, prefilled, ac
       </div>
     </div>
   );
-});
+}

@@ -681,7 +681,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'form' && (
           <Suspense fallback={<LazyLoading />}>
-            <ConstatForm role="A" prefilled={participantData as any} accidentData={accidentData as any} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
+            <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="A" prefilled={participantData as any} accidentData={accidentData as any} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
           </Suspense>
         )}
 
