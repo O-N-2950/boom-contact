@@ -690,6 +690,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <VoiceSketchFlow
               role="A"
               sessionId={sessionId}
+              participantToken={tokenA}
               lang={participantData.language}
               initialTranscript={voiceTranscript}
               onComplete={(data) => {

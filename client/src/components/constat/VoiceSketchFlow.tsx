@@ -12,6 +12,7 @@ type InputMode = 'voice' | 'text';
 interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   sessionId: string;
+  participantToken: string;
   lang?: string;
   initialTranscript?: string;  // restored from localStorage on back navigation
   preloadedAnalysis?: Record<string, unknown>;
@@ -38,7 +39,7 @@ async function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessionId, lang, initialTranscript = '', onComplete, onSkip }: Props) {
+export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessionId, participantToken, lang, initialTranscript = '', onComplete, onSkip }: Props) {
   const { t } = useTranslation();
   const [flowState, setFlowState] = useState<FlowState>(initialTranscript ? 'done' : 'intro');
   const [inputMode, setInputMode] = useState<InputMode>('voice');
@@ -86,7 +87,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
         const blob = new Blob(chunksRef.current, { type: mimeType || 'audio/webm' });
         const b64 = await blobToBase64(blob);
         setFlowState('transcribing');
-        transcribeMut.mutate({ audioBase64: b64, mimeType: mimeType || 'audio/webm', lang, sessionId, role } as any);
+        transcribeMut.mutate({ audioBase64: b64, mimeType: mimeType || 'audio/webm', lang, sessionId, role, participantToken });
       };
       recorder.start(1000);
       setFlowState('recording');

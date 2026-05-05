@@ -485,6 +485,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           <VoiceSketchFlow
             role={urlRole as 'A' | 'B' | 'C' | 'D' | 'E'}
             sessionId={sessionId}
+            participantToken={tokenB}
             lang={participantData.language}
             initialTranscript={voiceTranscript}
             onComplete={(data) => {
