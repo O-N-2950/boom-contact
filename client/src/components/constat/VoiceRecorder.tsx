@@ -101,10 +101,13 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
 
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Micro non accessible';
-      if (msg.includes('Permission') || msg.includes('NotAllowed')) {
-        setError('Accès au microphone refusé. Autorisez-le dans les réglages de votre navigateur.');
+      if (msg.includes('Permission') || msg.includes('NotAllowed') || msg.includes('not allowed')) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        setError(isIOS
+          ? 'Microphone bloqué. Allez dans Réglages > Safari > boom.contact > Microphone > Autoriser, puis rechargez la page.'
+          : 'Microphone bloqué. Cliquez sur l\'icône 🔒 dans la barre d\'adresse > Autoriser le microphone.');
       } else {
-        setError(`Microphone indisponible : ${msg}`);
+        setError('Microphone non disponible sur cet appareil. Vous pouvez décrire l\'accident par écrit.');
       }
       setState('error');
     }
