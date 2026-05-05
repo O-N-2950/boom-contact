@@ -5,10 +5,11 @@ const config: CapacitorConfig = {
   appName: 'boom.contact',
   webDir: 'dist/client',
   server: {
-    // En prod, l'app charge le site web directement (pas de bundle local)
-    // Ça garantit que l'app est toujours à jour sans re-soumettre sur les stores
-    url: 'https://www.boom.contact',
-    cleartext: false,
+    // Bundle local (obligatoire App Store — sinon rejet 4.2 "web clip")
+    // L'app embarque le build Vite et fonctionne offline
+    // Les mises à jour passent par les stores (ou Live Update Capacitor si besoin)
+    androidScheme: 'https',
+    iosScheme: 'https',
   },
   ios: {
     contentInset: 'automatic',
