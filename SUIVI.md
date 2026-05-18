@@ -35,12 +35,25 @@ Légende : ✅ OK (corrigé + vérifié build/TS/tests) · 🔵 fait, validation
 | M4 | URL avis Google placeholder (404 en prod) | ✅ **OK** | `process.env.GOOGLE_REVIEW_URL` ; bloc masqué si absente. |
 | M12 | Config tests fragile (chemin `/root` en dur) | ✅ **OK** | `vitest.config.ts` portable → 44/44 vert. |
 
-### Vérifications finales
+### Vérifications finales (locales)
 - `npx tsc --noEmit` → **0 erreur**
 - `npx vite build` → **OK**
 - `npm run build:server` → **OK**
 - `npx vitest run` → **44/44 OK**
 - Aucune route/fonctionnalité web existante cassée (changements no-op côté web pour B1 ; reste = additif ou ciblé).
+
+### ✅ Déploiement Railway VÉRIFIÉ (prod live)
+- Commit `23603f3` poussé sur `main` → déploiement `09912098` : **SUCCESS**
+  (build OK + serveur démarré + health check Railway passé).
+- `/health` → **200** (env production)
+- Home `/` → **200** (pas de page blanche)
+- API `session.create` → **OK** (sessionId + qrUrl `www.boom.contact` + tokenA)
+- Deep link `/join` → **200**
+- **B1 serveur prouvé live** : `Origin: capacitor://localhost` →
+  `access-control-allow-origin: capacitor://localhost` (origine native
+  désormais acceptée). Origine random (`evil.example.com`) → **toujours
+  refusée** → aucune régression de sécurité CORS.
+- Conclusion : déploiement validé, **rien de cassé côté web**.
 
 ---
 
