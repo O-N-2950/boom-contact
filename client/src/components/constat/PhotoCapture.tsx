@@ -5,6 +5,7 @@ interface Props {
   photos: ScenePhoto[];
   onChange: (photos: ScenePhoto[]) => void;
   onContinue: () => void;
+  vehicleCount?: number;
 }
 
 const MAX_PHOTOS = 5;
@@ -15,10 +16,24 @@ const CATEGORIES: { id: PhotoCategory; icon: string; label: string; sub: string 
   { id: 'scene',    icon: '📍', label: 'Lieu du sinistre',     sub: 'Vue générale, signalisation, traces de freinage' },
   { id: 'vehicleA', icon: '🚗', label: 'Dommages véhicule A',  sub: 'Choc, rayures, déformation' },
   { id: 'vehicleB', icon: '🚙', label: 'Dommages véhicule B',  sub: 'Choc, rayures, déformation' },
+  { id: 'vehicleC', icon: '🚐', label: 'Dommages véhicule C',  sub: 'Choc, rayures, déformation' },
+  { id: 'vehicleD', icon: '🚓', label: 'Dommages véhicule D',  sub: 'Choc, rayures, déformation' },
+  { id: 'vehicleE', icon: '🚛', label: 'Dommages véhicule E',  sub: 'Choc, rayures, déformation' },
   { id: 'injury',   icon: '🩹', label: 'Blessures',            sub: 'Uniquement si consentement' },
   { id: 'document', icon: '📄', label: 'Document / Plaque',    sub: 'Plaque d\'immatriculation, papiers' },
   { id: 'other',    icon: '📷', label: 'Autre',                sub: 'Tout ce qui peut être utile' },
 ];
+
+// Catégories véhicule visibles selon le nombre de véhicules (C si ≥3, D si
+// ≥4, E si ≥5). 2 véhicules ⇒ liste inchangée (aucune régression).
+function visibleCategories(vehicleCount?: number) {
+  const n = vehicleCount ?? 2;
+  const hidden = new Set<PhotoCategory>();
+  if (n < 3) hidden.add('vehicleC');
+  if (n < 4) hidden.add('vehicleD');
+  if (n < 5) hidden.add('vehicleE');
+  return CATEGORIES.filter(c => !hidden.has(c.id));
+}
 
 async function compressImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -43,7 +58,8 @@ async function compressImage(file: File): Promise<string> {
   });
 }
 
-export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange, onContinue }: Props) {
+export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange, onContinue, vehicleCount }: Props) {
+  const cats = visibleCategories(vehicleCount);
   const [selectedCategory, setSelectedCategory] = useState<PhotoCategory>('scene');
   const [editingCaption, setEditingCaption] = useState<string | null>(null);
   const [captionValue, setCaptionValue] = useState('');
@@ -109,7 +125,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
           Catégorie
         </div>
         <div className="flex flex-col gap-2">
-          {CATEGORIES.map(cat => (
+          {cats.map(cat => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
@@ -148,7 +164,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
         disabled={loading || photos.length >= MAX_PHOTOS}
         className="w-full p-[15px] rounded-xl border-0 font-bold flex items-center justify-center gap-2 mb-4 text-[15px]" style={{ background: photos.length >= MAX_PHOTOS ? 'rgba(240,237,232,0.08)' : 'var(--boom)', color: photos.length >= MAX_PHOTOS ? 'rgba(240,237,232,0.3)' : '#fff', cursor: photos.length >= MAX_PHOTOS ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}
       >
-        {loading ? '⏳ Traitement...' : `📷 Prendre une photo · ${CATEGORIES.find(c => c.id === selectedCategory)?.label}`}
+        {loading ? '⏳ Traitement...' : `📷 Prendre une photo · ${cats.find(c => c.id === selectedCategory)?.label}`}
       </button>
 
       {error && (

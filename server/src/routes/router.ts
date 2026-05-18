@@ -337,7 +337,7 @@ export const appRouter = router({
           }).optional(),
           photos:           z.array(z.object({
             id:       z.string().trim().max(100),
-            category: z.enum(['scene','vehicleA','vehicleB','injury','document','other']),
+            category: z.enum(['scene','vehicleA','vehicleB','vehicleC','vehicleD','vehicleE','injury','document','other']),
             base64:   z.string().max(7_000_000),
             caption:  z.string().trim().max(500).optional(),
             takenAt:  z.string().trim().max(50),

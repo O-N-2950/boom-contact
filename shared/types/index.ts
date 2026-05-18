@@ -133,6 +133,9 @@ export type PhotoCategory =
   | 'scene'      // Lieu du sinistre, vue générale
   | 'vehicleA'   // Dommages véhicule A
   | 'vehicleB'   // Dommages véhicule B
+  | 'vehicleC'   // Dommages véhicule C
+  | 'vehicleD'   // Dommages véhicule D
+  | 'vehicleE'   // Dommages véhicule E
   | 'injury'     // Blessures
   | 'document'   // Document, plaque, papier
   | 'other';     // Autre

@@ -549,6 +549,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               photos={photos}
               onChange={setPhotos}
               onContinue={handlePhotosContinue}
+              vehicleCount={vehicleCount}
             />
           </Suspense>
         )}

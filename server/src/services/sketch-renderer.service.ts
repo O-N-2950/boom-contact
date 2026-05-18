@@ -50,6 +50,9 @@ export interface SketchInput {
   vehicleBBrand?:    string;
   vehicleBModel?:    string;
   vehicleBPlate?:    string;
+  // Voie B — véhicules additionnels C/D/E (représentés dans la scène).
+  // Additif : le rendu A/B reste inchangé si extraVehicles est vide.
+  extraVehicles?:    Array<{ label: string; type: string; color: string; plate?: string }>;
   mapImageBase64?:   string;
   width?:  number;
   height?: number;
@@ -1048,6 +1051,30 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
     }
     plate(posA.x, posA.y+65, '${plateA}');
     plate(posB.x, posB.y+65, '${plateB}');
+
+    // Voie B — Véhicules additionnels C/D/E (additif : A/B inchangé).
+    // Positionnés en périphérie de la scène (hors zone de collision A/B),
+    // étiquetés avec leur type/couleur. Représentation de présence, non
+    // simulation physique multi-corps (trajectoire reste A/B-primaire).
+    var __extra = ${JSON.stringify(
+      (inp.extraVehicles || []).slice(0, 3).map(v => ({
+        label: sanitizeForHtml(v.label || ''),
+        type: sanitizeForHtml(v.type || 'car'),
+        color: sanitizeForHtml(v.color || '#9aa0b4'),
+        plate: sanitizeForHtml(v.plate || ''),
+      }))
+    )};
+    var __slots = [
+      { x: W*0.16, y: H*0.80, label:'C' },
+      { x: W*0.84, y: H*0.22, label:'D' },
+      { x: W*0.84, y: H*0.80, label:'E' },
+    ];
+    for (var __i=0; __i<__extra.length; __i++) {
+      var __v = __extra[__i], __s = __slots[__i];
+      drawVehicle(ctx, __s.x, __s.y, 0, { vehicleType: __v.type, color: __v.color }, __s.label);
+      if (__v.label) tag(__s.x, __s.y-22, __v.label, '#c9b3ff');
+      if (__v.plate) plate(__s.x, __s.y+62, __v.plate);
+    }
 
     // Barre inférieure
     ctx.fillStyle='rgba(0,0,0,0.65)';

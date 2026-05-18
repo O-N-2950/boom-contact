@@ -640,6 +640,18 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
         vehicleBImpactZone: (B.damagedZones?.[0] || 'rear').replace('-','_'),
         vehicleBMoving: true, vehicleBReversing: circB.includes('c13'),
         vehicleBBrand: B.vehicle?.brand, vehicleBModel: B.vehicle?.model, vehicleBPlate: B.vehicle?.licensePlate,
+        // Voie B — véhicules additionnels présents (C/D/E) représentés dans la scène
+        extraVehicles: (['C','D','E'] as const).flatMap((r) => {
+          const p: any = (session as any)[`participant${r}`];
+          const has = p && (p.vehicle?.licensePlate || p.vehicle?.brand || p.vehicle?.vehicleType || p.driver?.lastName);
+          if (!has) return [];
+          return [{
+            label: `${r} · ${[p.vehicle?.brand, p.vehicle?.model].filter(Boolean).join(' ') || ('Véhicule ' + r)}`,
+            type: (p.vehicle?.vehicleType || 'car') as string,
+            color: p.vehicle?.color || 'gris',
+            plate: p.vehicle?.licensePlate || '',
+          }];
+        }),
         mapImageBase64: await (async () => {
           const loc = acc.location as any;
           const lat = loc?.lat || loc?.latitude;

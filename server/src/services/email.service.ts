@@ -70,7 +70,7 @@ const TEMPLATES: Record<string, {
   fr: {
     subject: '✅ Votre constat signé — PDF ci-joint · boom.contact',
     heading: 'Constat finalisé & signé',
-    intro: 'Les deux conducteurs ont signé. Votre constat numérique certifié est joint à cet email en PDF.',
+    intro: 'Le constat est signé. Votre rapport numérique horodaté est joint à cet email en PDF.',
     step1: 'Ouvrez le PDF ci-joint et vérifiez les informations',
     step2: 'Contactez <strong>votre propre assureur</strong> pour déclarer le sinistre',
     step3: 'Transmettez-leur ce PDF dans les délais prévus par votre contrat d\'assurance',
@@ -88,12 +88,12 @@ const TEMPLATES: Record<string, {
     signupTitle: 'Prêt pour la prochaine fois ?',
     signupText: 'Créez un compte gratuit et enregistrez votre véhicule. La prochaine fois, votre constat sera pré-rempli en 10 secondes.',
     signupBtn: '🚗 Enregistrer mon véhicule',
-    footer: 'boom.contact · PEP\'s Swiss SA · IDE CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Suisse<br>Constat numérique certifié · Valable dans 150+ pays · Conforme RGPD',
+    footer: 'boom.contact · PEP\'s Swiss SA · IDE CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Suisse<br>Constat numérique horodaté · Conforme RGPD',
   },
   de: {
     subject: '✅ Ihr unterzeichneter Unfallbericht — PDF anbei · boom.contact',
     heading: 'Unfallbericht abgeschlossen & unterzeichnet',
-    intro: 'Beide Fahrer haben unterschrieben. Ihr zertifizierter digitaler Unfallbericht ist als PDF beigefügt.',
+    intro: 'Der Bericht ist unterschrieben. Ihr digitaler, zeitgestempelter Bericht ist als PDF beigefügt.',
     step1: 'Öffnen Sie das beigefügte PDF und prüfen Sie die Angaben',
     step2: 'Kontaktieren Sie <strong>Ihre eigene Versicherung</strong> zur Schadenmeldung',
     step3: 'Übermitteln Sie dieses PDF innerhalb der in Ihrem Versicherungsvertrag vorgesehenen Fristen',
@@ -116,7 +116,7 @@ const TEMPLATES: Record<string, {
   it: {
     subject: '✅ Il vostro modulo firmato — PDF allegato · boom.contact',
     heading: 'Constatazione completata e firmata',
-    intro: 'Entrambi i conducenti hanno firmato. Il vostro modulo digitale certificato è allegato in PDF.',
+    intro: 'Il constato è firmato. Il vostro rapporto digitale con marca temporale è allegato in PDF.',
     step1: 'Aprite il PDF allegato e verificate le informazioni',
     step2: 'Contattate <strong>la vostra assicurazione</strong> per dichiarare il sinistro',
     step3: 'Inviate loro questo PDF entro i termini previsti dal vostro contratto assicurativo',
@@ -139,7 +139,7 @@ const TEMPLATES: Record<string, {
   en: {
     subject: '✅ Your signed accident report — PDF attached · boom.contact',
     heading: 'Accident report completed & signed',
-    intro: 'Both drivers have signed. Your certified digital accident report is attached as a PDF.',
+    intro: 'The report is signed. Your timestamped digital report is attached as a PDF.',
     step1: 'Open the attached PDF and verify the information',
     step2: 'Contact <strong>your own insurance company</strong> to file the claim',
     step3: 'Send them this PDF within the deadlines set out in your insurance contract',
@@ -162,7 +162,7 @@ const TEMPLATES: Record<string, {
   es: {
     subject: '✅ Su declaración firmada — PDF adjunto · boom.contact',
     heading: 'Declaración completada y firmada',
-    intro: 'Ambos conductores han firmado. Su declaración digital certificada está adjunta en PDF.',
+    intro: 'El parte está firmado. Su informe digital con sello de tiempo está adjunto en PDF.',
     step1: 'Abra el PDF adjunto y verifique la información',
     step2: 'Contacte <strong>a su propia aseguradora</strong> para declarar el siniestro',
     step3: 'Envíeles este PDF dentro de los plazos previstos en su contrato de seguro',
@@ -185,7 +185,7 @@ const TEMPLATES: Record<string, {
   pt: {
     subject: '✅ A sua declaração assinada — PDF em anexo · boom.contact',
     heading: 'Declaração concluída e assinada',
-    intro: 'Ambos os condutores assinaram. A sua declaração digital certificada está anexada em PDF.',
+    intro: 'O relatório está assinado. O seu relatório digital com selo temporal está anexado em PDF.',
     step1: 'Abra o PDF em anexo e verifique as informações',
     step2: 'Contacte <strong>a sua seguradora</strong> para declarar o sinistro',
     step3: 'Envie-lhes este PDF dentro dos prazos previstos no seu contrato de seguro',
@@ -208,7 +208,7 @@ const TEMPLATES: Record<string, {
   nl: {
     subject: '✅ Uw ondertekend aanrijdingsformulier — PDF bijgevoegd · boom.contact',
     heading: 'Aanrijdingsformulier voltooid en ondertekend',
-    intro: 'Beide bestuurders hebben getekend. Uw gecertificeerd digitaal formulier is bijgevoegd als PDF.',
+    intro: 'Het rapport is ondertekend. Uw digitale rapport met tijdstempel is bijgevoegd als PDF.',
     step1: 'Open de bijgevoegde PDF en controleer de gegevens',
     step2: 'Neem contact op met <strong>uw eigen verzekeraar</strong> om de schade te melden',
     step3: 'Stuur hen deze PDF binnen de termijnen die in uw verzekeringscontract zijn vastgelegd',
@@ -231,7 +231,7 @@ const TEMPLATES: Record<string, {
   pl: {
     subject: '✅ Twoje podpisane oświadczenie — PDF w załączniku · boom.contact',
     heading: 'Oświadczenie o zdarzeniu zakończone i podpisane',
-    intro: 'Obaj kierowcy podpisali. Twoje certyfikowane cyfrowe oświadczenie jest dołączone jako PDF.',
+    intro: 'Protokół został podpisany. Twój cyfrowy raport ze znacznikiem czasu jest dołączony jako PDF.',
     step1: 'Otwórz załączony PDF i sprawdź dane',
     step2: 'Skontaktuj się <strong>ze swoim ubezpieczycielem</strong>, aby zgłosić szkodę',
     step3: 'Prześlij im ten PDF w terminach określonych w umowie ubezpieczenia',
@@ -254,7 +254,7 @@ const TEMPLATES: Record<string, {
   ru: {
     subject: '✅ Ваш подписанный протокол — PDF во вложении · boom.contact',
     heading: 'Протокол о ДТП завершён и подписан',
-    intro: 'Оба водителя подписали. Ваш сертифицированный цифровой протокол прилагается в формате PDF.',
+    intro: 'Протокол подписан. Ваш цифровой отчёт с отметкой времени прилагается в формате PDF.',
     step1: 'Откройте прилагаемый PDF и проверьте данные',
     step2: 'Свяжитесь <strong>со своей страховой компанией</strong> для подачи заявления',
     step3: 'Отправьте им этот PDF в сроки, предусмотренные вашим договором страхования',
@@ -277,7 +277,7 @@ const TEMPLATES: Record<string, {
   ar: {
     subject: '✅ تقريركم الموقع — PDF مرفق · boom.contact',
     heading: 'تقرير الحادث مكتمل وموقع',
-    intro: 'وقّع كلا السائقين. تقريركم الرقمي المعتمد مرفق بصيغة PDF.',
+    intro: 'تم توقيع التقرير. تقريركم الرقمي المختوم زمنياً مرفق بصيغة PDF.',
     step1: 'افتح ملف PDF المرفق وتحقق من المعلومات',
     step2: 'تواصل مع <strong>شركة التأمين الخاصة بك</strong> للإبلاغ عن الحادث',
     step3: 'أرسل لهم هذا الملف — الأجل: <strong>8 أيام عمل</strong>',
@@ -300,7 +300,7 @@ const TEMPLATES: Record<string, {
   zh: {
     subject: '✅ 您已签署的事故报告 — PDF附件 · boom.contact',
     heading: '事故报告已完成并签署',
-    intro: '双方驾驶员均已签署。您的认证数字报告以PDF格式附上。',
+    intro: '报告已签署。您的带时间戳的数字报告以PDF格式附上。',
     step1: '打开附件PDF并核实信息',
     step2: '联系<strong>您自己的保险公司</strong>申报事故',
     step3: '发送此PDF — 期限：<strong>5–8个工作日</strong>',
@@ -323,7 +323,7 @@ const TEMPLATES: Record<string, {
   ja: {
     subject: '✅ 署名済み事故報告書 — PDF添付 · boom.contact',
     heading: '事故報告書が完成・署名されました',
-    intro: '両ドライバーが署名しました。認定デジタル報告書がPDFで添付されています。',
+    intro: '報告書は署名されました。タイムスタンプ付きデジタル報告書がPDFで添付されています。',
     step1: '添付のPDFを開いて内容を確認してください',
     step2: '<strong>ご自身の保険会社</strong>に連絡して事故を申告してください',
     step3: 'このPDFを送付してください — 期限: <strong>5～10営業日</strong>',
@@ -346,7 +346,7 @@ const TEMPLATES: Record<string, {
   tr: {
     subject: '✅ İmzalanmış tutanağınız — PDF ekli · boom.contact',
     heading: 'Kaza tutanağı tamamlandı ve imzalandı',
-    intro: 'Her iki sürücü de imzaladı. Sertifikalı dijital tutanağınız PDF olarak ekte.',
+    intro: 'Tutanak imzalandı. Zaman damgalı dijital raporunuz PDF olarak ekte.',
     step1: "Ekli PDF'i açın ve bilgileri doğrulayın",
     step2: 'Hasarı bildirmek için <strong>kendi sigorta şirketinizle</strong> iletişime geçin',
     step3: "Bu PDF'i gönderin — süre: <strong>7 iş günü</strong>",
@@ -383,7 +383,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
   const BASE = 'https://www.boom.contact';
   const GOOGLE_REVIEW = process.env.GOOGLE_REVIEW_URL || ''; // configurable via env ; vide = bloc avis masqué
   const shareUrl = encodeURIComponent(BASE);
-  const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en 5 min, valable dans 150 pays');
+  const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en quelques minutes, à transmettre à votre assureur');
   const isRegistered = !!params.driverEmail; // s'ils ont un email, peut-être pas encore de compte
 
   const insurerSection = safeInsurerName ? `
@@ -631,7 +631,7 @@ export async function sendB2BOutreach(recipientEmail: string, recipientName?: st
     </div>
 
     <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">
-      <strong>How it works:</strong> Your policyholder opens boom.contact after an accident. Both drivers fill the digital report in 5 minutes (QR code pairing, OCR document scan, voice input). Your system receives structured JSON via webhook + certified PDF with blockchain timestamp.
+      <strong>How it works:</strong> Your policyholder opens boom.contact after an accident. The drivers fill the digital report in minutes (QR code pairing, OCR document scan, voice input). Your system receives structured JSON via webhook + PDF with a cryptographic blockchain timestamp (OpenTimestamps / Bitcoin).
     </p>
 
     <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 24px;">

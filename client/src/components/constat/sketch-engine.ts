@@ -377,7 +377,7 @@ export function drawVehicle(
   cx: number, cy: number,
   angle: number,
   vehicleData: VehicleScene,
-  label: 'A' | 'B',
+  label: 'A' | 'B' | 'C' | 'D' | 'E',
   impactColor: string = '#ef4444'
 ) {
   const VW = 70, VH = 34; // base dimensions
@@ -1077,6 +1077,7 @@ export function renderAccidentSketch(
   vehicleBColor?: string,
   vehicleAType?: string,
   vehicleBType?: string,
+  extraVehicles?: Array<{ label: string; type: string; color: string }>,
 ) {
   const ctx = canvas.getContext('2d')!;
   const W = canvas.width, H = canvas.height;
@@ -1140,6 +1141,27 @@ export function renderAccidentSketch(
   ctx.textAlign = 'center';
   ctx.letterSpacing = '1px';
   ctx.fillText('IMPACT', impactX, impactY + 22);
+
+  // Voie B — véhicules additionnels C/D/E (additif : A/B inchangé).
+  // Présence représentée en périphérie, hors zone de collision A/B.
+  const extras = (extraVehicles || []).slice(0, 3);
+  const slots = [
+    { x: W * 0.16, y: H * 0.80, lab: 'C' },
+    { x: W * 0.84, y: H * 0.22, lab: 'D' },
+    { x: W * 0.84, y: H * 0.80, lab: 'E' },
+  ];
+  extras.forEach((v, i) => {
+    const s = slots[i];
+    drawVehicle(ctx, s.x, s.y, 0, { ...analysis.vehicleA, color: v.color, vehicleType: v.type || 'car' } as VehicleScene, s.lab as 'C' | 'D' | 'E', '#ef4444');
+    if (v.label) {
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.font = 'bold 11px sans-serif';
+      const tw = ctx.measureText(v.label).width;
+      ctx.beginPath(); ctx.roundRect(s.x - tw / 2 - 6, s.y - 36, tw + 12, 18, 4); ctx.fill();
+      ctx.fillStyle = '#c9b3ff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(v.label, s.x, s.y - 27);
+    }
+  });
 
   // 8. Légende
   ctx.fillStyle = 'rgba(255,255,230,0.2)';
