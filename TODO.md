@@ -1,4 +1,59 @@
 # boom.contact — TODO.md
+
+> Mise à jour : 18 mai 2026 — Session 16
+
+---
+
+## ✅ FAIT cette session (Session 16) — voir SUIVI.md
+B1 (code), B2, B3, B4 (Voie A), H1, H2, H3, H4, H5 (PNG), M1, M4, M12.
+État : TS 0 erreur · build client/serveur OK · tests 44/44 OK.
+
+---
+
+## ⏳ RESTE À FAIRE — avant soumission stores
+
+### Bloquant résiduel (validation, pas code)
+- [ ] **B1 — validation runtime native** : générer IPA + AAB **signés**,
+      tester sur iPhone + Android réels le flux complet (création session,
+      QR scanné par 2e appareil, vocal, PDF, retour Stripe). Nécessite
+      Xcode/Android Studio + certificats Apple/Google. *Le code est prêt ;
+      seul le test appareil + la signature release manquent.*
+- [ ] Config signature release iOS (certificat + provisioning) et Android
+      (keystore) dans les workflows `build-ios.yml` / `build-android.yml`.
+
+### Décisions produit / juridique (ne pas trancher seul)
+- [ ] **M2 — claims légaux** PDF : « Document légalement valable - 46 pays »,
+      « valable auprès des assurances » → faire valider/reformuler par un
+      juriste (risque review Apple/Google + risque légal). Reformulation
+      prudente suggérée : « dossier PDF structuré + horodatage
+      cryptographique, à transmettre à votre assureur ».
+- [ ] **M3 — wording** « PDF envoyé à votre assureur » (UI) vs modèle réel
+      (envoyé au conducteur qui transmet). Aligner le texte.
+
+### Améliorations qualité (P1/P2, non bloquantes)
+- [ ] M5 — remplacer le QR de l'écran « done » (tiers `api.qrserver.com`)
+      par la lib `qrcode` locale (offline + confidentialité).
+- [ ] M6 — auto-email aussi pour constats solo / piéton / partie B
+      indisponible (aujourd'hui : seulement sur double signature).
+- [ ] M7 — rate-limit dédié + limite de taille sur
+      `/api/monitor/client-error`.
+- [ ] M8 — pagination des photos dans le PDF (multi-pages si > N photos).
+- [ ] H5b — WebP : conversion serveur (sharp) avant embed PDF (pdf-lib ne
+      supporte que JPG/PNG).
+- [ ] M9 — pseudonymiser/hasher l'email comme distinctId PostHog.
+- [ ] M10 — release Sentry alignée sur les versions iOS/Android.
+- [ ] M11 — `payment.verifyCredit` : ne plus exposer le solde par email.
+
+### Roadmap (hors V1 — Voie B / police)
+- [ ] Refactor multi-véhicules A–E : tokens individualisés, updateParticipant
+      A–E, PDF/email/croquis dynamiques, tests E2E A/B/C/D/E.
+- [ ] Réactiver « Témoin officiel » (rôle 'W' serveur : enum Zod +
+      signSession keyMap + PDF).
+- [ ] Module police (PoliceFlow, sous-domaine, PDF par pays) — roadmap M1-M3+.
+
+---
+
+# boom.contact — TODO.md
 > Mise à jour : 11 Avril 2026 — Fin Session 15
 
 ---

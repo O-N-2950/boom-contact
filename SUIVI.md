@@ -1,4 +1,50 @@
 # boom.contact — SUIVI.md
+
+> Dernière mise à jour : 18 mai 2026 — **Session 16 (Audit PREMIUM + corrections)**
+
+---
+
+## SESSION 16 — Statut des corrections d'audit
+
+Légende : ✅ OK (corrigé + vérifié build/TS/tests) · 🔵 fait, validation runtime à confirmer · ⏳ TODO (voir TODO.md)
+
+### 🔴 Bloquants
+
+| # | Sujet | Statut | Détail |
+|---|---|---|---|
+| B1 | Apps natives ne joignaient pas le backend | 🔵 **OK (code)** | `apiBase.ts` créé ; `main.tsx`, `trpc.ts`, `socket.ts`, `QRSession.tsx` câblés ; CORS serveur + origines Capacitor. Web = inchangé (relatif). **Validation appareil natif à faire** (hors sandbox). |
+| B2 | Vocal in-form cassé (manque participantToken) | ✅ **OK** | `VoiceRecorder` reçoit `participantToken` (propagé depuis ConstatFlow=tokenA / JoinSession=tokenB) + vrai mimeType iOS (audio/mp4). |
+| B3 | Double-débit crédit Stripe par session | ✅ **OK** | `useCredit` idempotent par `sessionId` (transaction + check `creditTxns` reason='use'/ref=sessionId avant débit). |
+| B4 | Effondrement multi-véhicules C/D/E | ✅ **OK (Voie A)** | `MAX_VEHICLES = 2` → C/D/E injoignables via UI → plus de corruption possible. Refactor A–E = Voie B (reporté). |
+
+### 🟠 Élevés
+
+| # | Sujet | Statut | Détail |
+|---|---|---|---|
+| H1 | Piéton QR bloqué (tokenA manquant) | ✅ **OK** | `tokenA={tokenA}` passé au `<QRSession>` piéton. C'était la seule erreur TS du repo → désormais 0 erreur. |
+| H2 | Coordonnées piéton (saisies par A) non sauvées | ✅ **OK** | Procédure serveur sécurisée `session.fillAbsentPedestrian` + client câblé via `trpcClient`. |
+| H3 | Lien « Témoin officiel » cassé (no-op) | ✅ **OK** | Bloc masqué (rôle 'W' non supporté serveur — roadmap). Plus de feature cassée visible en review. |
+| H4 | Suppression compte incomplète (RGPD) | ✅ **OK** | Cascade : delete constats/PII + anonymisation financiers (rétention fiscale). |
+| H5 | Photos PNG/WebP perdues dans le PDF | ✅ **OK (PNG)** | Fallback `embedPng` si `embedJpg` échoue. WebP = limite pdf-lib → TODO (conversion sharp). |
+
+### 🟡 Moyens traités
+
+| # | Sujet | Statut | Détail |
+|---|---|---|---|
+| M1 | `(trpc as any).session.get.fetch` invalide ×2 | ✅ **OK** | Remplacé par `trpcClient.session.get.query` + shape corrigée (`participantB`). |
+| M4 | URL avis Google placeholder (404 en prod) | ✅ **OK** | `process.env.GOOGLE_REVIEW_URL` ; bloc masqué si absente. |
+| M12 | Config tests fragile (chemin `/root` en dur) | ✅ **OK** | `vitest.config.ts` portable → 44/44 vert. |
+
+### Vérifications finales
+- `npx tsc --noEmit` → **0 erreur**
+- `npx vite build` → **OK**
+- `npm run build:server` → **OK**
+- `npx vitest run` → **44/44 OK**
+- Aucune route/fonctionnalité web existante cassée (changements no-op côté web pour B1 ; reste = additif ou ciblé).
+
+---
+
+# boom.contact — SUIVI.md
 > Dernière mise à jour : 23 Mars 2026 — Fin Session 12
 
 ---

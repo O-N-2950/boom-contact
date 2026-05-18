@@ -381,7 +381,7 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
   const safeSessionId = escapeHtml(params.sessionId);
   const safeLang = escapeHtml(params.language || 'fr');
   const BASE = 'https://www.boom.contact';
-  const GOOGLE_REVIEW = 'https://g.page/r/boom-contact/review'; // à personnaliser avec la vraie URL Google
+  const GOOGLE_REVIEW = process.env.GOOGLE_REVIEW_URL || ''; // configurable via env ; vide = bloc avis masqué
   const shareUrl = encodeURIComponent(BASE);
   const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en 5 min, valable dans 150 pays');
   const isRegistered = !!params.driverEmail; // s'ils ont un email, peut-être pas encore de compte
@@ -475,12 +475,12 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
     <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
 
     <!-- ═══ GOOGLE REVIEW ═══ -->
-    <div style="text-align:center;margin-bottom:28px;">
+    ${GOOGLE_REVIEW ? `<div style="text-align:center;margin-bottom:28px;">
       <div style="font-size:32px;margin-bottom:8px;">⭐</div>
       <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.googleTitle}</div>
       <div style="font-size:13px;color:#595959;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.googleText}</div>
       <a href="${GOOGLE_REVIEW}" style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.googleBtn}</a>
-    </div>
+    </div>` : ''}
 
     <!-- ─── DIVIDER ─── -->
     <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">

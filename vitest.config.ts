@@ -1,10 +1,12 @@
 import { defineConfig } from 'vitest/config';
+import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   resolve: {
     alias: {
-      // zod 3.25 only ships source (uses @zod/source condition) — vitest needs explicit alias
-      zod: '/root/boom-contact/node_modules/zod/src/index.ts',
+      // zod 3.25 only ships source (uses @zod/source condition) — vitest needs explicit alias.
+      // Chemin portable (résolu relativement à ce fichier) : robuste en CI / tout environnement.
+      zod: fileURLToPath(new URL('./node_modules/zod/src/index.ts', import.meta.url)),
     },
   },
   test: {

@@ -1,4 +1,61 @@
 # boom.contact — CONTEXT.md
+
+> Dernière mise à jour : 18 mai 2026 — **Session 16 (Audit PREMIUM pré-stores + corrections)**
+
+---
+
+## 🎯 SESSION 16 — Audit consolidé + corrections bloquants stores
+
+**Objectif :** audit expert pré-publication App Store / Google Play, puis
+corriger les bloquants. Deux audits (Claude + ChatGPT) confrontés et
+**vérifiés dans le code réel** (clone intégral, tsc, build, tests, prod live).
+
+**Décision produit : VOIE A** — V1 maîtrisée à **2 véhicules** (cas piéton /
+vélo / solo / fuite / refus / blessé conservés). Le refactor multi-véhicules
+A–E (Voie B) est reporté en v1.1/2.0.
+
+### État build (vérifié en fin de session)
+- TypeScript : **0 erreur** (le repo livrait 1 erreur TS avant — résolue)
+- Build client (`vite build`) : **OK**
+- Build serveur (`build:server`) : **OK**
+- Tests (`vitest run`) : **44/44 OK**
+
+### Décisions d'architecture verrouillées
+- **B1** (bloqueur store n°1) : base URL API absolue
+  (`https://www.boom.contact`) UNIQUEMENT en natif Capacitor via
+  `client/src/apiBase.ts`. Sur web → `''` (relatif, same-origin) →
+  comportement strictement inchangé, zéro régression web possible.
+  Origines natives ajoutées au CORS serveur (`capacitor://localhost`,
+  `https://localhost`).
+- **B4 / Voie A** : `MAX_VEHICLES = 2` (`QRSession.tsx`). Chemins C/D/E
+  conservés dans le code mais injoignables via l'UI (le serveur
+  `updateParticipant` n'écrit fiablement que A/B). Réactivation = Voie B.
+- **H2** : nouvelle procédure serveur `session.fillAbsentPedestrian`
+  (auth tokenA + garde anti-écrasement d'un vrai B) — constat unilatéral
+  piéton sans téléphone.
+- **H4** : suppression de compte = DELETE constats/PII (sessions, véhicules,
+  tokens) + ANONYMISATION (non suppression) des écritures financières
+  (paiements, crédits) pour rétention fiscale (~10 ans).
+  Email → `deleted-<sha256(16)>@anonymized.invalid`.
+- **M4** : URL avis Google via `process.env.GOOGLE_REVIEW_URL` (bloc masqué
+  si absente — plus de lien 404 en prod).
+- **M12** : `vitest.config.ts` rendu portable (plus de chemin `/root` en
+  dur) → CI robuste.
+
+### Nouvelle variable d'environnement (optionnelle)
+- `GOOGLE_REVIEW_URL` — si absente : bloc avis Google non rendu (aucun
+  impact fonctionnel). À renseigner quand la fiche Google Business est prête.
+
+### Limites assumées (honnêteté — voir TODO.md)
+- B1 : code corrigé et build vert, mais **validation runtime native**
+  (IPA/AAB signés + test appareil iOS/Android réel) NON faite ici
+  (nécessite Xcode/Android Studio + certificats). À faire avant soumission.
+- M2 (claims « légalement valable / 46 pays ») : **décision juridique** —
+  non modifié unilatéralement, à valider avec un juriste.
+
+---
+
+# boom.contact — CONTEXT.md
 > ⚠️ Les clés réelles sont dans les fichiers du projet Claude (Token_Railway_boom.contact, Key_Anthropic_, etc.)
 
 > Dernière mise à jour : 11 Avril 2026 — Session 15

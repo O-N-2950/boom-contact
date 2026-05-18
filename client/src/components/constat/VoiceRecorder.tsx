@@ -8,6 +8,7 @@ import { trpc } from '../../trpc';
 interface Props {
   role: 'A' | 'B' | 'C' | 'D' | 'E';
   sessionId: string;
+  participantToken: string; // requis par le serveur (voice.transcribe)
   lang?: string; // langue détectée (hint pour Whisper)
   onComplete?: (transcript: string, audioBase64: string) => void;
 }
@@ -16,7 +17,7 @@ type RecordState = 'idle' | 'recording' | 'recorded' | 'transcribing' | 'done' |
 
 const MAX_DURATION_SEC = 180; // 3 minutes max
 
-export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId, lang, onComplete }: Props) {
+export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId, participantToken, lang, onComplete }: Props) {
   const [state, setState]           = useState<RecordState>('idle');
   const [elapsed, setElapsed]       = useState(0);
   const [transcript, setTranscript] = useState('');
@@ -28,6 +29,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
   const chunksRef          = useRef<Blob[]>([]);
   const timerRef           = useRef<ReturnType<typeof setInterval> | null>(null);
   const streamRef          = useRef<MediaStream | null>(null);
+  const recordedMimeRef    = useRef<string>('audio/webm'); // vrai format enregistré (iOS = audio/mp4)
 
   // Nettoyage à la fin
   useEffect(() => {
@@ -66,6 +68,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
 
       const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
       mediaRecorderRef.current = recorder;
+      recordedMimeRef.current = mimeType || 'audio/webm';
       chunksRef.current = [];
 
       recorder.ondataavailable = (e) => {
@@ -122,15 +125,13 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
 
   const transcribe = () => {
     setState('transcribing');
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-      ? 'audio/webm;codecs=opus'
-      : 'audio/webm';
     transcribeMutation.mutate({
       audioBase64,
-      mimeType,
+      mimeType: recordedMimeRef.current, // vrai format (iOS = audio/mp4)
       lang,
       sessionId,
       role,
+      participantToken,
     } as any);
   };
 

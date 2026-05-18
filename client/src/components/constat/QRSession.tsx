@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { trpc } from '../../trpc';
+import { getPublicOrigin } from '../../apiBase';
 import type { ParticipantRole } from '../../../../shared/types';
 
 interface Props {
@@ -11,7 +12,11 @@ interface Props {
   onVehicleCountChange?: (count: number) => void;
 }
 
-const MAX_VEHICLES = 5;
+// VOIE A (store V1) : plafonné à 2 véhicules. Le modèle serveur ne persiste
+// fiablement que A/B (updateParticipant écrit C/D/E dans participantB). Tant
+// que le refactor multi-véhicules A-E n'est pas fait, on bloque l'UI à 2 pour
+// éviter toute corruption de données sur accident 3+ véhicules (audit B4).
+const MAX_VEHICLES = 2;
 const ROLE_LABELS: Record<ParticipantRole, string> = {
   A: 'Conducteur A (vous)', B: 'Conducteur B', C: 'Conducteur C', D: 'Conducteur D', E: 'Conducteur E',
 };
@@ -66,9 +71,9 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
           joinUrl = qrUrl; // qrUrl du serveur = /join?session=xxx&tokenB=yyy
         } else {
           // Extraire tokenB de la qrUrl du serveur pour les rôles C/D/E
-          const urlObj = new URL(qrUrl, window.location.origin);
+          const urlObj = new URL(qrUrl, getPublicOrigin());
           const tokenB = urlObj.searchParams.get('tokenB') || '';
-          joinUrl = `${window.location.origin}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+          joinUrl = `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
         }
         const url = await QRCode.toDataURL(joinUrl, {
           width: 240, margin: 2,
@@ -82,9 +87,9 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
 
   const buildJoinUrl = (role: ParticipantRole): string => {
     if (role === 'B') return qrUrl;
-    const urlObj = new URL(qrUrl, window.location.origin);
+    const urlObj = new URL(qrUrl, getPublicOrigin());
     const tokenB = urlObj.searchParams.get('tokenB') || '';
-    return `${window.location.origin}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+    return `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
   };
 
   const copyLink = async (role: ParticipantRole) => {
@@ -227,7 +232,13 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
         <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}`}</style>
       </div>
 
-      {/* Témoin officiel */}
+      {/* Témoin officiel — MASQUÉ V1 (audit H3).
+          Le rôle 'W' n'est pas supporté côté serveur : non présent dans
+          l'enum Zod updateParticipant ['A','B','C','D','E'] ni dans le
+          keyMap de signSession. Le lien était de plus un no-op
+          (replace /role=B/ sur une qrUrl sans 'role=B'). Fonctionnalité
+          roadmap (Mode Témoin officiel) — réactiver après support serveur.
+      {false && (
       <div className="mt-3 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.2)' }}>
         <div className="flex items-center gap-2 mb-1.5">
           <span className="text-base">👁️</span>
@@ -254,6 +265,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
           📤 Partager lien témoin
         </button>
       </div>
+      )} */}
     </div>
   );
 }

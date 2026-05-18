@@ -1,4 +1,5 @@
 import { io, type Socket } from 'socket.io-client';
+import { getApiBase } from './apiBase';
 
 // ── Socket.io client with resilient reconnection ──────────────
 // Reconnects automatically on disconnect with exponential backoff
@@ -8,7 +9,8 @@ let socket: Socket | null = null;
 export function getSocket(participantToken?: string): Socket {
   if (socket?.connected) return socket;
 
-  socket = io({
+  const base = getApiBase(); // '' sur web (same-origin), absolu en natif
+  const opts = {
     auth: participantToken ? { token: participantToken } : undefined,
     reconnection: true,
     reconnectionAttempts: 5,
@@ -17,7 +19,9 @@ export function getSocket(participantToken?: string): Socket {
     timeout: 20000,
     transports: ['websocket', 'polling'],
     autoConnect: true,
-  });
+  };
+
+  socket = base ? io(base, opts) : io(opts);
 
   socket.on('connect_error', (err) => {
     console.warn('[socket] connection error:', err.message);

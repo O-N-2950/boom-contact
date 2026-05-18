@@ -5,7 +5,7 @@ import { registerUser, loginWithPassword, createMagicToken, verifyMagicToken, cr
 import { sendMagicLink, sendGiftCreditsLink } from '../services/email.service.js';
 import { logger, maskEmail } from '../logger.js';
 import { db } from '../db/index.js';
-import { users, vehicles, magicTokens } from '../db/schema.js';
+import { users, vehicles, magicTokens, payments, creditTxns, sessions } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
 import { authMeOutput, authLoginOutput, authRegisterOutput, authMagicLinkRequestOutput, authMagicLinkVerifyOutput, authUpdateProfileOutput, authUpdateEmailOutput, authDeleteAccountOutput, authGrantCreditsOutput, authAdminBootstrapOutput, authClaimGiftOutput } from './output-schemas.js';
@@ -151,8 +151,23 @@ export const authRouter = router({
       // Bloquer suppression du compte admin
       if (ctx.authUser.role === 'admin') throw new TRPCError({ code: 'FORBIDDEN', message: 'Impossible de supprimer un compte admin.' });
 
-      // Supprimer dans une transaction atomique : tokens → véhicules → user
+      // Suppression RGPD/nLPD dans une transaction atomique.
+      //  - Données personnelles (constats, photos, signatures, vocal,
+      //    véhicules, tokens) → SUPPRIMÉES.
+      //  - Écritures financières (paiements, crédits) → ANONYMISÉES et non
+      //    supprimées : obligation légale de conservation comptable/fiscale
+      //    (~10 ans). L'email est remplacé par un identifiant non réversible
+      //    → plus aucun lien avec une personne identifiable.
+      const anonId = crypto.createHash('sha256').update(userEmail).digest('hex').slice(0, 16);
+      const anonEmail = `deleted-${anonId}@anonymized.invalid`;
+
       await db.transaction(async (tx) => {
+        // 1. Constats appartenant à l'utilisateur (PII : photos, signatures, vocal)
+        await tx.delete(sessions).where(eq(sessions.ownerEmail, userEmail));
+        // 2. Anonymisation des écritures financières (rétention fiscale)
+        await tx.update(payments).set({ userEmail: anonEmail }).where(eq(payments.userEmail, userEmail));
+        await tx.update(creditTxns).set({ userEmail: anonEmail }).where(eq(creditTxns.userEmail, userEmail));
+        // 3. Tokens magiques + véhicules + compte
         await tx.delete(magicTokens).where(eq(magicTokens.email, userEmail));
         await tx.delete(vehicles).where(eq(vehicles.userId, userId));
         await tx.delete(users).where(eq(users.id, userId));

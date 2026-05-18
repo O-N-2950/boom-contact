@@ -478,7 +478,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
 
         {step === 'form' && (
-          <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} language={participantData.language} />
+          <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} participantToken={tokenB} language={participantData.language} />
         )}
 
         {step === 'voice' && sessionId && (

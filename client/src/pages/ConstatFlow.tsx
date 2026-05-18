@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, Suspense } from 'reac
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { trpc } from '../trpc';
+import { trpcClient } from '../trpc';
 import { LocationStep } from '../components/constat/LocationStep';
 import { QRSession } from '../components/constat/QRSession';
 import { StepIndicator } from '../components/constat/StepIndicator';
@@ -572,8 +573,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onPartnerJoined={async () => {
                 // Charger les données véhicule B depuis la session
                 try {
-                  const sessionData = await (trpc as any).session.get.fetch({ sessionId: sessionId!, participantToken: tokenA });
-                  const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
+                  const sessionData = await trpcClient.session.get.query({ sessionId: sessionId!, participantToken: tokenA });
+                  const bParticipant = (sessionData as any)?.participantB;
                   if (bParticipant?.vehicle?.vehicleData) {
                     setAllVehicles(prev => ({ ...prev, B: bParticipant.vehicle.vehicleData }));
                     window.__boomVehicleB = bParticipant.vehicle.vehicleData;
@@ -631,11 +632,12 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <QRSession
             sessionId={sessionId}
             qrUrl={qrUrl}
+            tokenA={tokenA}
             isPedestrianMode
             onPartnerJoined={async () => {
               try {
-                const sessionData = await (trpc as any).session.get.fetch({ sessionId: sessionId!, participantToken: tokenA });
-                const bParticipant = sessionData?.participants?.find((p: Record<string, unknown>) => p.role === 'B');
+                const sessionData = await trpcClient.session.get.query({ sessionId: sessionId!, participantToken: tokenA });
+                const bParticipant = (sessionData as any)?.participantB;
                 if (bParticipant) setPedestrianData(bParticipant);
               } catch (e) { /* ignore */ }
               setStep('voice'); // piéton rejoint → vocal → formulaire → croquis → choc
@@ -649,15 +651,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             filledByDriverA
             onComplete={async (ped) => {
               setPedestrianData(ped as any);
-              // Sauvegarder dans la session comme participantB piéton
+              // Sauvegarder le piéton (partie adverse sans téléphone) côté serveur
               if (sessionId) {
                 try {
-                  await (trpc as any).client.session.updateParticipant.mutate({
+                  await trpcClient.session.fillAbsentPedestrian.mutate({
                     sessionId,
-                    role: 'B',
                     participantToken: tokenA,
                     data: {
-                      vehicle: { vehicleType: 'pedestrian' },
                       driver: {
                         firstName: ped.firstName || '',
                         lastName: ped.lastName || '',
@@ -668,8 +668,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                         phone: ped.phone || '',
                         email: ped.email || '',
                       },
-                      isPedestrian: true,
-                    } as any,
+                    },
                   });
                 } catch (e) { /* ignore — on continue quand même */ }
               }
@@ -681,7 +680,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'form' && (
           <Suspense fallback={<LazyLoading />}>
-            <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="A" prefilled={participantData as any} accidentData={accidentData as any} onSave={handleFormSave} sessionId={sessionId || ''} language={participantData.language} />
+            <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="A" prefilled={participantData as any} accidentData={accidentData as any} onSave={handleFormSave} sessionId={sessionId || ''} participantToken={tokenA} language={participantData.language} />
           </Suspense>
         )}
 

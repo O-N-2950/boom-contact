@@ -33,6 +33,9 @@ const ALLOWED_ORIGINS = [
   'https://boom.contact',
   'https://www.boom.contact',
   'https://police.boom.contact',
+  // Apps natives Capacitor (iOS = capacitor://localhost, Android = https://localhost)
+  'capacitor://localhost',
+  'https://localhost',
   // Only allow localhost in development
   ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173'] : []),
 ].filter(Boolean) as string[];

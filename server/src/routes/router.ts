@@ -239,6 +239,53 @@ export const appRouter = router({
         return { ok: true };
       }),
 
+    // H2 — Conducteur A documente la partie adverse PIÉTON SANS TÉLÉPHONE
+    // (constat unilatéral : aucun conducteur B ne scanne de QR, donc aucun
+    //  détenteur de tokenB). Le créateur de session (tokenA) est autorisé à
+    //  écrire participantB UNIQUEMENT si aucun vrai B n'a déjà saisi de
+    //  données (garde anti-écrasement). Sécurisé : tokenA prouve la
+    //  propriété de la session ; le garde empêche d'écraser un B réel.
+    fillAbsentPedestrian: publicProcedure
+      .input(z.object({
+        sessionId: z.string().trim().max(50),
+        participantToken: z.string().trim().max(500),
+        data: z.object({
+          driver: z.object({
+            firstName: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
+            lastName: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
+            address: z.string().trim().max(500).optional().transform(v => v ? stripHtmlTags(v) : v),
+            city: z.string().trim().max(200).optional().transform(v => v ? stripHtmlTags(v) : v),
+            postalCode: z.string().trim().max(20).optional(),
+            country: z.string().trim().max(100).optional(),
+            phone: z.string().trim().max(50).optional(),
+            email: z.string().trim().max(320).optional(),
+          }).optional(),
+        }),
+      }))
+      .mutation(async ({ input }) => {
+        // Auth : SEUL le créateur de session (tokenA) est autorisé
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+
+        const session = await getSession(input.sessionId);
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
+
+        // Garde anti-écrasement : refuser si un vrai B a déjà saisi des données
+        const b: any = (session as any).participantB;
+        const bHasRealData = !!(b && (b.driver?.firstName || b.driver?.lastName || b.vehicle?.licensePlate || b.vehicle?.plate));
+        if (bHasRealData) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'Participant B already has data' });
+        }
+
+        await updateParticipant(input.sessionId, 'B', {
+          vehicle: { vehicleType: 'pedestrian' },
+          driver: input.data.driver ?? {},
+          isPedestrian: true,
+        } as any);
+        logAudit({ event: 'session.absentPedestrianFilled', sessionId: input.sessionId });
+        return { ok: true };
+      }),
+
     // Update shared accident data
     updateAccident: publicProcedure
       .input(z.object({

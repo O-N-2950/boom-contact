@@ -394,23 +394,41 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
 
 // ── Utiliser un crédit pour un constat ────────────────────────
 export async function useCredit(userEmail: string, sessionId: string): Promise<boolean> {
-  // Atomic decrement: prevents race condition by doing SELECT+UPDATE in one query
-  const result = await db.update(schema.users)
-    .set({ credits: sql`${schema.users.credits} - 1` })
-    .where(and(eq(schema.users.email, userEmail), gt(schema.users.credits, 0)))
-    .returning({ credits: schema.users.credits });
+  // Idempotent par session : si un crédit a déjà été consommé pour ce
+  // sessionId, on NE re-débite PAS (on renvoie true → le PDF peut être
+  // (re)généré sans nouveau débit). Corrige le double-débit (audit B3) :
+  // revisite d'un constat (QR 7j / lien email / historique) → re-download.
+  return db.transaction(async (tx) => {
+    const existing = await tx
+      .select({ id: schema.creditTxns.id })
+      .from(schema.creditTxns)
+      .where(and(
+        eq(schema.creditTxns.userEmail, userEmail),
+        eq(schema.creditTxns.reason, 'use'),
+        eq(schema.creditTxns.ref, sessionId),
+      ))
+      .limit(1);
 
-  if (!result.length) return false;
+    if (existing.length) return true; // déjà consommé pour ce constat → pas de re-débit
 
-  await db.insert(schema.creditTxns).values({
-    id: makeId(),
-    userEmail,
-    delta: -1,
-    reason: 'use',
-    ref: sessionId,
+    // Décrément atomique : SELECT+UPDATE en une requête (anti-race)
+    const result = await tx.update(schema.users)
+      .set({ credits: sql`${schema.users.credits} - 1` })
+      .where(and(eq(schema.users.email, userEmail), gt(schema.users.credits, 0)))
+      .returning({ credits: schema.users.credits });
+
+    if (!result.length) return false;
+
+    await tx.insert(schema.creditTxns).values({
+      id: makeId(),
+      userEmail,
+      delta: -1,
+      reason: 'use',
+      ref: sessionId,
+    });
+
+    return true;
   });
-
-  return true;
 }
 
 // ── Récupérer solde utilisateur ───────────────────────────────

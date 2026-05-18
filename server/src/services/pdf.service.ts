@@ -781,7 +781,9 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
       const photo = acc.photos[i];
       try {
         const imgBytes = Buffer.from(photo.base64, 'base64');
-        const img = await doc.embedJpg(imgBytes);
+        let img;
+        try { img = await doc.embedJpg(imgBytes); }
+        catch { img = await doc.embedPng(imgBytes); } // fallback PNG (capture d'écran, etc.)
         const scale = Math.min(photoW / img.width, photoH / img.height, 1);
         const iw = img.width * scale;
         const ih = img.height * scale;

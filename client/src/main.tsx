@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import App from './App';
 import { trpc } from './trpc';
+import { getApiBase } from './apiBase';
 import './i18n'; // ← i18next init (must be before App)
 import './index.css';
 import { initSentryFrontend, initPostHog, initGA4 } from './analytics';
@@ -31,7 +32,7 @@ function Root() {
   const [trpcClientInstance] = useState(() =>
     trpc.createClient({
       links: [httpBatchLink({
-        url: '/trpc',
+        url: `${getApiBase()}/trpc`,
         headers: () => {
           const token = localStorage.getItem('boom_user_token');
           const h: Record<string, string> = { 'X-Requested-With': 'trpc-client' };
