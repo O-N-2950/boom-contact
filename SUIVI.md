@@ -49,6 +49,17 @@ tests 45/45 OK** (+1 test de régression Voie B).
   routes gardées (tokenA pour participantTokens), aucune migration DB.
 - A/B inchangé : rendu PDF A/B byte-identique (C/D/E = pages annexes additives).
 
+### ✅ Déploiement Railway VÉRIFIÉ (prod live)
+- Commit `3ea2801` poussé → déploiement `fe8f3910` : **SUCCESS**
+  (commitHash confirmé = 3ea2801b…, branch main).
+- `/health` 200 (production) · home 200 · `session.create` OK (core inchangé).
+- **Voie B live** : `session.participantTokens` renvoie des tokens
+  **individuels** B/C/D/E tous distincts (C≠D≠E≠B) → modèle multi-véhicules
+  opérationnel en prod.
+- **Sécurité** : la même route avec un mauvais token → **401 UNAUTHORIZED**
+  (garde tokenA active, pas de fuite des tokens C/D/E).
+- Conclusion : Voie B déployée, fonctionnelle, sécurisée — rien cassé.
+
 (le statut déploiement sera ajouté après vérif Railway)
 
 ---
