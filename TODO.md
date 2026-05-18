@@ -1,6 +1,26 @@
 # boom.contact — TODO.md
 
-> Mise à jour : 18 mai 2026 — Session 16b
+> Mise à jour : 19 mai 2026 — Post-audit #2
+
+## ✅ Corrigé post-audit #2 (commit 7668002, déployé)
+Emails wording multi-véh. + claims non prouvables retirés (13 langues),
+photos C/D/E, croquis C/D/E (représentation), webhook Stripe C/D/E confirmé.
+
+## ⏳ RESTE — hors capacité sandbox / décisions
+- [ ] **Runtime natif** : IPA/AAB signés + tests iPhone/Android réels
+      (micro, caméra, GPS, retour Stripe, QR 2e appareil). Nécessite
+      Xcode/Android Studio + certificats. **Bloquant soumission publique.**
+- [ ] **Tests E2E 3/4/5 véhicules sur appareils réels** (C/D/E rejoignent,
+      remplissent, signent, PDF/email, ne cassent pas B).
+- [ ] **Validation juridique finale** des claims restants (PDF « légalement
+      valable / 46 pays », « valable auprès des assurances ») — décision
+      juriste. J'ai réduit le risque (emails/footer/shareText) mais le PDF
+      principal et la validation de fond restent à valider par un juriste.
+- [ ] **Croquis : simulation multi-corps** (trajectoires de collision 3-5
+      véhicules) — redesign du moteur de scénarios. Représentation de
+      présence livrée ; physique multi-corps = chantier dédié assumé.
+- [ ] WebP dans le PDF (conversion sharp).
+- [ ] Module police A→E (roadmap M1-M3+, hors V1).
 
 ---
 

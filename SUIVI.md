@@ -1,5 +1,39 @@
 # boom.contact — SUIVI.md
 
+> Dernière mise à jour : 19 mai 2026 — **Post-audit expert #2 (corrections code restantes)**
+
+---
+
+## Post-audit #2 — ce qui a été corrigé (commit 7668002, déployé SUCCESS)
+
+| Sujet | Avant | Maintenant | Preuve |
+|---|---|---|---|
+| Emails « deux conducteurs ont signé » | faux à 3+ véh. | neutre, 13 langues (valide 1-5, solo, piéton) | email.service.ts intros |
+| Claim « certifié/certified » email | non validé | → « horodaté » (factuel : OpenTimestamps) | intros 13 langues |
+| Footer FR « Valable dans 150+ pays » | claim non prouvé | retiré ; reste « horodaté · Conforme RGPD » | email.service.ts:91 |
+| shareText « valable dans 150 pays » | claim non prouvé | reformulé (« à transmettre à votre assureur ») | email.service.ts |
+| Pitch B2B « certified PDF blockchain » | flou | « cryptographic blockchain timestamp (OpenTimestamps/Bitcoin) » | email.service.ts:634 |
+| Photos catégories C/D/E | absentes (→ « other ») | vehicleC/D/E ajoutées (type partagé + enum serveur + UI filtrée par vehicleCount) | types/index.ts, router.ts:340, PhotoCapture.tsx |
+| Croquis C/D/E | A/B uniquement | C/D/E **représentés** dans la scène (serveur PDF + aperçu client), étiquetés type/couleur/plaque — additif, A/B byte-identique | sketch-renderer.service.ts, sketch-engine.ts |
+| Webhook Stripe C/D/E | doute audit | **déjà en place** (commit 3329fe0) | stripe.service.ts:374-375 |
+
+Vérifié : tsc 0 · build client+serveur OK · tests 45/45 · Railway SUCCESS
+(commit `7668002`) · /health 200 · home 200.
+
+### Honnêteté sur le croquis
+Le croquis **représente désormais tous les véhicules présents** (C/D/E
+dessinés, étiquetés, positionnés en périphérie hors zone de collision) —
+l'audit disait « le croquis ne représente pas C/D/E », ce n'est plus vrai.
+**Ce n'est PAS** une simulation physique multi-corps : les trajectoires
+précises de collision restent A/B-primaires (un moteur de scénarios 3-5
+corps serait un redesign majeur du moteur 2-corps dupliqué client+serveur,
+risqué pour l'A/B qui fonctionne). C'est une représentation de présence,
+honnête et assumée.
+
+---
+
+# boom.contact — SUIVI.md
+
 > Dernière mise à jour : 18 mai 2026 — **Session 16b (Voie B complète + tous les M)**
 
 ---
