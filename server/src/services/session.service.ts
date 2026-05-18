@@ -108,7 +108,13 @@ export async function verifyParticipantToken(sessionId: string, token: string, r
   if (role === 'B' && safeCompare(r.tokenB, token)) return true;
   // Voie B : C/D/E ont chacun leur PROPRE token individuel (dérivé HMAC),
   // plus de partage du tokenB → accès séparé + traçabilité par rôle.
-  if (['C', 'D', 'E'].includes(role) && safeCompare(deriveParticipantToken(sessionId, role), token)) return true;
+  if (['C', 'D', 'E'].includes(role)) {
+    try {
+      if (safeCompare(deriveParticipantToken(sessionId, role), token)) return true;
+    } catch {
+      return false; // fail-closed : misconfig (JWT_SECRET) → on refuse, jamais on accorde
+    }
+  }
   return false;
 }
 
@@ -117,7 +123,14 @@ export async function verifyParticipantToken(sessionId: string, token: string, r
 // serveur), recalculable côté serveur pour vérification, unique par rôle.
 // A/B conservent leurs tokens aléatoires stockés (comportement inchangé).
 export function deriveParticipantToken(sessionId: string, role: string): string {
-  const secret = process.env.JWT_SECRET || '';
+  const secret = process.env.JWT_SECRET;
+  // Fail-closed (OWASP A04/A10) : sans secret fort, ne JAMAIS fabriquer un
+  // token devinable. Le serveur refuse déjà de démarrer sans JWT_SECRET ;
+  // ceci est une défense en profondeur — on échoue bruyamment plutôt que
+  // d'émettre un token forgeable.
+  if (!secret || secret.length < 16) {
+    throw new Error('deriveParticipantToken: JWT_SECRET missing or too weak');
+  }
   return crypto.createHmac('sha256', secret)
     .update(`${sessionId}:${role.toUpperCase()}`)
     .digest('base64url');
