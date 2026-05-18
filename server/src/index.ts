@@ -459,9 +459,26 @@ app.get('/api/monitor/status', (req, res) => {
   }
   res.json(getMonitorStatus());
 });
+// M7 — throttle léger en mémoire + tailles strictement bornées
+const _clientErrHits = new Map<string, { n: number; t: number }>();
 app.post('/api/monitor/client-error', (req, res) => {
+  const ip = req.ip || 'unknown';
+  const now = Date.now();
+  const slot = _clientErrHits.get(ip);
+  if (!slot || now - slot.t > 60_000) {
+    _clientErrHits.set(ip, { n: 1, t: now });
+  } else if (slot.n >= 20) {
+    return res.status(429).json({ ok: false }); // max 20/min/IP
+  } else {
+    slot.n++;
+  }
+  if (_clientErrHits.size > 5000) _clientErrHits.clear(); // garde-fou mémoire
   const { type, message, url } = req.body || {};
-  logger.warn('[CLIENT-ERROR]', { type, message: message?.slice(0, 200), url });
+  logger.warn('[CLIENT-ERROR]', {
+    type: String(type ?? '').slice(0, 60),
+    message: String(message ?? '').slice(0, 200),
+    url: String(url ?? '').slice(0, 300),
+  });
   res.json({ ok: true });
 });
 app.get('/api/monitor/health', async (_req, res) => {

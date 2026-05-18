@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { trpc } from '../../trpc';
+import { getPublicOrigin } from '../../apiBase';
 
 interface Props {
   sessionId: string;
@@ -24,6 +25,24 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
   const [emailSent, setEmailSent]       = useState(false);
   const [emailError, setEmailError]     = useState<string | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(!!driverEmail);
+  const [constatQr, setConstatQr] = useState<string>('');
+
+  // M5 — QR généré localement (lib qrcode) au lieu d'un service tiers
+  // (api.qrserver.com) : confidentialité (sessionId plus envoyé à un tiers)
+  // + fonctionne hors-ligne.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const QRCode = await import('qrcode');
+        const url = await QRCode.toDataURL(`${getPublicOrigin()}/?session=${sessionId}`, {
+          width: 140, margin: 2, color: { dark: '#F0EDE8', light: '#0E0E18' },
+        });
+        if (!cancelled) setConstatQr(url);
+      } catch (e) { console.warn('[PDFDownload] QR local generation failed', e); }
+    })();
+    return () => { cancelled = true; };
+  }, [sessionId]);
   const [creditUsed, setCreditUsed]     = useState(false);
   const [showPaywall, setShowPaywall]   = useState(false);
   // One-shot: email saisi sans compte
@@ -333,11 +352,9 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
           QR du constat — valable 7 jours
         </div>
         <div className="text-center mb-2.5">
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(`${window.location.origin}/?session=${sessionId}`)}&bgcolor=0E0E18&color=F0EDE8&margin=2`}
-            alt="QR du constat"
-            className="rounded-lg w-[140px] h-[140px] inline-block" 
-          />
+          {constatQr
+            ? <img src={constatQr} alt="QR du constat" className="rounded-lg w-[140px] h-[140px] inline-block" />
+            : <div className="w-[140px] h-[140px] inline-flex items-center justify-center text-[11px] opacity-60" style={{ fontFamily: 'monospace' }}>QR…</div>}
         </div>
         <div className="text-xs text-center leading-relaxed opacity-70" >
           Si la police intervient, elle peut scanner ce QR<br/>pour accéder au constat.

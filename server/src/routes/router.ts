@@ -4,7 +4,7 @@ import { scanDocument, scanDocumentPair } from '../services/ocr.service';
 import {
   createSession, getSession, joinSession,
   updateParticipant, updateAccident, signSession, getQRUrl, savePdfUrl,
-  verifyParticipantToken
+  verifyParticipantToken, getParticipantTokens
 } from '../services/session.service';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver } from '../services/email.service.js';
@@ -144,30 +144,42 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const session = await getSession(input.sessionId);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found or expired' });
-        // Verify participantToken — either A or B token is valid
-        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
-        if (!validA) {
-          const validB = await verifyParticipantToken(input.sessionId, input.participantToken, 'B');
-          if (!validB) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+        // Verify participantToken — tout token participant valide (A à E)
+        let valid = false;
+        for (const r of ['A', 'B', 'C', 'D', 'E']) {
+          if (await verifyParticipantToken(input.sessionId, input.participantToken, r)) { valid = true; break; }
         }
+        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
         return session;
       }),
 
-    // Driver B joins via QR scan — SECURITY: requires tokenB from QR code URL
+    // Un participant rejoint via QR — SECURITY: requiert le token du rôle (depuis l'URL du QR)
     join: publicProcedure
-      .input(z.object({ sessionId: z.string().trim().max(50), tokenB: z.string().trim().max(500), language: z.string().trim().max(10).default('fr') }))
+      .input(z.object({ sessionId: z.string().trim().max(50), tokenB: z.string().trim().max(500), role: z.enum(['B','C','D','E']).default('B'), language: z.string().trim().max(10).default('fr') }))
       .output(sessionJoinOutput)
       .mutation(async ({ input }) => {
-        // Verify tokenB before allowing join (timing-safe comparison)
-        const validToken = await verifyParticipantToken(input.sessionId, input.tokenB, 'B');
+        // Vérifie le token DU RÔLE (timing-safe) — B = tokenB stocké, C/D/E = token dérivé
+        const validToken = await verifyParticipantToken(input.sessionId, input.tokenB, input.role);
         if (!validToken) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or expired join token' });
 
-        const session = await joinSession(input.sessionId, input.language);
+        const session = await joinSession(input.sessionId, input.language, input.role);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found, expired or already completed' });
 
         // Notify driver A via WebSocket
-        io.to(`session:${input.sessionId}`).emit('participant-joined', { role: 'B' });
+        io.to(`session:${input.sessionId}`).emit('participant-joined', { role: input.role });
         return session;
+      }),
+
+    // Voie B — Tokens de jonction par rôle (B/C/D/E) pour générer les QR
+    // multi-véhicules. Gardé par tokenA : seul le créateur de session y accède.
+    participantTokens: publicProcedure
+      .input(z.object({ sessionId: z.string().trim().max(50), participantToken: z.string().trim().max(500) }))
+      .query(async ({ input }) => {
+        const validA = await verifyParticipantToken(input.sessionId, input.participantToken, 'A');
+        if (!validA) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+        const tokens = await getParticipantTokens(input.sessionId);
+        if (!tokens) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
+        return tokens;
       }),
 
     // Update participant data (vehicle, driver, insurance)
@@ -228,7 +240,7 @@ export const appRouter = router({
         const valid = await verifyParticipantToken(input.sessionId, input.participantToken, input.role);
         if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or missing participant token' });
 
-        const session = await updateParticipant(input.sessionId, input.role as 'A' | 'B', input.data as any);
+        const session = await updateParticipant(input.sessionId, input.role, input.data as any);
         if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
 
         // Sync to other party via WebSocket
@@ -475,6 +487,27 @@ export const appRouter = router({
                 logger.info(`PDF envoyé au piéton: ${maskEmail(emailB)}`);
               }
 
+              // Voie B — Envoi aux participants additionnels C/D/E (si email)
+              for (const role of ['C', 'D', 'E'] as const) {
+                const p = (fullSession as any)[`participant${role}`];
+                const emailP = p?.driver?.email;
+                if (!emailP) continue;
+                const pIsPedestrian = NON_SIGNING.includes(p?.vehicle?.vehicleType as string) || (p as any)?.isPedestrian;
+                const pdfBytesP = await generateConstatPDF(fullSession, role);
+                const pdfB64P = Buffer.from(pdfBytesP).toString('base64');
+                const nameP = [p?.driver?.firstName, p?.driver?.lastName].filter(Boolean).join(' ') || `Participant ${role}`;
+                await sendPDFToDriver({
+                  driverEmail: emailP,
+                  driverName: nameP,
+                  role,
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64P,
+                  insurerName: pIsPedestrian ? undefined : p?.insurance?.company,
+                  language: p?.language || 'fr',
+                });
+                logger.info(`PDF envoyé au participant ${role}: ${maskEmail(emailP)}`);
+              }
+
             } catch (err) {
               const errorMsg = err instanceof Error ? err.message : String(err);
               const errorStack = err instanceof Error ? err.stack : undefined;
@@ -668,7 +701,7 @@ export const appRouter = router({
 
         if (!canGenerate) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Both parties must sign before generating PDF' });
 
-        const role = (input.role === 'A' || input.role === 'B') ? input.role : 'A';
+        const role = input.role; // Voie B : A-E supportés (PDF complet inclut tous les participants)
         const pdfBytes = await generateConstatPDF(session, role);
         const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
         const filename = `constat-${session.id}-${role}-${new Date().toISOString().split('T')[0]}.pdf`;

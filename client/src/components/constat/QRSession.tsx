@@ -12,11 +12,10 @@ interface Props {
   onVehicleCountChange?: (count: number) => void;
 }
 
-// VOIE A (store V1) : plafonné à 2 véhicules. Le modèle serveur ne persiste
-// fiablement que A/B (updateParticipant écrit C/D/E dans participantB). Tant
-// que le refactor multi-véhicules A-E n'est pas fait, on bloque l'UI à 2 pour
-// éviter toute corruption de données sur accident 3+ véhicules (audit B4).
-const MAX_VEHICLES = 2;
+// Voie B — support multi-véhicules complet jusqu'à 5 (A→E). Chaque rôle
+// C/D/E a son token individuel (dérivé serveur via session.participantTokens)
+// et écrit dans sa propre colonne participant{role}.
+const MAX_VEHICLES = 5;
 const ROLE_LABELS: Record<ParticipantRole, string> = {
   A: 'Conducteur A (vous)', B: 'Conducteur B', C: 'Conducteur C', D: 'Conducteur D', E: 'Conducteur E',
 };
@@ -36,6 +35,13 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
   const { data: sessionData } = trpc.session.get.useQuery(
     { sessionId, participantToken: tokenA },
     { enabled: !!sessionId && !!tokenA && !partnerJoined, retry: 3, refetchInterval: 2000 }
+  );
+
+  // Voie B — tokens individuels par rôle (B stocké, C/D/E dérivés serveur),
+  // gardé par tokenA. Sert à construire des liens/QR individualisés.
+  const { data: partTokens } = trpc.session.participantTokens.useQuery(
+    { sessionId, participantToken: tokenA },
+    { enabled: !!sessionId && !!tokenA && vehicleCount > 2 }
   );
 
   useEffect(() => {
@@ -64,16 +70,14 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
       if (qrDataUrls[role]) return;
       try {
         const QRCode = await import('qrcode');
-        // B utilise le qrUrl du serveur (contient tokenB sécurisé)
-        // C/D/E utilisent le même tokenB (le serveur les accepte aussi)
+        // B = qrUrl serveur (contient tokenB). C/D/E = token individuel dérivé.
         let joinUrl: string;
         if (role === 'B') {
-          joinUrl = qrUrl; // qrUrl du serveur = /join?session=xxx&tokenB=yyy
+          joinUrl = qrUrl;
         } else {
-          // Extraire tokenB de la qrUrl du serveur pour les rôles C/D/E
-          const urlObj = new URL(qrUrl, getPublicOrigin());
-          const tokenB = urlObj.searchParams.get('tokenB') || '';
-          joinUrl = `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+          const roleToken = (partTokens as any)?.[role];
+          if (!roleToken) return; // tokens pas encore chargés → réessai au prochain render
+          joinUrl = `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(roleToken)}`;
         }
         const url = await QRCode.toDataURL(joinUrl, {
           width: 240, margin: 2,
@@ -83,13 +87,12 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
         setQrDataUrls(prev => ({ ...prev, [role]: url }));
       } catch (e) { console.warn('[QRSession] QR generation failed', e); }
     });
-  }, [vehicleCount, sessionId, qrUrl]);
+  }, [vehicleCount, sessionId, qrUrl, partTokens]);
 
   const buildJoinUrl = (role: ParticipantRole): string => {
     if (role === 'B') return qrUrl;
-    const urlObj = new URL(qrUrl, getPublicOrigin());
-    const tokenB = urlObj.searchParams.get('tokenB') || '';
-    return `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(tokenB)}`;
+    const roleToken = (partTokens as any)?.[role] || '';
+    return `${getPublicOrigin()}/join?session=${sessionId}&role=${role}&tokenB=${encodeURIComponent(roleToken)}`;
   };
 
   const copyLink = async (role: ParticipantRole) => {

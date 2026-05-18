@@ -48,3 +48,24 @@ describe('NON_SIGNING_TYPES constant', () => {
     expect(NON_SIGNING_TYPES).toHaveLength(5);
   });
 });
+
+// ── Voie B — tokens participants individualisés (régression audit B4) ──
+describe('deriveParticipantToken (Voie B multi-véhicules)', () => {
+  it('génère un token distinct, déterministe et non vide par rôle', async () => {
+    const { deriveParticipantToken } = await import('../services/session.service.js');
+    const sid = 'SESSIONTEST1';
+    const tC = deriveParticipantToken(sid, 'C');
+    const tD = deriveParticipantToken(sid, 'D');
+    const tE = deriveParticipantToken(sid, 'E');
+    // Non vides
+    expect(tC.length).toBeGreaterThan(20);
+    expect(tD.length).toBeGreaterThan(20);
+    expect(tE.length).toBeGreaterThan(20);
+    // Individualisés : C ≠ D ≠ E (plus de partage du tokenB)
+    expect(new Set([tC, tD, tE]).size).toBe(3);
+    // Déterministe : recalculable côté serveur pour vérification
+    expect(deriveParticipantToken(sid, 'C')).toBe(tC);
+    // Lié à la session : un autre sessionId → token différent
+    expect(deriveParticipantToken('AUTRESESSION', 'C')).not.toBe(tC);
+  });
+});

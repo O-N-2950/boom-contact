@@ -191,7 +191,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
     if (!sessionId || joining) return;
     setJoining(true);
     setError(null);
-    joinMutation.mutate({ sessionId, tokenB, language: selectedLang });
+    joinMutation.mutate({ sessionId, tokenB, role: urlRole as 'B'|'C'|'D'|'E', language: selectedLang });
   };
 
 
@@ -336,7 +336,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           { icon: '📄', text: 'Vous scannez vos documents (2 photos)' },
           { icon: '📋', text: 'Vous remplissez vos infos sur votre téléphone' },
           { icon: '🚗', text: 'Vous indiquez les dégâts sur votre véhicule' },
-          { icon: '✍️', text: 'Vous signez — PDF envoyé à votre assureur' },
+          { icon: '✍️', text: 'Vous signez — vous recevez le PDF à transmettre à votre assureur' },
         ].map((item, i) => (
           <div key={i} className="flex items-center gap-3" style={{ padding: '10px 0', borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
             <span className="text-xl shrink-0">{item.icon}</span>
@@ -474,11 +474,11 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         )}
 
         {step === 'ocr' && (
-          <OCRScanner role="B" onComplete={handleOCRComplete as any} onSkip={() => setStep('photos')} sessionId={sessionId} participantToken={tokenB} />
+          <OCRScanner role={urlRole as any} onComplete={handleOCRComplete as any} onSkip={() => setStep('photos')} sessionId={sessionId} participantToken={tokenB} />
         )}
 
         {step === 'form' && (
-          <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role="B" prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} participantToken={tokenB} language={participantData.language} />
+          <ConstatForm key={`form-${participantData.vehicle?.licensePlate || 'empty'}`} role={urlRole as any} prefilled={participantData} accidentData={{}} onSave={handleFormSave} sessionId={sessionId} participantToken={tokenB} language={participantData.language} />
         )}
 
         {step === 'voice' && sessionId && (
@@ -506,7 +506,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         {step === 'sketch' && (
           <MapVehiclePlacer
             required={false}
-            role="B"
+            role={urlRole as any}
             sessionId={sessionId}
             accidentLat={sessionAccidentData?.lat}
             accidentLng={sessionAccidentData?.lng}
@@ -540,7 +540,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         {step === 'diagram' && (
           <div>
             <VehicleDiagram
-                  role="B"
+                  role={urlRole as any}
                   vehicleType={participantData.vehicle?.vehicleType}
                   brand={participantData.vehicle?.brand}
                   model={participantData.vehicle?.model}
@@ -583,14 +583,14 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                 ✏️ Corriger mes informations
               </button>
             </div>
-            <SignaturePad role="B" onSign={handleSign} otherSigned={otherSigned} />
+            <SignaturePad role={urlRole as any} onSign={handleSign} otherSigned={otherSigned} />
           </>
         )}
 
         {step === 'done' && (
           <PDFDownload
             sessionId={sessionId}
-            role="B"
+            role={urlRole as any}
             participantToken={tokenB}
             driverEmail={participantData.driver?.email}
             insurerName={participantData.insurance?.company || participantData.insurance?.companyName}

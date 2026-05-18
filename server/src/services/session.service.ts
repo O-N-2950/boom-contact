@@ -106,10 +106,37 @@ export async function verifyParticipantToken(sessionId: string, token: string, r
 
   if (role === 'A' && safeCompare(r.tokenA, token)) return true;
   if (role === 'B' && safeCompare(r.tokenB, token)) return true;
-  // Roles C/D/E can use tokenB (they're additional participants like B)
-  if (['C', 'D', 'E'].includes(role) && safeCompare(r.tokenB, token)) return true;
+  // Voie B : C/D/E ont chacun leur PROPRE token individuel (dérivé HMAC),
+  // plus de partage du tokenB → accès séparé + traçabilité par rôle.
+  if (['C', 'D', 'E'].includes(role) && safeCompare(deriveParticipantToken(sessionId, role), token)) return true;
   return false;
 }
+
+// ── Voie B — token individuel déterministe pour les rôles additionnels ──
+// HMAC(JWT_SECRET, "sessionId:role") : non devinable (dépend du secret
+// serveur), recalculable côté serveur pour vérification, unique par rôle.
+// A/B conservent leurs tokens aléatoires stockés (comportement inchangé).
+export function deriveParticipantToken(sessionId: string, role: string): string {
+  const secret = process.env.JWT_SECRET || '';
+  return crypto.createHmac('sha256', secret)
+    .update(`${sessionId}:${role.toUpperCase()}`)
+    .digest('base64url');
+}
+
+// Tokens de jonction pour tous les rôles additionnels (B stocké, C/D/E dérivés).
+// Utilisé (gardé par tokenA) pour construire les liens/QR multi-véhicules.
+export async function getParticipantTokens(sessionId: string): Promise<{ B: string; C: string; D: string; E: string } | null> {
+  const [row] = await db.select().from(schema.sessions).where(eq(schema.sessions.id, sessionId)).limit(1);
+  if (!row) return null;
+  const r = row as SessionRow;
+  return {
+    B: r.tokenB ?? '',
+    C: deriveParticipantToken(sessionId, 'C'),
+    D: deriveParticipantToken(sessionId, 'D'),
+    E: deriveParticipantToken(sessionId, 'E'),
+  };
+}
+
 
 // âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // GET
@@ -138,23 +165,28 @@ export async function getSession(id: string): Promise<ConstatSession | null> {
 // âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // JOIN â Driver B scans QR
 // âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSession | null> {
+export async function joinSession(id: string, lang = 'fr', role: 'B' | 'C' | 'D' | 'E' = 'B'): Promise<ConstatSession | null> {
   const session = await getSession(id);
   if (!session) return null;
   if (session.status === 'expired' || session.status === 'completed') return null;
 
+  const keyMap = { B: 'participantB', C: 'participantC', D: 'participantD', E: 'participantE' } as const;
+  const existingMap: Record<string, Partial<ParticipantData> | null | undefined> = {
+    B: (session as any).participantB, C: (session as any).participantC,
+    D: (session as any).participantD, E: (session as any).participantE,
+  };
+  // Ne pas écraser des données déjà saisies par ce participant (reprise de session)
+  const existing = existingMap[role];
+  const participant = existing && Object.keys(existing).length > 0
+    ? existing
+    : { role, vehicle: {}, driver: {}, insurance: {}, damagedZones: [], circumstances: [], language: lang };
+
   const [row] = await db.update(schema.sessions)
-    .set({
-      status: 'active',
-      participantB: {
-        role: 'B', vehicle: {}, driver: {},
-        insurance: {}, damagedZones: [], circumstances: [], language: lang,
-      },
-    })
+    .set({ status: 'active', [keyMap[role]]: participant })
     .where(eq(schema.sessions.id, id))
     .returning();
 
-  logger.session('joined', id, lang);
+  logger.session('joined', id, `${role}:${lang}`);
   return rowToSession(row);
 }
 
@@ -163,7 +195,7 @@ export async function joinSession(id: string, lang = 'fr'): Promise<ConstatSessi
 // âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export async function updateParticipant(
   id: string,
-  role: 'A' | 'B',
+  role: 'A' | 'B' | 'C' | 'D' | 'E',
   data: Partial<ParticipantData>,
 ): Promise<ConstatSession | null> {
   // Wrap in transaction to prevent race conditions (concurrent updates from both drivers)
@@ -177,8 +209,16 @@ export async function updateParticipant(
     if (!currentRow) return null;
 
     const typedRow = currentRow as SessionRow;
-    const key = role === 'A' ? 'participantA' : 'participantB';
-    const current = role === 'A' ? typedRow.participantA ?? {} : typedRow.participantB ?? {};
+    // Voie B : chaque rôle écrit dans SA colonne (plus d'écrasement de B par C/D/E)
+    const keyMap = {
+      A: 'participantA', B: 'participantB', C: 'participantC', D: 'participantD', E: 'participantE',
+    } as const;
+    const key = keyMap[role];
+    const currentMap: Record<string, Partial<ParticipantData> | null | undefined> = {
+      A: typedRow.participantA, B: typedRow.participantB, C: typedRow.participantC,
+      D: typedRow.participantD, E: typedRow.participantE,
+    };
+    const current = currentMap[role] ?? {};
     const merged = { ...current, ...data };
 
     const [row] = await tx.update(schema.sessions)

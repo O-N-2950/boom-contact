@@ -3,6 +3,16 @@
 // All config via env vars — no hardcoded keys
 
 import { logger } from './logger.js';
+import crypto from 'crypto';
+
+// M9 — Pseudonymise tout identifiant ressemblant à un email avant envoi
+// à PostHog (privacy : pas d'email en clair chez l'outil d'analytics).
+function pseudonymize(id: string): string {
+  if (id && id.includes('@')) {
+    return 'u_' + crypto.createHash('sha256').update(id.toLowerCase()).digest('hex').slice(0, 24);
+  }
+  return id;
+}
 
 // ── Sentry Backend ────────────────────────────────────────────
 let sentryInitialized = false;
@@ -51,11 +61,12 @@ const PH_HOST = process.env.POSTHOG_HOST || 'https://eu.i.posthog.com';
 
 async function phCapture(distinctId: string, event: string, properties: Record<string, unknown> = {}) {
   if (!PH_API_KEY) return;
+  const safeId = pseudonymize(distinctId);
   try {
     const body = JSON.stringify({
       api_key: PH_API_KEY,
       event,
-      distinct_id: distinctId,
+      distinct_id: safeId,
       properties: {
         ...properties,
         $lib: 'boom-server',

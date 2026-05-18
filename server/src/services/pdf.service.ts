@@ -766,7 +766,7 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
 
   if (!acc.photos || acc.photos.length === 0) return;
   try {
-    const photoPage = doc.addPage([595, 842]);
+    let photoPage = doc.addPage([595, 842]);
     photoPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
     drawText(photoPage, L.photosTitle, margin, 820, bold, 10, C.boom, rtlFonts);
     drawText(photoPage, `${acc.photos.length} photo(s) - Session: ${session.id}`, margin, 808, mono, 7, C.mid, rtlFonts);
@@ -776,8 +776,25 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
     const photoH = 180;
     let px = margin;
     let py = 795;
+    let pageIndex = 1;
+
+    const newPhotoPage = () => {
+      const p = doc.addPage([595, 842]);
+      p.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
+      pageIndex++;
+      drawText(p, `${L.photosTitle} (${pageIndex})`, margin, 820, bold, 10, C.boom, rtlFonts);
+      drawText(p, `Session: ${session.id}`, margin, 808, mono, 7, C.mid, rtlFonts);
+      drawText(p, L.footer, margin, 18, normal, 7, C.mid, rtlFonts);
+      return p;
+    };
 
     for (let i = 0; i < acc.photos.length; i++) {
+      // M8 — saut de page si la ligne suivante déborde (libellé + marge inclus)
+      if (i % cols === 0 && py - photoH - 30 < 40) {
+        photoPage = newPhotoPage();
+        px = margin;
+        py = 795;
+      }
       const photo = acc.photos[i];
       try {
         const imgBytes = Buffer.from(photo.base64, 'base64');
@@ -822,12 +839,84 @@ function buildFooter(ctx: PdfContext): void {
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
 }
 
+// ── Sub-function: Additional participants (C / D / E) ───────
+// Voie B — page annexe single-column pour les véhicules 3+ (C/D/E).
+// 100% additif : ne touche PAS au rendu A/B (constat principal inchangé).
+async function buildAdditionalParticipantsSection(ctx: PdfContext): Promise<void> {
+  const { doc, bold, normal, rtlFonts, L, session } = ctx;
+  const extras: { role: string; p: any }[] = [];
+  for (const role of ['C', 'D', 'E'] as const) {
+    const p = (session as any)[`participant${role}`];
+    const hasData = p && (p.driver?.firstName || p.driver?.lastName || p.vehicle?.licensePlate ||
+      (p.vehicle as any)?.plate || p.vehicle?.brand || p.signature || (p.isPedestrian === true));
+    if (hasData) extras.push({ role, p });
+  }
+  if (extras.length === 0) return; // aucun C/D/E → page annexe non créée
+
+  const W = 595, H = 842, margin = 28;
+  let page = doc.addPage([W, H]);
+  page.drawRectangle({ x: 0, y: H - 52, width: W, height: 52, color: C.boom });
+  drawText(page, 'boom.contact', margin, H - 20, bold, 20, C.white, rtlFonts);
+  drawText(page, 'Participants additionnels — Additional parties', margin, H - 38, normal, 9, C.white, rtlFonts);
+  let y = H - 72;
+
+  for (const { role, p } of extras) {
+    if (y < 180) { page = doc.addPage([W, H]); y = H - 48; }
+
+    page.drawRectangle({ x: margin, y: y - 22, width: W - margin * 2, height: 22, color: C.black });
+    drawText(page, `${L.vehicleA?.replace(/A$/, '').trim() || 'VEHICULE'} ${role}`, margin + 6, y - 8, bold, 9, C.white, rtlFonts);
+    drawText(page, `${p.isPedestrian ? 'Pieton / Pedestrian' : (L.driver || 'Conducteur')} : ${p?.driver?.firstName ?? ''} ${p?.driver?.lastName ?? ''}`.trim(),
+      margin + 6, y - 18, normal, 7, C.light, rtlFonts);
+    y -= 30;
+
+    const fullW = W - margin * 2;
+    const half = (fullW - 8) / 2;
+    labelValue(page, L.plate || 'PLAQUE', p?.vehicle?.licensePlate ?? (p?.vehicle as any)?.plate ?? '', margin, y, half, normal, bold, rtlFonts);
+    labelValue(page, L.brand || 'MARQUE / MODELE', `${p?.vehicle?.brand ?? ''} ${p?.vehicle?.model ?? ''}`.trim(), margin + half + 8, y, half, normal, bold, rtlFonts);
+    y -= 26;
+    labelValue(page, L.name || 'NOM', `${p?.driver?.firstName ?? ''} ${p?.driver?.lastName ?? ''}`.trim(), margin, y, half, normal, bold, rtlFonts);
+    labelValue(page, 'TEL', p?.driver?.phone ?? '', margin + half + 8, y, half, normal, bold, rtlFonts);
+    y -= 26;
+    labelValue(page, L.address || 'ADRESSE', `${p?.driver?.address ?? ''} ${p?.driver?.city ?? ''}`.trim(), margin, y, fullW, normal, bold, rtlFonts);
+    y -= 26;
+    labelValue(page, L.insurer || 'ASSUREUR', p?.insurance?.company ?? '', margin, y, half, normal, bold, rtlFonts);
+    labelValue(page, 'N° DE POLICE', p?.insurance?.policyNumber ?? '', margin + half + 8, y, half, normal, bold, rtlFonts);
+    y -= 28;
+
+    const circ = Array.isArray(p?.circumstances) ? p.circumstances.filter(Boolean) : [];
+    if (circ.length) {
+      drawText(page, L.s4 || 'Circonstances', margin + 2, y - 4, bold, 7.5, C.boom, rtlFonts);
+      y -= 14;
+      for (const c of circ.slice(0, 12)) {
+        drawText(page, `• ${String(c)}`, margin + 6, y, normal, 7.5, C.black, rtlFonts);
+        y -= 12;
+      }
+      y -= 4;
+    }
+
+    // Signature du participant
+    const sigH = 56;
+    drawRect(page, margin, y - sigH, fullW, sigH + 18, C.white, C.border);
+    drawText(page, `${L.signedAt || 'Signe le'} : ${p?.signedAt ? new Date(p.signedAt).toLocaleString('fr-CH') : '-'}`,
+      margin + 4, y - 8, normal, 6.5, C.mid, rtlFonts);
+    if (p?.signature) {
+      try {
+        const sigBytes = Buffer.from(p.signature, 'base64');
+        const sigImg = await doc.embedPng(sigBytes);
+        const sigDims = sigImg.scale(Math.min(1, (fullW - 20) / sigImg.width, (sigH - 6) / sigImg.height));
+        page.drawImage(sigImg, { x: margin + 8, y: y - sigH + 2, width: sigDims.width, height: sigDims.height });
+      } catch (e) { logger.warn('[PDF] Signature C/D/E embed failed', { role, error: String(e) }); }
+    }
+    y -= sigH + 34;
+  }
+}
+
 // ─────────────────────────────────────────────────────────────
 // Main export
 // ─────────────────────────────────────────────────────────────
 export async function generateConstatPDF(
   session: ConstatSession,
-  forRole: 'A' | 'B' = 'A'
+  forRole: 'A' | 'B' | 'C' | 'D' | 'E' = 'A'
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
 
@@ -886,7 +975,9 @@ export async function generateConstatPDF(
   const B = session.participantB;
 
   const { langA, langB, langAccident } = determineLangs(A as any, B as any, acc);
-  const driverLang: PdfLang = forRole === 'A' ? langA : langB;
+  const roleParticipant = (session as any)[`participant${forRole}`];
+  const roleLang = (roleParticipant?.language as PdfLang) || undefined;
+  const driverLang: PdfLang = forRole === 'A' ? langA : (roleLang || langB);
   const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
 
   const margin = 28;
@@ -908,6 +999,7 @@ export async function generateConstatPDF(
   await buildSignatureSection(ctx);
   await buildSketchSection(ctx);
   await buildPhotosSection(ctx);
+  await buildAdditionalParticipantsSection(ctx);
   buildFooter(ctx);
 
   return doc.save();

@@ -68,8 +68,10 @@ export const paymentRouter = router({
     .input(z.object({ userEmail: z.string().trim().email().max(320), sessionId: z.string().trim().max(50).optional() }))
     .output(paymentVerifyCreditOutput)
     .query(async ({ input }) => {
+      // M11 — Ne pas divulguer le solde exact à un appelant public
+      // (énumération par email). On renvoie seulement la disponibilité.
       const credits = await getUserCredits(input.userEmail);
-      return { ready: credits > 0, credits };
+      return { ready: credits > 0, credits: credits > 0 ? 1 : 0 };
     }),
 
   // Utiliser 1 crédit pour démarrer un constat — auth required to prevent IDOR

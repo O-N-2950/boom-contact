@@ -1,5 +1,60 @@
 # boom.contact — SUIVI.md
 
+> Dernière mise à jour : 18 mai 2026 — **Session 16b (Voie B complète + tous les M)**
+
+---
+
+## SESSION 16b — Refactor multi-véhicules A→E (Voie B) + finitions M
+
+Décision révisée : **VOIE B retenue** (vrai support multi-véhicules complet,
+pas de bridage UI). Tout vérifié : **TS 0 erreur · build client+serveur OK ·
+tests 45/45 OK** (+1 test de régression Voie B).
+
+### Voie B — multi-véhicules A→E (résout B4 à la racine)
+| Élément | Statut |
+|---|---|
+| Tokens individuels C/D/E (HMAC `JWT_SECRET`, zéro migration DB) | ✅ OK |
+| `verifyParticipantToken` : C/D/E vérifient LEUR token (plus de partage tokenB) | ✅ OK |
+| `updateParticipant` écrit dans `participant{role}` A-E (plus d'écrasement de B) | ✅ OK |
+| `joinSession` role-aware (init participant{role}, ne réécrase pas une reprise) | ✅ OK |
+| Route `session.join` : param `role` + vérif du token du rôle | ✅ OK |
+| Route `session.get` : accepte les tokens A-E | ✅ OK |
+| Nouvelle route `session.participantTokens` (gardée tokenA) pour QR multi | ✅ OK |
+| `QRSession` : MAX_VEHICLES=5 + QR avec token individuel par rôle | ✅ OK |
+| `JoinSession` : passe `role` à join + composants en `urlRole` (A-E) | ✅ OK |
+| PDF : page annexe C/D/E (single-column, signatures) — A/B byte-identique | ✅ OK |
+| `generateConstatPDF` : `forRole` A-E + langue selon le rôle | ✅ OK |
+| `pdf.generate` : respecte le rôle C/D/E (ne force plus vers A) | ✅ OK |
+| Email : `role` A-E + auto-envoi PDF aux participants C/D/E sur signature | ✅ OK |
+| `signSession` : `allSigned` déjà multi-participants (vérifié) | ✅ OK |
+| Test de régression `deriveParticipantToken` (tokens individualisés) | ✅ OK |
+
+### Items M (finitions)
+| # | Sujet | Statut |
+|---|---|---|
+| M3 | Wording « PDF envoyé à votre assureur » → reformulé (reçu, à transmettre) | ✅ OK |
+| M5 | QR écran final : lib `qrcode` locale (plus de tiers api.qrserver.com) | ✅ OK |
+| M6 | Auto-email solo/piéton/unilatéral | ✅ DÉJÀ CORRECT (vérifié — `allSigned` couvre ces cas ; audit l'avait sur-signalé) |
+| M7 | `/api/monitor/client-error` : throttle 20/min/IP + tailles bornées | ✅ OK |
+| M8 | Pagination photos PDF (nouvelle page si débordement) | ✅ OK |
+| M9 | PostHog : email pseudonymisé (SHA-256) avant envoi | ✅ OK |
+| M10 | Sentry release via `VITE_RELEASE`/`VITE_APP_VERSION` | ✅ OK |
+| M11 | `payment.verifyCredit` ne divulgue plus le solde exact | ✅ OK |
+
+### Vérifs finales (locales)
+- `npx tsc --noEmit` → **0 erreur**
+- `npx vite build` → **OK** · `npm run build:server` → **OK**
+- `npx vitest run` → **45/45 OK**
+- Sécurité préservée : tokens C/D/E non devinables (HMAC secret serveur),
+  routes gardées (tokenA pour participantTokens), aucune migration DB.
+- A/B inchangé : rendu PDF A/B byte-identique (C/D/E = pages annexes additives).
+
+(le statut déploiement sera ajouté après vérif Railway)
+
+---
+
+# boom.contact — SUIVI.md
+
 > Dernière mise à jour : 18 mai 2026 — **Session 16 (Audit PREMIUM + corrections)**
 
 ---

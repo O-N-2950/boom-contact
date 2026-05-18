@@ -1,5 +1,46 @@
 # boom.contact — TODO.md
 
+> Mise à jour : 18 mai 2026 — Session 16b
+
+---
+
+## ✅ FAIT — Session 16b (Voie B complète + tous les M) — voir SUIVI.md
+Voie B multi-véhicules A→E complète (tokens individuels, persistance par
+rôle, join/PDF/email A-E, QR 5 véhicules). M3, M5, M7, M8, M9, M10, M11.
+M6 vérifié déjà correct. État : TS 0 · build OK · tests 45/45.
+
+## ✅ FAIT — Session 16 (bloquants) — voir historique
+B1 (code), B2, B3, H1, H2, H3, H4, H5, M1, M4, M12.
+
+---
+
+## ⏳ RESTE AVANT SOUMISSION STORES
+
+### Validation (pas du code)
+- [ ] **B1 — test runtime natif** : IPA + AAB **signés**, test iPhone +
+      Android réels (session, QR scanné par 2e appareil, vocal, PDF, retour
+      Stripe). Nécessite Xcode/Android Studio + certificats.
+- [ ] Signature release iOS (cert+provisioning) / Android (keystore) dans
+      `build-ios.yml` / `build-android.yml`.
+- [ ] Tester end-to-end un constat **3/4/5 véhicules** sur device réel
+      (C/D/E rejoignent, signent, PDF annexe correct, emails reçus).
+
+### Décision juridique (ne pas trancher seul)
+- [ ] **M2 — claims légaux** PDF (« légalement valable / 46 pays », « valable
+      auprès des assurances ») → validation juriste + reformulation prudente.
+
+### Améliorations (P2, non bloquantes)
+- [ ] WebP dans le PDF : conversion serveur (`sharp`) — pdf-lib = JPG/PNG only.
+- [ ] Croquis multi-véhicules (le croquis reste orienté A/B ; les données
+      C/D/E sont dans la page annexe mais le schéma visuel ne place que A/B).
+- [ ] Mode « Témoin officiel » (rôle 'W' serveur) — réactiver le bloc masqué.
+
+### Roadmap
+- [ ] Module police (PoliceFlow, sous-domaine, PDF par pays) — M1-M3+.
+- [ ] Intégration assureurs (API/webhook) — M12+.
+
+# boom.contact — TODO.md
+
 > Mise à jour : 18 mai 2026 — Session 16
 
 ---

@@ -20,7 +20,7 @@ export async function initSentryFrontend() {
     Sentry.init({
       dsn,
       environment: 'production',
-      release: 'boom-contact@0.1.0',
+      release: import.meta.env.VITE_RELEASE || `boom-contact@${import.meta.env.VITE_APP_VERSION || '0.1.0'}`,
       tracesSampleRate: 0.05,    // 5% traces frontend
       replaysSessionSampleRate: 0,
       replaysOnErrorSampleRate: 0.1,

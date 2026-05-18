@@ -1,5 +1,50 @@
 # boom.contact — CONTEXT.md
 
+> Dernière mise à jour : 18 mai 2026 — **Session 16b (Voie B retenue)**
+
+---
+
+## 🎯 SESSION 16b — DÉCISION : VOIE B (multi-véhicules complet A→E)
+
+Révision de la décision Session 16 : on NE bride PAS l'UI à 2 véhicules.
+**Voie B implémentée intégralement** — vrai support 1 à 5 véhicules.
+
+### Modèle de tokens (zéro migration DB — choix de robustesse)
+- A/B : tokens aléatoires stockés (inchangé, aucune régression).
+- **C/D/E : tokens dérivés HMAC-SHA256(`JWT_SECRET`, "sessionId:role")**
+  → individuels (plus de partage du tokenB), non devinables, recalculables
+  serveur pour vérification, AUCUNE colonne DB ajoutée.
+- Route `session.participantTokens` (gardée tokenA) fournit les tokens
+  B/C/D/E au créateur pour générer les QR individualisés.
+
+### Persistance
+- `updateParticipant(role A-E)` écrit dans `participant{role}` (B4 résolu
+  à la racine : C/D/E n'écrasent plus participantB).
+- `joinSession` role-aware ; `signSession` déjà multi-participants.
+
+### PDF
+- A/B : rendu **strictement inchangé** (byte-identique).
+- C/D/E : **page annexe additive** single-column (véhicule, conducteur,
+  assurance, circonstances, signature). `forRole` A-E.
+
+### Variables d'environnement (optionnelles)
+- `GOOGLE_REVIEW_URL` (M4) — bloc avis masqué si absente.
+- `VITE_RELEASE` / `VITE_APP_VERSION` (M10) — release Sentry mobile.
+
+### État build (vérifié fin de session)
+TS **0 erreur** · build client **OK** · build serveur **OK** ·
+tests **45/45 OK** (+1 régression Voie B `deriveParticipantToken`).
+
+### Limites assumées (honnêteté — TODO.md)
+- B1 : code OK + build vert, mais test **runtime natif** (device + signature)
+  non fait ici (hors sandbox).
+- Croquis visuel reste A/B (données C/D/E présentes en page annexe PDF).
+- M2 (claims légaux) : décision **juridique**, non tranchée seul.
+
+---
+
+# boom.contact — CONTEXT.md
+
 > Dernière mise à jour : 18 mai 2026 — **Session 16 (Audit PREMIUM pré-stores + corrections)**
 
 ---

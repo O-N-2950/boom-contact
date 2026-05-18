@@ -29,7 +29,7 @@ export async function getResendClient() {
 interface SendPDFToDriverParams {
   driverEmail: string;
   driverName: string;
-  role: 'A' | 'B';
+  role: 'A' | 'B' | 'C' | 'D' | 'E';
   sessionId: string;
   pdfBase64: string;
   insurerName?: string;       // Nom de la compagnie (extrait OCR carte verte)
