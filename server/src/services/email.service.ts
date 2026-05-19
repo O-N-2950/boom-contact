@@ -616,17 +616,17 @@ export async function sendB2BOutreach(recipientEmail: string, recipientName?: st
     <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">Hi ${safeName},</p>
 
     <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 16px;">
-      I'm reaching out because <strong>boom.contact</strong> is the world's first digital accident report platform, and we believe it could transform how your organization handles claims intake.
+      I'm reaching out because <strong>boom.contact</strong> is a digital accident report platform, and we believe it could transform how your organization handles claims intake.
     </p>
 
     <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:12px;padding:20px;margin:24px 0;">
-      <div style="font-size:13px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">KEY RESULTS</div>
+      <div style="font-size:13px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">WHAT IT DOES</div>
       <table style="width:100%;font-size:14px;color:#333;line-height:2;">
-        <tr><td style="font-weight:600;">Claim processing time</td><td style="text-align:right;color:#FF3500;font-weight:700;">-80%</td></tr>
-        <tr><td style="font-weight:600;">Manual data entry</td><td style="text-align:right;color:#FF3500;font-weight:700;">-60%</td></tr>
-        <tr><td style="font-weight:600;">Data accuracy (OCR + AI)</td><td style="text-align:right;color:#FF3500;font-weight:700;">90%</td></tr>
+        <tr><td style="font-weight:600;">Digital report completion</td><td style="text-align:right;font-weight:700;">~5 min</td></tr>
+        <tr><td style="font-weight:600;">Document capture</td><td style="text-align:right;font-weight:700;">OCR + AI</td></tr>
+        <tr><td style="font-weight:600;">Structured data export</td><td style="text-align:right;font-weight:700;">JSON webhook</td></tr>
         <tr><td style="font-weight:600;">Languages supported</td><td style="text-align:right;font-weight:700;">50</td></tr>
-        <tr><td style="font-weight:600;">Countries covered</td><td style="text-align:right;font-weight:700;">150+</td></tr>
+        <tr><td style="font-weight:600;">Tamper-evidence</td><td style="text-align:right;font-weight:700;">Blockchain timestamp</td></tr>
       </table>
     </div>
 
@@ -635,7 +635,7 @@ export async function sendB2BOutreach(recipientEmail: string, recipientName?: st
     </p>
 
     <p style="font-size:15px;color:#333;line-height:1.7;margin:0 0 24px;">
-      <strong>No paper. No re-keying. No delays.</strong> Compliant with European Accident Statement (CEA) standards. GDPR compliant. Works offline (PWA).
+      <strong>No paper. No re-keying. No delays.</strong> Built around the European Accident Statement (constat amiable) model. Designed with GDPR in mind. Works offline (PWA).
     </p>
 
     <div style="text-align:center;margin:32px 0;">
@@ -655,7 +655,7 @@ export async function sendB2BOutreach(recipientEmail: string, recipientName?: st
   <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
     <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
       boom.contact &middot; PEP's Swiss SA &middot; IDE CHE-476.484.632 &middot; Bellevue 7, 2950 Courgenay, Jura, Switzerland<br>
-      World's first digital accident report &middot; 50 languages &middot; 150+ countries
+      Digital accident report &middot; 50 languages &middot; multi-country
     </div>
   </div>
 

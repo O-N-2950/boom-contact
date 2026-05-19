@@ -51,13 +51,19 @@ tests **45/45 OK** (+1 régression Voie B `deriveParticipantToken`).
 
 ## 🎯 SESSION 16 — Audit consolidé + corrections bloquants stores
 
+> ⚠️ **SECTION HISTORIQUE — SUPERSÉDÉE.** La décision « Voie A » ci-dessous
+> a été **abandonnée** en Session 16b au profit de la **Voie B** (vrai
+> multi-véhicules A→E, voir tout en haut de ce fichier). `MAX_VEHICLES`
+> est désormais **5** (et non 2). Cette section est conservée uniquement
+> comme journal de décision. **La décision produit ACTUELLE est : Voie B.**
+
 **Objectif :** audit expert pré-publication App Store / Google Play, puis
 corriger les bloquants. Deux audits (Claude + ChatGPT) confrontés et
 **vérifiés dans le code réel** (clone intégral, tsc, build, tests, prod live).
 
-**Décision produit : VOIE A** — V1 maîtrisée à **2 véhicules** (cas piéton /
-vélo / solo / fuite / refus / blessé conservés). Le refactor multi-véhicules
-A–E (Voie B) est reporté en v1.1/2.0.
+**Décision produit (HISTORIQUE, abandonnée) : ~~VOIE A~~** — était : V1 à
+2 véhicules. **Remplacée par VOIE B en Session 16b** (multi-véhicules
+complet A→E livré, déployé, vérifié).
 
 ### État build (vérifié en fin de session)
 - TypeScript : **0 erreur** (le repo livrait 1 erreur TS avant — résolue)
@@ -72,9 +78,8 @@ A–E (Voie B) est reporté en v1.1/2.0.
   comportement strictement inchangé, zéro régression web possible.
   Origines natives ajoutées au CORS serveur (`capacitor://localhost`,
   `https://localhost`).
-- **B4 / Voie A** : `MAX_VEHICLES = 2` (`QRSession.tsx`). Chemins C/D/E
-  conservés dans le code mais injoignables via l'UI (le serveur
-  `updateParticipant` n'écrit fiablement que A/B). Réactivation = Voie B.
+- **B4 / ~~Voie A~~ (HISTORIQUE)** : `MAX_VEHICLES` était mis à 2 en
+  Session 16 ; **désormais 5** (Voie B). Ligne conservée pour le journal.
 - **H2** : nouvelle procédure serveur `session.fillAbsentPedestrian`
   (auth tokenA + garde anti-écrasement d'un vrai B) — constat unilatéral
   piéton sans téléphone.
