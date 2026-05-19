@@ -163,6 +163,12 @@ export interface ParticipantData {
   signature?: string;
   signedAt?: Date;
   language: string;
+  // Suivi d'envoi PDF par destinataire (A3) — zéro migration : stocké
+  // dans le JSONB participant existant. Permet un resend ciblé du seul
+  // destinataire en échec sans re-spammer les autres.
+  pdfDeliveredAt?: string;
+  pdfDeliveryError?: string;
+  pdfDeliveryMessageId?: string;
 }
 
 // ── Localisation ──────────────────────────────────────────────

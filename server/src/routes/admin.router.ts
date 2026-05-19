@@ -8,7 +8,7 @@ import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPos
 import { desc, gte, eq, count, sum, sql, isNull, and, inArray, or, ilike } from 'drizzle-orm';
 import { generateConstatPDF } from '../services/pdf.service.js';
 import { sendPDFToDriver, sendB2BOutreach } from '../services/email.service.js';
-import { getSession } from '../services/session.service.js';
+import { getSession, updateParticipant } from '../services/session.service.js';
 
 export const adminRouter = router({
 
@@ -326,11 +326,19 @@ export const adminResendPdf = adminProcedure
     });
 
     if (!result.ok) {
+      await updateParticipant(input.sessionId, input.role, { pdfDeliveryError: result.error || 'unknown' } as any).catch(() => {});
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: `Échec envoi email: ${result.error}`,
       });
     }
+
+    // A3 — suivi par rôle : resend manuel réussi → marquer livré, effacer l'erreur
+    await updateParticipant(input.sessionId, input.role, {
+      pdfDeliveredAt: new Date().toISOString(),
+      pdfDeliveryMessageId: result.messageId,
+      pdfDeliveryError: undefined,
+    } as any).catch(() => {});
 
     logger.info('Admin resend PDF', {
       sessionId: input.sessionId,

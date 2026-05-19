@@ -270,9 +270,34 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
             await new Promise(r => setTimeout(r, DELAYS[attempt] || 120_000));
           }
           try {
-            const { getSession, savePdfUrl } = await import('./session.service.js');
+            const { getSession, savePdfUrl, updateParticipant } = await import('./session.service.js');
             const { generateConstatPDF } = await import('./pdf.service.js');
             const { sendPDFToDriver } = await import('./email.service.js');
+
+            // A3 — envoi avec suivi de livraison par destinataire (capture
+            // aussi ok:false). Ne lève jamais. Zéro migration (JSONB participant).
+            const deliverAndRecord = async (
+              role: 'A' | 'B' | 'C' | 'D' | 'E',
+              params: Parameters<typeof sendPDFToDriver>[0],
+            ): Promise<void> => {
+              try {
+                const r = await sendPDFToDriver(params);
+                if (r?.ok) {
+                  await updateParticipant(constatSessionId, role, {
+                    pdfDeliveredAt: new Date().toISOString(),
+                    pdfDeliveryMessageId: r.messageId,
+                    pdfDeliveryError: undefined,
+                  } as any).catch(() => {});
+                  logger.info(`[DELIVERY] Webhook PDF livré ${role}`, { sessionId: constatSessionId });
+                } else {
+                  await updateParticipant(constatSessionId, role, { pdfDeliveryError: r?.error || 'unknown' } as any).catch(() => {});
+                  logger.error(`[DELIVERY] Webhook échec PDF ${role} — resend requis`, { sessionId: constatSessionId, role, error: r?.error });
+                }
+              } catch (e) {
+                await updateParticipant(constatSessionId, role, { pdfDeliveryError: String(e) } as any).catch(() => {});
+                logger.error(`[DELIVERY] Webhook échec PDF ${role} — resend requis`, { sessionId: constatSessionId, role, error: String(e) });
+              }
+            };
 
             const fullSession = await getSession(constatSessionId);
             if (!fullSession) {
@@ -280,9 +305,15 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
               return; // no point retrying if session doesn't exist
             }
 
-            // Dedup: if pdfUrl already set, PDF was already sent (by sign handler)
-            if (fullSession.pdfUrl) {
-              logger.info('Webhook auto-PDF: PDF already sent (dedup), skipping', { sessionId: constatSessionId });
+            // A3 — Dedup PRÉCIS par destinataire (cf. sign handler) :
+            // skip total seulement si tous les destinataires sont livrés.
+            const _allDelivered = (['A','B','C','D','E'] as const).every((rr) => {
+              const pp = (fullSession as any)[`participant${rr}`];
+              if (!pp?.driver?.email) return true;
+              return !!pp.pdfDeliveredAt;
+            });
+            if (fullSession.pdfUrl && _allDelivered) {
+              logger.info('Webhook auto-PDF: tous les destinataires déjà livrés, skip', { sessionId: constatSessionId });
               return;
             }
 
@@ -321,20 +352,17 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
               logger.warn('[OTS] Timestamping failed in webhook (non-blocking)', { sessionId: constatSessionId, error: String(tsErr) });
             }
 
-            await sendPDFToDriver({
-              driverEmail: userEmail,
-              driverName: nameA,
-              role: 'A',
-              sessionId: constatSessionId,
-              pdfBase64: pdfB64A,
-              insurerName: fullSession.participantA?.insurance?.company,
-              language: fullSession.participantA?.language || 'fr',
-            });
-
-            logger.info('Webhook auto-PDF sent to A', {
-              sessionId: constatSessionId,
-              email: userEmail.replace(/(.{2}).*(@.*)/, '$1***$2'),
-            });
+            if (!(fullSession.participantA as any)?.pdfDeliveredAt) {
+              await deliverAndRecord('A', {
+                driverEmail: userEmail,
+                driverName: nameA,
+                role: 'A',
+                sessionId: constatSessionId,
+                pdfBase64: pdfB64A,
+                insurerName: fullSession.participantA?.insurance?.company,
+                language: fullSession.participantA?.language || 'fr',
+              });
+            }
 
             // Also send to conductor B if email available
             const B = fullSession.participantB;
@@ -344,19 +372,20 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
               const bIsPedestrian = NON_SIGNING.includes(B?.vehicle?.vehicleType as string) || (B as any)?.isPedestrian;
 
               if (!bIsPedestrian) {
-                const pdfBytesB = await generateConstatPDF(fullSession, 'B');
-                const pdfB64B = Buffer.from(pdfBytesB).toString('base64');
-                const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur B';
-                await sendPDFToDriver({
-                  driverEmail: emailB,
-                  driverName: nameB,
-                  role: 'B',
-                  sessionId: constatSessionId,
-                  pdfBase64: pdfB64B,
-                  insurerName: B?.insurance?.company,
-                  language: B?.language || 'fr',
-                });
-                logger.info('Webhook auto-PDF sent to B', { sessionId: constatSessionId });
+                if (!(B as any)?.pdfDeliveredAt) {
+                  const pdfBytesB = await generateConstatPDF(fullSession, 'B');
+                  const pdfB64B = Buffer.from(pdfBytesB).toString('base64');
+                  const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur B';
+                  await deliverAndRecord('B', {
+                    driverEmail: emailB,
+                    driverName: nameB,
+                    role: 'B',
+                    sessionId: constatSessionId,
+                    pdfBase64: pdfB64B,
+                    insurerName: B?.insurance?.company,
+                    language: B?.language || 'fr',
+                  });
+                }
               } else {
                 const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Piéton';
                 await sendPDFToDriver({
@@ -375,27 +404,21 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
             for (const role of ['C', 'D', 'E'] as const) {
               const p = (fullSession as any)[`participant${role}`];
               const emailP = p?.driver?.email;
-              if (!emailP) continue;
-              try {
-                const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
-                const pIsPedestrian = NON_SIGNING.includes(p?.vehicle?.vehicleType as string) || (p as any)?.isPedestrian;
-                const pdfBytesP = await generateConstatPDF(fullSession, role);
-                const pdfB64P = Buffer.from(pdfBytesP).toString('base64');
-                const nameP = [p?.driver?.firstName, p?.driver?.lastName].filter(Boolean).join(' ') || `Participant ${role}`;
-                await sendPDFToDriver({
-                  driverEmail: emailP,
-                  driverName: nameP,
-                  role,
-                  sessionId: constatSessionId,
-                  pdfBase64: pdfB64P,
-                  insurerName: pIsPedestrian ? undefined : p?.insurance?.company,
-                  language: p?.language || 'fr',
-                });
-                logger.info(`Webhook auto-PDF sent to ${role}`, { sessionId: constatSessionId });
-              } catch (e) {
-                // Un échec C/D/E ne bloque pas les autres ni le crédit
-                logger.error(`[DELIVERY] Webhook échec envoi PDF ${role} — resend manuel requis`, { sessionId: constatSessionId, role, error: String(e) });
-              }
+              if (!emailP || p?.pdfDeliveredAt) continue;
+              const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
+              const pIsPedestrian = NON_SIGNING.includes(p?.vehicle?.vehicleType as string) || (p as any)?.isPedestrian;
+              const pdfBytesP = await generateConstatPDF(fullSession, role);
+              const pdfB64P = Buffer.from(pdfBytesP).toString('base64');
+              const nameP = [p?.driver?.firstName, p?.driver?.lastName].filter(Boolean).join(' ') || `Participant ${role}`;
+              await deliverAndRecord(role, {
+                driverEmail: emailP,
+                driverName: nameP,
+                role,
+                sessionId: constatSessionId,
+                pdfBase64: pdfB64P,
+                insurerName: pIsPedestrian ? undefined : p?.insurance?.company,
+                language: p?.language || 'fr',
+              });
             }
 
             return; // success — exit retry loop

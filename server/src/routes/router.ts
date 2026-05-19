@@ -114,6 +114,43 @@ async function verifyAnyParticipant(sessionId: string, participantToken: string)
  *   - adminDeleteUser, adminSetCredits, etc: Admin maintenance (top-level)
  *   - marketing: Social post management
  */
+
+/**
+ * A3 — Envoi PDF avec suivi de livraison PAR DESTINATAIRE.
+ * Capture aussi le cas `ok:false` (échec doux Resend) qui était
+ * auparavant loggé comme un succès. Persiste le statut dans le JSONB
+ * participant existant (zéro migration) : permet un resend ciblé du
+ * seul destinataire en échec sans re-spammer les autres.
+ * Ne lève jamais : un échec d'un destinataire n'interrompt pas les autres.
+ */
+async function deliverAndRecord(
+  sessionId: string,
+  role: 'A' | 'B' | 'C' | 'D' | 'E',
+  params: Parameters<typeof sendPDFToDriver>[0],
+): Promise<void> {
+  try {
+    const r = await sendPDFToDriver(params);
+    if (r?.ok) {
+      await updateParticipant(sessionId, role, {
+        pdfDeliveredAt: new Date().toISOString(),
+        pdfDeliveryMessageId: r.messageId,
+        pdfDeliveryError: undefined,
+      } as any).catch(() => { /* la livraison a réussi : ne pas masquer */ });
+      logger.info(`[DELIVERY] PDF livré ${role}`, { sessionId });
+    } else {
+      await updateParticipant(sessionId, role, {
+        pdfDeliveryError: r?.error || 'unknown',
+      } as any).catch(() => {});
+      logger.error(`[DELIVERY] Échec envoi PDF ${role} — resend requis`, { sessionId, role, error: r?.error });
+    }
+  } catch (e) {
+    await updateParticipant(sessionId, role, {
+      pdfDeliveryError: String(e),
+    } as any).catch(() => {});
+    logger.error(`[DELIVERY] Échec envoi PDF ${role} — resend requis`, { sessionId, role, error: String(e) });
+  }
+}
+
 export const appRouter = router({
 
   // ── SESSION ────────────────────────────────
@@ -413,9 +450,18 @@ export const appRouter = router({
               const fullSession = await getSession(input.sessionId);
               if (!fullSession) return;
 
-              // Dedup: if pdfUrl already set, PDF was already sent (by webhook auto-PDF)
-              if (fullSession.pdfUrl) {
-                logger.info('Sign auto-PDF: PDF already sent (dedup), skipping', { sessionId: input.sessionId });
+              // A3 — Dedup PRÉCIS par destinataire : on ne skip la session
+              // entière que si chaque participant ayant un email a déjà
+              // reçu son PDF. Sinon on entre dans la boucle : les rôles
+              // déjà livrés sont skippés individuellement (pdfDeliveredAt),
+              // seuls les destinataires en échec sont (re)tentés.
+              const _allDelivered = (['A','B','C','D','E'] as const).every((rr) => {
+                const pp = (fullSession as any)[`participant${rr}`];
+                if (!pp?.driver?.email) return true;          // pas de destinataire → ok
+                return !!pp.pdfDeliveredAt;                    // livré ?
+              });
+              if (fullSession.pdfUrl && _allDelivered) {
+                logger.info('Sign auto-PDF: tous les destinataires déjà livrés, skip', { sessionId: input.sessionId });
                 return;
               }
 
@@ -454,22 +500,17 @@ export const appRouter = router({
               }
 
               // Envoyer à conducteur A
-              if (emailA) {
+              if (emailA && !(A as any)?.pdfDeliveredAt) {
                 const nameA = [A?.driver?.firstName, A?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur A';
-                try {
-                  await sendPDFToDriver({
-                    driverEmail: emailA,
-                    driverName: nameA,
-                    role: 'A',
-                    sessionId: input.sessionId,
-                    pdfBase64: pdfB64A,
-                    insurerName: A?.insurance?.company,
-                    language: A?.language || 'fr',
-                  });
-                  logger.info(`PDF envoyé à conducteur A: ${maskEmail(emailA)}`);
-                } catch (e) {
-                  logger.error('[DELIVERY] Échec envoi PDF A — resend manuel requis', { sessionId: input.sessionId, role: 'A', email: maskEmail(emailA), error: String(e) });
-                }
+                await deliverAndRecord(input.sessionId, 'A', {
+                  driverEmail: emailA,
+                  driverName: nameA,
+                  role: 'A',
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64A,
+                  insurerName: A?.insurance?.company,
+                  language: A?.language || 'fr',
+                });
               }
 
               // Envoyer à conducteur B (si email disponible et pas piéton)
@@ -477,24 +518,19 @@ export const appRouter = router({
               const NON_SIGNING = ['pedestrian','bicycle','escooter','cargo_bike','moped'];
               const bIsPedestrian = NON_SIGNING.includes(bVehicleType as string) || (B as any)?.isPedestrian;
 
-              if (emailB && !bIsPedestrian) {
+              if (emailB && !bIsPedestrian && !(B as any)?.pdfDeliveredAt) {
                 const pdfBytesB = await generateConstatPDF(fullSession, 'B');
                 const pdfB64B = Buffer.from(pdfBytesB).toString('base64');
                 const nameB = [B?.driver?.firstName, B?.driver?.lastName].filter(Boolean).join(' ') || 'Conducteur B';
-                try {
-                  await sendPDFToDriver({
-                    driverEmail: emailB,
-                    driverName: nameB,
-                    role: 'B',
-                    sessionId: input.sessionId,
-                    pdfBase64: pdfB64B,
-                    insurerName: B?.insurance?.company,
-                    language: B?.language || 'fr',
-                  });
-                  logger.info(`PDF envoyé à conducteur B: ${maskEmail(emailB)}`);
-                } catch (e) {
-                  logger.error('[DELIVERY] Échec envoi PDF B — resend manuel requis', { sessionId: input.sessionId, role: 'B', email: maskEmail(emailB), error: String(e) });
-                }
+                await deliverAndRecord(input.sessionId, 'B', {
+                  driverEmail: emailB,
+                  driverName: nameB,
+                  role: 'B',
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64B,
+                  insurerName: B?.insurance?.company,
+                  language: B?.language || 'fr',
+                });
               }
 
               // Piéton avec email → envoyer PDF version A aussi
@@ -515,26 +551,20 @@ export const appRouter = router({
               for (const role of ['C', 'D', 'E'] as const) {
                 const p = (fullSession as any)[`participant${role}`];
                 const emailP = p?.driver?.email;
-                if (!emailP) continue;
-                try {
-                  const pIsPedestrian = NON_SIGNING.includes(p?.vehicle?.vehicleType as string) || (p as any)?.isPedestrian;
-                  const pdfBytesP = await generateConstatPDF(fullSession, role);
-                  const pdfB64P = Buffer.from(pdfBytesP).toString('base64');
-                  const nameP = [p?.driver?.firstName, p?.driver?.lastName].filter(Boolean).join(' ') || `Participant ${role}`;
-                  await sendPDFToDriver({
-                    driverEmail: emailP,
-                    driverName: nameP,
-                    role,
-                    sessionId: input.sessionId,
-                    pdfBase64: pdfB64P,
-                    insurerName: pIsPedestrian ? undefined : p?.insurance?.company,
-                    language: p?.language || 'fr',
-                  });
-                  logger.info(`PDF envoyé au participant ${role}: ${maskEmail(emailP)}`);
-                } catch (e) {
-                  // Un échec C/D/E ne bloque pas les autres destinataires
-                  logger.error(`[DELIVERY] Échec envoi PDF ${role} — resend manuel requis`, { sessionId: input.sessionId, role, email: maskEmail(emailP), error: String(e) });
-                }
+                if (!emailP || p?.pdfDeliveredAt) continue;
+                const pIsPedestrian = NON_SIGNING.includes(p?.vehicle?.vehicleType as string) || (p as any)?.isPedestrian;
+                const pdfBytesP = await generateConstatPDF(fullSession, role);
+                const pdfB64P = Buffer.from(pdfBytesP).toString('base64');
+                const nameP = [p?.driver?.firstName, p?.driver?.lastName].filter(Boolean).join(' ') || `Participant ${role}`;
+                await deliverAndRecord(input.sessionId, role, {
+                  driverEmail: emailP,
+                  driverName: nameP,
+                  role,
+                  sessionId: input.sessionId,
+                  pdfBase64: pdfB64P,
+                  insurerName: pIsPedestrian ? undefined : p?.insurance?.company,
+                  language: p?.language || 'fr',
+                });
               }
 
             } catch (err) {

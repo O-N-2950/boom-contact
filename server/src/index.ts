@@ -984,7 +984,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('signing-ready', ({ sessionId, role }: { sessionId: string; role: 'A' | 'B' }) => {
+  socket.on('signing-ready', ({ sessionId, role }: { sessionId: string; role: 'A' | 'B' | 'C' | 'D' | 'E' }) => {
     // SECURITY: Socket must have joined this session
     if (!joinedSessions.has(sessionId)) {
       socket.emit('error', { message: 'You must join a session before signaling readiness' });
