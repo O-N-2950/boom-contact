@@ -1,5 +1,64 @@
 # boom.contact — SUIVI.md
 
+> Mise à jour : 19 mai 2026 — **Audit profond proactif (auto-initié)**
+
+---
+
+## Audit profond proactif — commit 69f0262, déployé SUCCESS, health/home 200
+
+Recherche active de ce qui peut casser (concurrence, dépendances
+externes, fuites, sécurité) — pas de confirmation de ce qui marche.
+
+### 2 vrais bugs production trouvés et corrigés
+
+**BUG 1 — Course critique sans verrou (SÉRIEUX)**
+`updateParticipant` / `updateAccident` / `signSession` lisaient la
+session en transaction mais SANS `FOR UPDATE`. En READ COMMITTED :
+- A et B signent quasi-simultanément → chaque transaction voit l'autre
+  « non signé » → `allSigned=false` pour les deux → **constat bloqué en
+  `signing`, jamais `completed`, aucun PDF/email auto-envoyé.**
+- Lost-update sur la colonne `accident` partagée (A et B éditant
+  circonstances/photos en même temps → modifs écrasées).
+Fix : `SELECT … .for('update')` sur les 3 fonctions → le read-modify-
+write est sérialisé (la 2e transaction attend, relit l'état frais,
+recalcule correctement). Correctif standard PostgreSQL, non-cassant
+(ne change le comportement que sous concurrence — vers le correct).
+
+**BUG 2 — Client SDK Anthropic sans timeout**
+Défaut SDK = 10 min/requête. OCR (chemin utilisateur, scan document
+pendant l'accident) pouvait se figer jusqu'à 10 min sur connexion
+pendue. Fix : `timeout: 45_000` + `maxRetries: 1` sur le singleton.
+
+### Zones auditées et VÉRIFIÉES SAINES (aucune modif inventée)
+- OCR / accident-analyzer : `JSON.parse` IA en try/catch → dégradation
+  gracieuse, jamais de 500
+- Expiration session : TTL 7 j + jamais d'auto-expiration si
+  active/signing/completed → pas de perte de données en cours de saisie
+- Bornes Zod : signature/audio/strings tous bornés (≤10 MB)
+- Auth Socket.io : middleware JWT + rate-limit anonyme + join-session
+  exige et valide le participantToken (events = notifications, pas de
+  mutation d'état)
+- Webhook Stripe : raw body + `constructEvent` (signature vérifiée) +
+  secret fail-closed + idempotence par session
+- Puppeteer : timeouts setContent/waitForFunction + `page.close()` en
+  finally + `getBrowser()` détecte `disconnected` et relance (auto-heal)
+- Tâche background auto-envoi : `try/catch` englobant (pas de crash
+  process) + envoi par destinataire résilient
+- `useCredit` : décrément atomique en une requête avec garde
+  `credits > 0` + ledger idempotent → pas d'underflow, pas de
+  double-dépense
+
+Vérifié : tsc 0 · build client+serveur OK · tests 45/45 · Railway
+SUCCESS (`69f0262`) · /health 200 · home 200.
+
+> Note honnête : le fix concurrence est le pattern PostgreSQL standard
+> (FOR UPDATE) et est validé tsc/build ; un test de concurrence réel
+> exige un vrai Postgres (les 45 tests utilisent une DB mockée). À
+> rejouer dans la matrice E2E appareils du kit (2 signatures
+> simultanées → constat doit passer `completed`).
+
+# boom.contact — SUIVI.md
+
 > Mise à jour : 19 mai 2026 — **Post-audit #4 (tous points code corrigés)**
 
 ---
