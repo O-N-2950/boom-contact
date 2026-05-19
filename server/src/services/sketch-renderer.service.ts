@@ -1081,7 +1081,7 @@ function calcVehiclePositions(scenario, trafficSide, W, H) {
     ctx.fillRect(0,H-28,W,28);
     ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='10px monospace';
     ctx.textAlign='left'; ctx.textBaseline='middle';
-    ctx.fillText('● Impact  → Trajectoire A  → Trajectoire B', 14, H-14);
+    ctx.fillText('● Impact  → Trajectoire A  → Trajectoire B' + (__extra.length ? '  ·  + C/D/E (voir annexe)' : ''), 14, H-14);
     ctx.textAlign='right'; ctx.fillStyle='rgba(255,255,255,0.25)';
     ctx.fillText('boom.contact · Croquis IA', W-14, H-14);
 

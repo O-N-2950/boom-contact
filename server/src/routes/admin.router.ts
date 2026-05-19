@@ -283,7 +283,7 @@ export const adminResendPdf = adminProcedure
   .input(z.object({
     sessionId: z.string().max(50),
     recipientEmail: z.string().email().max(320),
-    role: z.enum(['A', 'B']).default('A'),
+    role: z.enum(['A', 'B', 'C', 'D', 'E']).default('A'),
   }))
   .mutation(async ({ input }) => {
     const session = await getSession(input.sessionId);
@@ -308,8 +308,8 @@ export const adminResendPdf = adminProcedure
     const pdfBytes = await generateConstatPDF(session, input.role);
     const pdfBase64 = Buffer.from(pdfBytes).toString('base64');
 
-    // Determine driver info from session
-    const participant = input.role === 'A' ? session.participantA : session.participantB;
+    // Determine driver info from session (A-E)
+    const participant = (session as any)[`participant${input.role}`];
     const driverName = [participant?.driver?.firstName, participant?.driver?.lastName]
       .filter(Boolean).join(' ') || 'Conducteur';
     const lang = participant?.language || 'fr';

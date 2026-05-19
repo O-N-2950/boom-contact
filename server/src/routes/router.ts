@@ -339,7 +339,7 @@ export const appRouter = router({
             id:       z.string().trim().max(100),
             category: z.enum(['scene','vehicleA','vehicleB','vehicleC','vehicleD','vehicleE','injury','document','other']),
             base64:   z.string().max(7_000_000),
-            mediaType: z.enum(['image/jpeg','image/png','image/webp','image/gif']).optional(),
+            mediaType: z.enum(['image/jpeg','image/png']).optional(),
             caption:  z.string().trim().max(500).optional(),
             takenAt:  z.string().trim().max(50),
           })).max(20).optional(),
@@ -350,8 +350,10 @@ export const appRouter = router({
         // Verify participant token — REQUIRED (either party can update accident)
         await verifyAnyParticipant(input.sessionId, input.participantToken);
 
-        // Validate photo sizes — type réel (déclaré ou détecté par magic
-        // bytes), plus de 'image/jpeg' forcé qui rejetait PNG/WebP/GIF.
+        // Validate photos — uniquement JPEG/PNG (seuls formats que le PDF
+        // sait intégrer). WebP/GIF rejetés explicitement à l'upload pour
+        // éviter tout échec silencieux à la génération du PDF. Le client
+        // produit toujours du JPEG (canvas.toDataURL('image/jpeg')).
         if (input.data.photos) {
           for (const photo of input.data.photos) {
             let mt = (photo as any).mediaType as string | undefined;
@@ -362,6 +364,9 @@ export const appRouter = router({
               else if (buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46) mt = 'image/webp';
               else if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) mt = 'image/gif';
               else mt = 'image/jpeg'; // défaut prudent si non détecté
+            }
+            if (mt !== 'image/jpeg' && mt !== 'image/png') {
+              throw new TRPCError({ code: 'BAD_REQUEST', message: 'Format photo non supporté (JPEG ou PNG uniquement)' });
             }
             const validation = validateBase64Image(photo.base64, mt);
             if (!validation.valid) {

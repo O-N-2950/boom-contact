@@ -299,7 +299,7 @@ function buildHeader(ctx: PdfContext): void {
   drawText(page, 'boom.contact', margin, height - 20, bold, 20, C.white, rtlFonts);
   const pdfTitle = isUnilateral ? 'Declaration Unilaterale de Sinistre' : L.title;
   const pdfSubtitle = isUnilateral
-    ? 'Document valable aupres des assurances — Convention Europeenne 46 pays'
+    ? 'Dossier d\'accident numerique horodate — a transmettre a votre assureur'
     : L.subtitle;
   drawText(page, pdfTitle, margin, height - 34, normal, 9, rgb(1, 0.9, 0.7), rtlFonts);
   drawText(page, pdfSubtitle, margin, height - 44, normal, 6.5, rgb(1, 0.85, 0.6), rtlFonts);
@@ -836,17 +836,17 @@ function buildFooter(ctx: PdfContext): void {
 
   drawLine(page, margin, 56, width - margin, 56, C.border);
   const footerLine1 = isUnilateral
-    ? 'boom.contact - Declaration unilaterale de sinistre - Document legalement valable - 46 pays'
-    : 'boom.contact - Constat amiable numerique mondial - boom-contact-production.up.railway.app';
+    ? 'boom.contact - Declaration unilaterale de sinistre - Dossier numerique horodate'
+    : 'boom.contact - Constat amiable numerique - www.boom.contact';
   drawText(page, footerLine1, margin, 46, normal, 7, C.mid, rtlFonts);
   drawText(page, `Session ID: ${session.id} - Genere le ${new Date().toLocaleString('fr-CH')} - PEP's Swiss SA - CHE-476.484.632`,
     margin, 36, mono, 6.5, C.mid, rtlFonts);
   const footerLine3 = isUnilateral
-    ? `boom.contact by PEP's Swiss SA · Declaration unilaterale certifiee · Convention Europeenne Assurances`
-    : `boom.contact by PEP's Swiss SA · Document numerique certifie · Valable mondialement`;
+    ? `boom.contact by PEP's Swiss SA · Declaration unilaterale · Horodatage cryptographique`
+    : `boom.contact by PEP's Swiss SA · Dossier numerique horodate`;
   drawText(page, footerLine3, margin, 26, normal, 6.5, C.mid, rtlFonts);
   // Blockchain timestamping badge
-  drawText(page, 'Horodatage cryptographique SHA-256 -- OpenTimestamps -- Preuve blockchain Bitcoin',
+  drawText(page, 'Horodatage cryptographique SHA-256 -- OpenTimestamps (ancrage Bitcoin)',
     margin, 16, mono, 5.5, C.green, rtlFonts);
   page.drawRectangle({ x: width - 40, y: 0, width: 40, height: 10, color: C.boom });
 }
