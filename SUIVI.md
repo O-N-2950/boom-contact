@@ -1,5 +1,40 @@
 # boom.contact — SUIVI.md
 
+> Mise à jour : 19 mai 2026 — **Post-audit #5 (grille A/B/C)**
+
+---
+
+## Post-audit #5 — commit e6534c1, déployé SUCCESS, health/home 200
+
+Audit ChatGPT le plus rigoureux (grille appliquée : défaut code réel /
+périmètre documenté / bloqueur non-code, sur le bon commit).
+
+### Catégorie A — défauts code réels → TOUS traités
+| # | Point | Traitement |
+|---|---|---|
+| A1 | socket `signing-ready` typé A/B | Élargi A→E (frontend n'émet pas cet event → alignement de type, zéro impact runtime) ✅ |
+| A2 | WebP/GIF acceptés mais pas dans PDF | **Déjà corrigé** au commit 8519ebc pour le chemin photos→PDF (enum JPEG/PNG + rejet explicite). Ligne 618 = route `ocr.scan` : images → Claude Vision (extraction texte), jamais dans le PDF. Clos avec preuve, pas de re-fix d'un non-bug ✅ |
+| A3 | suivi d'envoi global via pdfUrl | Suivi PAR DESTINATAIRE : `pdfDeliveredAt`/`pdfDeliveryError`/`pdfDeliveryMessageId` dans le JSONB participant (zéro migration). Helper `deliverAndRecord` (sign + webhook + admin resend) capture aussi `ok:false` (gap latent corrigé : échec doux Resend était loggé « envoyé »). Skip par rôle si déjà livré + dedup global → dedup précis : un échec C est rejouable sans re-spammer A/B ✅ |
+
+### Catégorie B — décisions de périmètre documentées (pas des bugs)
+PDF C/D/E en annexe · croquis A/B (+ C/D/E représentés) · police A/B
+(roadmap hors V1) · tokens HMAC sans colonne DB. Confirmées correctes
+par l'audit. Aucune action.
+
+### Catégorie C — bloqueurs non-code (impossibles en sandbox)
+Runtime natif iOS/Android signé · validation juridique de fond · test
+concurrence réel Postgres (signatures simultanées A-E). Tout est dans
+KIT-passage-TestFlight.md.
+
+Vérifié : tsc 0 · build client+serveur OK · tests 45/45 · Railway
+SUCCESS (`e6534c1`) · /health 200 · home 200.
+
+### Bilan des 5 audits + audit profond interne
+Plus AUCUN défaut code ouvert. Tout ce qui reste = catégorie B
+(décisions documentées) ou C (non-code : appareils + juriste).
+
+# boom.contact — SUIVI.md
+
 > Mise à jour : 19 mai 2026 — **Audit profond proactif (auto-initié)**
 
 ---
