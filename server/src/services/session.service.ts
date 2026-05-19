@@ -217,7 +217,8 @@ export async function updateParticipant(
       .select()
       .from(schema.sessions)
       .where(eq(schema.sessions.id, id))
-      .limit(1);
+      .limit(1)
+      .for('update');
 
     if (!currentRow) return null;
 
@@ -256,7 +257,8 @@ export async function updateAccident(
       .select()
       .from(schema.sessions)
       .where(eq(schema.sessions.id, id))
-      .limit(1);
+      .limit(1)
+      .for('update');
 
     if (!currentRow) return null;
 
@@ -293,7 +295,8 @@ export async function signSession(
     .select()
     .from(schema.sessions)
     .where(eq(schema.sessions.id, id))
-    .limit(1);
+    .limit(1)
+    .for('update');
 
   if (!sessionRow) return null;
   const typedRow = sessionRow as SessionRow;

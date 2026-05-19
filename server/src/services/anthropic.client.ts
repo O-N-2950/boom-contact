@@ -9,8 +9,14 @@ import { ANTHROPIC_API_KEY } from '../config.js';
 import { logger } from '../logger.js';
 
 // ── Singleton SDK instance ────────────────────────────────────
+// timeout/maxRetries explicites : le défaut SDK est 10 min par requête,
+// inacceptable sur le chemin utilisateur (OCR pendant l'accident).
+// 45s borne chaque appel ; 1 retry SDK (accident-analyzer n'a pas de
+// retry propre ; ocr.service a déjà sa propre boucle de retry).
 export const anthropic = new Anthropic({
   apiKey: ANTHROPIC_API_KEY ?? undefined,
+  timeout: 45_000,
+  maxRetries: 1,
 });
 
 const ANTHROPIC_BASE_URL = 'https://api.anthropic.com/v1/messages';
