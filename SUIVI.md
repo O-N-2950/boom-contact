@@ -1,5 +1,33 @@
 # boom.contact — SUIVI.md
 
+> Mise à jour : 19 mai 2026 — **Post-audit #4 (tous points code corrigés)**
+
+---
+
+## Post-audit #4 — commit 8519ebc, déployé SUCCESS, health/home 200
+
+| # audit | Point | Correctif | Statut |
+|---|---|---|---|
+| 2.1 | Footer PDF = URL Railway technique | → `www.boom.contact` (et version unilatérale nettoyée) | ✅ |
+| 2.2 | Claims PDF juridiques sensibles | TOUS retirés/reformulés : « légalement valable », « 46 pays », « certifié », « valable mondialement », « Convention Européenne Assurances » → wording factuel « dossier numérique horodaté » ; badge « Preuve blockchain » → « OpenTimestamps (ancrage Bitcoin) » (mécanisme factuel). Vérifié : **0** claim sensible restant dans pdf.service.ts | ✅ |
+| 2.3 | Légende croquis A/B trompeuse | Mention « + C/D/E (voir annexe) » ajoutée quand C/D/E présents → non trompeur | ✅ |
+| 2.5 | WebP/GIF acceptés mais non intégrables PDF | Upload restreint à **JPEG/PNG** (client produit toujours JPEG → zéro impact) ; WebP/GIF rejetés explicitement → plus d'échec PDF silencieux possible | ✅ |
+| 2.6 | Résilience livraison / échec C/D/E masqué | `adminResendPdf` accepte désormais **A-E** (recouvrement manuel C/D/E) + déjà : chaque envoi en try/catch individuel + log `[DELIVERY]` actionnable | ✅ |
+| 2.4 | Police A/B | **Décision de périmètre actée** : module police = roadmap M1-M3+, explicitement **HORS V1 publique**. Pas un bug, un scope assumé. | ✅ documenté |
+
+Vérifié : tsc 0 · build client+serveur OK · tests 45/45 · Railway SUCCESS
+(`8519ebc`) · /health 200 · home 200.
+
+### Ce qui reste — STRICTEMENT hors-code (impossible en sandbox)
+- Runtime natif (builds signés + tests iPhone/Android réels) → kit fourni
+- Validation juridique de fond du wording neutre restant (le risqué est
+  retiré ; un juriste peut valider le neutre)
+- Tests E2E 1-5 véhicules sur appareils réels
+- (P2 documenté) croquis = simulation multi-corps ; PDF C/D/E en annexe :
+  approche assumée, pas un défaut
+
+# boom.contact — SUIVI.md
+
 > Dernière mise à jour : 19 mai 2026 — **Post-audit expert #2 (corrections code restantes)**
 
 ---
