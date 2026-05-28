@@ -378,3 +378,28 @@ Vérif : tsc 0 · build client+serveur OK · 45/45 tests · Railway SUCCESS · p
 - docs/ créé : ios-testflight, android-internal-testing, qa-mobile-e2e-matrix, store-go-no-go, ux-ui-final-review.
 - Vérif : JSON 48/48 · tsc 0 · build OK · 45/45 tests · Railway SUCCESS · prod 200 · bundle live sans claim.
 - Reste hors code : builds natifs signés, tests device, validation juriste, App Privacy/Data Safety consoles, screenshots.
+
+---
+
+## Sprint 2 — Native Store Readiness (commit a7d4eaf)
+
+**Date** : 2026-05-28
+
+### Corrections
+- **Capacitor CLI** aligné 7.6.2 → 8.3.1 (core/ios/android/cli tous 8.3.1, `cap doctor` OK).
+- **Versions app** : iOS `MARKETING_VERSION` 1.0 → **1.0.0** (Debug+Release), build 1 ; Android déjà 1.0.0 / code 1 / appId `contact.boom.app`.
+- **Retour Stripe natif câblé** :
+  - iOS : `App.entitlements` (associated-domains `applinks:www.boom.contact` + `applinks:boom.contact`) + `CODE_SIGN_ENTITLEMENTS` dans les 2 configs pbxproj.
+  - Android : intent-filter `autoVerify="true"` (VIEW/DEFAULT/BROWSABLE, https www.boom.contact + boom.contact) sur MainActivity.
+  - `.well-known/{apple-app-site-association,assetlinks.json}` (templates, placeholders `TO_REPLACE`).
+  - Routes Express dédiées (`serveWellKnown`) servant `application/json`, avant static + catch-all SPA, sans redirection.
+  - `@capacitor/app` + listener `appUrlOpen` (natif only) rejouant les query params dans la WebView locale.
+- **Docs** : matrice QA (sections Deep Links/Stripe + Permissions WebView), checklists iOS/Android, go-no-go actualisés.
+
+### Vérifs
+- typecheck 0 · build OK · test 45/45 · cap sync OK · cap doctor 8.3.1 aligné.
+- Prod : Railway SUCCESS · `/health` 200 · `/` 200 · bundle live = 0 claim.
+- `.well-known` live : HTTP 200, `application/json`, JSON valides, placeholders visibles.
+
+### À compléter manuellement (hors code)
+Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Associated Domains (profil Apple) · builds signés · uploads TestFlight / Internal Testing · tests devices DL-01..09 + PERM-01..04 · juriste.
