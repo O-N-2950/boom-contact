@@ -357,3 +357,14 @@ car, suv, van, truck, bus, tram, **train** 🆕, motorcycle, scooter, moped, esc
 
 ### Prochaines tâches (voir TODO.md Session 13)
 
+
+## 2026-05-28 — Sprint 1 UX/legal (commit bf5c1ee)
+Sprint UX/légal/store-readiness, zéro modif backend. 9 fichiers front + 2 i18n.
+- Écran intro sécurité/légal avant OCR (ConstatFlow) + bouton urgence dès l'intro.
+- Acceptation CGU/privacy invités B/C/D/E (JoinSession, case obligatoire).
+- Confirmation légale avant signature A/B/C/D/E (SignaturePad, case obligatoire).
+- Claims PDFDownload assainis (plus de "certifié"/"150+ pays"/"deux parties").
+- Notice paiement (service, pas achat contenu) + micro-copy micro + confirmation photos blessures.
+- QRSession : updateVehicleCount() unifié (corrige divergence UI/DB/PDF sur +/−).
+- i18n : section 'legal' (fr+en), fallback FR pour les autres langues.
+Vérif : tsc 0 · build client+serveur OK · 45/45 tests · Railway SUCCESS · prod /health+home 200.
