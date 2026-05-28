@@ -438,3 +438,13 @@ Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Ass
 - **Non touchés** : backend, Stripe webhook, PDF backend, emails, landing, police, admin, B2B.
 - **Vérifs** : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS (0c19efd cycle complet) · /health 200 · / 200 · /design-preview 200 · Manrope live · CSS hybrid live.
 - **Reste** : QA visuelle sur appareils réels (device-qa-protocol) — non réalisable dans l'environnement de build.
+
+---
+
+## Sprint 6 — Visual QA + Store screenshots prep + Device capture readiness (commit f0ee34e)
+**Date** : 2026-05-28
+- **Code** : route `/visual-qa` (lazy, noindex, robots Disallow, hors nav, code-split 14.58 kB) — rend les 10 écrans du flow en `data-theme="hybrid"` avec les **mêmes variables/classes que la production** ; SignaturePad **réel** embarqué (props mockées). Ajustements stricts : buyPack PDFDownload → navy ; `text-green-500` → `text-[var(--green)]`.
+- **Docs (5)** : `visual-qa-audit-2026-05-28.md` (10/10 contrôles OK) · `store-screenshot-production-plan.md` (7 captures + wording prudent) · `screenshot-capture-guide.md` (iOS sim + Android émul) · `demo-data-for-screenshots.md` (jeu fictif, 0 donnée réelle) · `accessibility-visual-checklist.md` (WCAG 2.2 AA, actions device).
+- **Backend** : non touché.
+- **Vérifs** : tsc 0 · build OK · 45/45 · 0 claim vivant · Railway SUCCESS · `/visual-qa` 200 · `/design-preview` 200 · `/health` 200 · Manrope live · CSS hybrid live · robots Disallow ×2.
+- **Non public-ready** : Team ID, SHA-256, builds signés, device QA, juriste, App Privacy, Data Safety, beta restent prérequis.
