@@ -71,5 +71,31 @@
 | LEG-03 | Aucun claim risqué | Aucun « certifié / 150 pays / valable mondialement » visible dans l'UI ni le PDF | ⚪️ |
 | LEG-04 | Wording PDF | « Dossier numérique horodaté », pas « certifié » | ⚪️ |
 
+## E. Deep Links / Universal Links (iOS) / App Links (Android) + Retour Stripe
+
+> Pré-requis : `.well-known/apple-app-site-association` et `.well-known/assetlinks.json` live en HTTPS (200, application/json, sans redirection) avec **vrai Apple Team ID** et **vrai SHA-256** de la clé de signature ; capability *Associated Domains* activée dans le profil de provisioning Apple ; vérification App Links Android (`adb shell pm verify-app-links`).
+
+| ID | Vérif | Résultat attendu | Statut |
+|----|-------|------------------|--------|
+| DL-01 | AASA accessible | `GET https://www.boom.contact/.well-known/apple-app-site-association` → 200, `application/json`, JSON valide, **pas** de redirection | ⚪️ |
+| DL-02 | assetlinks accessible | `GET https://www.boom.contact/.well-known/assetlinks.json` → 200, `application/json`, JSON valide | ⚪️ |
+| DL-03 | Universal Link iOS | Ouvrir `https://www.boom.contact/?session=X&paid=1` depuis Notes/Safari → ouvre **l'app** (pas Safari), arrive sur l'étape `done` | ⚪️ |
+| DL-04 | App Link Android | Idem depuis un lien Android → ouvre l'app, `appUrlOpen` rejoue les params | ⚪️ |
+| DL-05 | **Stripe success → app** | Payer (one-shot) → redirection `?payment=success&constat=X` → retour dans l'app → PDF prêt (`done`) | ⚪️ |
+| DL-06 | **Stripe cancel → app** | Annuler le paiement → `?payment=cancelled` → retour propre dans l'app (pas d'écran cassé) | ⚪️ |
+| DL-07 | App froide via lien | App fermée (tuée) → ouverture via lien → `appUrlOpen` capté au démarrage, params appliqués | ⚪️ |
+| DL-08 | App chaude via lien | App déjà ouverte en arrière-plan → lien → reprise + params appliqués | ⚪️ |
+| DL-09 | Fallback navigateur | Si l'app n'est pas installée → le lien ouvre le site web (PWA) normalement | ⚪️ |
+| DL-10 | tokenA absent | Retour paiement sans `tokenA` en localStorage → message d'erreur clair (pas de crash) ; *(P1 : bouton « retrouver mon dossier »)* | ⚪️ |
+
+## F. Permissions WebView natives (à tester sur appareil)
+
+| ID | Vérif | Résultat attendu | Statut |
+|----|-------|------------------|--------|
+| PERM-01 | Caméra (photos/OCR) | `<input type=file capture>` → picker/caméra natif (Android `onShowFileChooser`, iOS WKWebView) | ⚪️ |
+| PERM-02 | Micro (voix) | `getUserMedia({audio})` → prompt micro accordé (Android `onPermissionRequest` + `RECORD_AUDIO`, iOS `NSMicrophone`) | ⚪️ |
+| PERM-03 | Géolocalisation | `navigator.geolocation` → prompt position (Android `onGeolocationPermissionsShowPrompt` + `ACCESS_FINE_LOCATION`, iOS `NSLocationWhenInUse`) | ⚪️ |
+| PERM-04 | Refus permission | Refus micro/géo → fallback texte / saisie manuelle, pas de blocage | ⚪️ |
+
 ---
 *Exécution sur devices réels = hors périmètre de l'environnement actuel. FN-15 (concurrence) doit être testé sur une vraie base Postgres.*

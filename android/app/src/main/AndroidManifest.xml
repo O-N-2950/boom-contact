@@ -22,6 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- App Links : retour dans l'app depuis https://(www.)boom.contact (ex. redirection Stripe) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="www.boom.contact" />
+                <data android:scheme="https" android:host="boom.contact" />
+            </intent-filter>
+
         </activity>
 
         <provider

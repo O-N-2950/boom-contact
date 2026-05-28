@@ -90,3 +90,14 @@ Chaînes d'usage obligatoires (rédigées dans la langue de soumission, idéalem
 
 ---
 *Document de travail — à compléter au fil des builds. Statut natif/runtime : hors périmètre de l'environnement actuel (nécessite macOS + Xcode + device réel).*
+
+## 9. Universal Links + retour Stripe (iOS)
+
+- [ ] `ios/App/App/App.entitlements` contient `com.apple.developer.associated-domains` :
+      `applinks:www.boom.contact`, `applinks:boom.contact` (présent dans le repo).
+- [ ] `CODE_SIGN_ENTITLEMENTS = App/App.entitlements` présent dans les 2 configs du target App (Debug/Release) — présent dans le repo.
+- [ ] **À FAIRE MANUELLEMENT** : activer la capability *Associated Domains* dans Xcode + le profil de provisioning (Apple Developer portal).
+- [ ] **À FAIRE MANUELLEMENT** : remplacer `TEAMID_TO_REPLACE` par le vrai **Apple Team ID** dans `client/public/.well-known/apple-app-site-association`, redéployer, vérifier `https://www.boom.contact/.well-known/apple-app-site-association` (200, application/json).
+- [ ] Listener `appUrlOpen` (`@capacitor/app`) présent côté JS — rejoue `?session=X&paid=1` dans la WebView.
+- [ ] Test DL-03, DL-05, DL-06, DL-07, DL-08, DL-09 de `qa-mobile-e2e-matrix.md` sur iPhone réel.
+- [ ] Permissions WebView : PERM-01..04 sur iPhone réel.

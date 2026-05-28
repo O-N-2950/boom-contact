@@ -321,6 +321,35 @@ export default function App() {
     }
   }, []);
 
+  // ── Deep links natifs (Universal Links iOS / App Links Android) ──
+  // Sans ce listener, un lien https://(www.)boom.contact/... ouvre bien l'app
+  // mais n'injecte PAS ses query params (ex. retour Stripe ?session=X&paid=1)
+  // dans la WebView locale Capacitor. No-op total sur web/PWA.
+  useEffect(() => {
+    let remove: (() => void) | undefined;
+    (async () => {
+      try {
+        const { Capacitor } = await import('@capacitor/core');
+        if (!Capacitor.isNativePlatform()) return;
+        const { App: CapApp } = await import('@capacitor/app');
+        const handle = await CapApp.addListener('appUrlOpen', ({ url }) => {
+          try {
+            const u = new URL(url);
+            const slug = (u.pathname || '/') + (u.search || '');
+            // Rejoue le lien dans la WebView locale -> getInitialView relit les params
+            window.location.href = slug || '/';
+          } catch (e) {
+            console.debug('appUrlOpen parse failed', e);
+          }
+        });
+        remove = () => handle.remove();
+      } catch (e) {
+        console.debug('deep link listener init skipped', e);
+      }
+    })();
+    return () => { if (remove) remove(); };
+  }, []);
+
   const hasAcceptedCGU = () => !!localStorage.getItem(CGU_KEY);
 
   const handleCGUAccept = useCallback((email: string, _consentMarketing: boolean) => {

@@ -635,6 +635,32 @@ app.get('/social/health', async (_req, res) => {
   }
 });
 
+// ── Deep links / App Links : .well-known ──────────────────────
+// CRITIQUE : AVANT express.static et le wildcard SPA.
+// apple-app-site-association doit être servi en application/json, SANS extension, SANS redirection.
+function serveWellKnown(fileName: string): express.RequestHandler {
+  return async (_req, res) => {
+    try {
+      const fs = await import('fs');
+      const candidates = [
+        path.join(__dirname, '../../dist/client/.well-known/', fileName),
+        path.join(__dirname, '../../client/public/.well-known/', fileName),
+      ];
+      for (const f of candidates) {
+        if (fs.existsSync(f)) {
+          res.type('application/json').send(fs.readFileSync(f, 'utf-8'));
+          return;
+        }
+      }
+      res.status(404).end();
+    } catch {
+      res.status(500).end();
+    }
+  };
+}
+app.get('/.well-known/apple-app-site-association', serveWellKnown('apple-app-site-association'));
+app.get('/.well-known/assetlinks.json', serveWellKnown('assetlinks.json'));
+
 // ── Serve React app ───────────────────────────────────────────
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../../dist/client');

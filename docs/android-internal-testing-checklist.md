@@ -91,3 +91,13 @@
 
 ---
 *Document de travail. Build natif + tests device = hors périmètre de l'environnement actuel.*
+
+## App Links + retour Stripe (Android)
+
+- [ ] `AndroidManifest.xml` : intent-filter `android:autoVerify="true"` avec `VIEW/DEFAULT/BROWSABLE` + `https` hosts `www.boom.contact` et `boom.contact` (présent dans le repo).
+- [ ] **À FAIRE MANUELLEMENT** : remplacer `SHA256_CERT_FINGERPRINT_TO_REPLACE` par le **vrai SHA-256** de la clé de signature (upload key Play App Signing) dans `client/public/.well-known/assetlinks.json`, redéployer, vérifier `https://www.boom.contact/.well-known/assetlinks.json` (200, application/json).
+      Obtenir le SHA-256 : `keytool -list -v -keystore <keystore> -alias <alias>` ou Play Console → App integrity → App signing.
+- [ ] Vérifier la validation App Links : `adb shell pm get-app-links contact.boom.app` / `pm verify-app-links`.
+- [ ] Listener `appUrlOpen` (`@capacitor/app`) présent côté JS.
+- [ ] Test DL-04, DL-05, DL-06, DL-07, DL-08, DL-09 sur Android réel.
+- [ ] Permissions WebView : PERM-01..04 (Android `onPermissionRequest` / `onGeolocationPermissionsShowPrompt` gérés par Capacitor 8).

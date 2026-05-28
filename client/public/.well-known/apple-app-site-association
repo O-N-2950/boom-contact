@@ -1,0 +1,22 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "TEAMID_TO_REPLACE.contact.boom.app"
+        ],
+        "components": [
+          {
+            "/": "/",
+            "comment": "boom.contact app links - racine"
+          },
+          {
+            "/": "/*",
+            "comment": "Toutes les routes web (inclut le retour Stripe ?payment=success)"
+          }
+        ]
+      }
+    ]
+  }
+}
