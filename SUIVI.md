@@ -554,3 +554,18 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Hors périmètre non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts`.
 - **Vérifs** : `quality:prestore` exit 0 (212 fichiers, A_BLOCKING=0, 45/45) · assetlinks JSON valide · AASA placeholder intact · Railway SUCCESS · live assetlinks 200, SHA présent, 0 placeholder.
 - **Reste** : Apple Team ID → AASA + cap sync ios ; validation device (adb verify-app-links après install Internal Testing) ; juriste ; soumission stores. **Pas de public-ready.**
+
+---
+
+## Sprint 10B exécution complète — AASA + assetlinks finalisés
+**Date** : 2026-05-29
+- **Valeurs externes officielles boom.contact appliquées** :
+  - AASA : `appIDs = ["7YWB99G6Q8.contact.boom.app"]` (Apple Team ID `7YWB99G6Q8`, entité PEP's Swiss SA — Team ID commun à l'organisation, normal).
+  - assetlinks : SHA-256 Play App Signing `C5:CC:...:4D:99` (propre à boom.contact), package `contact.boom.app` (déjà en place depuis le sprint Android partiel — inchangé).
+- **Placeholders éliminés** : `TEAMID_TO_REPLACE` + `SHA256_CERT_FINGERPRINT_TO_REPLACE` → 0 dans les deux sources `.well-known`.
+- **cap sync ios + android** : copies natives régénérées et vérifiées (iOS Team ID présent, Android SHA présent, 0 placeholder). iOS `pod install` sauté (CocoaPods absent en CI Linux — sera exécuté sur la machine de build macOS/Codemagic ; sans impact sur la copie `.well-known`).
+- **Validation externe** : Google Digital Asset Links Statement List → déclaration publiée OK (package + SHA exacts). Apple AASA → format valide servi 200 (revérif CDN Apple au build signé).
+- **Hors périmètre non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts`.
+- **Vérifs** : `quality:prestore` exit 0 (212 fichiers, A_BLOCKING=0, 45/45) · 2 JSON valides · Railway SUCCESS · live AASA + assetlinks 200, application/json, 0 placeholder.
+- **Store native links readiness** : ~98/100 (reste validation device après install signée). **Avancement global ~98.7/100.**
+- **Prochaine étape** : Codemagic / builds signés iOS+Android → TestFlight + Google Internal Testing → adb verify-app-links + test Universal Links device. **Pas de public-ready** (device QA + juriste + soumission restants).
