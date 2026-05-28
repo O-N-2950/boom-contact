@@ -1,89 +1,67 @@
 # Revue des thèmes visuels — boom.contact
 
-> But : décider de la direction visuelle avant TestFlight / Internal Testing, **sans** redesign global irréversible.
-> Support : `client/src/pages/DesignPreview.tsx` (route cachée `/design-preview`, noindex) + artifact HTML de comparaison.
-> Aucun thème n'est appliqué en production — ce document sert à **choisir**.
+> Décision visuelle V1 prise. Support : `client/src/pages/DesignPreview.tsx` (route cachée `/design-preview`, noindex) + artifact HTML.
+> Aucun thème n'est encore appliqué en production — l'application se fera progressivement après validation finale.
 
----
+## Direction recommandée V1 : **Hybrid Trust Premium**
 
-## Les 3 thèmes
+Fond clair, cartes blanches, texte bleu nuit, **CTA principal orange boom**, **CTA sérieux bleu nuit** (paiement/PDF). Calme, clair, rassurant, premium — esprit Apple / Stripe / Revolut / Alan avec la signature boom en accent. Le noir/orange n'est plus la base du flow accident ; il reste la **marque** (landing, accent).
 
-### A — Boom Signature
-| | |
+Intention émotionnelle : « Je suis guidé, c'est clair, sérieux, calme et professionnel. » — réduire le stress, augmenter la confiance, garder la lisibilité.
+
+### Palette validée (app principale)
+| Token | Valeur |
 |---|---|
-| Palette | Noir profond `#0a0a14` · Orange boom `#ff6b1a` · Cyan `#00d4ff` · Blanc cassé `#f5f5f0` |
-| Typo | Titre **Sora**, texte **Manrope** |
-| Personnalité | Énergique, virale, technologique |
-| Avantages | Branding **fort et mémorable**, excellent pour le viral/TikTok, CTA qui claque |
-| Risques | Sombre = moins « rassurant » après un accident, **lisibilité plein soleil plus faible**, perçu moins institutionnel par assureurs/juristes, blanc sur orange = contraste limite |
-| Usage recommandé | **Landing marketing / viral**, accent de marque (logo, CTA) |
+| Background global | `#F5F8FC` |
+| Surface card | `#FFFFFF` |
+| Surface elevated | `#EEF4FA` |
+| Text primary | `#102033` |
+| Text secondary | `#5D6B7C` |
+| Primary CTA | `#FF6B1A` |
+| Primary CTA hover | `#F05A0A` |
+| Trust blue (CTA sérieux) | `#123A5A` |
+| Accent cyan | `#18B8E8` |
+| Success | `#16A34A` |
+| Warning | `#F59E0B` |
+| Danger | `#DC2626` |
+| Border | `#DDE7F0` |
+| Shadow | `rgba(16,32,51,0.10)` |
+| Typo | Titre **Sora**, texte **Hanken Grotesk** |
 
-### B — Trust Premium
-| | |
+## Scoring des directions
+| Direction | Score | Rôle |
+|---|:--:|---|
+| **Hybrid Trust Premium** | **95/100** | **App principale V1** |
+| Trust Light Premium | 91/100 | Base de Hybrid · variante stores |
+| Swiss Calm | 88/100 | B2B / assureurs / juristes / admin / police |
+| Boom Dark Signature | 82/100 | Landing marketing / viral / accent de marque |
+
+## Recommandation par surface
+| Surface | Direction |
 |---|---|
-| Palette | Fond clair `#eef3f9` · Bleu nuit `#1b3a5b` · Bleu électrique `#0ea5e9` · Orange CTA `#ff6b1a` |
-| Typo | Titre **Fraunces** (serif premium), texte **Hanken Grotesk** |
-| Personnalité | Calme, sûr, fintech/assurance |
-| Avantages | **Confiance élevée**, lisible plein soleil, premium, orange réservé au CTA → forte conversion, compatible Apple/Google et assureurs |
-| Risques | Bleu fintech un peu **moins différenciant** que le noir/orange ; nécessite rigueur typographique |
-| Usage recommandé | **App principale (flow accident)**, **screenshots stores**, B2B |
+| App principale | **Hybrid Trust Premium** |
+| Landing marketing | **Boom Dark Signature adouci** |
+| Screenshots stores | **Hybrid Trust Premium / Trust Light** |
+| B2B / assureurs / courtiers | **Swiss Calm** |
+| Emails / PDF | **Trust Premium / Swiss Calm** |
+| Admin / police | **Swiss Calm** |
 
-### C — Swiss Calm
-| | |
-|---|---|
-| Palette | Blanc cassé `#faf9f7` · Anthracite `#1f2227` · Rouge/orange discret `#d6452a` · Gris premium `#8a9099` |
-| Typo | Titre **Archivo**, texte **IBM Plex Sans** |
-| Personnalité | Institutionnel, suisse, élégant, juridique |
-| Avantages | **Acceptabilité maximale assureurs/juristes/entreprises**, très lisible, haut de gamme, beaucoup d'espace |
-| Risques | Accent discret = **CTA moins punchy** (conversion B2C), moins mémorable que Boom |
-| Usage recommandé | **B2B / institutionnel**, variante « sérieuse » du flow |
+## Accessibilité — Hybrid Trust Premium
 
----
+- **Contraste texte/fond** : texte `#102033` sur fond `#F5F8FC` / carte `#FFFFFF` ≈ **15:1** → **AAA**. Texte secondaire `#5D6B7C` sur blanc ≈ **5.2:1** → **AA** (OK petit texte).
+- **CTA orange/fond** : ⚠️ texte **blanc sur `#FF6B1A` ≈ 2.4:1** → insuffisant pour petit texte. Comme le libellé CTA est **gros et gras (≥ 18px/700)**, il passe en **AA gros texte (≥ 3:1)** une fois mesuré ; sinon, prévoir texte foncé `#102033` sur l'orange. À **valider au contrôle de contraste réel**.
+- **CTA sérieux bleu nuit** : blanc sur `#123A5A` ≈ **11:1** → **AAA**.
+- **Urgence rouge** : blanc sur `#DC2626` ≈ **4.6:1** → **AA** ; toujours accompagné de l'icône 🆘 + libellé (pas couleur seule).
+- **Focus visible** : prévoir un anneau 2px contrasté (`#123A5A` ou `#18B8E8`) sur tous les éléments interactifs.
+- **Boutons ≥ 44×44px** : CTA pleine largeur padding 14px → conforme.
+- **Lisibilité plein soleil** : fond clair = **avantage** (vs ancien thème sombre).
+- **État disabled** : prévoir surface `#EEF4FA` + texte `#5D6B7C` + curseur not-allowed (contraste réduit assumé).
+- **Daltonisme** : success/warning/danger toujours doublés d'icône + texte ; ne jamais s'appuyer sur la couleur seule.
+- **Dark mode** : possible plus tard (P2) — fournir une variante sombre dérivée (non requise V1).
 
-## Matrice d'évaluation (1 = faible, 5 = fort)
+**Corrections recommandées avant application réelle** : mesurer le contraste exact du texte sur CTA orange et ajuster (texte foncé si < 3:1 en gros) ; définir le style focus-visible global ; définir l'état disabled.
 
-| Critère | Boom | Trust | Swiss |
-|---|:--:|:--:|:--:|
-| Confiance | 3 | 5 | 5 |
-| Clarté | 4 | 5 | 5 |
-| Premium | 4 | 5 | 5 |
-| Réduction du stress | 2 | 5 | 4 |
-| Lisibilité plein soleil | 2 | 5 | 5 |
-| Accessibilité contraste | 3 | 4 | 4 |
-| Différenciation marque | 5 | 3 | 3 |
-| Conversion paiement | 4 | 5 | 3 |
-| Acceptabilité assureurs/B2B | 2 | 5 | 5 |
-| Acceptabilité Apple/Google | 4 | 5 | 5 |
-| Internationalisation | 4 | 5 | 5 |
-| **Total /55** | **37** | **52** | **49** |
+## Écrans à screenshotter
+Intro/sécurité · QR multi-participants · Voix/texte · Signature · PDF/paiement · État d'erreur · Urgence. (Tous présents dans `/design-preview`, version Hybrid réaliste.)
 
----
-
-## Accessibilité
-
-**AA OK / à vérifier (par thème)**
-- **Boom** : texte blanc cassé sur fond sombre = **AAA**. ⚠️ **Risque** : texte **blanc sur orange `#ff6b1a` ≈ 2.2:1 < AA**. Correction : texte foncé sur boutons orange, ou orange plus sombre pour le texte, ou réserver le blanc-sur-orange aux **gros** libellés (≥ 24px / 18px gras).
-- **Trust** : navy `#1b3a5b` + blanc = **AAA** ; texte navy sur clair = **AAA**. ⚠️ CTA orange : même précaution blanc-sur-orange que Boom (l'orange est ici réservé au CTA, donc gros texte → acceptable, à mesurer).
-- **Swiss** : anthracite sur blanc cassé = **AAA**. ⚠️ rouge `#d6452a` + blanc ≈ **3.9:1** → OK pour **gros** texte/CTA, **insuffisant** pour petit texte.
-
-**Risques transverses**
-- Couleurs danger/success/warning : ne pas s'appuyer **uniquement** sur la couleur (daltonisme) → toujours **icône + libellé**.
-- Plein soleil : Boom désavantagé (sombre) ; Trust/Swiss avantagés (clair).
-
-**Corrections recommandées**
-- Boutons primaires : viser **≥ 4.5:1** (petit texte) ou **≥ 3:1** (gros texte) — ajuster la teinte du texte sur orange/rouge.
-- Cibles tactiles **≥ 44×44px**, **focus visible** (anneau 2px contrasté), états hover/active distincts.
-- Mode sombre/clair : Boom = sombre natif ; Trust/Swiss = clair natif → prévoir une variante sombre si besoin (P2).
-
----
-
-## Quels écrans screenshotter (pour comparer)
-Intro/sécurité · QR multi-véhicules · Vocal · Signature · Paiement/PDF · Landing hero · État d'erreur · Bouton urgence. (Tous présents dans `/design-preview`.)
-
-## Recommandation
-- **App principale (V1)** : **Trust Premium** comme base (confiance + lisibilité + conversion), en **conservant l'orange boom pour le CTA principal et le logo** → approche **hybride**.
-- **Landing marketing / viral** : **Boom Signature**.
-- **Screenshots stores** : **Trust Premium**.
-- **B2B / institutionnel** : **Swiss Calm** (ou Trust Premium).
-
-> Décision attendue d'Olivier après visualisation. Tant que non tranché, la production reste **inchangée** (aucun risque).
+> Décision actée : **Hybrid Trust Premium** pour l'app. Application réelle = étape suivante, progressive, sans casser la prod.

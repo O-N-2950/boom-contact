@@ -1,39 +1,38 @@
 # Plan screenshots App Store / Google Play — boom.contact
 
-> But : 6–7 visuels qui racontent le parcours, avec un **wording prudent** (aucun claim).
-> Thème recommandé pour les screenshots : **Trust Premium** (cf. `design-theme-review.md`).
+> Direction visuelle des screenshots : **Hybrid Trust Premium** (fond clair, cartes blanches, texte bleu nuit, CTA orange boom). Variante : Trust Light.
+> Wording **prudent** (aucun claim).
 
 ## Contraintes wording (verrouillées)
-- ✅ « Dossier PDF horodaté » · « à transmettre à votre assureur »
-- ❌ JAMAIS : « certifié légalement », « valable dans 150 pays », « accepté par toutes les assurances », « remplace la police », « valable mondialement », « première app mondiale ».
+- ✅ « Documentez un accident en quelques minutes » · « Invitez les participants par QR » · « Ajoutez photos, voix et signature » · « Générez un dossier PDF horodaté » · « À transmettre à votre assureur ».
+- ❌ JAMAIS : « certifié », « 150+ pays », « légalement valable », « accepté par toutes les assurances », « remplace la police », « preuve incontestable », « valable mondialement », « première app mondiale ».
 
 ## Formats requis
 - **iPhone 6.7"** (1290×2796) et **6.5"** (1242×2688) — obligatoires App Store.
-- **iPad 12.9"** si support iPad (sinon non requis).
-- **Android phone** (min 1080×1920, ratio 9:16) — Google Play, jusqu'à 8 visuels.
-- Texte localisé au minimum **FR + EN** (idéalement DE/IT pour la Suisse).
+- **iPad 12.9"** si support iPad.
+- **Android phone** (min 1080×1920, 9:16) — jusqu'à 8 visuels.
+- Localisation min **FR + EN** (idéalement DE/IT).
 
-## Séquence recommandée (légende → écran source)
+## Séquence recommandée (Hybrid Trust Premium)
 
-| # | Légende (prudente) | Écran source | Notes |
+| # | Titre (prudent) | Écran source | Notes |
 |---|---|---|---|
-| 1 | **Documentez un accident en quelques minutes** | Intro / flow simple | Montrer le bouton urgence visible |
-| 2 | **Invitez les autres participants par QR** | QR B/C/D/E | Mettre en avant le multi-rôles |
-| 3 | **Photos, localisation et déclaration vocale** | Photos / vocal / localisation | Trio de capture |
-| 4 | **Signez et générez un dossier PDF horodaté** | Signature / PDF | Wording « horodaté » |
-| 5 | **Recevez le dossier à transmettre à votre assureur** | Done / email / PDF | Wording « à transmettre à votre assureur » |
-| 6 | **Multi-véhicules : jusqu'à 5 participants** | QR multi-rôles ou annexe PDF | Différenciateur produit |
+| 1 | **Documentez un accident en quelques minutes** | Intro / sécurité | Fond clair, CTA orange « Commencer », bouton urgence visible |
+| 2 | **Invitez les participants par QR** | QR multi-participants | Chips A(orange)/B(navy)/C-E, jusqu'à 5 |
+| 3 | **Ajoutez photos, voix et signature** | Voix-texte + signature | Capture + signature |
+| 4 | **Générez un dossier PDF horodaté** | PDF / paiement | CTA bleu nuit « Payer et générer le PDF » |
+| 5 | **À transmettre à votre assureur** | Done / email | Wording assurance prudent |
+| 6 | **Multi-véhicules : jusqu'à 5 participants** | QR multi-rôles / annexe PDF | Différenciateur |
 | 7 | **Conçu pour les situations stressantes** | Urgence / aide | Rappel : ne remplace pas les secours |
 
 ## Recommandations visuelles
-- Cadre device propre, fond cohérent avec le thème retenu.
-- 1 idée par visuel, légende courte en haut, capture en bas.
-- Pas de prix « barré » trompeur ; pas de logo d'assureur tiers (droits).
-- Cohérence avec l'icône et la fiche store.
+- Style **Hybrid** : fond `#F5F8FC`, cartes blanches arrondies, texte `#102033`, CTA orange `#FF6B1A`, CTA sérieux bleu nuit `#123A5A`.
+- 1 idée par visuel ; légende courte en haut ; capture en bas.
+- Pas de prix barré trompeur ; pas de logo d'assureur tiers.
+- Cohérence icône + fiche store.
 
 ## À produire (hors environnement de code)
-- [ ] Choisir le thème (Trust Premium recommandé).
-- [ ] Capturer les 7 écrans sur device/simulateur dans le thème retenu.
-- [ ] Habiller les captures (légendes FR/EN).
-- [ ] Exporter aux formats iPhone 6.7"/6.5" + Android.
-- [ ] Vérifier wording (relire la liste des claims interdits).
+- [ ] Capturer les 7 écrans dans le thème **Hybrid Trust Premium** (sur device/simulateur après application réelle).
+- [ ] Habiller (légendes FR/EN).
+- [ ] Exporter formats iPhone 6.7"/6.5" + Android.
+- [ ] Relire la liste des claims interdits avant upload.
