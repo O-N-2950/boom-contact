@@ -368,3 +368,13 @@ Sprint UX/légal/store-readiness, zéro modif backend. 9 fichiers front + 2 i18n
 - QRSession : updateVehicleCount() unifié (corrige divergence UI/DB/PDF sur +/−).
 - i18n : section 'legal' (fr+en), fallback FR pour les autres langues.
 Vérif : tsc 0 · build client+serveur OK · 45/45 tests · Railway SUCCESS · prod /health+home 200.
+
+## 2026-05-28 — Audit post-Sprint 1 + claims + Legal Pack + docs QA/stores (commit d2a1a3c)
+- Audit code Sprint 1 : 7 fichiers OK ; checklist PDFDownload rendue générique (A-E/unilatéral).
+- Claims risqués : découverte que seul le flow + pdf.service.ts étaient nettoyés. Assainis en plus :
+  pdf.labels.ts (PDF, 12 langues), stripe.service.ts, ~48 locales, LandingPage, B2BPage, ShareBoom,
+  PartyUnavailableModal. Balayage final = ZÉRO claim risqué. Railway URL = config (acceptable).
+- Legal Pack : 8 docs présents + addendum daté au LEGAL_CLAIMS_REVIEW.
+- docs/ créé : ios-testflight, android-internal-testing, qa-mobile-e2e-matrix, store-go-no-go, ux-ui-final-review.
+- Vérif : JSON 48/48 · tsc 0 · build OK · 45/45 tests · Railway SUCCESS · prod 200 · bundle live sans claim.
+- Reste hors code : builds natifs signés, tests device, validation juriste, App Privacy/Data Safety consoles, screenshots.
