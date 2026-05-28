@@ -533,3 +533,13 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Vérifs** : `quality:prestore` **exit 0** · tsc 0 · build OK (`✓ built` + `Server compiled`) · 45/45 · check:claims A_BLOCKING=0 (210 fichiers) · placeholders confirmés présents live · endpoints prod 200.
 - **Limite honnête** : `./gradlew assembleRelease` non exécutable dans l'environnement de build (pas de SDK Android) — la signature/fail-fast sera validée au premier build réel signé.
 - **Finding A restant (à traiter par Olivier)** : rotation du mot de passe du vrai release keystore s'il utilisait l'ancien fallback.
+
+---
+
+## Sprint 10B (préparation) — Runbook d'exécution .well-known prêt-à-dérouler
+**Date** : 2026-05-29
+- **Aucun remplacement de placeholder** : `TEAMID_TO_REPLACE` + `SHA256_CERT_FINGERPRINT_TO_REPLACE` restent intacts (sources + live). Valeurs externes toujours non disponibles.
+- **`docs/phase-10b-well-known-execution-runbook.md`** créé : procédure étape par étape A→I — préparation valeurs (Team ID 10 car., appID `TEAMID.contact.boom.app`, SHA-256 Play App Signing, package `contact.boom.app`, jamais de SHA d'une autre app) · remplacement AASA + assetlinks (JSON valide, autres champs intacts) · `npm run build` + `npx cap sync ios/android` · vérif copies natives (`ios/App/App/public/.well-known/`, `android/app/src/main/assets/public/.well-known/`) · `quality:prestore` · commit/push/Railway SUCCESS · vérifs live curl (200, pas de redirect, application/json, 0 placeholder, appID/package/SHA exacts) · validation externe (Apple AASA, Google Statement List Tester, `adb pm verify-app-links`, test device Internal/TestFlight) · rollback (mauvais Team ID/SHA, JSON cassé, App/Universal Links non validés, `git revert` d'urgence).
+- **`docs/phase-10b-values-checklist.md`** créé : checklist courte (Team ID, SHA Play App Signing, upload key opt., date, source console, validé par, remplacé, déployé, testé).
+- **Hors périmètre non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts`, fichiers `.well-known` (valeurs).
+- **Vérifs** : `quality:prestore` exit 0 · placeholders intacts · Railway SUCCESS.
