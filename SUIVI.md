@@ -448,3 +448,16 @@ Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Ass
 - **Backend** : non touché.
 - **Vérifs** : tsc 0 · build OK · 45/45 · 0 claim vivant · Railway SUCCESS · `/visual-qa` 200 · `/design-preview` 200 · `/health` 200 · Manrope live · CSS hybrid live · robots Disallow ×2.
 - **Non public-ready** : Team ID, SHA-256, builds signés, device QA, juriste, App Privacy, Data Safety, beta restent prérequis.
+
+---
+
+## Sprint 7 — Store Screenshot Automation + UX polish QRSession (commits 1224894 + b073f2a)
+**Date** : 2026-05-28
+- **UX polish** : QRSession +/- véhicules : 32px → **44px** (WCAG 2.2 AA touch target).
+- **Visual QA mode screenshot** : `/visual-qa?screenshot=<key>` (intro/qr/voice/photo/signature/pdf/done/emergency/store) ; layout marketing plein écran (gradient #F5F8FC→#EEF4FA, titre Manrope 800 navy, phone mockup centré, brand mark) ; données fictives verrouillées (Camille Martin / Luca Rossi / Sofia Keller / Exemple Auto / VD 000 000 / Assurance Démo / demo@boom.contact / Lausanne) ; QR stylisé propre avec 3 finders.
+- **Script Playwright** `scripts/capture-store-screenshots.ts` : 5 viewports (iphone67 1290×2796 / iphone65 1284×2778 / iphone61 1179×2556 / android-phone 1080×1920 / android-tab 1440×2560) × 9 écrans + design-preview desktop ; variables BASE_URL/FORMATS/SCREENS ; sortie `artifacts/store-screenshots/` (gitignored).
+- **package.json** : devDep `playwright ^1.49.0` + `npm run capture:screenshots`.
+- **Docs MAJ** : store-screenshot-production-plan / screenshot-capture-guide / demo-data-for-screenshots.
+- **Smoke test (vs prod live)** : 5 captures en 15.8s · 0 échec · PNG 100-310 kB · rendu visuel validé (titre/mockup/CTA/brand).
+- **Vérifs** : tsc 0 · build OK (VisualQA 20.26 kB code-split) · 45/45 · 0 claim · Railway SUCCESS (b073f2a 255s) · `/visual-qa?screenshot=*` toutes 200 · robots Disallow ×2.
+- **Backend / Stripe / logique métier non touchés**.
