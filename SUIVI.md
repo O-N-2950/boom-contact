@@ -427,3 +427,14 @@ Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Ass
 - Vérifs : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS · /design-preview 200 · robots Disallow · .well-known 200/200.
 - **Reco par surface** : app=Hybrid · landing=Boom adouci · stores=Hybrid/Trust · B2B=Swiss · emails/PDF=Trust/Swiss · admin/police=Swiss.
 - Production INCHANGÉE — application réelle = étape suivante après validation.
+
+---
+
+## Sprint 5 — Application Hybrid Trust Premium au flow accident réel (commits e74c1bb + 0c19efd)
+**Date** : 2026-05-28
+- **Foundation** (index.css) : Manrope auto-hébergé (woff2 latin+latin-ext) ; thème `[data-theme="hybrid"]` = palette stricte mappée sur variables existantes + `--navy #123A5A` / `--cyan #18B8E8` + `--shadow-card 0 8px 24px rgba(16,32,51,.06)` + `--radius-card 18px` + Manrope + inputs/textarea clairs.
+- **App.tsx** : `data-theme="hybrid"` scoped au flow accident (constat/join), restauré en sortie. Landing/B2B/admin/police inchangés.
+- **Composants** : PDFDownload paiement→navy (download reste orange) ; SignaturePad canvas blanc + encre navy (corrige `strokeStyle` var() invalide) ; QRSession QR `#123A5A` sur blanc + ROLE_COLORS A=orange/B=navy/C-E=gris ; ConstatFlow panneaux sombres→blancs (couplé texte), urgence intro→rouge ; global `#FF3500`→var(--boom), statuts→var ; 2 états disabled illisibles→var(--muted).
+- **Non touchés** : backend, Stripe webhook, PDF backend, emails, landing, police, admin, B2B.
+- **Vérifs** : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS (0c19efd cycle complet) · /health 200 · / 200 · /design-preview 200 · Manrope live · CSS hybrid live.
+- **Reste** : QA visuelle sur appareils réels (device-qa-protocol) — non réalisable dans l'environnement de build.
