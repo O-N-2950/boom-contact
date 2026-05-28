@@ -20,7 +20,7 @@ const ROLE_LABELS: Record<ParticipantRole, string> = {
   A: 'Conducteur A (vous)', B: 'Conducteur B', C: 'Conducteur C', D: 'Conducteur D', E: 'Conducteur E',
 };
 const ROLE_COLORS: Record<ParticipantRole, string> = {
-  A: '#3B82F6', B: 'var(--boom)', C: 'var(--green)', D: '#A855F7', E: 'var(--amber)',
+  A: 'var(--boom)', B: 'var(--navy,#123A5A)', C: '#5D6B7C', D: '#7E8CA0', E: '#9AA7B4',
 };
 
 export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestrianMode = false, onVehicleCountChange }: Props) {
