@@ -27,7 +27,7 @@
     "cta": {
       "start": "Tambali rapport",
       "pricing": "Xool njëgël →",
-      "from": "CI 4.90 CHF/€ · Dëkk ci aduna yépp",
+      "from": "CI 4.90 CHF/€",
       "free": "YOMB · ENREGISTREMENT AMUL · RGPD"
     },
     "mockup": {
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Signatiir yu bari",
-          "desc": "N signatiir yu numérik. Dëkk ci dëkk ci réew 150+."
+          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "PDF bu dëkk ci réew 150+",
+          "title": "Timestamped PDF",
           "desc": "Dokkument numérik bu dëkk. Assurance yépp ko nangu."
         },
         {
@@ -419,7 +419,7 @@
     "trust": {
       "stripe": "🔒 Fanaan bu bëgg séq ci Stripe (PCI-DSS)",
       "no_expiry": "📄 Crédit expiration amul",
-      "worldwide": "🌍 Dokkument numérik · dëkk ci réew 150+",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
     },
     "legal": "Soggeel bi, dañu nangu CGU bu boom.contact.\nRemboursement amul PDF yëg.",

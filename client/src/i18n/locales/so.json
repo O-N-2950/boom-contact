@@ -27,7 +27,7 @@
     "cta": {
       "start": "Bilow warbixin",
       "pricing": "Arag qiimaha →",
-      "from": "CHF/€ 4.90 laga bilaabo · Caalami la aqbali karo",
+      "from": "CHF/€ 4.90 laga bilaabo",
       "free": "BILAASH · DIWAANGELIN MAJIRTO · RGPD"
     },
     "mockup": {
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Saxeexyo badan",
-          "desc": "N saxeex dhijitaal ah. Sharci ahaan waxtareed 150+ wadan."
+          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "PDF 150+ wadan",
+          "title": "Timestamped PDF",
           "desc": "Dukumiint dhijitaal ah oo buuxda. Shirkadaha caymiska oo dhan way aqbalaan."
         },
         {
@@ -419,7 +419,7 @@
     "trust": {
       "stripe": "🔒 Lacag bixin ammaan ah oo Stripe (PCI-DSS)",
       "no_expiry": "📄 Credits taariikhda dhammaadka malaha",
-      "worldwide": "🌍 Dukumiint dhijitaal · 150+ wadan oo aqbalay",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
     },
     "legal": "Iibsashada, waxaad aqbalaysaa shuruudaha boom.contact.\nSoo noqod ma jirto PDF la sameeyay kaddib.",

@@ -183,7 +183,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
           </div>
         </div>
         <div className="grid gap-[5px]"  style={{ gridTemplateColumns: '1fr 1fr' }}>
-          {['✅ Véhicules A & B','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ 2 signatures'].map((item, i) => (
+          {['✅ Véhicules','✅ Conducteurs','✅ Assurances','✅ Circonstances','✅ Zones de choc','✅ Signatures'].map((item, i) => (
             <div key={i} className="text-[11px] opacity-75">{item}</div>
           ))}
         </div>

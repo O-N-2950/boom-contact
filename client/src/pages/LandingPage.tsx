@@ -109,7 +109,7 @@ function PhoneMockup() {
         </div>
       </div>
       <FloatingBadge icon="✅" text="PDF généré" style={{ fontSize: '11px', bottom: '-14px', left: '-20px' }}  />
-      <FloatingBadge icon="🌍" text="150+ pays" style={{ fontSize: '11px', top: '20px', right: '-24px' }}  />
+      <FloatingBadge icon="🌍" text="50 langues" style={{ fontSize: '11px', top: '20px', right: '-24px' }}  />
     </div>
   );
 }
@@ -292,7 +292,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                     { icon: '🔒', text: 'Chiffré SSL' },
                     { icon: '🌍', text: '50 langues' },
                     { icon: '⚡', text: '5 minutes' },
-                    { icon: '📄', text: 'PDF certifié' },
+                    { icon: '📄', text: 'PDF horodaté' },
                   ].map(b => (
                     <div key={b.text} className="flex items-center rounded-[20px] text-[11px] gap-[5px] opacity-70 px-[11px] py-[5px]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.25)' }}>
                       <span>{b.icon}</span><span>{b.text}</span>
@@ -412,7 +412,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <div className="text-center mb-9" >
             <div className="rounded-[20px] text-[11px] font-bold mb-3 inline-block px-3.5 py-1 tracking-[1px]" style={{ background: 'rgba(255,53,0,0.12)', border: '1px solid rgba(255,53,0,0.3)', color: 'var(--boom)' }} role="doc-subtitle">TARIFS</div>
             <h2 className="font-bold mb-2" style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 36 : 26 }}>Simple, transparent, mondial</h2>
-            <p className="text-[13px] leading-relaxed opacity-75">1 crédit = 1 constat complet · Valable dans 150+ pays · Sans abonnement</p>
+            <p className="text-[13px] leading-relaxed opacity-75">1 crédit = 1 constat complet · Multilingue · Sans abonnement</p>
           </div>
 
           <div className="grid mx-auto" style={{ gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: isDesktop ? 16 : 12, maxWidth: isDesktop ? 'none' : 480 }}>
@@ -444,7 +444,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
 
           <div className="flex gap-2 justify-center mt-6" style={{ flexWrap: 'wrap' as const }}>
-            {['✅ Sans abonnement', '✅ Crédits sans expiration', '✅ PDF certifié', '✅ 150+ pays'].map(g => (
+            {['✅ Sans abonnement', '✅ Crédits sans expiration', '✅ PDF horodaté', '✅ Multilingue'].map(g => (
               <span key={g} className="text-[11px] rounded-[20px] opacity-75 px-2.5 py-1" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)' }}>{g}</span>
             ))}
           </div>
@@ -461,7 +461,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <div className="text-center mb-8">
             <div style={S.sectionLabel}>ILS NOUS FONT CONFIANCE</div>
-            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Utilisé dans <span style={S.boomColor}>150+ pays</span></h2>
+            <h2 style={{ fontFamily: 'Oswald, sans-serif', fontSize: isDesktop ? 34 : 26 }}>Pensé pour l'international <span style={S.boomColor}>· 50 langues</span></h2>
           </div>
 
           {/* Testimonials */}
@@ -493,7 +493,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               { icon: '🇨🇭', text: 'Made in Switzerland' },
               { icon: '🔒', text: 'Chiffrement SSL 256-bit' },
               { icon: '🏛️', text: 'Conforme RGPD · nLPD' },
-              { icon: '✅', text: 'PDF conforme CEA' },
+              { icon: '✅', text: 'Modèle constat européen' },
               { icon: '💳', text: 'Paiement Stripe sécurisé' },
               { icon: '🗑️', text: 'Données supprimées sous 30j' },
             ].map(b => (
@@ -516,8 +516,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
 
           <div className="mx-auto flex flex-col gap-3 max-w-[720px]">
             {[
-              { q: "Qu'est-ce qu'un constat amiable numérique ?", a: "Un constat amiable numérique remplace le formulaire papier traditionnel. Avec boom.contact, vous remplissez votre constat d'accident directement depuis votre téléphone en 5 minutes. L'OCR scanne vos documents automatiquement, les deux conducteurs signent digitalement, et un PDF certifié conforme au standard européen (CEA) est généré instantanément." },
-              { q: "Le constat amiable numérique est-il accepté par les assureurs ?", a: "Oui. Le PDF généré par boom.contact est conforme au formulaire européen standardisé CEA (Constat Européen d'Accident). Il est accepté par les assureurs dans plus de 150 pays. Les signatures digitales sont horodatées et géolocalisées, ce qui leur confère une valeur probante supérieure au papier." },
+              { q: "Qu'est-ce qu'un constat amiable numérique ?", a: "Un constat amiable numérique est l'alternative numérique au formulaire papier. Avec boom.contact, vous remplissez votre constat d'accident directement depuis votre téléphone en 5 minutes. L'OCR scanne vos documents automatiquement, les conducteurs signent numériquement, et un PDF horodaté inspiré du modèle de constat européen est généré instantanément." },
+              { q: "Le constat amiable numérique est-il accepté par les assureurs ?", a: "Le PDF généré par boom.contact reprend le modèle du constat européen d'accident. Il est destiné à être transmis à votre assureur dans le cadre de votre déclaration de sinistre. Les signatures sont horodatées cryptographiquement (OpenTimestamps) et, si vous l'autorisez, géolocalisées. boom.contact ne garantit pas l'acceptation du dossier par une compagnie d'assurance." },
               { q: "Combien coûte le constat amiable numérique boom.contact ?", a: "À partir de CHF 4.90 / EUR 4.90 pour un constat unique. Pack famille de 3 constats à CHF 12.90 (-12%), ou pack flotte de 10 constats à CHF 34.90 (-29%). Sans abonnement, sans expiration. Disponible en CHF, EUR, GBP, USD, AUD, CAD, SGD et JPY." },
               { q: "Dois-je installer une application ?", a: "Non. boom.contact fonctionne directement dans le navigateur de votre téléphone (Safari, Chrome, Firefox…). Aucun téléchargement requis. Vous pouvez également ajouter boom.contact à votre écran d'accueil comme une Progressive Web App (PWA) pour un accès hors-ligne." },
               { q: "Le constat numérique fonctionne-t-il si l'autre conducteur parle une autre langue ?", a: "C'est justement la force de boom.contact. Chaque conducteur utilise l'interface dans sa propre langue parmi les 50 langues disponibles. L'OCR reconnaît les documents de circulation de tous les pays. Le PDF final est généré dans la langue de chaque conducteur." },

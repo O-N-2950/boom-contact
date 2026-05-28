@@ -34,7 +34,7 @@ export const PACKAGES = {
     id: 'single',
     label: '1 constat',
     credits: 1,
-    description: '1 constat numérique certifié boom.contact',
+    description: '1 constat numérique horodaté boom.contact',
     popular: false,
     savings: null,
     prices: {

@@ -16,18 +16,18 @@
     "unknown": "Non renseigné"
   },
   "landing": {
-    "badge": "Première app mondiale",
+    "badge": "Constat amiable numérique",
     "hero": {
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
       "line4": "CONTACT"
     },
-    "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR universel, QR code partagé, double signature digitale, PDF certifié. Valable dans 150+ pays.",
+    "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR universel, QR code partagé, double signature digitale, PDF horodaté.",
     "cta": {
       "start": "Démarrer un constat",
       "pricing": "Voir les tarifs →",
-      "from": "À PARTIR DE CHF/€ 4.90 · VALABLE MONDIALEMENT",
+      "from": "À PARTIR DE CHF/€ 4.90",
       "free": "GRATUIT · SANS INSCRIPTION · RGPD"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Signez & envoyez",
-          "desc": "Deux signatures digitales horodatées. PDF certifié instantanément."
+          "desc": "Plusieurs signatures numériques horodatées. PDF horodaté généré."
         }
       ]
     },
@@ -114,12 +114,12 @@
         {
           "icon": "✍️",
           "title": "Signatures multi-parties",
-          "desc": "N signatures tactiles simultanées. Valeur légale dans 150+ pays. QR actif 24h pour la police."
+          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
         },
         {
           "icon": "📄",
-          "title": "PDF certifié 150+ pays",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos. Reconnu par toutes les compagnies d'assurance."
+          "title": "PDF horodaté",
+          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
         },
         {
           "icon": "🚔",
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "Standard international",
-      "text": "Notre PDF numérique est reconnu par les compagnies d'assurance dans plus de 50 pays. Supérieur au constat papier : horodaté, signé numériquement, inviolable."
+      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
     },
     "finalCta": {
       "title": "Prêt pour ton constat amiable numérique ?",
@@ -355,7 +355,7 @@
       },
       {
         "title": "3. Description du service",
-        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF horodaté signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
       },
       {
         "title": "4. Tarification",
@@ -363,7 +363,7 @@
       },
       {
         "title": "5. Valeur légale",
-        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+        "text": "Le document numérique généré par boom.contact constitue un dossier numérique horodaté de l'accident, destiné à être transmis à votre assureur. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
       },
       {
         "title": "6. Responsabilité",
@@ -420,7 +420,7 @@
     "trust": {
       "stripe": "🔒 Paiement sécurisé via Stripe (PCI-DSS)",
       "no_expiry": "📄 Crédits sans date d'expiration",
-      "worldwide": "🌍 Document numérique certifié · valable dans 150+ pays",
+      "worldwide": "🌍 Dossier numérique horodaté",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
     },
     "legal": "En achetant, vous acceptez les CGU de boom.contact.\nRemboursement impossible après génération du PDF.",
@@ -469,7 +469,7 @@
     "trust_stripe": "Paiement Stripe sécurisé PCI-DSS",
     "trust_no_expiry": "Crédits sans expiration",
     "trust_whatsapp": "Partageable par WhatsApp",
-    "trust_worldwide": "Valable dans 150+ pays",
+    "trust_worldwide": "Multilingue",
     "trust_invoice": "Facture PDF automatique",
     "trust_fleet": "Idéal flottes entreprise",
     "why_title": "POURQUOI AVOIR DES CRÉDITS D'AVANCE ?",
@@ -478,7 +478,7 @@
     "scenario_company_title": "Véhicule de société",
     "scenario_company_text": "Votre livreur a un accrochage. Transférez-lui un crédit instantanément depuis votre mobile.",
     "scenario_abroad_title": "En voyage à l'étranger",
-    "scenario_abroad_text": "Accident en Allemagne, Australie ou Japon. Votre constat est reconnu dans 150+ pays.",
+    "scenario_abroad_text": "Accident en Allemagne, Australie ou Japon. Interface disponible en plusieurs langues.",
     "pkg_single_label": "1 constat",
     "pkg_single_desc": "Pour un accident ponctuel",
     "pkg_pack3_label": "3 constats",

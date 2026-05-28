@@ -348,7 +348,7 @@ export function PartyUnavailableModal({ onConfirm, onCancel }: Props) {
               <div className="rounded-[10px] mb-[18px] text-xs px-3.5 py-3 leading-[1.6]" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
                 <strong style={{ color: 'var(--boom)' }}>Déclaration unilatérale de sinistre</strong><br/>
                 Raison : <strong>{selected.label}</strong><br/>
-                Ce document est légalement valable auprès de votre assurance dans les 46 pays signataires de la Convention Européenne.
+                Ce dossier numérique horodaté documente votre déclaration. Il est à transmettre à votre assureur ou aux autorités compétentes.
               </div>
 
               {/* Référence police */}

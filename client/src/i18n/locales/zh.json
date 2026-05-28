@@ -16,7 +16,7 @@
     "unknown": "未填写"
   },
   "landing": {
-    "badge": "全球首款应用",
+    "badge": "数字事故报告",
     "hero": {
       "line1": "事故",
       "line2": "之后",
@@ -27,7 +27,7 @@
     "cta": {
       "start": "开始填写事故报告",
       "pricing": "查看价格 →",
-      "from": "起价 CHF/€ 4.90 · 全球有效",
+      "from": "起价 CHF/€ 4.90",
       "free": "免费 · 无需注册 · RGPD"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "签署并发送",
-          "desc": "两个带时间戳的数字签名。即时生成认证PDF。"
+          "desc": "Multiple timestamped digital signatures. Timestamped PDF generated."
         }
       ]
     },
@@ -114,12 +114,12 @@
         {
           "icon": "✍️",
           "title": "多方签名",
-          "desc": "同时支持N个触控签名。在150+个国家具有法律效力。QR码24小时有效供警方使用。"
+          "desc": "支持多个同时触控签名。QR码24小时有效供警方使用。"
         },
         {
           "icon": "📄",
-          "title": "150+国认证PDF",
-          "desc": "完整数字文件：证人、第三方损伤、备注、草图、照片。获所有保险公司认可。"
+          "title": "带时间戳的PDF",
+          "desc": "完整数字文件：证人、第三方损伤、备注、草图、照片。"
         },
         {
           "icon": "🚔",
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "国际标准",
-      "text": "我们的数字PDF获50多个国家保险公司认可。优于纸质事故报告：带时间戳、数字签名、不可篡改。"
+      "text": "我们的数字PDF带时间戳并经数字签名，可提交给您的保险公司。"
     },
     "finalCta": {
       "title": "发生事故时已准备好了吗？",
@@ -354,7 +354,7 @@
       },
       {
         "title": "3. Description du service",
-        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF horodaté signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
       },
       {
         "title": "4. Tarification",
@@ -362,7 +362,7 @@
       },
       {
         "title": "5. Valeur légale",
-        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+        "text": "Le document numérique généré par boom.contact constitue un dossier numérique horodaté de l'accident, destiné à être transmis à votre assureur. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
       },
       {
         "title": "6. Responsabilité",
@@ -419,7 +419,7 @@
     "trust": {
       "stripe": "🔒 通过 Stripe 安全支付（PCI-DSS）",
       "no_expiry": "📄 积分无过期日期",
-      "worldwide": "🌍 经认证的数字文件 · 在 150 多个国家有效",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, 瑞士"
     },
     "legal": "购买即表示您接受 boom.contact 的使用条款。\nPDF 生成后不可退款。",

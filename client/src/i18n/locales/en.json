@@ -16,18 +16,18 @@
     "unknown": "Not provided"
   },
   "landing": {
-    "badge": "World's first app",
+    "badge": "Digital accident report",
     "hero": {
       "line1": "AFTER",
       "line2": "THE BOOM",
       "line3": "THE",
       "line4": "CONTACT"
     },
-    "subtitle": "Complete your digital accident report in 5 minutes. Universal OCR, shared QR code, dual digital signature, certified PDF. Valid in 150+ countries.",
+    "subtitle": "Complete your digital accident report in 5 minutes. Universal OCR, shared QR code, dual digital signature, timestamped PDF.",
     "cta": {
       "start": "Start a report",
       "pricing": "View pricing →",
-      "from": "FROM CHF/€ 4.90 · VALID WORLDWIDE",
+      "from": "FROM CHF/€ 4.90",
       "free": "FREE · NO SIGN-UP · GDPR"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Sign & send",
-          "desc": "Two timestamped digital signatures. Certified PDF instantly."
+          "desc": "Multiple timestamped digital signatures. Timestamped PDF generated."
         }
       ]
     },
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Multi-party signatures",
-          "desc": "N simultaneous touch signatures. Legal validity in 150+ countries. QR active for 24h for the police."
+          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "PDF certified in 150+ countries",
+          "title": "Timestamped PDF",
           "desc": "Complete digital document: witnesses, third-party damage, observations, sketch, photos. Recognised by all insurance companies."
         },
         {
@@ -355,7 +355,7 @@
       },
       {
         "title": "3. Service description",
-        "text": "boom.contact enables: (a) document capture by OCR (registration, green card); (b) real-time session sharing between drivers via QR code; (c) generation of a digitally signed certified PDF; (d) sending the PDF by email to each driver. The service does not replace each driver's legal obligation to declare the claim to their own insurer within the contractual timeframe."
+        "text": "boom.contact enables: (a) document capture by OCR (registration, green card); (b) real-time session sharing between drivers via QR code; (c) generation of a digitally signed timestamped PDF; (d) sending the PDF by email to each driver. The service does not replace each driver's legal obligation to declare the claim to their own insurer within the contractual timeframe."
       },
       {
         "title": "4. Pricing",
@@ -420,7 +420,7 @@
     "trust": {
       "stripe": "🔒 Secure payment via Stripe (PCI-DSS)",
       "no_expiry": "📄 Credits with no expiration date",
-      "worldwide": "🌍 Certified digital document · valid in 150+ countries",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Switzerland"
     },
     "legal": "By purchasing, you agree to boom.contact's Terms of Use.\nRefunds are not possible after the PDF has been generated.",
@@ -469,7 +469,7 @@
     "trust_stripe": "Stripe secure payment PCI-DSS",
     "trust_no_expiry": "Credits never expire",
     "trust_whatsapp": "Shareable via WhatsApp",
-    "trust_worldwide": "Valid in 150+ countries",
+    "trust_worldwide": "Multilingual",
     "trust_invoice": "Automatic PDF invoice",
     "trust_fleet": "Ideal for corporate fleets",
     "why_title": "WHY KEEP CREDITS IN ADVANCE?",
@@ -478,7 +478,7 @@
     "scenario_company_title": "Company vehicle",
     "scenario_company_text": "Your driver has a fender bender. Transfer a credit instantly from your phone.",
     "scenario_abroad_title": "Travelling abroad",
-    "scenario_abroad_text": "Accident in Germany, Australia or Japan. Your report is recognized in 150+ countries.",
+    "scenario_abroad_text": "Accident in Germany, Australia or Japan. Interface available in many languages.",
     "pkg_single_label": "1 report",
     "pkg_single_desc": "For a one-time accident",
     "pkg_pack3_label": "3 reports",

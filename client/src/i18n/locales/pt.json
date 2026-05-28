@@ -27,7 +27,7 @@
     "cta": {
       "start": "Iniciar uma constatação",
       "pricing": "Ver os preços →",
-      "from": "A PARTIR DE CHF/€ 4.90 · VÁLIDO MUNDIALMENTE",
+      "from": "A PARTIR DE CHF/€ 4.90",
       "free": "GRATUITO · SEM INSCRIÇÃO · RGPD"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Assine & envie",
-          "desc": "Duas assinaturas digitais com carimbo de data/hora. PDF certificado instantaneamente."
+          "desc": "Várias assinaturas digitais com carimbo de data/hora. PDF com carimbo de data/hora gerado."
         }
       ]
     },
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Assinaturas multipartes",
-          "desc": "N assinaturas táteis simultâneas. Valor legal em 150+ países. QR ativo 24h para a polícia."
+          "desc": "Várias assinaturas táteis simultâneas. QR ativo 24h para a polícia."
         },
         {
           "icon": "📄",
-          "title": "PDF certificado 150+ países",
+          "title": "PDF com carimbo de data/hora",
           "desc": "Documento digital completo: testemunhas, danos a terceiros, observações, croqui, fotos. Reconhecido por todas as seguradoras."
         },
         {
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "Padrão internacional",
-      "text": "Nosso PDF digital é reconhecido pelas seguradoras em mais de 50 países. Superior ao constat em papel: com carimbo de data/hora, assinado digitalmente, inviolável."
+      "text": "Nosso PDF digital tem carimbo de data/hora e assinatura digital, para transmitir à sua seguradora."
     },
     "finalCta": {
       "title": "Preparado para um acidente?",
@@ -344,7 +344,7 @@
       },
       {
         "title": "3. Description du service",
-        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF horodaté signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
       },
       {
         "title": "4. Tarification",
@@ -352,7 +352,7 @@
       },
       {
         "title": "5. Valeur légale",
-        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+        "text": "Le document numérique généré par boom.contact constitue un dossier numérique horodaté de l'accident, destiné à être transmis à votre assureur. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
       },
       {
         "title": "6. Responsabilité",
@@ -409,7 +409,7 @@
     "trust": {
       "stripe": "🔒 Pagamento seguro via Stripe (PCI-DSS)",
       "no_expiry": "📄 Créditos sem data de expiração",
-      "worldwide": "🌍 Documento digital certificado · válido em 150+ países",
+      "worldwide": "🌍 Documento digital com carimbo de data/hora",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suíça"
     },
     "legal": "Ao comprar, você aceita os Termos de Uso do boom.contact.\nReembolso impossível após a geração do PDF.",

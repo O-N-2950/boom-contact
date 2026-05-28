@@ -22,11 +22,11 @@
       "line3": "ƏLAQƏ",
       "line4": "QURUN"
     },
-    "subtitle": "Rəqəmsal qəza hesabatını 5 dəqiqədə tamamlayın. Universal OCR, paylaşılan QR kod, ikili rəqəmsal imza, sertifikatlı PDF. 150+ ölkədə etibarlıdır.",
+    "subtitle": "Rəqəmsal qəza hesabatını 5 dəqiqədə tamamlayın. Universal OCR, paylaşılan QR kod, ikili rəqəmsal imza, vaxt damğalı PDF.",
     "cta": {
       "start": "Qəza protokolunu başlat",
       "pricing": "Qiymətlərə baxın →",
-      "from": "CHF/€ 4.90-DAN BAŞLAYARAQ · DÜNYA MİQYASINDA ETİBARLI",
+      "from": "CHF/€ 4.90-DAN BAŞLAYARAQ",
       "free": "PULSUZ · QEYDİYYATSIZ · GDPR"
     },
     "mockup": {
@@ -78,7 +78,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "İmzalayın və göndərin",
-          "desc": "İki vaxt damğalı rəqəmsal imza. Dərhal sertifikatlı PDF."
+          "desc": "Bir neçə vaxt damğalı rəqəmsal imza. Vaxt damğalı PDF yaradılır."
         }
       ]
     },
@@ -113,11 +113,11 @@
         {
           "icon": "✍️",
           "title": "Çoxtərəfli imzalar",
-          "desc": "N eyni vaxtda toxunma imzası. 150+ ölkədə hüquqi qüvvə. Polis üçün 24 saat aktiv QR."
+          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "150+ ölkədə sertifikatlı PDF",
+          "title": "Timestamped PDF",
           "desc": "Tam rəqəmsal sənəd: şahidlər, üçüncü tərəf zərəri, müşahidələr, eskiz, şəkillər. Bütün sığorta şirkətləri tərəfindən tanınır."
         },
         {
@@ -354,7 +354,7 @@
       },
       {
         "title": "3. Xidmətin təsviri",
-        "text": "boom.contact aşağıdakıları təmin edir: (a) OCR vasitəsilə sənədlərin tutulması (qeydiyyat, yaşıl kart); (b) QR kod vasitəsilə sürücülər arasında real vaxtda sessiya paylaşımı; (c) rəqəmsal imzalı sertifikatlı PDF-in yaradılması; (d) PDF-in hər sürücüyə e-poçtla göndərilməsi. Xidmət hər sürücünün müqavilə müddətləri daxilində qəzanı öz sığortaçısına bildirmək qanuni öhdəliyini əvəz etmir."
+        "text": "boom.contact aşağıdakıları təmin edir: (a) OCR vasitəsilə sənədlərin tutulması (qeydiyyat, yaşıl kart); (b) QR kod vasitəsilə sürücülər arasında real vaxtda sessiya paylaşımı; (c) rəqəmsal imzalı vaxt damğalı PDF-in yaradılması; (d) PDF-in hər sürücüyə e-poçtla göndərilməsi. Xidmət hər sürücünün müqavilə müddətləri daxilində qəzanı öz sığortaçısına bildirmək qanuni öhdəliyini əvəz etmir."
       },
       {
         "title": "4. Qiymətləndirmə",
@@ -419,7 +419,7 @@
     "trust": {
       "stripe": "🔒 Stripe vasitəsilə təhlükəsiz ödəniş (PCI-DSS)",
       "no_expiry": "📄 İstifadə müddəti olmayan kreditlər",
-      "worldwide": "🌍 Sertifikatlı rəqəmsal sənəd · 150+ ölkədə etibarlı",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, İsveçrə"
     },
     "legal": "Satın almaqla boom.contact-ın İstifadə Şərtlərini qəbul edirsiniz.\nPDF yaradıldıqdan sonra geri ödəniş mümkün deyil.",

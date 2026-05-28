@@ -148,7 +148,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   fr: {
     title: 'CONSTAT AMIABLE D\'ACCIDENT',
-    subtitle: 'Document numerique certifie - Valable mondialement',
+    subtitle: 'Dossier numerique horodate',
     s1: '1. ACCIDENT', date: 'DATE', time: 'HEURE', country: 'PAYS',
     injuries: 'BLESSES ?', yes: 'OUI', no: 'NON', location: 'LIEU DE L\'ACCIDENT',
     s2: '2. CONDUCTEURS', vehicleA: 'VEHICULE A', vehicleB: 'VEHICULE B',
@@ -185,7 +185,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   de: {
     title: 'EUROPAEISCHER UNFALLBERICHT',
-    subtitle: 'Digitales zertifiziertes Dokument - Weltweite Gueltigkeit',
+    subtitle: 'Zeitgestempeltes digitales Dokument',
     s1: '1. UNFALL', date: 'DATUM', time: 'UHRZEIT', country: 'LAND',
     injuries: 'VERLETZTE ?', yes: 'JA', no: 'NEIN', location: 'UNFALLORT',
     s2: '2. FAHRER', vehicleA: 'FAHRZEUG A', vehicleB: 'FAHRZEUG B',
@@ -222,7 +222,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   it: {
     title: 'CONSTATAZIONE AMICHEVOLE D\'INCIDENTE',
-    subtitle: 'Documento digitale certificato - Valido in tutto il mondo',
+    subtitle: 'Documento digitale con marca temporale',
     s1: '1. INCIDENTE', date: 'DATA', time: 'ORA', country: 'PAESE',
     injuries: 'FERITI ?', yes: 'SI', no: 'NO', location: 'LUOGO DELL\'INCIDENTE',
     s2: '2. CONDUCENTI', vehicleA: 'VEICOLO A', vehicleB: 'VEICOLO B',
@@ -259,7 +259,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   en: {
     title: 'EUROPEAN ACCIDENT STATEMENT',
-    subtitle: 'Certified digital document - Valid worldwide',
+    subtitle: 'Timestamped digital report',
     s1: '1. ACCIDENT', date: 'DATE', time: 'TIME', country: 'COUNTRY',
     injuries: 'INJURIES ?', yes: 'YES', no: 'NO', location: 'ACCIDENT LOCATION',
     s2: '2. DRIVERS', vehicleA: 'VEHICLE A', vehicleB: 'VEHICLE B',
@@ -296,7 +296,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   es: {
     title: 'DECLARACION AMISTOSA DE ACCIDENTE',
-    subtitle: 'Documento digital certificado - Valido en todo el mundo',
+    subtitle: 'Documento digital con sello de tiempo',
     s1: '1. ACCIDENTE', date: 'FECHA', time: 'HORA', country: 'PAIS',
     injuries: 'HERIDOS ?', yes: 'SI', no: 'NO', location: 'LUGAR DEL ACCIDENTE',
     s2: '2. CONDUCTORES', vehicleA: 'VEHICULO A', vehicleB: 'VEHICULO B',
@@ -330,7 +330,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   pt: {
     title: 'DECLARACAO AMIGAVEL DE ACIDENTE',
-    subtitle: 'Documento digital certificado - Valido em todo o mundo',
+    subtitle: 'Documento digital com carimbo de data/hora',
     s1: '1. ACIDENTE', date: 'DATA', time: 'HORA', country: 'PAIS',
     injuries: 'FERIDOS ?', yes: 'SIM', no: 'NAO', location: 'LOCAL DO ACIDENTE',
     s2: '2. CONDUTORES', vehicleA: 'VEICULO A', vehicleB: 'VEICULO B',
@@ -364,7 +364,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   nl: {
     title: 'EUROPEES AANRIJDINGSFORMULIER',
-    subtitle: 'Gecertificeerd digitaal document - Wereldwijd geldig',
+    subtitle: 'Tijdgestempeld digitaal document',
     s1: '1. AANRIJDING', date: 'DATUM', time: 'TIJDSTIP', country: 'LAND',
     injuries: 'GEWONDEN ?', yes: 'JA', no: 'NEE', location: 'PLAATS VAN AANRIJDING',
     s2: '2. BESTUURDERS', vehicleA: 'VOERTUIG A', vehicleB: 'VOERTUIG B',
@@ -398,7 +398,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   pl: {
     title: 'EUROPEJSKIE OSWIADCZENIE O WYPADKU',
-    subtitle: 'Certyfikowany dokument cyfrowy - Wazny na calym swiecie',
+    subtitle: 'Cyfrowy dokument ze znacznikiem czasu',
     s1: '1. WYPADEK', date: 'DATA', time: 'GODZINA', country: 'KRAJ',
     injuries: 'RANNI ?', yes: 'TAK', no: 'NIE', location: 'MIEJSCE WYPADKU',
     s2: '2. KIEROWCY', vehicleA: 'POJAZD A', vehicleB: 'POJAZD B',
@@ -432,7 +432,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   ru: {
     title: 'EVROPEISKOE IZVESHENIE OB AVARII',
-    subtitle: 'Sertifitsirovannyi tsifrovoi dokument - Deistvitelen vo vsem mire',
+    subtitle: 'Tsifrovoi dokument s metkoi vremeni',
     s1: '1. AVARIA', date: 'DATA', time: 'VREMIA', country: 'STRANA',
     injuries: 'POSTRADAVSHIE ?', yes: 'DA', no: 'NET', location: 'MESTO AVARII',
     s2: '2. VODITELI', vehicleA: 'AVTOMOBIL A', vehicleB: 'AVTOMOBIL B',
@@ -466,7 +466,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   uk: {
     title: 'IeVROPEISKE POVIDOMLENNIa PRO DTP',
-    subtitle: 'Sertyfikovanyi tsyfrovyi dokument - Diie v usomu sviti',
+    subtitle: 'Tsyfrovyi dokument z poznachkoiu chasu',
     s1: '1. DTP', date: 'DATA', time: 'ChAS', country: 'KRAINA',
     injuries: 'POSTRAZhDALI ?', yes: 'TAK', no: 'NI', location: 'MISIeTsE DTP',
     s2: '2. VIiYI', vehicleA: 'AVTO A', vehicleB: 'AVTO B',
@@ -500,7 +500,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   zh: {
     title: 'OUZHOU JIAOTONGSHOUGUDAN',
-    subtitle: 'Renzhen shuziwenjian - Quanqiu youxiao',
+    subtitle: 'Dai shijianchuo de shuzi wenjian',
     s1: '1. SHIGU', date: 'RIQI', time: 'SHIJIAN', country: 'GUOJIA',
     injuries: 'SHANGYUAN ?', yes: 'SHI', no: 'FOU', location: 'SHIGU DIDIAN',
     s2: '2. SIJI', vehicleA: 'CHELIANG A', vehicleB: 'CHELIANG B',
@@ -534,7 +534,7 @@ const LABELS: Record<PdfLang, PdfLabels> = {
 
   ar: {
     title: 'TAQRIR HADITH MURUR URUBI',
-    subtitle: 'Wathiqa raqmiya muassada - Salida fi jamia anha al-alam',
+    subtitle: 'Wathiqa raqmiya muarrakha bil-tawqit',
     s1: '1. AL-HADITH', date: 'AT-TARIKH', time: 'AL-WAQT', country: 'AD-DAWLA',
     injuries: 'MUSABIN ?', yes: 'NAAM', no: 'LA', location: 'MAWQIA AL-HADITH',
     s2: '2. AS-SUWWAQ', vehicleA: 'AL-ARABIYA A', vehicleB: 'AL-ARABIYA B',

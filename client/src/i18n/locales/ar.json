@@ -27,7 +27,7 @@
     "cta": {
       "start": "بدء تقرير الحادثة",
       "pricing": "عرض الأسعار →",
-      "from": "ابتداءً من CHF/€ 4.90 · صالح عالمياً",
+      "from": "ابتداءً من CHF/€ 4.90",
       "free": "مجاني · بدون تسجيل · RGPD"
     },
     "mockup": {
@@ -120,7 +120,7 @@
     },
     "legal": {
       "title": "معيار دولي",
-      "text": "ملف PDF الرقمي الخاص بنا معترف به من قبل شركات التأمين في أكثر من 50 دولة. يتفوق على التقرير الورقي: مؤرخ بالتوقيت، موقّع رقمياً، غير قابل للتلاعب."
+      "text": "ملف PDF الرقمي الخاص بنا مؤرخ بالتوقيت وموقّع رقمياً، لإرساله إلى شركة التأمين الخاصة بك."
     },
     "finalCta": {
       "title": "هل أنت مستعد في حالة وقوع حادث؟",
@@ -334,7 +334,7 @@
       },
       {
         "title": "3. Description du service",
-        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF certifié signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
+        "text": "boom.contact permet : (a) la capture de documents par OCR (permis, carte verte) ; (b) le partage d'une session temps réel entre deux conducteurs via QR code ; (c) la génération d'un PDF horodaté signé numériquement ; (d) l'envoi du PDF par email à chaque conducteur. Le service ne se substitue pas à l'obligation légale de chaque conducteur de déclarer le sinistre à son propre assureur dans les délais prévus par son contrat."
       },
       {
         "title": "4. Tarification",
@@ -342,7 +342,7 @@
       },
       {
         "title": "5. Valeur légale",
-        "text": "Le document numérique généré par boom.contact constitue un constat amiable d'accident reconnu par les compagnies d'assurance. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
+        "text": "Le document numérique généré par boom.contact constitue un dossier numérique horodaté de l'accident, destiné à être transmis à votre assureur. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
       },
       {
         "title": "6. Responsabilité",
@@ -399,7 +399,7 @@
     "trust": {
       "stripe": "🔒 دفع آمن عبر Stripe (PCI-DSS)",
       "no_expiry": "📄 رصيد بدون تاريخ انتهاء صلاحية",
-      "worldwide": "🌍 وثيقة رقمية معتمدة · صالحة في أكثر من 150 دولة",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — كورجيني، جورا، سويسرا"
     },
     "legal": "بالشراء، فإنك توافق على شروط الاستخدام الخاصة بـ boom.contact.\nلا يمكن استرداد المبلغ بعد إنشاء PDF.",

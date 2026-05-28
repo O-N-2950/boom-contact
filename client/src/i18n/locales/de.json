@@ -16,18 +16,18 @@
     "unknown": "Nicht angegeben"
   },
   "landing": {
-    "badge": "Erste weltweite App",
+    "badge": "Digitaler Unfallbericht",
     "hero": {
       "line1": "NACH",
       "line2": "DEM BOOM",
       "line3": "DER",
       "line4": "KONTAKT"
     },
-    "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Universelle OCR, geteilter QR-Code, doppelte digitale Unterschrift, zertifiziertes PDF. Gültig in 150+ Ländern.",
+    "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Universelle OCR, geteilter QR-Code, doppelte digitale Unterschrift, zeitgestempeltes PDF.",
     "cta": {
       "start": "Protokoll starten",
       "pricing": "Preise ansehen →",
-      "from": "AB CHF/€ 4.90 · WELTWEIT GÜLTIG",
+      "from": "AB CHF/€ 4.90",
       "free": "KOSTENLOS · OHNE REGISTRIERUNG · DSGVO"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Unterschreiben & senden",
-          "desc": "Zwei zeitgestempelte digitale Unterschriften. PDF sofort zertifiziert."
+          "desc": "Mehrere zeitgestempelte digitale Unterschriften. Zeitgestempeltes PDF erzeugt."
         }
       ]
     },
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Mehrparteien-Unterschriften",
-          "desc": "N gleichzeitige Touch-Unterschriften. Rechtsgültigkeit in 150+ Ländern. QR 24h aktiv für die Polizei."
+          "desc": "Mehrere gleichzeitige Touch-Unterschriften. QR 24h aktiv für die Polizei."
         },
         {
           "icon": "📄",
-          "title": "Zertifiziertes PDF 150+ Länder",
+          "title": "Zeitgestempeltes PDF",
           "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Anmerkungen, Skizze, Fotos. Von allen Versicherungsgesellschaften anerkannt."
         },
         {
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "Internationaler Standard",
-      "text": "Unser digitales PDF wird von Versicherungsgesellschaften in mehr als 50 Ländern anerkannt. Überlegen gegenüber dem Papierprotokoll: zeitgestempelt, digital signiert, manipulationssicher."
+      "text": "Unser digitales PDF ist zeitgestempelt und digital signiert, zur Übermittlung an Ihre Versicherung."
     },
     "finalCta": {
       "title": "Bereit für den Ernstfall?",
@@ -363,7 +363,7 @@
       },
       {
         "title": "5. Rechtswert",
-        "text": "Das von boom.contact erstellte Dokument ist ein von Versicherungen anerkanntes Unfallprotokoll. PEP's Swiss SA garantiert nicht die Akzeptanz in allen Ländern."
+        "text": "Das von boom.contact erstellte Dokument ist ein zeitgestempeltes digitales Unfallprotokoll, zur Übermittlung an Ihre Versicherung. PEP's Swiss SA garantiert nicht die Akzeptanz in allen Ländern."
       },
       {
         "title": "6. Haftung",
@@ -420,7 +420,7 @@
     "trust": {
       "stripe": "🔒 Sichere Zahlung über Stripe (PCI-DSS)",
       "no_expiry": "📄 Credits ohne Ablaufdatum",
-      "worldwide": "🌍 Zertifiziertes digitales Dokument · gültig in 150+ Ländern",
+      "worldwide": "🌍 Zeitgestempeltes digitales Dokument",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Schweiz"
     },
     "legal": "Mit dem Kauf akzeptieren Sie die AGB von boom.contact.\nNach der PDF-Generierung ist keine Rückerstattung möglich.",

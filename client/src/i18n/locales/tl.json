@@ -27,7 +27,7 @@
     "cta": {
       "start": "Magsimula ng ulat",
       "pricing": "Tingnan ang presyo →",
-      "from": "Mula CHF/€ 4.90 · Tanggap sa buong mundo",
+      "from": "Mula CHF/€ 4.90",
       "free": "LIBRE · WALANG PAGPAPAREHISTRO · RGPD"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Pumirma at magpadala",
-          "desc": "Dalawang digital na lagda. Agad na certified PDF."
+          "desc": "Multiple timestamped digital signatures. Timestamped PDF generated."
         }
       ]
     },
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Maramihang lagda",
-          "desc": "N digital na lagda. Legal na halaga sa 150+ bansa."
+          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
         },
         {
           "icon": "📄",
-          "title": "PDF para sa 150+ bansa",
+          "title": "Timestamped PDF",
           "desc": "Kumpleto na digital na dokumento. Tinatanggap ng lahat ng insurance company."
         },
         {
@@ -419,7 +419,7 @@
     "trust": {
       "stripe": "🔒 Ligtas na bayad sa pamamagitan ng Stripe (PCI-DSS)",
       "no_expiry": "📄 Mga credit na walang petsa ng pag-expire",
-      "worldwide": "🌍 Digital na dokumento · Tinatanggap sa 150+ bansa",
+      "worldwide": "🌍 Timestamped digital report",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Suisse"
     },
     "legal": "Sa pagbili, tinatanggap mo ang mga tuntunin ng boom.contact.\nWalang refund pagkatapos makuha ang PDF.",

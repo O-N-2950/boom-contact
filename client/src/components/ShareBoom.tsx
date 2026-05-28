@@ -23,26 +23,26 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
     post_constat: {
       title: '🚗 Passe le mot !',
       subtitle: 'Tu viens de faire ton constat en 5 min. Tes amis et collègues méritent de savoir que ça existe.',
-      whatsapp: `💥 Je viens d'utiliser boom.contact pour faire un constat d'accident en 5 minutes depuis mon téléphone. OCR automatique, QR code, PDF certifié. Valable dans 150 pays. Télécharge-le avant d'en avoir besoin 👉 ${APP_URL}`,
-      sms: `Utilise boom.contact pour tes constats d'accident. Simple, rapide, mondial. ${APP_URL}`,
+      whatsapp: `💥 Je viens d'utiliser boom.contact pour faire un constat d'accident en 5 minutes depuis mon téléphone. OCR automatique, QR code, PDF horodaté. Télécharge-le avant d'en avoir besoin 👉 ${APP_URL}`,
+      sms: `Utilise boom.contact pour tes constats d'accident. Simple et rapide. ${APP_URL}`,
       email_subject: "boom.contact — Le constat numérique que tout conducteur devrait avoir",
-      email_body: `Salut,\n\nJe viens d'utiliser boom.contact pour faire un constat amiable numérique et c'est vraiment top.\n\n✅ Constat en 5 minutes\n✅ Scan automatique des documents\n✅ PDF certifié envoyé par email\n✅ Valable dans 150+ pays\n\nUtile d'avoir ça avant d'en avoir besoin !\n\n👉 ${APP_URL}\n`,
+      email_body: `Salut,\n\nJe viens d'utiliser boom.contact pour faire un constat amiable numérique et c'est vraiment top.\n\n✅ Constat en 5 minutes\n✅ Scan automatique des documents\n✅ PDF horodaté envoyé par email\n✅ Multilingue\n\nUtile d'avoir ça avant d'en avoir besoin !\n\n👉 ${APP_URL}\n`,
     },
     account: {
       title: '🎁 Partagez boom.contact',
       subtitle: 'Chaque conducteur devrait avoir boom.contact avant un accident. Partagez maintenant.',
-      whatsapp: `💥 Tu connais boom.contact ? L'app qui remplace le constat papier. Constat numérique en 5 min, QR code, PDF certifié, valable dans 150 pays. Gratuit pour essayer 👉 ${APP_URL}`,
+      whatsapp: `💥 Tu connais boom.contact ? L'app de constat amiable numérique. Constat numérique en 5 min, QR code, PDF horodaté. Gratuit pour essayer 👉 ${APP_URL}`,
       sms: `boom.contact — fais tes constats d'accident depuis ton téléphone en 5 min. ${APP_URL}`,
       email_subject: "boom.contact — L'app constat que tout conducteur devrait avoir",
-      email_body: `Bonjour,\n\nJe te recommande boom.contact, une application pour faire des constats amiables numériques.\n\n✅ Constat en 5 minutes depuis ton téléphone\n✅ Reconnaissance automatique des documents\n✅ PDF certifié envoyé par email\n✅ Valable dans 150+ pays\n\n👉 ${APP_URL}\n`,
+      email_body: `Bonjour,\n\nJe te recommande boom.contact, une application pour faire des constats amiables numériques.\n\n✅ Constat en 5 minutes depuis ton téléphone\n✅ Reconnaissance automatique des documents\n✅ PDF horodaté envoyé par email\n✅ Multilingue\n\n👉 ${APP_URL}\n`,
     },
     landing: {
       title: '📲 Partager boom.contact',
       subtitle: 'Fais découvrir l\'app constat à tes proches. Tu pourrais leur sauver la mise un jour.',
-      whatsapp: `💥 boom.contact — le constat numérique en 5 minutes. Scan des documents, QR code, PDF certifié. Valable dans 150 pays. À avoir sur son téléphone avant un accident 👉 ${APP_URL}`,
+      whatsapp: `💥 boom.contact — le constat numérique en 5 minutes. Scan des documents, QR code, PDF horodaté. À avoir sur son téléphone avant un accident 👉 ${APP_URL}`,
       sms: `boom.contact — constat numérique en 5 min. ${APP_URL}`,
       email_subject: "boom.contact — Le constat numérique à avoir sur son téléphone",
-      email_body: `Bonjour,\n\nboom.contact est une app pour faire des constats d'accident depuis son téléphone.\n\n✅ 5 minutes chrono\n✅ Scan automatique permis et carte verte\n✅ PDF certifié envoyé par email\n✅ Valable dans 150+ pays\n\n👉 ${APP_URL}\n`,
+      email_body: `Bonjour,\n\nboom.contact est une app pour faire des constats d'accident depuis son téléphone.\n\n✅ 5 minutes chrono\n✅ Scan automatique permis et carte verte\n✅ PDF horodaté envoyé par email\n✅ Multilingue\n\n👉 ${APP_URL}\n`,
     },
   };
 
@@ -174,7 +174,7 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
       {/* Stats sociales — preuve sociale */}
       <div className="rounded-xl flex gap-5 justify-center px-4 py-3" style={{ margin: '16px 20px 0', background: 'rgba(255,255,255,0.03)' }}>
         {[
-          ['150+', 'pays reconnus'],
+          ['5 min', 'pour un constat'],
           ['5 min', 'pour un constat'],
           ['0€', 'pour essayer'],
         ].map(([val, label]) => (

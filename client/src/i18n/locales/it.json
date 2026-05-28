@@ -16,18 +16,18 @@
     "unknown": "Non specificato"
   },
   "landing": {
-    "badge": "Prima app mondiale",
+    "badge": "Constatazione digitale",
     "hero": {
       "line1": "DOPO",
       "line2": "IL BOOM",
       "line3": "IL",
       "line4": "CONTACT"
     },
-    "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, doppia firma digitale, PDF certificato. Valido in 150+ paesi.",
+    "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, doppia firma digitale, PDF con marca temporale.",
     "cta": {
       "start": "Avvia una constatazione",
       "pricing": "Vedi i prezzi →",
-      "from": "A PARTIRE DA CHF/€ 4.90 · VALIDO IN TUTTO IL MONDO",
+      "from": "A PARTIRE DA CHF/€ 4.90",
       "free": "GRATUITO · SENZA REGISTRAZIONE · GDPR"
     },
     "mockup": {
@@ -79,7 +79,7 @@
           "step": "05",
           "icon": "✍️",
           "title": "Firma & invia",
-          "desc": "Due firme digitali con marca temporale. PDF certificato istantaneamente."
+          "desc": "Più firme digitali con marca temporale. PDF con marca temporale generato."
         }
       ]
     },
@@ -114,11 +114,11 @@
         {
           "icon": "✍️",
           "title": "Firme multi-parti",
-          "desc": "N firme tattili simultanee. Valore legale in 150+ paesi. QR attivo 24h per la polizia."
+          "desc": "Più firme tattili simultanee. QR attivo 24h per la polizia."
         },
         {
           "icon": "📄",
-          "title": "PDF certificato 150+ paesi",
+          "title": "Timestamped PDF",
           "desc": "Documento digitale completo: testimoni, danni a terzi, osservazioni, schizzo, foto. Riconosciuto da tutte le compagnie assicurative."
         },
         {
@@ -140,7 +140,7 @@
     },
     "legal": {
       "title": "Standard internazionale",
-      "text": "Il nostro PDF digitale è riconosciuto dalle compagnie assicurative in più di 50 paesi. Superiore al modulo cartaceo: datato, firmato digitalmente, inviolabile."
+      "text": "Il nostro PDF digitale è datato e firmato digitalmente, da trasmettere alla tua assicurazione."
     },
     "finalCta": {
       "title": "Pronto in caso di incidente?",
@@ -355,7 +355,7 @@
       },
       {
         "title": "3. Descrizione del servizio",
-        "text": "boom.contact consente: (a) acquisizione di documenti tramite OCR; (b) condivisione di sessione in tempo reale tramite QR; (c) generazione di PDF certificato firmato digitalmente; (d) invio del PDF via email. Il servizio non sostituisce l'obbligo di denuncia del sinistro al proprio assicuratore."
+        "text": "boom.contact consente: (a) acquisizione di documenti tramite OCR; (b) condivisione di sessione in tempo reale tramite QR; (c) generazione di PDF con marca temporale firmato digitalmente; (d) invio del PDF via email. Il servizio non sostituisce l'obbligo di denuncia del sinistro al proprio assicuratore."
       },
       {
         "title": "4. Tariffazione",
@@ -420,7 +420,7 @@
     "trust": {
       "stripe": "🔒 Pagamento sicuro tramite Stripe (PCI-DSS)",
       "no_expiry": "📄 Crediti senza data di scadenza",
-      "worldwide": "🌍 Documento digitale certificato · valido in 150+ paesi",
+      "worldwide": "🌍 Documento digitale con marca temporale",
       "company": "🏛️ PEP's Swiss SA — Courgenay, Jura, Svizzera"
     },
     "legal": "Acquistando, accetti i Termini e Condizioni di boom.contact.\nRimborso impossibile dopo la generazione del PDF.",

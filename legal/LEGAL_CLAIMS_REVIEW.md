@@ -167,3 +167,23 @@ Conformément à PRIVACY.md :
 - PRIVACY.md (politique de confidentialité)
 - EMERGENCY_DISCLAIMER.md (texte d'urgence)
 - DPA_SUBPROCESSORS.md (sous-traitants et engagements)
+
+---
+
+## Addendum — 28 mai 2026 : nettoyage exhaustif des claims (post-Sprint 1)
+
+L'audit post-Sprint 1 a révélé que la suppression initiale des claims ne couvrait que le flow constat (`PDFDownload`) et `pdf.service.ts`. Les surfaces suivantes contenaient **encore** les anciens claims et ont été assainies :
+
+- **`server/src/services/pdf.labels.ts`** — sous-titres du PDF généré, dans 12 langues (« Document numérique certifié · Valable mondialement », « Certified digital document · Valid worldwide », etc.) → remplacés par « Dossier numérique horodaté » / « Timestamped digital report » / équivalents par langue.
+- **`server/src/services/stripe.service.ts`** — description produit Stripe « 1 constat numérique certifié » → « horodaté ».
+- **~48 fichiers de locale** (`client/src/i18n/locales/*.json`) — clés `landing.badge` (« Première app mondiale » / « World's first app »), `landing.cta.from` (« VALABLE MONDIALEMENT »), `landing.subtitle`, `landing.how.steps[4].desc`, `landing.features.list[5].desc` (« Valeur légale dans 150+ pays »), `landing.features.list[6].title` (« PDF certifié 150+ pays »), `landing.features.list[7].desc` (« Reconnu par toutes les compagnies d'assurance »), `pricing.trust.worldwide`, `pricingPage.trust_worldwide`, `pricingPage.scenario_abroad_text`, `cgu.cgu_sections[2].text`, `cgu.cgu_sections[4].text`, et le claim marketing « reconnu par les compagnies d'assurance dans plus de 50 pays · Supérieur au constat papier · inviolable ».
+- **Pages publiques** — `LandingPage.tsx` (FAQ « accepté par les assureurs dans plus de 150 pays · valeur probante supérieure », badges, tuiles), `B2BPage.tsx` (« world's first », « certified accident data », « 150+ countries »), `ShareBoom.tsx` (messages de partage), `PartyUnavailableModal.tsx` (« légalement valable dans les 46 pays »).
+
+**Résultat** : balayage final `client/src` + `server/src` = **zéro** occurrence des termes à risque.
+
+**Classé acceptable (non modifié)** :
+- `boom-contact-production.up.railway.app` dans `server/src/index.ts` (allowlist CORS) et `stripe.service.ts` (fallback `PUBLIC_ORIGIN` ; la prod utilise la variable d'environnement `www.boom.contact`) — configuration interne, non visible utilisateur.
+- Termes factuels : « prestataire certifié PCI-DSS » (Stripe l'est réellement), « Certificate of Motor Insurance », « certificat d'immatriculation », « registration certificate », noms de types de documents OCR.
+- Titre de section CGU « 5. Valeur légale » (intitulé ; le texte de la section est prudent).
+
+**À valider juridiquement** : l'ensemble du wording prudent retenu (« dossier numérique horodaté », « destiné à être transmis à votre assureur », « ne garantit pas l'acceptation ») doit être confirmé par un juriste suisse/européen avant publication publique.

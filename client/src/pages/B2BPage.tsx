@@ -34,7 +34,7 @@ export function B2BPage({ onBack }: Props) {
           <span style={{ color: BOOM }}>80%</span>
         </h1>
         <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)', maxWidth: 640, margin: '0 auto 40px', lineHeight: 1.7 }}>
-          boom.contact is the world's first digital accident report platform. Integrate our API to receive structured, certified accident data instantly -- no more paper forms, no more manual data entry.
+          boom.contact is a digital accident report platform. Integrate our API to receive structured, timestamped accident data -- no more paper forms, no more manual data entry.
         </p>
         <button
           onClick={handleDemo}
@@ -55,9 +55,9 @@ export function B2BPage({ onBack }: Props) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
           {[
             { value: '50', label: 'Languages supported', icon: '🌍' },
-            { value: '150+', label: 'Countries covered', icon: '🗺' },
+            { value: '50', label: 'Languages supported', icon: '🗺' },
             { value: '5 min', label: 'Average completion', icon: '⚡' },
-            { value: 'PDF', label: 'Certified & timestamped', icon: '📄' },
+            { value: 'PDF', label: 'Structured & timestamped', icon: '📄' },
           ].map((stat) => (
             <div key={stat.label} style={{
               background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
@@ -141,7 +141,7 @@ export function B2BPage({ onBack }: Props) {
             { step: '1', title: 'Policyholder has an accident', desc: 'They open boom.contact on their phone (or your branded app via SDK).' },
             { step: '2', title: 'Both drivers fill the report', desc: 'QR code pairing. OCR scans documents. Voice input in 50 languages. 5 minutes.' },
             { step: '3', title: 'API webhook fires', desc: 'Your system receives structured JSON: vehicles, drivers, insurance, circumstances, photos, GPS, signatures.' },
-            { step: '4', title: 'Auto-create claim', desc: 'Pre-populate your claims system. Certified PDF attached. Blockchain timestamp for legal proof.' },
+            { step: '4', title: 'Auto-create claim', desc: 'Pre-populate your claims system. Structured PDF attached. Cryptographic timestamp (OpenTimestamps).' },
           ].map((item, i) => (
             <div key={item.step} style={{ display: 'flex', gap: 20, marginBottom: i < 3 ? 32 : 0, alignItems: 'flex-start' }}>
               <div style={{
@@ -223,7 +223,7 @@ export function B2BPage({ onBack }: Props) {
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '24px', textAlign: 'center' }}>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', lineHeight: 1.8 }}>
           boom.contact &middot; PEP's Swiss SA &middot; IDE CHE-476.484.632 &middot; Bellevue 7, 2950 Courgenay, Jura, Suisse<br />
-          World's first digital accident report &middot; 50 languages &middot; 150+ countries &middot; Blockchain certified
+          Digital accident report &middot; 50 languages &middot; Multi-country &middot; Cryptographic timestamp
         </div>
       </footer>
     </div>
