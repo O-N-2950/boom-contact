@@ -501,3 +501,21 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Placeholders bloquants restants (valeurs externes)
 - `client/public/.well-known/apple-app-site-association` L7 : `TEAMID_TO_REPLACE` → Apple Team ID réel requis avant upload App Store
 - `client/public/.well-known/assetlinks.json` L8 : `SHA256_CERT_FINGERPRINT_TO_REPLACE` → SHA-256 Play App Signing requis avant upload Google Play
+
+---
+
+## Sprint 9 — Permanent Compliance Guard + Legal Handoff + Reviewer Account (commit ebb8ce1)
+**Date** : 2026-05-28
+- **Garde-fou permanent claims** : `scripts/check-claims.ts` (300 lignes, 42 patterns FR/EN/DE/ES/IT, 9 catégories : geographic/certification/legal/acceptance/substitution/fake-reviews/inflated/cea). Scan 210 fichiers (client/index.html + client/public + client/src + locales + server/src + shared + docs + legal). Classification A_BLOCKING / B_DOC_ACCEPTABLE / C_FACTUAL_WHITELIST. AUDIT_FILES explicite. Détection négations sémantiques. Exit 1 si vrai risque. **Test fumigène validé** (injection → exit 1, retour → exit 0).
+- **npm scripts** : `check:claims` + `quality:prestore` (typecheck + build + test + check:claims chaînés).
+- **Docs Sprint 9 créés (6)** :
+  - `docs/prestore-quality-gate.md` — checklist obligatoire pré-submission stores
+  - `docs/legal-handoff-final.md` — handoff juriste structuré 17 sections + 11 questions à trancher
+  - `docs/reviewer-account-setup.md` — préparation compte Apple/Google review
+  - `docs/sql/reviewer-account-credits.sql` — SQL annoté **NE PAS EXÉCUTER** (idempotent, ROLLBACK par défaut)
+  - `docs/release-monitoring-and-rollback.md` — seuils Sentry/PostHog/Stripe/Resend + rollback Railway
+  - `docs/pitch-html-decision.md` — Option A retenue (garder + clean + Disallow + couvert par check:claims)
+- **Décision /pitch.html** : Option A (clean, Disallow robots, couvert par garde-fou, non linké depuis pages publiques — vérifié grep 0 lien)
+- **Placeholders audit exhaustif** : 2 bloquants (TEAMID_TO_REPLACE + SHA256_CERT_FINGERPRINT_TO_REPLACE, sources uniques), 6 docs templates acceptables, 0 TODO_*, 1 "TESTIMONIAL PLACEHOLDER" honnête (pas un faux témoignage).
+- **Vérifs** : `quality:prestore` exit 0 sur 210 fichiers · A_BLOCKING=0 · B_DOC_ACCEPTABLE=111 · C_FACTUAL_WHITELIST=4 · tsc 0 · build OK · 45/45 · Railway SUCCESS (ebb8ce1, 250s) · tous endpoints 200 · robots Disallow ×3.
+- **Backend / Stripe webhook / logique métier non touchés** (confirmé).
