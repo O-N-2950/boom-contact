@@ -1,5 +1,22 @@
 apply plugin: 'com.android.application'
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Secrets de signature release — Phase 10A (sécurité).
+// AUCUN mot de passe en dur. Résolution : 1) variables d'environnement (CI),
+// sinon 2) fichier local non commité `keystore.properties` (gitignored).
+// Le build release échoue explicitement si les secrets sont absents (fail-fast
+// en bas de fichier). Les secrets ne sont jamais écrits dans les logs.
+// ─────────────────────────────────────────────────────────────────────────────
+def keystorePropsFile = rootProject.file("keystore.properties")
+def keystoreProps = new Properties()
+if (keystorePropsFile.exists()) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+def releaseStorePassword = System.getenv("KEYSTORE_PASSWORD") ?: keystoreProps.getProperty("storePassword")
+def releaseKeyPassword   = System.getenv("KEY_PASSWORD")      ?: keystoreProps.getProperty("keyPassword")
+def releaseKeyAlias      = System.getenv("KEY_ALIAS")         ?: keystoreProps.getProperty("keyAlias")  ?: "boom-contact"
+def releaseStoreFile     = System.getenv("KEYSTORE_FILE")     ?: keystoreProps.getProperty("storeFile") ?: "boom-contact-release.keystore"
+
 android {
     namespace "contact.boom.app"
     compileSdk rootProject.ext.compileSdkVersion
@@ -18,10 +35,15 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('boom-contact-release.keystore')
-            storePassword System.getenv("KEYSTORE_PASSWORD") ?: "BoomContact2026!"
-            keyAlias "boom-contact"
-            keyPassword System.getenv("KEY_PASSWORD") ?: "BoomContact2026!"
+            // Configuré uniquement si les secrets sont disponibles (env ou keystore.properties).
+            // Sans secrets : AUCUNE valeur par défaut. Le fail-fast (bas du fichier) bloque
+            // tout build release et ne casse ni les builds debug ni les tâches Gradle générales.
+            if (releaseStorePassword != null && releaseKeyPassword != null) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
         }
     }
     buildTypes {
@@ -30,6 +52,24 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fail-fast signature release : échec EXPLICITE si KEYSTORE_PASSWORD / KEY_PASSWORD
+// (ou keystore.properties) sont absents lors d'un build release. Ne bloque PAS les
+// builds debug ni les tâches Gradle générales. N'imprime jamais les mots de passe.
+// ─────────────────────────────────────────────────────────────────────────────
+tasks.configureEach { task ->
+    if (task.name ==~ /(?i)(assemble|bundle).*Release/) {
+        task.doFirst {
+            if (releaseStorePassword == null || releaseKeyPassword == null) {
+                throw new GradleException(
+                    "Signature release impossible : definissez KEYSTORE_PASSWORD et KEY_PASSWORD " +
+                    "(variables d'environnement CI) ou un fichier keystore.properties non commite " +
+                    "(storePassword / keyPassword). Aucun mot de passe par defaut n'est fourni.")
+            }
         }
     }
 }

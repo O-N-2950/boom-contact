@@ -519,3 +519,17 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Placeholders audit exhaustif** : 2 bloquants (TEAMID_TO_REPLACE + SHA256_CERT_FINGERPRINT_TO_REPLACE, sources uniques), 6 docs templates acceptables, 0 TODO_*, 1 "TESTIMONIAL PLACEHOLDER" honnête (pas un faux témoignage).
 - **Vérifs** : `quality:prestore` exit 0 sur 210 fichiers · A_BLOCKING=0 · B_DOC_ACCEPTABLE=111 · C_FACTUAL_WHITELIST=4 · tsc 0 · build OK · 45/45 · Railway SUCCESS (ebb8ce1, 250s) · tous endpoints 200 · robots Disallow ×3.
 - **Backend / Stripe webhook / logique métier non touchés** (confirmé).
+
+---
+
+## Sprint 10A — Sécurité Android signing + doc clés (read-only sur placeholders)
+**Date** : 2026-05-29
+- **Sécurité signature Android** (`android/app/build.gradle`) : suppression du **mot de passe keystore en dur** (`BoomContact2026!`, ancien fallback pour `storePassword` + `keyPassword`). Résolution désormais : 1) env (`KEYSTORE_PASSWORD`/`KEY_PASSWORD`/opt. `KEY_ALIAS`/`KEYSTORE_FILE`), sinon 2) `android/keystore.properties` non commité. `signingConfigs.release` configuré uniquement si secrets présents ; **fail-fast** `GradleException` sur tâches `*Release` si secrets absents (n'affecte ni debug ni tâches Gradle générales) ; aucun secret loggué.
+- **.gitignore** (`android/.gitignore`) : activation `*.jks` / `*.keystore` + ajout `keystore.properties` (secrets jamais commités). Keystore binaire toujours non commité.
+- **Template** : `android/keystore.properties.example` (format documenté, aucune vraie valeur).
+- **Doc** (`docs/well-known-finalization.md`) : nouvelle **section 0 faisant autorité** — placeholders à conserver, distinction **debug key / upload key / Play App Signing key**, valeur finale `assetlinks.json` = **SHA-256 Play App Signing key** de boom.contact (package `contact.boom.app`, source Play Console → App integrity), debug jamais en prod, upload key complément optionnel, timing « ne pas remplacer trop tôt » ; Apple Team ID = compte Developer, appID final `TEAMID.contact.boom.app`, ne jamais inventer ; note **rotation obligatoire** du mot de passe keystore avant publication.
+- **Placeholders INTACTS** : `TEAMID_TO_REPLACE` (AASA) + `SHA256_CERT_FINGERPRINT_TO_REPLACE` (assetlinks) — aucun remplacement, aucune valeur inventée ou empruntée.
+- **Hors périmètre confirmé non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts` (aucune nouvelle surface de claim).
+- **Vérifs** : `quality:prestore` **exit 0** · tsc 0 · build OK (`✓ built` + `Server compiled`) · 45/45 · check:claims A_BLOCKING=0 (210 fichiers) · placeholders confirmés présents live · endpoints prod 200.
+- **Limite honnête** : `./gradlew assembleRelease` non exécutable dans l'environnement de build (pas de SDK Android) — la signature/fail-fast sera validée au premier build réel signé.
+- **Finding A restant (à traiter par Olivier)** : rotation du mot de passe du vrai release keystore s'il utilisait l'ancien fallback.

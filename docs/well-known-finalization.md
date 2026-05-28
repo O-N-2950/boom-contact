@@ -8,6 +8,42 @@
 
 ---
 
+## 0. Référence — clés Android & Apple Team ID (faisant autorité)
+
+### 0.1 Placeholders à CONSERVER tant que les vraies valeurs ne sont pas disponibles
+| Placeholder | Fichier source unique (servi live) | À remplacer par |
+|---|---|---|
+| `TEAMID_TO_REPLACE` | `client/public/.well-known/apple-app-site-association` | Apple Team ID **réel** du compte propriétaire de boom.contact |
+| `SHA256_CERT_FINGERPRINT_TO_REPLACE` | `client/public/.well-known/assetlinks.json` | SHA-256 de la **Play App Signing key** de boom.contact |
+
+**Règles** : ne jamais inventer une valeur · ne jamais réutiliser la valeur d'une autre application · garder le placeholder tant que la vraie valeur boom.contact n'est pas confirmée.
+
+### 0.2 Android — les 3 clés à ne PAS confondre
+| Clé | Rôle | Source du SHA-256 | Dans `assetlinks.json` ? |
+|---|---|---|---|
+| **Debug key** | builds locaux de dev | `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android` | ❌ **Jamais** en production (test local uniquement) |
+| **Upload key** (release keystore) | signe l'AAB que **tu** envoies à Google | `keytool -list -v -keystore boom-contact-release.keystore -alias boom-contact` ou `./gradlew signingReport` | ⚠️ Optionnel (complément sideload) — **pas** la clé de vérif principale |
+| **Play App Signing key** | clé **détenue par Google** qui signe l'app livrée aux appareils | Play Console → **Setup** → **App integrity** → **App signing key certificate** → **SHA-256** | ✅ **OUI — valeur principale obligatoire** |
+
+**Valeur finale d'`assetlinks.json` = SHA-256 de la Play App Signing key de boom.contact**, package **`contact.boom.app`**.
+Raison : avec Play App Signing activé, l'app installée est re-signée par la clé de Google ; la vérification Android App Links lit le certificat de la clé qui signe réellement l'app livrée. Mettre l'upload key seule → App Links échouent silencieusement en production.
+La clé upload peut être **ajoutée en complément** (tableau `sha256_cert_fingerprints` multi-entrées) pour couvrir les builds signés uniquement par l'upload key (sideload/dev), mais la clé **principale** pour les installs Play (y compris Internal Testing distribué par Play) reste la **Play App Signing key**.
+
+> ⚠️ **Timing — ne pas remplacer trop tôt** : la Play App Signing key SHA-256 n'existe qu'**après** création de l'app boom.contact dans Play Console + configuration Play App Signing. Tant que ce n'est pas fait → garder `SHA256_CERT_FINGERPRINT_TO_REPLACE`.
+
+### 0.3 Apple — Team ID
+- **Apple Team ID** = valeur du compte **Apple Developer** (10 caractères alphanumériques) — Membership, ou Xcode → Signing & Capabilities.
+- appID final attendu dans l'AASA : **`TEAMID.contact.boom.app`** (suffixe = `appId` Capacitor `contact.boom.app`).
+- Associated Domains iOS **déjà configurés** dans `ios/App/App/App.entitlements` (`applinks:www.boom.contact` + `applinks:boom.contact`).
+- Ne jamais inventer le Team ID. Garder `TEAMID_TO_REPLACE` tant que la vraie valeur n'est pas fournie.
+
+### 0.4 Sécurité signature release (Phase 10A)
+`android/app/build.gradle` ne contient **aucun mot de passe en dur**. Les secrets de signature sont résolus ainsi : 1) variables d'environnement (`KEYSTORE_PASSWORD`, `KEY_PASSWORD`, option. `KEY_ALIAS`, `KEYSTORE_FILE`), sinon 2) fichier local **non commité** `android/keystore.properties` (gitignored, voir `keystore.properties.example`). Un build **release** sans ces secrets **échoue explicitement** (fail-fast) ; les builds debug ne sont pas affectés ; les mots de passe ne sont jamais logués.
+
+> 🔁 **Rotation obligatoire avant publication** : un ancien fallback en dur (`BoomContact2026!`) existait dans l'historique git. Si le vrai release keystore utilise ce mot de passe, le **roter impérativement** avant toute soumission store et stocker le nouveau secret hors git (env/CI ou `keystore.properties`).
+
+---
+
 ## 1. Apple — AASA (Universal Links)
 
 ### 1.1 Obtenir le vrai Apple Team ID
