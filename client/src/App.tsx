@@ -29,6 +29,7 @@ const PoliceIntervention   = React.lazy(() => import('./pages/PoliceIntervention
 const PrivacyPage          = React.lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
 const B2BPage              = React.lazy(() => import('./pages/B2BPage').then(m => ({ default: m.B2BPage })));
 const DesignPreview        = React.lazy(() => import('./pages/DesignPreview'));
+const VisualQA             = React.lazy(() => import('./pages/VisualQA'));
 const EmergencyNumbers = React.lazy(() => import('./components/EmergencyNumbers').then(m => ({ default: m.EmergencyNumbers })));
 const AuthModal       = React.lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
 const CGUModal        = React.lazy(() => import('./components/CGUModal').then(m => ({ default: m.CGUModal })));
@@ -44,7 +45,7 @@ function LoadingSpinner() {
   );
 }
 
-type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow' | 'police_intervention' | 'b2b' | 'design_preview';
+type AppView = 'landing' | 'cgu' | 'pricing' | 'constat' | 'join' | 'account' | 'admin' | 'emergency' | 'privacy' | 'police_login' | 'police_dashboard' | 'police_flow' | 'police_intervention' | 'b2b' | 'design_preview' | 'visual_qa';
 
 const EMAIL_KEY = 'boom_user_email';
 const USER_TOKEN_KEY = 'boom_user_token';
@@ -57,6 +58,7 @@ function getInitialView(): AppView {
   const params = new URLSearchParams(window.location.search);
   const pathname = window.location.pathname;
   // Route interne cachée (preview design) — non liée, noindex
+  if (pathname === '/visual-qa' || params.get('qa') === 'visual') return 'visual_qa';
   if (pathname === '/design-preview' || params.get('design') === 'preview') return 'design_preview';
   if (params.get('admin') === 'true') return 'admin';
   if (params.get('urgences') === 'true') return 'emergency';
@@ -287,6 +289,7 @@ export default function App() {
       police_intervention: 'app.nav_police_intervention',
       b2b: 'app.nav_b2b',
       design_preview: 'app.nav_landing',
+      visual_qa: 'app.nav_landing',
     };
     const label = t(viewLabelKeys[view]);
     dispatch({ type: 'SET_ROUTE_ANNOUNCEMENT', message: t('app.nav_to', { label }) });
@@ -495,6 +498,7 @@ export default function App() {
       )}
 
       {view === 'design_preview' && <DesignPreview />}
+      {view === 'visual_qa' && <VisualQA />}
       {view === 'b2b' && (
         <B2BPage onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })} />
       )}

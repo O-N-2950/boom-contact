@@ -173,7 +173,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
           </div>
         )}
         {signed && (
-          <div className="absolute rounded text-[10px] text-green-500 top-2 right-2 px-2 py-[3px] tracking-[1px]" style={{ background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace' }}>
+          <div className="absolute rounded text-[10px] text-[var(--green)] top-2 right-2 px-2 py-[3px] tracking-[1px]" style={{ background: 'rgba(34,197,94,0.2)', border: '1px solid rgba(34,197,94,0.4)', fontFamily: 'monospace' }}>
             {t('signature.signed')}
           </div>
         )}
@@ -213,7 +213,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       {signed && (otherSigned || isOtherPedestrian) && (
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.3)' }}>
           <div className="text-4xl mb-1.5">🎉</div>
-          <div className="text-[15px] font-bold text-green-500">{t('signature.report_signed')}</div>
+          <div className="text-[15px] font-bold text-[var(--green)]">{t('signature.report_signed')}</div>
           <div className="text-xs mt-1 opacity-75">{t('signature.generating_pdf')}</div>
         </div>
       )}

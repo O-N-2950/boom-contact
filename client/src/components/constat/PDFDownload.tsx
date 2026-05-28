@@ -261,7 +261,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
           <div className="text-[13px] mb-3.5 leading-[1.65]" style={{ opacity: 0.755 }}>
             Vous n'avez plus de crédit. Achetez un pack pour récupérer votre constat.
           </div>
-          <button onClick={() => onBuyPack?.()} className="w-full p-3.5 rounded-[10px] border-0 text-white cursor-pointer font-bold mb-2 text-[15px]" style={{ background: 'var(--boom)' }}>
+          <button onClick={() => onBuyPack?.()} className="w-full p-3.5 rounded-[10px] border-0 text-white cursor-pointer font-bold mb-2 text-[15px]" style={{ background: 'var(--navy,#123A5A)' }}>
             Acheter un pack →
           </button>
           <div className="text-[11px] text-center opacity-70" >

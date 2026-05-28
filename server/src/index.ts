@@ -562,6 +562,7 @@ app.get('/robots.txt', (_req, res) => {
 `User-agent: *
 Allow: /
 Disallow: /design-preview
+  Disallow: /visual-qa
 
 Sitemap: https://www.boom.contact/sitemap.xml`
   );
