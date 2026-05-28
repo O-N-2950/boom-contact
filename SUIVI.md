@@ -403,3 +403,15 @@ Vérif : tsc 0 · build client+serveur OK · 45/45 tests · Railway SUCCESS · p
 
 ### À compléter manuellement (hors code)
 Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Associated Domains (profil Apple) · builds signés · uploads TestFlight / Internal Testing · tests devices DL-01..09 + PERM-01..04 · juriste.
+
+---
+
+## Sprint 4 — Premium Visual System (commit 32efc12)
+**Date** : 2026-05-28
+- 3 thèmes comparables : Boom Signature / Trust Premium / Swiss Calm (`client/src/design/themeTokens.ts`).
+- `client/src/pages/DesignPreview.tsx` : 8 écrans-maquettes/thème, route **cachée** `/design-preview` (ou `?design=preview`), **noindex**, hors nav publique, code-split (13.7 kB), fonts injectés. N'altère ni le flow réel ni le thème de prod.
+- `robots.txt` : `Disallow: /design-preview`.
+- `docs/design-theme-review.md` (palettes, matrice 11 critères, accessibilité AA, reco hybride) + `docs/store-screenshot-plan.md` (7 visuels, wording prudent).
+- Artifact HTML de comparaison fourni pour visualisation.
+- Vérifs : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS · /health 200 · /design-preview 200 · robots Disallow OK · .well-known 200/200.
+- **Reco** : App V1 = Trust Premium (base) + orange boom en CTA ; Landing = Boom ; Screenshots = Trust ; B2B = Swiss Calm. Décision Olivier en attente — prod inchangée.
