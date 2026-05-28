@@ -543,3 +543,14 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **`docs/phase-10b-values-checklist.md`** créé : checklist courte (Team ID, SHA Play App Signing, upload key opt., date, source console, validé par, remplacé, déployé, testé).
 - **Hors périmètre non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts`, fichiers `.well-known` (valeurs).
 - **Vérifs** : `quality:prestore` exit 0 · placeholders intacts · Railway SUCCESS.
+
+---
+
+## Phase 10B partielle — Android assetlinks finalisé (SHA-256 Play App Signing)
+**Date** : 2026-05-29
+- **assetlinks.json finalisé** : `client/public/.well-known/assetlinks.json` — placeholder `SHA256_CERT_FINGERPRINT_TO_REPLACE` remplacé par le **SHA-256 Play App Signing de boom.contact** (`C5:CC:A0:97:...:4D:99`, 32 octets), package `contact.boom.app`. Valeur traitée comme spécifique à boom.contact uniquement (jamais réutilisée pour une autre app). JSON valide, autres champs (`relation`, `namespace`, `package_name`) inchangés.
+- **AASA NON touché** : `apple-app-site-association` garde `TEAMID_TO_REPLACE` (Apple Team ID pas encore fourni). iOS sync volontairement **non exécuté**.
+- **cap sync android** : copie native régénérée → `android/app/src/main/assets/public/.well-known/assetlinks.json` contient le SHA réel (vérifié), 0 placeholder. Dossier natif gitignored (régénéré au build).
+- **Hors périmètre non touché** : backend métier, Stripe, logique session/participants/PDF, `check-claims.ts`.
+- **Vérifs** : `quality:prestore` exit 0 (212 fichiers, A_BLOCKING=0, 45/45) · assetlinks JSON valide · AASA placeholder intact · Railway SUCCESS · live assetlinks 200, SHA présent, 0 placeholder.
+- **Reste** : Apple Team ID → AASA + cap sync ios ; validation device (adb verify-app-links après install Internal Testing) ; juriste ; soumission stores. **Pas de public-ready.**
