@@ -15,6 +15,9 @@ export function BugReport() {
     onError:   (err) => { setErrorMsg(err.message || 'Erreur lors de l\'envoi du rapport'); console.error('bugReport failed:', err.message); },
   });
 
+  // Masqué sur les routes internes preview/QA pour des screenshots stores propres
+  if (typeof window !== 'undefined' && /\/(visual-qa|design-preview)/.test(window.location.pathname)) return null;
+
   const submit = () => {
     if (!text.trim()) return;
     sendMut.mutate({

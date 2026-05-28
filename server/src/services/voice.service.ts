@@ -1,6 +1,6 @@
 // server/src/services/voice.service.ts
 // Transcription vocale via OpenAI Whisper
-// 99 langues supportées, détection automatique, aucune config côté utilisateur
+// Transcription multilingue avec détection automatique, aucune config côté utilisateur
 
 import { logger } from '../logger.js';
 import * as fs from 'fs';

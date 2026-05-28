@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FF3500" />
+    <meta name="theme-color" content="#FF6B1A" />
     <!-- dns-prefetch for external domains -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com" />
     <link rel="dns-prefetch" href="//js.stripe.com" />
@@ -13,7 +13,7 @@
     <link rel="dns-prefetch" href="//eu.i.posthog.com" />
     <link rel="dns-prefetch" href="//nominatim.openstreetmap.org" />
 
-    <!-- Anti-flash : appliquer le thÃ¨me AVANT que React charge -->
+    <!-- Anti-flash : appliquer le thème AVANT que React charge -->
     <script>
       (function(){
         var t = localStorage.getItem('boom-theme');
@@ -21,11 +21,11 @@
       })();
     </script>
 
-    <!-- SEO â optimisÃ© "constat amiable numÃ©rique" + "digital accident report" -->
-    <title>boom.contact â Constat amiable numÃ©rique mondial | Digital Accident Report</title>
-    <meta name="description" content="boom.contact : le constat amiable numÃ©rique mondial. Remplissez votre constat d'accident en 5 minutes depuis votre tÃ©lÃ©phone. OCR 50 langues, QR code temps rÃ©el, double signature digitale, PDF certifiÃ©. Valable dans 150+ pays. Sans app Ã  installer." />
-    <meta name="keywords" content="constat amiable numÃ©rique, constat amiable en ligne, digital accident report, constat accident smartphone, e-constat, constat digital, europÃ¤ischer unfallbericht, rapport d'accident numÃ©rique, constat voiture, dÃ©claration accident, formulaire constat europÃ©en, constat amiable application, accident report app" />
-    <meta name="author" content="PEP's Swiss SA â Groupe NEUKOMM" />
+    <!-- SEO — wording prudent : aucun claim juridique, géographique ou de certification -->
+    <title>boom.contact — Documenter un accident depuis votre téléphone</title>
+    <meta name="description" content="boom.contact aide à documenter un accident de la route : QR pour inviter les autres conducteurs, photos, voix, signature, et un dossier PDF horodaté à transmettre à votre assureur." />
+    <meta name="keywords" content="constat amiable, accident voiture, application accident, déclaration accident, signature digitale, PDF horodaté, QR conducteurs, photos accident, accident report app" />
+    <meta name="author" content="PEP's Swiss SA — Groupe NEUKOMM" />
     <link rel="canonical" href="https://www.boom.contact/" />
 
     <!-- Hreflang -->
@@ -39,8 +39,8 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.boom.contact/" />
-    <meta property="og:title" content="boom.contact â Constat amiable numÃ©rique en 5 minutes" />
-    <meta property="og:description" content="Le premier constat amiable numÃ©rique mondial. OCR 50 langues, QR code, double signature digitale, PDF certifiÃ©. 150+ pays. Sans installation." />
+    <meta property="og:title" content="boom.contact — Documenter un accident depuis votre téléphone" />
+    <meta property="og:description" content="QR pour inviter les autres conducteurs, photos, voix, signature et un dossier PDF horodaté à transmettre à votre assureur." />
     <meta property="og:image" content="https://www.boom.contact/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -52,32 +52,26 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="boom.contact â Constat amiable numÃ©rique mondial" />
-    <meta name="twitter:description" content="Constat amiable numÃ©rique en 5 minutes. OCR 50 langues, double signature, PDF certifiÃ©. 150+ pays." />
+    <meta name="twitter:title" content="boom.contact — Documenter un accident depuis votre téléphone" />
+    <meta name="twitter:description" content="QR, photos, voix, signature, dossier PDF horodaté à transmettre à votre assureur." />
     <meta name="twitter:image" content="https://www.boom.contact/og-image.png" />
 
-    <!-- JSON-LD Structured Data: SoftwareApplication -->
+    <!-- JSON-LD : SoftwareApplication — wording factuel, AUCUN aggregateRating fabriqué -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "boom.contact",
-      "alternateName": "boom.contact â Constat amiable numÃ©rique",
-      "description": "Application web de constat amiable numÃ©rique mondial. Remplissez votre constat d'accident en 5 minutes avec OCR, QR code et signature digitale. PDF certifiÃ© valable dans 150+ pays.",
+      "alternateName": "boom.contact — constat numérique",
+      "description": "Application web pour documenter un accident de la route : invitation des autres conducteurs par QR, photos, voix, signature et génération d'un dossier PDF horodaté à transmettre à son assureur.",
       "url": "https://www.boom.contact",
       "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Web",
+      "operatingSystem": "Web, iOS, Android",
       "offers": {
         "@type": "Offer",
         "price": "4.90",
         "priceCurrency": "CHF",
         "priceValidUntil": "2027-12-31"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "127",
-        "bestRating": "5"
       },
       "author": {
         "@type": "Organization",
@@ -90,29 +84,28 @@
           "addressCountry": "CH"
         }
       },
-      "inLanguage": ["fr","de","it","en","es","pt","nl","pl","tr","ru","ar","zh","ja","ko"],
+      "inLanguage": ["fr","de","it","en"],
       "featureList": [
-        "OCR universel 50+ langues",
-        "QR code session temps rÃ©el",
-        "Double signature digitale",
-        "PDF certifiÃ© conforme CEA",
-        "GÃ©olocalisation GPS automatique",
-        "Carte satellite OpenStreetMap",
-        "Croquis d'accident interactif",
-        "Transcription vocale 99 langues",
-        "Chiffrement SSL bout en bout",
-        "Conforme RGPD / nLPD"
+        "QR pour inviter les autres conducteurs",
+        "Capture de photos guidée",
+        "Saisie vocale et textuelle",
+        "Signature digitale par participant",
+        "Géolocalisation du lieu (optionnelle)",
+        "Croquis de l'accident",
+        "Génération d'un dossier PDF horodaté",
+        "Fonctionnement hors ligne avec synchronisation",
+        "Conformité RGPD / nLPD"
       ]
     }
     </script>
 
-    <!-- JSON-LD: Organization -->
+    <!-- JSON-LD : Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "PEP's Swiss SA",
-      "legalName": "PEP's Swiss SA â Groupe NEUKOMM",
+      "legalName": "PEP's Swiss SA — Groupe NEUKOMM",
       "url": "https://www.boom.contact",
       "logo": "https://www.boom.contact/logo.webp",
       "sameAs": [
@@ -135,7 +128,7 @@
     }
     </script>
 
-    <!-- JSON-LD: FAQPage â SEO keywords "constat amiable numÃ©rique" -->
+    <!-- JSON-LD : FAQPage — réponses factuelles, sans claim juridique -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -143,50 +136,42 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Qu'est-ce qu'un constat amiable numÃ©rique ?",
+          "name": "Qu'est-ce que boom.contact ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Un constat amiable numÃ©rique remplace le formulaire papier traditionnel. Avec boom.contact, vous remplissez votre constat d'accident directement depuis votre tÃ©lÃ©phone en 5 minutes. Le document est signÃ© digitalement par les deux conducteurs et un PDF certifiÃ© est gÃ©nÃ©rÃ© instantanÃ©ment."
+            "text": "boom.contact est une application qui aide à documenter un accident de la route depuis un téléphone : invitation des autres conducteurs par QR, photos, voix, signature et génération d'un dossier PDF horodaté à transmettre à votre assureur."
           }
         },
         {
           "@type": "Question",
-          "name": "Le constat amiable numÃ©rique boom.contact est-il valable lÃ©galement ?",
+          "name": "Comment fonctionne boom.contact ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Oui. Le constat amiable numÃ©rique boom.contact produit un PDF conforme au formulaire europÃ©en standardisÃ© (CEA). Il est acceptÃ© par les assureurs dans plus de 150 pays. Les signatures digitales horodatÃ©es ont valeur probante."
+            "text": "1) Vous démarrez le constat et invitez les autres participants par QR (jusqu'à 5 véhicules). 2) Vous ajoutez les informations utiles : photos, voix, croquis. 3) Chaque participant signe. 4) Un dossier PDF horodaté est généré. 5) Vous le téléchargez ou le recevez par email, puis vous le transmettez à votre assureur."
           }
         },
         {
           "@type": "Question",
-          "name": "Comment fonctionne le constat amiable numÃ©rique boom.contact ?",
+          "name": "boom.contact remplace-t-il les services de secours, la police ou l'assureur ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "1) Scannez vos documents (permis, carte verte) â l'OCR extrait les donnÃ©es automatiquement. 2) Partagez un QR code avec l'autre conducteur. 3) Remplissez le formulaire prÃ©-rempli ensemble en temps rÃ©el. 4) Signez tous les deux. 5) Recevez le PDF certifiÃ© par email."
+            "text": "Non. boom.contact ne remplace pas les services de secours, la police, votre assureur ni un avocat. En cas de blessés ou de danger, appelez d'abord les secours. L'acceptation du dossier PDF par votre assureur reste à sa discrétion selon votre contrat et la juridiction."
           }
         },
         {
           "@type": "Question",
-          "name": "Combien coÃ»te le constat amiable numÃ©rique boom.contact ?",
+          "name": "Combien coûte boom.contact ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Ã partir de CHF 4.90 / EUR 4.90 pour un constat unique. Packs disponibles : 3 constats Ã  CHF 12.90 (famille) ou 10 constats Ã  CHF 34.90 (flottes et courtiers). Sans abonnement, crÃ©dits sans expiration."
+            "text": "À partir de CHF 4.90 / EUR 4.90 pour un constat. Packs : 3 constats à 12.90, 10 constats à 34.90. Sans abonnement, crédits sans expiration. Paiement Stripe sécurisé."
           }
         },
         {
           "@type": "Question",
-          "name": "Le constat numÃ©rique fonctionne-t-il Ã  l'Ã©tranger ?",
+          "name": "Faut-il installer une application ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Oui, boom.contact fonctionne dans plus de 150 pays. L'application supporte 50 langues et reconnaÃ®t les documents de circulation de tous les pays grÃ¢ce Ã  son OCR universel. Deux conducteurs de nationalitÃ©s diffÃ©rentes peuvent remplir le constat chacun dans sa propre langue."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Faut-il installer une application pour faire un constat numÃ©rique ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Non. boom.contact fonctionne directement dans le navigateur de votre tÃ©lÃ©phone (Safari, Chrome, etc.). Aucune installation requise. Vous pouvez aussi l'ajouter Ã  votre Ã©cran d'accueil comme une app progressive (PWA) pour un accÃ¨s hors ligne."
+            "text": "Non. boom.contact fonctionne directement dans le navigateur de votre téléphone. Vous pouvez aussi l'ajouter à votre écran d'accueil comme une PWA pour un accès hors ligne, ou télécharger les versions iOS et Android."
           }
         }
       ]
@@ -206,21 +191,20 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="/logo.webp" as="image" type="image/webp" />
 
-    <!-- Self-hosted fonts â preload latin subsets for fastest paint -->
-    <link rel="preload" href="/fonts/dm-sans-400-600-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/oswald-600-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Self-hosted fonts — Manrope (font principale Hybrid Trust Premium) -->
+    <link rel="preload" href="/fonts/manrope-400-800-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Critical CSS inlined for fastest first paint -->
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-      body { font-family: 'DM Sans', system-ui, -apple-system, sans-serif; background: #06060C; color: #f0ede8; min-height: 100vh; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+      body { font-family: 'Manrope', system-ui, -apple-system, sans-serif; background: #06060C; color: #f0ede8; min-height: 100vh; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
       #root { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
       @keyframes spin { to { transform: rotate(360deg); } }
       [data-theme="light"] body, [data-theme="light"] { background: #f5f3ef; color: #1a1a1a; }
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
     </style>
 
-    <!-- Prefetch main route chunks after idle â reads Vite manifest for hashed filenames -->
+    <!-- Prefetch main route chunks after idle — reads Vite manifest for hashed filenames -->
     <script>
       if ('requestIdleCallback' in window) {
         requestIdleCallback(function() {
@@ -242,40 +226,43 @@
                 });
               });
             })
-            .catch(function() { /* manifest unavailable in dev â ignore */ });
+            .catch(function() { /* manifest unavailable in dev — ignore */ });
         });
       }
     </script>
 
-    <!-- Google Analytics 4 â loaded dynamically from analytics.ts via VITE_GA4_ID env var -->
+    <!-- Google Analytics 4 — loaded dynamically from analytics.ts via VITE_GA4_ID env var -->
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Noscript fallback â SEO crawlers voient du contenu mÃªme sans JS -->
+    <!-- Noscript fallback — wording prudent, aucun claim juridique -->
     <noscript>
-      <div style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:sans-serif;color:#333">
-        <h1>boom.contact â Constat amiable numÃ©rique mondial</h1>
-        <p>boom.contact est la <strong>premiÃ¨re application mondiale de constat amiable numÃ©rique</strong>. Remplissez votre constat d'accident en 5 minutes directement depuis votre tÃ©lÃ©phone, sans rien installer.</p>
+      <div style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:'Manrope',system-ui,sans-serif;color:#333">
+        <h1>boom.contact — Documenter un accident depuis votre téléphone</h1>
+        <p>boom.contact aide à documenter un accident de la route depuis un téléphone, étape par étape. L'app est conçue pour les situations stressantes : interface claire, instructions courtes, bouton urgence toujours visible.</p>
 
-        <h2>Comment fonctionne le constat amiable numÃ©rique ?</h2>
-        <p>1. Scannez vos documents (permis, carte verte) â l'OCR extrait les donnÃ©es en 50+ langues. 2. Partagez un QR code avec l'autre conducteur. 3. Remplissez le formulaire ensemble en temps rÃ©el. 4. Signez tous les deux digitalement. 5. Recevez le PDF certifiÃ© instantanÃ©ment.</p>
+        <h2>Comment ça marche</h2>
+        <ol>
+          <li>Vous démarrez le constat et invitez les autres participants par QR (jusqu'à 5 véhicules).</li>
+          <li>Vous ajoutez les informations utiles : photos, voix, croquis, données du véhicule, assurance.</li>
+          <li>Chaque participant signe sa déclaration.</li>
+          <li>boom.contact génère un dossier PDF horodaté.</li>
+          <li>Vous le téléchargez ou le recevez par email, et vous le transmettez à votre assureur.</li>
+        </ol>
 
-        <h2>Pourquoi choisir boom.contact ?</h2>
-        <p>OCR universel 50 langues, session QR temps rÃ©el, double signature digitale, PDF conforme CEA, gÃ©olocalisation GPS, carte satellite, croquis interactif, transcription vocale, chiffrement SSL. Conforme RGPD et nLPD. Valable dans 150+ pays.</p>
+        <h2>Caractéristiques</h2>
+        <p>QR pour inviter les autres conducteurs, capture photos guidée, saisie vocale et textuelle, signature digitale par participant, croquis de l'accident, géolocalisation optionnelle, génération d'un dossier PDF horodaté, fonctionnement hors ligne avec synchronisation. Conformité RGPD et nLPD.</p>
 
-        <h2>Tarifs du constat amiable numÃ©rique</h2>
-        <p>1 constat : CHF 4.90 / EUR 4.90. Pack 3 constats : CHF 12.90. Pack 10 constats : CHF 34.90. Sans abonnement, crÃ©dits sans expiration.</p>
+        <h2>Tarifs</h2>
+        <p>1 constat : CHF 4.90 / EUR 4.90. Pack 3 constats : 12.90. Pack 10 constats : 34.90. Sans abonnement, crédits sans expiration. Paiement Stripe sécurisé.</p>
 
-        <h2>FAQ â Constat amiable numÃ©rique</h2>
-        <p><strong>Le constat numÃ©rique est-il valable lÃ©galement ?</strong> Oui, boom.contact produit un PDF conforme au formulaire europÃ©en CEA, acceptÃ© par les assureurs dans 150+ pays.</p>
-        <p><strong>Fonctionne-t-il Ã  l'Ã©tranger ?</strong> Oui, dans 150+ pays et 50 langues. Deux conducteurs de nationalitÃ©s diffÃ©rentes remplissent le constat chacun dans sa langue.</p>
-        <p><strong>Faut-il installer une app ?</strong> Non, boom.contact fonctionne directement dans le navigateur. PWA disponible pour l'accÃ¨s hors-ligne.</p>
+        <h2>Limites importantes</h2>
+        <p>boom.contact ne remplace pas les services de secours, la police, votre assureur ni un avocat. En cas de blessés ou de danger, appelez d'abord les secours. L'acceptation du dossier PDF par votre assureur reste à sa discrétion selon votre contrat et la juridiction.</p>
 
-        <p style="margin-top:40px;font-size:12px;color:#999">PEP's Swiss SA â Groupe NEUKOMM Â· Bellevue 7, 2950 Courgenay, Suisse Â· CHE-476.484.632 Â· <a href="mailto:contact@boom.contact">contact@boom.contact</a></p>
+        <p style="margin-top:40px;font-size:12px;color:#999">PEP's Swiss SA — Groupe NEUKOMM · Bellevue 7, 2950 Courgenay, Suisse · CHE-476.484.632 · <a href="mailto:contact@boom.contact">contact@boom.contact</a></p>
       </div>
     </noscript>
   </body>
 </html>
-

@@ -1,5 +1,5 @@
 // client/src/components/constat/VoiceRecorder.tsx
-// Enregistrement vocal réel + transcription Whisper (99 langues)
+// Enregistrement vocal réel + transcription Whisper multilingue
 // Utilisé par conducteur A, B, C, D — chacun déclare sa version des faits
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -182,7 +182,7 @@ export const VoiceRecorder = React.memo(function VoiceRecorder({ role, sessionId
               <span className="text-[22px]">🎙️</span> Enregistrer ma déclaration
             </button>
             <div className="mt-2.5 text-[11px] text-center opacity-70" >
-              Max 3 minutes · 99 langues · Consentement: l&apos;enregistrement sera transcrit et intégré au PDF
+              Max 3 minutes · transcription multilingue · Consentement: l&apos;enregistrement sera transcrit et intégré au PDF
             </div>
           </>
         )}

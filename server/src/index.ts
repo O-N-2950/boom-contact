@@ -561,7 +561,7 @@ app.get('/robots.txt', (_req, res) => {
   res.type('text/plain').send(
 `User-agent: *
 Allow: /
-Disallow: /design-preview
+Disallow: /design-preview\nDisallow: /pitch.html
   Disallow: /visual-qa
 
 Sitemap: https://www.boom.contact/sitemap.xml`

@@ -330,7 +330,7 @@
     "cgu_sections": [
       {
         "title": "1. Objet",
-        "text": "boom.contact est un service numérique édité par PEP's Swiss SA (ci-après \"PEP's Swiss\"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l'établissement de constats amiables d'accident numériques, utilisables dans le monde entier."
+        "text": "boom.contact est un service numérique édité par PEP's Swiss SA (ci-après \"PEP's Swiss\"), Bellevue 7, 2950 Courgenay, Jura, Suisse. Il permet l'établissement de constats amiables d'accident numériques, à transmettre à votre assureur."
       },
       {
         "title": "2. Acceptation",
@@ -345,7 +345,7 @@
         "text": "L'accès au service est payant selon les packages disponibles au moment de l'achat. Les prix sont affichés TTC. Le paiement s'effectue via Stripe, prestataire certifié PCI-DSS. Chaque package correspond à un nombre de crédits permettant d'initier des constats. Les crédits n'ont pas de date d'expiration. Aucun remboursement ne peut être accordé une fois un constat finalisé et le PDF généré."
       },
       {
-        "title": "5. Valeur légale",
+        "title": "5. Statut du dossier PDF",
         "text": "Le document numérique généré par boom.contact constitue un dossier numérique horodaté de l'accident, destiné à être transmis à votre assureur. PEP's Swiss SA ne garantit pas l'acceptation du document dans tous les pays et recommande de le transmettre dans les délais légaux à son assureur."
       },
       {
