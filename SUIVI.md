@@ -415,3 +415,15 @@ Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Ass
 - Artifact HTML de comparaison fourni pour visualisation.
 - Vérifs : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS · /health 200 · /design-preview 200 · robots Disallow OK · .well-known 200/200.
 - **Reco** : App V1 = Trust Premium (base) + orange boom en CTA ; Landing = Boom ; Screenshots = Trust ; B2B = Swiss Calm. Décision Olivier en attente — prod inchangée.
+
+---
+
+## Sprint 4.1 — Hybrid Trust Premium validé (commit f078e8d)
+**Date** : 2026-05-28
+- Direction V1 actée : **Hybrid Trust Premium** (palette #F5F8FC/#FFFFFF/#102033/#FF6B1A/#123A5A/#18B8E8...).
+- `themeTokens.ts` : thème hybrid ajouté + scores (Hybrid 95 / Trust 91 / Swiss 88 / Boom 82) + scheme/recommended.
+- `DesignPreview.tsx` : refonte page CLAIRE, 7 mockups Hybrid réalistes (logo boom.contact, cartes blanches, CTA orange + CTA navy « Payer et générer le PDF », chips A/B/C-E) ; alternatives sur leur vrai fond (plus de shell noir).
+- docs design-theme-review + store-screenshot-plan mis à jour (reco par surface, accessibilité Hybrid, titres prudents).
+- Vérifs : tsc 0 · build OK · 45/45 · 0 claim · Railway SUCCESS · /design-preview 200 · robots Disallow · .well-known 200/200.
+- **Reco par surface** : app=Hybrid · landing=Boom adouci · stores=Hybrid/Trust · B2B=Swiss · emails/PDF=Trust/Swiss · admin/police=Swiss.
+- Production INCHANGÉE — application réelle = étape suivante après validation.
