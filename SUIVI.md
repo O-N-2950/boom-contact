@@ -461,3 +461,43 @@ Apple Team ID (AASA) · SHA-256 clé de signature (assetlinks) · capability Ass
 - **Smoke test (vs prod live)** : 5 captures en 15.8s · 0 échec · PNG 100-310 kB · rendu visuel validé (titre/mockup/CTA/brand).
 - **Vérifs** : tsc 0 · build OK (VisualQA 20.26 kB code-split) · 45/45 · 0 claim · Railway SUCCESS (b073f2a 255s) · `/visual-qa?screenshot=*` toutes 200 · robots Disallow ×2.
 - **Backend / Stripe / logique métier non touchés**.
+
+---
+
+## Sprint 8 — Store Assets Finalization + claims leak critique (commits 0affa4a → 2e44111)
+**Date** : 2026-05-28
+
+### Livré
+- **46/46 screenshots** générés en 120s (5 viewports × 9 écrans + design-preview, 6.4 MB total, gitignored).
+- **5 docs stores** créés (~1100 lignes) : `store-screenshot-final-selection.md`, `store-screenshot-copy-fr-en.md`, `store-listing-copy-fr-en.md`, `app-review-instructions.md`, `store-upload-checklist.md`.
+- **CookieBanner** + **BugReport** masqués sur `/visual-qa` et `/design-preview` (screenshots propres).
+
+### DÉCOUVERTE CRITIQUE mid-sprint
+8 sprints de greps anti-claims ciblaient `client/src + server/src + shared` et **rataient** :
+- **`client/index.html`** servi live à chaque page : 18+ claims interdits (meta title/desc/keywords, OG, Twitter Card, 3 JSON-LD, noscript) + **`aggregateRating: 4.8/127` factice** (violation Google Structured Data policy)
+- **`client/public/pitch.html`** servi 200 sur `/pitch.html` : 9 claims interdits (150+ pays, certifié, légalement valide, valeur légale officielle, monde entier, conforme CEA)
+- **39 fichiers `client/src/i18n/locales/*.json`** : 78 occurrences de `"monde entier"` et `"5. Valeur légale"` non capturées par les patterns originaux
+- `client/src/components/constat/VoiceRecorder.tsx` + `server/src/services/voice.service.ts` : `99 langues` inflated (Whisper ~57)
+- `client/src/components/BugReport.tsx` : bouton **🐛** fixed bottom-right visible dans tous les screenshots stores
+
+### Corrigé (commit b2b8458 + 2e44111)
+- `index.html` réécrit entièrement : wording prudent, `aggregateRating` retiré, Manrope preload, `#FF6B1A`
+- `pitch.html` : 9 remplacements ciblés + `Disallow /pitch.html` dans `robots.txt` server route
+- 39 locales : 78 remplacements (`monde entier` → `à transmettre à votre assureur`, `5. Valeur légale` → `5. Statut du dossier PDF`)
+- `VoiceRecorder` + `voice.service` : `99 langues` → `transcription multilingue`
+- `BugReport` : guard `/visual-qa` + `/design-preview`
+
+### Vérifications finales
+- **Grep claims étendu** (incl. `client/index.html` + `client/public/*` + `locales`) : **0** ✅
+- **HTML live servi** : `/` 0 claim, `/pitch.html` 0 claim ✅
+- tsc 0 / build OK / 45-45
+- Railway SUCCESS (2e44111, 165s) · tous endpoints 200 (incl. `/privacy`, `/cgu`, AASA, assetlinks)
+- robots Disallow ×3 (`/visual-qa`, `/design-preview`, `/pitch.html`)
+- 46/46 re-capture post-deploy : screenshots **entièrement propres** (🐛 disparu)
+
+### Échec processus reconnu
+Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/index.html`, `client/public/*` et certaines clés i18n contenaient les pires claims. **Toute affirmation antérieure de « 0 claim vivant » était fausse pour les surfaces SEO/social/legal-pages**. Sprint 8 corrige cet angle mort et étend désormais le grep à l'ensemble du périmètre live.
+
+### Placeholders bloquants restants (valeurs externes)
+- `client/public/.well-known/apple-app-site-association` L7 : `TEAMID_TO_REPLACE` → Apple Team ID réel requis avant upload App Store
+- `client/public/.well-known/assetlinks.json` L8 : `SHA256_CERT_FINGERPRINT_TO_REPLACE` → SHA-256 Play App Signing requis avant upload Google Play
