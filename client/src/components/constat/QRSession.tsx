@@ -180,10 +180,10 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
             )}
           <div className="flex items-center gap-2.5">
             <button onClick={() => updateVehicleCount(Math.max(1, vehicleCount - 1))} disabled={vehicleCount <= 1}
-              className="rounded-lg border-0 text-lg font-bold w-8 h-8"  style={{ background: vehicleCount <= 2 ? 'var(--muted)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
+              className="rounded-lg border-0 text-lg font-bold w-11 h-11"  style={{ background: vehicleCount <= 2 ? 'var(--muted)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
             <span className="text-[22px] font-extrabold text-center min-w-[24px]"  style={{ color: 'var(--boom)' }}>{vehicleCount}</span>
             <button onClick={() => updateVehicleCount(Math.min(MAX_VEHICLES, vehicleCount + 1))} disabled={vehicleCount >= MAX_VEHICLES}
-              className="rounded-lg border-0 text-white text-lg font-bold w-8 h-8"  style={{ background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
+              className="rounded-lg border-0 text-white text-lg font-bold w-11 h-11"  style={{ background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
           </div>
         </div>
         <div className="flex gap-1.5 flex-wrap">

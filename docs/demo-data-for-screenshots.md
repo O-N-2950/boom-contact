@@ -1,103 +1,76 @@
 # Données fictives pour screenshots — boom.contact
 
-> **Règle absolue** : aucune donnée réelle (personne, plaque, marque/modèle traçable, email, accident, photo).  
-> Tout est fictif et conçu pour ne **pas** matcher un cas réel.
+> **Règle absolue** : aucune donnée réelle (personne, plaque, marque, email, accident, photo).  
+> Tout est fictif et conçu pour ne **pas** matcher un cas réel.  
+> Ces données sont utilisées par `/visual-qa?screenshot=<key>` (mode marketing) et le script Playwright.
 
-## Identités
+## Identités (verrouillées Sprint 7)
 
-### Conducteur A
-- **Prénom / Nom** : Alex Demo
-- **Né(e)** : 12/03/1985
-- **Adresse** : Rue de l'Exemple 42, 2950 Courgenay, Suisse
-- **Email** : `demo.a@boom.contact`
-- **Téléphone** : +41 79 000 00 01
+| Rôle | Nom (fictif) | Email | Téléphone |
+|---|---|---|---|
+| Conducteur A | **Camille Martin** | demo.a@boom.contact | +41 79 000 00 01 |
+| Conducteur B | **Luca Rossi** | participant.b@example.com | +41 79 000 00 02 |
+| Conducteur C | **Sofia Keller** | participant.c@example.com | +41 79 000 00 03 |
+| Conducteur D | Dakota Placeholder | participant.d@example.com | +41 79 000 00 04 |
+| Conducteur E | Elliott Fictif | participant.e@example.com | +41 79 000 00 05 |
 
-### Conducteur B
-- **Prénom / Nom** : Camille Sample
-- **Né(e)** : 27/08/1990
-- **Adresse** : Avenue du Test 7, 2800 Delémont, Suisse
-- **Email** : `participant.b@example.com`
-- **Téléphone** : +41 79 000 00 02
+## Véhicules (génériques)
 
-### (Optionnels) Conducteurs C / D / E
-- Charlie Mock — `participant.c@example.com`
-- Dakota Placeholder — `participant.d@example.com`
-- Elliott Fictif — `participant.e@example.com`
+| Véhicule | Type | Plaque | Année |
+|---|---|---|---|
+| A | **Exemple Auto · berline** | **VD 000 000** | 2019 |
+| B | **Exemple Auto · SUV** | **VD 000 001** | 2021 |
 
-## Véhicules (génériques, sans marque réelle)
+> ⚠️ Pas de marque réelle (Audi, BMW, VW, Tesla, etc.). Les silhouettes sketch (16 types génériques) sont déjà neutres.
 
-### Véhicule A
-- **Type** : berline (silhouette générique)
-- **Couleur** : gris foncé
-- **Plaque** : **JU-DEMO-1** (fictive, jamais émise par le canton)
-- **Année** : 2019
-- **N° châssis** : WAAA000000000000A (fictif, ne respecte pas la convention VIN réelle)
+## Assurance & permis
 
-### Véhicule B
-- **Type** : SUV compact (silhouette générique)
-- **Couleur** : blanc
-- **Plaque** : **JU-DEMO-2** (fictive)
-- **Année** : 2021
-- **N° châssis** : WBBB000000000000B (fictif)
-
-> ⚠️ **Ne pas utiliser** : marques Audi, BMW, VW, Tesla, etc. — risque IP. Préférer « berline » / « SUV » / « break » génériques. Les silhouettes sketch internes (16+ types) sont déjà génériques.
-
-## Assurances (fictives)
-
-- **Compagnie A** : « Assurance Démo SA »
+- **Compagnie A & B** : **Assurance Démo**
 - **N° police A** : `DEMO-A-2026-0001`
-- **Compagnie B** : « Sample Insurance AG »
 - **N° police B** : `DEMO-B-2026-0002`
+- **N° permis A** : `VD-DEMO-A-1234567`
+- **N° permis B** : `VD-DEMO-B-7654321`
 
-> ⚠️ **Ne pas utiliser** : AXA, Baloise, Helvetia, Mobilière, La Vaudoise — risques d'association non autorisée.
+> ⚠️ Pas de nom d'assureur réel (AXA, Baloise, Helvetia, Mobilière, Vaudoise).
 
-## Permis (fictifs)
+## Email principal screenshots
 
-- **N° permis A** : `JU-DEMO-A-1234567`
-- **N° permis B** : `JU-DEMO-B-7654321`
-- **Catégorie** : B
-- **Date d'émission** : 2010-06-15
+- **`demo@boom.contact`** (boîte de démo / placeholder visible dans les captures).
 
-## Lieu de l'accident (fictif)
+## Lieu
 
-- **Adresse** : Carrefour Avenue Démo / Rue Sample, 2950 Courgenay, Suisse
-- **Coordonnées GPS** : `47.4750, 7.1500` (approximative, lieu non identifiable précis)
-- **Date** : *jour de la capture, heure 9:41*
+- **Lausanne, Suisse** (générique, sans coordonnées GPS précises identifiables).
+- Date d'accident : *jour de la capture*, heure **9:41** (convention Apple).
 
-## Description (neutre, non sensible)
+## Description neutre
 
 > « Deux véhicules circulaient en direction du centre. Un changement de file a entraîné un contact léger au niveau de l'aile arrière droite du véhicule A. Aucun blessé. »
 
-> ⚠️ Pas de blâme explicite ; pas de blessé décrit ; pas de mention de témoin identifiable ; pas de détail sensible.
+## QR / sessions
+
+- Soit **QR stylisé propre** (généré localement dans `/visual-qa` — pattern de coin valide, non-scannable car données factices).
+- Soit **QR réel** d'une session de démo dédiée — à flouter/anonymiser en post-traitement avant upload store.
+- **Jamais** un QR pointant vers une session client réelle.
 
 ## Photos placeholder
 
-- Privilégier des photos **placeholder neutres** :
-  - Image abstraite de carrosserie gris/blanc.
-  - Capot ou aile vue rapprochée, **sans plaque réelle visible**.
-  - Vue de carrefour générique (Google Street View **non recommandé** — IP).
-- Sources autorisées : Unsplash / Pexels (licence libre, vérifier) — recadrer pour anonymiser.
+- Images abstraites neutres (gris/blanc), pas de plaque réelle visible, pas de visage, pas de marque.
+- Sources : Unsplash / Pexels (licence libre), recadrées pour anonymiser.
 - **Interdits** : photos d'accident réel, visages, plaques réelles, marques visibles, intérieur de véhicule personnel.
 
-## QR / sessions
+## Croquis
 
-- Créer une **session de démonstration** dédiée aux captures (séparée de la prod réelle).
-- Le QR généré peut être **réel** (scannable vers la session démo) ou **flouté en post-traitement** pour les captures publiques.
-- **Ne jamais** capturer un QR qui pointe vers une session client réelle.
+- 2 véhicules génériques (berline + SUV).
+- Intersection en T ou en croix.
+- Flèches claires mais non accusatrices.
 
-## Croquis / sketch
-
-- Utiliser 2 véhicules génériques (berline + SUV).
-- Position simple : intersection en T ou en croix.
-- Direction des flèches : claire mais non accusatrice.
-
-## Validation finale (avant utilisation)
+## Validation finale
 
 - [ ] Aucun nom de personne réelle.
-- [ ] Aucune plaque valide ou ayant été émise.
+- [ ] Aucune plaque valide (VD 000 000 / VD 000 001 sont fictives, hors plage émise).
 - [ ] Aucune marque de voiture identifiable.
 - [ ] Aucun nom d'assureur réel.
-- [ ] Aucun email réel actif.
-- [ ] Aucune adresse précise réelle (Courgenay = générique siège Groupe NEUKOMM, OK).
+- [ ] Aucun email réel actif (sauf `demo@boom.contact` = boîte démo Groupe NEUKOMM, OK).
+- [ ] Lieu générique « Lausanne, Suisse » sans adresse précise.
 - [ ] Description sans blessure réelle, sans blâme, sans tiers identifiable.
 - [ ] Photos sans personne reconnaissable et sans marque visible.

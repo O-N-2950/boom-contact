@@ -88,3 +88,28 @@ Suivre l'ordre de `docs/store-screenshot-production-plan.md` :
 - [ ] Vérifier toutes les captures côte-à-côte → cohérence visuelle.
 - [ ] Vérifier que la fiche store ne contredit pas les captures.
 - [ ] Double check icône + screenshots + description = même histoire prudente.
+
+---
+
+## Capture automatisée Playwright (Sprint 7)
+
+Pour les itérations rapides et un rendu cohérent sur tous les formats, utiliser le script `scripts/capture-store-screenshots.ts`.
+
+```bash
+npm install
+npx playwright install chromium
+npm run capture:screenshots
+```
+
+Le script :
+- Pilote Chromium headless via Playwright.
+- Pour chaque viewport (iphone67/iphone65/iphone61/android-phone/android-tab) et chaque écran (intro/qr/voice/photo/signature/pdf/done/emergency/store) → navigue sur `/visual-qa?screenshot=<key>`.
+- Attend les polices + le layout puis screenshote la viewport exacte.
+- Écrit `artifacts/store-screenshots/<viewport>/<screen>.png`.
+
+Variables :
+- `BASE_URL` (défaut : `https://www.boom.contact`).
+- `FORMATS=iphone67,android-phone` (restreindre).
+- `SCREENS=intro,qr` (restreindre).
+
+> ⚠️ La capture automatisée **ne remplace pas** la QA device réelle (`device-qa-protocol.md`). Elle produit des assets cohérents pour les stores ; le rendu réel sur iPhone/Android physique doit être validé séparément (touch targets, contraste plein soleil, claviers natifs).

@@ -73,3 +73,53 @@
 - [ ] Versions EN (au minimum 2-3 captures clés).
 - [ ] Habillage marketing (titre + device frame).
 - [ ] Relecture finale claims avant upload.
+
+---
+
+## Génération automatisée (Sprint 7)
+
+Un script Playwright produit chaque capture en mode marketing à partir de `/visual-qa?screenshot=<key>` sur la prod live (ou un serveur local). Le mode marketing utilise les **données fictives** strictes (cf. `demo-data-for-screenshots.md`) — aucune donnée réelle ne peut transiter.
+
+### Commande
+```bash
+npm install                                  # installe playwright (devDep)
+npx playwright install chromium              # télécharge Chromium (~150 MB, une fois)
+npm run capture:screenshots                  # contre https://www.boom.contact
+
+# Variantes
+BASE_URL=http://localhost:5173 npm run capture:screenshots
+FORMATS=iphone67,android-phone npm run capture:screenshots
+SCREENS=intro,qr,signature npm run capture:screenshots
+```
+
+### Sortie
+```
+artifacts/store-screenshots/
+├── iphone67/          (1290 × 2796)
+│   ├── intro.png   qr.png   voice.png   photo.png
+│   ├── signature.png   pdf.png   done.png   emergency.png   store.png
+├── iphone65/          (1284 × 2778)
+├── iphone61/          (1179 × 2556)
+├── android-phone/     (1080 × 1920)
+├── android-tab/       (1440 × 2560)
+└── desktop/           (1440 × 2200) — design-preview.png
+```
+> `artifacts/` est **gitignored** : les PNG ne sont **pas** commités (poids).
+
+### Tailles générées
+| Format | Dimensions | Cible store |
+|---|---|---|
+| iphone67 | 1290 × 2796 | App Store iPhone 6.7" (obligatoire) |
+| iphone65 | 1284 × 2778 | App Store iPhone 6.5" (obligatoire) |
+| iphone61 | 1179 × 2556 | App Store iPhone 6.1" (optionnel) |
+| android-phone | 1080 × 1920 | Google Play phone (obligatoire) |
+| android-tab | 1440 × 2560 | Google Play tablet (optionnel) |
+
+### Checklist AVANT upload stores
+- [ ] `npm run capture:screenshots` exécuté sans erreur.
+- [ ] Inspection visuelle de chaque PNG dans `artifacts/store-screenshots/`.
+- [ ] Vérifier titres marketing alignés (cf. tableau plus haut).
+- [ ] Aucune donnée réelle visible (relire `demo-data-for-screenshots.md`).
+- [ ] QR stylisé ou réel anonymisé.
+- [ ] Tester sur 1 device réel à minima (cf. `device-qa-protocol.md`).
+- [ ] Versions FR + EN (relancer le script en changeant la langue browser au besoin).
