@@ -354,6 +354,19 @@ export default function App() {
     return () => { if (remove) remove(); };
   }, []);
 
+  // ── Thème Hybrid Trust Premium scoped au flow accident (constat/join) ──
+  // Applique data-theme="hybrid" sur <html> pendant le flow, restaure en sortie.
+  // Landing / B2B / admin / police conservent leur thème.
+  useEffect(() => {
+    const flowViews = ['constat', 'join'];
+    const html = document.documentElement;
+    if (flowViews.includes(view)) {
+      const prev = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', 'hybrid');
+      return () => { if (prev) html.setAttribute('data-theme', prev); else html.removeAttribute('data-theme'); };
+    }
+  }, [view]);
+
   const hasAcceptedCGU = () => !!localStorage.getItem(CGU_KEY);
 
   const handleCGUAccept = useCallback((email: string, _consentMarketing: boolean) => {

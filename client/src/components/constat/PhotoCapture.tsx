@@ -194,7 +194,7 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
       )}
 
       {error && (
-        <div className="rounded-lg text-[13px] mb-4 px-3.5 py-2.5 text-[#ff3b30]" style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid rgba(255,59,48,0.3)' }}>
+        <div className="rounded-lg text-[13px] mb-4 px-3.5 py-2.5 text-[var(--red)]" style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid rgba(255,59,48,0.3)' }}>
           {error}
         </div>
       )}

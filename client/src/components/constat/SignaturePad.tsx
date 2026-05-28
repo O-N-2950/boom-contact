@@ -19,14 +19,14 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
   const [confirmAccepted, setConfirmAccepted] = useState(false);
   const drawing      = useRef(false);
   const lastPoint    = useRef<{ x: number; y: number } | null>(null);
-  const roleColor    = role === 'A' ? '#FF3500' : '#00E5FF';
+  const roleColor    = role === 'A' ? 'var(--boom)' : '#00E5FF';
 
   // ── Canvas context init ────────────────────────────────────
   const initCtx = useCallback((canvas: HTMLCanvasElement) => {
     const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#06060C';
+    ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = roleColor;
+    ctx.strokeStyle = '#102033';
     ctx.lineWidth = 2.5;
     ctx.lineCap   = 'round';
     ctx.lineJoin  = 'round';
@@ -141,7 +141,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
               noSig: isOtherPedestrian,
             },
           ].map((p, i) => (
-            <div key={i} className="rounded-[20px] text-[11px] px-3 py-1" style={{ fontFamily: 'monospace', background: p.done ? 'rgba(34,197,94,0.15)' : i === 0 ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`, color: p.done ? '#22c55e' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)' }}>
+            <div key={i} className="rounded-[20px] text-[11px] px-3 py-1" style={{ fontFamily: 'monospace', background: p.done ? 'rgba(34,197,94,0.15)' : i === 0 ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${p.done ? 'rgba(34,197,94,0.3)' : i === 0 ? 'rgba(255,53,0,0.2)' : 'rgba(255,255,255,0.1)'}`, color: p.done ? 'var(--green)' : i === 0 ? 'var(--boom)' : 'rgba(240,237,232,0.4)' }}>
               {p.done ? (p.noSig ? '✓' : '✅') : '⏳'} {p.label}{p.noSig ? ` — ${t('signature.no_signature')}` : ''}
             </div>
           ))}
@@ -205,7 +205,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       {signed && !otherSigned && !isOtherPedestrian && (
         <div className="p-3.5 rounded-[10px] text-center" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
           <div className="text-[22px] mb-1.5">⏳</div>
-          <div className="text-[13px] font-semibold text-[#f59e0b]">{t('signature.waiting_other')}</div>
+          <div className="text-[13px] font-semibold text-[var(--amber)]">{t('signature.waiting_other')}</div>
           <div className="text-[11px] mt-1 opacity-70" >{t('signature.waiting_pdf')}</div>
         </div>
       )}

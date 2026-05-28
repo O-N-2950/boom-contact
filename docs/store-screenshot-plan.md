@@ -36,3 +36,6 @@
 - [ ] Habiller (légendes FR/EN).
 - [ ] Exporter formats iPhone 6.7"/6.5" + Android.
 - [ ] Relire la liste des claims interdits avant upload.
+
+## Note QR (screenshots définitifs)
+Les screenshots stores doivent utiliser un **QR réel anonymisé/flouté** ou un **QR stylisé propre** — **pas** un faux pattern de preview (repeating-conic-gradient). Le rendu réel génère un vrai QR (dark `#123A5A` sur fond blanc, scannable) ; pour les captures marketing, flouter/anonymiser les données de session.

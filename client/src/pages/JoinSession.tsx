@@ -21,7 +21,7 @@ const SignaturePad = React.lazy(() => import('../components/constat/SignaturePad
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, var(--boom))', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 type FlowStep = 'landing' | 'ocr' | 'location' | 'photos' | 'form' | 'voice' | 'sketch' | 'diagram' | 'sign' | 'done';
@@ -471,9 +471,9 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
       {/* Error banner */}
       {errorMsg && (
-        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, margin: '0 16px 12px' }}>
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: 'var(--red)', fontSize: 13, margin: '0 16px 12px' }}>
           {errorMsg}
-          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
         </div>
       )}
 

@@ -29,7 +29,7 @@ const ConstatForm = React.lazy(() => import('../components/constat/ConstatForm')
 
 // ── Loading fallback component ───────────────────────────────────
 function LazyLoading() {
-  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, #FF3500)', animation: 'spin 0.8s linear infinite' }} /></div>;
+  return <div className="flex items-center justify-center p-10"><div className="rounded-full w-6 h-6"  style={{ border: '2px solid rgba(255,255,255,0.25)', borderTopColor: 'var(--boom, var(--boom))', animation: 'spin 0.8s linear infinite' }} /></div>;
 }
 
 // ── Zod schema for localStorage validation ─────────────────
@@ -469,7 +469,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
       {/* Session expiry warning */}
       {showExpiryWarning && step !== 'done' && (
-        <div role="alert" className="shrink-0 flex items-center gap-2 text-[12px] font-semibold px-4 py-2.5" style={{ background: 'rgba(234,179,8,0.15)', borderBottom: '1px solid rgba(234,179,8,0.3)', color: '#eab308' }}>
+        <div role="alert" className="shrink-0 flex items-center gap-2 text-[12px] font-semibold px-4 py-2.5" style={{ background: 'rgba(234,179,8,0.15)', borderBottom: '1px solid rgba(234,179,8,0.3)', color: 'var(--amber)' }}>
           <span aria-hidden="true">⚠️</span>
           <span>Votre session expire bientôt. Sauvegardez vos données.</span>
           <span className="ml-auto text-[11px] opacity-80" style={{ fontFamily: 'monospace' }}>~{expiryTime}</span>
@@ -491,9 +491,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
       {/* Error banner */}
       {errorMsg && (
-        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: '#ef4444', fontSize: 13, margin: '0 16px 12px' }}>
+        <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: 'var(--red)', fontSize: 13, margin: '0 16px 12px' }}>
           {errorMsg}
-          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
         </div>
       )}
 
@@ -509,14 +509,14 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             <button
               onClick={() => setStep('ocr')}
               className="w-full rounded-xl cursor-pointer font-bold text-base px-4 py-3.5 touch-manipulation"
-              style={{ background: 'var(--accent, #FF3500)', color: '#fff', border: 'none', WebkitTapHighlightColor: 'transparent' }}
+              style={{ background: 'var(--accent, var(--boom))', color: '#fff', border: 'none', WebkitTapHighlightColor: 'transparent' }}
             >
               {t('legal.intro.start')}
             </button>
             <button
               onClick={() => setShowEmergency(true)}
               className="w-full rounded-xl cursor-pointer font-semibold text-sm px-4 py-3 touch-manipulation flex items-center justify-center gap-2"
-              style={{ border: '1px solid rgba(200,0,0,0.5)', background: 'rgba(200,0,0,0.08)', color: '#ff6b6b', WebkitTapHighlightColor: 'transparent' }}
+              style={{ border: '1px solid rgba(200,0,0,0.5)', background: 'rgba(200,0,0,0.08)', color: 'var(--red)', WebkitTapHighlightColor: 'transparent' }}
             >
               🆘 {t('legal.intro.emergency')}
             </button>
@@ -535,28 +535,28 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             {!showVehiclePicker ? (
               <button
                 onClick={() => setShowVehiclePicker(true)}
-                className="w-full rounded-xl cursor-pointer flex items-center gap-3 px-4 py-3.5 bg-[#0d2a0d]" style={{ border: '1px solid #1a5c1a' }}
+                className="w-full rounded-xl cursor-pointer flex items-center gap-3 px-4 py-3.5 bg-[#FFFFFF]" style={{ border: '1px solid #1a5c1a' }}
               >
                 <span className="text-2xl">🚗</span>
                 <div className="text-left">
-                  <div className="text-green-400 font-bold text-sm">Utiliser un véhicule enregistré</div>
-                  <div className="text-[#d0d0d0] text-xs">Pré-remplissage automatique — pas besoin de scanner</div>
+                  <div className="text-[var(--green)] font-bold text-sm">Utiliser un véhicule enregistré</div>
+                  <div className="text-[var(--muted)] text-xs">Pré-remplissage automatique — pas besoin de scanner</div>
                 </div>
-                <span className="text-green-400 ml-auto">→</span>
+                <span className="text-[var(--green)] ml-auto">→</span>
               </button>
             ) : (
-              <div className="bg-[#111] rounded-xl p-4" style={{ border: '1px solid #1a5c1a' }}>
-                <div className="text-green-400 font-bold mb-3">Choisissez votre véhicule :</div>
+              <div className="bg-[#FFFFFF] rounded-xl p-4" style={{ border: '1px solid #1a5c1a' }}>
+                <div className="text-[var(--green)] font-bold mb-3">Choisissez votre véhicule :</div>
                 {savedVehicles.map((v: any) => (
-                  <button key={v.id} onClick={() => applyVehicle(v)} className="w-full rounded-[10px] mb-2 cursor-pointer px-3.5 py-3 bg-[#1a2a1a] text-left" style={{ border: '1px solid #2a4a2a' }}>
-                    <div className="text-white font-semibold">
+                  <button key={v.id} onClick={() => applyVehicle(v)} className="w-full rounded-[10px] mb-2 cursor-pointer px-3.5 py-3 bg-[#FFFFFF] text-left" style={{ border: '1px solid #2a4a2a' }}>
+                    <div className="font-semibold text-[var(--text)]">
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
-                    {v.plate && <div className="text-[13px] text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
-                    {v.insuranceData?.companyName && <div className="text-[#d0d0d0] text-xs">🛡️ {v.insuranceData.companyName}</div>}
+                    {v.plate && <div className="text-[13px] text-[var(--boom3)]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
+                    {v.insuranceData?.companyName && <div className="text-[var(--muted)] text-xs">🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
-                <button onClick={() => setShowVehiclePicker(false)} className="bg-transparent border-0 text-[#d0d0d0] cursor-pointer text-[13px]">
+                <button onClick={() => setShowVehiclePicker(false)} className="bg-transparent border-0 text-[var(--muted)] cursor-pointer text-[13px]">
                   Annuler
                 </button>
               </div>

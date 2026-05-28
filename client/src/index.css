@@ -347,3 +347,56 @@ svg [role="button"]:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Manrope (auto-hébergé) — app principale Hybrid Trust Premium ── */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/manrope-400-800-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/manrope-400-800-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ── Hybrid Trust Premium — thème de l'app principale (flow accident) ── */
+/* Activé via data-theme="hybrid" sur <html>. Mappe la palette stricte sur les */
+/* variables existantes + ajoute navy/cyan. Les composants suivent automatiquement. */
+[data-theme="hybrid"] {
+  --boom:     #FF6B1A;  /* CTA / action principale */
+  --boom-cta: #F05A0A;  /* hover CTA */
+  --boom2:    #F05A0A;
+  --boom3:    #FF8340;
+  --navy:     #123A5A;  /* paiement / génération PDF / action sérieuse */
+  --trust:    #123A5A;
+  --cyan:     #18B8E8;  /* accent discret */
+  --black:    #F5F8FC;  /* fond global clair */
+  --dark:     #EEF4FA;  /* surface elevated */
+  --card:     #FFFFFF;
+  --card2:    #EEF4FA;
+  --border:   #DDE7F0;
+  --text:     #102033;
+  --muted:    #5D6B7C;
+  --green:    #16A34A;
+  --amber:    #F59E0B;
+  --red:      #DC2626;
+  --shadow-card: 0 8px 24px rgba(16,32,51,0.06);
+  --radius-card: 18px;
+}
+[data-theme="hybrid"] body { background: var(--black); color: var(--text); font-family: 'Manrope', 'DM Sans', system-ui, sans-serif; }
+[data-theme="hybrid"] { font-family: 'Manrope', 'DM Sans', system-ui, sans-serif; }
+[data-theme="hybrid"] .font-display { font-family: 'Manrope', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+[data-theme="hybrid"] input,
+[data-theme="hybrid"] textarea {
+  background: #fff !important;
+  color: #102033 !important;
+  border-color: #DDE7F0 !important;
+}
+[data-theme="hybrid"] ::-webkit-scrollbar-thumb { background: rgba(18,58,90,0.25); }

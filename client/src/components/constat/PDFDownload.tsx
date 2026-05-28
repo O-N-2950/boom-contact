@@ -201,7 +201,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
       )}
 
       {error && (
-        <div className="mb-3 p-3 rounded-lg text-[13px] text-[#ef4444]" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>⚠️ {error}</div>
+        <div className="mb-3 p-3 rounded-lg text-[13px] text-[var(--red)]" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>⚠️ {error}</div>
       )}
 
       {/* ── PAYWALL — pas connecté : 2 options ── */}
@@ -230,7 +230,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
             <button
               onClick={payOneShot}
               disabled={oneshotLoading || !oneshotEmail.includes('@')}
-              className="w-full p-3.5 rounded-[10px] border-0 text-white font-bold flex items-center justify-center gap-2 text-[15px]" style={{ background: oneshotEmail.includes('@') ? 'var(--boom)' : 'rgba(255,53,0,0.3)', cursor: oneshotEmail.includes('@') ? 'pointer' : 'not-allowed' }}>
+              className="w-full p-3.5 rounded-[10px] border-0 text-white font-bold flex items-center justify-center gap-2 text-[15px]" style={{ background: oneshotEmail.includes('@') ? 'var(--navy,#123A5A)' : 'rgba(18,58,90,0.3)', cursor: oneshotEmail.includes('@') ? 'pointer' : 'not-allowed' }}>
               {oneshotLoading ? '⏳ Redirection…' : '💳 Payer CHF 4.90 →'}
             </button>
           </div>
@@ -311,14 +311,14 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
                   {emailError && (
                     <div className="text-xs text-red-500 mb-2">⚠️ {emailError}</div>
                   )}
-                  <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} className="w-full p-[11px] rounded-lg border-0 text-white text-sm font-semibold" style={{ background: !email.includes('@') ? 'rgba(255,255,255,0.1)' : 'rgba(34,197,94,0.8)', cursor: !email.includes('@') ? 'not-allowed' : 'pointer' }}>
+                  <button onClick={sendEmail} disabled={sendingEmail || !email.includes('@')} className="w-full p-[11px] rounded-lg border-0 text-white text-sm font-semibold" style={{ background: !email.includes('@') ? 'var(--muted)' : 'var(--green)', cursor: !email.includes('@') ? 'not-allowed' : 'pointer' }}>
                     {sendingEmail ? '⏳ Envoi…' : '✉️ Envoyer'}
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <div className="p-3.5 rounded-[10px] text-center text-sm font-semibold text-[#22c55e]" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
+            <div className="p-3.5 rounded-[10px] text-center text-sm font-semibold text-[var(--green)]" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
               ✅ PDF envoyé à {email}
             </div>
           )}
@@ -339,7 +339,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
 
       {/* Legal */}
       <div className="p-3.5 rounded-[10px] mb-3.5" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
-        <div className="text-xs font-bold mb-[5px] text-[#f59e0b]">
+        <div className="text-xs font-bold mb-[5px] text-[var(--amber)]">
           ⏰ À transmettre à votre assureur
         </div>
         <div className="text-xs leading-[1.65]" style={{ opacity: 0.755 }}>

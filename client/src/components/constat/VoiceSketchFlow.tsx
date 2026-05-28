@@ -123,7 +123,7 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
   };
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-  const roleColor = { A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#EC4899' }[role] || '#fff';
+  const roleColor = { A: '#3B82F6', B: 'var(--boom)', C: 'var(--green)', D: '#A855F7', E: '#EC4899' }[role] || '#fff';
 
   const btnPrimary: React.CSSProperties = {
     width: '100%', padding: '16px', borderRadius: 12, border: 'none',

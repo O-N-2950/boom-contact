@@ -20,7 +20,7 @@ const ROLE_LABELS: Record<ParticipantRole, string> = {
   A: 'Conducteur A (vous)', B: 'Conducteur B', C: 'Conducteur C', D: 'Conducteur D', E: 'Conducteur E',
 };
 const ROLE_COLORS: Record<ParticipantRole, string> = {
-  A: '#3B82F6', B: '#FF6B00', C: '#22C55E', D: '#A855F7', E: '#F59E0B',
+  A: '#3B82F6', B: 'var(--boom)', C: 'var(--green)', D: '#A855F7', E: 'var(--amber)',
 };
 
 export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestrianMode = false, onVehicleCountChange }: Props) {
@@ -87,7 +87,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
         }
         const url = await QRCode.toDataURL(joinUrl, {
           width: 240, margin: 2,
-          color: { dark: ROLE_COLORS[role], light: '#06060C' },
+          color: { dark: '#123A5A', light: '#FFFFFF' },
           errorCorrectionLevel: 'M',
         });
         setQrDataUrls(prev => ({ ...prev, [role]: url }));
@@ -161,7 +161,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
 
             {vehicleCount === 1 && (
               <div className="mt-2.5 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(255,179,0,0.07)', border: '1px solid rgba(255,179,0,0.2)' }}>
-                <div className="text-xs font-bold mb-1.5 text-[#f59e0b]">
+                <div className="text-xs font-bold mb-1.5 text-[var(--amber)]">
                   {secondPartyType === 'pedestrian' ? '🚶 Piéton impliqué' :
                    secondPartyType === 'object' ? '🏗️ Aucun autre conducteur' : '🧍 Conducteur seul'}
                 </div>
@@ -180,7 +180,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
             )}
           <div className="flex items-center gap-2.5">
             <button onClick={() => updateVehicleCount(Math.max(1, vehicleCount - 1))} disabled={vehicleCount <= 1}
-              className="rounded-lg border-0 text-lg font-bold w-8 h-8"  style={{ background: vehicleCount <= 2 ? 'rgba(240,237,232,0.05)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
+              className="rounded-lg border-0 text-lg font-bold w-8 h-8"  style={{ background: vehicleCount <= 2 ? 'var(--muted)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
             <span className="text-[22px] font-extrabold text-center min-w-[24px]"  style={{ color: 'var(--boom)' }}>{vehicleCount}</span>
             <button onClick={() => updateVehicleCount(Math.min(MAX_VEHICLES, vehicleCount + 1))} disabled={vehicleCount >= MAX_VEHICLES}
               className="rounded-lg border-0 text-white text-lg font-bold w-8 h-8"  style={{ background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
@@ -190,7 +190,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
           <div className="rounded-[20px] text-[11px] font-bold px-2.5 py-1 text-[#3B82F6]" style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)' }}>A — Vous ✅</div>
           {roles.map(role => (
             <button key={role} onClick={() => setActiveQR(role)}
-              className="rounded-[20px] text-[11px] font-bold cursor-pointer px-2.5 py-1" style={{ border: `1px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.15)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}20` : 'transparent', color: joinedRoles.has(role) ? '#22c55e' : ROLE_COLORS[role] }}>
+              className="rounded-[20px] text-[11px] font-bold cursor-pointer px-2.5 py-1" style={{ border: `1px solid ${activeQR === role ? ROLE_COLORS[role] : 'rgba(240,237,232,0.15)'}`, background: activeQR === role ? `${ROLE_COLORS[role]}20` : 'transparent', color: joinedRoles.has(role) ? 'var(--green)' : ROLE_COLORS[role] }}>
               {role} {joinedRoles.has(role) ? '✅' : '⏳'}
             </button>
           ))}
@@ -200,7 +200,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
       {/* QR for active role */}
       <div className="text-center mb-4">
         <div className="text-xs font-bold mb-2.5 uppercase tracking-[1px]" style={{ color: ROLE_COLORS[activeQR] }}>{ROLE_LABELS[activeQR]}</div>
-        <div className="flex justify-center p-4 bg-[#06060C] rounded-[20px] min-h-[180px]"  style={{ border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22` }}>
+        <div className="flex justify-center p-4 bg-[#FFFFFF] rounded-[20px] min-h-[180px]"  style={{ border: `2px solid ${ROLE_COLORS[activeQR]}33`, boxShadow: `0 0 40px ${ROLE_COLORS[activeQR]}22` }}>
           {qrDataUrls[activeQR]
             ? <img src={qrDataUrls[activeQR]} alt="Code QR pour inviter le conducteur B à rejoindre la session de constat" loading="lazy" className="rounded-lg w-[200px] h-[200px]"  />
             : <div className="flex items-center justify-center w-[200px] h-[200px]" ><div className="text-[11px] opacity-70" style={{ fontFamily: 'monospace' }}>Génération…</div></div>
@@ -214,7 +214,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
         <button onClick={() => shareLink(activeQR)} className="rounded-[10px] border-0 text-white cursor-pointer text-sm font-bold flex items-center justify-center gap-2 p-[13px]"  style={{ flex: 2, background: ROLE_COLORS[activeQR] }}>
           📤 Partager lien {activeQR}
         </button>
-        <button onClick={() => copyLink(activeQR)} className="flex-1 rounded-[10px] cursor-pointer text-[13px] font-semibold p-[13px]"  style={{ border: '1.5px solid rgba(240,237,232,0.15)', background: copied === activeQR ? 'rgba(34,197,94,0.15)' : 'transparent', color: copied === activeQR ? '#22c55e' : 'var(--text)' }}>
+        <button onClick={() => copyLink(activeQR)} className="flex-1 rounded-[10px] cursor-pointer text-[13px] font-semibold p-[13px]"  style={{ border: '1.5px solid rgba(240,237,232,0.15)', background: copied === activeQR ? 'rgba(34,197,94,0.15)' : 'transparent', color: copied === activeQR ? 'var(--green)' : 'var(--text)' }}>
           {copied === activeQR ? '✅' : '📋'}
         </button>
       </div>
@@ -232,7 +232,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
 
       {/* Waiting */}
       <div className="rounded-[10px] flex items-center gap-3 px-4 py-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="rounded-full shrink-0 w-2.5 h-2.5 bg-[#f59e0b]" style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
+        <div className="rounded-full shrink-0 w-2.5 h-2.5 bg-[var(--amber)]" style={{ animation: 'pulse 1.5s ease-in-out infinite' }} />
         <div>
           <div className="text-[13px] font-semibold">En attente — {joinedRoles.size}/{vehicleCount - 1} rejoint{joinedRoles.size > 1 ? 's' : ''}</div>
           <div className="text-[11px] opacity-70 mt-0.5" >Actualisation automatique toutes les 2s.</div>
