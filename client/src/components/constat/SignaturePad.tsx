@@ -16,6 +16,7 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
   const [signing, setSigning]   = useState(false);
   const [signed, setSigned]     = useState(false);
   const [isEmpty, setIsEmpty]   = useState(true);
+  const [confirmAccepted, setConfirmAccepted] = useState(false);
   const drawing      = useRef(false);
   const lastPoint    = useRef<{ x: number; y: number } | null>(null);
   const roleColor    = role === 'A' ? '#FF3500' : '#00E5FF';
@@ -179,11 +180,23 @@ export const SignaturePad = React.memo(function SignaturePad({ role, onSign, oth
       </div>
 
       {!signed && (
+        <label className="flex items-start gap-2.5 mb-3 cursor-pointer text-[12px] leading-snug opacity-90">
+          <input
+            type="checkbox"
+            checked={confirmAccepted}
+            onChange={(e) => setConfirmAccepted(e.target.checked)}
+            className="mt-0.5 shrink-0 w-4 h-4 cursor-pointer"
+            aria-label={t('legal.signature_confirm')}
+          />
+          <span>{t('legal.signature_confirm')}</span>
+        </label>
+      )}
+      {!signed && (
         <div className="flex gap-2.5">
           <button onClick={clear} className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] p-[13px]"  style={{ border: '1.5px solid rgba(240,237,232,0.12)', color: 'var(--text)' }}>
             {t('signature.clear')}
           </button>
-          <button onClick={confirmSign} disabled={isEmpty || signing || disabled} className="rounded-[10px] border-0 text-white text-sm font-bold p-[13px] transition-all duration-200"  style={{ flex: 2, opacity: disabled ? 0.4 : 1, background: isEmpty ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty ? 'not-allowed' : 'pointer' }}>
+          <button onClick={confirmSign} disabled={isEmpty || signing || disabled || !confirmAccepted} className="rounded-[10px] border-0 text-white text-sm font-bold p-[13px] transition-all duration-200"  style={{ flex: 2, opacity: disabled || !confirmAccepted ? 0.4 : 1, background: isEmpty || !confirmAccepted ? 'rgba(255,53,0,0.3)' : 'var(--boom)', cursor: isEmpty || !confirmAccepted ? 'not-allowed' : 'pointer' }}>
             {signing ? t('signature.saving') : t('signature.confirm_signature')}
           </button>
         </div>

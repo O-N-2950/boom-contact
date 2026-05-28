@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ScenePhoto, PhotoCategory } from '../../../../shared/types';
 
 interface Props {
@@ -59,8 +60,11 @@ async function compressImage(file: File): Promise<string> {
 }
 
 export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange, onContinue, vehicleCount }: Props) {
+  const { t } = useTranslation();
   const cats = visibleCategories(vehicleCount);
   const [selectedCategory, setSelectedCategory] = useState<PhotoCategory>('scene');
+  const [injuryConfirmed, setInjuryConfirmed] = useState(false);
+  const [showInjuryConfirm, setShowInjuryConfirm] = useState(false);
   const [editingCaption, setEditingCaption] = useState<string | null>(null);
   const [captionValue, setCaptionValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -159,6 +163,8 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
       <button
         onClick={() => {
           if (photos.length >= MAX_PHOTOS) { setError(`Maximum ${MAX_PHOTOS} photos atteint.`); return; }
+          // Confirmation légère pour les photos de blessures (données sensibles)
+          if (selectedCategory === 'injury' && !injuryConfirmed) { setShowInjuryConfirm(true); return; }
           fileInputRef.current?.click();
         }}
         disabled={loading || photos.length >= MAX_PHOTOS}
@@ -166,6 +172,26 @@ export const PhotoCapture = React.memo(function PhotoCapture({ photos, onChange,
       >
         {loading ? '⏳ Traitement...' : `📷 Prendre une photo · ${cats.find(c => c.id === selectedCategory)?.label}`}
       </button>
+
+      {showInjuryConfirm && (
+        <div className="rounded-xl p-4 mb-4" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.35)' }}>
+          <div className="text-[13px] leading-snug mb-3 opacity-90">{t('legal.injury_confirm.body')}</div>
+          <div className="flex gap-2.5">
+            <button
+              onClick={() => { setInjuryConfirmed(true); setShowInjuryConfirm(false); fileInputRef.current?.click(); }}
+              className="flex-1 rounded-[10px] border-0 text-white text-[13px] font-bold p-[11px] cursor-pointer" style={{ background: 'var(--boom)' }}
+            >
+              {t('legal.injury_confirm.continue')}
+            </button>
+            <button
+              onClick={() => { setShowInjuryConfirm(false); setSelectedCategory('scene'); }}
+              className="flex-1 rounded-[10px] bg-transparent cursor-pointer text-[13px] p-[11px]" style={{ border: '1.5px solid rgba(240,237,232,0.2)', color: 'var(--text)' }}
+            >
+              {t('legal.injury_confirm.change')}
+            </button>
+          </div>
+        </div>
+      )}
 
       {error && (
         <div className="rounded-lg text-[13px] mb-4 px-3.5 py-2.5 text-[#ff3b30]" style={{ background: 'rgba(255,59,48,0.1)', border: '1px solid rgba(255,59,48,0.3)' }}>

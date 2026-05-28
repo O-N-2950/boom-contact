@@ -886,5 +886,28 @@
       "speed_limit": "Speed limit in the area (km/h)",
       "speed_limit_placeholder": "E.g. 50"
     }
+  },
+  "legal": {
+    "intro": {
+      "title": "Before you start",
+      "body": "boom.contact helps you document an accident and generate a structured PDF report. In case of injury, danger, a fleeing party, serious disagreement or legal obligation, immediately contact emergency services, the police or the competent authorities. The information provided remains the responsibility of the participants. You can enter information manually if you prefer not to use the camera, microphone or location.",
+      "start": "Got it, start",
+      "emergency": "View emergency numbers",
+      "privacy_cgu": "Privacy / Terms"
+    },
+    "guest_accept": {
+      "checkbox": "I accept the Terms of Use and have read the Privacy Policy.",
+      "note": "I understand that my information will be used to generate the accident PDF report and that the information provided remains my responsibility."
+    },
+    "signature_confirm": "I confirm that the information I have provided is accurate to the best of my knowledge and I agree that my signature will be included in the PDF report.",
+    "payment_notice": "By continuing to payment, you understand that the payment covers the generation and delivery of the PDF report. The information provided remains the responsibility of the participants.",
+    "mic_notice": "By using the microphone, your voice statement will be transcribed to be included in the accident report. You can use text input instead.",
+    "injury_confirm": {
+      "body": "Injury photos may contain sensitive data. Make sure you have the consent of the person concerned, unless required for safety or by legal obligation.",
+      "continue": "Continue",
+      "change": "Change category"
+    },
+    "pdf_ready_title": "Timestamped accident PDF report",
+    "pdf_ready_body": "The required signatures have been recorded. The PDF report is ready. Check the information before sending it to your insurer."
   }
 }

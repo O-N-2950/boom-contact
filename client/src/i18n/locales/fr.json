@@ -886,5 +886,28 @@
       "speed_limit": "Limitation de vitesse sur zone (km/h)",
       "speed_limit_placeholder": "Ex: 50"
     }
+  },
+  "legal": {
+    "intro": {
+      "title": "Avant de commencer",
+      "body": "boom.contact t'aide à documenter un accident et à générer un dossier PDF structuré. En cas de blessure, danger, fuite, désaccord grave ou obligation légale, contacte immédiatement les secours, la police ou les autorités compétentes. Les informations fournies restent sous la responsabilité des participants. Tu peux saisir les informations manuellement si tu ne souhaites pas utiliser la caméra, le micro ou la localisation.",
+      "start": "J'ai compris, commencer",
+      "emergency": "Voir les numéros d'urgence",
+      "privacy_cgu": "Confidentialité / CGU"
+    },
+    "guest_accept": {
+      "checkbox": "J'accepte les Conditions générales d'utilisation et j'ai lu la Politique de confidentialité.",
+      "note": "Je comprends que mes informations seront utilisées pour générer le dossier PDF d'accident et que les informations fournies restent sous ma responsabilité."
+    },
+    "signature_confirm": "Je confirme que les informations que j'ai fournies sont exactes à ma connaissance et j'accepte que ma signature soit intégrée au dossier PDF.",
+    "payment_notice": "En continuant vers le paiement, tu comprends que le paiement couvre la génération et l'envoi du dossier PDF. Les informations fournies restent sous la responsabilité des participants.",
+    "mic_notice": "En utilisant le micro, ta déclaration vocale sera transcrite afin d'être intégrée au dossier d'accident. Tu peux utiliser la saisie texte à la place.",
+    "injury_confirm": {
+      "body": "Les photos de blessures peuvent contenir des données sensibles. Assure-toi d'avoir l'accord de la personne concernée, sauf nécessité de sécurité ou obligation légale.",
+      "continue": "Continuer",
+      "change": "Changer de catégorie"
+    },
+    "pdf_ready_title": "Dossier PDF d'accident horodaté",
+    "pdf_ready_body": "Les signatures requises ont été enregistrées. Le dossier PDF est prêt. Vérifie les informations avant de le transmettre à ton assureur."
   }
 }

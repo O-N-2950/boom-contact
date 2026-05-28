@@ -81,7 +81,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const urlTokenB = params.get('tokenB') || '';
   const saved = loadState(sessionId);
 
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedLang, setSelectedLang] = useState<string>(() => {
     return saved?.lang || localStorage.getItem('boom_lang') || navigator.language?.split('-')[0] || 'fr';
   });
@@ -90,6 +90,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [step, setStepRaw] = useState<FlowStep>((saved?.step as FlowStep) || 'landing');
   const [joined, setJoined] = useState(saved?.joined || false);
   const [joining, setJoining] = useState(false);
+  const [guestAccepted, setGuestAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [participantData, setParticipantData] = useState<Partial<ParticipantData>>(
     saved?.participantData || { role: urlRole, language: navigator.language?.split('-')[0] || 'fr' }
@@ -405,7 +406,22 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
       </div>
 
-      <button onClick={join} disabled={joining || !sessionId} className="w-full p-[18px] rounded-xl border-0 text-white text-base font-bold transition-all duration-200 flex items-center justify-center gap-3" style={{ background: joining || !sessionId ? 'rgba(255,53,0,0.4)' : 'var(--boom)', cursor: joining || !sessionId ? 'not-allowed' : 'pointer', boxShadow: '0 8px 32px rgba(255,53,0,0.35)' }}>
+      <label className="flex items-start gap-2.5 mb-3 cursor-pointer text-[12px] leading-snug opacity-90">
+        <input
+          type="checkbox"
+          checked={guestAccepted}
+          onChange={(e) => setGuestAccepted(e.target.checked)}
+          className="mt-0.5 shrink-0 w-4 h-4 cursor-pointer"
+          aria-label={t('legal.guest_accept.checkbox')}
+        />
+        <span>
+          {t('legal.guest_accept.checkbox')}{' '}
+          <a href="/privacy" className="underline opacity-80" style={{ color: 'inherit' }}>↗</a>
+          <span className="block opacity-70 mt-1">{t('legal.guest_accept.note')}</span>
+        </span>
+      </label>
+
+      <button onClick={join} disabled={joining || !sessionId || !guestAccepted} className="w-full p-[18px] rounded-xl border-0 text-white text-base font-bold transition-all duration-200 flex items-center justify-center gap-3" style={{ background: joining || !sessionId || !guestAccepted ? 'rgba(255,53,0,0.4)' : 'var(--boom)', cursor: joining || !sessionId || !guestAccepted ? 'not-allowed' : 'pointer', boxShadow: '0 8px 32px rgba(255,53,0,0.35)' }}>
         {joining ? (
           <><span className="text-xl inline-block"  style={{ animation: 'spin 1s linear infinite' }}>⏳</span> Connexion…</>
         ) : joined ? (

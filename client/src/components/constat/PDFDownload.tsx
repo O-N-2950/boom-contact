@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { trpc } from '../../trpc';
 import { getPublicOrigin } from '../../apiBase';
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, participantToken, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
+  const { t } = useTranslation();
   const [loading, setLoading]           = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfBase64, setPdfBase64]       = useState<string | null>(null);
@@ -162,7 +164,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
           Constat finalisé !
         </h2>
         <p className="text-[13px] opacity-75 leading-[1.7]">
-          Les deux parties ont signé. Le document numérique certifié est prêt.
+          {t('legal.pdf_ready_body')}
         </p>
         <div className="inline-flex items-center gap-2 mt-2 rounded-[20px] px-3.5 py-[5px]" style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)' }}>
           <span className="text-[10px] text-green-500 tracking-[1px]" style={{ fontFamily: 'monospace' }}>
@@ -177,7 +179,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
           <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center text-lg" style={{ background: 'var(--boom)' }}>📄</div>
           <div>
             <div className="font-bold text-[13px]">Constat numérique — boom.contact</div>
-            <div className="text-[11px] opacity-70" >Document certifié · 150+ pays</div>
+            <div className="text-[11px] opacity-70" >{t('legal.pdf_ready_title')}</div>
           </div>
         </div>
         <div className="grid gap-[5px]"  style={{ gridTemplateColumns: '1fr 1fr' }}>
@@ -205,6 +207,9 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
       {/* ── PAYWALL — pas connecté : 2 options ── */}
       {!authUser && (
         <div className="mb-4">
+          <div className="text-[11px] opacity-70 leading-snug mb-2.5 px-1">
+            {t('legal.payment_notice')}
+          </div>
           {/* Option 1 : Payer sans compte — one shot */}
           <div className="p-4 rounded-xl mb-2.5" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
             <div className="font-bold text-sm mb-1">

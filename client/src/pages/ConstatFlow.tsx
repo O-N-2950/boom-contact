@@ -51,7 +51,7 @@ const savedStateSchema = z.object({
   ts: z.number().optional(),
 }).passthrough();
 
-type FlowStep = 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
+type FlowStep = 'intro' | 'ocr' | 'location' | 'photos' | 'voice' | 'qr' | 'pedestrian_form' | 'sketch' | 'form' | 'diagram' | 'sign' | 'done';
 
 const STORAGE_KEY = 'boom_flow_a';
 
@@ -104,7 +104,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   const [step, setStepRaw] = useState<FlowStep>(() => {
     if (isPaidReturn) return 'done'; // Post-payment: go directly to done
     if (initialSessionId) return 'qr'; // Skip OCR, jump to QR step
-    return (saved?.step as FlowStep) || 'ocr';
+    return (saved?.step as FlowStep) || 'intro';
   });
   const [sessionId, setSessionId] = useState<string | null>(initialSessionId || saved?.sessionId || null);
   const [qrUrl, setQrUrl] = useState<string>(saved?.qrUrl || '');
@@ -477,7 +477,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       )}
 
       {/* Step indicator */}
-      {step !== 'done' && (
+      {step !== 'done' && step !== 'intro' && (
         <StepIndicator
           steps={STEPS}
           currentIndex={currentStepIdx}
@@ -499,6 +499,37 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
       {/* Main content */}
       <div role="tabpanel" id={`tabpanel-${step}`} aria-labelledby={`tab-${step}`} className="flex-1 overflow-y-auto">
+        {step === 'intro' && (
+          <div className="px-5 py-6 max-w-md mx-auto flex flex-col gap-5">
+            <div className="text-center">
+              <div className="text-3xl mb-2">💥</div>
+              <h2 className="text-xl font-bold mb-1">{t('legal.intro.title')}</h2>
+            </div>
+            <p className="text-sm leading-relaxed opacity-90">{t('legal.intro.body')}</p>
+            <button
+              onClick={() => setStep('ocr')}
+              className="w-full rounded-xl cursor-pointer font-bold text-base px-4 py-3.5 touch-manipulation"
+              style={{ background: 'var(--accent, #FF3500)', color: '#fff', border: 'none', WebkitTapHighlightColor: 'transparent' }}
+            >
+              {t('legal.intro.start')}
+            </button>
+            <button
+              onClick={() => setShowEmergency(true)}
+              className="w-full rounded-xl cursor-pointer font-semibold text-sm px-4 py-3 touch-manipulation flex items-center justify-center gap-2"
+              style={{ border: '1px solid rgba(200,0,0,0.5)', background: 'rgba(200,0,0,0.08)', color: '#ff6b6b', WebkitTapHighlightColor: 'transparent' }}
+            >
+              🆘 {t('legal.intro.emergency')}
+            </button>
+            <a
+              href="/privacy"
+              className="text-center text-[12px] opacity-60 underline"
+              style={{ color: 'inherit' }}
+            >
+              {t('legal.intro.privacy_cgu')}
+            </a>
+          </div>
+        )}
+
         {step === 'ocr' && savedVehicles.length > 0 && (
           <div className="mb-4">
             {!showVehiclePicker ? (
@@ -832,7 +863,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           </>
         )}
 
-        {step !== 'done' && step !== 'ocr' && (
+        {step !== 'done' && (
           <button
             onClick={() => setShowEmergency(true)}
             title="Numéros d'urgence"

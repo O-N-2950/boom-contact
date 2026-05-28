@@ -159,6 +159,9 @@ export const VoiceSketchFlow = React.memo(function VoiceSketchFlow({ role, sessi
               {error}
             </div>
           )}
+          <div className="text-[11px] opacity-70 leading-snug mb-2.5 text-center">
+            {t('legal.mic_notice')}
+          </div>
           <button onClick={startRecording} style={btnPrimary}>
             <span className="text-[22px]">🎙️</span>
             {t('voice.start_recording')}

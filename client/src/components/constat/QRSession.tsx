@@ -27,6 +27,12 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
   const [partnerJoined, setPartnerJoined] = useState(false);
   const [copied, setCopied] = useState<ParticipantRole | null>(null);
   const [vehicleCount, setVehicleCount] = useState(isPedestrianMode ? 1 : 2);
+  // Source unique de vérité : toute modif de vehicleCount notifie le parent
+  // (évite divergence UI locale / DB / PDF / signature).
+  const updateVehicleCount = (count: number) => {
+    setVehicleCount(count);
+    onVehicleCountChange?.(count);
+  };
   const [secondPartyType, setSecondPartyType] = useState<'vehicle'|'pedestrian'|'object'|'solo'>(isPedestrianMode ? 'pedestrian' : 'vehicle');
   const [qrDataUrls, setQrDataUrls] = useState<Record<string, string>>({});
   const [activeQR, setActiveQR] = useState<ParticipantRole>('B');
@@ -147,8 +153,7 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
                   onClick={() => {
                     setSecondPartyType(opt.val);
                     const newCount = opt.val !== 'vehicle' ? 1 : Math.max(2, vehicleCount);
-                    setVehicleCount(newCount);
-                    onVehicleCountChange?.(newCount);
+                    updateVehicleCount(newCount);
                   }}
                   className="rounded-[20px] cursor-pointer text-[11px] px-2.5 py-[5px] touch-manipulation" style={{ border: secondPartyType === opt.val ? '1.5px solid var(--boom)' : '1px solid rgba(255,255,255,0.25)', background: secondPartyType === opt.val ? 'rgba(255,53,0,0.1)' : 'rgba(255,255,255,0.03)', color: secondPartyType === opt.val ? 'var(--boom)' : 'rgba(255,255,255,0.55)', fontWeight: secondPartyType === opt.val ? 700 : 400 }}>{opt.icon} {opt.label}</button>
               ))}
@@ -174,10 +179,10 @@ export function QRSession({ sessionId, qrUrl, tokenA, onPartnerJoined, isPedestr
               </div>
             )}
           <div className="flex items-center gap-2.5">
-            <button onClick={() => setVehicleCount(v => Math.max(1, v - 1))} disabled={vehicleCount <= 1}
+            <button onClick={() => updateVehicleCount(Math.max(1, vehicleCount - 1))} disabled={vehicleCount <= 1}
               className="rounded-lg border-0 text-lg font-bold w-8 h-8"  style={{ background: vehicleCount <= 2 ? 'rgba(240,237,232,0.05)' : 'rgba(240,237,232,0.1)', color: 'var(--text)', cursor: vehicleCount <= 2 ? 'not-allowed' : 'pointer', opacity: vehicleCount <= 2 ? 0.3 : 1 }}>−</button>
             <span className="text-[22px] font-extrabold text-center min-w-[24px]"  style={{ color: 'var(--boom)' }}>{vehicleCount}</span>
-            <button onClick={() => setVehicleCount(v => Math.min(MAX_VEHICLES, v + 1))} disabled={vehicleCount >= MAX_VEHICLES}
+            <button onClick={() => updateVehicleCount(Math.min(MAX_VEHICLES, vehicleCount + 1))} disabled={vehicleCount >= MAX_VEHICLES}
               className="rounded-lg border-0 text-white text-lg font-bold w-8 h-8"  style={{ background: vehicleCount >= MAX_VEHICLES ? 'rgba(240,237,232,0.05)' : 'var(--boom)', cursor: vehicleCount >= MAX_VEHICLES ? 'not-allowed' : 'pointer', opacity: vehicleCount >= MAX_VEHICLES ? 0.3 : 1 }}>+</button>
           </div>
         </div>
