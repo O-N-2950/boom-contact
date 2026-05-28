@@ -73,6 +73,8 @@ export function CookieBanner() {
     return () => bannerRef.current?.removeEventListener('keydown', handleKeyDown);
   }, [visible]);
 
+  // Masqué sur les routes internes preview/QA pour des screenshots propres
+  if (typeof window !== 'undefined' && /\/(visual-qa|design-preview)/.test(window.location.pathname)) return null;
   if (!visible) return null;
 
   const accept = (choice: 'all' | 'essential') => {
