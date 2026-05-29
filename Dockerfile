@@ -20,6 +20,20 @@ RUN npm ci --no-fund --no-audit
 COPY . .
 RUN rm -f vite.config.ts
 RUN mkdir -p server/src/assets
+
+# Variables analytics build-time : Vite inline import.meta.env.VITE_* au build.
+# Railway fournit les variables de service comme build args ; on les déclare ici pour
+# que `vite build` les reçoive (sinon PostHog/GA4/Sentry sont éliminés du bundle).
+# Valeurs publiques côté client (clé projet PostHog, ID GA4, DSN Sentry) — pas des secrets serveur.
+ARG VITE_POSTHOG_KEY=""
+ARG VITE_POSTHOG_HOST=""
+ARG VITE_GA4_ID=""
+ARG VITE_SENTRY_DSN=""
+ENV VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY \
+    VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST \
+    VITE_GA4_ID=$VITE_GA4_ID \
+    VITE_SENTRY_DSN=$VITE_SENTRY_DSN
+
 # Build client (Vite) + server (tsc)
 RUN npm run build
 

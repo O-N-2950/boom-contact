@@ -56,3 +56,11 @@ commit vide ou cliquer **Redeploy**.
 ## 6. Données envoyées (rappel)
 Uniquement des propriétés non identifiantes filtrées par `sanitizeProps()` (langue, source,
 loggedIn, step, method, count, credits_bucket, country). Détail : `analytics-privacy-review.md`.
+
+## 7. Correctif build (2026-05-29) — IMPORTANT
+Le déploiement utilise un **Dockerfile** (`railway.toml` → builder dockerfile). Les variables
+`VITE_*` n'étaient **pas transmises** à `vite build` dans le stage builder → PostHog/GA4/Sentry
+étaient **éliminés du bundle** (analytics inactif en prod malgré les variables Railway définies).
+**Corrigé** : `ARG`/`ENV VITE_POSTHOG_KEY|HOST|GA4_ID|SENTRY_DSN` ajoutés avant `RUN npm run build`.
+Railway injecte les variables de service comme build args → elles sont désormais inline au build.
+Vérification post-déploiement : voir §4 (`window.__boomAnalytics.status()` → `posthog:true`).

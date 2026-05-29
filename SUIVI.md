@@ -767,3 +767,18 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Non touché : webhook Stripe, flow constat, auth/compte/garage/crédits, AASA/assetlinks. SW v13->v14.
 ### Vérifs : tsc 0, quality:prestore exit 0, 93 tests, A_BLOCKING=0, check:i18n vert.
 ### ACTION OLIVIER : poser VITE_POSTHOG_KEY (+ host) dans Railway -> rebuild -> accepter cookies -> vérifier window.__boomAnalytics.status() + PostHog Live events.
+
+---
+
+## Sprint Analytics Activation — CORRECTIF build (analytics était mort en prod)
+**Date** : 2026-05-29
+### Diagnostic (vérifié sur le bundle prod servi)
+- Les variables VITE_POSTHOG_KEY/HOST/GA4_ID/SENTRY_DSN SONT bien définies dans Railway.
+- MAIS le bundle prod ne contenait AUCUNE référence (api_host, eu.i.posthog.com, phc_, anonymize_ip) : le code d'init était éliminé (`async function rr(){}` vide). Analytics INACTIF en prod.
+- Cause : `railway.toml` builder = dockerfile ; le Dockerfile lançait `npm run build` SANS les VITE_* dans l'env du stage builder → import.meta.env.VITE_* = undefined au build → dead-code elimination.
+- Stripe NON affecté : VITE_STRIPE_PUBLISHABLE_KEY non utilisée côté client (paiement = redirection Stripe Checkout pilotée serveur).
+### Correctif
+- Dockerfile : ARG + ENV VITE_POSTHOG_KEY/HOST/GA4_ID/SENTRY_DSN avant `RUN npm run build` (Railway injecte les variables de service comme build args). Valeurs publiques client (pas des secrets serveur).
+- Runbook §7 ajouté. SW v14->v15.
+### À VÉRIFIER post-deploy : bundle prod doit contenir l'init (host/phc_) + window.__boomAnalytics.status() => posthog:true après consentement.
+### Non touché : webhook Stripe, flow, auth/garage, AASA/assetlinks. quality:prestore exit 0, 93 tests.
