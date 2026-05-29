@@ -123,97 +123,93 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
     });
   };
 
+  const C = { bg:'#F5F8FC', card:'#FFFFFF', elevated:'#EEF4FA', text:'#102033', sec:'#5D6B7C', orange:'#FF6B1A', orangeHover:'#F05A0A', navy:'#123A5A', cyan:'#18B8E8', success:'#16A34A', warning:'#F59E0B', danger:'#DC2626', border:'#DDE7F0', font:'Manrope, ui-sans-serif, system-ui, sans-serif' };
+
   return (
-    <div className="mx-auto min-h-[100svh] max-w-[440px] px-4 py-6">
-      <h1 className="absolute p-0 overflow-hidden whitespace-nowrap w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>{t('pricingPage.sr_title')}</h1>
+    <div style={{ margin:'0 auto', minHeight:'100svh', maxWidth:440, padding:'24px 16px', background:C.bg, color:C.text, fontFamily:C.font, boxSizing:'border-box' }}>
+      <h1 style={{ position:'absolute', padding:0, overflow:'hidden', whiteSpace:'nowrap', width:1, height:1, margin:-1, border:0, clip:'rect(0,0,0,0)' }}>{t('pricingPage.sr_title')}</h1>
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button onClick={onBack} className="bg-transparent border-0 cursor-pointer text-[15px] font-semibold flex items-center gap-1.5 touch-manipulation" style={{ color: 'rgba(255,255,255,0.55)', padding: '8px 0' }}>{t('pricingPage.back')}</button>
+      <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:24 }}>
+        <button onClick={onBack} style={{ background:'transparent', border:'none', cursor:'pointer', fontSize:15, fontWeight:600, display:'flex', alignItems:'center', gap:6, color:C.sec, padding:'8px 0' }}>{t('pricingPage.back')}</button>
         <div>
-          <div className="font-extrabold text-lg">{t('pricingPage.buy_reports')}</div>
-          <div className="text-[11px] opacity-70" >{t('pricingPage.credits_no_expiry')}</div>
+          <div style={{ fontWeight:800, fontSize:18, color:C.text }}>{t('pricingPage.buy_reports')}</div>
+          <div style={{ fontSize:11, color:C.sec }}>{t('pricingPage.credits_no_expiry')}</div>
         </div>
       </div>
 
-      {/* Credits badge if logged in */}
+      {/* Credits badge */}
       {authUser && (
-        <div className="rounded-xl mb-4 flex justify-between items-center" style={{ background: authUser.credits > 0 ? '#0d2a0d' : '#1a1000', border: `1px solid ${authUser.credits > 0 ? '#1a4a1a' : '#3a2000'}`, padding: '12px 16px' }}>
+        <div style={{ borderRadius:12, marginBottom:16, display:'flex', justifyContent:'space-between', alignItems:'center', padding:'12px 16px', background: authUser.credits > 0 ? 'rgba(22,163,74,0.08)' : 'rgba(245,158,11,0.08)', border:`1px solid ${authUser.credits > 0 ? 'rgba(22,163,74,0.3)' : 'rgba(245,158,11,0.3)'}` }}>
           <div>
-            <div className="font-bold text-sm" style={{ color: authUser.credits > 0 ? '#4ade80' : '#fbbf24' }}>
+            <div style={{ fontWeight:700, fontSize:14, color: authUser.credits > 0 ? C.success : C.warning }}>
               {authUser.credits > 0 ? t('pricingPage.credits_available', { count: authUser.credits }) : t('pricingPage.no_credits')}
             </div>
-            <div className="text-[#d0d0d0] text-xs mt-0.5" >{authUser.email}</div>
+            <div style={{ fontSize:12, color:C.sec, marginTop:2 }}>{authUser.email}</div>
           </div>
-          {authUser.credits === 999999 && <span className="text-[#FF3500] font-black text-xl">∞</span>}
+          {authUser.credits === 999999 && <span style={{ color:C.orange, fontWeight:900, fontSize:20 }}>∞</span>}
         </div>
       )}
 
       {/* Currency selector */}
-      <div className="mb-5">
-        <div className="text-[#d0d0d0] text-[11px] font-semibold mb-2 tracking-[1px]">
-          {t('pricingPage.currency_label')} {detected && <span className="text-green-400 ml-1.5" >{t('pricingPage.currency_detected')}</span>}
+      <div style={{ marginBottom:20 }}>
+        <div style={{ fontSize:11, fontWeight:700, marginBottom:8, letterSpacing:1, color:C.sec }}>
+          {t('pricingPage.currency_label')} {detected && <span style={{ color:C.success, marginLeft:6 }}>{t('pricingPage.currency_detected')}</span>}
         </div>
-        <div className="flex gap-1.5" style={{ flexWrap: 'wrap' as const }}>
-          {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => (
-            <button key={c} onClick={() => setCurrency(c)} className="text-white rounded-lg text-xs cursor-pointer min-h-[44px] min-w-[44px]" style={{ background: currency === c ? '#D42D00' : '#111', border: `1px solid ${currency === c ? '#D42D00' : '#222'}`, padding: '6px 10px', fontWeight: currency === c ? 700 : 400 }}>
-              {CURRENCY_FLAGS[c]} {c}
-            </button>
-          ))}
+        <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+          {(Object.keys(CURRENCY_FLAGS) as CurrencyCode[]).map(c => {
+            const active = currency === c;
+            return (
+              <button key={c} onClick={() => setCurrency(c)} style={{ borderRadius:10, fontSize:12, cursor:'pointer', minHeight:44, minWidth:44, padding:'6px 12px', fontWeight: active ? 700 : 500, color: active ? '#fff' : C.text, background: active ? C.orange : C.card, border:`1px solid ${active ? C.orange : C.border}`, transition:'all .15s' }}>
+                {CURRENCY_FLAGS[c]} {c}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Packages */}
-      <div className="flex flex-col gap-3 mb-6">
+      <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:24 }}>
         {PACKAGES.map(pkg => {
           const amountCents = PRICES[pkg.id][currency];
           const priceStr    = formatPrice(amountCents, currency);
           const symbol      = CURRENCY_SYMBOL[currency];
           const isLoading   = loading === pkg.id;
-
           return (
-            <div key={pkg.id} className="rounded-2xl overflow-hidden" style={{ border: pkg.popular ? '1.5px solid rgba(255,53,0,0.5)' : '1px solid rgba(255,255,255,0.25)', background: pkg.popular ? 'rgba(255,53,0,0.06)' : 'rgba(255,255,255,0.03)' }}>
+            <div key={pkg.id} style={{ borderRadius:16, overflow:'hidden', background: pkg.popular ? '#FFF7F2' : C.card, border:`1.5px solid ${pkg.popular ? 'rgba(255,107,26,0.4)' : C.border}`, boxShadow: pkg.popular ? '0 8px 24px rgba(255,107,26,0.10)' : '0 8px 24px rgba(16,32,51,0.06)' }}>
               {pkg.popular && (
-                <div className="bg-[#D42D00] text-[10px] font-bold text-white px-4 py-1 tracking-[1px]">
+                <div style={{ background:C.orange, fontSize:10, fontWeight:700, color:'#fff', padding:'4px 16px', letterSpacing:1 }}>
                   {t('pricingPage.most_popular', { savings: pkg.savings })}
                 </div>
               )}
-
-              <div className="px-5 py-[18px]">
-                <div className="flex justify-between items-start mb-2.5">
+              <div style={{ padding:'18px 20px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:10 }}>
                   <div>
-                    <div className="font-extrabold text-[17px]">{pkg.icon} {pkg.label}</div>
-                    <div className="text-[#d0d0d0] text-xs mt-0.5" >{pkg.desc}</div>
+                    <div style={{ fontWeight:800, fontSize:17, color:C.text }}>{pkg.icon} {pkg.label}</div>
+                    <div style={{ fontSize:12, color:C.sec, marginTop:2 }}>{pkg.desc}</div>
                     {!pkg.popular && pkg.savings && (
-                      <div className="text-green-400 text-[11px] mt-1">{t('pricingPage.economy', { savings: pkg.savings })}</div>
+                      <div style={{ fontSize:11, marginTop:4, color:C.success, fontWeight:700 }}>{t('pricingPage.economy', { savings: pkg.savings })}</div>
                     )}
                   </div>
-                  <div className="shrink-0 text-right">
-                    <div className="text-[26px] font-black" style={{ color: pkg.popular ? '#FF3500' : '#fff' }}>
+                  <div style={{ flexShrink:0, textAlign:'right' }}>
+                    <div style={{ fontSize:26, fontWeight:900, color: pkg.popular ? C.orange : C.text }}>
                       {currency === 'JPY' ? `¥${amountCents}` : priceStr}
                     </div>
-                    <div className="text-[#d0d0d0] text-[11px]">
-                      {currency !== 'JPY' ? symbol : ''} {t('pricingPage.per_pack')}
-                    </div>
+                    <div style={{ fontSize:11, color:C.sec }}>{currency !== 'JPY' ? symbol : ''} {t('pricingPage.per_pack')}</div>
                     {pkg.credits > 1 && (
-                      <div className="text-[#d0d0d0] text-[10px] mt-0.5" >
+                      <div style={{ fontSize:10, color:C.sec, marginTop:2 }}>
                         ≈ {currency === 'JPY' ? `¥${Math.round(amountCents / pkg.credits)}` : `${symbol} ${(amountCents / pkg.credits / 100).toFixed(2)}`} {t('pricingPage.per_report')}
                       </div>
                     )}
                   </div>
                 </div>
-
                 {pkg.marketing && (
-                  <div className="rounded-lg mb-3 text-[#d0d0d0] text-xs leading-normal px-3 py-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                  <div style={{ borderRadius:10, marginBottom:12, fontSize:12, lineHeight:1.5, padding:'8px 12px', background:C.elevated, color:C.sec }}>
                     {pkg.marketing}
                   </div>
                 )}
-
-                <button
-                  onClick={() => handleBuy(pkg.id)}
-                  disabled={!!loading}
-                  className="w-full rounded-[10px] border-0 text-sm font-bold text-white transition-all duration-200 px-5 py-[13px]" style={{ cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? '#D42D00' : 'rgba(255,255,255,0.08)', opacity: loading ? 0.6 : 1 }}
-                >
+                <button onClick={() => handleBuy(pkg.id)} disabled={!!loading}
+                  style={{ width:'100%', borderRadius:10, border:'none', fontSize:14, fontWeight:700, color:'#fff', padding:'13px 20px', cursor: loading ? 'not-allowed' : 'pointer', background: pkg.popular ? C.orange : C.navy, opacity: loading ? 0.6 : 1, transition:'background .15s' }}>
                   {isLoading ? t('pricingPage.redirecting_stripe') : t('pricingPage.buy_btn', { label: pkg.label, price: `${currency === 'JPY' ? `¥${amountCents}` : `${symbol} ${priceStr}`}` })}
                 </button>
               </div>
@@ -223,52 +219,52 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       </div>
 
       {error && (
-        <div className="rounded-[10px] p-3 mb-4 text-[13px] bg-[#2a0a0a] text-[#f87171]" style={{ border: '1px solid #5c1a1a' }}>
+        <div role="alert" style={{ borderRadius:10, padding:12, marginBottom:16, fontSize:13, background:'rgba(220,38,38,0.08)', color:C.danger, border:'1px solid rgba(220,38,38,0.25)' }}>
           ⚠️ {error}
         </div>
       )}
 
       {/* Trust badges */}
-      <div className="grid gap-2 mb-5" style={{ gridTemplateColumns: '1fr 1fr' }}>
+      <div style={{ display:'grid', gap:8, marginBottom:20, gridTemplateColumns:'1fr 1fr' }}>
         {[
-          { icon: '🔒', text: t('pricingPage.trust_stripe') },
-          { icon: '♾️', text: t('pricingPage.trust_no_expiry') },
-          { icon: '🎁', text: t('pricingPage.trust_whatsapp') },
-          { icon: '🌍', text: t('pricingPage.trust_worldwide') },
-          { icon: '📄', text: t('pricingPage.trust_invoice') },
-          { icon: '🏢', text: t('pricingPage.trust_fleet') },
+          { icon:'🔒', text:t('pricingPage.trust_stripe') },
+          { icon:'♾️', text:t('pricingPage.trust_no_expiry') },
+          { icon:'🎁', text:t('pricingPage.trust_whatsapp') },
+          { icon:'🌍', text:t('pricingPage.trust_worldwide') },
+          { icon:'📄', text:t('pricingPage.trust_invoice') },
+          { icon:'🏢', text:t('pricingPage.trust_fleet') },
         ].map((item, i) => (
-          <div key={i} className="flex items-center gap-2 rounded-lg px-2.5 py-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <span className="text-base">{item.icon}</span>
-            <span className="text-[#d0d0d0] text-[11px]">{item.text}</span>
+          <div key={i} style={{ display:'flex', alignItems:'center', gap:8, borderRadius:10, padding:'8px 10px', background:C.card, border:`1px solid ${C.border}` }}>
+            <span style={{ fontSize:16 }}>{item.icon}</span>
+            <span style={{ fontSize:11, color:C.sec }}>{item.text}</span>
           </div>
         ))}
       </div>
 
       {/* Scenarios */}
-      <div className="rounded-[14px] p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-        <div className="text-[#d0d0d0] text-xs font-bold mb-2.5 tracking-[0.5px]">
+      <div style={{ borderRadius:14, padding:16, marginBottom:16, background:C.card, border:`1px solid ${C.border}` }}>
+        <div style={{ fontSize:12, fontWeight:700, marginBottom:10, letterSpacing:0.5, color:C.text }}>
           {t('pricingPage.why_title')}
         </div>
         {[
-          { icon: '📱', title: t('pricingPage.scenario_child_title'), text: t('pricingPage.scenario_child_text') },
-          { icon: '🚚', title: t('pricingPage.scenario_company_title'), text: t('pricingPage.scenario_company_text') },
-          { icon: '✈️', title: t('pricingPage.scenario_abroad_title'), text: t('pricingPage.scenario_abroad_text') },
-        ].map((s, i) => (
-          <div key={i} className="flex gap-3" style={{ marginBottom: i < 2 ? 12 : 0 }}>
-            <span className="text-xl shrink-0">{s.icon}</span>
+          { icon:'📱', title:t('pricingPage.scenario_child_title'), text:t('pricingPage.scenario_child_text') },
+          { icon:'🚚', title:t('pricingPage.scenario_company_title'), text:t('pricingPage.scenario_company_text') },
+          { icon:'✈️', title:t('pricingPage.scenario_abroad_title'), text:t('pricingPage.scenario_abroad_text') },
+        ].map((sc, i) => (
+          <div key={i} style={{ display:'flex', gap:12, marginBottom: i < 2 ? 12 : 0 }}>
+            <span style={{ fontSize:20, flexShrink:0 }}>{sc.icon}</span>
             <div>
-              <div className="font-semibold text-[13px] text-[#ccc]">{s.title}</div>
-              <div className="text-[#d0d0d0] text-xs leading-normal mt-0.5" >{s.text}</div>
+              <div style={{ fontWeight:600, fontSize:13, color:C.text }}>{sc.title}</div>
+              <div style={{ fontSize:12, color:C.sec, lineHeight:1.5, marginTop:2 }}>{sc.text}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="text-[11px] leading-relaxed text-[#b0b0b0] text-center">
+      <div style={{ fontSize:11, lineHeight:1.6, color:C.sec, textAlign:'center' }}>
         boom.contact · PEP's Swiss SA · CHE-476.484.632<br/>
         Bellevue 7, 2950 Courgenay, Jura, Suisse<br/>
-        <a href="mailto:contact@boom.contact" className="text-[#d0d0d0]">contact@boom.contact</a>
+        <a href="mailto:contact@boom.contact" style={{ color:C.navy }}>contact@boom.contact</a>
       </div>
     </div>
   );

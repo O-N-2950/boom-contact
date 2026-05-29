@@ -602,3 +602,12 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
   - **BugReport** (fab 🐛) : pill + popover dark #06060C -> blanc translucide discret, bordures #DDE7F0, texte navy, CTA orange controle, toast succes vert #16A34A. trpc.email.bugReport inchange. Visibilite inchangee (masque sur /visual-qa + /design-preview).
 - **Hors perimetre non touche** : backend, Stripe, logique session/participants/PDF, AASA/assetlinks, check-claims.ts.
 - **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle (hors blancs translucides voulus).
+
+---
+
+## Sprint Landing (suite 3) — PricingPage en Hybrid clair + audit thème global
+**Date** : 2026-05-29
+- **Cause racine identifiee** : data-theme="hybrid" (palette claire) n'est applique QUE pendant le flow (App.tsx). Hors flow, le :root SOMBRE par defaut s'applique. Les pages qui CODENT leurs couleurs en dur (pas via var()) restent donc sombres -> incoherence (signale par Olivier sur la page tarifs).
+- **`client/src/pages/PricingPage.tsx`** recolore en Hybrid clair : fond #F5F8FC, cartes blanches, devise active orange #FF6B1A, prix popular orange / autres navy, bouton achat popular orange + autres navy (#123A5A = action paiement), badge populaire orange, badges confiance/scenarios clairs, erreurs en rouge clair. Logique 100% preservee (detectCurrency, checkoutMutation Stripe, PACKAGES, PRICES, handleBuy). Stripe NON touche.
+- **Audit complet des pages** (etat) : CLAIR -> LandingPage, ConstatFlow/PoliceFlow/VisualQA (tokens var()), DesignPreview, PricingPage (corrige), + modales ShareBoom/CGUModal/LanguageSwitcher/BugReport. SOMBRE HARDCODE restant -> AccountPage, PrivacyPage, B2BPage, JoinSession (user-facing), AdminDashboard, PoliceLogin/Dashboard/Intervention (interne). A traiter dans un sprint coherence dedie.
+- **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle dans PricingPage.
