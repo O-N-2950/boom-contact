@@ -639,3 +639,13 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
   - **Test unitaire** `server/src/__tests__/bugReport.test.ts` (18 cas) : prouve le rejet < 5, l'email invalide, et que la ZodError brute de la capture devient un message propre (sans "too_small"/"[").
 - **SW** : bump v6 -> v7 pour livrer le correctif aux clients PWA.
 - **Verifs** : typecheck 0 ; quality:prestore exit 0 ; **63 tests** (45 -> 63) ; A_BLOCKING=0 (214 fichiers).
+
+---
+
+## Fix — Service Worker : erreur "Request scheme 'chrome-extension' is unsupported"
+**Date** : 2026-05-29
+- **Bug (console Olivier)** : `Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Request scheme 'chrome-extension' is unsupported` (sw.js, staleWhileRevalidate). Le SW interceptait les requetes d'extensions navigateur (chrome-extension://) et tentait de les mettre en cache -> erreur (schema non cachable).
+- **Fix** : guard en tete du handler `fetch` -> on n'intercepte que http(s) ; tout autre scheme (chrome-extension://, data:, blob:...) est laisse au navigateur. Aucune logique applicative modifiee.
+- **SW** : bump v7 -> v8.
+- **Note** : le "je ne peux pas envoyer" du bug report n'est PAS un bug -> message < 5 caracteres = bouton desactive par design (validation alignee serveur), l'indice "5 caracteres minimum (n/5)" s'affiche. >= 5 caracteres -> bouton actif.
+- **Verifs** : quality:prestore exit 0 ; 63 tests ; A_BLOCKING=0.

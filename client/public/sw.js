@@ -1,8 +1,8 @@
-// boom.contact — Service Worker v7
+// boom.contact — Service Worker v8
 // Full PWA offline mode: CacheFirst for shell, NetworkFirst for API, CacheFirst for tiles
-// Backward-compatible with v6 — all old caches purged on activate
+// Backward-compatible with v7 — all old caches purged on activate
 
-const CACHE_NAME = 'boom-contact-v7';
+const CACHE_NAME = 'boom-contact-v8';
 const TILE_CACHE = 'boom-tiles-v1';
 const API_CACHE = 'boom-api-v1';
 const OFFLINE_URL = '/';
@@ -38,12 +38,12 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.filter((k) => !KEEP.includes(k)).map((k) => {
-          console.log('[SW v7] Suppression cache obsolete:', k);
+          console.log('[SW v8] Suppression cache obsolete:', k);
           return caches.delete(k);
         })
       )
     ).then(() => {
-      console.log('[SW v7] Actif — anciens caches supprimes');
+      console.log('[SW v8] Actif — anciens caches supprimes');
       return self.clients.claim();
     })
   );
@@ -53,6 +53,12 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
+
+  // Ne jamais intercepter les requetes non-http (chrome-extension://, data:, blob:, etc.) :
+  // elles ne sont pas cachables et cache.put() leverait
+  // "Failed to execute 'put' on 'Cache': Request scheme '...' is unsupported".
+  // On laisse le navigateur les gerer nativement.
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   // Only handle GET for caching (POST/PUT mutations handled by app-side queue)
   // Socket.io: always network, never cached
@@ -235,7 +241,7 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
   if (event.data === 'GET_VERSION') {
-    event.source?.postMessage({ version: 'v7', cache: CACHE_NAME });
+    event.source?.postMessage({ version: 'v8', cache: CACHE_NAME });
   }
   // Replay mutations — triggered from app when back online
   if (event.data === 'REPLAY_MUTATIONS') {
