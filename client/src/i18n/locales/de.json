@@ -21,7 +21,9 @@
       "line1": "NACH",
       "line2": "DEM BOOM",
       "line3": "DER",
-      "line4": "KONTAKT"
+      "line4": "KONTAKT",
+      "title": "Dokumentieren Sie einen Unfall — ohne Papier, ohne Verwirrung.",
+      "subtitle": "boom.contact führt Sie Schritt für Schritt: nützliche Informationen erfassen, Fotos, Standort, Angaben und Unterschriften hinzufügen und anschließend eine zeitgestempelte PDF-Akte für Ihre Versicherung erstellen."
     },
     "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Universelle OCR, geteilter QR-Code, doppelte digitale Unterschrift, zeitgestempeltes PDF.",
     "cta": {
@@ -67,7 +69,7 @@
           "step": "03",
           "icon": "📋",
           "title": "Formular ausfüllen",
-          "desc": "Universelles Formular, vorausgefüllt per OCR. Prüfen und Umstände ankreuzen."
+          "desc": "Geführtes Formular, vorausgefüllt per OCR. Prüfen und Umstände ankreuzen."
         },
         {
           "step": "04",

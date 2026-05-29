@@ -21,7 +21,9 @@
       "line1": "DOPO",
       "line2": "IL BOOM",
       "line3": "IL",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Documenta un incidente senza carta, senza confusione.",
+      "subtitle": "boom.contact ti guida passo dopo passo per raccogliere le informazioni utili, aggiungere foto, posizione, dichiarazioni e firme, quindi generare un dossier PDF con marca temporale da trasmettere alla tua assicurazione."
     },
     "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, doppia firma digitale, PDF con marca temporale.",
     "cta": {
@@ -67,7 +69,7 @@
           "step": "03",
           "icon": "📋",
           "title": "Compila il modulo",
-          "desc": "Modulo universale precompilato tramite OCR. Verifica e spunta le circostanze."
+          "desc": "Modulo guidato precompilato tramite OCR. Verifica e spunta le circostanze."
         },
         {
           "step": "04",

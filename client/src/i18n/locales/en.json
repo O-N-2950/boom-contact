@@ -21,7 +21,9 @@
       "line1": "AFTER",
       "line2": "THE BOOM",
       "line3": "THE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Document an accident — no paper, no confusion.",
+      "subtitle": "boom.contact guides you step by step to collect the useful information, add photos, location, statements and signatures, then generate a timestamped PDF file to send to your insurer."
     },
     "subtitle": "Complete your digital accident report in 5 minutes. Universal OCR, shared QR code, dual digital signature, timestamped PDF.",
     "cta": {
@@ -67,7 +69,7 @@
           "step": "03",
           "icon": "📋",
           "title": "Fill in the form",
-          "desc": "Universal form pre-filled by OCR. Check and tick the circumstances."
+          "desc": "Guided form pre-filled by OCR. Check and tick the circumstances."
         },
         {
           "step": "04",

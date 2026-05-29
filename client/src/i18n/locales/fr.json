@@ -21,11 +21,13 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Documentez un accident sans papier, sans confusion.",
+      "subtitle": "boom.contact vous guide étape par étape pour collecter les informations utiles, ajouter photos, localisation, déclarations et signatures, puis générer un dossier PDF horodaté à transmettre à votre assureur."
     },
     "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR universel, QR code partagé, double signature digitale, PDF horodaté.",
     "cta": {
-      "start": "Démarrer un constat",
+      "start": "Commencer un constat",
       "pricing": "Voir les tarifs →",
       "from": "À PARTIR DE CHF/€ 4.90",
       "free": "GRATUIT · SANS INSCRIPTION · RGPD"
@@ -67,7 +69,7 @@
           "step": "03",
           "icon": "📋",
           "title": "Remplissez le formulaire",
-          "desc": "Formulaire universel pré-rempli par OCR. Vérifiez et cochez les circonstances."
+          "desc": "Formulaire guidé pré-rempli par OCR. Vérifiez et cochez les circonstances."
         },
         {
           "step": "04",

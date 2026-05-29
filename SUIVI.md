@@ -569,3 +569,17 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Vérifs** : `quality:prestore` exit 0 (212 fichiers, A_BLOCKING=0, 45/45) · 2 JSON valides · Railway SUCCESS · live AASA + assetlinks 200, application/json, 0 placeholder.
 - **Store native links readiness** : ~98/100 (reste validation device après install signée). **Avancement global ~98.7/100.**
 - **Prochaine étape** : Codemagic / builds signés iOS+Android → TestFlight + Google Internal Testing → adb verify-app-links + test Universal Links device. **Pas de public-ready** (device QA + juriste + soumission restants).
+
+---
+
+## Sprint Landing — Hybrid Marketing Landing (homepage claire)
+**Date** : 2026-05-29
+- **Refonte `client/src/pages/LandingPage.tsx`** (594 -> 484 lignes) : home dark/orange agressive -> Hybrid Marketing Landing claire. Palette officielle (bg #F5F8FC, cartes #FFFFFF, elevated #EEF4FA, texte #102033/#5D6B7C, CTA orange #FF6B1A/#F05A0A, trust navy #123A5A, accent cyan #18B8E8, border #DDE7F0, shadow officielle). Manrope. Landing explicitement claire (override du fond sombre parent).
+- **Architecture** : Hero = bleu nuit/graphite adouci (#102033->#123A5A, grille subtile, mockup produit clair, CTA orange + secondaire contour clair). Sections produit claires, cartes blanches. B2B = Swiss Calm. CTA principal orange ; confiance navy ; urgence rouge (encart secours) ; succes vert (badges).
+- **Sections** : Hero, Comment ca marche (5 etapes i18n), QR / photos-voix-signature / PDF horodate / a transmettre a l assureur, Concu pour situations stressantes (+ encart ne remplace pas secours/police/avocat/assureur), Tarifs (1/3/10), B2B courtiers/flottes/partenaires, FAQ reformulee, CTA final, Footer clair.
+- **Claims interdits supprimes** : mondial (x2), OCR universel / Formulaire universel (nettoyes FR/EN/DE/IT), faux temoignages retires, badge Modele constat europeen retire, FAQ reference CEA reformulee, section drapeaux coverage retiree, compteurs 1.8M retires.
+- **i18n** : ajout landing.hero.title + subtitle (FR/EN/DE/IT, wording recommande) ; cta.start FR -> Commencer un constat ; step3 nettoye. Limite documentee (cat B) : residus universel/mondial dans ~39 locales long-tail (non rendus sur la nouvelle landing, non bloquants check:claims) -> sprint i18n dedie.
+- **SEO index.html** : title -> boom.contact - Constater un accident simplement ; meta description recommandee ; og + twitter alignes ; H1 unique ; pas d aggregateRating ni faux avis.
+- **Hors perimetre non touche** : backend, Stripe, logique session/participants/PDF, AASA/assetlinks (placeholders finalises intacts), check-claims.ts, /visual-qa, /design-preview, /privacy, /cgu.
+- **Perf** : bundle landing 33.6 -> 28.4 kB, aucune dependance ajoutee.
+- **Verifs** : quality:prestore exit 0 (212 fichiers, A_BLOCKING=0, 45/45) ; typecheck 0 ; build OK ; 0 mot interdit landing+index.html ; H1 unique.
