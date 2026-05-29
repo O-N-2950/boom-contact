@@ -753,3 +753,17 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Tests** : +11 (analytics.test.ts : sanitize, taxonomie, creditsBucket). Total 93 (82→93).
 ### Non touché : webhook Stripe, flow constat, auth/compte/garage/crédits, AASA/assetlinks. SW v12→v13.
 ### Vérifs : tsc 0, quality:prestore exit 0, A_BLOCKING=0, check:i18n vert.
+
+---
+
+## Sprint Analytics Activation + PostHog Funnels Setup Guide
+**Date** : 2026-05-29
+### Audit variables (toutes build-time, inline Vite -> rebuild requis)
+- VITE_POSTHOG_KEY (requise, PostHog off si absente) · VITE_POSTHOG_HOST (opt, défaut eu.i.posthog.com) · VITE_GA4_ID (opt) · VITE_SENTRY_DSN (opt) · VITE_RELEASE/VITE_APP_VERSION (opt). Aucune clé en dur dans Git.
+### Ajouts
+- **Helper debug dev-only** dans analytics.ts : `window.__boomAnalytics.status()` -> { prod, consent, posthog, ga4, sentry, recent[] }. AUCUNE clé exposée. `console.debug('[analytics]', event, safe)` uniquement hors prod. Pas de panneau utilisateur.
+- **Docs** : analytics-activation-runbook.md (vars Railway, rebuild, vérif bundle, désactivation) · posthog-funnels-setup-guide.md (4 funnels + breakdowns) · analytics-manual-test-plan.md (17 scénarios, events attendus, PII interdites, PASS/FAIL).
+### Consentement (re-confirmé) : refus -> 0 event PostHog/GA4 ; accept all -> events ; Sentry séparé (erreurs, replay off, autocapture off).
+### Non touché : webhook Stripe, flow constat, auth/compte/garage/crédits, AASA/assetlinks. SW v13->v14.
+### Vérifs : tsc 0, quality:prestore exit 0, 93 tests, A_BLOCKING=0, check:i18n vert.
+### ACTION OLIVIER : poser VITE_POSTHOG_KEY (+ host) dans Railway -> rebuild -> accepter cookies -> vérifier window.__boomAnalytics.status() + PostHog Live events.

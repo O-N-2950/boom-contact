@@ -12,6 +12,10 @@ export function hasAnalyticsConsent(): boolean {
   try { return localStorage.getItem('boom_cookie_consent') === 'all'; } catch { return false; }
 }
 
+// État interne (debug dev-only — aucune clé exposée)
+const _state = { posthog: false, ga4: false, sentry: false, recent: [] as string[] };
+
+
 // Vite import.meta.env typing
 declare global {
   interface ImportMeta {
@@ -34,6 +38,7 @@ export async function initSentryFrontend() {
       replaysOnErrorSampleRate: 0,   // pas de capture d'écran (privacy)
       integrations: [],
     });
+    _state.sentry = true;
   } catch (e) {
     console.warn('[Analytics] Sentry init failed', e);
   }
@@ -56,6 +61,7 @@ export async function initPostHog() {
       disable_session_recording: true,
     });
     _ph = posthog as typeof _ph;
+    _state.posthog = true;
   } catch (e) {
     console.warn('[Analytics] PostHog init failed', e);
   }
@@ -83,6 +89,7 @@ export async function initGA4() {
     window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', id, { anonymize_ip: true, cookie_flags: 'SameSite=None;Secure' });
+    _state.ga4 = true;
   } catch (e) {
     console.warn('[Analytics] GA4 init failed', e);
   }
@@ -102,8 +109,27 @@ export function ga4Event(name: string, params: Record<string, unknown> = {}) {
 export function track(event: string, props: Record<string, unknown> = {}) {
   // Filtrage privacy systématique : aucune donnée personnelle/sensible ne sort.
   const safe = sanitizeProps(props);
+  _state.recent.push(event);
+  if (_state.recent.length > 20) _state.recent.shift();
+  if (!IS_PROD) console.debug('[analytics]', event, safe);  // dev only — jamais en prod
   phCapture(event, safe);
   ga4Event(event, safe);
+}
+
+// Helper debug SAFE (statut booléen + derniers events ; AUCUNE clé). Exposé sur window pour
+// vérifier l'activation sans panneau utilisateur. Ne révèle jamais de secret.
+export function analyticsStatus() {
+  return {
+    prod: IS_PROD,
+    consent: hasAnalyticsConsent(),
+    posthog: _state.posthog,
+    ga4: _state.ga4,
+    sentry: _state.sentry,
+    recent: [..._state.recent],
+  };
+}
+if (typeof window !== 'undefined') {
+  (window as unknown as { __boomAnalytics?: unknown }).__boomAnalytics = { status: analyticsStatus };
 }
 
 // Active PostHog + GA4 après consentement "all" (appelé par le CookieBanner).
