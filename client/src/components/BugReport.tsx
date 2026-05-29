@@ -8,7 +8,7 @@ export function BugReport() {
   const [sent, setSent]       = useState(false);
   const [email, setEmail]     = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const dialogRef = useFocusTrap<HTMLDivElement>(() => setOpen(false));
+  const dialogRef = useFocusTrap<HTMLDivElement>(() => setOpen(false), open);
 
   const sendMut = trpc.email.bugReport.useMutation({
     onSuccess: () => { setSent(true); setErrorMsg(''); setOpen(false); },

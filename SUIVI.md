@@ -611,3 +611,12 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **`client/src/pages/PricingPage.tsx`** recolore en Hybrid clair : fond #F5F8FC, cartes blanches, devise active orange #FF6B1A, prix popular orange / autres navy, bouton achat popular orange + autres navy (#123A5A = action paiement), badge populaire orange, badges confiance/scenarios clairs, erreurs en rouge clair. Logique 100% preservee (detectCurrency, checkoutMutation Stripe, PACKAGES, PRICES, handleBuy). Stripe NON touche.
 - **Audit complet des pages** (etat) : CLAIR -> LandingPage, ConstatFlow/PoliceFlow/VisualQA (tokens var()), DesignPreview, PricingPage (corrige), + modales ShareBoom/CGUModal/LanguageSwitcher/BugReport. SOMBRE HARDCODE restant -> AccountPage, PrivacyPage, B2BPage, JoinSession (user-facing), AdminDashboard, PoliceLogin/Dashboard/Intervention (interne). A traiter dans un sprint coherence dedie.
 - **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle dans PricingPage.
+
+---
+
+## Fix — BugReport "Signaler un probleme" : saisie lettre par lettre (focus vole)
+**Date** : 2026-05-29
+- **Bug** : dans la fenetre Signaler un probleme, le focus etait vole a chaque frappe (saisie lettre par lettre). Cause : `BugReport` appelait `useFocusTrap(() => setOpen(false))` avec une **fonction inline recreee a chaque rendu** ; l'effet du hook dependait de `[onClose]` -> se relancait a chaque keystroke (setText -> re-render) et rappelait `first.focus()`, deplacant le focus du champ vers le bouton de fermeture.
+- **Fix (hook `useFocusTrap.ts`, robuste pour tous les appelants)** : `onClose` stocke dans un ref (l'identite ne retrigger plus l'effet) ; ajout d'un parametre `active` (defaut true) dans les deps, pour (re)initialiser le piege de focus quand une modale a montage permanent s'ouvre. `BugReport` passe desormais `useFocusTrap(() => setOpen(false), open)`.
+- **Compatibilite** : ShareBoom / CGUModal / AuthModal / PartyUnavailableModal (onClose stable, active=true par defaut) -> comportement identique (effet une seule fois au montage), et desormais proteges de tout vol de focus meme avec des champs de saisie. Escape/Tab-trap preserves (onClose via ref, focusables recalcules au keydown).
+- **Verifs** : typecheck 0 ; quality:prestore exit 0 (A_BLOCKING=0, 45/45).
