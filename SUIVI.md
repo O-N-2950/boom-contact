@@ -620,3 +620,10 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Fix (hook `useFocusTrap.ts`, robuste pour tous les appelants)** : `onClose` stocke dans un ref (l'identite ne retrigger plus l'effet) ; ajout d'un parametre `active` (defaut true) dans les deps, pour (re)initialiser le piege de focus quand une modale a montage permanent s'ouvre. `BugReport` passe desormais `useFocusTrap(() => setOpen(false), open)`.
 - **Compatibilite** : ShareBoom / CGUModal / AuthModal / PartyUnavailableModal (onClose stable, active=true par defaut) -> comportement identique (effet une seule fois au montage), et desormais proteges de tout vol de focus meme avec des champs de saisie. Escape/Tab-trap preserves (onClose via ref, focusables recalcules au keydown).
 - **Verifs** : typecheck 0 ; quality:prestore exit 0 (A_BLOCKING=0, 45/45).
+
+---
+
+## Fix (suite) — Forcer la MAJ PWA (cache v5 -> v6) pour livrer le correctif focus
+**Date** : 2026-05-29
+- Le correctif useFocusTrap (saisie lettre par lettre) etait deja en prod (2e77de4) mais les clients PWA pouvaient encore tourner sur l'ancien bundle en cache (service worker). Bump `CACHE_NAME` boom-contact-v5 -> v6 (sw.js) : reinstall SW + skipWaiting + clients.claim + purge des anciens caches a l'activate -> rechargement du nouveau code. Aucun changement de logique applicative.
+- Verifs : quality:prestore exit 0 (45/45, A_BLOCKING=0).
