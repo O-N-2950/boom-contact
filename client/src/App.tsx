@@ -435,6 +435,7 @@ export default function App() {
         onGarage={goToGarage}
         onAccount={() => authUser ? dispatch({ type: 'SET_VIEW', view: 'account' }) : dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
         onLogout={handleLogout}
+        onLogin={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
         authUser={authUser}
       />}
       {view === 'constat' && (

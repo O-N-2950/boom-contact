@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { UserMenu } from '../components/UserMenu';
 const CGUModal = React.lazy(() => import('../components/CGUModal').then(m => ({ default: m.CGUModal })));
 
 /* ── Hybrid Marketing Landing — palette officielle ────────────────────────── */
@@ -99,10 +100,11 @@ interface Props {
   onGarage?: () => void;
   onAccount?: () => void;
   onLogout?: () => void;
+  onLogin?: () => void;
   authUser?: { email: string; credits: number } | null;
 }
 
-export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout, authUser }: Props) {
+export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout, onLogin, authUser }: Props) {
   const [showShare, setShowShare] = useState(false);
   const [showCGU, setShowCGU] = useState(false);
   const { t } = useTranslation();
@@ -152,9 +154,24 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               <span style={{ color: C.orange }}>boom</span><span style={{ color: C.textSec }}>.contact</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 14 : 8 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: C.navy, border: `1px solid ${C.border}`, background: C.card, borderRadius: 20, padding: '5px 12px' }}>RGPD · nLPD</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 12 : 8 }}>
+            {isDesktop && <span style={{ fontSize: 11, fontWeight: 700, color: C.navy, border: `1px solid ${C.border}`, background: C.card, borderRadius: 20, padding: '5px 12px' }}>RGPD · nLPD</span>}
             <LanguageSwitcher compact />
+            {authUser ? (
+              <UserMenu
+                authUser={authUser}
+                onAccount={() => onAccount?.()}
+                onGarage={() => onGarage?.()}
+                onBuyCredits={() => onPricing?.()}
+                onLogout={() => onLogout?.()}
+                compact={!isDesktop}
+              />
+            ) : (
+              <button onClick={() => (onLogin ? onLogin() : onAccount?.())}
+                style={{ background: 'transparent', border: `1px solid ${C.border}`, color: C.navy, fontWeight: 700, fontSize: 13, borderRadius: 11, padding: isDesktop ? '9px 16px' : '8px 12px', cursor: 'pointer', fontFamily: C.font }}>
+                {t('account.login', { defaultValue: 'Me connecter' })}
+              </button>
+            )}
             {isDesktop && (
               <button onClick={onStart} style={{ ...ctaOrange, fontSize: 14, padding: '10px 20px', borderRadius: 11 }}>
                 {t('landing.cta.start', { defaultValue: 'Commencer un constat' })}
@@ -186,19 +203,6 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               <p style={{ fontSize: isDesktop ? 17 : 15, lineHeight: 1.6, color: '#B9CBDB', maxWidth: 540, margin: '0 0 28px', opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all .6s ease .2s' }}>
                 {t('landing.hero.subtitle', { defaultValue: 'boom.contact vous guide étape par étape pour collecter les informations utiles, ajouter photos, localisation, déclarations et signatures, puis générer un dossier PDF horodaté à transmettre à votre assureur.' })}
               </p>
-
-              {authUser && (
-                <div style={{ display: 'flex', alignItems: 'center', overflow: 'hidden', marginBottom: 14, borderRadius: 12, border: '1px solid rgba(255,255,255,0.16)', background: 'rgba(255,255,255,0.06)', maxWidth: 440 }}>
-                  <button onClick={onAccount} style={{ flex: 1, background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, padding: '10px 14px', color: '#DCEAF5' }}>
-                    <span>👤</span>
-                    <span style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', maxWidth: 160 }}>{authUser.email}</span>
-                    <span style={{ marginLeft: 'auto', background: C.orange, color: '#fff', borderRadius: 20, fontSize: 11, fontWeight: 700, padding: '2px 10px' }}>
-                      {authUser.credits === 999999 ? '∞' : authUser.credits} crédit{authUser.credits !== 1 ? 's' : ''}
-                    </span>
-                  </button>
-                  <button onClick={onLogout} title="Se déconnecter" style={{ background: 'transparent', border: 'none', borderLeft: '1px solid rgba(255,255,255,0.16)', cursor: 'pointer', fontSize: 15, padding: '10px 14px', color: '#9FB4C7' }}>↩</button>
-                </div>
-              )}
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all .6s ease .3s' }}>
                 <button onClick={onStart} style={ctaOrange}

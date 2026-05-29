@@ -116,41 +116,41 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   if (showDeleteModal) {
     const emailToConfirm = freshUser.email || user.email;
     return (
-      <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center p-6" style={{ background: 'rgba(6,6,12,0.97)' }}>
-        <div className="w-full max-w-[420px] rounded-[20px] p-7 bg-[#0d0d18]" style={{ border: '1.5px solid rgba(239,68,68,0.35)' }}>
+      <div className="fixed inset-0 z-[1000] flex flex-col items-center justify-center p-6" style={{ background: 'rgba(16,32,51,0.6)', backdropFilter: 'blur(4px)' }}>
+        <div className="w-full max-w-[420px] rounded-[20px] p-7 bg-[#FFFFFF]" style={{ border: '1.5px solid rgba(239,68,68,0.35)' }}>
           {/* Icône warning */}
           <div className="text-center text-5xl mb-4">⚠️</div>
 
-          <div className="text-red-500 font-black text-xl text-center mb-2">
+          <div className="text-[#DC2626] font-black text-xl text-center mb-2">
             Suppression définitive
           </div>
 
-          <div className="text-[#d0d0d0] text-sm mb-5 text-center leading-[1.7]">
+          <div className="text-[#5D6B7C] text-sm mb-5 text-center leading-[1.7]">
             Tu es sur le point de supprimer le compte<br />
-            <strong className="text-white">{emailToConfirm}</strong>
+            <strong className="text-[#102033]">{emailToConfirm}</strong>
           </div>
 
           {/* Ce qui sera supprimé */}
           <div className="rounded-xl p-4 mb-5" style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.2)' }}>
-            <div className="text-red-500 font-bold text-xs mb-2.5">CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
+            <div className="text-[#DC2626] font-bold text-xs mb-2.5">CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
             {[
               '🗑️ Ton compte et tes identifiants',
               '🚗 Tous tes véhicules enregistrés',
               '📋 Tout ton historique de constats',
               '💳 Tous tes crédits restants',
             ].map((item, i) => (
-              <div key={i} className="text-[13px] mb-1.5 flex items-center gap-2 text-[#ccc]">
+              <div key={i} className="text-[13px] mb-1.5 flex items-center gap-2 text-[#5D6B7C]">
                 {item}
               </div>
             ))}
-            <div className="text-red-500 text-xs mt-2.5 font-semibold">
+            <div className="text-[#DC2626] text-xs mt-2.5 font-semibold">
               ⚠️ Cette action est irréversible. Aucune récupération possible.
             </div>
           </div>
 
           {/* Confirmation par saisie email */}
           <div className="mb-5">
-            <label htmlFor="delete-confirm" className="text-[#d0d0d0] text-xs mb-2 block">
+            <label htmlFor="delete-confirm" className="text-[#5D6B7C] text-xs mb-2 block">
               Pour confirmer, saisis ton adresse email :
             </label>
             <input
@@ -162,9 +162,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               autoCorrect="off"
               aria-label="Confirmation de l'adresse email"
               aria-describedby="delete-confirm-help"
-              className="w-full rounded-[10px] text-white text-sm box-border px-3.5 py-3 bg-[#1a1a2e]" style={{ border: '1px solid #2a2a3e', outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none' }}
+              className="w-full rounded-[10px] text-[#102033] text-sm box-border px-3.5 py-3 bg-[#F5F8FC]" style={{ border: '1px solid #DDE7F0', outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none' }}
             />
-            <div id="delete-confirm-help" className="text-[11px] text-[#d0d0d0] mt-1">
+            <div id="delete-confirm-help" className="text-[11px] text-[#5D6B7C] mt-1">
               Ceci est irréversible.
             </div>
           </div>
@@ -183,13 +183,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   setShowDeleteModal(false);
                 } finally { setSaving(false); }
               }}
-              className="w-full p-3.5 rounded-xl border-0 font-bold transition-all duration-200 text-[15px]" style={{ background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)', color: deleteConfirmText === emailToConfirm ? '#fff' : 'rgba(255,255,255,0.6)', cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed' }}
+              className="w-full p-3.5 rounded-xl border-0 font-bold transition-all duration-200 text-[15px]" style={{ background: deleteConfirmText === emailToConfirm ? '#ef4444' : 'rgba(239,68,68,0.15)', color: deleteConfirmText === emailToConfirm ? '#fff' : '#5D6B7C', cursor: deleteConfirmText === emailToConfirm ? 'pointer' : 'not-allowed' }}
             >
               {saving ? 'Suppression...' : '🗑️ Supprimer définitivement'}
             </button>
             <button
               onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
-              className="w-full p-[13px] rounded-xl bg-transparent cursor-pointer text-sm font-semibold text-[#d0d0d0]" style={{ border: '1px solid rgba(255,255,255,0.25)' }}
+              className="w-full p-[13px] rounded-xl bg-transparent cursor-pointer text-sm font-semibold text-[#5D6B7C]" style={{ border: '1px solid #DDE7F0' }}
             >
               Annuler — garder mon compte
             </button>
@@ -202,11 +202,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   // ── OCR Scan overlay ─────────────────────────────────────────
   if (scanning) {
     return (
-      <div className="min-h-screen bg-[#06060C] p-4">
+      <div className="min-h-screen bg-[#F5F8FC] p-4">
         <div className="mx-auto max-w-[500px]">
           <button onClick={() => setScanning(false)} style={backBtn}>← Annuler</button>
-          <p className="text-[#d0d0d0] text-[13px] mb-4">
-            Photographiez votre <strong className="text-white">permis de circuler</strong> et/ou votre <strong className="text-white">carte verte</strong>.
+          <p className="text-[#5D6B7C] text-[13px] mb-4">
+            Photographiez votre <strong className="text-[#102033]">permis de circuler</strong> et/ou votre <strong className="text-[#102033]">carte verte</strong>.
           </p>
           <OCRScanner role="A" onComplete={handleScanComplete} />
         </div>
@@ -217,23 +217,23 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   // ── Vehicle form ─────────────────────────────────────────────
   if (vehicleView !== 'list') {
     return (
-      <div className="min-h-screen bg-[#06060C] p-4">
+      <div className="min-h-screen bg-[#F5F8FC] p-4">
         <div className="mx-auto max-w-[500px]">
           <button onClick={() => setVehicleView('list')} style={backBtn}>← Garage</button>
-          <h2 className="text-white text-xl font-extrabold mb-1">
+          <h2 className="text-[#102033] text-xl font-extrabold mb-1">
             {vehicleView === 'add' ? '➕ Ajouter un véhicule' : '✏️ Modifier le véhicule'}
           </h2>
-          <p className="text-[#d0d0d0] text-[13px] mb-5">
+          <p className="text-[#5D6B7C] text-[13px] mb-5">
             Scannez vos documents pour tout pré-remplir automatiquement.
           </p>
 
           {feedback && <FeedbackBanner msg={feedback} />}
 
-          <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5 px-4 py-3.5 bg-[#0d1f2a]" style={{ border: '1px solid #1a4a6a' }}>
+          <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5 px-4 py-3.5 bg-[#EEF4FA]" style={{ border: '1px solid #DDE7F0' }}>
             <span className="text-[28px]">📄</span>
             <div className="text-left">
-              <div className="font-bold text-[#60c8f0]">Scanner permis + carte verte</div>
-              <div className="text-xs text-[#8a8a8a]">Reconnaissance automatique · 50 langues</div>
+              <div className="font-bold text-[#123A5A]">Scanner permis + carte verte</div>
+              <div className="text-xs text-[#5D6B7C]">Reconnaissance automatique · 50 langues</div>
             </div>
           </button>
 
@@ -250,11 +250,11 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
-              <div className="rounded-[10px] p-3.5 bg-[#0d2a0d]" style={{ border: '1px solid #1a4a1a' }}>
-                <div className="text-green-400 font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
-                {(form.insuranceData as any)?.company && <div className="text-[13px] text-[#ccc]">{(form.insuranceData as any).company}</div>}
-                {(form.insuranceData as any)?.policyNumber && <div className="text-[#d0d0d0] text-xs">Police n° {(form.insuranceData as any).policyNumber}</div>}
-                <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-green-400 text-xs cursor-pointer px-3 py-1.5" style={{ border: '1px dashed #2a4a2a' }}>
+              <div className="rounded-[10px] p-3.5 bg-[#ECFDF3]" style={{ border: '1px solid rgba(22,163,74,0.3)' }}>
+                <div className="text-[#16A34A] font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
+                {(form.insuranceData as any)?.company && <div className="text-[13px] text-[#5D6B7C]">{(form.insuranceData as any).company}</div>}
+                {(form.insuranceData as any)?.policyNumber && <div className="text-[#5D6B7C] text-xs">Police n° {(form.insuranceData as any).policyNumber}</div>}
+                <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-[#16A34A] text-xs cursor-pointer px-3 py-1.5" style={{ border: '1px dashed rgba(22,163,74,0.4)' }}>
                   Mettre à jour →
                 </button>
               </div>
@@ -274,18 +274,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const history  = historyQ.data || [];
 
   return (
-    <div className="min-h-screen bg-[#06060C] p-4">
+    <div className="min-h-screen bg-[#F5F8FC] p-4">
       <div className="mx-auto max-w-[500px]">
         <div className="flex justify-between items-center mb-5">
           <button onClick={onBack} style={backBtn}>← Retour</button>
-          <button onClick={onLogout} className="bg-transparent border-0 cursor-pointer text-[13px] font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Déconnexion</button>
+          <button onClick={onLogout} className="bg-transparent border-0 cursor-pointer text-[13px] font-medium" style={{ color: '#5D6B7C' }}>Déconnexion</button>
         </div>
 
         {/* Profile card */}
         <h1 className="absolute p-0 overflow-hidden w-px h-px m-[-1px] border-0"  style={{ clip: 'rect(0,0,0,0)' }}>Mon compte boom.contact</h1>
-        <div className="bg-[#111] rounded-2xl p-5 mb-5" style={{ border: '1px solid #222' }}>
-          <div className="text-[#FF3500] font-black text-xl">💥 boom.contact</div>
-          <div className="text-[#d0d0d0] text-[13px] mt-0.5" >{freshUser.email}</div>
+        <div className="bg-[#FFFFFF] rounded-2xl p-5 mb-5" style={{ border: '1px solid #DDE7F0' }}>
+          <div className="text-[#FF6B1A] font-black text-xl">💥 boom.contact</div>
+          <div className="text-[#5D6B7C] text-[13px] mt-0.5" >{freshUser.email}</div>
           <div className="flex gap-2.5 mt-3.5" >
             <StatBadge value={freshUser.credits === 999999 ? '∞' : freshUser.credits} label="crédits" highlight />
             <StatBadge value={vehicles.length} label={vehicles.length !== 1 ? 'véhicules' : 'véhicule'} />
@@ -298,7 +298,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* Tabs */}
         <div className="flex gap-1.5 mb-5">
           {(['garage', 'history', 'profile'] as PageTab[]).map(t => (
-            <button key={t} onClick={() => setTab(t)} className="flex-1 text-white rounded-[10px] text-xs font-bold cursor-pointer px-1.5 py-[9px]" style={{ background: tab === t ? '#D42D00' : '#111', border: '1px solid ' + (tab === t ? '#D42D00' : '#222') }}>
+            <button key={t} onClick={() => setTab(t)} className="flex-1 rounded-[10px] text-xs font-bold cursor-pointer px-1.5 py-[9px]" style={{ background: tab === t ? '#FF6B1A' : '#FFFFFF', color: tab === t ? '#fff' : '#102033', border: '1px solid ' + (tab === t ? '#FF6B1A' : '#DDE7F0') }}>
               {t === 'garage' ? '🚗 Garage' : t === 'history' ? '📋 Historique' : '👤 Profil'}
             </button>
           ))}
@@ -308,23 +308,23 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {tab === 'garage' && (
           <>
             <div className="flex justify-between items-center mb-3">
-              <div className="text-white font-bold">Mon garage ({vehicles.length})</div>
-              <button onClick={startAdd} className="bg-[#D42D00] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
+              <div className="text-[#102033] font-bold">Mon garage ({vehicles.length})</div>
+              <button onClick={startAdd} className="bg-[#FF6B1A] text-[#102033] border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
             </div>
             {vehicles.length === 0 && (
               <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
-                <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]">➕ Ajouter mon premier véhicule</button>
+                <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]" style={{ background: '#FF6B1A', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>➕ Ajouter mon premier véhicule</button>
               </EmptyState>
             )}
             {vehicles.map((v: any) => (
-              <div key={v.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
+              <div key={v.id} className="bg-[#FFFFFF] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #DDE7F0' }}>
                 <div className="flex justify-between">
                   <div>
                     <div>
-                      <div className="text-white font-bold">{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
+                      <div className="text-[#102033] font-bold">{v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}</div>
                     </div>
-                    {v.plate && <div className="text-sm text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
-                    <div className="text-xs mt-0.5 text-[#8a8a8a]">{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                    {v.plate && <div className="text-sm text-[#123A5A]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
+                    <div className="text-xs mt-0.5 text-[#5D6B7C]">{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
                   <div className="flex gap-1.5">
                     <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule">✏️</button>
@@ -332,8 +332,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
-                  ? <div className="mt-2.5 rounded-lg text-xs text-green-400 px-3 py-[7px] bg-[#0d2a0d]">🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
-                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer px-2.5 py-[5px] text-[#8a8a8a]" style={{ border: '1px dashed #2a2a2a' }}>+ Ajouter assurance</button>
+                  ? <div className="mt-2.5 rounded-lg text-xs text-[#16A34A] px-3 py-[7px] bg-[#ECFDF3]">🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
+                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer px-2.5 py-[5px] text-[#5D6B7C]" style={{ border: '1px dashed #DDE7F0' }}>+ Ajouter assurance</button>
                 }
               </div>
             ))}
@@ -343,8 +343,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {/* HISTORY */}
         {tab === 'history' && (
           <>
-            <div className="text-white font-bold mb-3">Mes constats ({history.length})</div>
-            {historyQ.isLoading && <div className="text-center p-8 text-[#8a8a8a]">Chargement...</div>}
+            <div className="text-[#102033] font-bold mb-3">Mes constats ({history.length})</div>
+            {historyQ.isLoading && <div className="text-center p-8 text-[#5D6B7C]">Chargement...</div>}
             {!historyQ.isLoading && history.length === 0 && (
               <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
             )}
@@ -354,16 +354,16 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               const date = new Date(s.createdAt).toLocaleDateString('fr-CH', { day: '2-digit', month: 'short', year: 'numeric' });
               const statusIcon = s.status === 'completed' ? '✅' : s.status === 'signing' ? '✍️' : '⏳';
               return (
-                <div key={s.id} className="bg-[#111] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #1a1a1a' }}>
+                <div key={s.id} className="bg-[#FFFFFF] rounded-[14px] p-4 mb-2.5" style={{ border: '1px solid #DDE7F0' }}>
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="text-xs text-[#FF5533]"  style={{ fontFamily: 'monospace' }}>{s.id}</div>
-                      <div className="text-white font-semibold mt-0.5" >Plaque : {plate}</div>
-                      <div className="text-xs mt-0.5 text-[#8a8a8a]">{date} · {statusIcon} {s.status}</div>
-                      {s.accident?.location?.address && <div className="text-[11px] mt-1 text-[#8a8a8a]">📍 {s.accident.location.address}</div>}
+                      <div className="text-xs text-[#123A5A]"  style={{ fontFamily: 'monospace' }}>{s.id}</div>
+                      <div className="text-[#102033] font-semibold mt-0.5" >Plaque : {plate}</div>
+                      <div className="text-xs mt-0.5 text-[#5D6B7C]">{date} · {statusIcon} {s.status}</div>
+                      {s.accident?.location?.address && <div className="text-[11px] mt-1 text-[#5D6B7C]">📍 {s.accident.location.address}</div>}
                     </div>
                     {s.pdfUrl && (
-                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg text-xs no-underline px-3 py-[7px] bg-[#1a1a1a] text-[#ccc]" style={{ border: '1px solid #333' }}>📄 PDF</a>
+                      <a href={s.pdfUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg text-xs no-underline px-3 py-[7px] bg-[#EEF4FA] text-[#5D6B7C]" style={{ border: '1px solid #DDE7F0' }}>📄 PDF</a>
                     )}
                   </div>
                 </div>
@@ -377,21 +377,21 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           <div className="flex flex-col gap-3.5">
 
             {/* Crédits */}
-            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
-              <div className="text-[#d0d0d0] text-xs mb-1">CRÉDITS DISPONIBLES</div>
-              <div className="text-[#FF3500] text-[32px] font-black">{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
-              <div className="text-xs text-[#8a8a8a]">1 crédit = 1 constat amiable complet</div>
+            <div className="bg-[#FFFFFF] rounded-[14px] p-[18px]" style={{ border: '1px solid #DDE7F0' }}>
+              <div className="text-[#5D6B7C] text-xs mb-1">CRÉDITS DISPONIBLES</div>
+              <div className="text-[#FF6B1A] text-[32px] font-black">{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
+              <div className="text-xs text-[#5D6B7C]">1 crédit = 1 constat amiable complet</div>
             </div>
 
             {/* Email — changement */}
-            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
+            <div className="bg-[#FFFFFF] rounded-[14px] p-[18px]" style={{ border: '1px solid #DDE7F0' }}>
               <div className="flex justify-between items-center" style={{ marginBottom: editingEmail ? 14 : 0 }}>
                 <div>
-                  <div className="text-[#d0d0d0] text-[11px] font-semibold mb-[3px]" >EMAIL</div>
-                  <div className="text-white text-sm">{freshUser.email || user.email}</div>
+                  <div className="text-[#5D6B7C] text-[11px] font-semibold mb-[3px]" >EMAIL</div>
+                  <div className="text-[#102033] text-sm">{freshUser.email || user.email}</div>
                 </div>
                 <button onClick={() => { setEditingEmail(!editingEmail); setNewEmail(''); setEmailPassword(''); }}
-                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #2a2a2a' }}>
+                  className="bg-transparent rounded-lg text-[#5D6B7C] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #DDE7F0' }}>
                   {editingEmail ? 'Annuler' : 'Modifier →'}
                 </button>
               </div>
@@ -420,9 +420,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {/* Profil — infos personnelles */}
-            <div className="bg-[#111] rounded-[14px] p-[18px]" style={{ border: '1px solid #1a1a1a' }}>
+            <div className="bg-[#FFFFFF] rounded-[14px] p-[18px]" style={{ border: '1px solid #DDE7F0' }}>
               <div className="flex justify-between items-center mb-3.5" >
-                <div className="text-white font-bold text-sm">👤 Informations personnelles</div>
+                <div className="text-[#102033] font-bold text-sm">👤 Informations personnelles</div>
                 {!editingProfile && (
                   <button onClick={() => {
                     setProfileForm({
@@ -434,7 +434,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     });
                     setEditingProfile(true);
                   }}
-                  className="bg-transparent rounded-lg text-[#d0d0d0] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #2a2a2a' }}>
+                  className="bg-transparent rounded-lg text-[#5D6B7C] text-xs cursor-pointer px-2.5 py-[5px]" style={{ border: '1px solid #DDE7F0' }}>
                     Modifier →
                   </button>
                 )}
@@ -449,12 +449,12 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     ['Adresse', user.address],
                   ].map(([label, val]) => val ? (
                     <div key={label as string}>
-                      <div className="text-[11px] text-[#8a8a8a]">{label as string}</div>
-                      <div className="text-sm text-[#ccc]">{val as string}</div>
+                      <div className="text-[11px] text-[#5D6B7C]">{label as string}</div>
+                      <div className="text-sm text-[#5D6B7C]">{val as string}</div>
                     </div>
                   ) : null)}
                   {!(user.firstName || user.phone) && (
-                    <div className="text-[13px] text-[#8a8a8a]">Aucune information — clique sur Modifier</div>
+                    <div className="text-[13px] text-[#5D6B7C]">Aucune information — clique sur Modifier</div>
                   )}
                 </div>
               ) : (
@@ -468,7 +468,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                   <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
                   <div className="flex gap-2 mt-1">
                     <button onClick={() => setEditingProfile(false)}
-                      className="flex-1 bg-transparent rounded-[10px] text-[#d0d0d0] cursor-pointer text-[13px] p-[11px]"  style={{ border: '1px solid #2a2a2a' }}>
+                      className="flex-1 bg-transparent rounded-[10px] text-[#5D6B7C] cursor-pointer text-[13px] p-[11px]"  style={{ border: '1px solid #DDE7F0' }}>
                       Annuler
                     </button>
                     <button onClick={async () => {
@@ -491,12 +491,12 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             </div>
 
             {/* Partage viral */}
-            <div className="rounded-[14px] p-[18px]" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
-              <div className="font-bold text-sm mb-1.5 text-[#FF5533]">📤 Faire connaître boom.contact</div>
-              <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3">
+            <div className="rounded-[14px] p-[18px]" style={{ background: 'rgba(255,107,26,0.08)', border: '1px solid rgba(255,107,26,0.25)' }}>
+              <div className="font-bold text-sm mb-1.5 text-[#123A5A]">📤 Faire connaître boom.contact</div>
+              <div className="text-[#5D6B7C] text-[13px] leading-relaxed mb-3">
                 Partage l'app à tes proches, collègues et sur les réseaux. Aide-les avant qu'ils en aient besoin.
               </div>
-              <button onClick={() => setShowShare(true)} className="text-sm">
+              <button onClick={() => setShowShare(true)} className="text-sm" style={{ background: '#FF6B1A', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700, cursor: 'pointer' }}>
                 📤 Partager boom.contact
               </button>
             </div>
@@ -504,13 +504,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Zone dangereuse — Suppression compte */}
             <div className="rounded-[14px] p-[18px]" style={{ border: '1px solid rgba(239,68,68,0.2)' }}>
-              <div className="text-red-500 font-bold text-[13px] mb-1.5">⚠️ Zone dangereuse</div>
-              <div className="text-[#d0d0d0] text-xs leading-relaxed mb-3">
+              <div className="text-[#DC2626] font-bold text-[13px] mb-1.5">⚠️ Zone dangereuse</div>
+              <div className="text-[#5D6B7C] text-xs leading-relaxed mb-3">
                 Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.
               </div>
               <button
                 onClick={() => setShowDeleteModal(true)}
-                className="w-full p-[11px] rounded-[10px] cursor-pointer text-[13px] font-semibold text-[#ef4444]" style={{ border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.06)' }}
+                className="w-full p-[11px] rounded-[10px] cursor-pointer text-[13px] font-semibold text-[#DC2626]" style={{ border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.06)' }}
               >
                 🗑️ Supprimer mon compte
               </button>
@@ -526,50 +526,50 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 function Field({ label, placeholder, value, onChange }: { label: string; placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <div className="text-[#d0d0d0] text-[11px] font-semibold mb-1 tracking-[0.5px]">{label.toUpperCase()}</div>
+      <div className="text-[#5D6B7C] text-[11px] font-semibold mb-1 tracking-[0.5px]">{label.toUpperCase()}</div>
       <input aria-label={label} placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-        className="rounded-[10px] text-white text-sm w-full px-3.5 py-[11px] box-border bg-[#1a1a1a]" style={{ border: '1px solid #2a2a2a' }} />
+        className="rounded-[10px] text-[#102033] text-sm w-full px-3.5 py-[11px] box-border bg-[#EEF4FA]" style={{ border: '1px solid #DDE7F0' }} />
     </div>
   );
 }
 
 function StatBadge({ value, label, highlight }: { value: string | number; label: string; highlight?: boolean }) {
   return (
-    <div className="rounded-[10px] flex-1 px-3.5 py-2 bg-[#1a1a1a] text-center">
-      <div className="text-xl font-black" style={{ color: highlight ? '#FF3500' : '#fff' }}>{value}</div>
-      <div className="text-[11px] text-[#8a8a8a]">{label}</div>
+    <div className="rounded-[10px] flex-1 px-3.5 py-2 bg-[#EEF4FA] text-center">
+      <div className="text-xl font-black" style={{ color: highlight ? '#FF6B1A' : '#102033' }}>{value}</div>
+      <div className="text-[11px] text-[#5D6B7C]">{label}</div>
     </div>
   );
 }
 
 function FeedbackBanner({ msg }: { msg: string }) {
   const ok = msg.startsWith('✅');
-  return <div className="rounded-[10px] mb-4 text-sm px-4 py-3 text-[#ccc]" style={{ background: ok ? '#0a2a0a' : '#2a0a0a', border: '1px solid ' + (ok ? '#1a5c1a' : '#5c1a1a') }}>{msg}</div>;
+  return <div className="rounded-[10px] mb-4 text-sm px-4 py-3 text-[#5D6B7C]" style={{ background: ok ? '#ECFDF3' : 'rgba(220,38,38,0.08)', border: '1px solid ' + (ok ? 'rgba(22,163,74,0.4)' : 'rgba(220,38,38,0.3)') }}>{msg}</div>;
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-[#111] rounded-[14px] p-5" style={{ border: '1px solid #1a1a1a' }}>
-      <div className="text-[#d0d0d0] text-xs mb-1">{label.toUpperCase()}</div>
-      <div className="text-white text-[15px]">{value}</div>
+    <div className="bg-[#FFFFFF] rounded-[14px] p-5" style={{ border: '1px solid #DDE7F0' }}>
+      <div className="text-[#5D6B7C] text-xs mb-1">{label.toUpperCase()}</div>
+      <div className="text-[#102033] text-[15px]">{value}</div>
     </div>
   );
 }
 
 function EmptyState({ icon, title, subtitle, children }: { icon: string; title: string; subtitle: string; children?: React.ReactNode }) {
   return (
-    <div className="bg-[#111] rounded-[14px] p-8 text-center" style={{ border: '1px dashed #2a2a2a' }}>
+    <div className="bg-[#FFFFFF] rounded-[14px] p-8 text-center" style={{ border: '1px dashed #DDE7F0' }}>
       <div className="text-[40px] mb-3">{icon}</div>
-      <div className="text-white font-bold mb-1.5">{title}</div>
-      <div className="text-[#d0d0d0] text-sm leading-relaxed">{subtitle}</div>
+      <div className="text-[#102033] font-bold mb-1.5">{title}</div>
+      <div className="text-[#5D6B7C] text-sm leading-relaxed">{subtitle}</div>
       {children}
     </div>
   );
 }
 
-const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '4px 0', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 };
-const primaryBtn: React.CSSProperties = { background: '#D42D00', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
-const iconBtn: React.CSSProperties = { background: '#1a1a1a', border: '1px solid #222', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
+const backBtn: React.CSSProperties = { background: 'none', border: 'none', color: '#5D6B7C', cursor: 'pointer', fontSize: 15, fontWeight: 600, padding: '4px 0', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 };
+const primaryBtn: React.CSSProperties = { background: '#FF6B1A', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 20px', fontSize: 15, fontWeight: 700, cursor: 'pointer', width: '100%' };
+const iconBtn: React.CSSProperties = { background: '#EEF4FA', border: '1px solid #DDE7F0', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 15 };
 
 
 

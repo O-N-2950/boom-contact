@@ -675,3 +675,32 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 
 - **SW** : bump v8 -> v9 (livraison UI).
 - **Verifs** : typecheck 0 ; quality:prestore exit 0 ; 68 tests (63 -> 68) ; A_BLOCKING=0.
+
+---
+
+## Sprint — Account Access UX + Auth Validation + Garage-to-Constat Flow
+**Date** : 2026-05-29
+**Deja corrige (non refait)** : magic link absolu, ?verify=, AuthModal claire, email magic restyle + lien texte, tests.
+
+### Navigation compte (header) — AJOUTE
+- `UserMenu.tsx` (nouveau, thème clair) : menu deroulant connecte -> Mon compte / Mon garage / Mes credits: X (+ Acheter) / Deconnexion (clic-exterieur + Echap).
+- Header LandingPage adaptatif : DECONNECTE -> "Me connecter" + "Commencer un constat" (+ "Preparer mon garage" dans le hero) ; CONNECTE -> UserMenu (email + badge credits) + "Commencer un constat". Retrait du bloc compte redondant du hero. Prop `onLogin` branchee dans App.
+
+### Garage (deja fonctionnel, valide)
+- vehicle.router (list/save/delete protege JWT) + AccountPage (garage/historique/profil, scan carte grise OCR, ajout/edition/suppression vehicules, etat vide explicatif). "Preparer mon garage" -> garage si connecte, sinon AuthModal puis redirection garage (pendingAction).
+
+### Garage-to-Constat Flow (deja present, AMELIORE + teste)
+- A l'etape scan, si l'utilisateur est connecte ET a >=1 vehicule : bouton "Choisir un vehicule de mon garage" -> liste -> selection -> PREREMPLIT (vehicule + assurance + donnees permis via mapGarageVehicleToParticipant) et SAUTE l'OCR (setStep('location')). Le scan devient secondaire ("ou scanner un nouveau vehicule"), jamais obligatoire.
+- Logique extraite en module PUR teste : `garageVehicleMap.ts` (mapGarageVehicleToParticipant, shouldOfferGarage, isScanRequiredAfterGarageSelection).
+- Cas A-H couverts par tests : A(0 veh->pas de garage), B/C(1/plusieurs->garage), D(non connecte->jamais), scan optionnel apres selection. Annuler/Utiliser un autre/Ajouter nouveau geres par l'UI. B/C/D/E : le garage s'applique a l'initiateur authentifie (role A) ; les autres conducteurs rejoignent par QR (JoinSession).
+
+### Credits
+- Visibles : badge header (UserMenu), carte profil "CREDITS DISPONIBLES", badge stats compte. 0 credit affiche en rouge dans le menu. "Acheter" -> pricing.
+
+### UI/UX — AccountPage recoloree (Hybrid Trust Premium)
+- Etait entierement sombre (#06060C/#111/#1a1a1a/#D42D00/#FF3500...) -> recoloree : fond #F5F8FC, cartes blanches, texte #102033, secondaire #5D6B7C, CTA orange #FF6B1A, onglet actif orange, plaques navy #123A5A, assurance vert #16A34A, danger #DC2626, bordures #DDE7F0. 0 residu sombre, 0 text-white invisible. Sélecteur garage du ConstatFlow recolore aussi (etait en var(--green) cassees).
+
+### Tests
+- +10 (garageFlow.test.ts). Total 78 (68 -> 78). quality:prestore exit 0, A_BLOCKING=0 (218 fichiers).
+
+### Non touche : webhook Stripe, AASA/assetlinks (verifie intacts), backend metier. SW v9 -> v10.

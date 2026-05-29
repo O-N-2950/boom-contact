@@ -17,6 +17,7 @@ import { CoherenceScore } from '../components/constat/CoherenceScore';
 import type { PartyBStatus } from '../components/constat/PartyUnavailableModal';
 import type { OCRResult, ParticipantData, AccidentData, VehicleType, ScenePhoto } from '../../../shared/types';
 import { ocrCategoryToVehicleType } from '../../../shared/utils/ocrCategoryToVehicleType';
+import { mapGarageVehicleToParticipant, shouldOfferGarage } from '../components/constat/garageVehicleMap';
 
 // ── Lazy-loaded heavy components (code-splitting) ──────────────
 const OCRScanner = React.lazy(() => import('../components/constat/OCRScanner').then(m => ({ default: m.OCRScanner })));
@@ -171,28 +172,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   const applyVehicle = (v: Record<string, unknown>) => {
     setShowVehiclePicker(false);
-    const va = v as any;
-    const newData: Partial<ParticipantData> = {
-      role: 'A',
-      vehicle: {
-        licensePlate:   va.plate,
-        make:           va.make,
-        model:          va.model,
-        color:          va.color,
-        year:           va.year,
-        vehicleCategory: va.category,
-        ...(va.licenseData || {}),
-      },
-      insurance: va.insuranceData && Object.keys(va.insuranceData).length > 0
-        ? {
-            ...va.insuranceData,
-            // Normaliser : 'company' est le champ utilisé par ConstatForm
-            company:      va.insuranceData.company || va.insuranceData.companyName || '',
-            companyName:  va.insuranceData.company || va.insuranceData.companyName || '',
-            policyNumber: va.insuranceData.policyNumber || '',
-          }
-        : undefined,
-    };
+    const newData = mapGarageVehicleToParticipant(v as any) as Partial<ParticipantData>;
     setParticipantData(newData);
     setStep('location'); // skip OCR — jump straight to location
   };
@@ -530,33 +510,35 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           </div>
         )}
 
-        {step === 'ocr' && savedVehicles.length > 0 && (
+        {step === 'ocr' && shouldOfferGarage(authToken, savedVehicles.length) && (
           <div className="mb-4">
             {!showVehiclePicker ? (
               <button
                 onClick={() => setShowVehiclePicker(true)}
-                className="w-full rounded-xl cursor-pointer flex items-center gap-3 px-4 py-3.5 bg-[#FFFFFF]" style={{ border: '1px solid #1a5c1a' }}
+                className="w-full rounded-xl cursor-pointer flex items-center gap-3 px-4 py-3.5"
+                style={{ background: '#FFFFFF', border: '1px solid #DDE7F0', borderLeft: '3px solid #16A34A', boxShadow: '0 2px 10px rgba(16,32,51,0.05)' }}
               >
-                <span className="text-2xl">🚗</span>
+                <span className="text-2xl" aria-hidden="true">🚗</span>
                 <div className="text-left">
-                  <div className="text-[var(--green)] font-bold text-sm">Utiliser un véhicule enregistré</div>
-                  <div className="text-[var(--muted)] text-xs">Pré-remplissage automatique — pas besoin de scanner</div>
+                  <div style={{ color: '#16A34A', fontWeight: 800, fontSize: 14 }}>Choisir un véhicule de mon garage</div>
+                  <div style={{ color: '#5D6B7C', fontSize: 12 }}>Préremplissage automatique — pas besoin de scanner</div>
                 </div>
-                <span className="text-[var(--green)] ml-auto">→</span>
+                <span style={{ color: '#16A34A', marginLeft: 'auto', fontWeight: 700 }}>→</span>
               </button>
             ) : (
-              <div className="bg-[#FFFFFF] rounded-xl p-4" style={{ border: '1px solid #1a5c1a' }}>
-                <div className="text-[var(--green)] font-bold mb-3">Choisissez votre véhicule :</div>
+              <div style={{ background: '#FFFFFF', border: '1px solid #DDE7F0', borderRadius: 14, padding: 16 }}>
+                <div style={{ color: '#102033', fontWeight: 800, marginBottom: 12 }}>Vos véhicules enregistrés</div>
                 {savedVehicles.map((v: any) => (
-                  <button key={v.id} onClick={() => applyVehicle(v)} className="w-full rounded-[10px] mb-2 cursor-pointer px-3.5 py-3 bg-[#FFFFFF] text-left" style={{ border: '1px solid #2a4a2a' }}>
-                    <div className="font-semibold text-[var(--text)]">
+                  <button key={v.id} onClick={() => applyVehicle(v)} className="w-full text-left"
+                    style={{ display: 'block', borderRadius: 12, marginBottom: 8, padding: '12px 14px', background: '#F5F8FC', border: '1px solid #DDE7F0', cursor: 'pointer' }}>
+                    <div style={{ fontWeight: 700, color: '#102033' }}>
                       {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
                     </div>
-                    {v.plate && <div className="text-[13px] text-[var(--boom3)]"  style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
-                    {v.insuranceData?.companyName && <div className="text-[var(--muted)] text-xs">🛡️ {v.insuranceData.companyName}</div>}
+                    {v.plate && <div style={{ fontFamily: 'monospace', fontSize: 13, color: '#123A5A' }}>{v.plate}</div>}
+                    {v.insuranceData?.companyName && <div style={{ color: '#5D6B7C', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}
                   </button>
                 ))}
-                <button onClick={() => setShowVehiclePicker(false)} className="bg-transparent border-0 text-[var(--muted)] cursor-pointer text-[13px]">
+                <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'transparent', border: 'none', color: '#5D6B7C', cursor: 'pointer', fontSize: 13, padding: '4px 0', textDecoration: 'underline' }}>
                   Annuler
                 </button>
               </div>
@@ -566,6 +548,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
         {step === 'ocr' && (
           <Suspense fallback={<LazyLoading />}>
+            {shouldOfferGarage(authToken, savedVehicles.length) && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '4px 0 14px' }}>
+                <div style={{ flex: 1, height: 1, background: '#DDE7F0' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#5D6B7C' }}>ou scanner un nouveau véhicule</span>
+                <div style={{ flex: 1, height: 1, background: '#DDE7F0' }} />
+              </div>
+            )}
             <OCRScanner role="A" onComplete={handleOCRComplete as any} onSkip={() => setStep('location')} sessionId={sessionId || undefined} participantToken={tokenA || undefined} />
           </Suspense>
         )}
