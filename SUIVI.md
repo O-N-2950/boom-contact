@@ -583,3 +583,11 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Hors perimetre non touche** : backend, Stripe, logique session/participants/PDF, AASA/assetlinks (placeholders finalises intacts), check-claims.ts, /visual-qa, /design-preview, /privacy, /cgu.
 - **Perf** : bundle landing 33.6 -> 28.4 kB, aucune dependance ajoutee.
 - **Verifs** : quality:prestore exit 0 (212 fichiers, A_BLOCKING=0, 45/45) ; typecheck 0 ; build OK ; 0 mot interdit landing+index.html ; H1 unique.
+
+---
+
+## Sprint Landing (suite) — Modale ShareBoom alignée Hybrid clair
+**Date** : 2026-05-29
+- **`client/src/components/ShareBoom.tsx`** : la modale de partage etait restee dark plein ecran (rgba(6,6,12,0.95)) + bouton rouge agressif #FF3500 -> incoherente avec la landing claire (signale par Olivier via capture). Refonte en **carte modale centree claire** : scrim navy translucide + blur, carte blanche (#FFF, border #DDE7F0, shadow), titre navy, CTA "Partager maintenant" orange controle #FF6B1A, tuiles canaux claires (#F5F8FC) avec couleurs de marque conservees (WhatsApp/Telegram/etc.), email -> navy, stats en navy, encart TikTok en elevated clair. Bug corrige : doublon de stat "5 min / pour un constat" (x2) -> 3 stats distinctes (5 min / QR / PDF).
+- **Logique 100% preservee** : channels, share(), messages par contexte, useFocusTrap, navigator.share/clipboard inchanges. Utilisee aussi par PostConstatCTA + AccountPage (surfaces deja claires) -> coherent partout.
+- **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle ; bundle ShareBoom 8.78 kB.

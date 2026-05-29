@@ -94,105 +94,91 @@ export const ShareBoom = React.memo(function ShareBoom({ onClose, context = 'lan
     { id: 'whatsapp', label: 'WhatsApp', color: '#25D366', icon: '💬' },
     { id: 'sms', label: 'SMS', color: '#0A84FF', icon: '✉️' },
     { id: 'telegram', label: 'Telegram', color: '#229ED9', icon: '✈️' },
-    { id: 'email', label: 'Email', color: '#FF3500', icon: '📧' },
+    { id: 'email', label: 'Email', color: '#123A5A', icon: '📧' },
     { id: 'x', label: 'X / Twitter', color: '#000', icon: '𝕏' },
     { id: 'facebook', label: 'Facebook', color: '#1877F2', icon: 'f' },
     { id: 'linkedin', label: 'LinkedIn', color: '#0A66C2', icon: 'in' },
   ];
 
+  // Palette Hybrid Trust Premium
+  const C = { card:'#FFFFFF', bg:'#F5F8FC', elevated:'#EEF4FA', text:'#102033', sec:'#5D6B7C', orange:'#FF6B1A', orangeHover:'#F05A0A', navy:'#123A5A', border:'#DDE7F0', success:'#16A34A' };
+
   return (
-    <div ref={dialogRef} role="dialog" aria-label="Partager boom.contact" aria-modal="true" className="fixed inset-0 flex flex-col" style={{ zIndex: 900, background: 'rgba(6,6,12,0.95)', padding: '0 0 env(safe-area-inset-bottom)' }}>
-      {/* Header */}
-      <div className="flex justify-between items-start" style={{ padding: '20px 20px 0' }}>
-        <div>
-          <div className="text-[22px] font-black text-white">{m.title}</div>
-          <div className="text-[13px] mt-1 leading-normal max-w-[280px]"  style={{ color: 'rgba(240,237,232,0.5)' }}>
-            {m.subtitle}
+    <div role="dialog" aria-label="Partager boom.contact" aria-modal="true"
+      onClick={onClose}
+      style={{ position:'fixed', inset:0, zIndex:900, display:'flex', alignItems:'center', justifyContent:'center', padding:'20px', background:'rgba(16,32,51,0.55)', backdropFilter:'blur(6px)', WebkitBackdropFilter:'blur(6px)', boxSizing:'border-box' }}>
+      <div ref={dialogRef} onClick={e => e.stopPropagation()}
+        style={{ width:'100%', maxWidth:460, maxHeight:'92vh', overflowY:'auto', background:C.card, border:`1px solid ${C.border}`, borderRadius:20, boxShadow:'0 24px 60px rgba(16,32,51,0.22)', padding:'22px 20px calc(20px + env(safe-area-inset-bottom))', fontFamily:'Manrope, ui-sans-serif, system-ui, sans-serif' }}>
+
+        {/* Header */}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12 }}>
+          <div>
+            <div style={{ fontSize:20, fontWeight:800, color:C.text }}>{m.title}</div>
+            <div style={{ fontSize:13, marginTop:4, lineHeight:1.5, color:C.sec, maxWidth:300 }}>{m.subtitle}</div>
           </div>
+          {onClose && (
+            <button onClick={onClose} aria-label="Fermer le partage" style={{ border:`1px solid ${C.border}`, background:C.bg, borderRadius:20, width:34, height:34, cursor:'pointer', fontSize:18, flexShrink:0, color:C.sec, lineHeight:1 }}>×</button>
+          )}
         </div>
-        {onClose && (
-          <button onClick={onClose} aria-label="Fermer le partage" className="border-0 rounded-[20px] w-9 h-9 cursor-pointer text-lg shrink-0 text-[#d0d0d0]" style={{ background: 'rgba(255,255,255,0.08)' }}>×</button>
+
+        {/* Message preview */}
+        <div style={{ marginTop:16, background:C.elevated, border:`1px solid ${C.border}`, borderRadius:12, padding:'12px 14px', fontSize:12, fontStyle:'italic', lineHeight:1.6, color:C.sec }}>
+          "{m.whatsapp.slice(0, 120)}..."
+        </div>
+
+        {/* Bouton natif */}
+        {'share' in navigator && (
+          <button onClick={() => share('native')}
+            style={{ marginTop:16, width:'100%', padding:16, borderRadius:14, border:'none', color:'#fff', cursor:'pointer', fontSize:16, fontWeight:800, display:'flex', alignItems:'center', justifyContent:'center', gap:10, background:C.orange, boxShadow:'0 8px 22px rgba(255,107,26,0.28)', transition:'background .15s' }}
+            onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
+            onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
+            <span style={{ fontSize:20 }}>📤</span> Partager maintenant
+          </button>
         )}
-      </div>
 
-      {/* Message preview */}
-      <div className="rounded-xl text-xs italic px-4 py-3.5 leading-[1.6]" style={{ margin: '16px 20px 0', background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)', color: 'rgba(240,237,232,0.6)' }}>
-        "{m.whatsapp.slice(0, 120)}..."
-      </div>
+        {/* Séparateur */}
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginTop:16 }}>
+          <div style={{ flex:1, height:1, background:C.border }} />
+          <div style={{ fontSize:11, color:C.sec }}>ou choisir</div>
+          <div style={{ flex:1, height:1, background:C.border }} />
+        </div>
 
-      {/* Bouton natif iOS/Android en premier */}
-      {'share' in navigator && (
-        <div style={{ padding: '16px 20px 0' }}>
-          <button
-            onClick={() => share('native')}
-            className="w-full p-4 rounded-[14px] border-0 text-white cursor-pointer text-base font-bold flex items-center justify-center gap-2.5" style={{ background: 'var(--boom)', boxShadow: '0 6px 24px rgba(255,53,0,0.4)' }}
-          >
-            <span className="text-xl">📤</span>
-            Partager maintenant
+        {/* Grille canaux */}
+        <div style={{ display:'grid', gap:10, marginTop:14, gridTemplateColumns:'repeat(4, 1fr)' }}>
+          {channels.map(ch => (
+            <button key={ch.id} onClick={() => share(ch.id)}
+              style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, borderRadius:14, cursor:'pointer', padding:'12px 8px', border: sent === ch.id ? `1.5px solid ${ch.color}` : `1px solid ${C.border}`, background: sent === ch.id ? `${ch.color}18` : C.bg, transition:'all .15s' }}>
+              <div style={{ width:36, height:36, borderRadius:10, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff', background:ch.color, fontSize: ch.id === 'x' || ch.id === 'linkedin' ? 14 : 18, fontWeight:900 }}>{ch.icon}</div>
+              <div style={{ fontSize:10, textAlign:'center', color:C.sec }}>{ch.label}</div>
+            </button>
+          ))}
+          {/* Copier le lien */}
+          <button onClick={() => share('copy')}
+            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, borderRadius:14, cursor:'pointer', padding:'12px 8px', transition:'all .2s', border: copied ? `1.5px solid ${C.success}` : `1px solid ${C.border}`, background: copied ? 'rgba(22,163,74,0.12)' : C.bg }}>
+            <div style={{ width:36, height:36, borderRadius:10, display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, background: copied ? C.success : C.elevated, transition:'background .2s' }}>{copied ? '✅' : '📋'}</div>
+            <div style={{ fontSize:10, textAlign:'center', color: copied ? C.success : C.sec }}>{copied ? 'Copié !' : 'Copier lien'}</div>
           </button>
         </div>
-      )}
 
-      {/* Séparateur */}
-      <div className="flex items-center gap-3" style={{ padding: '16px 20px 0' }}>
-        <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }} />
-        <div className="text-[#d0d0d0] text-[11px]">ou choisir</div>
-        <div className="flex-1 h-px"  style={{ background: 'rgba(255,255,255,0.08)' }} />
-      </div>
-
-      {/* Grille canaux */}
-      <div className="grid gap-2.5" style={{ padding: '14px 20px 0', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-        {channels.map(ch => (
-          <button
-            key={ch.id}
-            onClick={() => share(ch.id)}
-            className="flex flex-col items-center gap-1.5 rounded-[14px] cursor-pointer px-2 py-3" style={{ border: sent === ch.id ? `1.5px solid ${ch.color}` : '1px solid rgba(255,255,255,0.25)', background: sent === ch.id ? `${ch.color}22` : 'rgba(255,255,255,0.04)', transition: 'all 0.15s' }}
-          >
-            <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-white" style={{ background: ch.color, fontSize: ch.id === 'x' ? 14 : ch.id === 'linkedin' ? 14 : 18, fontWeight: 900 }}>
-              {ch.icon}
+        {/* Stats */}
+        <div style={{ marginTop:16, background:C.bg, border:`1px solid ${C.border}`, borderRadius:12, display:'flex', gap:20, justifyContent:'center', padding:'12px 16px' }}>
+          {[['5 min','pour un constat'], ['QR','pour inviter'], ['PDF','horodaté']].map(([val, label]) => (
+            <div key={label} style={{ textAlign:'center' }}>
+              <div style={{ fontWeight:800, fontSize:16, color:C.navy }}>{val}</div>
+              <div style={{ fontSize:10, color:C.sec }}>{label}</div>
             </div>
-            <div className="text-[10px] text-center" style={{ color: 'rgba(240,237,232,0.6)' }}>
-              {ch.label}
-            </div>
-          </button>
-        ))}
-
-        {/* Copier le lien */}
-        <button
-          onClick={() => share('copy')}
-          className="flex flex-col items-center gap-1.5 rounded-[14px] cursor-pointer transition-all duration-200 px-2 py-3" style={{ border: copied ? '1.5px solid #22c55e' : '1px solid rgba(255,255,255,0.25)', background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.04)' }}
-        >
-          <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-lg" style={{ background: copied ? '#22c55e' : '#333', transition: 'background 0.2s' }}>
-            {copied ? '✅' : '📋'}
-          </div>
-          <div className="text-[10px] text-center" style={{ color: copied ? '#22c55e' : 'rgba(240,237,232,0.6)' }}>
-            {copied ? 'Copié !' : 'Copier lien'}
-          </div>
-        </button>
-      </div>
-
-      {/* Stats sociales — preuve sociale */}
-      <div className="rounded-xl flex gap-5 justify-center px-4 py-3" style={{ margin: '16px 20px 0', background: 'rgba(255,255,255,0.03)' }}>
-        {[
-          ['5 min', 'pour un constat'],
-          ['5 min', 'pour un constat'],
-          ['0€', 'pour essayer'],
-        ].map(([val, label]) => (
-          <div key={label} className="text-center">
-            <div className="font-black text-base text-[#FF5533]">{val}</div>
-            <div className="text-[#d0d0d0] text-[10px]">{label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* TikTok — astuce */}
-      <div className="rounded-[10px] flex items-center gap-2.5 px-3.5 py-2.5" style={{ margin: '12px 20px 0', background: 'rgba(0,0,0,0.4)' }}>
-        <span className="text-xl">🎵</span>
-        <div className="text-[11px] text-[#d0d0d0] leading-normal">
-          <strong className="text-white">TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !
+          ))}
         </div>
-      </div>
 
+        {/* TikTok tip */}
+        <div style={{ marginTop:12, background:C.elevated, border:`1px solid ${C.border}`, borderRadius:10, display:'flex', alignItems:'center', gap:10, padding:'10px 14px' }}>
+          <span style={{ fontSize:18 }}>🎵</span>
+          <div style={{ fontSize:11, color:C.sec, lineHeight:1.5 }}>
+            <strong style={{ color:C.text }}>TikTok / Instagram / YouTube</strong> — filme ton prochain constat et mentionne boom.contact dans la vidéo !
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 });
