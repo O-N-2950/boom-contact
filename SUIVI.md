@@ -721,3 +721,19 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 
 ### Non touche : webhook Stripe, AASA/assetlinks (verifie), flow constat, sessions. SW v10 -> v11.
 ### Verifs : tsc 0, quality:prestore exit 0, 78 tests, A_BLOCKING=0 (218 fichiers).
+
+---
+
+## Sprint i18n Switzerland Completion (DE + IT 100%)
+**Date** : 2026-05-29
+### Réalisé
+- **DE et IT complétés à 100 %** du périmètre grand public (559/559 clés, tableaux développés ; vérifié par 2 méthodes + test). Avant : 34 % (213). +275 clés core × 2 langues fusionnées.
+- Namespaces traduits : postConstat(48), ocrScanner(46), constatForm(46), pricingPage(39), auth(24), voice(24), app(19), legal(15), signature(14). **police (132) volontairement laissé FR-first** (B2G, hors périmètre stores).
+- **Méthode** : API Anthropic claude-sonnet-4-6, prompt strict (préservation placeholders {{}}/HTML/emojis validée par script ; terminologie verrouillée DE/IT ; vouvoiement ; formulations prudentes ; claims interdits bannis). 18/18 namespaces×langues OK du 1er coup. PCI-DSS-zertifiziert = factuel Stripe (légitime).
+- **Statut qualité** : traduction auto vérifiée par garde-fous ; relecture humaine recommandée avant publication stores (documenté), non bloquante pour TestFlight.
+- **Outillage** : `scripts/check-i18n.ts` + `npm run check:i18n` (échoue si langue EXPOSÉE < 100% core ; locales non exposées en informatif) **intégré à quality:prestore**. Test `i18nCompleteness.test.ts` (4 langues). Doc `docs/i18n-readiness-audit.md`.
+- **LanguageSwitcher** : FR/EN/DE/IT désormais tous réellement utilisables de bout en bout (plus de repli français sur le formulaire/scan/auth/signature/post-constat/tarifs en DE/IT).
+- **ES/PT** : audités, ~50% core, NON exposés (getLangOrder inchangé). Roadmap = sprint dédié. Score ES/PT 50/100.
+
+### Vérifs : tsc 0, quality:prestore exit 0, **82 tests** (78→82), A_BLOCKING=0, check:i18n vert. SW v11→v12.
+### Non touché : webhook Stripe, AASA/assetlinks (vérifié intacts), flow constat, sessions, getLangOrder.

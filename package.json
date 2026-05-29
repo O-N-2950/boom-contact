@@ -17,7 +17,8 @@
     "test": "vitest run",
     "capture:screenshots": "tsx scripts/capture-store-screenshots.ts",
     "check:claims": "tsx scripts/check-claims.ts",
-    "quality:prestore": "npm run typecheck && npm run build && npm run test && npm run check:claims"
+    "quality:prestore": "npm run typecheck && npm run build && npm run test && npm run check:claims && npm run check:i18n",
+    "check:i18n": "tsx scripts/check-i18n.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.85.0",
