@@ -782,3 +782,26 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Runbook §7 ajouté. SW v14->v15.
 ### À VÉRIFIER post-deploy : bundle prod doit contenir l'init (host/phc_) + window.__boomAnalytics.status() => posthog:true après consentement.
 ### Non touché : webhook Stripe, flow, auth/garage, AASA/assetlinks. quality:prestore exit 0, 93 tests.
+
+---
+
+## Sprint Fleet B2B MVP — Architecture + Product Spec (docs, pas de build du système org)
+**Date** : 2026-05-29
+### Audit architecture actuelle (read-only)
+- vehicles : userId notNull (FK users.id, onDelete cascade) — PERSONNEL uniquement, pas d'organizationId.
+- crédits : users.credits + creditTxns (par userEmail) + payments (par userEmail) — par utilisateur uniquement.
+- auditLog : EXISTE DEJA (event/userId/sessionId/ip/detail) — réutilisable pour la flotte.
+- users.role : varchar simple ; users.company : texte libre (pas un lien org).
+- PDF/email : 1 destinataire à la fois (driverEmail/recipientEmail + attachments) — multi-destinataires à ajouter (boucle).
+- B2BPage existe (route /b2b, /partners) + section landing pro ; CTA = modal partage.
+- Architecture ne BLOQUE PAS l'extension entreprise : tout est additif (colonne nullable + nouvelles tables), zéro migration destructive.
+### Docs créés
+- docs/fleet-b2b-data-model.md (6 tables + vehicles.organizationId nullable, non destructif)
+- docs/fleet-b2b-mvp-spec.md (MVP 30j, personae, flows, débit wallet, done)
+- docs/fleet-b2b-security-review.md (12 risques + matrice permissions + RGPD/nLPD)
+- docs/fleet-b2b-monetization.md (3 modèles + partenaires + impact Stripe)
+- docs/fleet-b2b-roadmap.md (30/90/12 mois)
+- analytics-event-taxonomy.md : section Fleet B2B (11 events planifiés + props sans PII)
+### Quick win APPLIQUÉ (sûr)
+- fleet_cta_clicked câblé sur le CTA B2B de la landing (track + EVENTS déjà importés). Risque nul (additif, consentement-gaté, no PII). Fichier : client/src/pages/LandingPage.tsx. SW v15->v16.
+### Garanties : webhook Stripe, flow constat, garage perso, auth/crédits, AASA/assetlinks — INTACTS. quality:prestore exit 0, 93 tests, A_BLOCKING=0.

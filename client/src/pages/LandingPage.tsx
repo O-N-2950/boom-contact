@@ -397,7 +397,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                   </div>
                 </div>
                 <div style={{ flexShrink: 0 }}>
-                  <button onClick={() => setShowShare(true)} style={ctaNavyOutline}
+                  <button onClick={() => { track(EVENTS.FLEET_CTA_CLICKED); setShowShare(true); }} style={ctaNavyOutline}
                     onMouseEnter={e => (e.currentTarget.style.background = C.card)}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                     Contacter / partager

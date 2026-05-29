@@ -76,3 +76,25 @@ _Mise à jour : 2026-05-29._
 (différencier login vs register), constat_step_completed/abandoned, constat_photo_added,
 constat_voice_*, constat_signature_*, pdf_email_sent/downloaded, share_*, referral_*,
 participant_qr_displayed/completed, et toute la section B2B/fleet (en attente du module flotte).
+
+---
+
+## Fleet B2B — events planifiés (non câblés tant que le module n'existe pas)
+| Event | Quand |
+| --- | --- |
+| `fleet_cta_clicked` | clic CTA « professionnels / flottes » (câblé sur la landing) |
+| `company_interest_submitted` | soumission d'un intérêt entreprise |
+| `organization_created` | création d'une organisation |
+| `organization_member_invited` | invitation envoyée |
+| `organization_member_joined` | invitation acceptée |
+| `fleet_vehicle_added` / `fleet_vehicle_updated` | véhicule d'org ajouté / modifié |
+| `fleet_vehicle_selected_for_constat` | véhicule d'org choisi dans un constat |
+| `fleet_report_sent_to_admin` | PDF envoyé à un responsable flotte |
+| `fleet_wallet_used` | débit du wallet org pour un constat |
+| `fleet_dashboard_viewed` | ouverture du dashboard flotte |
+
+**Propriétés autorisées (aucune PII)** : `organization_size_bucket`, `role`, `vehicle_count_bucket`,
+`source`, `country`, `language`, `plan_type`, `credits_bucket`.
+
+**Interdit** : nom d'entreprise (si sensible), email, plaque, VIN, détails accident, contenu PDF,
+adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
