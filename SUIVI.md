@@ -591,3 +591,14 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **`client/src/components/ShareBoom.tsx`** : la modale de partage etait restee dark plein ecran (rgba(6,6,12,0.95)) + bouton rouge agressif #FF3500 -> incoherente avec la landing claire (signale par Olivier via capture). Refonte en **carte modale centree claire** : scrim navy translucide + blur, carte blanche (#FFF, border #DDE7F0, shadow), titre navy, CTA "Partager maintenant" orange controle #FF6B1A, tuiles canaux claires (#F5F8FC) avec couleurs de marque conservees (WhatsApp/Telegram/etc.), email -> navy, stats en navy, encart TikTok en elevated clair. Bug corrige : doublon de stat "5 min / pour un constat" (x2) -> 3 stats distinctes (5 min / QR / PDF).
 - **Logique 100% preservee** : channels, share(), messages par contexte, useFocusTrap, navigator.share/clipboard inchanges. Utilisee aussi par PostConstatCTA + AccountPage (surfaces deja claires) -> coherent partout.
 - **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle ; bundle ShareBoom 8.78 kB.
+
+---
+
+## Sprint Landing (suite 2) — CGUModal + LanguageSwitcher + BugReport alignés Hybrid clair
+**Date** : 2026-05-29
+- **Revue des 3 surfaces secondaires lancees depuis la landing** (demande Olivier) -> toutes recolorees en Hybrid clair, logique 100% preservee :
+  - **CGUModal** : bottom-sheet dark #0E0E18 -> carte blanche (scrim navy translucide, texte navy #102033/#5D6B7C, accent + onglets + liens + checkbox en orange #FF6B1A, bordures #DDE7F0, input clair). Ajout couleur de base #102033 (corrige des textes qui auraient herite du blanc -> invisibles sur fond blanc). tRPC saveConsent / consentement CGU+marketing CH / handleSubmit inchanges.
+  - **LanguageSwitcher** : boutons drapeaux blanc-translucides (invisibles sur fond clair) -> bordure #DDE7F0 / fond blanc, actif orange #FF6B1A + fond orange 10%. applyLang inchange.
+  - **BugReport** (fab 🐛) : pill + popover dark #06060C -> blanc translucide discret, bordures #DDE7F0, texte navy, CTA orange controle, toast succes vert #16A34A. trpc.email.bugReport inchange. Visibilite inchangee (masque sur /visual-qa + /design-preview).
+- **Hors perimetre non touche** : backend, Stripe, logique session/participants/PDF, AASA/assetlinks, check-claims.ts.
+- **Verifs** : quality:prestore exit 0 (A_BLOCKING=0, 45/45) ; typecheck 0 ; 0 couleur sombre residuelle (hors blancs translucides voulus).
