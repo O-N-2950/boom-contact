@@ -149,7 +149,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <header>
         <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box', padding: `16px ${padX}px`, maxWidth: 1180, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="/logo.webp" alt="boom.contact" style={{ width: 44, height: 44, objectFit: 'contain' }} />
+            <img src="/logo.webp" alt="boom.contact" style={{ width: isDesktop ? 50 : 40, height: isDesktop ? 50 : 40, objectFit: 'contain', display: 'block' }} />
             <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: C.text }}>
               <span style={{ color: C.orange }}>boom</span><span style={{ color: C.textSec }}>.contact</span>
             </div>

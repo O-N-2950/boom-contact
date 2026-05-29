@@ -39,7 +39,7 @@
       "capture": "📸 Photograph"
     },
     "badges": {
-      "languages": "50 languages",
+      "languages": "Multilingual",
       "time": "5 min",
       "encrypted": "Encrypted"
     },
@@ -130,7 +130,7 @@
         },
         {
           "icon": "🌍",
-          "title": "50 languages + RTL",
+          "title": "Multilingual · RTL",
           "desc": "5 billion speakers. Arabic, Hebrew, Farsi, Urdu in native RTL. Geolocated emergencies."
         }
       ]

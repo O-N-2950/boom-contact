@@ -39,7 +39,7 @@
       "capture": "📸 Photographier"
     },
     "badges": {
-      "languages": "50 langues",
+      "languages": "Multilingue",
       "time": "5 min",
       "encrypted": "Chiffré"
     },
@@ -130,7 +130,7 @@
         },
         {
           "icon": "🌍",
-          "title": "50 langues + RTL",
+          "title": "Multilingue · RTL",
           "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
         }
       ]

@@ -704,3 +704,20 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - +10 (garageFlow.test.ts). Total 78 (68 -> 78). quality:prestore exit 0, A_BLOCKING=0 (218 fichiers).
 
 ### Non touche : webhook Stripe, AASA/assetlinks (verifie intacts), backend metier. SW v9 -> v10.
+
+---
+
+## Sprint global — Account UX + Auth + Garage + Fleet audit + i18n audit + Strategic
+**Date** : 2026-05-29
+### Corrections code (sures, evidentes) appliquees
+- **Logo header** : 44px fixe -> responsive 50px desktop / 40px mobile (display block, aligne).
+- **Claim "50 langues" (CATEGORIE A, trompeur)** : seuls FR/EN sont a 100% ; DE/IT a 34% ; switcher n'expose que 4 langues (fr/de/it/en) ; les 46 autres locales sont inatteignables. "50 langues/languages/idiomas/lingue/Sprachen" etait servi dans les 50 locales (cles landing.badges/coverage ORPHELINES non rendues), pitch.html, AccountPage, B2BPage, email footer. -> Tout neutralise en "Multilingue/Multilingual/Multilingüe/Mehrsprachig". 
+- **check-claims durci** : + patterns ES/PT (valido mundialmente, legalmente valido, aceptado/aceito por todas, sustituye/substitui a la policia, prueba/prova incontestable, 150 paises, primera aplicacion/primeiro aplicativo mundial, reconocido/reconhecido oficialmente) + garde anti "50 langues" toutes langues. NB: "certificado de seguro" (ES) reste autorise (nom de document legitime). 60 patterns au total.
+- **Email footer** : "50 languages · multi-country" -> "available in multiple languages".
+
+### Audits livres (NON construits — voir rapport)
+- **Fleet/B2B** : vehicles.userId uniquement (personnel strict), users.company libre, credits par user, aucune entite organisation. Architecture NON bloquee (jsonb, schema propre) -> roadmap org_id progressive.
+- **i18n reel** : 50 locales, FR/EN 100%, DE/IT 34%, 46 autres 34% et inatteignables. Manquant en DE/IT = produit (constatForm/ocrScanner/auth/signature/postConstat/pricingPage/voice) ; present = landing/location/ocr/cgu. fallbackLng='fr'.
+
+### Non touche : webhook Stripe, AASA/assetlinks (verifie), flow constat, sessions. SW v10 -> v11.
+### Verifs : tsc 0, quality:prestore exit 0, 78 tests, A_BLOCKING=0 (218 fichiers).

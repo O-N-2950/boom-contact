@@ -1,4 +1,4 @@
-// boom.contact — i18n setup — 50 langues
+// boom.contact — i18n setup — Multilingue
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';

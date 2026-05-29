@@ -39,7 +39,7 @@
       "capture": "📸 Fotografieren"
     },
     "badges": {
-      "languages": "50 Sprachen",
+      "languages": "Mehrsprachig",
       "time": "5 Min",
       "encrypted": "Verschlüsselt"
     },
@@ -130,7 +130,7 @@
         },
         {
           "icon": "🌍",
-          "title": "50 Sprachen + RTL",
+          "title": "Mehrsprachig · RTL",
           "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Geolocalisierte Notrufe."
         }
       ]

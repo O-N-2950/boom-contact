@@ -91,6 +91,30 @@ const PATTERNS: PatternDef[] = [
   { regex: /\bconforme CEA\b/i,                        name: 'conforme CEA',                  category: 'cea' },
   { regex: /\bconstat CEA\b/i,                         name: 'constat CEA',                   category: 'cea' },
   { regex: /\bConvention Europ[ée]enne (des )?Assurances?\b/i, name: 'Convention Européenne Assurances', category: 'cea' },
+
+  // Espagnol / Portugais — claims interdits (cf. sprint i18n) — phrases multi-mots uniquement
+  // (NB: "certificado de seguro" est legitime = nom du document carte verte, donc NON inclus)
+  { regex: /\bválido mundialmente\b/i,                 name: 'válido mundialmente (ES/PT)',              category: 'geographic' },
+  { regex: /\bválido em todo o mundo\b/i,              name: 'válido em todo o mundo (PT)',              category: 'geographic' },
+  { regex: /\blegalmente válido\b/i,                   name: 'legalmente válido (ES/PT)',                category: 'legal' },
+  { regex: /\baceptado por todas las aseguradoras\b/i, name: 'aceptado por todas las aseguradoras (ES)', category: 'acceptance' },
+  { regex: /\baceito por todas as seguradoras\b/i,     name: 'aceito por todas as seguradoras (PT)',     category: 'acceptance' },
+  { regex: /\bsustituye a la polic[ií]a\b/i,           name: 'sustituye a la policía (ES)',              category: 'substitution' },
+  { regex: /\bsubstitui a pol[ií]cia\b/i,              name: 'substitui a polícia (PT)',                 category: 'substitution' },
+  { regex: /\bprueba incontestable\b/i,                name: 'prueba incontestable (ES)',                category: 'legal' },
+  { regex: /\bprova incontestável\b/i,                 name: 'prova incontestável (PT)',                 category: 'legal' },
+  { regex: /\b150\s+pa[ií]ses\b/i,                     name: '150 países (ES/PT)',                       category: 'geographic' },
+  { regex: /\bprimera aplicación mundial\b/i,          name: 'primera aplicación mundial (ES)',          category: 'geographic' },
+  { regex: /\bprimeiro aplicativo mundial\b/i,         name: 'primeiro aplicativo mundial (PT)',         category: 'geographic' },
+  { regex: /\breconocido oficialmente\b/i,             name: 'reconocido oficialmente (ES)',             category: 'legal' },
+  { regex: /\breconhecido oficialmente\b/i,            name: 'reconhecido oficialmente (PT)',            category: 'legal' },
+
+  // Drift quantitatif langues — eviter tout "50 langues/languages/idiomas/lingue/Sprachen"
+  { regex: /\b50\s+langues\b/i,                        name: '50 langues',                    category: 'inflated' },
+  { regex: /\b50\s+languages\b/i,                      name: '50 languages',                  category: 'inflated' },
+  { regex: /\b50\s+idiomas\b/i,                        name: '50 idiomas',                    category: 'inflated' },
+  { regex: /\b50\s+lingue\b/i,                         name: '50 lingue',                     category: 'inflated' },
+  { regex: /\b50\s+Sprachen\b/i,                       name: '50 Sprachen',                   category: 'inflated' },
 ];
 
 // ────────────────────────────── WHITELISTS ──────────────────────────────

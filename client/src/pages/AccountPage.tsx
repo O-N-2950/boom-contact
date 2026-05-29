@@ -233,7 +233,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             <span className="text-[28px]">📄</span>
             <div className="text-left">
               <div className="font-bold text-[#123A5A]">Scanner permis + carte verte</div>
-              <div className="text-xs text-[#5D6B7C]">Reconnaissance automatique · 50 langues</div>
+              <div className="text-xs text-[#5D6B7C]">Reconnaissance automatique · multilingue</div>
             </div>
           </button>
 

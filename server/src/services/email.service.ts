@@ -655,7 +655,7 @@ export async function sendB2BOutreach(recipientEmail: string, recipientName?: st
   <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
     <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
       boom.contact &middot; PEP's Swiss SA &middot; IDE CHE-476.484.632 &middot; Bellevue 7, 2950 Courgenay, Jura, Switzerland<br>
-      Digital accident report &middot; 50 languages &middot; multi-country
+      Digital accident report &middot; available in multiple languages
     </div>
   </div>
 

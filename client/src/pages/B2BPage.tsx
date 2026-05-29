@@ -110,7 +110,7 @@ export function B2BPage({ onBack }: Props) {
               },
               {
                 title: 'Global coverage',
-                desc: '50 languages including RTL (Arabic, Hebrew). Emergency numbers for every country. Works offline (PWA).',
+                desc: 'Multilingual including RTL (Arabic, Hebrew). Emergency numbers for every country. Works offline (PWA).',
                 icon: '🌐',
               },
             ].map((item) => (
@@ -139,7 +139,7 @@ export function B2BPage({ onBack }: Props) {
         <div style={{ position: 'relative' }}>
           {[
             { step: '1', title: 'Policyholder has an accident', desc: 'They open boom.contact on their phone (or your branded app via SDK).' },
-            { step: '2', title: 'Both drivers fill the report', desc: 'QR code pairing. OCR scans documents. Voice input in 50 languages. 5 minutes.' },
+            { step: '2', title: 'Both drivers fill the report', desc: 'QR code pairing. OCR scans documents. Voice input, multilingual. 5 minutes.' },
             { step: '3', title: 'API webhook fires', desc: 'Your system receives structured JSON: vehicles, drivers, insurance, circumstances, photos, GPS, signatures.' },
             { step: '4', title: 'Auto-create claim', desc: 'Pre-populate your claims system. Structured PDF attached. Cryptographic timestamp (OpenTimestamps).' },
           ].map((item, i) => (
@@ -223,7 +223,7 @@ export function B2BPage({ onBack }: Props) {
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '24px', textAlign: 'center' }}>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', lineHeight: 1.8 }}>
           boom.contact &middot; PEP's Swiss SA &middot; IDE CHE-476.484.632 &middot; Bellevue 7, 2950 Courgenay, Jura, Suisse<br />
-          Digital accident report &middot; 50 languages &middot; Multi-country &middot; Cryptographic timestamp
+          Digital accident report &middot; multilingual &middot; Multi-country &middot; Cryptographic timestamp
         </div>
       </footer>
     </div>

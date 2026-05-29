@@ -39,7 +39,7 @@
       "capture": "📸 Fotografare"
     },
     "badges": {
-      "languages": "50 lingue",
+      "languages": "Multilingue",
       "time": "5 min",
       "encrypted": "Crittografato"
     },
@@ -130,7 +130,7 @@
         },
         {
           "icon": "🌍",
-          "title": "50 lingue + RTL",
+          "title": "Multilingue · RTL",
           "desc": "5 miliardi di parlanti. Arabo, ebraico, farsi, urdu in RTL nativo. Emergenze geolocalizzate."
         }
       ]
