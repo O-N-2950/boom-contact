@@ -627,3 +627,15 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 **Date** : 2026-05-29
 - Le correctif useFocusTrap (saisie lettre par lettre) etait deja en prod (2e77de4) mais les clients PWA pouvaient encore tourner sur l'ancien bundle en cache (service worker). Bump `CACHE_NAME` boom-contact-v5 -> v6 (sw.js) : reinstall SW + skipWaiting + clients.claim + purge des anciens caches a l'activate -> rechargement du nouveau code. Aucun changement de logique applicative.
 - Verifs : quality:prestore exit 0 (45/45, A_BLOCKING=0).
+
+---
+
+## Fix — BugReport : erreur Zod brute affichee + validation client manquante
+**Date** : 2026-05-29
+- **Bug (capture Olivier)** : a l'envoi d'un message < 5 caracteres, l'erreur Zod brute en JSON ([ { code: too_small, ... } ]) etait affichee a l'utilisateur. Cause : serveur valide message z.string().trim().min(5) ; le client affichait err.message tel quel (JSON Zod).
+- **Fix complet (cote client, le bon endroit)** :
+  - Module pur teste `client/src/components/bugReportUtils.ts` : MIN_MESSAGE (=5, aligne serveur), isValidEmail, validateBugReport(), friendlyError() qui ne renvoie JAMAIS d'erreur brute (JSON Zod/objet -> message FR propre).
+  - `BugReport.tsx` : validation client (message >= 5, email valide si rempli) -> bouton Envoyer desactive tant que non valide ; indices inline ("5 caracteres minimum (n/5)", "email invalide ou laissez vide") ; onError mappe via friendlyError ; reset des champs apres succes.
+  - **Test unitaire** `server/src/__tests__/bugReport.test.ts` (18 cas) : prouve le rejet < 5, l'email invalide, et que la ZodError brute de la capture devient un message propre (sans "too_small"/"[").
+- **SW** : bump v6 -> v7 pour livrer le correctif aux clients PWA.
+- **Verifs** : typecheck 0 ; quality:prestore exit 0 ; **63 tests** (45 -> 63) ; A_BLOCKING=0 (214 fichiers).

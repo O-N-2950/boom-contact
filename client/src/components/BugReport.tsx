@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { trpc } from '../trpc';
+import { MIN_MESSAGE, validateBugReport, isValidEmail, friendlyError } from './bugReportUtils';
+
+const C = { card:'#FFFFFF', bg:'#F5F8FC', elevated:'#EEF4FA', text:'#102033', sec:'#5D6B7C', orange:'#FF6B1A', navy:'#123A5A', border:'#DDE7F0', success:'#16A34A', danger:'#DC2626' };
+const FONT = 'Manrope, ui-sans-serif, system-ui, sans-serif';
+
 
 export function BugReport() {
   const [open, setOpen]       = useState(false);
@@ -11,22 +16,30 @@ export function BugReport() {
   const dialogRef = useFocusTrap<HTMLDivElement>(() => setOpen(false), open);
 
   const sendMut = trpc.email.bugReport.useMutation({
-    onSuccess: () => { setSent(true); setErrorMsg(''); setOpen(false); },
-    onError:   (err) => { setErrorMsg(err.message || 'Erreur lors de l\'envoi du rapport'); console.error('bugReport failed:', err.message); },
+    onSuccess: () => { setSent(true); setErrorMsg(''); setText(''); setEmail(''); setOpen(false); },
+    onError:   (err) => { setErrorMsg(friendlyError(err)); },
   });
 
   // Masqué sur les routes internes preview/QA pour des screenshots stores propres
   if (typeof window !== 'undefined' && /\/(visual-qa|design-preview)/.test(window.location.pathname)) return null;
 
+  const v = validateBugReport(text, email);
+  const { trimmed, emailFilled, emailOk, messageTooShort } = v;
+  const canSend = v.canSend && !sendMut.isPending;
+
   const submit = () => {
-    if (!text.trim()) return;
+    if (!canSend) return;
+    setErrorMsg('');
     sendMut.mutate({
-      message:   text.trim(),
-      userEmail: email.includes('@') ? email : undefined,
+      message:   trimmed,
+      userEmail: emailFilled && isValidEmail(email) ? email.trim() : undefined,
       page:      window.location.href,
       userAgent: navigator.userAgent.slice(0, 200),
     });
   };
+
+  const inputStyle: React.CSSProperties = { border:`1px solid ${C.border}`, background:C.bg, color:C.text, fontFamily:'inherit', boxSizing:'border-box' };
+  const hintStyle: React.CSSProperties = { fontSize:11, color:C.sec, margin:'-4px 0 8px' };
 
   return (
     <>
@@ -46,33 +59,44 @@ export function BugReport() {
       )}
 
       {open && (
-        <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" className="bottom-[112px] right-4 rounded-[14px] p-4 w-[272px] fixed bg-[#FFFFFF]" style={{ zIndex:700, border:'1px solid #DDE7F0', boxShadow:'0 12px 32px rgba(16,32,51,0.16)', color:'#102033', fontFamily:"Manrope, ui-sans-serif, system-ui, sans-serif" }}>
+        <div ref={dialogRef} role="dialog" aria-label="Signaler un problème" aria-modal="true" className="bottom-[112px] right-4 rounded-[14px] p-4 w-[272px] fixed bg-[#FFFFFF]" style={{ zIndex:700, border:'1px solid #DDE7F0', boxShadow:'0 12px 32px rgba(16,32,51,0.16)', color:'#102033', fontFamily:FONT }}>
           <div className="flex justify-between items-center mb-2.5">
             <div className="font-bold text-[13px]">🐛 Signaler un problème</div>
             <button onClick={() => setOpen(false)} aria-label="Fermer le formulaire" className="bg-transparent border-0 cursor-pointer text-base" style={{ color: '#9AA8B6' }}>✕</button>
           </div>
-          <textarea value={text} onChange={e => setText(e.target.value)}
+
+          <textarea value={text} onChange={e => { setText(e.target.value); if (errorMsg) setErrorMsg(''); }}
             placeholder="Décrivez ce qui ne fonctionne pas…"
             aria-label="Description du problème"
             rows={4}
-            className="p-2.5 rounded-lg mb-2 leading-normal box-border w-full text-[13px]" style={{ border:'1px solid #DDE7F0', background:'#F5F8FC', color:'#102033', resize:'none', fontFamily:'inherit' }}
+            className="p-2.5 rounded-lg mb-2 leading-normal box-border w-full text-[13px]" style={{ ...inputStyle, resize:'none' }}
             onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF6B1A'}
             onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+          {messageTooShort && (
+            <div style={hintStyle}>Encore un peu — {MIN_MESSAGE} caractères minimum ({trimmed.length}/{MIN_MESSAGE}).</div>
+          )}
+
+          <input type="email" value={email} onChange={e => { setEmail(e.target.value); if (errorMsg) setErrorMsg(''); }}
             placeholder="Votre email (optionnel)"
             aria-label="Adresse email"
-            className="rounded-lg mb-2.5 px-2.5 py-[9px] box-border w-full text-[13px]" style={{ border:'1px solid #DDE7F0', background:'#F5F8FC', color:'#102033', fontFamily:'inherit' }}
+            className="rounded-lg mb-1 px-2.5 py-[9px] box-border w-full text-[13px]" style={inputStyle}
             onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF6B1A'}
             onBlur={(e) => e.currentTarget.style.outline = 'none'}
           />
+          {emailFilled && !emailOk && (
+            <div style={hintStyle}>Adresse email invalide (ou laissez le champ vide).</div>
+          )}
+          {!emailFilled && <div style={{ height: 6 }} />}
+
           {errorMsg && (
-            <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '8px 12px', color: '#ef4444', fontSize: 12, marginBottom: 8 }}>
+            <div role="alert" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.25)', borderRadius: 8, padding: '8px 12px', color: C.danger, fontSize: 12, marginBottom: 8 }}>
               {errorMsg}
             </div>
           )}
-          <button onClick={submit} disabled={!text.trim() || sendMut.isPending}
-            className="p-2.5 rounded-lg font-bold w-full text-[13px]" style={{ border:'none', background: text.trim() ? '#FF6B1A' : '#EEF4FA', color: text.trim() ? '#fff' : '#5D6B7C', cursor: text.trim() ? 'pointer' : 'not-allowed' }}>
+
+          <button onClick={submit} disabled={!canSend}
+            className="p-2.5 rounded-lg font-bold w-full text-[13px]" style={{ border:'none', background: canSend ? C.orange : C.elevated, color: canSend ? '#fff' : C.sec, cursor: canSend ? 'pointer' : 'not-allowed' }}>
             {sendMut.isPending ? '⏳ Envoi…' : 'Envoyer →'}
           </button>
         </div>
