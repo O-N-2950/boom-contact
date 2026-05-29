@@ -1,3 +1,5 @@
+import { track } from '../../analytics';
+import { EVENTS } from '../../analytics-events';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trpc } from '../../trpc';
@@ -52,7 +54,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
   const [oneshotLoading, setOneshotLoading] = useState(false);
 
   const pdfMutation    = trpc.pdf.generate.useMutation({
-    onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); setIsGenerating(false); },
+    onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); setIsGenerating(false); track(EVENTS.PDF_GENERATION_SUCCESS); },
     onError:   (err)  => { setError(err.message); setLoading(false); setIsGenerating(false); },
   });
   const creditMutation = trpc.payment.useCredit.useMutation({
@@ -75,6 +77,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
     if (!oneshotEmail.includes('@')) return;
     setOneshotLoading(true);
     setError(null);
+    track(EVENTS.PAYMENT_STARTED, { method: 'oneshot' });
     checkoutMutation.mutate({
       packageId: 'single',
       userEmail: oneshotEmail,

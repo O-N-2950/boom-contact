@@ -1,3 +1,5 @@
+import { track } from '../analytics';
+import { EVENTS } from '../analytics-events';
 import React, { useState, useEffect, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, LANG_META, applyLang, getLangOrder } from '../i18n';
@@ -89,6 +91,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
   const [tokenB, setTokenB] = useState<string>(urlTokenB || saved?.tokenB || '');
   const [step, setStepRaw] = useState<FlowStep>((saved?.step as FlowStep) || 'landing');
   const [joined, setJoined] = useState(saved?.joined || false);
+  useEffect(() => { if (joined) track(EVENTS.PARTICIPANT_JOINED_VIA_QR); }, [joined]);
   const [joining, setJoining] = useState(false);
   const [guestAccepted, setGuestAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);

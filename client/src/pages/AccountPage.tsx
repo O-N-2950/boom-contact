@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { track } from '../analytics';
+import { EVENTS } from '../analytics-events';
+import { useState, useEffect } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
@@ -40,6 +42,8 @@ interface VehicleForm {
 
 export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garage' }: AccountPageProps) {
   const [tab, setTab]                 = useState<PageTab>(initialTab);
+  useEffect(() => { track(EVENTS.ACCOUNT_VIEWED); }, []);
+  useEffect(() => { if (tab === 'garage') track(EVENTS.GARAGE_VIEWED); }, [tab]);
   const [vehicleView, setVehicleView] = useState<VehicleView>('list');
   const [form, setForm]               = useState<VehicleForm>({});
   const [scanning, setScanning]       = useState(false);
@@ -99,6 +103,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     setSaving(true);
     try {
       await saveMut.mutateAsync(form as any);
+      track(EVENTS.GARAGE_VEHICLE_ADDED);
       await vehicleListQ.refetch();
       setVehicleView('list');
       toast('✅ Véhicule sauvegardé !');

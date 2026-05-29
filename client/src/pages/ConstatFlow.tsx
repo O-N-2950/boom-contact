@@ -1,3 +1,5 @@
+import { track } from '../analytics';
+import { EVENTS } from '../analytics-events';
 import React, { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -163,6 +165,11 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     window.history.replaceState({}, '', '/');
   }, []);
 
+  useEffect(() => {
+    track(EVENTS.CONSTAT_STARTED);
+    if (isPaidReturn) track(EVENTS.PAYMENT_SUCCESS);
+  }, []);
+
   // Saved vehicles (if logged in)
   const vehicleListQ = trpc.vehicle.list.useQuery(undefined, {
     enabled: !!authToken && step === 'ocr',
@@ -172,6 +179,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   const applyVehicle = (v: Record<string, unknown>) => {
     setShowVehiclePicker(false);
+    track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: 'garage' });
+    track(EVENTS.CONSTAT_GARAGE_VEHICLE_SELECTED);
     const newData = mapGarageVehicleToParticipant(v as any) as Partial<ParticipantData>;
     setParticipantData(newData);
     setStep('location'); // skip OCR — jump straight to location
@@ -300,6 +309,8 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   }
 
   const handleOCRComplete = (result: { registration: OCRResult; greenCard: OCRResult }) => {
+    track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: 'scan' });
+    track(EVENTS.CONSTAT_SCAN_SUCCESS);
     // Déduire le type de véhicule depuis la catégorie OCR
     const ocrCategory = result.registration.vehicle?.category as string | undefined;
     const detectedType = ocrCategoryToVehicleType(ocrCategory);
@@ -555,7 +566,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 <div style={{ flex: 1, height: 1, background: '#DDE7F0' }} />
               </div>
             )}
-            <OCRScanner role="A" onComplete={handleOCRComplete as any} onSkip={() => setStep('location')} sessionId={sessionId || undefined} participantToken={tokenA || undefined} />
+            <OCRScanner role="A" onComplete={handleOCRComplete as any} onSkip={() => { track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: 'manual' }); setStep('location'); }} sessionId={sessionId || undefined} participantToken={tokenA || undefined} />
           </Suspense>
         )}
 

@@ -1,3 +1,5 @@
+import { track } from '../analytics';
+import { EVENTS } from '../analytics-events';
 import React, { useEffect, useRef, useState } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
@@ -111,7 +113,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
   const w = useWindowWidth();
   const isDesktop = w >= 900;
   const [heroVisible, setHeroVisible] = useState(false);
-  useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); }, []);
+  const trackedStart = () => { track(EVENTS.CTA_START_CONSTAT_CLICKED); onStart(); };
+  const trackedGarage = () => { track(EVENTS.CTA_PREPARE_GARAGE_CLICKED); onGarage?.(); };
+  useEffect(() => { requestAnimationFrame(() => setHeroVisible(true)); track(EVENTS.LANDING_VIEWED); }, []);
 
   const howSteps = t('landing.how.steps', { returnObjects: true }) as { step: string; icon: string; title: string; desc: string }[];
   const scrollTo = (id: string) => { const el = document.getElementById(id); el?.scrollIntoView({ behavior: 'smooth' }); };
@@ -167,13 +171,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 compact={!isDesktop}
               />
             ) : (
-              <button onClick={() => (onLogin ? onLogin() : onAccount?.())}
+              <button onClick={() => { track(EVENTS.CTA_LOGIN_CLICKED); (onLogin ? onLogin() : onAccount?.()); }}
                 style={{ background: 'transparent', border: `1px solid ${C.border}`, color: C.navy, fontWeight: 700, fontSize: 13, borderRadius: 11, padding: isDesktop ? '9px 16px' : '8px 12px', cursor: 'pointer', fontFamily: C.font }}>
                 {t('account.login', { defaultValue: 'Me connecter' })}
               </button>
             )}
             {isDesktop && (
-              <button onClick={onStart} style={{ ...ctaOrange, fontSize: 14, padding: '10px 20px', borderRadius: 11 }}>
+              <button onClick={trackedStart} style={{ ...ctaOrange, fontSize: 14, padding: '10px 20px', borderRadius: 11 }}>
                 {t('landing.cta.start', { defaultValue: 'Commencer un constat' })}
               </button>
             )}
@@ -205,7 +209,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'translateY(16px)', transition: 'all .6s ease .3s' }}>
-                <button onClick={onStart} style={ctaOrange}
+                <button onClick={trackedStart} style={ctaOrange}
                   onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
                   onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
                   {t('landing.cta.start', { defaultValue: 'Commencer un constat' })} <span style={{ fontSize: 18 }}>→</span>
@@ -218,7 +222,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               </div>
 
               {onGarage && (
-                <button onClick={onGarage} style={{ marginTop: 14, background: 'transparent', border: 'none', cursor: 'pointer', color: '#9FB4C7', fontSize: 13, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 8, padding: 0 }}>
+                <button onClick={trackedGarage} style={{ marginTop: 14, background: 'transparent', border: 'none', cursor: 'pointer', color: '#9FB4C7', fontSize: 13, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 8, padding: 0 }}>
                   🚗 Préparer mon garage — enregistrez vos véhicules à l'avance ›
                 </button>
               )}
@@ -441,7 +445,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <img src="/logo.webp" alt="boom.contact" loading="lazy" style={{ width: 88, height: 88, objectFit: 'contain', marginBottom: 14 }} />
           <h2 style={{ ...h2, fontSize: isDesktop ? 32 : 24, marginBottom: 10 }}>{t('landing.finalCta.title', { defaultValue: 'Prêt à documenter votre accident ?' })}</h2>
           <p style={{ fontSize: 14, color: C.textSec, maxWidth: 420, margin: '0 auto 24px', lineHeight: 1.6 }}>{t('landing.finalCta.subtitle', { defaultValue: 'Commencez en quelques secondes, sans inscription.' })}</p>
-          <button onClick={onStart} style={ctaOrange}
+          <button onClick={trackedStart} style={ctaOrange}
             onMouseEnter={e => (e.currentTarget.style.background = C.orangeHover)}
             onMouseLeave={e => (e.currentTarget.style.background = C.orange)}>
             {t('landing.finalCta.button', { defaultValue: 'Commencer un constat' })} <span style={{ fontSize: 18 }}>→</span>

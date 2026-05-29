@@ -2,7 +2,15 @@
 // Sentry (errors) + PostHog (UX events) + GA4 (traffic)
 // Loaded async — never blocks render, never breaks app
 
+import { sanitizeProps } from './analytics-events';
+
 const IS_PROD = window.location.hostname === 'www.boom.contact' || window.location.hostname === 'boom.contact';
+
+// Consentement analytics : PostHog + GA4 ne s'activent QUE si l'utilisateur a accepté "all".
+// (Le CookieBanner stocke 'all' | 'essential' dans localStorage 'boom_cookie_consent'.)
+export function hasAnalyticsConsent(): boolean {
+  try { return localStorage.getItem('boom_cookie_consent') === 'all'; } catch { return false; }
+}
 
 // Vite import.meta.env typing
 declare global {
@@ -23,7 +31,7 @@ export async function initSentryFrontend() {
       release: import.meta.env.VITE_RELEASE || `boom-contact@${import.meta.env.VITE_APP_VERSION || '0.1.0'}`,
       tracesSampleRate: 0.05,    // 5% traces frontend
       replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0.1,
+      replaysOnErrorSampleRate: 0,   // pas de capture d'écran (privacy)
       integrations: [],
     });
   } catch (e) {
@@ -37,7 +45,7 @@ let _ph: { capture: (event: string, props?: Record<string, unknown>) => void; id
 export async function initPostHog() {
   const apiKey = import.meta.env.VITE_POSTHOG_KEY;
   const host   = import.meta.env.VITE_POSTHOG_HOST || 'https://eu.i.posthog.com';
-  if (!apiKey || !IS_PROD) return;
+  if (!apiKey || !IS_PROD || !hasAnalyticsConsent()) return;
   try {
     const posthog = (await import('posthog-js')).default;
     posthog.init(apiKey, {
@@ -64,7 +72,7 @@ export function phIdentify(email: string, props: Record<string, unknown> = {}) {
 // ── GA4 ──────────────────────────────────────────────────────
 export async function initGA4() {
   const id = import.meta.env.VITE_GA4_ID;
-  if (!id || !IS_PROD) return;
+  if (!id || !IS_PROD || !hasAnalyticsConsent()) return;
   try {
     const s = document.createElement('script');
     s.async = true;
@@ -92,6 +100,13 @@ export function ga4Event(name: string, params: Record<string, unknown> = {}) {
 
 // ── Unified track function ────────────────────────────────────
 export function track(event: string, props: Record<string, unknown> = {}) {
-  phCapture(event, props);
-  ga4Event(event, props);
+  // Filtrage privacy systématique : aucune donnée personnelle/sensible ne sort.
+  const safe = sanitizeProps(props);
+  phCapture(event, safe);
+  ga4Event(event, safe);
+}
+
+// Active PostHog + GA4 après consentement "all" (appelé par le CookieBanner).
+export async function enableAnalyticsAfterConsent() {
+  await Promise.all([initPostHog(), initGA4()]).catch(() => {});
 }

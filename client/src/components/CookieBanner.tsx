@@ -80,6 +80,10 @@ export function CookieBanner() {
   const accept = (choice: 'all' | 'essential') => {
     localStorage.setItem(COOKIE_KEY, choice);
     setVisible(false);
+    if (choice === 'all') {
+      // Active PostHog + GA4 immédiatement après consentement (sans rechargement)
+      import('../analytics').then(a => a.enableAnalyticsAfterConsent?.()).catch(() => {});
+    }
   };
 
   return (

@@ -1,3 +1,5 @@
+import { track } from './analytics';
+import { EVENTS } from './analytics-events';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
 import { RouteAnnouncer } from './components/RouteAnnouncer';
@@ -213,6 +215,7 @@ export default function App() {
           localStorage.setItem(USER_TOKEN_KEY, res.token);
           localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
           dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
+          track(EVENTS.AUTH_MAGIC_LINK_SUCCESS);
           dispatch({ type: 'SET_VIEW', view: 'account' });
         },
         onError: () => alert(t('app.magic_link_error')),

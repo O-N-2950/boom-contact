@@ -737,3 +737,19 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 
 ### Vérifs : tsc 0, quality:prestore exit 0, **82 tests** (78→82), A_BLOCKING=0, check:i18n vert. SW v11→v12.
 ### Non touché : webhook Stripe, AASA/assetlinks (vérifié intacts), flow constat, sessions, getLangOrder.
+
+---
+
+## Sprint Analytics Funnel + Growth Instrumentation
+**Date** : 2026-05-29
+### Audit existant
+- Infra DÉJÀ présente : posthog-js, @sentry/react+node, client/src/analytics.ts (track unifié PostHog+GA4), CookieBanner. MAIS : **0 event instrumenté** + PostHog/GA4 initialisés SANS consentement (incohérent avec le bandeau « aucun tracking »).
+### Corrections / ajouts
+- **Consentement** : PostHog + GA4 ne s'activent QUE si boom_cookie_consent === 'all' (gating dans initPostHog/initGA4). Accepter le bandeau active l'analytics immédiatement (enableAnalyticsAfterConsent, sans reload). Sentry = intérêt légitime, replay désactivé (privacy).
+- **Privacy** : `sanitizeProps()` filtre toute PII (email/nom/plaque/tel/GPS/transcript/pdf/description/iban/token + email-like + texte libre >64c). track() sanitise TOUJOURS.
+- **Taxonomie centralisée** : client/src/analytics-events.ts (EVENTS, VEHICLE_SOURCES, sanitizeProps, creditsBucket, isValidEventName) — module pur testable.
+- **16 events MVP câblés** : landing_viewed, cta_start/garage/login, auth_magic_link_success, account_viewed, garage_viewed, garage_vehicle_added, constat_started, constat_vehicle_source_selected (garage/scan/manual), constat_garage_vehicle_selected, constat_scan_success, payment_started, payment_success, pdf_generation_success, participant_joined_via_qr.
+- **Docs** : analytics-event-taxonomy.md, analytics-funnel-dashboard-spec.md (4 funnels + KPIs + seuils), analytics-privacy-review.md (RGPD/nLPD + stores).
+- **Tests** : +11 (analytics.test.ts : sanitize, taxonomie, creditsBucket). Total 93 (82→93).
+### Non touché : webhook Stripe, flow constat, auth/compte/garage/crédits, AASA/assetlinks. SW v12→v13.
+### Vérifs : tsc 0, quality:prestore exit 0, A_BLOCKING=0, check:i18n vert.
