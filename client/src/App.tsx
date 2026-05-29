@@ -197,6 +197,7 @@ export default function App() {
   const { view, routeAnnouncement, accountInitialTab, userEmail, authUser, authToken, showAuthModal, showCGU, pendingAction, policeToken, policeUser, policeSessionId, policeFlowToken } = state;
 
   const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();
+  const verifyEmailMut  = trpc.auth.verifyEmailToken.useMutation();
   const claimGiftMut    = trpc.auth.claimGift.useMutation();
 
   // Handle ?magic= and ?gift= on mount
@@ -204,6 +205,7 @@ export default function App() {
     const params = new URLSearchParams(window.location.search);
     const magicToken = params.get('magic');
     const giftToken  = params.get('gift');
+    const verifyToken = params.get('verify');
     if (magicToken) {
       window.history.replaceState({}, '', '/');
       magicVerifyMut.mutate({ token: magicToken }, {
@@ -214,6 +216,14 @@ export default function App() {
           dispatch({ type: 'SET_VIEW', view: 'account' });
         },
         onError: () => alert(t('app.magic_link_error')),
+      });
+    }
+
+    if (verifyToken) {
+      window.history.replaceState({}, '', '/');
+      verifyEmailMut.mutate({ token: verifyToken }, {
+        onSuccess: () => alert(t('app.email_verified', 'Votre adresse email a été vérifiée. Merci !')),
+        onError:   () => alert(t('app.email_verify_error', 'Lien de vérification invalide ou expiré.')),
       });
     }
 

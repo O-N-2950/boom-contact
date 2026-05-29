@@ -12,6 +12,14 @@ interface AuthModalProps {
   subtitle?: string;
 }
 
+// Palette claire "Hybrid" — cohérente avec le reste de l'app (BugReport / ShareBoom / CGU)
+const C = {
+  card: '#FFFFFF', bg: '#F5F8FC', elevated: '#EEF4FA',
+  text: '#102033', sec: '#5D6B7C', orange: '#FF6B1A', orangeDark: '#F05A0A',
+  navy: '#123A5A', border: '#DDE7F0', danger: '#DC2626',
+};
+const FONT = 'Manrope, ui-sans-serif, system-ui, sans-serif';
+
 export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   const { t } = useTranslation();
   const [mode, setMode]         = useState<AuthMode>('choose');
@@ -44,7 +52,7 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
       localStorage.setItem('boom_user_token', res.token);
       localStorage.setItem('boom_user', JSON.stringify(res.user));
       onAuth(res.token, res.user);
-    } catch (e: unknown) {
+    } catch {
       setError(t('auth.login_error'));
     } finally { setLoading(false); }
   };
@@ -62,14 +70,26 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
     } finally { setLoading(false); }
   };
 
+  const errorBox = (id: string) => error && (
+    <div id={id} role="alert" style={{ background: 'rgba(220,38,38,0.08)', border: `1px solid rgba(220,38,38,0.25)`, borderRadius: 10, padding: '9px 12px', color: C.danger, fontSize: 13 }}>
+      {error}
+    </div>
+  );
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
-      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification" className="rounded-[20px] p-8 w-full max-w-[420px] relative bg-[#111]" style={{ border: '1px solid #444' }}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ background: 'rgba(16,32,51,0.55)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}>
+      <div ref={modalRef} role="dialog" aria-modal="true" aria-label="Authentification"
+        className="rounded-[20px] p-7 w-full max-w-[420px] relative"
+        style={{ background: C.card, border: `1px solid ${C.border}`, boxShadow: '0 20px 50px rgba(16,32,51,0.22)', color: C.text, fontFamily: FONT }}>
+
         <div className="mb-6">
-          <h2 className="text-[28px] font-extrabold text-white mb-1.5">
-            {title || '💥 boom.contact'}
-          </h2>
-          <div className="text-[#d0d0d0] text-sm leading-normal">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span aria-hidden="true" className="text-[22px]">💥</span>
+            <h2 className="text-[24px] font-extrabold m-0" style={{ color: C.text, letterSpacing: '-0.02em' }}>
+              {title || 'boom.contact'}
+            </h2>
+          </div>
+          <div className="text-[14px] leading-normal" style={{ color: C.sec }}>
             {subtitle || t('auth.default_subtitle')}
           </div>
         </div>
@@ -77,20 +97,20 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: choose */}
         {mode === 'choose' && (
           <div className="flex flex-col gap-3">
-            <button onClick={() => setMode('magic')} style={btnStyle('#D42D00')}>
+            <button onClick={() => setMode('magic')} style={btn('primary')}>
               {t('auth.magic_btn')}
             </button>
-            <button onClick={() => setMode('password')} style={btnStyle('#444')}>
+            <button onClick={() => setMode('password')} style={btn('secondary')}>
               {t('auth.password_btn')}
             </button>
-            <button onClick={() => setMode('register')} style={btnStyle('#444')}>
+            <button onClick={() => setMode('register')} style={btn('secondary')}>
               {t('auth.register_btn')}
             </button>
-            <div className="mt-1" style={{ borderTop: '1px solid #444' }} />
-            <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
+            <div className="my-1" style={{ borderTop: `1px solid ${C.border}` }} />
+            <button onClick={onSkip} style={btn('ghost')}>
               {t('auth.skip_btn')}
             </button>
-            <p className="text-[#d0d0d0] text-[11px] text-center m-0">
+            <p className="text-[11px] text-center m-0" style={{ color: C.sec }}>
               {t('auth.skip_note')}
             </p>
           </div>
@@ -99,24 +119,24 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {/* MODE: magic link */}
         {mode === 'magic' && (
           <div className="flex flex-col gap-3">
-            <div className="text-sm mb-1 text-[#ccc]">
+            <div className="text-[14px] mb-1" style={{ color: C.sec }}>
               {t('auth.magic_instructions')}
             </div>
             <input
               type="email" placeholder="votre@email.com" value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleMagicRequest()}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onFocus={(e) => e.currentTarget.style.outline = `2px solid ${C.orange}`}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Email"
-              aria-describedby={error ? "error-magic" : undefined}
-              style={inputStyle}
+              aria-describedby={error ? 'error-magic' : undefined}
+              style={input}
             />
-            {error && <div id="error-magic" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleMagicRequest} disabled={loading || !email} style={btnStyle('#D42D00')}>
+            {errorBox('error-magic')}
+            <button onClick={handleMagicRequest} disabled={loading || !email} style={btn('primary', loading || !email)}>
               {loading ? t('auth.sending') : t('auth.send_link')}
             </button>
-            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
+            <button onClick={() => { setMode('choose'); setError(''); }} style={link}>{t('auth.back')}</button>
           </div>
         )}
 
@@ -124,15 +144,15 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
         {mode === 'magic_sent' && (
           <div className="text-center">
             <div className="text-5xl mb-4" aria-hidden="true">📧</div>
-            <div className="text-white font-bold text-lg mb-2">
+            <div className="font-bold text-lg mb-2" style={{ color: C.text }}>
               {t('auth.email_sent_title')}
             </div>
-            <div className="text-[#d0d0d0] text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: t('auth.email_sent_desc', { email }) }} />
-            <div className="text-[#d0d0d0] text-sm leading-relaxed">
+            <div className="text-[14px] leading-relaxed" style={{ color: C.sec }} dangerouslySetInnerHTML={{ __html: t('auth.email_sent_desc', { email }) }} />
+            <div className="text-[14px] leading-relaxed" style={{ color: C.sec }}>
               {t('auth.email_sent_validity')}
             </div>
-            <div className="mt-6 pt-5" style={{ borderTop: '1px solid #444' }}>
-              <button onClick={onSkip} className="text-[#d0d0d0]" style={{ border: '1px solid #555' }}>
+            <div className="mt-6 pt-5" style={{ borderTop: `1px solid ${C.border}` }}>
+              <button onClick={onSkip} style={btn('ghost')}>
                 {t('auth.skip_btn')}
               </button>
             </div>
@@ -145,64 +165,64 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onFocus={(e) => e.currentTarget.style.outline = `2px solid ${C.orange}`}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Email"
-              aria-describedby={error ? "error-password" : undefined}
-              style={inputStyle}
+              aria-describedby={error ? 'error-password' : undefined}
+              style={input}
             />
             <input
               type="password" placeholder={t('auth.password_placeholder')} value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleLogin()}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onFocus={(e) => e.currentTarget.style.outline = `2px solid ${C.orange}`}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label={t('auth.password_placeholder')}
-              style={inputStyle}
+              style={input}
             />
-            {error && <div id="error-password" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleLogin} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
+            {errorBox('error-password')}
+            <button onClick={handleLogin} disabled={loading || !email || !password} style={btn('primary', loading || !email || !password)}>
               {loading ? t('auth.logging_in') : t('auth.login_btn')}
             </button>
-            <button onClick={() => { setMode('magic'); setError(''); }} style={linkStyle}>
+            <button onClick={() => { setMode('magic'); setError(''); }} style={link}>
               {t('auth.forgot_password')}
             </button>
-            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
+            <button onClick={() => { setMode('choose'); setError(''); }} style={link}>{t('auth.back')}</button>
           </div>
         )}
 
         {/* MODE: register */}
         {mode === 'register' && (
           <div className="flex flex-col gap-3">
-            <div className="text-[13px] leading-normal text-[#ccc]">
+            <div className="text-[13px] leading-normal" style={{ color: C.sec }}>
               {t('auth.register_desc')}
             </div>
             <input
               type="email" placeholder="Email" value={email}
               onChange={e => setEmail(e.target.value)}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onFocus={(e) => e.currentTarget.style.outline = `2px solid ${C.orange}`}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label="Email"
-              aria-describedby={error ? "error-register" : undefined}
-              style={inputStyle}
+              aria-describedby={error ? 'error-register' : undefined}
+              style={input}
             />
             <input
               type="password" placeholder={t('auth.password_placeholder')} value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleRegister()}
-              onFocus={(e) => e.currentTarget.style.outline = '2px solid #FF3500'}
+              onFocus={(e) => e.currentTarget.style.outline = `2px solid ${C.orange}`}
               onBlur={(e) => e.currentTarget.style.outline = 'none'}
               aria-label={t('auth.password_placeholder')}
-              style={inputStyle}
+              style={input}
             />
-            {error && <div id="error-register" role="alert" className="text-[13px] text-[#ff6b6b]">{error}</div>}
-            <button onClick={handleRegister} disabled={loading || !email || !password} style={btnStyle('#D42D00')}>
+            {errorBox('error-register')}
+            <button onClick={handleRegister} disabled={loading || !email || !password} style={btn('primary', loading || !email || !password)}>
               {loading ? t('auth.creating') : t('auth.create_btn')}
             </button>
-            <p className="text-[#d0d0d0] text-[11px] m-0 leading-normal">
+            <p className="text-[11px] m-0 leading-normal" style={{ color: C.sec }}>
               {t('auth.register_legal')}
             </p>
-            <button onClick={() => setMode('choose')} style={linkStyle}>{t('auth.back')}</button>
+            <button onClick={() => { setMode('choose'); setError(''); }} style={link}>{t('auth.back')}</button>
           </div>
         )}
       </div>
@@ -210,24 +230,26 @@ export function AuthModal({ onAuth, onSkip, title, subtitle }: AuthModalProps) {
   );
 }
 
-const inputStyle: React.CSSProperties = {
-  background: '#1a1a1a', border: '1px solid #555', borderRadius: 10,
-  color: '#fff', padding: '12px 14px', fontSize: 15, width: '100%',
-  boxSizing: 'border-box',
+const input: React.CSSProperties = {
+  background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12,
+  color: C.text, padding: '12px 14px', fontSize: 15, width: '100%',
+  boxSizing: 'border-box', fontFamily: 'inherit',
   transition: 'border-color 0.15s, outline 0.15s',
 };
 
-function btnStyle(bg: string): React.CSSProperties {
-  return {
-    background: bg, color: bg === 'transparent' ? '#b0b0b0' : '#fff',
-    border: 'none', borderRadius: 10, padding: '13px 16px',
-    fontSize: 15, fontWeight: 600, cursor: 'pointer', width: '100%',
-    transition: 'opacity 0.15s',
+function btn(variant: 'primary' | 'secondary' | 'ghost', disabled = false): React.CSSProperties {
+  const base: React.CSSProperties = {
+    border: 'none', borderRadius: 12, padding: '13px 16px',
+    fontSize: 15, fontWeight: 700, cursor: disabled ? 'not-allowed' : 'pointer', width: '100%',
+    fontFamily: 'inherit', transition: 'opacity 0.15s, background 0.15s', opacity: disabled ? 0.55 : 1,
   };
+  if (variant === 'primary') return { ...base, background: C.orange, color: '#fff' };
+  if (variant === 'secondary') return { ...base, background: C.elevated, color: C.navy, fontWeight: 600 };
+  return { ...base, background: 'transparent', color: C.sec, border: `1px solid ${C.border}`, fontWeight: 600 };
 }
 
-const linkStyle: React.CSSProperties = {
-  background: 'none', border: 'none', color: '#d0d0d0',
+const link: React.CSSProperties = {
+  background: 'none', border: 'none', color: C.sec,
   fontSize: 13, cursor: 'pointer', textDecoration: 'underline', padding: 0,
-  textAlign: 'left' as const,
+  textAlign: 'left' as const, fontFamily: 'inherit',
 };

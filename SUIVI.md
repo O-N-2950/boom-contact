@@ -649,3 +649,29 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **SW** : bump v7 -> v8.
 - **Note** : le "je ne peux pas envoyer" du bug report n'est PAS un bug -> message < 5 caracteres = bouton desactive par design (validation alignee serveur), l'indice "5 caracteres minimum (n/5)" s'affiche. >= 5 caracteres -> bouton actif.
 - **Verifs** : quality:prestore exit 0 ; 63 tests ; A_BLOCKING=0.
+
+---
+
+## Audit + fixes — Auth (lien magique CASSÉ), verification email, UI AuthModal
+**Date** : 2026-05-29
+**Declencheur** : Olivier — "le lien de connexion n'a pas fonctionne c'est grave". Capture : lien email = "\?magic=<token>" (RELATIF, sans domaine).
+
+### CRITIQUE — lien magique relatif (corrige)
+- **Cause** : `config.ts` -> `CLIENT_URL = optional('CLIENT_URL')` = chaine VIDE en prod (Railway n'a NI CLIENT_URL NI BASE_URL ; seulement RAILWAY_PUBLIC_DOMAIN=www.boom.contact). `auth.router.ts` construit `${CLIENT_URL}/?magic=${token}` -> "/?magic=..." relatif -> lien mort.
+- **Fix** : `resolveClientUrl(env)` (fonction PURE, testee) : CLIENT_URL explicite -> https://RAILWAY_PUBLIC_DOMAIN -> https://www.boom.contact. Garantit une URL ABSOLUE. En prod -> https://www.boom.contact -> lien magique = https://www.boom.contact/?magic=token.
+- **Test** : `server/src/__tests__/clientUrl.test.ts` (5 cas) — prouve qu'aucune config ne produit d'URL relative.
+
+### BUG — lien de verification d'email (?verify=) non traite (corrige)
+- L'inscription envoie un email avec `?verify=token` mais App.tsx ne lisait que ?magic= et ?gift=. Ajout du traitement ?verify= -> appel auth.verifyEmailToken -> message de confirmation/erreur.
+
+### UI/UX — AuthModal recolore (thème clair Hybrid)
+- Etait entierement sombre (#111 / #1a1a1a / #D42D00) -> recolore en clair coherent (carte blanche, scrim navy+blur, inputs #F5F8FC, CTA orange #FF6B1A, boutons secondaires navy, focus orange). Logique et cles i18n strictement identiques. "Mot de passe oublie" -> bascule lien magique (recuperation passwordless, OK).
+
+### Email lien magique restyle (clair + lien texte de secours)
+- Header navy, bouton orange #FF6B1A, + lien en TEXTE BRUT sous le bouton (utile quand le bouton est bloque, ex. avertissement securite Outlook).
+
+### Audit Garage
+- vehicle.router.ts (list/save/delete, protege JWT) + AccountPage (onglets garage/historique/profil, scan carte grise OCR) : cable et fonctionnel.
+
+- **SW** : bump v8 -> v9 (livraison UI).
+- **Verifs** : typecheck 0 ; quality:prestore exit 0 ; 68 tests (63 -> 68) ; A_BLOCKING=0.

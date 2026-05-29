@@ -696,16 +696,18 @@ export async function sendMagicLink(email: string, magicUrl: string): Promise<vo
       from: 'boom.contact <contact@boom.contact>',
       to: email,
       subject: '🔑 Votre lien de connexion boom.contact',
-      html: `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f4f4f5;margin:0;padding:32px;">
-<div style="max-width:480px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-  <div style="background:#06060C;padding:24px 28px;">
-    <span style="color:#FF3500;font-size:20px;font-weight:700;">💥 boom.contact</span>
+      html: `<!DOCTYPE html><html><body style="font-family:'Segoe UI',Arial,sans-serif;background:#F5F8FC;margin:0;padding:32px;">
+<div style="max-width:480px;margin:0 auto;background:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(16,32,51,0.10);border:1px solid #DDE7F0;">
+  <div style="background:#123A5A;padding:22px 28px;">
+    <span style="color:#FFFFFF;font-size:19px;font-weight:700;letter-spacing:-0.01em;">💥 boom.contact</span>
   </div>
   <div style="padding:28px;">
-    <h2 style="margin:0 0 12px;font-size:20px;color:#111;">Votre lien de connexion</h2>
-    <p style="color:#595959;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
-    <a href="${magicUrl}" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;font-size:16px;">Se connecter →</a>
-    <p style="color:#595959;font-size:12px;margin-top:24px;">Si vous n'avez pas demandé ce lien, ignorez cet email.</p>
+    <h2 style="margin:0 0 12px;font-size:20px;color:#102033;">Votre lien de connexion</h2>
+    <p style="color:#5D6B7C;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
+    <a href="${magicUrl}" style="display:inline-block;background:#FF6B1A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px;">Se connecter →</a>
+    <p style="color:#5D6B7C;font-size:13px;margin:24px 0 6px;">Ou copiez ce lien dans votre navigateur :</p>
+    <p style="margin:0 0 24px;"><a href="${magicUrl}" style="color:#123A5A;font-size:13px;word-break:break-all;">${magicUrl}</a></p>
+    <p style="color:#9AA8B6;font-size:12px;margin:0;border-top:1px solid #EEF4FA;padding-top:16px;">Si vous n'avez pas demandé ce lien, ignorez cet email.</p>
   </div>
 </div></body></html>`,
     });
