@@ -2,6 +2,10 @@
 
 Pré-requis : `codemagic.yaml` (racine, créé) + `codemagic-store-build-runbook.md`. Aucune nouvelle feature pendant ce plan.
 
+## Statut d'exécution (2026-06-01)
+- ✅ `codemagic.yaml` corrigé (contrat de variables env aligné avec `build.gradle` ; bug `-P` retiré) + validé YAML.
+- ⏳ Builds/uploads NON exécutables par l'assistant (accès Codemagic/Apple/Google requis) → voir étapes A–F dans `codemagic-store-build-runbook.md`.
+
 ## Jour 1 — Codemagic & builds
 - Créer les groupes de secrets Codemagic (android_signing, google_play) + clé ASC (boom_contact_asc_key).
 - Générer le keystore Android (hors CI), l'encoder base64 → Secure file `CM_KEYSTORE`.

@@ -952,3 +952,18 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Audit natif (réel) : Android applicationId contact.boom.app, versionCode 1, versionName 1.0.0, minSdk 23/target 35, signing via env, App Links autoVerify ✅. iOS bundle contact.boom.app, MARKETING_VERSION 1.0.0, 4 UsageDescription OK, Associated Domains ✅. Team ID 7YWB99G6Q8. Icônes présentes.
 ### Bloquants identifiés : codemagic.yaml (réglé), screenshots définitifs FR/EN/DE/IT + feature graphic (P1), bouton suppression compte + consentement analytics à confirmer device (P0), validation juriste (P0 public).
 ### quality:prestore exit 0, 180 tests + 7 skipped, A_BLOCKING=0. Aucun runtime/natif/webhook touché. SW inchangé (v22).
+
+---
+
+## Sprint Store Execution Day 1 (2026-06-01)
+### Fait (assistant)
+- AUDIT Codemagic : bug réel trouvé — `codemagic.yaml` passait des `-P` Gradle alors que `android/app/build.gradle` lit des VARIABLES D'ENV (System.getenv). Sans correctif → fail-fast signature → build KO.
+- CORRECTIF : build Android utilise désormais env vars (KEYSTORE_PASSWORD/KEY_PASSWORD/KEY_ALIAS lus par gradle) + KEYSTORE_FILE exporté depuis CM_KEYSTORE (base64). YAML re-validé. En-tête yaml clarifié (noms EXACTS, pas de préfixe CM_ sur les 3 secrets gradle).
+- Runbook MAJ : étapes manuelles exactes A–F (keytool + base64, groupes Codemagic android_signing/google_play, clé ASC boom_contact_asc_key, lancement workflows, vérifs).
+- quality:prestore exit 0, 180 tests, A_BLOCKING=0.
+### Bloqué (action Olivier — accès externes requis, l'assistant ne peut pas les faire)
+- Générer le keystore + le stocker en sûreté (jamais commité).
+- Créer les secrets Codemagic (android_signing + google_play) + clé App Store Connect API.
+- Connecter le repo à Codemagic + lancer android-internal et ios-testflight.
+- AAB → Google Internal Testing ; IPA → TestFlight.
+### Aucun runtime/natif/webhook modifié. AASA/assetlinks intacts. Pas de secret/keystore dans Git.

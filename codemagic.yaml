@@ -3,10 +3,12 @@
 # Groupes de variables à créer dans Codemagic UI : "android_signing", "google_play", "app_store_connect", "build_env".
 #
 # Android signing (groupe android_signing) :
-#   - CM_KEYSTORE              (fichier .keystore encodé base64, type "Secure file")  -> décodé en $CM_KEYSTORE_PATH
-#   - KEYSTORE_PASSWORD        (secret)
-#   - KEY_PASSWORD             (secret)
-#   - KEY_ALIAS                (ex: boom-contact)
+# Android signing (groupe android_signing) — NOMS EXACTS lus par android/app/build.gradle (System.getenv) :
+#   - CM_KEYSTORE              (fichier .keystore encodé base64, type "Secure file") -> décodé puis exposé en KEYSTORE_FILE
+#   - KEYSTORE_PASSWORD        (secret)   <- lu tel quel par build.gradle
+#   - KEY_PASSWORD             (secret)   <- lu tel quel par build.gradle
+#   - KEY_ALIAS                (= boom-contact)  <- lu tel quel par build.gradle
+#   (NE PAS préfixer ces 3 en CM_… : build.gradle attend exactement KEYSTORE_PASSWORD / KEY_PASSWORD / KEY_ALIAS)
 # Google Play (groupe google_play) :
 #   - GCLOUD_SERVICE_ACCOUNT_CREDENTIALS  (JSON du service account, secret) -> publication Internal Testing
 # App Store Connect (Code Signing Identities Codemagic, PAS en variables) :
@@ -51,12 +53,11 @@ workflows:
       - name: Build AAB signé
         script: |
           cd android
+          # build.gradle lit les VARIABLES D'ENVIRONNEMENT (System.getenv), pas les -P Gradle.
+          # Les secrets du groupe android_signing (KEYSTORE_PASSWORD/KEY_PASSWORD/KEY_ALIAS) sont
+          # déjà exposés comme env vars ; on ajoute seulement KEYSTORE_FILE (chemin du keystore décodé).
           export KEYSTORE_FILE="$CM_KEYSTORE_PATH"
-          ./gradlew bundleRelease \
-            -PKEYSTORE_FILE="$CM_KEYSTORE_PATH" \
-            -PKEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" \
-            -PKEY_ALIAS="$KEY_ALIAS" \
-            -PKEY_PASSWORD="$KEY_PASSWORD"
+          ./gradlew bundleRelease
     artifacts:
       - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/mapping.txt

@@ -30,3 +30,49 @@ Code signing identities (Teams) : clé App Store Connect API (Issuer ID + Key ID
 
 ## Pré-soumission (après TestFlight + Internal Testing)
 Bumper les versions avant chaque nouvelle build : Android `versionCode`/`versionName`, iOS `CURRENT_PROJECT_VERSION`/`MARKETING_VERSION`. Voir `docs/store-readiness-7-day-execution-plan.md`.
+
+---
+## Day-1 Execution — correctif & étapes manuelles exactes (2026-06-01)
+
+### Correctif pipeline (fait)
+`codemagic.yaml` corrigé : le build Android utilise désormais les **variables d'environnement** (et non des `-P` Gradle, que `build.gradle` ne lit pas). Contrat EXACT lu par `android/app/build.gradle` (`System.getenv`) :
+`KEYSTORE_PASSWORD`, `KEY_PASSWORD`, `KEY_ALIAS`, `KEYSTORE_FILE`. Le yaml décode `CM_KEYSTORE` (base64) en fichier et exporte `KEYSTORE_FILE`.
+⚠️ Dans le groupe Codemagic `android_signing`, nommer les variables EXACTEMENT `KEYSTORE_PASSWORD`, `KEY_PASSWORD`, `KEY_ALIAS` (PAS de préfixe `CM_`), + la Secure file `CM_KEYSTORE`.
+
+### Étapes manuelles Olivier (ne peuvent pas être faites par l'assistant — accès Codemagic/Apple/Google requis)
+
+**A. Keystore Android (à faire une seule fois, sur la machine d'Olivier)**
+```
+keytool -genkey -v -keystore boom-contact-release.keystore \
+  -alias boom-contact -keyalg RSA -keysize 2048 -validity 10000
+# Choisir un store password + key password robustes (à conserver dans un gestionnaire de secrets).
+base64 -i boom-contact-release.keystore -o boom-contact-release.keystore.b64   # macOS
+# (Linux: base64 boom-contact-release.keystore > boom-contact-release.keystore.b64)
+```
+Stockage : conserver `boom-contact-release.keystore` + les 2 mots de passe en lieu sûr (PERTE = impossible de publier des mises à jour). NE JAMAIS committer (déjà gitignored : `*.keystore`).
+
+**B. Codemagic — groupe `android_signing`**
+- Secure file `CM_KEYSTORE` = contenu de `boom-contact-release.keystore.b64`.
+- Variable `KEYSTORE_PASSWORD` = store password (secret).
+- Variable `KEY_PASSWORD` = key password (secret).
+- Variable `KEY_ALIAS` = `boom-contact`.
+
+**C. Codemagic — groupe `google_play`**
+- `GCLOUD_SERVICE_ACCOUNT_CREDENTIALS` = JSON du service account Google Cloud lié à Play Console (rôle limité, accès Internal Testing).
+  1. Google Cloud Console → créer un service account → clé JSON.
+  2. Play Console → Users & permissions → inviter le service account → permission "Release to internal testing".
+
+**D. Codemagic — clé App Store Connect API (Teams > Code signing identities)**
+- App Store Connect → Users and Access → Integrations → App Store Connect API → générer une clé (rôle App Manager).
+- Récupérer Issuer ID + Key ID + fichier `.p8`, les ajouter dans Codemagic, nommer l'intégration `boom_contact_asc_key` (= valeur référencée dans le yaml).
+- Team ID `7YWB99G6Q8` est lié à cette clé (équipe Apple Developer).
+
+**E. Lancer les builds (Codemagic UI)**
+1. Connecter le repo `O-N-2950/boom-contact` à Codemagic (le `codemagic.yaml` est détecté automatiquement).
+2. Lancer le workflow `android-internal` → artifact `.aab` + publication track `internal`.
+3. Lancer le workflow `ios-testflight` → artifact `.ipa` + publication TestFlight.
+4. Logs et artifacts visibles dans la page du build Codemagic.
+
+**F. Vérifications post-build**
+- Android : AAB reçu dans Play Console (Internal testing), Play App Signing activé, App Links vérifiés.
+- iOS : build "Processing" puis disponible dans TestFlight, Universal Links OK (lien `https://www.boom.contact/?invite=…` ouvre l'app).
