@@ -4,10 +4,10 @@
 #
 # Android signing (groupe android_signing) :
 # Android signing (groupe android_signing) — NOMS EXACTS lus par android/app/build.gradle (System.getenv) :
-#   - CM_KEYSTORE              (fichier .keystore encodé base64, type "Secure file") -> décodé puis exposé en KEYSTORE_FILE
-#   - KEYSTORE_PASSWORD        (secret)   <- lu tel quel par build.gradle
-#   - KEY_PASSWORD             (secret)   <- lu tel quel par build.gradle
-#   - KEY_ALIAS                (= boom-contact)  <- lu tel quel par build.gradle
+#   - CM_KEYSTORE            (fichier .keystore encodé base64, type "Secure file") -> décodé puis exposé en KEYSTORE_FILE
+#   - KEYSTORE_PASSWORD      (secret)   <- lu tel quel par build.gradle
+#   - KEY_PASSWORD           (secret)   <- lu tel quel par build.gradle
+#   - KEY_ALIAS              (= boom-contact) <- lu tel quel par build.gradle
 #   (NE PAS préfixer ces 3 en CM_… : build.gradle attend exactement KEYSTORE_PASSWORD / KEY_PASSWORD / KEY_ALIAS)
 # Google Play (groupe google_play) :
 #   - GCLOUD_SERVICE_ACCOUNT_CREDENTIALS  (JSON du service account, secret) -> publication Internal Testing
@@ -38,7 +38,7 @@ workflows:
     environment:
       groups:
         - android_signing
-        - google_play
+        # - google_play  # désactivé : publication manuelle via Google Play Console
       node: 20
       java: 17
     scripts:
@@ -61,19 +61,14 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.aab
       - android/app/build/outputs/**/mapping.txt
-    publishing:
-      google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
-        track: internal          # Google Play Internal Testing
-        submit_as_draft: false
-
+    # publishing: google_play désactivé — importer l'AAB manuellement dans Google Play Console
   # ─────────────────────────────────────────────────────────────────────────
   ios-testflight:
     name: iOS — IPA signé → TestFlight
     instance_type: mac_mini_m2
     max_build_duration: 90
     integrations:
-      app_store_connect: boom_contact_asc_key   # nom de la clé ASC configurée dans Codemagic
+      app_store_connect: boom_contact_asc_key # nom de la clé ASC configurée dans Codemagic
     environment:
       node: 20
       xcode: latest
@@ -93,8 +88,8 @@ workflows:
         script: |
           app-store-connect fetch-signing-files contact.boom.app \
             --type IOS_APP_STORE --create
-          keychain initialize
-          keychain add-certificates
+          keychain initialize keychain
+          add-certificates
           xcode-project use-profiles
       - name: Archive + export IPA
         script: |
