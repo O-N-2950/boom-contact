@@ -865,3 +865,15 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Anti-régression : webhook perso (credits-granted/purchase/auto-PDF) + useCredit + crédits perso + AASA/assetlinks INTACTS (diff: 0 ligne supprimée). quality:prestore exit 0, 137 tests, A_BLOCKING=0. SW v18->v19.
 ### Effet : le wallet org peut être approvisionné → routage org effectif (org débitée en priorité quand solde>0). Monetization bout-en-bout.
 ### Reste : abonnements/packs récurrents, dashboard finance, PDF multi-destinataires, QA device, relecture juridique facture entreprise.
+
+---
+
+## Sprint Stripe B2B Billing QA — Checkout → Webhook → Wallet Validation
+**Date** : 2026-05-29 (QA/validation, pas de feature)
+### Livré
+- Test automatisé du VRAI webhook : server/src/__tests__/stripeWebhookOrg.test.ts (7) — event org crédite wallet org + chemin perso JAMAIS exécuté (db.transaction non appelé), idempotence (payments paid → skip), event org sans organizationId/credits=0 → refus propre, event perso → chemin perso intact, signature invalide → throw, createOrgCheckout metadata + success_url.
+- docs/stripe-b2b-billing-test-plan.md : procédure pas-à-pas mode test (carte 4242, rejeu event idempotence, non-régression perso, erreurs, rollback, logs, variables Stripe test vs live).
+- scripts/verify-org-wallet.mjs : inspection LECTURE SEULE (DATABASE_URL env, aucun secret) → solde wallet org + transactions + détection double crédit.
+- Audit : route webhook = POST /webhook/stripe ; prod = clés LIVE → test réel à faire en MODE TEST séparé. analytics fleet_wallet_credit_added consentement-gaté.
+### Aucun bug trouvé. Aucune modification du webhook perso (code runtime inchangé ce sprint). Aucune migration. quality:prestore à valider.
+### RESTE : exécuter l'aller-retour Stripe réel en mode test (Olivier, hors sandbox) avant vente B2B / stores.

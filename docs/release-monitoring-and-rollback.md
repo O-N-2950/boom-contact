@@ -229,3 +229,12 @@ Si la migration DB a corrompu des données :
 | Health endpoint | https://www.boom.contact/health |
 | Robots | https://www.boom.contact/robots.txt |
 | Last known good commit | (à mettre à jour à chaque deploy) |
+
+---
+## Rollback — achat de crédits entreprise (Fleet Monetization)
+Sprint additif (aucune migration destructive). Pour neutraliser sans toucher au B2C :
+1. Masquer les boutons d'achat org dans AccountPage (section entreprise) — front only.
+2. Optionnel : retirer la route `payment.createOrgCheckout` (renvoie alors une erreur tRPC propre côté client).
+3. La branche webhook `org_credits` est isolée et terminée par `return` → la retirer ne touche PAS le chemin personnel (prouvé : stripeWebhookOrg.test.ts).
+4. Les tables `credit_wallets` / `wallet_transactions` restent inertes (aucun impact paiement perso / users.credits).
+Logs à surveiller post-déploiement : `org-checkout-created`, `org-credits-granted`, `Webhook org already processed, skipping`, et côté perso `credits-granted` (doit rester inchangé).

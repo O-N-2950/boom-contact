@@ -79,3 +79,12 @@ Wallet org (credit_wallets + wallet_transactions) + routage billing livrés. Mod
 - AUCUNE migration (réutilise tables Block 16). Aucun changement de schéma.
 - Tests : creditOrganizationFromPurchase (succès + idempotent + montant invalide), canManageOrganizationBilling. Total walletBilling 13→17.
 ### Le wallet org peut désormais être approvisionné → routage org devient effectif (org débitée en priorité). Monetization quasi bout-en-bout.
+
+---
+## MAJ QA (2026-05-29) — validation boucle Stripe B2B
+- Test webhook automatisé (stripeWebhookOrg.test.ts, 7) exerçant le VRAI handleStripeWebhook : event org → wallet org crédité, chemin perso JAMAIS exécuté (db.transaction non appelé), idempotence (payments paid → skip), signature invalide → throw, createOrgCheckout metadata + success_url=org_credits=success.
+- analytics fleet_wallet_credit_added : consentement-gaté (hasAnalyticsConsent), sans PII ni montant.
+- Test plan manuel : docs/stripe-b2b-billing-test-plan.md (carte test 4242…, rejeu d'event pour idempotence, non-régression perso, rollback, logs).
+- Script LECTURE SEULE sans secret : scripts/verify-org-wallet.mjs (DATABASE_URL env) → solde + transactions + détection double crédit.
+- Route webhook réelle : POST /webhook/stripe. Idempotence DOUBLE : payments.status='paid' + unicité wallet_transactions.related_payment_id (purchase).
+### RESTE À TESTER MANUELLEMENT : l'aller-retour réel Checkout→webhook→wallet en MODE TEST Stripe (clé sk_test + whsec test), non exécutable en sandbox.

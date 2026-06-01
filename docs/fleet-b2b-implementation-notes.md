@@ -81,3 +81,7 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 ---
 ## MAJ Monetization Part 2 (2026-05-29)
 - Achat de crédits entreprise livré : payment.createOrgCheckout (Checkout, owner/fleet_admin) + branche webhook org_credits isolée créditant le wallet org (creditOrganizationFromPurchase, idempotent par session Stripe). Flux perso/webhook perso INCHANGÉ. UI achat 1/3/10 par org. Aucune migration.
+
+---
+## MAJ QA Stripe B2B (2026-05-29)
+- Webhook prouvé par test du vrai handler (mock Stripe SDK + db) : routage org/perso, isolation, idempotence, signature. createOrgCheckout metadata validée. Voir docs/stripe-b2b-billing-test-plan.md + scripts/verify-org-wallet.mjs.
