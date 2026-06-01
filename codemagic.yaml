@@ -20,8 +20,13 @@
 definitions:
   scripts:
     - &quality_gate
-      name: Quality gate (typecheck + build + tests + claims + i18n)
+      name: Quality gate (Node 22 + typecheck + build + tests + claims + i18n)
       script: |
+        # @capacitor/cli@8.x exige Node >=22 — on force Node 22 AVANT tout npm.
+        nvm install 22
+        nvm use 22
+        echo "node: $(node --version) | npm: $(npm --version)"
+        case "$(node --version)" in v22.*) echo "Node 22 OK" ;; *) echo "ERREUR: Node 22 attendu"; exit 1 ;; esac
         npm ci
         npm run quality:prestore
     - &web_build
@@ -39,7 +44,7 @@ workflows:
       groups:
         - android_signing
         # - google_play  # désactivé : publication manuelle via Google Play Console
-      node: 20
+      node: 22
       java: 17
     scripts:
       - *quality_gate
@@ -70,7 +75,7 @@ workflows:
     integrations:
       app_store_connect: boom_contact_asc_key # nom de la clé ASC configurée dans Codemagic
     environment:
-      node: 20
+      node: 22
       xcode: latest
       cocoapods: default
       ios_signing:

@@ -76,3 +76,12 @@ Stockage : conserver `boom-contact-release.keystore` + les 2 mots de passe en li
 **F. Vérifications post-build**
 - Android : AAB reçu dans Play Console (Internal testing), Play App Signing activé, App Links vérifiés.
 - iOS : build "Processing" puis disponible dans TestFlight, Universal Links OK (lien `https://www.boom.contact/?invite=…` ouvre l'app).
+
+
+---
+## ⚠️ Node 22 OBLIGATOIRE (correctif 2026-06-01)
+`@capacitor/cli@8.x` exige **Node >= 22**. Codemagic par défaut peut fournir Node 20 → `npm ci` échoue puis `tsc: command not found`.
+Le `codemagic.yaml` force Node 22 de deux façons :
+- `environment.node: 22` dans chaque workflow (`android-internal`, `ios-testflight`) ;
+- en tête du Quality gate : `nvm install 22 && nvm use 22` + contrôle `node --version` (échec explicite si ≠ v22.x) AVANT `npm ci`.
+Toujours vérifier dans les logs : `node: v22.x | npm: …` puis `Node 22 OK`.
