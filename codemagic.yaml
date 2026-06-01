@@ -45,7 +45,7 @@ workflows:
         - android_signing
         # - google_play  # désactivé : publication manuelle via Google Play Console
       node: 22
-      java: 17
+      java: 21
     scripts:
       - *quality_gate
       - *web_build

@@ -85,3 +85,9 @@ Le `codemagic.yaml` force Node 22 de deux façons :
 - `environment.node: 22` dans chaque workflow (`android-internal`, `ios-testflight`) ;
 - en tête du Quality gate : `nvm install 22 && nvm use 22` + contrôle `node --version` (échec explicite si ≠ v22.x) AVANT `npm ci`.
 Toujours vérifier dans les logs : `node: v22.x | npm: …` puis `Node 22 OK`.
+
+
+---
+## ⚠️ Java 21 OBLIGATOIRE (Android, correctif 2026-06-01)
+Capacitor 8 génère `sourceCompatibility/targetCompatibility = JavaVersion.VERSION_21` (voir `android/app/capacitor.build.gradle`). Avec un JDK < 21, la compilation échoue : `error: invalid source release: 21`.
+Le workflow `android-internal` doit utiliser **`java: 21`** (configuré dans `codemagic.yaml`). Le workflow iOS n'a pas besoin de Java (build Xcode).
