@@ -88,6 +88,67 @@ export const paymentRouter = router({
       storeIdempotency(input.idempotencyKey, result);
       return result;
     }),
+
+  // ── Fleet B2B — Wallet entreprise + routage billing (additif) ──────────
+  // Attache l'organisation de facturation à un constat (véhicule d'org sélectionné).
+  attachConstatBilling: protectedProcedure
+    .input(z.object({ sessionId: z.string().trim().max(50), organizationId: z.string().trim().max(20) }))
+    .mutation(async ({ ctx, input }) => {
+      const { setConstatBillingOrganization } = await import('../services/wallet.service.js');
+      try { return await setConstatBillingOrganization(ctx.authUser.sub, input.sessionId, input.organizationId); }
+      catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        if (msg.startsWith('FORBIDDEN')) throw new TRPCError({ code: 'FORBIDDEN', message: 'Facturation entreprise non autorisée.' });
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Erreur interne.' });
+      }
+    }),
+
+  // Consomme un crédit pour un constat en routant vers le wallet d'org ou le crédit perso.
+  consumeForConstat: protectedProcedure
+    .input(z.object({ sessionId: z.string().trim().max(50), idempotencyKey: z.string().trim().max(100).optional() }))
+    .mutation(async ({ ctx, input }) => {
+      const cached = checkIdempotency(input.idempotencyKey);
+      if (cached) return cached as { ok: boolean; billingSource: 'personal' | 'organization' };
+      const { consumeCreditForConstat } = await import('../services/wallet.service.js');
+      const r = await consumeCreditForConstat(ctx.authUser.email, ctx.authUser.sub, input.sessionId);
+      if (!r.ok && r.billingSource === 'organization') {
+        throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits entreprise insuffisants' });
+      }
+      if (!r.ok) throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Crédits insuffisants' });
+      const result = { ok: true, billingSource: r.billingSource };
+      storeIdempotency(input.idempotencyKey, result);
+      return result;
+    }),
+
+  // Solde du wallet d'organisation (membre uniquement).
+  organizationWallet: protectedProcedure
+    .input(z.object({ organizationId: z.string().trim().max(20) }))
+    .query(async ({ ctx, input }) => {
+      const { canUseOrganizationWallet, getOrganizationWalletBalance } = await import('../services/wallet.service.js');
+      const { getUserOrganizationRole } = await import('../services/organization.service.js');
+      const role = await getUserOrganizationRole(ctx.authUser.sub, input.organizationId);
+      if (!role) throw new TRPCError({ code: 'FORBIDDEN', message: 'Non membre.' });
+      const balance = await getOrganizationWalletBalance(input.organizationId);
+      const canUse = await canUseOrganizationWallet(ctx.authUser.sub, input.organizationId);
+      return { balance, canUse };
+    }),
+
+  // Soldes des wallets de toutes mes organisations (pour l'UI compte).
+  myOrganizationWallets: protectedProcedure
+    .query(async ({ ctx }) => {
+      const { listMyOrganizations } = await import('../services/organization.service.js');
+      const { getOrganizationWalletBalance, canUseOrganizationWallet } = await import('../services/wallet.service.js');
+      const orgs = await listMyOrganizations(ctx.authUser.sub);
+      const out: Array<{ organizationId: string; name: string; balance: number; canUse: boolean }> = [];
+      for (const o of orgs) {
+        out.push({
+          organizationId: o.id, name: o.name,
+          balance: await getOrganizationWalletBalance(o.id),
+          canUse: await canUseOrganizationWallet(ctx.authUser.sub, o.id),
+        });
+      }
+      return out;
+    }),
 });
 
 export const userRouter = router({

@@ -44,6 +44,8 @@ export const sessions = pgTable('sessions', {
   ownerEmail:   text('owner_email'),
   tokenA:       text('token_a'),            // participant token for party A
   tokenB:       text('token_b'),            // participant token for party B
+  // Fleet billing : organisation à débiter si le constat utilise un véhicule d'org (NULL = perso)
+  billingOrganizationId: varchar('billing_organization_id', { length: 20 }),
   timestampProof: jsonb('timestamp_proof').$type<{
     sha256: string;
     otsProofBase64: string;
@@ -354,4 +356,39 @@ export const organizationMembers = pgTable('organization_members', {
   orgIdx:  index('org_members_org_idx').on(t.organizationId),
   userIdx: index('org_members_user_idx').on(t.userId),
   uniq:    uniqueIndex('org_members_org_user_uniq').on(t.organizationId, t.userId),
+}));
+
+
+// ── Fleet B2B — Monetization : wallets + transactions (additif) ──────────────
+// owner_type = 'user' | 'organization'. Coexiste avec users.credits (non migré).
+export const creditWallets = pgTable('credit_wallets', {
+  id:             varchar('id', { length: 20 }).primaryKey(),
+  ownerType:      varchar('owner_type', { length: 20 }).notNull(),
+  userId:         varchar('user_id', { length: 20 }).references(() => users.id, { onDelete: 'cascade' }),
+  organizationId: varchar('organization_id', { length: 20 }).references(() => organizations.id, { onDelete: 'cascade' }),
+  credits:        integer('credits').notNull().default(0),
+  createdAt:      timestamp('created_at').notNull().defaultNow(),
+  updatedAt:      timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  userIdx: index('credit_wallets_user_idx').on(t.userId),
+  orgIdx:  index('credit_wallets_org_idx').on(t.organizationId),
+  orgUniq: uniqueIndex('credit_wallets_org_uniq').on(t.organizationId),
+}));
+
+// type = 'purchase' | 'consumption' | 'adjustment' | 'refund'
+export const walletTransactions = pgTable('wallet_transactions', {
+  id:                   varchar('id', { length: 20 }).primaryKey(),
+  walletId:             varchar('wallet_id', { length: 20 }).notNull().references(() => creditWallets.id, { onDelete: 'cascade' }),
+  type:                 varchar('type', { length: 20 }).notNull(),
+  amount:               integer('amount').notNull(),
+  balanceAfter:         integer('balance_after').notNull(),
+  reason:               varchar('reason', { length: 60 }),
+  relatedSessionId:     varchar('related_session_id', { length: 20 }),
+  relatedPaymentId:     varchar('related_payment_id', { length: 30 }),
+  relatedOrganizationId:varchar('related_organization_id', { length: 20 }),
+  createdByUserId:      varchar('created_by_user_id', { length: 20 }),
+  createdAt:            timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  walletIdx:  index('wallet_txns_wallet_idx').on(t.walletId),
+  sessionIdx: index('wallet_txns_session_idx').on(t.relatedSessionId),
 }));

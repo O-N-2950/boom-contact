@@ -836,3 +836,18 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Tests : fleetVehicles.test.ts (11) — mapping pur, guards lecture/gestion, garage unifié. analytics.test.ts MAJ. Total 109→120.
 ### Hors scope (volontaire) : wallet entreprise, PDF multi-destinataires, dashboard complet, invitation email, import CSV.
 ### Anti-régression : webhook Stripe / AASA / assetlinks / save+delete perso / garage perso / flow constat B2C — INTACTS. quality:prestore exit 0, 120 tests, A_BLOCKING=0. SW v16->v17.
+
+---
+
+## Sprint Fleet B2B Monetization — Organization Wallet + Credit Routing
+**Date** : 2026-05-29
+### Livré
+- Migration Block 16 (additif) : credit_wallets + wallet_transactions + sessions.billing_organization_id nullable. users.credits NON migré.
+- wallet.service.ts : getOrCreate/getBalance/addOrganizationCredits/consumeOrganizationCredit (idempotent session, jamais négatif), canUseOrganizationWallet (owner/fleet_admin/driver), setConstatBillingOrganization, resolveBillingSourceForConstat, consumeCreditForConstat (routage).
+- Routes : payment.attachConstatBilling, consumeForConstat, organizationWallet, myOrganizationWallets. payment.useCredit + webhook Stripe INCHANGÉS.
+- ConstatFlow : véhicule d'org → attachConstatBilling. PDFDownload : consommation routée (consumeForConstat) ; message "Crédits entreprise insuffisants".
+- AccountPage : solde crédits entreprise par org (lecture) + bouton achat placeholder. Analytics fleet_wallet_viewed/used + events monetization.
+- Tests : walletBilling.test.ts (13). Total 120→133.
+### Règle routage NON bloquante : org si billingOrg + membre consommateur + wallet>0, sinon perso. Tant qu'aucun achat org (placeholder) → fallback perso transparent.
+### Anti-régression : webhook Stripe / stripe.service.useCredit / crédits perso / paiement / AASA / assetlinks / garage / flow — INTACTS. quality:prestore exit 0, 133 tests, A_BLOCKING=0. SW v17->v18.
+### Reste : achat réel crédits org (Checkout metadata → addOrganizationCredits, webhook inchangé), dashboard finance, PDF multi-destinataires.

@@ -320,6 +320,44 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS vehicles_org_idx ON vehicles(organization_id);
     `);
 
+    // ── Block 16 : Fleet Monetization — wallets + transactions ──────────
+    // Additif. users.credits NON migré (coexistence). sessions.billing_organization_id nullable.
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS billing_organization_id VARCHAR(20);
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+
+      CREATE TABLE IF NOT EXISTS credit_wallets (
+        id              VARCHAR(20) PRIMARY KEY,
+        owner_type      VARCHAR(20) NOT NULL,
+        user_id         VARCHAR(20) REFERENCES users(id) ON DELETE CASCADE,
+        organization_id VARCHAR(20) REFERENCES organizations(id) ON DELETE CASCADE,
+        credits         INTEGER NOT NULL DEFAULT 0,
+        created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS credit_wallets_user_idx ON credit_wallets(user_id);
+      CREATE INDEX IF NOT EXISTS credit_wallets_org_idx  ON credit_wallets(organization_id);
+      CREATE UNIQUE INDEX IF NOT EXISTS credit_wallets_org_uniq ON credit_wallets(organization_id);
+
+      CREATE TABLE IF NOT EXISTS wallet_transactions (
+        id                      VARCHAR(20) PRIMARY KEY,
+        wallet_id               VARCHAR(20) NOT NULL REFERENCES credit_wallets(id) ON DELETE CASCADE,
+        type                    VARCHAR(20) NOT NULL,
+        amount                  INTEGER NOT NULL,
+        balance_after           INTEGER NOT NULL,
+        reason                  VARCHAR(60),
+        related_session_id      VARCHAR(20),
+        related_payment_id      VARCHAR(30),
+        related_organization_id VARCHAR(20),
+        created_by_user_id      VARCHAR(20),
+        created_at              TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS wallet_txns_wallet_idx  ON wallet_transactions(wallet_id);
+      CREATE INDEX IF NOT EXISTS wallet_txns_session_idx ON wallet_transactions(related_session_id);
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

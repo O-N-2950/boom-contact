@@ -72,6 +72,11 @@ export const EVENTS = {
   FLEET_VEHICLE_IMPORT_STARTED: 'fleet_vehicle_import_started',
   FLEET_VEHICLE_ADDED: 'fleet_vehicle_added',
   FLEET_VEHICLE_SELECTED_FOR_CONSTAT: 'fleet_vehicle_selected_for_constat',
+  FLEET_WALLET_VIEWED: 'fleet_wallet_viewed',
+  FLEET_WALLET_CREDIT_ADDED: 'fleet_wallet_credit_added',
+  FLEET_WALLET_USED: 'fleet_wallet_used',
+  FLEET_WALLET_INSUFFICIENT: 'fleet_wallet_insufficient',
+  FLEET_BILLING_SOURCE_RESOLVED: 'fleet_billing_source_resolved',
 } as const;
 
 export type EventName = typeof EVENTS[keyof typeof EVENTS];

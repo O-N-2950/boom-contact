@@ -101,3 +101,6 @@ adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
 
 ---
 ## MAJ Value Chain : `organization_garage` ajouté à VEHICLE_SOURCES ; events `fleet_vehicle_added` + `fleet_vehicle_selected_for_constat` câblés (props: scope=personal|organization, sans PII).
+
+---
+## MAJ Monetization : events fleet_wallet_viewed/credit_added/used/insufficient + fleet_billing_source_resolved (props: billing_source=personal|organization, vehicle_scope, success ; sans PII ni montant sensible).

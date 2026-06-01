@@ -64,3 +64,7 @@ Forfait plateforme (dashboard, multi-utilisateurs, support) + crédits/constats 
 
 > Règle : tant qu'on reste sur le **Modèle 1**, le webhook Stripe **n'est pas modifié**. Toute extension
 > Billing (Modèles 2/3) fera l'objet d'un sprint dédié avec tests, sans toucher le flux de crédits perso.
+
+---
+## MAJ Monetization sprint (2026-05-29)
+Wallet org (credit_wallets + wallet_transactions) + routage billing livrés. Modèle 1 (wallet crédits org) techniquement prêt côté consommation. Reste : route d'achat (Checkout metadata → addOrganizationCredits), webhook Stripe inchangé. Précédence : org si wallet approvisionné, sinon perso (non bloquant).

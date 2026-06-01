@@ -175,6 +175,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     enabled: !!authToken && step === 'ocr',
   });
   const savedVehicles = vehicleListQ.data || [];
+  const attachBillingMut = trpc.payment.attachConstatBilling.useMutation();
   const [showVehiclePicker, setShowVehiclePicker] = useState(false);
 
   const applyVehicle = (v: Record<string, unknown>) => {
@@ -183,6 +184,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
     track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: isOrg ? 'organization_garage' : 'garage' });
     track(EVENTS.CONSTAT_GARAGE_VEHICLE_SELECTED, { scope: isOrg ? 'organization' : 'personal' });
     if (isOrg) track(EVENTS.FLEET_VEHICLE_SELECTED_FOR_CONSTAT, { scope: 'organization' });
+    if (isOrg && (v as any).organizationId && sessionId) {
+      // Rattache l'organisation de facturation à la session (vérif d'appartenance côté serveur).
+      attachBillingMut.mutate({ sessionId, organizationId: (v as any).organizationId });
+    }
     const newData = mapGarageVehicleToParticipant(v as any) as Partial<ParticipantData>;
     setParticipantData(newData);
     setStep('location'); // skip OCR — jump straight to location

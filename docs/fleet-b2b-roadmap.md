@@ -54,3 +54,7 @@ _Mise à jour : 2026-05-29. Voir aussi : mvp-spec, data-model, security-review, 
 ---
 ## MAJ sprint Value Chain (2026-05-29)
 - vehicles.organizationId nullable livré (Block 15). Garage unifié + sélection véhicule d'org dans le constat opérationnels. Guards lecture/gestion par rôle. UI entreprise conditionnelle (membres seulement). 30j MVP: points 4,5,6 livrés.
+
+---
+## MAJ sprint Monetization (2026-05-29)
+- credit_wallets + wallet_transactions + sessions.billing_organization_id (Block 16, additif). Routage débit org/perso opérationnel (non bloquant). users.credits coexiste, non migré. Webhook Stripe intact. Sécurité : re-vérif appartenance au débit, idempotence par session, jamais de solde négatif, viewers exclus de la consommation.

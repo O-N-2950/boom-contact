@@ -60,3 +60,20 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 - AccountPage : section « Véhicules d'entreprise » visible UNIQUEMENT si membre d'une org ; lecture pour tous, gestion (ajout/édition/suppression) pour owner/fleet_admin.
 - Tests : fleetVehicles.test.ts (11) — mapping pur, guards, garage unifié.
 ### Reste : wallet entreprise, PDF multi-destinataires, dashboard flotte, invitation email, import CSV.
+
+---
+
+## MAJ sprint Monetization (2026-05-29) — wallet entreprise + routage crédit
+### Implémenté
+- Migration Block 16 (additif) : tables credit_wallets + wallet_transactions + sessions.billing_organization_id nullable. users.credits NON migré (coexistence).
+- wallet.service.ts : getOrCreateOrganizationWallet, getOrganizationWalletBalance, addOrganizationCredits, consumeOrganizationCredit (idempotent par session, jamais négatif), canUseOrganizationWallet (owner/fleet_admin/driver ; viewers exclus), setConstatBillingOrganization, resolveBillingSourceForConstat, consumeCreditForConstat (routage org/perso).
+- Routes : payment.attachConstatBilling, payment.consumeForConstat, payment.organizationWallet, payment.myOrganizationWallets. payment.useCredit INCHANGÉE ; webhook Stripe NON touché.
+- ConstatFlow : sélection véhicule d'org → attachConstatBilling (rattache l'org à la session). PDFDownload : consommation routée via consumeForConstat (message "Crédits entreprise insuffisants" si org sans solde au moment du débit).
+- AccountPage : solde "Crédits entreprise" par org (lecture) + bouton "Acheter des crédits entreprise" (placeholder — pas de Stripe org). Analytics fleet_wallet_viewed/used.
+- Tests : walletBilling.test.ts (13).
+### Règle de routage (NON bloquante)
+- ORGANISATION si : session.billingOrganizationId présent ET membre consommateur actif ET solde wallet org > 0. Sinon PERSONNEL.
+- Tant qu'aucun achat de crédits org n'existe (placeholder), le wallet est à 0 → fallback perso transparent (value chain préservée). Dès qu'un achat alimente le wallet, l'org est débitée en priorité.
+### Coexistence users.credits / wallet org
+- users.credits inchangé (constats perso). Wallet org séparé. Aucune migration des crédits perso.
+### Reste : achat réel de crédits org (Stripe Checkout metadata → addOrganizationCredits via route dédiée, webhook inchangé), dashboard finance, abonnements, PDF multi-destinataires.

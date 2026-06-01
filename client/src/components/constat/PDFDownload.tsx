@@ -57,7 +57,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
     onSuccess: (data) => { setPdfBase64(data.pdfBase64); setLoading(false); setIsGenerating(false); track(EVENTS.PDF_GENERATION_SUCCESS); },
     onError:   (err)  => { setError(err.message); setLoading(false); setIsGenerating(false); },
   });
-  const creditMutation = trpc.payment.useCredit.useMutation({
+  const creditMutation = trpc.payment.consumeForConstat.useMutation({
     onError: (err) => { setError(err.message); setLoading(false); },
   });
   const checkoutMutation = trpc.payment.createCheckout.useMutation({
@@ -98,7 +98,8 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
     // Consume credit (idempotent — server ignores if already consumed for this session)
     if (!creditUsed && authUser && authUser.role !== 'admin') {
       try {
-        await creditMutation.mutateAsync({ email: authUser.email, sessionId } as any);
+        const res = await creditMutation.mutateAsync({ sessionId } as any);
+        if ((res as any)?.billingSource === 'organization') track(EVENTS.FLEET_WALLET_USED, { billing_source: 'organization' });
         setCreditUsed(true);
       } catch {
         setLoading(false);

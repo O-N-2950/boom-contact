@@ -75,6 +75,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const deleteOrgMut   = trpc.vehicle.deleteOrganization.useMutation();
   const accessibleQ    = trpc.vehicle.listAccessible.useQuery(undefined);
   const myOrgsQ        = trpc.organization.listMine.useQuery(undefined);
+  const walletsQ       = trpc.payment.myOrganizationWallets.useQuery(undefined);
+  useEffect(() => { if (tab === 'garage' && (myOrgsQ.data?.length ?? 0) > 0) track(EVENTS.FLEET_WALLET_VIEWED); }, [tab, myOrgsQ.data]);
   const updateProfileMut = trpc.auth.updateProfile.useMutation();
   const updateEmailMut   = trpc.auth.updateEmail.useMutation();
 
@@ -368,6 +370,19 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               return (
                 <div className="mt-7 pt-5" style={{ borderTop: '1px solid #DDE7F0' }}>
                   <div className="text-[#102033] font-bold mb-3">🏢 Véhicules d'entreprise ({orgVehicles.length})</div>
+                  {(walletsQ.data || []).map((w: any) => (
+                    <div key={w.organizationId} className="rounded-[12px] p-3 mb-3 flex items-center justify-between flex-wrap gap-2" style={{ background: '#EEF4FA', border: '1px solid #DDE7F0' }}>
+                      <div>
+                        <div className="text-[13px] font-bold text-[#123A5A]">Crédits entreprise · {w.name}</div>
+                        <div className="text-[12px] text-[#5D6B7C]">{w.balance > 0 ? w.balance + ' crédit' + (w.balance > 1 ? 's' : '') + ' disponibles' : 'Aucun crédit entreprise — les constats utilisent vos crédits personnels'}</div>
+                      </div>
+                      {(w.canUse) && (
+                        <button onClick={() => toast('L\'achat de crédits entreprise arrive prochainement.')} className="bg-[#123A5A] text-white border-0 rounded-lg text-[12px] font-bold cursor-pointer px-3 py-1.5">
+                          Acheter des crédits entreprise
+                        </button>
+                      )}
+                    </div>
+                  ))}
                   {manageableOrgs.map((o: any) => (
                     <button key={o.id} onClick={() => startAddOrg(o.id)} className="bg-[#123A5A] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2 mb-2 mr-2">
                       + Ajouter pour {o.name}
