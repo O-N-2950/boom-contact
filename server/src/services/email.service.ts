@@ -865,3 +865,36 @@ export async function sendPoliceReportEmail(params: SendPoliceReportParams): Pro
     return { ok: false, error: msg };
   }
 }
+// ── Fleet B2B — Email d'invitation membre ────────────────────────────────────
+export async function sendOrganizationInvite(
+  email: string, organizationName: string, role: 'driver' | 'fleet_admin', inviteUrl: string,
+): Promise<void> {
+  if (!RESEND_API_KEY) { logger.warn('RESEND missing — org invite not sent'); return; }
+  const roleLabel = role === 'fleet_admin' ? 'administrateur de flotte' : 'chauffeur';
+  try {
+    const resend = await getResendClient();
+    await resend.emails.send({
+      from: 'boom.contact <contact@boom.contact>',
+      to: email,
+      subject: 'Invitation à rejoindre une flotte sur boom.contact',
+      html: `<!DOCTYPE html><html><body style="font-family:'Segoe UI',Arial,sans-serif;background:#F5F8FC;margin:0;padding:32px;">
+<div style="max-width:480px;margin:0 auto;background:#FFFFFF;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(16,32,51,0.10);border:1px solid #DDE7F0;">
+  <div style="background:#123A5A;padding:22px 28px;">
+    <span style="color:#FFFFFF;font-size:19px;font-weight:700;letter-spacing:-0.01em;">💥 boom.contact</span>
+  </div>
+  <div style="padding:28px;">
+    <h2 style="margin:0 0 12px;font-size:20px;color:#102033;">Vous êtes invité·e à rejoindre une flotte</h2>
+    <p style="color:#5D6B7C;margin:0 0 16px;line-height:1.6;">Vous avez été invité·e à rejoindre <strong>${organizationName}</strong> sur boom.contact, en tant que <strong>${roleLabel}</strong>.</p>
+    <p style="color:#5D6B7C;margin:0 0 24px;line-height:1.6;">boom.contact permet de sélectionner un véhicule d'entreprise lors d'un constat, pour gagner du temps.</p>
+    <a href="${inviteUrl}" style="display:inline-block;background:#FF6B1A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px;">Accepter l'invitation →</a>
+    <p style="color:#5D6B7C;font-size:13px;margin:24px 0 6px;">Ce lien est valable 7 jours. Ou copiez-le dans votre navigateur :</p>
+    <p style="margin:0 0 24px;"><a href="${inviteUrl}" style="color:#123A5A;font-size:13px;word-break:break-all;">${inviteUrl}</a></p>
+    <p style="color:#9AA8B6;font-size:12px;margin:0;border-top:1px solid #EEF4FA;padding-top:16px;">Si vous n'êtes pas concerné·e par cette invitation, ignorez cet email.</p>
+  </div>
+</div></body></html>`,
+    });
+    logger.email('org-invite', email, 'org invite sent');
+  } catch (err) {
+    logger.error('sendOrganizationInvite failed', { error: String(err) });
+  }
+}

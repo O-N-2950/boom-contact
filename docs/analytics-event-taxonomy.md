@@ -107,3 +107,6 @@ adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
 
 ---
 ## MAJ Finance : fleet_wallet_transactions_viewed / fleet_wallet_export_clicked / fleet_wallet_low_balance_seen / fleet_wallet_empty_seen (props: role, credits_bucket, transaction_count_bucket, canExport ; sans PII).
+
+---
+## Onboarding : organization_member_invite_started / organization_member_invited / organization_invite_accepted / organization_invite_revoked / organization_invite_failed (props: role, organization_role_actor, invite_status, success, language ; INTERDIT email/nom org/token/nom user).

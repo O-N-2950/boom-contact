@@ -100,3 +100,13 @@ Test d'intégration réel exécuté : vrai handleStripeWebhook + vraie base Post
 - Analytics : fleet_wallet_transactions_viewed / export_clicked / low_balance_seen / empty_seen (sans PII).
 - Tests : fleetFinance.test.ts (8) — permissions, anti-PII/troncature, pagination, refus non-membre.
 ### Dépend encore du test Stripe E2E 12/12 pour la confiance facturation globale (la visibilité est prête, indépendante du paiement).
+
+---
+## Onboarding entreprise — Invitations + createOrganization transactionnel (2026-06-01)
+- createOrganization : 2 INSERT (org + membership owner) dans db.transaction → plus d'org orpheline. API inchangée.
+- Table organization_invites (Block 17, additif) : id, organizationId (FK cascade), email, role, tokenHash (sha256, 64), status (pending/accepted/revoked/expired), invitedByUserId, acceptedByUserId, expiresAt, acceptedAt. Token BRUT jamais stocké ni loggé ni renvoyé au client (uniquement dans l'email).
+- Service : inviteMember (owner/fleet_admin, rôles invitables driver/fleet_admin, révoque le pending existant, TTL 7j), listInvites (sans tokenHash/invitedByUserId), revokeInvite (admin + appartenance org), acceptInvite (hash → vérifie email connecté == email invité, expiration, déjà-accepté=no-op, transaction membership+accepted).
+- Routes : organization.inviteMember (envoie email, n'expose pas le token), listInvites, revokeInvite, acceptInvite.
+- Email : sendOrganizationInvite (Resend, sujet "Invitation à rejoindre une flotte", lien 7j, AUCUN claim juridique).
+- Lien : `${CLIENT_URL}/?invite=<token>`. Client : App.tsx détecte ?invite= (si connecté → accepte ; sinon stocke 'boom_pending_invite' + ouvre login → acceptation post-login). AccountPage : OrgMembersPanel (membres + invitation email/rôle + révocation), owner/fleet_admin only.
+- Sécurité : acceptation refusée si email connecté ≠ email invité (FORBIDDEN), si expirée (marquée expired), revoked. Prouvé par tests d'intégration réels (rollback, token non stocké).

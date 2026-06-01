@@ -392,3 +392,24 @@ export const walletTransactions = pgTable('wallet_transactions', {
   walletIdx:  index('wallet_txns_wallet_idx').on(t.walletId),
   sessionIdx: index('wallet_txns_session_idx').on(t.relatedSessionId),
 }));
+
+// ── Fleet B2B — Onboarding : invitations membres (additif) ───────────────────
+// status = 'pending' | 'accepted' | 'revoked' | 'expired'. token brut JAMAIS stocké (tokenHash).
+export const organizationInvites = pgTable('organization_invites', {
+  id:                varchar('id', { length: 20 }).primaryKey(),
+  organizationId:    varchar('organization_id', { length: 20 }).notNull().references(() => organizations.id, { onDelete: 'cascade' }),
+  email:             text('email').notNull(),
+  role:              varchar('role', { length: 20 }).notNull().default('driver'),
+  tokenHash:         varchar('token_hash', { length: 64 }).notNull(),
+  status:            varchar('status', { length: 20 }).notNull().default('pending'),
+  invitedByUserId:   varchar('invited_by_user_id', { length: 20 }),
+  acceptedByUserId:  varchar('accepted_by_user_id', { length: 20 }),
+  expiresAt:         timestamp('expires_at').notNull(),
+  acceptedAt:        timestamp('accepted_at'),
+  createdAt:         timestamp('created_at').notNull().defaultNow(),
+  updatedAt:         timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  orgIdx:   index('org_invites_org_idx').on(t.organizationId),
+  emailIdx: index('org_invites_email_idx').on(t.email),
+  tokenIdx: index('org_invites_token_idx').on(t.tokenHash),
+}));

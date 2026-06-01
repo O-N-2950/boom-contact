@@ -24,6 +24,7 @@ vi.mock('../db/index.js', () => ({
     },
     insert: vi.fn(() => ({ values: h.valuesSpy })),
     update: vi.fn(() => ({ set: h.setSpy })),
+    transaction: vi.fn(async (cb: any) => cb({ insert: vi.fn(() => ({ values: h.valuesSpy })), update: vi.fn(() => ({ set: h.setSpy })) })),
   },
   schema: {},
 }));

@@ -7,7 +7,7 @@
  */
 import crypto from 'crypto';
 import { db } from '../db/index.js';
-import { organizations, organizationMembers, users } from '../db/schema.js';
+import { organizations, organizationMembers, users, organizationInvites } from '../db/schema.js';
 import { eq, and, isNull } from 'drizzle-orm';
 import { logger } from '../logger.js';
 
@@ -111,14 +111,16 @@ export async function canInviteOrganizationMember(userId: string, organizationId
 export async function createOrganization(userId: string, input: { name: string; country?: string; slug?: string }) {
   const orgId = nanoid();
   const now = new Date();
-  await db.insert(organizations).values({
-    id: orgId, name: input.name, country: input.country, slug: input.slug,
-    plan: 'free', createdByUserId: userId, createdAt: now, updatedAt: now,
-  });
-  // Le créateur devient owner
-  await db.insert(organizationMembers).values({
-    id: nanoid(), organizationId: orgId, userId, role: 'owner', status: 'active',
-    joinedAt: now, createdAt: now, updatedAt: now,
+  // Atomique : org + membership owner dans une transaction → jamais d'org orpheline.
+  await db.transaction(async (tx) => {
+    await tx.insert(organizations).values({
+      id: orgId, name: input.name, country: input.country, slug: input.slug,
+      plan: 'free', createdByUserId: userId, createdAt: now, updatedAt: now,
+    });
+    await tx.insert(organizationMembers).values({
+      id: nanoid(), organizationId: orgId, userId, role: 'owner', status: 'active',
+      joinedAt: now, createdAt: now, updatedAt: now,
+    });
   });
   logger.info('Organization created', { orgId, userId });
   return { ok: true as const, id: orgId };
@@ -153,7 +155,7 @@ export async function listMembers(userId: string, organizationId: string) {
     where: and(eq(organizationMembers.organizationId, organizationId), eq(organizationMembers.status, 'active')),
   });
   // Renvoie le strict nécessaire (pas de PII superflue)
-  return members.map(m => ({ id: m.id, userId: m.userId, role: m.role as OrgRole, status: m.status as OrgMemberStatus, joinedAt: m.joinedAt }));
+  return members.map(m => ({ id: m.id, userId: m.userId, role: m.role as OrgRole, status: m.status as OrgMemberStatus, joinedAt: m.joinedAt, invitedEmail: m.invitedEmail }));
 }
 
 /**
@@ -246,4 +248,115 @@ async function countActiveOwners(organizationId: string): Promise<number> {
     ),
   });
   return owners.length;
+}
+
+// ── Fleet B2B — Invitations membres (onboarding) ─────────────────────────────
+const INVITE_TTL_DAYS = 7;
+const INVITABLE_ROLES: readonly OrgRole[] = ['driver', 'fleet_admin'];
+
+function hashToken(raw: string): string {
+  return crypto.createHash('sha256').update(raw).digest('hex');
+}
+
+/** Crée une invitation + renvoie le token BRUT (à mettre uniquement dans l'email, jamais loggé/stocké). */
+export async function inviteMember(actorUserId: string, organizationId: string, email: string, role: OrgRole) {
+  const actorRole = await assertOrganizationAdmin(actorUserId, organizationId);
+  if (!INVITABLE_ROLES.includes(role)) throw new Error('FORBIDDEN: role not invitable');
+  if (!canAssignRole(actorRole, role)) throw new Error('FORBIDDEN: cannot assign this role');
+  const normEmail = email.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normEmail)) throw new Error('CONFLICT: invalid email');
+
+  // Déjà membre actif ?
+  const existingUser = await db.query.users.findFirst({ where: eq(users.email, normEmail) });
+  if (existingUser) {
+    const m = await db.query.organizationMembers.findFirst({
+      where: and(eq(organizationMembers.organizationId, organizationId), eq(organizationMembers.userId, existingUser.id)),
+    });
+    if (m && m.status === 'active') throw new Error('CONFLICT: already a member');
+  }
+
+  const rawToken = crypto.randomBytes(24).toString('base64url'); // jamais stocké
+  const tokenHash = hashToken(rawToken);
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + INVITE_TTL_DAYS * 86400_000);
+  const id = nanoid();
+
+  await db.transaction(async (tx) => {
+    // Révoquer toute invitation pending existante pour (org, email) → 1 seule active
+    await tx.update(organizationInvites)
+      .set({ status: 'revoked', updatedAt: now })
+      .where(and(
+        eq(organizationInvites.organizationId, organizationId),
+        eq(organizationInvites.email, normEmail),
+        eq(organizationInvites.status, 'pending'),
+      ));
+    await tx.insert(organizationInvites).values({
+      id, organizationId, email: normEmail, role, tokenHash, status: 'pending',
+      invitedByUserId: actorUserId, expiresAt, createdAt: now, updatedAt: now,
+    });
+  });
+  logger.info('Organization invite created', { organizationId, role }); // pas d'email ni token
+  return { ok: true as const, inviteId: id, rawToken, email: normEmail, role, expiresAt };
+}
+
+export async function listInvites(actorUserId: string, organizationId: string) {
+  await assertOrganizationAdmin(actorUserId, organizationId);
+  const rows = await db.query.organizationInvites.findMany({
+    where: eq(organizationInvites.organizationId, organizationId),
+    orderBy: (t, { desc }) => [desc(t.createdAt)],
+    limit: 50,
+  });
+  // JAMAIS de tokenHash exposé
+  return rows.map((i) => ({
+    id: i.id, email: i.email, role: i.role, status: i.status,
+    expiresAt: i.expiresAt, createdAt: i.createdAt,
+  }));
+}
+
+export async function revokeInvite(actorUserId: string, organizationId: string, inviteId: string) {
+  await assertOrganizationAdmin(actorUserId, organizationId);
+  const inv = await db.query.organizationInvites.findFirst({ where: eq(organizationInvites.id, inviteId) });
+  if (!inv || inv.organizationId !== organizationId) throw new Error('NOT_FOUND: invite');
+  if (inv.status !== 'pending') throw new Error('CONFLICT: invite not pending');
+  await db.update(organizationInvites)
+    .set({ status: 'revoked', updatedAt: new Date() })
+    .where(eq(organizationInvites.id, inviteId));
+  logger.info('Organization invite revoked', { organizationId });
+  return { ok: true as const };
+}
+
+/** Accepte une invitation : vérifie token + email correspondant + non expirée. */
+export async function acceptInvite(userId: string, userEmail: string, rawToken: string) {
+  const tokenHash = hashToken(rawToken);
+  const inv = await db.query.organizationInvites.findFirst({ where: eq(organizationInvites.tokenHash, tokenHash) });
+  if (!inv) throw new Error('NOT_FOUND: invite');
+  if (inv.status === 'accepted') return { ok: true as const, alreadyAccepted: true as const, organizationId: inv.organizationId };
+  if (inv.status !== 'pending') throw new Error('CONFLICT: invite not pending');
+  const now = new Date();
+  if (inv.expiresAt < now) {
+    await db.update(organizationInvites).set({ status: 'expired', updatedAt: now }).where(eq(organizationInvites.id, inv.id));
+    throw new Error('CONFLICT: invite expired');
+  }
+  if (inv.email !== userEmail.trim().toLowerCase()) throw new Error('FORBIDDEN: invite email mismatch');
+
+  await db.transaction(async (tx) => {
+    const existing = await tx.query.organizationMembers.findFirst({
+      where: and(eq(organizationMembers.organizationId, inv.organizationId), eq(organizationMembers.userId, userId)),
+    });
+    if (existing) {
+      await tx.update(organizationMembers)
+        .set({ role: inv.role, status: 'active', joinedAt: now, updatedAt: now })
+        .where(eq(organizationMembers.id, existing.id));
+    } else {
+      await tx.insert(organizationMembers).values({
+        id: nanoid(), organizationId: inv.organizationId, userId, invitedEmail: inv.email,
+        role: inv.role, status: 'active', joinedAt: now, createdAt: now, updatedAt: now,
+      });
+    }
+    await tx.update(organizationInvites)
+      .set({ status: 'accepted', acceptedByUserId: userId, acceptedAt: now, updatedAt: now })
+      .where(eq(organizationInvites.id, inv.id));
+  });
+  logger.info('Organization invite accepted', { organizationId: inv.organizationId, role: inv.role });
+  return { ok: true as const, organizationId: inv.organizationId, role: inv.role };
 }

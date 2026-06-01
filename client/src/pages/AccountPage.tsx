@@ -6,6 +6,92 @@ import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
 
+// ── Fleet B2B — panneau membres + invitations (owner/fleet_admin) ──
+function OrgMembersPanel({ organizationId, name }: { organizationId: string; name: string }) {
+  const membersQ = trpc.organization.listMembers.useQuery({ organizationId });
+  const invitesQ = trpc.organization.listInvites.useQuery({ organizationId });
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<'driver' | 'fleet_admin'>('driver');
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  const inviteMut = trpc.organization.inviteMember.useMutation({
+    onSuccess: () => {
+      track(EVENTS.ORGANIZATION_MEMBER_INVITED, { role, success: true });
+      setMsg({ ok: true, text: 'Invitation envoyée par email.' }); setEmail('');
+      invitesQ.refetch();
+    },
+    onError: (e: any) => {
+      track(EVENTS.ORGANIZATION_INVITE_FAILED, { role, success: false });
+      const m = /already a member/.test(e?.message) ? 'Cette personne est déjà membre.'
+        : /invalid email/.test(e?.message) ? 'Adresse email invalide.'
+        : /cannot assign|not invitable|admin required/.test(e?.message) ? "Vous n'avez pas le droit d'inviter ce rôle."
+        : "L'invitation a échoué.";
+      setMsg({ ok: false, text: m });
+    },
+  });
+  const revokeMut = trpc.organization.revokeInvite.useMutation({
+    onSuccess: () => { track(EVENTS.ORGANIZATION_INVITE_REVOKED, {}); invitesQ.refetch(); },
+  });
+
+  const ROLE_LABEL: Record<string, string> = { owner: 'Propriétaire', fleet_admin: 'Admin flotte', driver: 'Chauffeur', broker_viewer: 'Courtier', insurer_viewer: 'Assureur' };
+  const pending = (invitesQ.data || []).filter((i: any) => i.status === 'pending');
+
+  const submit = () => {
+    setMsg(null);
+    track(EVENTS.ORGANIZATION_MEMBER_INVITE_STARTED, { role });
+    inviteMut.mutate({ organizationId, email: email.trim(), role });
+  };
+
+  return (
+    <div className="rounded-[12px] p-3 mb-4" style={{ background: '#FFFFFF', border: '1px solid #DDE7F0' }}>
+      <div className="text-[13px] font-bold text-[#102033] mb-2">Membres · {name}</div>
+      <div className="flex flex-col gap-1 mb-3">
+        {(membersQ.data || []).map((m: any) => (
+          <div key={m.id} className="flex items-center justify-between text-[12px] py-1" style={{ borderTop: '1px solid #EEF4FA' }}>
+            <span className="text-[#102033]">{m.invitedEmail || 'Membre'}</span>
+            <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: '#123A5A', background: '#EEF4FA' }}>{ROLE_LABEL[m.role] || m.role}</span>
+          </div>
+        ))}
+        {(membersQ.data?.length ?? 0) === 0 && <div className="text-[12px] text-[#5D6B7C] py-1">{membersQ.isLoading ? 'Chargement…' : 'Aucun membre.'}</div>}
+      </div>
+
+      <div className="text-[12px] font-bold text-[#102033] mb-1">Inviter un membre</div>
+      <div className="flex items-center gap-1.5 flex-wrap mb-1">
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@entreprise.ch"
+          className="flex-1 min-w-[160px] rounded-lg text-[13px] px-3 py-2 text-[#102033]" style={{ border: '1px solid #DDE7F0' }} />
+        <select value={role} onChange={(e) => setRole(e.target.value as any)}
+          className="rounded-lg text-[13px] px-2 py-2 text-[#102033] cursor-pointer" style={{ border: '1px solid #DDE7F0' }}>
+          <option value="driver">Chauffeur</option>
+          <option value="fleet_admin">Admin flotte</option>
+        </select>
+        <button onClick={submit} disabled={inviteMut.isPending || !email.trim()}
+          className="bg-[#FF6B1A] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2 disabled:opacity-50">
+          Inviter
+        </button>
+      </div>
+      {msg && <div className="text-[12px] mb-2" style={{ color: msg.ok ? '#16A34A' : '#DC2626' }}>{msg.text}</div>}
+
+      {pending.length > 0 && (
+        <div className="mt-2">
+          <div className="text-[12px] font-bold text-[#102033] mb-1">Invitations en attente</div>
+          {pending.map((i: any) => (
+            <div key={i.id} className="flex items-center justify-between text-[12px] py-1" style={{ borderTop: '1px solid #EEF4FA' }}>
+              <div className="flex flex-col">
+                <span className="text-[#102033]">{i.email}</span>
+                <span className="text-[11px] text-[#5D6B7C]">{ROLE_LABEL[i.role] || i.role} · expire le {new Date(i.expiresAt).toLocaleDateString()}</span>
+              </div>
+              <button onClick={() => revokeMut.mutate({ organizationId, inviteId: i.id })} disabled={revokeMut.isPending}
+                className="bg-transparent rounded-lg text-[11px] font-bold cursor-pointer px-2.5 py-1 text-[#DC2626] disabled:opacity-50" style={{ border: '1px solid #DC2626' }}>
+                Révoquer
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Fleet Finance — panneau historique wallet (owner/fleet_admin), lecture seule ──
 function OrgFinancePanel({ organizationId, name }: { organizationId: string; name: string }) {
   const walletQ = trpc.payment.getOrganizationWallet.useQuery({ organizationId });
@@ -494,6 +580,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         </div>
                       )}
                     </div>
+                    {w.canManageBilling && <OrgMembersPanel organizationId={w.organizationId} name={w.name} />}
                     {w.canManageBilling && <OrgFinancePanel organizationId={w.organizationId} name={w.name} />}
                     </div>
                   ))}

@@ -115,4 +115,61 @@ export const organizationRouter = router({
         return res;
       } catch (e) { mapError(e); }
     }),
+
+  // ── Fleet B2B — Invitations membres (owner/fleet_admin) ──────────────
+  inviteMember: protectedProcedure
+    .input(z.object({
+      organizationId: z.string().trim().max(20),
+      email:          z.string().trim().email().max(200),
+      role:           z.enum(['driver', 'fleet_admin']),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { inviteMember } = await import('../services/organization.service.js');
+        const res = await inviteMember(ctx.authUser.sub, input.organizationId, input.email, input.role);
+        // Lien d'invitation (token brut UNIQUEMENT dans l'email, jamais loggé/renvoyé au client)
+        const { CLIENT_URL } = await import('../config.js');
+        const inviteUrl = `${CLIENT_URL}/?invite=${res.rawToken}`;
+        const { sendOrganizationInvite } = await import('../services/email.service.js');
+        // Nom d'org pour l'email (lecture interne, non exposé en analytics)
+        const { getOrganization } = await import('../services/organization.service.js');
+        const org = await getOrganization(ctx.authUser.sub, input.organizationId).catch(() => null);
+        await sendOrganizationInvite(res.email, (org as any)?.name || 'votre organisation', input.role, inviteUrl);
+        logAudit({ event: 'org.member_invited', userId: ctx.authUser.sub, detail: { organizationId: input.organizationId, role: input.role } });
+        return { ok: true, inviteId: res.inviteId, expiresAt: res.expiresAt }; // PAS de token renvoyé
+      } catch (e) { mapError(e); }
+    }),
+
+  listInvites: protectedProcedure
+    .input(z.object({ organizationId: z.string().trim().max(20) }))
+    .query(async ({ ctx, input }) => {
+      try {
+        const { listInvites } = await import('../services/organization.service.js');
+        return await listInvites(ctx.authUser.sub, input.organizationId);
+      } catch (e) { mapError(e); }
+    }),
+
+  revokeInvite: protectedProcedure
+    .input(z.object({ organizationId: z.string().trim().max(20), inviteId: z.string().trim().max(20) }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { revokeInvite } = await import('../services/organization.service.js');
+        const res = await revokeInvite(ctx.authUser.sub, input.organizationId, input.inviteId);
+        logAudit({ event: 'org.invite_revoked', userId: ctx.authUser.sub, detail: { organizationId: input.organizationId } });
+        return res;
+      } catch (e) { mapError(e); }
+    }),
+
+  acceptInvite: protectedProcedure
+    .input(z.object({ token: z.string().trim().min(10).max(200) }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { acceptInvite } = await import('../services/organization.service.js');
+        const res = await acceptInvite(ctx.authUser.sub, ctx.authUser.email, input.token);
+        if (!(res as any).alreadyAccepted) {
+          logAudit({ event: 'org.invite_accepted', userId: ctx.authUser.sub, detail: { organizationId: res.organizationId } });
+        }
+        return res;
+      } catch (e) { mapError(e); }
+    }),
 });

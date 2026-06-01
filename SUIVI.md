@@ -917,3 +917,16 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Tests : fleetFinance.test.ts (8). Total 144→152.
 ### Anti-régression : stripe.service NON modifié (0 ligne), AASA/assetlinks intacts, garage/véhicules/wallet/flux constat intacts. quality:prestore exit 0, 152 tests + 3 skipped, A_BLOCKING=0. SW v19->v20.
 ### Export = Option A (client-side, sans risque serveur). Visibilité prête indépendamment du test Stripe E2E 12/12.
+
+---
+
+## Sprint Fleet B2B Onboarding — createOrganization transactionnel + invitations email (2026-06-01)
+### Livré
+- createOrganization ATOMIQUE (db.transaction : org + membership owner) → plus d'org orpheline.
+- Table organization_invites (Block 17, additif) : tokenHash sha256 (token brut JAMAIS stocké/loggé/renvoyé), status pending/accepted/revoked/expired, TTL 7j, expiration.
+- Service : inviteMember (owner/fleet_admin, rôles driver/fleet_admin, révoque pending existant), listInvites (sans tokenHash), revokeInvite (admin + appartenance), acceptInvite (email connecté == email invité, expiration, déjà-accepté no-op, membership transactionnel).
+- Routes : organization.inviteMember/listInvites/revokeInvite/acceptInvite. Email Resend sendOrganizationInvite (sujet flotte, lien 7j, sans claim).
+- Client : App.tsx détecte ?invite= (accepte si connecté, sinon login puis acceptation post-login). AccountPage OrgMembersPanel (membres + invitation + révocation, owner/fleet_admin).
+- Analytics : organization_member_invite_started/invited/invite_accepted/revoked/failed (sans PII).
+- Tests : fleetOnboarding.test.ts (15) + fleetOnboarding.integration.test.ts (4, RUN_DB_IT, rollback réel + token non stocké prouvés). Total 152→167.
+### Anti-régression : stripe.service 0 ligne, AASA/assetlinks/webhook intacts, B2C/garage/finance intacts. quality:prestore exit 0, 167 tests + 7 skipped, A_BLOCKING=0. SW v20->v21. Block 17 migré.

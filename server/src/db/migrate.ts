@@ -358,6 +358,27 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS wallet_txns_session_idx ON wallet_transactions(related_session_id);
     `);
 
+    // ── Block 17 : Fleet Onboarding — organization_invites ──────────────
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS organization_invites (
+        id                   VARCHAR(20) PRIMARY KEY,
+        organization_id      VARCHAR(20) NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+        email                TEXT NOT NULL,
+        role                 VARCHAR(20) NOT NULL DEFAULT 'driver',
+        token_hash           VARCHAR(64) NOT NULL,
+        status               VARCHAR(20) NOT NULL DEFAULT 'pending',
+        invited_by_user_id   VARCHAR(20),
+        accepted_by_user_id  VARCHAR(20),
+        expires_at           TIMESTAMP NOT NULL,
+        accepted_at          TIMESTAMP,
+        created_at           TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at           TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS org_invites_org_idx   ON organization_invites(organization_id);
+      CREATE INDEX IF NOT EXISTS org_invites_email_idx ON organization_invites(email);
+      CREATE INDEX IF NOT EXISTS org_invites_token_idx ON organization_invites(token_hash);
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

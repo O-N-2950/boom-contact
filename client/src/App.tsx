@@ -198,9 +198,9 @@ export default function App() {
   const [state, dispatch] = useReducer(appReducer, undefined, getInitialAppState);
   const { view, routeAnnouncement, accountInitialTab, userEmail, authUser, authToken, showAuthModal, showCGU, pendingAction, policeToken, policeUser, policeSessionId, policeFlowToken } = state;
 
-  const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();
-  const verifyEmailMut  = trpc.auth.verifyEmailToken.useMutation();
+  const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();  const verifyEmailMut  = trpc.auth.verifyEmailToken.useMutation();
   const claimGiftMut    = trpc.auth.claimGift.useMutation();
+  const acceptInviteMut = trpc.organization.acceptInvite.useMutation();
 
   // Handle ?magic= and ?gift= on mount
   useEffect(() => {
@@ -241,6 +241,28 @@ export default function App() {
         dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
       }
     }
+
+    const inviteToken = params.get('invite');
+    if (inviteToken) {
+      window.history.replaceState({}, '', '/');
+      if (authUser?.email) {
+        acceptInviteMut.mutate({ token: inviteToken }, {
+          onSuccess: (res: any) => {
+            track(EVENTS.ORGANIZATION_INVITE_ACCEPTED, { invite_status: res?.alreadyAccepted ? 'already_accepted' : 'accepted', success: true, language: i18n.language });
+            alert(res?.alreadyAccepted ? t('app.invite_already', 'Invitation déjà acceptée.') : t('app.invite_accepted', 'Vous avez rejoint la flotte.'));
+            dispatch({ type: 'SET_ACCOUNT_TAB', tab: 'garage' });
+            dispatch({ type: 'SET_VIEW', view: 'account' });
+          },
+          onError: (e: any) => {
+            track(EVENTS.ORGANIZATION_INVITE_FAILED, { success: false, language: i18n.language });
+            alert(e?.message || t('app.invite_error', 'Cette invitation est invalide, expirée, ou destinée à une autre adresse email.'));
+          },
+        });
+      } else {
+        localStorage.setItem('boom_pending_invite', inviteToken);
+        dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
+      }
+    }
   }, []);
 
   const handleAuth = useCallback((token: string, user: Record<string, unknown>) => {
@@ -257,6 +279,22 @@ export default function App() {
       localStorage.removeItem('boom_pending_gift');
       claimGiftMut.mutate({ token: pendingGift, email: authUser.email }, {
         onSuccess: (res) => alert(`🎁 ${res.credits} crédit(s) ajouté(s) à votre compte !`),
+      });
+    }
+    const pendingInvite = localStorage.getItem('boom_pending_invite');
+    if (pendingInvite) {
+      localStorage.removeItem('boom_pending_invite');
+      acceptInviteMut.mutate({ token: pendingInvite }, {
+        onSuccess: (res: any) => {
+          track(EVENTS.ORGANIZATION_INVITE_ACCEPTED, { invite_status: res?.alreadyAccepted ? 'already_accepted' : 'accepted', success: true, language: i18n.language });
+          alert(res?.alreadyAccepted ? t('app.invite_already', 'Invitation déjà acceptée.') : t('app.invite_accepted', 'Vous avez rejoint la flotte.'));
+          dispatch({ type: 'SET_ACCOUNT_TAB', tab: 'garage' });
+          dispatch({ type: 'SET_VIEW', view: 'account' });
+        },
+        onError: (e: any) => {
+          track(EVENTS.ORGANIZATION_INVITE_FAILED, { success: false, language: i18n.language });
+          alert(e?.message || t('app.invite_error', 'Cette invitation est invalide, expirée, ou destinée à une autre adresse email.'));
+        },
       });
     }
     if (pendingAction === 'garage') {

@@ -89,3 +89,7 @@ serveur dédiée (à spécifier en phase 90 j), pas via une modification du webh
 ---
 ## MAJ Monetization Part 2 (2026-05-29)
 - Achat de crédits entreprise livré : payment.createOrgCheckout (Checkout, owner/fleet_admin) + branche webhook org_credits isolée créditant le wallet org (creditOrganizationFromPurchase, idempotent par session Stripe). Flux perso/webhook perso INCHANGÉ. UI achat 1/3/10 par org. Aucune migration.
+
+---
+## Onboarding (2026-06-01)
+- Invitations membres par email (token hashé sha256, jamais stocké en clair, TTL 7j, révocable). Acceptation liée à l'email invité (refus si mismatch/expiré). createOrganization atomique (transaction). owner/fleet_admin invitent driver/fleet_admin. Aucun impact Stripe/B2C.
