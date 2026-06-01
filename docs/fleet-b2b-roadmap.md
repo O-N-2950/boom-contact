@@ -62,3 +62,7 @@ _Mise à jour : 2026-05-29. Voir aussi : mvp-spec, data-model, security-review, 
 ---
 ## MAJ Monetization Part 2 (2026-05-29)
 - Achat de crédits entreprise livré : payment.createOrgCheckout (Checkout, owner/fleet_admin) + branche webhook org_credits isolée créditant le wallet org (creditOrganizationFromPurchase, idempotent par session Stripe). Flux perso/webhook perso INCHANGÉ. UI achat 1/3/10 par org. Aucune migration.
+
+---
+## MAJ Finance Dashboard (2026-06-01)
+- Dashboard finance entreprise (lecture seule) : solde + badge statut + historique transactions paginé + export CSV client, réservé owner/fleet_admin. DTO anti-PII (IDs tronqués, pas de createdByUserId/email/plaque/VIN). Webhook/paiement intacts. Export = client-side depuis liste sanitisée.

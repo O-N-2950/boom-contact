@@ -88,3 +88,7 @@ Wallet org (credit_wallets + wallet_transactions) + routage billing livrés. Mod
 - Script LECTURE SEULE sans secret : scripts/verify-org-wallet.mjs (DATABASE_URL env) → solde + transactions + détection double crédit.
 - Route webhook réelle : POST /webhook/stripe. Idempotence DOUBLE : payments.status='paid' + unicité wallet_transactions.related_payment_id (purchase).
 ### RESTE À TESTER MANUELLEMENT : l'aller-retour réel Checkout→webhook→wallet en MODE TEST Stripe (clé sk_test + whsec test), non exécutable en sandbox.
+
+---
+## MAJ Finance Dashboard (2026-06-01)
+- Dashboard finance entreprise (lecture seule) : solde + badge statut + historique transactions paginé + export CSV client, réservé owner/fleet_admin. DTO anti-PII (IDs tronqués, pas de createdByUserId/email/plaque/VIN). Webhook/paiement intacts. Export = client-side depuis liste sanitisée.

@@ -1,10 +1,97 @@
 import { track } from '../analytics';
-import { EVENTS } from '../analytics-events';
+import { EVENTS, creditsBucket } from '../analytics-events';
 import { useState, useEffect } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { trpc } from '../trpc';
 import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
+
+// ── Fleet Finance — panneau historique wallet (owner/fleet_admin), lecture seule ──
+function OrgFinancePanel({ organizationId, name }: { organizationId: string; name: string }) {
+  const walletQ = trpc.payment.getOrganizationWallet.useQuery({ organizationId });
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [rows, setRows] = useState<any[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const txQ = trpc.payment.listOrganizationTransactions.useQuery({ organizationId, limit: 10, cursor });
+
+  useEffect(() => { track(EVENTS.FLEET_WALLET_TRANSACTIONS_VIEWED); }, []);
+  useEffect(() => {
+    if (!txQ.data) return;
+    setRows(prev => cursor ? [...prev, ...txQ.data.items] : txQ.data.items);
+    setNextCursor(txQ.data.nextCursor);
+  }, [txQ.data, cursor]);
+  useEffect(() => {
+    const c = walletQ.data?.credits;
+    if (c == null) return;
+    if (c === 0) track(EVENTS.FLEET_WALLET_EMPTY_SEEN);
+    else if (c <= 3) track(EVENTS.FLEET_WALLET_LOW_BALANCE_SEEN, { credits_bucket: creditsBucket(c) });
+  }, [walletQ.data?.credits]);
+
+  const credits = walletQ.data?.credits ?? 0;
+  const badge = credits === 0
+    ? { t: 'Aucun crédit', c: '#DC2626', bg: '#FEF2F2' }
+    : credits <= 3
+    ? { t: 'Solde bas', c: '#B45309', bg: '#FFFBEB' }
+    : { t: 'Crédits disponibles', c: '#16A34A', bg: '#ECFDF3' };
+
+  const TYPE_LABEL: Record<string, string> = { purchase: 'Achat', consumption: 'Consommation', adjustment: 'Ajustement', refund: 'Remboursement' };
+
+  const exportCsv = () => {
+    track(EVENTS.FLEET_WALLET_EXPORT_CLICKED, { transaction_count_bucket: rows.length > 20 ? '20+' : String(rows.length) });
+    const header = ['date', 'type', 'amount', 'balanceAfter', 'reason', 'relatedSessionShort', 'relatedPaymentShort'];
+    const lines = rows.map(r => [
+      new Date(r.createdAt).toISOString(), r.type, r.amount, r.balanceAfter,
+      (r.reason || '').replace(/[",\n]/g, ' '), r.relatedSessionShort || '', r.relatedPaymentShort || '',
+    ].join(','));
+    const blob = new Blob([[header.join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `credits-entreprise-${organizationId}.csv`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="rounded-[12px] p-3 mb-4" style={{ background: '#FFFFFF', border: '1px solid #DDE7F0' }}>
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[13px] font-bold text-[#102033]">Crédits entreprise · {name}</span>
+          <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: badge.c, background: badge.bg }}>{badge.t}</span>
+          <span className="text-[12px] text-[#5D6B7C]">{credits} crédit{credits > 1 ? 's' : ''}</span>
+        </div>
+        {walletQ.data?.canExport && rows.length > 0 && (
+          <button onClick={exportCsv} className="bg-transparent rounded-lg text-[12px] font-bold cursor-pointer px-3 py-1.5 text-[#123A5A]" style={{ border: '1px solid #123A5A' }}>
+            Exporter CSV
+          </button>
+        )}
+      </div>
+      {rows.length === 0 ? (
+        <div className="text-[12px] text-[#5D6B7C] py-2">{txQ.isLoading ? 'Chargement…' : 'Aucune transaction pour le moment.'}</div>
+      ) : (
+        <div className="flex flex-col gap-1">
+          {rows.map((r: any) => (
+            <div key={r.id} className="flex items-center justify-between text-[12px] py-1.5" style={{ borderTop: '1px solid #EEF4FA' }}>
+              <div className="flex flex-col">
+                <span className="text-[#102033] font-semibold">{TYPE_LABEL[r.type] || r.type}{r.reason ? ' · ' + r.reason : ''}</span>
+                <span className="text-[#5D6B7C] text-[11px]">{new Date(r.createdAt).toLocaleDateString()} {new Date(r.createdAt).toLocaleTimeString().slice(0,5)}{r.relatedPaymentShort ? ' · ' + r.relatedPaymentShort : ''}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-bold" style={{ color: r.amount >= 0 ? '#16A34A' : '#DC2626' }}>{r.amount >= 0 ? '+' : ''}{r.amount}</span>
+                <span className="text-[#5D6B7C]">solde {r.balanceAfter}</span>
+              </div>
+            </div>
+          ))}
+          {nextCursor && (
+            <button onClick={() => setCursor(nextCursor)} disabled={txQ.isFetching}
+              className="bg-transparent border-0 text-[12px] font-bold cursor-pointer text-[#123A5A] mt-1 self-start disabled:opacity-50">
+              Voir plus
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 interface AccountPageProps {
   user: {
@@ -387,7 +474,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 <div className="mt-7 pt-5" style={{ borderTop: '1px solid #DDE7F0' }}>
                   <div className="text-[#102033] font-bold mb-3">🏢 Véhicules d'entreprise ({orgVehicles.length})</div>
                   {(walletsQ.data || []).map((w: any) => (
-                    <div key={w.organizationId} className="rounded-[12px] p-3 mb-3 flex items-center justify-between flex-wrap gap-2" style={{ background: '#EEF4FA', border: '1px solid #DDE7F0' }}>
+                    <div key={w.organizationId}>
+                    <div className="rounded-[12px] p-3 mb-3 flex items-center justify-between flex-wrap gap-2" style={{ background: '#EEF4FA', border: '1px solid #DDE7F0' }}>
                       <div>
                         <div className="text-[13px] font-bold text-[#123A5A]">Crédits entreprise · {w.name}</div>
                         <div className="text-[12px] text-[#5D6B7C]">{w.balance > 0 ? w.balance + ' crédit' + (w.balance > 1 ? 's' : '') + ' disponibles' : 'Aucun crédit entreprise — les constats utilisent vos crédits personnels'}</div>
@@ -405,6 +493,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                           ))}
                         </div>
                       )}
+                    </div>
+                    {w.canManageBilling && <OrgFinancePanel organizationId={w.organizationId} name={w.name} />}
                     </div>
                   ))}
                   {manageableOrgs.map((o: any) => (

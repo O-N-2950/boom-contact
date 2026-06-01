@@ -89,3 +89,14 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 ---
 ## MAJ exécution réelle (2026-06-01)
 Test d'intégration réel exécuté : vrai handleStripeWebhook + vraie base PostgreSQL + vraie signature Stripe + rejeu. Idempotence org RÉELLE prouvée (pas de double crédit), flux perso intact, signature invalide rejetée. Voir docs/stripe-b2b-billing-test-plan.md. Reste : Checkout hébergé Stripe + livraison webhook réelle (clés test) à valider manuellement.
+
+---
+## MAJ Finance Dashboard (2026-06-01)
+- Guards finance : canViewOrganizationWallet / canViewOrganizationTransactions / canExportOrganizationWallet = owner/fleet_admin (driver + viewers exclus).
+- getOrganizationWalletView (solde + updatedAt + canManageBilling + canExport) ; listOrganizationTransactions (DTO anti-PII : IDs session/payment TRONQUÉS, createdByUserId NON exposé, aucun email/nom/plaque/VIN/détail accident ; pagination cursor par createdAt).
+- Routes : payment.getOrganizationWallet, payment.listOrganizationTransactions (lecture seule, protégées). Webhook/paiement NON touchés.
+- UI : composant OrgFinancePanel dans AccountPage (owner/fleet_admin) — badge statut (disponibles/bas/aucun), historique paginé "Voir plus", export CSV CLIENT (depuis DTO sanitisé), états vides. Visible uniquement si membre d'une org.
+- Export CSV = Option A (client-side, depuis liste déjà sanitisée) → aucun nouveau risque serveur.
+- Analytics : fleet_wallet_transactions_viewed / export_clicked / low_balance_seen / empty_seen (sans PII).
+- Tests : fleetFinance.test.ts (8) — permissions, anti-PII/troncature, pagination, refus non-membre.
+### Dépend encore du test Stripe E2E 12/12 pour la confiance facturation globale (la visibilité est prête, indépendante du paiement).

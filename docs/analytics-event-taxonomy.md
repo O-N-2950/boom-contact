@@ -104,3 +104,6 @@ adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
 
 ---
 ## MAJ Monetization : events fleet_wallet_viewed/credit_added/used/insufficient + fleet_billing_source_resolved (props: billing_source=personal|organization, vehicle_scope, success ; sans PII ni montant sensible).
+
+---
+## MAJ Finance : fleet_wallet_transactions_viewed / fleet_wallet_export_clicked / fleet_wallet_low_balance_seen / fleet_wallet_empty_seen (props: role, credits_bucket, transaction_count_bucket, canExport ; sans PII).

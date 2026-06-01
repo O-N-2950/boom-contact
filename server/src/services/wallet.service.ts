@@ -185,3 +185,95 @@ export async function creditOrganizationFromPurchase(
     return { ok: true as const, balanceAfter: row.credits };
   });
 }
+
+// ── Fleet Finance — visibilité solde + historique (lecture seule) ────────────
+// owner/fleet_admin : solde + historique + export. driver/viewers : pas d'accès finance.
+export async function canViewOrganizationWallet(userId: string, organizationId: string): Promise<boolean> {
+  return canManageOrganizationBilling(userId, organizationId);
+}
+export async function canViewOrganizationTransactions(userId: string, organizationId: string): Promise<boolean> {
+  return canManageOrganizationBilling(userId, organizationId);
+}
+export async function canExportOrganizationWallet(userId: string, organizationId: string): Promise<boolean> {
+  return canManageOrganizationBilling(userId, organizationId);
+}
+
+export interface OrgWalletView {
+  organizationId: string;
+  credits: number;
+  updatedAt: Date | null;
+  canManageBilling: boolean;
+  canExport: boolean;
+}
+
+/** Détails du wallet d'org pour le dashboard finance (owner/fleet_admin). */
+export async function getOrganizationWalletView(userId: string, organizationId: string): Promise<OrgWalletView> {
+  if (!(await canViewOrganizationWallet(userId, organizationId))) throw new Error('FORBIDDEN: finance view not allowed');
+  const wallet = await db.query.creditWallets.findFirst({
+    where: and(eq(creditWallets.ownerType, 'organization'), eq(creditWallets.organizationId, organizationId)),
+  });
+  return {
+    organizationId,
+    credits: wallet?.credits ?? 0,
+    updatedAt: (wallet?.updatedAt as Date) ?? null,
+    canManageBilling: true,
+    canExport: true,
+  };
+}
+
+/** Tronque un identifiant pour l'affichage (anti-exposition complète). */
+function shortRef(v: string | null | undefined): string | null {
+  if (!v) return null;
+  if (v.length <= 10) return v;
+  return v.slice(0, 6) + '…' + v.slice(-4);
+}
+
+export type WalletTxnType = 'purchase' | 'consumption' | 'adjustment' | 'refund';
+export interface WalletTxnDTO {
+  id: string;
+  type: string;
+  amount: number;
+  balanceAfter: number;
+  reason: string | null;
+  createdAt: Date;
+  relatedSessionShort: string | null;
+  relatedPaymentShort: string | null;
+}
+
+/**
+ * Historique des transactions du wallet d'org (owner/fleet_admin). DTO anti-PII :
+ * aucun email/nom/plaque/VIN/détail accident ; session & payment IDs TRONQUÉS ;
+ * createdByUserId NON exposé. Pagination simple par cursor (createdAt ISO).
+ */
+export async function listOrganizationTransactions(
+  userId: string, organizationId: string,
+  opts: { limit?: number; cursor?: string | null; type?: WalletTxnType } = {},
+): Promise<{ items: WalletTxnDTO[]; nextCursor: string | null }> {
+  if (!(await canViewOrganizationTransactions(userId, organizationId))) throw new Error('FORBIDDEN: transactions not allowed');
+  const limit = Math.min(Math.max(opts.limit ?? 20, 1), 100);
+  const wallet = await db.query.creditWallets.findFirst({
+    where: and(eq(creditWallets.ownerType, 'organization'), eq(creditWallets.organizationId, organizationId)),
+  });
+  if (!wallet) return { items: [], nextCursor: null };
+
+  const rows = await db.query.walletTransactions.findMany({
+    where: (t, { and: a, eq: e, lt }) => {
+      const conds = [e(t.walletId, wallet.id)];
+      if (opts.type) conds.push(e(t.type, opts.type));
+      if (opts.cursor) conds.push(lt(t.createdAt, new Date(opts.cursor)));
+      return a(...conds);
+    },
+    orderBy: (t, { desc }) => [desc(t.createdAt)],
+    limit: limit + 1,
+  });
+
+  const hasMore = rows.length > limit;
+  const page = hasMore ? rows.slice(0, limit) : rows;
+  const items: WalletTxnDTO[] = page.map((t: any) => ({
+    id: t.id, type: t.type, amount: t.amount, balanceAfter: t.balanceAfter,
+    reason: t.reason ?? null, createdAt: t.createdAt as Date,
+    relatedSessionShort: shortRef(t.relatedSessionId), relatedPaymentShort: shortRef(t.relatedPaymentId),
+  }));
+  const nextCursor = hasMore ? (page[page.length - 1].createdAt as Date).toISOString() : null;
+  return { items, nextCursor };
+}

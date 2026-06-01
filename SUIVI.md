@@ -904,3 +904,16 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ## Stripe B2B — Quick Execution Checklist (2026-06-01)
 - docs/stripe-b2b-quick-execution-checklist.md : version courte "copier-coller" du runbook (clés test, stripe listen :3000, npm run dev, owner/org test, achat 4242, vérifs, scripts verify/checklist, rejeu resend, non-régression perso, checklist 12/12 → 95/100).
 - Aucune feature, aucun code runtime modifié. Docs uniquement.
+
+---
+
+## Sprint Fleet Finance Dashboard — Wallet Visibility + Transactions History (2026-06-01)
+### Livré (lecture seule, aucun impact paiement)
+- Guards : canViewOrganizationWallet/Transactions/Export = owner/fleet_admin (driver + viewers exclus).
+- Service : getOrganizationWalletView + listOrganizationTransactions (DTO anti-PII : IDs session/payment tronqués, createdByUserId NON exposé, pagination cursor createdAt).
+- Routes : payment.getOrganizationWallet + listOrganizationTransactions (protégées, lecture seule). useCredit/webhook/createOrgCheckout INCHANGÉS.
+- UI : OrgFinancePanel (AccountPage) — badge statut (disponibles/bas/aucun), historique paginé "Voir plus", export CSV client (depuis DTO sanitisé), états vides ; owner/fleet_admin only.
+- Analytics : fleet_wallet_transactions_viewed/export_clicked/low_balance_seen/empty_seen (sans PII).
+- Tests : fleetFinance.test.ts (8). Total 144→152.
+### Anti-régression : stripe.service NON modifié (0 ligne), AASA/assetlinks intacts, garage/véhicules/wallet/flux constat intacts. quality:prestore exit 0, 152 tests + 3 skipped, A_BLOCKING=0. SW v19->v20.
+### Export = Option A (client-side, sans risque serveur). Visibilité prête indépendamment du test Stripe E2E 12/12.

@@ -167,6 +167,31 @@ export const paymentRouter = router({
       const { createOrgCheckout } = await import('../services/stripe.service.js');
       return createOrgCheckout(input.organizationId, input.packageId, ctx.authUser.email, ctx.authUser.sub, input.currency, input.locale);
     }),
+
+  // ── Fleet Finance Dashboard — lecture seule (owner/fleet_admin) ──────────
+  getOrganizationWallet: protectedProcedure
+    .input(z.object({ organizationId: z.string().trim().max(20) }))
+    .query(async ({ ctx, input }) => {
+      const { getOrganizationWalletView } = await import('../services/wallet.service.js');
+      try { return await getOrganizationWalletView(ctx.authUser.sub, input.organizationId); }
+      catch { throw new TRPCError({ code: 'FORBIDDEN', message: 'Accès finance non autorisé.' }); }
+    }),
+
+  listOrganizationTransactions: protectedProcedure
+    .input(z.object({
+      organizationId: z.string().trim().max(20),
+      limit:  z.number().int().min(1).max(100).optional(),
+      cursor: z.string().trim().max(40).nullish(),
+      type:   z.enum(['purchase', 'consumption', 'adjustment', 'refund']).optional(),
+    }))
+    .query(async ({ ctx, input }) => {
+      const { listOrganizationTransactions } = await import('../services/wallet.service.js');
+      try {
+        return await listOrganizationTransactions(ctx.authUser.sub, input.organizationId, {
+          limit: input.limit, cursor: input.cursor ?? null, type: input.type,
+        });
+      } catch { throw new TRPCError({ code: 'FORBIDDEN', message: 'Historique non autorisé.' }); }
+    }),
 });
 
 export const userRouter = router({

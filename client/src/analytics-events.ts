@@ -77,6 +77,10 @@ export const EVENTS = {
   FLEET_WALLET_USED: 'fleet_wallet_used',
   FLEET_WALLET_INSUFFICIENT: 'fleet_wallet_insufficient',
   FLEET_BILLING_SOURCE_RESOLVED: 'fleet_billing_source_resolved',
+  FLEET_WALLET_TRANSACTIONS_VIEWED: 'fleet_wallet_transactions_viewed',
+  FLEET_WALLET_EXPORT_CLICKED: 'fleet_wallet_export_clicked',
+  FLEET_WALLET_LOW_BALANCE_SEEN: 'fleet_wallet_low_balance_seen',
+  FLEET_WALLET_EMPTY_SEEN: 'fleet_wallet_empty_seen',
 } as const;
 
 export type EventName = typeof EVENTS[keyof typeof EVENTS];
