@@ -889,3 +889,12 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - quality:prestore exit 0 : 144 passés + 3 skipped (intégration), A_BLOCKING=0. Aucun code runtime modifié (test+script+docs).
 ### RESTE (hors sandbox) : Checkout HÉBERGÉ Stripe + livraison webhook réelle en mode test (clés sk_test/whsec test) — config, à valider par Olivier avant vente B2B / stores.
 ### Aucun bug trouvé. Webhook live non touché.
+
+---
+
+## Sprint Stripe CLI E2E Runbook — Hosted Checkout + Real Delivery (2026-06-01)
+### Livré (docs + outillage, aucune feature, aucun code runtime)
+- docs/stripe-cli-e2e-b2b-runbook.md : runbook pas-à-pas pour Olivier — prérequis, Mode A (local + Stripe CLI `stripe listen --forward-to localhost:3000/webhook/stripe`), Mode B (staging Railway), commandes exactes, paiement carte 4242, vérifs DB/Dashboard/UI, idempotence réelle (`stripe events resend`), non-régression perso, checklist 12 points PASS/FAIL, dépannage, rollback.
+- scripts/stripe-b2b-e2e-checklist.mjs : vérif E2E LECTURE SEULE (postgres.js, sans secret) — wallet, idempotence (doublon related_payment_id), txn purchase unique/montant, payment paid ; PASS/FAIL + exit code. Testé OK contre base réelle.
+- Note clé : `stripe trigger` ne porte PAS metadata.kind=org_credits → le test org DOIT passer par le vrai createOrgCheckout (bouton UI) puis rejeu de CET event.
+### Reste (Olivier, hors sandbox) : exécuter le runbook avec sk_test + carte 4242 + livraison webhook Stripe réelle → Billing Confidence 89 → 95.
