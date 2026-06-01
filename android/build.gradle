@@ -22,6 +22,24 @@ allprojects {
         google()
         mavenCentral()
     }
+
+    // ── Fix doublons Kotlin stdlib (release build) ───────────────────────────
+    // Depuis Kotlin 1.8, kotlin-stdlib-jdk7/jdk8 sont FUSIONNÉS dans kotlin-stdlib.
+    // Un plugin Cordova/Capacitor transitif tire encore kotlin-stdlib-jdk7/jdk8:1.6.21,
+    // ce qui duplique des classes (CollectionsJDK8Kt) face à kotlin-stdlib:1.8.22.
+    // On aligne TOUTE la famille kotlin-stdlib sur 1.8.22 (jdk7/jdk8:1.8.22 = shims vides
+    // qui ne font que dépendre de kotlin-stdlib → plus aucun doublon). Pas de downgrade,
+    // pas d'exclusion : simple alignement de version. Les autres artefacts Kotlin
+    // (kotlin-gradle-plugin, etc.) ne sont PAS affectés.
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.jetbrains.kotlin'
+                    && details.requested.name.startsWith('kotlin-stdlib')) {
+                details.useVersion '1.8.22'
+                details.because 'Align Kotlin stdlib (jdk7/jdk8 merged into stdlib since 1.8) to avoid duplicate classes in release build'
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {
