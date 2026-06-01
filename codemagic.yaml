@@ -1,0 +1,111 @@
+# boom.contact — Codemagic CI/CD (App Store + Google Play)
+# AUCUN SECRET ICI. Tous les secrets sont injectés via les Environment Variables / Code Signing Identities de Codemagic.
+# Groupes de variables à créer dans Codemagic UI : "android_signing", "google_play", "app_store_connect", "build_env".
+#
+# Android signing (groupe android_signing) :
+#   - CM_KEYSTORE              (fichier .keystore encodé base64, type "Secure file")  -> décodé en $CM_KEYSTORE_PATH
+#   - KEYSTORE_PASSWORD        (secret)
+#   - KEY_PASSWORD             (secret)
+#   - KEY_ALIAS                (ex: boom-contact)
+# Google Play (groupe google_play) :
+#   - GCLOUD_SERVICE_ACCOUNT_CREDENTIALS  (JSON du service account, secret) -> publication Internal Testing
+# App Store Connect (Code Signing Identities Codemagic, PAS en variables) :
+#   - App Store Connect API key (Issuer ID + Key ID + .p8) configurée dans Teams > Code signing identities
+#   - Distribution certificate + provisioning profile gérés par "app-store-connect fetch-signing-files"
+# build_env :
+#   - (aucun secret requis pour le web build ; l'app embarque le bundle Vite)
+
+definitions:
+  scripts:
+    - &quality_gate
+      name: Quality gate (typecheck + build + tests + claims + i18n)
+      script: |
+        npm ci
+        npm run quality:prestore
+    - &web_build
+      name: Web build (Vite) + Capacitor sync
+      script: |
+        npm run build:client
+
+workflows:
+  # ─────────────────────────────────────────────────────────────────────────
+  android-internal:
+    name: Android — AAB signé → Google Internal Testing
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      groups:
+        - android_signing
+        - google_play
+      node: 20
+      java: 17
+    scripts:
+      - *quality_gate
+      - *web_build
+      - name: Capacitor sync Android
+        script: npx cap sync android
+      - name: Décoder le keystore (Secure file base64 → fichier)
+        script: |
+          echo "$CM_KEYSTORE" | base64 --decode > "$CM_BUILD_DIR/boom-contact-release.keystore"
+          echo "CM_KEYSTORE_PATH=$CM_BUILD_DIR/boom-contact-release.keystore" >> "$CM_ENV"
+      - name: Build AAB signé
+        script: |
+          cd android
+          export KEYSTORE_FILE="$CM_KEYSTORE_PATH"
+          ./gradlew bundleRelease \
+            -PKEYSTORE_FILE="$CM_KEYSTORE_PATH" \
+            -PKEYSTORE_PASSWORD="$KEYSTORE_PASSWORD" \
+            -PKEY_ALIAS="$KEY_ALIAS" \
+            -PKEY_PASSWORD="$KEY_PASSWORD"
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+      - android/app/build/outputs/**/mapping.txt
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal          # Google Play Internal Testing
+        submit_as_draft: false
+
+  # ─────────────────────────────────────────────────────────────────────────
+  ios-testflight:
+    name: iOS — IPA signé → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    integrations:
+      app_store_connect: boom_contact_asc_key   # nom de la clé ASC configurée dans Codemagic
+    environment:
+      node: 20
+      xcode: latest
+      cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: contact.boom.app
+    scripts:
+      - *quality_gate
+      - *web_build
+      - name: Capacitor sync iOS
+        script: npx cap sync ios
+      - name: Pods
+        script: |
+          cd ios/App && pod install
+      - name: Récupérer les fichiers de signature (ASC API key)
+        script: |
+          app-store-connect fetch-signing-files contact.boom.app \
+            --type IOS_APP_STORE --create
+          keychain initialize
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Archive + export IPA
+        script: |
+          cd ios/App
+          xcode-project build-ipa \
+            --workspace App.xcworkspace \
+            --scheme App
+    artifacts:
+      - ios/App/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        # PAS de submit_to_app_store : soumission App Store déclenchée manuellement après QA.

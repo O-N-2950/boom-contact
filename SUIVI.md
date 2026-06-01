@@ -941,3 +941,14 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Email QA : lien texte brut déjà sous le bouton (comme magic link), wording sans claim, token jamais loggé. Test réel délivrabilité à faire.
 - Tests : fleetMemberMgmt.test.ts (13). Total 167→180.
 ### Anti-régression : stripe.service 0 ligne, AASA/assetlinks/webhook intacts, B2C/garage/finance/invitations intacts. quality:prestore exit 0, 180 tests + 7 skipped, A_BLOCKING=0. SW v21->v22.
+
+---
+
+## Sprint Store Readiness Final Push (2026-06-01)
+### Livré (docs + config CI, AUCUN runtime/natif modifié)
+- codemagic.yaml (racine) : workflows android-internal (AAB → Google Internal Testing) + ios-testflight (IPA → TestFlight), quality gate bloquant, secrets via env Codemagic (aucun en clair), pas de soumission App Store auto. YAML validé.
+- .gitignore durci : *.keystore/*.jks/*.p8/*.p12/keystore.properties/*service-account*.json.
+- Docs : codemagic-store-build-runbook, codemagic-yaml-proposal, mobile-permissions-review (ancré manifest/plist réels), app-store-privacy-final, google-play-data-safety-final, store-reviewer-account-final, device-qa-master-checklist (P0-P3), store-assets-final-review, legal-store-final-checklist, store-readiness-7-day-execution-plan.
+### Audit natif (réel) : Android applicationId contact.boom.app, versionCode 1, versionName 1.0.0, minSdk 23/target 35, signing via env, App Links autoVerify ✅. iOS bundle contact.boom.app, MARKETING_VERSION 1.0.0, 4 UsageDescription OK, Associated Domains ✅. Team ID 7YWB99G6Q8. Icônes présentes.
+### Bloquants identifiés : codemagic.yaml (réglé), screenshots définitifs FR/EN/DE/IT + feature graphic (P1), bouton suppression compte + consentement analytics à confirmer device (P0), validation juriste (P0 public).
+### quality:prestore exit 0, 180 tests + 7 skipped, A_BLOCKING=0. Aucun runtime/natif/webhook touché. SW inchangé (v22).

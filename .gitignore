@@ -10,3 +10,8 @@ coverage/
 
 # Screenshots stores générés (lourds, non commités)
 artifacts/
+*.jks
+*.p8
+*.p12
+keystore.properties
+**/*service-account*.json
