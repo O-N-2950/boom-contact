@@ -178,6 +178,73 @@ export async function createCheckoutSession(
   return { url: session.url!, sessionId: session.id };
 }
 
+// ── Fleet : Checkout d'achat de crédits ENTREPRISE ────────────
+// Réutilise PACKAGES/getPrice. Crédite le wallet d'org via le webhook (branche org_credits).
+// N'affecte PAS le flux perso ni users.credits.
+export async function createOrgCheckout(
+  organizationId: string,
+  packageId: PackageId,
+  actorEmail: string,
+  actorUserId: string,
+  currency: SupportedCurrency = 'EUR',
+  locale: string = 'fr',
+) {
+  const pkg = PACKAGES[packageId];
+  if (!pkg) throw new Error(`Package inconnu: ${packageId}`);
+  const priceAmount = getPrice(packageId, currency);
+  const currencyLower = currency.toLowerCase();
+
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    customer_email: actorEmail,
+    locale: ((locale as string) || 'fr') as any,
+    invoice_creation: { enabled: true },
+    ...(process.env.STRIPE_TAX_ENABLED === 'true' ? { automatic_tax: { enabled: true } } : {}),
+    line_items: [{
+      price_data: {
+        currency: currencyLower,
+        product_data: {
+          name: `boom.contact entreprise — ${pkg.label}`,
+          description: `${pkg.description} (crédits entreprise)`,
+          images: [],
+          metadata: { packageId, credits: String(pkg.credits), application: 'boom.contact', kind: 'org_credits' },
+        },
+        unit_amount: priceAmount,
+      },
+      quantity: 1,
+    }],
+    metadata: {
+      kind: 'org_credits',
+      organizationId,
+      packageId,
+      credits: String(pkg.credits),
+      actorUserId,
+      actorEmail,
+      application: 'boom.contact',
+      environment: process.env.NODE_ENV || 'production',
+    },
+    success_url: `${BASE_URL}/account?org_credits=success`,
+    cancel_url: `${BASE_URL}/account?org_credits=cancelled`,
+  });
+
+  // Paiement enregistré en pending (userEmail = acteur, pour idempotence + audit)
+  const payId = makeId(20);
+  await db.insert(schema.payments).values({
+    id: payId,
+    userEmail: actorEmail,
+    stripeSessionId: session.id,
+    packageId,
+    packageLabel: `${pkg.label} (entreprise)`,
+    creditsGranted: pkg.credits,
+    amountCents: priceAmount,
+    currency,
+    status: 'pending',
+  });
+
+  logger.payment('org-checkout-created', actorEmail, packageId, priceAmount);
+  return { url: session.url!, sessionId: session.id };
+}
+
 // ── Webhook: confirmer paiement et créditer ───────────────────
 export async function handleStripeWebhook(payload: Buffer, signature: string) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -192,6 +259,34 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
+
+    // ── Fleet : achat de crédits ENTREPRISE (branche isolée — flux perso intact) ──
+    if (session.metadata?.kind === 'org_credits') {
+      const orgId = session.metadata.organizationId;
+      const creditsInt = parseInt(session.metadata.credits || '0', 10);
+      const actorUserId = session.metadata.actorUserId || null;
+      if (!orgId || !(creditsInt > 0)) {
+        console.error('Webhook org_credits: metadata manquantes', session.metadata);
+        return;
+      }
+      // Idempotence (best-effort via payments) — le crédit lui-même est idempotent par session.id
+      const [existingOrgPay] = await db.select()
+        .from(schema.payments)
+        .where(eq(schema.payments.stripeSessionId, session.id))
+        .limit(1);
+      if (existingOrgPay?.status === 'paid') {
+        logger.info('Webhook org already processed, skipping', { stripeSessionId: session.id });
+        return;
+      }
+      await db.update(schema.payments)
+        .set({ status: 'paid', paidAt: new Date() })
+        .where(eq(schema.payments.stripeSessionId, session.id));
+      const { creditOrganizationFromPurchase } = await import('./wallet.service.js');
+      await creditOrganizationFromPurchase(orgId, creditsInt, session.id, actorUserId);
+      logger.payment('org-credits-granted', session.metadata.actorEmail || 'org', session.metadata.packageId || 'pkg', creditsInt);
+      return;
+    }
+
     const { packageId, userEmail, credits } = session.metadata || {};
 
     if (!userEmail || !credits) {

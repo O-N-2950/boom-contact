@@ -77,3 +77,7 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 ### Coexistence users.credits / wallet org
 - users.credits inchangé (constats perso). Wallet org séparé. Aucune migration des crédits perso.
 ### Reste : achat réel de crédits org (Stripe Checkout metadata → addOrganizationCredits via route dédiée, webhook inchangé), dashboard finance, abonnements, PDF multi-destinataires.
+
+---
+## MAJ Monetization Part 2 (2026-05-29)
+- Achat de crédits entreprise livré : payment.createOrgCheckout (Checkout, owner/fleet_admin) + branche webhook org_credits isolée créditant le wallet org (creditOrganizationFromPurchase, idempotent par session Stripe). Flux perso/webhook perso INCHANGÉ. UI achat 1/3/10 par org. Aucune migration.

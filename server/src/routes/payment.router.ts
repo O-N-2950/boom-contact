@@ -137,17 +137,35 @@ export const paymentRouter = router({
   myOrganizationWallets: protectedProcedure
     .query(async ({ ctx }) => {
       const { listMyOrganizations } = await import('../services/organization.service.js');
-      const { getOrganizationWalletBalance, canUseOrganizationWallet } = await import('../services/wallet.service.js');
+      const { getOrganizationWalletBalance, canUseOrganizationWallet, canManageOrganizationBilling } = await import('../services/wallet.service.js');
       const orgs = await listMyOrganizations(ctx.authUser.sub);
-      const out: Array<{ organizationId: string; name: string; balance: number; canUse: boolean }> = [];
+      const out: Array<{ organizationId: string; name: string; balance: number; canUse: boolean; canManageBilling: boolean }> = [];
       for (const o of orgs) {
         out.push({
           organizationId: o.id, name: o.name,
           balance: await getOrganizationWalletBalance(o.id),
           canUse: await canUseOrganizationWallet(ctx.authUser.sub, o.id),
+          canManageBilling: await canManageOrganizationBilling(ctx.authUser.sub, o.id),
         });
       }
       return out;
+    }),
+
+  // Achat de crédits entreprise (owner/fleet_admin) → Stripe Checkout, crédite le wallet d'org via webhook.
+  createOrgCheckout: protectedProcedure
+    .input(z.object({
+      organizationId: z.string().trim().max(20),
+      packageId:      z.enum(['single', 'pack3', 'pack10']),
+      currency:       z.enum(['CHF','EUR','GBP','AUD','USD','CAD','SGD','JPY']).default('EUR'),
+      locale:         z.string().trim().max(10).default('fr'),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { canManageOrganizationBilling } = await import('../services/wallet.service.js');
+      if (!(await canManageOrganizationBilling(ctx.authUser.sub, input.organizationId))) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Seuls les responsables de flotte peuvent acheter des crédits entreprise.' });
+      }
+      const { createOrgCheckout } = await import('../services/stripe.service.js');
+      return createOrgCheckout(input.organizationId, input.packageId, ctx.authUser.email, ctx.authUser.sub, input.currency, input.locale);
     }),
 });
 

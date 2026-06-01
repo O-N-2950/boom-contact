@@ -132,6 +132,38 @@ describe('resolveBillingSourceForConstat', () => {
   });
 });
 
+describe('canManageOrganizationBilling + creditOrganizationFromPurchase', () => {
+  it('seuls owner/fleet_admin gèrent la facturation', async () => {
+    const { canManageOrganizationBilling } = await import('../services/wallet.service.js');
+    h.findMemberFirst.mockResolvedValueOnce({ role: 'owner' });
+    expect(await canManageOrganizationBilling('u', 'org_1')).toBe(true);
+    h.findMemberFirst.mockResolvedValueOnce({ role: 'fleet_admin' });
+    expect(await canManageOrganizationBilling('u', 'org_1')).toBe(true);
+    h.findMemberFirst.mockResolvedValueOnce({ role: 'driver' });
+    expect(await canManageOrganizationBilling('u', 'org_1')).toBe(false);
+    h.findMemberFirst.mockResolvedValueOnce(undefined);
+    expect(await canManageOrganizationBilling('u', 'org_1')).toBe(false);
+  });
+  it('creditOrganizationFromPurchase refuse un montant invalide', async () => {
+    const { creditOrganizationFromPurchase } = await import('../services/wallet.service.js');
+    await expect(creditOrganizationFromPurchase('org_1', 0, 'cs_1')).rejects.toThrow(/CONFLICT/);
+  });
+  it('creditOrganizationFromPurchase crédite le wallet', async () => {
+    const { creditOrganizationFromPurchase } = await import('../services/wallet.service.js');
+    h.findWalletFirst.mockResolvedValueOnce({ id: 'w1', credits: 0 });
+    h.txExisting = []; h.txUpdateReturning = [{ credits: 10 }];
+    const r = await creditOrganizationFromPurchase('org_1', 10, 'cs_123', 'owner_user');
+    expect(r.ok).toBe(true); expect(r.balanceAfter).toBe(10);
+  });
+  it('creditOrganizationFromPurchase est idempotent par session Stripe (already)', async () => {
+    const { creditOrganizationFromPurchase } = await import('../services/wallet.service.js');
+    h.findWalletFirst.mockResolvedValueOnce({ id: 'w1', credits: 10 });
+    h.txExisting = [{ id: 'txn_existing' }]; // déjà crédité pour cette session
+    const r = await creditOrganizationFromPurchase('org_1', 10, 'cs_123', 'owner_user');
+    expect(r.ok).toBe(true); expect(r.already).toBe(true);
+  });
+});
+
 describe('consumeCreditForConstat (routage)', () => {
   it('véhicule personnel → crédit personnel (useCredit)', async () => {
     const { consumeCreditForConstat } = await import('../services/wallet.service.js');

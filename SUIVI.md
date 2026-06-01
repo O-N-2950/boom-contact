@@ -851,3 +851,17 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Règle routage NON bloquante : org si billingOrg + membre consommateur + wallet>0, sinon perso. Tant qu'aucun achat org (placeholder) → fallback perso transparent.
 ### Anti-régression : webhook Stripe / stripe.service.useCredit / crédits perso / paiement / AASA / assetlinks / garage / flow — INTACTS. quality:prestore exit 0, 133 tests, A_BLOCKING=0. SW v17->v18.
 ### Reste : achat réel crédits org (Checkout metadata → addOrganizationCredits, webhook inchangé), dashboard finance, PDF multi-destinataires.
+
+---
+
+## Sprint Fleet B2B Monetization Part 2 — Organization Credit Purchase (Stripe)
+**Date** : 2026-05-29
+### Livré
+- payment.createOrgCheckout (owner/fleet_admin) → Stripe Checkout, metadata.kind='org_credits' + organizationId + actorUserId. Réutilise PACKAGES/getPrice. payments en pending (userEmail=acteur).
+- Webhook checkout.session.completed : BRANCHE org_credits isolée EN TÊTE → creditOrganizationFromPurchase (idempotent par session Stripe via relatedPaymentId) → return. Chemin PERSO byte-identique (95 ajouts, 0 suppression dans stripe.service.ts).
+- wallet.service : creditOrganizationFromPurchase (idempotent, montant>0), canManageOrganizationBilling (owner/fleet_admin). myOrganizationWallets expose canManageBilling.
+- UI AccountPage : 3 boutons achat (1/3/10) par org pour owner/fleet_admin ; détection retour ?org_credits=success → toast + refetch + analytics fleet_wallet_credit_added.
+- AUCUNE migration (réutilise Block 16). Tests : +4 (creditOrganizationFromPurchase succès/idempotent/invalide, canManageOrganizationBilling). Total 133→137.
+### Anti-régression : webhook perso (credits-granted/purchase/auto-PDF) + useCredit + crédits perso + AASA/assetlinks INTACTS (diff: 0 ligne supprimée). quality:prestore exit 0, 137 tests, A_BLOCKING=0. SW v18->v19.
+### Effet : le wallet org peut être approvisionné → routage org effectif (org débitée en priorité quand solde>0). Monetization bout-en-bout.
+### Reste : abonnements/packs récurrents, dashboard finance, PDF multi-destinataires, QA device, relecture juridique facture entreprise.

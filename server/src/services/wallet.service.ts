@@ -145,3 +145,43 @@ export async function consumeCreditForConstat(userEmail: string, userId: string,
 }
 
 export { getUserCredits };
+
+// ── Achat de crédits entreprise (appelé par le webhook Stripe) ───────────────
+/** owner / fleet_admin peuvent acheter des crédits pour l'organisation. */
+export async function canManageOrganizationBilling(userId: string, organizationId: string): Promise<boolean> {
+  const role = await getUserOrganizationRole(userId, organizationId);
+  return role === 'owner' || role === 'fleet_admin';
+}
+
+/**
+ * Crédite le wallet d'org suite à un achat Stripe. IDEMPOTENT par session Stripe
+ * (relatedPaymentId) → les retries de webhook ne re-créditent jamais.
+ */
+export async function creditOrganizationFromPurchase(
+  organizationId: string, credits: number, stripeSessionId: string, actorUserId?: string | null,
+): Promise<{ ok: boolean; already?: boolean; balanceAfter?: number }> {
+  if (!Number.isInteger(credits) || credits <= 0) throw new Error('CONFLICT: invalid credits');
+  const wallet = await getOrCreateOrganizationWallet(organizationId);
+  return db.transaction(async (tx) => {
+    const existing = await tx.select({ id: walletTransactions.id })
+      .from(walletTransactions)
+      .where(and(
+        eq(walletTransactions.walletId, wallet.id),
+        eq(walletTransactions.type, 'purchase'),
+        eq(walletTransactions.relatedPaymentId, stripeSessionId),
+      )).limit(1);
+    if (existing.length) return { ok: true as const, already: true as const };
+
+    const [row] = await tx.update(creditWallets)
+      .set({ credits: sql`${creditWallets.credits} + ${credits}`, updatedAt: new Date() })
+      .where(eq(creditWallets.id, wallet.id))
+      .returning({ credits: creditWallets.credits });
+    await tx.insert(walletTransactions).values({
+      id: nanoid(), walletId: wallet.id, type: 'purchase', amount: credits, balanceAfter: row.credits,
+      reason: 'org_checkout', relatedPaymentId: stripeSessionId, relatedOrganizationId: organizationId,
+      createdByUserId: actorUserId ?? null,
+    });
+    logger.info('Org wallet credited from purchase', { organizationId, credits, balanceAfter: row.credits, stripeSessionId });
+    return { ok: true as const, balanceAfter: row.credits };
+  });
+}

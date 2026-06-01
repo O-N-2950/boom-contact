@@ -73,3 +73,7 @@ _Analyse des risques et stratégie. Mise à jour : 2026-05-29._
 ---
 ## MAJ sprint Monetization (2026-05-29)
 - credit_wallets + wallet_transactions + sessions.billing_organization_id (Block 16, additif). Routage débit org/perso opérationnel (non bloquant). users.credits coexiste, non migré. Webhook Stripe intact. Sécurité : re-vérif appartenance au débit, idempotence par session, jamais de solde négatif, viewers exclus de la consommation.
+
+---
+## MAJ Monetization Part 2 (2026-05-29)
+- Achat de crédits entreprise livré : payment.createOrgCheckout (Checkout, owner/fleet_admin) + branche webhook org_credits isolée créditant le wallet org (creditOrganizationFromPurchase, idempotent par session Stripe). Flux perso/webhook perso INCHANGÉ. UI achat 1/3/10 par org. Aucune migration.

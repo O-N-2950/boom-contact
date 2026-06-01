@@ -68,3 +68,14 @@ Forfait plateforme (dashboard, multi-utilisateurs, support) + crédits/constats 
 ---
 ## MAJ Monetization sprint (2026-05-29)
 Wallet org (credit_wallets + wallet_transactions) + routage billing livrés. Modèle 1 (wallet crédits org) techniquement prêt côté consommation. Reste : route d'achat (Checkout metadata → addOrganizationCredits), webhook Stripe inchangé. Précédence : org si wallet approvisionné, sinon perso (non bloquant).
+
+---
+## MAJ Monetization Part 2 (2026-05-29) — achat de crédits entreprise (Stripe)
+- Route payment.createOrgCheckout (owner/fleet_admin) → Stripe Checkout, metadata.kind='org_credits' + organizationId + actorUserId. Réutilise PACKAGES/getPrice. payments enregistré (userEmail=acteur) pour idempotence.
+- Webhook checkout.session.completed : BRANCHE org_credits isolée en TÊTE du handler → creditOrganizationFromPurchase (idempotent par session Stripe via wallet_transactions.relatedPaymentId) → return. Le flux PERSO est inchangé (s'exécute seulement si kind !== 'org_credits').
+- creditOrganizationFromPurchase : idempotent (retries webhook ne re-créditent jamais), montant>0, txn type='purchase' reason='org_checkout'.
+- canManageOrganizationBilling (owner/fleet_admin) gate l'achat (route + UI).
+- UI AccountPage : 3 boutons d'achat (1/3/10 crédits) par org pour owner/fleet_admin ; détection retour ?org_credits=success → toast + refetch + analytics fleet_wallet_credit_added.
+- AUCUNE migration (réutilise tables Block 16). Aucun changement de schéma.
+- Tests : creditOrganizationFromPurchase (succès + idempotent + montant invalide), canManageOrganizationBilling. Total walletBilling 13→17.
+### Le wallet org peut désormais être approvisionné → routage org devient effectif (org débitée en priorité). Monetization quasi bout-en-bout.

@@ -76,6 +76,22 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const accessibleQ    = trpc.vehicle.listAccessible.useQuery(undefined);
   const myOrgsQ        = trpc.organization.listMine.useQuery(undefined);
   const walletsQ       = trpc.payment.myOrganizationWallets.useQuery(undefined);
+  const orgCheckoutMut = trpc.payment.createOrgCheckout.useMutation({
+    onSuccess: (d: any) => { if (d?.url) window.location.href = d.url; },
+    onError:   (e: any) => { toast('Erreur : ' + e.message); },
+  });
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get('org_credits');
+    if (p === 'success') {
+      track(EVENTS.FLEET_WALLET_CREDIT_ADDED);
+      toast('✅ Crédits entreprise ajoutés !');
+      walletsQ.refetch();
+      window.history.replaceState({}, '', '/account');
+    } else if (p === 'cancelled') {
+      window.history.replaceState({}, '', '/account');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => { if (tab === 'garage' && (myOrgsQ.data?.length ?? 0) > 0) track(EVENTS.FLEET_WALLET_VIEWED); }, [tab, myOrgsQ.data]);
   const updateProfileMut = trpc.auth.updateProfile.useMutation();
   const updateEmailMut   = trpc.auth.updateEmail.useMutation();
@@ -376,10 +392,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         <div className="text-[13px] font-bold text-[#123A5A]">Crédits entreprise · {w.name}</div>
                         <div className="text-[12px] text-[#5D6B7C]">{w.balance > 0 ? w.balance + ' crédit' + (w.balance > 1 ? 's' : '') + ' disponibles' : 'Aucun crédit entreprise — les constats utilisent vos crédits personnels'}</div>
                       </div>
-                      {(w.canUse) && (
-                        <button onClick={() => toast('L\'achat de crédits entreprise arrive prochainement.')} className="bg-[#123A5A] text-white border-0 rounded-lg text-[12px] font-bold cursor-pointer px-3 py-1.5">
-                          Acheter des crédits entreprise
-                        </button>
+                      {(w.canManageBilling) && (
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[11px] text-[#5D6B7C] mr-1">Acheter :</span>
+                          {([['single','1'],['pack3','3'],['pack10','10']] as const).map(([pid, lbl]) => (
+                            <button key={pid}
+                              onClick={() => orgCheckoutMut.mutate({ organizationId: w.organizationId, packageId: pid as any, currency: 'EUR', locale: (navigator.language || 'fr').split('-')[0] })}
+                              disabled={orgCheckoutMut.isPending}
+                              className="bg-[#123A5A] text-white border-0 rounded-lg text-[12px] font-bold cursor-pointer px-3 py-1.5 disabled:opacity-50">
+                              {lbl} crédit{lbl !== '1' ? 's' : ''}
+                            </button>
+                          ))}
+                        </div>
                       )}
                     </div>
                   ))}
