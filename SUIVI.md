@@ -967,3 +967,13 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Connecter le repo à Codemagic + lancer android-internal et ios-testflight.
 - AAB → Google Internal Testing ; IPA → TestFlight.
 ### Aucun runtime/natif/webhook modifié. AASA/assetlinks intacts. Pas de secret/keystore dans Git.
+
+---
+
+## Android Internal Testing ACTIF (2026-06-01)
+- boom.contact en **test interne Google Play** — version **1.0.0** / versionCode **1**, canal Tests internes, statut **Actif**.
+- Lien : https://play.google.com/apps/internaltest/4701728878089201088
+- Pipeline Codemagic résolu de bout en bout : Node 22 → JDK 21 → doublons Kotlin (stdlib 1.8.22) → AAB signé.
+- Docs QA : android-internal-tester-instructions.md (lien réel + parcours), android-internal-feedback-template.md, android-internal-qa-report.md (triage P0/P1/P2/P3 + GO/NO-GO).
+- **Prochaine étape : QA device** (récent + milieu de gamme + Android 8/9 ancien). Bump versionCode + quality:prestore obligatoires avant tout build correctif.
+- iOS/TestFlight : pipeline prêt, en attente clé ASC + lancement.
