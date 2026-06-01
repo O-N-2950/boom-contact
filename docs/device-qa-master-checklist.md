@@ -45,3 +45,28 @@ Consolide `device-qa-protocol.md` + `qa-mobile-e2e-matrix.md`. Classement : **P0
 
 ## Procédure de relevé
 Pour chaque ligne : appareil, OS, résultat (OK / KO), capture si KO, sévérité. Reporter les KO P0/P1 dans `store-go-no-go.md` avant toute soumission.
+
+---
+## Android Legacy Devices (ajout 2026-06-01)
+Voir `android-legacy-device-compatibility.md`. Appareils : **Android 8 ou 9 réel** (prioritaire) + **Android 10 milieu de gamme**.
+
+### P0 (bloque stores) sur vieil appareil
+- [ ] Lancement sans crash + **rendu UI complet (pas d'écran blanc = test WebView)**.
+- [ ] Caméra → si KO, **fallback `input file` + saisie manuelle** fonctionne.
+- [ ] Micro → **fallback texte** fonctionne.
+- [ ] Localisation refusée → **adresse manuelle** fonctionne.
+- [ ] Parcours constat complet sans blocage.
+
+### P1 (bloque public) sur vieil appareil
+- [ ] Compte / magic link.
+- [ ] Garage perso + véhicule entreprise.
+- [ ] Galerie (import photo).
+- [ ] QR participant (sync 2e partie).
+- [ ] OCR scan document.
+- [ ] PDF (génération / téléchargement).
+- [ ] Paiement test (Stripe).
+- [ ] Offline → reconnect (session préservée).
+- [ ] Redémarrage app (état session).
+- [ ] Rotation écran (si applicable).
+- [ ] Faible mémoire (pas de crash).
+- [ ] Réseau lent 3G/4G (OCR/sync dégradent proprement, pas de blocage).
