@@ -930,3 +930,14 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Analytics : organization_member_invite_started/invited/invite_accepted/revoked/failed (sans PII).
 - Tests : fleetOnboarding.test.ts (15) + fleetOnboarding.integration.test.ts (4, RUN_DB_IT, rollback réel + token non stocké prouvés). Total 152→167.
 ### Anti-régression : stripe.service 0 ligne, AASA/assetlinks/webhook intacts, B2C/garage/finance intacts. quality:prestore exit 0, 167 tests + 7 skipped, A_BLOCKING=0. SW v20->v21. Block 17 migré.
+
+---
+
+## Sprint Fleet B2B Member Management — Role Changes + Removal + Invite Resend (2026-06-01)
+### Livré
+- Backend audité : updateMemberRole / removeMember / leaveOrganization déjà corrects (guards canAssignRole/canRemoveRole + protection DERNIER owner sur démotion/retrait/départ). NOUVEAU : resendInvite (Option A : nouveau token, prolonge +7j, pending only, ré-émet email, token jamais exposé) + AuditEvent org.invite_resent + route.
+- UI OrgMembersPanel : actorRole (listMine) → select rôle driver↔fleet_admin + bouton Retirer (confirm), masqués si interdit/dernier owner ; invitations pending → Renvoyer + Révoquer ; messages clairs.
+- Analytics : member_role_update_started/updated, member_removed, invite_resent, member_action_failed (sans PII).
+- Email QA : lien texte brut déjà sous le bouton (comme magic link), wording sans claim, token jamais loggé. Test réel délivrabilité à faire.
+- Tests : fleetMemberMgmt.test.ts (13). Total 167→180.
+### Anti-régression : stripe.service 0 ligne, AASA/assetlinks/webhook intacts, B2C/garage/finance/invitations intacts. quality:prestore exit 0, 180 tests + 7 skipped, A_BLOCKING=0. SW v21->v22.

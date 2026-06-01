@@ -7,7 +7,7 @@ import { OCRScanner } from '../components/constat/OCRScanner';
 import type { OCRResult } from '../../../shared/types';
 
 // ── Fleet B2B — panneau membres + invitations (owner/fleet_admin) ──
-function OrgMembersPanel({ organizationId, name }: { organizationId: string; name: string }) {
+function OrgMembersPanel({ organizationId, name, actorRole }: { organizationId: string; name: string; actorRole?: string }) {
   const membersQ = trpc.organization.listMembers.useQuery({ organizationId });
   const invitesQ = trpc.organization.listInvites.useQuery({ organizationId });
   const [email, setEmail] = useState('');
@@ -32,9 +32,33 @@ function OrgMembersPanel({ organizationId, name }: { organizationId: string; nam
   const revokeMut = trpc.organization.revokeInvite.useMutation({
     onSuccess: () => { track(EVENTS.ORGANIZATION_INVITE_REVOKED, {}); invitesQ.refetch(); },
   });
+  const resendMut = trpc.organization.resendInvite.useMutation({
+    onSuccess: () => { track(EVENTS.ORGANIZATION_INVITE_RESENT, {}); setMsg({ ok: true, text: 'Invitation renvoyée par email.' }); invitesQ.refetch(); },
+    onError: () => { track(EVENTS.ORGANIZATION_MEMBER_ACTION_FAILED, { reason_code: 'resend', success: false }); setMsg({ ok: false, text: 'Le renvoi a échoué.' }); },
+  });
+  const roleMut = trpc.organization.updateMemberRole.useMutation({
+    onSuccess: () => { track(EVENTS.ORGANIZATION_MEMBER_ROLE_UPDATED, { actor_role: actorRole, success: true }); setMsg({ ok: true, text: 'Rôle mis à jour.' }); membersQ.refetch(); },
+    onError: (e: any) => {
+      track(EVENTS.ORGANIZATION_MEMBER_ACTION_FAILED, { actor_role: actorRole, reason_code: 'role_update', success: false });
+      setMsg({ ok: false, text: /last owner/.test(e?.message) ? 'Impossible de rétrograder le dernier propriétaire.' : "Changement de rôle refusé." });
+    },
+  });
+  const removeMut = trpc.organization.removeMember.useMutation({
+    onSuccess: () => { track(EVENTS.ORGANIZATION_MEMBER_REMOVED, { actor_role: actorRole, success: true }); setMsg({ ok: true, text: 'Membre retiré.' }); membersQ.refetch(); },
+    onError: (e: any) => {
+      track(EVENTS.ORGANIZATION_MEMBER_ACTION_FAILED, { actor_role: actorRole, reason_code: 'remove', success: false });
+      setMsg({ ok: false, text: /last owner/.test(e?.message) ? 'Impossible de retirer le dernier propriétaire.' : "Retrait refusé." });
+    },
+  });
 
   const ROLE_LABEL: Record<string, string> = { owner: 'Propriétaire', fleet_admin: 'Admin flotte', driver: 'Chauffeur', broker_viewer: 'Courtier', insurer_viewer: 'Assureur' };
   const pending = (invitesQ.data || []).filter((i: any) => i.status === 'pending');
+  const ownerCount = (membersQ.data || []).filter((m: any) => m.role === 'owner').length;
+  // Droits UI (le serveur reste l'autorité) : owner gère tout sauf rétrograder/retirer le dernier owner ;
+  // fleet_admin ne gère que les drivers.
+  const canManageMember = (memberRole: string) =>
+    actorRole === 'owner' ? true : actorRole === 'fleet_admin' ? memberRole === 'driver' : false;
+  const isLastOwner = (memberRole: string) => memberRole === 'owner' && ownerCount <= 1;
 
   const submit = () => {
     setMsg(null);
@@ -46,12 +70,32 @@ function OrgMembersPanel({ organizationId, name }: { organizationId: string; nam
     <div className="rounded-[12px] p-3 mb-4" style={{ background: '#FFFFFF', border: '1px solid #DDE7F0' }}>
       <div className="text-[13px] font-bold text-[#102033] mb-2">Membres · {name}</div>
       <div className="flex flex-col gap-1 mb-3">
-        {(membersQ.data || []).map((m: any) => (
-          <div key={m.id} className="flex items-center justify-between text-[12px] py-1" style={{ borderTop: '1px solid #EEF4FA' }}>
-            <span className="text-[#102033]">{m.invitedEmail || 'Membre'}</span>
-            <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: '#123A5A', background: '#EEF4FA' }}>{ROLE_LABEL[m.role] || m.role}</span>
-          </div>
-        ))}
+        {(membersQ.data || []).map((m: any) => {
+          const manageable = canManageMember(m.role) && !isLastOwner(m.role);
+          return (
+            <div key={m.id} className="flex items-center justify-between text-[12px] py-1.5 gap-2 flex-wrap" style={{ borderTop: '1px solid #EEF4FA' }}>
+              <span className="text-[#102033] flex-1 min-w-[120px]">{m.invitedEmail || 'Membre'}</span>
+              {manageable && m.role !== 'owner' ? (
+                <select value={m.role} disabled={roleMut.isPending}
+                  onChange={(e) => { setMsg(null); track(EVENTS.ORGANIZATION_MEMBER_ROLE_UPDATE_STARTED, { actor_role: actorRole, new_role: e.target.value }); roleMut.mutate({ organizationId, memberId: m.id, role: e.target.value as any }); }}
+                  className="rounded-md text-[11px] px-1.5 py-1 text-[#123A5A] cursor-pointer" style={{ border: '1px solid #DDE7F0' }}>
+                  <option value="driver">Chauffeur</option>
+                  <option value="fleet_admin">Admin flotte</option>
+                </select>
+              ) : (
+                <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: '#123A5A', background: '#EEF4FA' }}>{ROLE_LABEL[m.role] || m.role}</span>
+              )}
+              {manageable && (
+                <button
+                  onClick={() => { if (window.confirm('Retirer ce membre ? Il perdra l\'accès aux véhicules et crédits de l\'entreprise.')) { setMsg(null); removeMut.mutate({ organizationId, memberId: m.id }); } }}
+                  disabled={removeMut.isPending}
+                  className="bg-transparent rounded-md text-[11px] font-bold cursor-pointer px-2 py-1 text-[#DC2626] disabled:opacity-50" style={{ border: '1px solid #DC2626' }}>
+                  Retirer
+                </button>
+              )}
+            </div>
+          );
+        })}
         {(membersQ.data?.length ?? 0) === 0 && <div className="text-[12px] text-[#5D6B7C] py-1">{membersQ.isLoading ? 'Chargement…' : 'Aucun membre.'}</div>}
       </div>
 
@@ -75,15 +119,21 @@ function OrgMembersPanel({ organizationId, name }: { organizationId: string; nam
         <div className="mt-2">
           <div className="text-[12px] font-bold text-[#102033] mb-1">Invitations en attente</div>
           {pending.map((i: any) => (
-            <div key={i.id} className="flex items-center justify-between text-[12px] py-1" style={{ borderTop: '1px solid #EEF4FA' }}>
-              <div className="flex flex-col">
+            <div key={i.id} className="flex items-center justify-between text-[12px] py-1 gap-2 flex-wrap" style={{ borderTop: '1px solid #EEF4FA' }}>
+              <div className="flex flex-col flex-1 min-w-[140px]">
                 <span className="text-[#102033]">{i.email}</span>
                 <span className="text-[11px] text-[#5D6B7C]">{ROLE_LABEL[i.role] || i.role} · expire le {new Date(i.expiresAt).toLocaleDateString()}</span>
               </div>
-              <button onClick={() => revokeMut.mutate({ organizationId, inviteId: i.id })} disabled={revokeMut.isPending}
-                className="bg-transparent rounded-lg text-[11px] font-bold cursor-pointer px-2.5 py-1 text-[#DC2626] disabled:opacity-50" style={{ border: '1px solid #DC2626' }}>
-                Révoquer
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button onClick={() => { setMsg(null); resendMut.mutate({ organizationId, inviteId: i.id }); }} disabled={resendMut.isPending}
+                  className="bg-transparent rounded-lg text-[11px] font-bold cursor-pointer px-2.5 py-1 text-[#123A5A] disabled:opacity-50" style={{ border: '1px solid #123A5A' }}>
+                  Renvoyer
+                </button>
+                <button onClick={() => revokeMut.mutate({ organizationId, inviteId: i.id })} disabled={revokeMut.isPending}
+                  className="bg-transparent rounded-lg text-[11px] font-bold cursor-pointer px-2.5 py-1 text-[#DC2626] disabled:opacity-50" style={{ border: '1px solid #DC2626' }}>
+                  Révoquer
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -580,7 +630,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         </div>
                       )}
                     </div>
-                    {w.canManageBilling && <OrgMembersPanel organizationId={w.organizationId} name={w.name} />}
+                    {w.canManageBilling && <OrgMembersPanel organizationId={w.organizationId} name={w.name} actorRole={(myOrgsQ.data || []).find((o: any) => o.id === w.organizationId)?.role} />}
                     {w.canManageBilling && <OrgFinancePanel organizationId={w.organizationId} name={w.name} />}
                     </div>
                   ))}

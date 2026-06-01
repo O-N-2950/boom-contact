@@ -172,4 +172,21 @@ export const organizationRouter = router({
         return res;
       } catch (e) { mapError(e); }
     }),
+
+  resendInvite: protectedProcedure
+    .input(z.object({ organizationId: z.string().trim().max(20), inviteId: z.string().trim().max(20) }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const { resendInvite } = await import('../services/organization.service.js');
+        const res = await resendInvite(ctx.authUser.sub, input.organizationId, input.inviteId);
+        const { CLIENT_URL } = await import('../config.js');
+        const inviteUrl = `${CLIENT_URL}/?invite=${res.rawToken}`;
+        const { sendOrganizationInvite } = await import('../services/email.service.js');
+        const { getOrganization } = await import('../services/organization.service.js');
+        const org = await getOrganization(ctx.authUser.sub, input.organizationId).catch(() => null);
+        await sendOrganizationInvite(res.email, (org as any)?.name || 'votre organisation', res.role as any, inviteUrl);
+        logAudit({ event: 'org.invite_resent', userId: ctx.authUser.sub, detail: { organizationId: input.organizationId, role: res.role } });
+        return { ok: true, inviteId: res.inviteId, expiresAt: res.expiresAt }; // PAS de token renvoyé
+      } catch (e) { mapError(e); }
+    }),
 });

@@ -86,6 +86,11 @@ export const EVENTS = {
   ORGANIZATION_INVITE_ACCEPTED: 'organization_invite_accepted',
   ORGANIZATION_INVITE_REVOKED: 'organization_invite_revoked',
   ORGANIZATION_INVITE_FAILED: 'organization_invite_failed',
+  ORGANIZATION_MEMBER_ROLE_UPDATE_STARTED: 'organization_member_role_update_started',
+  ORGANIZATION_MEMBER_ROLE_UPDATED: 'organization_member_role_updated',
+  ORGANIZATION_MEMBER_REMOVED: 'organization_member_removed',
+  ORGANIZATION_INVITE_RESENT: 'organization_invite_resent',
+  ORGANIZATION_MEMBER_ACTION_FAILED: 'organization_member_action_failed',
 } as const;
 
 export type EventName = typeof EVENTS[keyof typeof EVENTS];

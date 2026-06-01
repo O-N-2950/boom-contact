@@ -360,3 +360,21 @@ export async function acceptInvite(userId: string, userEmail: string, rawToken: 
   logger.info('Organization invite accepted', { organizationId: inv.organizationId, role: inv.role });
   return { ok: true as const, organizationId: inv.organizationId, role: inv.role };
 }
+
+/** Renvoie une invitation pending : NOUVEAU token, prolonge l'expiration, ré-émet l'email. */
+export async function resendInvite(actorUserId: string, organizationId: string, inviteId: string) {
+  await assertOrganizationAdmin(actorUserId, organizationId);
+  const inv = await db.query.organizationInvites.findFirst({ where: eq(organizationInvites.id, inviteId) });
+  if (!inv || inv.organizationId !== organizationId) throw new Error('NOT_FOUND: invite');
+  if (inv.status !== 'pending') throw new Error('CONFLICT: invite not pending');
+
+  const rawToken = crypto.randomBytes(24).toString('base64url'); // jamais stocké
+  const tokenHash = hashToken(rawToken);
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + INVITE_TTL_DAYS * 86400_000);
+  await db.update(organizationInvites)
+    .set({ tokenHash, expiresAt, updatedAt: now })
+    .where(eq(organizationInvites.id, inviteId));
+  logger.info('Organization invite resent', { organizationId, role: inv.role }); // ni email ni token
+  return { ok: true as const, inviteId, rawToken, email: inv.email, role: inv.role as OrgRole, expiresAt };
+}

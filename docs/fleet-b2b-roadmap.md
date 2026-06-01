@@ -70,3 +70,7 @@ _Mise à jour : 2026-05-29. Voir aussi : mvp-spec, data-model, security-review, 
 ---
 ## Onboarding (2026-06-01)
 - Invitations membres par email (token hashé sha256, jamais stocké en clair, TTL 7j, révocable). Acceptation liée à l'email invité (refus si mismatch/expiré). createOrganization atomique (transaction). owner/fleet_admin invitent driver/fleet_admin. Aucun impact Stripe/B2C.
+
+---
+## Member Management (2026-06-01)
+- Livré : changement rôle, retrait, resend invitation, protection dernier owner, UX gated par rôle. Reste avant prod B2B : QA device réelle, envoi email invitation réel (délivrabilité), transfert d'ownership (promouvoir un 2e owner), gestion multi-org consolidée.

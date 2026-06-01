@@ -93,3 +93,9 @@ serveur dédiée (à spécifier en phase 90 j), pas via une modification du webh
 ---
 ## Onboarding (2026-06-01)
 - Invitations membres par email (token hashé sha256, jamais stocké en clair, TTL 7j, révocable). Acceptation liée à l'email invité (refus si mismatch/expiré). createOrganization atomique (transaction). owner/fleet_admin invitent driver/fleet_admin. Aucun impact Stripe/B2C.
+
+---
+## Member Management + email QA (2026-06-01)
+- Gestion membres complète (changement rôle, retrait, resend) avec protection dernier owner.
+- QA email invitation : from contact@boom.contact, sujet "Invitation à rejoindre une flotte sur boom.contact", lien absolu ${CLIENT_URL}/?invite=<token>, **lien texte brut sous le bouton** (déjà présent, comme magic link), wording prudent sans claim, token jamais loggé. À tester manuellement en conditions réelles (Gmail/Outlook). SPF/DKIM/DMARC du domaine boom.contact déjà configurés (Resend vérifié) — vérifier le rendu et la non-mise en spam lors d'un envoi réel.
+- Acceptation : ?invite= → connecté = accept immédiat ; non connecté = stockage 'boom_pending_invite' + AuthModal → acceptation post-login ; messages clairs (mauvais email / expirée / révoquée / déjà acceptée).

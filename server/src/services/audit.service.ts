@@ -27,7 +27,8 @@ export type AuditEvent =
   | 'org.member_left'
   | 'org.member_invited'
   | 'org.invite_accepted'
-  | 'org.invite_revoked';
+  | 'org.invite_revoked'
+  | 'org.invite_resent';
 
 interface AuditParams {
   event: AuditEvent;

@@ -110,3 +110,10 @@ Test d'intégration réel exécuté : vrai handleStripeWebhook + vraie base Post
 - Email : sendOrganizationInvite (Resend, sujet "Invitation à rejoindre une flotte", lien 7j, AUCUN claim juridique).
 - Lien : `${CLIENT_URL}/?invite=<token>`. Client : App.tsx détecte ?invite= (si connecté → accepte ; sinon stocke 'boom_pending_invite' + ouvre login → acceptation post-login). AccountPage : OrgMembersPanel (membres + invitation email/rôle + révocation), owner/fleet_admin only.
 - Sécurité : acceptation refusée si email connecté ≠ email invité (FORBIDDEN), si expirée (marquée expired), revoked. Prouvé par tests d'intégration réels (rollback, token non stocké).
+
+---
+## Member Management (2026-06-01)
+- Routes (déjà présentes, auditées OK) : organization.updateMemberRole, removeMember, leave — guards corrects + protection dernier owner. NOUVEAU : organization.resendInvite (Option A, nouveau token, pending only, ré-émet email, n'expose pas le token).
+- UI OrgMembersPanel : reçoit actorRole (depuis listMine) ; par membre → select rôle (driver↔fleet_admin) + bouton Retirer (window.confirm), masqués si action interdite ou dernier owner ; invitations pending → Renvoyer + Révoquer ; messages succès/erreur clairs (dernier owner, refus).
+- Analytics : organization_member_role_update_started/updated, member_removed, invite_resent, member_action_failed (props actor_role/new_role/reason_code/success, sans PII).
+- Tests : fleetMemberMgmt.test.ts (13).

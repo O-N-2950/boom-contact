@@ -110,3 +110,6 @@ adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
 
 ---
 ## Onboarding : organization_member_invite_started / organization_member_invited / organization_invite_accepted / organization_invite_revoked / organization_invite_failed (props: role, organization_role_actor, invite_status, success, language ; INTERDIT email/nom org/token/nom user).
+
+---
+## Member Management : organization_member_role_update_started / organization_member_role_updated / organization_member_removed / organization_invite_resent / organization_member_action_failed (props: actor_role, target_role, new_role, invite_status, success, reason_code, language ; INTERDIT email/nom/token/nom org).

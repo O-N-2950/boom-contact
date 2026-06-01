@@ -85,3 +85,15 @@ _Analyse des risques et stratégie. Mise à jour : 2026-05-29._
 ---
 ## Onboarding (2026-06-01)
 - Invitations membres par email (token hashé sha256, jamais stocké en clair, TTL 7j, révocable). Acceptation liée à l'email invité (refus si mismatch/expiré). createOrganization atomique (transaction). owner/fleet_admin invitent driver/fleet_admin. Aucun impact Stripe/B2C.
+
+---
+## Member Management — matrice rôles/actions + sécurité dernier owner (2026-06-01)
+| Acteur \ Action | Inviter | Changer rôle | Retirer | Resend | Cible autorisée |
+|---|---|---|---|---|---|
+| owner | ✅ | ✅ | ✅ | ✅ | tous SAUF rétrograder/retirer le DERNIER owner |
+| fleet_admin | ✅ (driver/viewer) | ✅ (driver↔viewer) | ✅ (driver/viewer) | ✅ | jamais un owner ni un autre fleet_admin |
+| driver | ❌ | ❌ | ❌ | ❌ | — |
+| viewers | ❌ | ❌ | ❌ | ❌ | — |
+- Sécurité dernier owner : countActiveOwners ≤ 1 → CONFLICT sur démotion (updateMemberRole), retrait (removeMember) et départ (leaveOrganization "transfer ownership before leaving"). Guards serveur = autorité ; l'UI ne fait que masquer les actions interdites.
+- Resend (Option A) : resendInvite régénère un NOUVEAU token (nouveau tokenHash sha256), prolonge expiresAt (+7j), pending uniquement, ré-émet l'email. Token brut jamais stocké/loggé/renvoyé. Ancien lien invalidé (hash remplacé).
+- Anti-PII : updateMemberRole/removeMember/resendInvite ne loggent ni email ni token ; analytics member sans email/nom/token.
