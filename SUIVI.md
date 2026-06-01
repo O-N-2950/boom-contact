@@ -898,3 +898,9 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - scripts/stripe-b2b-e2e-checklist.mjs : vérif E2E LECTURE SEULE (postgres.js, sans secret) — wallet, idempotence (doublon related_payment_id), txn purchase unique/montant, payment paid ; PASS/FAIL + exit code. Testé OK contre base réelle.
 - Note clé : `stripe trigger` ne porte PAS metadata.kind=org_credits → le test org DOIT passer par le vrai createOrgCheckout (bouton UI) puis rejeu de CET event.
 ### Reste (Olivier, hors sandbox) : exécuter le runbook avec sk_test + carte 4242 + livraison webhook Stripe réelle → Billing Confidence 89 → 95.
+
+---
+
+## Stripe B2B — Quick Execution Checklist (2026-06-01)
+- docs/stripe-b2b-quick-execution-checklist.md : version courte "copier-coller" du runbook (clés test, stripe listen :3000, npm run dev, owner/org test, achat 4242, vérifs, scripts verify/checklist, rejeu resend, non-régression perso, checklist 12/12 → 95/100).
+- Aucune feature, aucun code runtime modifié. Docs uniquement.
