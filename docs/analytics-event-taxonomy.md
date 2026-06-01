@@ -98,3 +98,6 @@ participant_qr_displayed/completed, et toute la section B2B/fleet (en attente du
 
 **Interdit** : nom d'entreprise (si sensible), email, plaque, VIN, détails accident, contenu PDF,
 adresse exacte. Tout passe par `sanitizeProps()` comme les events B2C.
+
+---
+## MAJ Value Chain : `organization_garage` ajouté à VEHICLE_SOURCES ; events `fleet_vehicle_added` + `fleet_vehicle_selected_for_constat` câblés (props: scope=personal|organization, sans PII).

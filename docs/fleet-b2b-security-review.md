@@ -65,3 +65,7 @@ _Analyse des risques et stratégie. Mise à jour : 2026-05-29._
 - Matrice pure testée (16 tests) : driver ne gère rien, fleet_admin ne touche pas owner, viewers lecture seule, dernier owner protégé (demote/remove/leave bloqués).
 - Retrait membre = soft (`status='removed'`) → conserve l'audit, révoque l'accès (toute requête exige `status='active'`).
 - Audit log branché sur create/add/role_update/remove/leave (sans PII).
+
+---
+## MAJ sprint Value Chain (2026-05-29)
+- vehicles.organizationId nullable livré (Block 15). Garage unifié + sélection véhicule d'org dans le constat opérationnels. Guards lecture/gestion par rôle. UI entreprise conditionnelle (membres seulement). 30j MVP: points 4,5,6 livrés.

@@ -52,8 +52,8 @@ describe('analytics — taxonomie', () => {
   it('rejette un nom hors taxonomie', () => {
     expect(isValidEventName('random_event_xyz')).toBe(false);
   });
-  it('sources véhicule = garage|scan|manual', () => {
-    expect([...VEHICLE_SOURCES].sort()).toEqual(['garage','manual','scan']);
+  it('sources véhicule = garage|organization_garage|scan|manual', () => {
+    expect([...VEHICLE_SOURCES].sort()).toEqual(['garage','manual','organization_garage','scan']);
   });
   it('creditsBucket ne révèle pas le compte exact', () => {
     expect(creditsBucket(0)).toBe('0');

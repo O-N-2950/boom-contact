@@ -171,7 +171,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
   }, []);
 
   // Saved vehicles (if logged in)
-  const vehicleListQ = trpc.vehicle.list.useQuery(undefined, {
+  const vehicleListQ = trpc.vehicle.listAccessible.useQuery(undefined, {
     enabled: !!authToken && step === 'ocr',
   });
   const savedVehicles = vehicleListQ.data || [];
@@ -179,8 +179,10 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
   const applyVehicle = (v: Record<string, unknown>) => {
     setShowVehiclePicker(false);
-    track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: 'garage' });
-    track(EVENTS.CONSTAT_GARAGE_VEHICLE_SELECTED);
+    const isOrg = (v as any).scope === 'organization';
+    track(EVENTS.CONSTAT_VEHICLE_SOURCE_SELECTED, { source: isOrg ? 'organization_garage' : 'garage' });
+    track(EVENTS.CONSTAT_GARAGE_VEHICLE_SELECTED, { scope: isOrg ? 'organization' : 'personal' });
+    if (isOrg) track(EVENTS.FLEET_VEHICLE_SELECTED_FOR_CONSTAT, { scope: 'organization' });
     const newData = mapGarageVehicleToParticipant(v as any) as Partial<ParticipantData>;
     setParticipantData(newData);
     setStep('location'); // skip OCR — jump straight to location
@@ -531,7 +533,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               >
                 <span className="text-2xl" aria-hidden="true">🚗</span>
                 <div className="text-left">
-                  <div style={{ color: '#16A34A', fontWeight: 800, fontSize: 14 }}>Choisir un véhicule de mon garage</div>
+                  <div style={{ color: '#16A34A', fontWeight: 800, fontSize: 14 }}>Choisir un véhicule enregistré</div>
                   <div style={{ color: '#5D6B7C', fontSize: 12 }}>Préremplissage automatique — pas besoin de scanner</div>
                 </div>
                 <span style={{ color: '#16A34A', marginLeft: 'auto', fontWeight: 700 }}>→</span>
@@ -542,8 +544,19 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                 {savedVehicles.map((v: any) => (
                   <button key={v.id} onClick={() => applyVehicle(v)} className="w-full text-left"
                     style={{ display: 'block', borderRadius: 12, marginBottom: 8, padding: '12px 14px', background: '#F5F8FC', border: '1px solid #DDE7F0', cursor: 'pointer' }}>
-                    <div style={{ fontWeight: 700, color: '#102033' }}>
-                      {v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontWeight: 700, color: '#102033' }}>
+                        {v.label || v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
+                      </span>
+                      {v.scope === 'organization' ? (
+                        <span style={{ fontSize: 11, fontWeight: 700, color: '#123A5A', background: '#EEF4FA', border: '1px solid #DDE7F0', borderRadius: 6, padding: '2px 7px' }}>
+                          🏢 {v.organizationName || 'Entreprise'}
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: 11, fontWeight: 700, color: '#5D6B7C', background: '#F5F8FC', border: '1px solid #DDE7F0', borderRadius: 6, padding: '2px 7px' }}>
+                          Personnel
+                        </span>
+                      )}
                     </div>
                     {v.plate && <div style={{ fontFamily: 'monospace', fontSize: 13, color: '#123A5A' }}>{v.plate}</div>}
                     {v.insuranceData?.companyName && <div style={{ color: '#5D6B7C', fontSize: 12 }}>🛡️ {v.insuranceData.companyName}</div>}

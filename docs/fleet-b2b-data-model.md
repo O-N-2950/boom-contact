@@ -145,3 +145,7 @@ org est **ajoutée** seulement si l'utilisateur est membre d'au moins une organi
 - Rôles supportés : owner / fleet_admin / driver / broker_viewer / insurer_viewer. status : active/suspended/removed.
 - Unique `(organization_id, user_id)`. `user_id` nullable (prévu pour invitations email futures ; `addMember` exige aujourd'hui un compte existant).
 - **PAS** de `vehicles.organizationId` ce sprint (reporté — garage perso strictement intact).
+
+---
+## MAJ sprint Value Chain (2026-05-29)
+- vehicles.organizationId nullable livré (Block 15). Garage unifié + sélection véhicule d'org dans le constat opérationnels. Guards lecture/gestion par rôle. UI entreprise conditionnelle (membres seulement). 30j MVP: points 4,5,6 livrés.

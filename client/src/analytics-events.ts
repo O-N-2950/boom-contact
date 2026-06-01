@@ -70,6 +70,7 @@ export const EVENTS = {
   B2B_CONTACT_CLICKED: 'b2b_contact_clicked',
   COMPANY_INTEREST_SUBMITTED: 'company_interest_submitted',
   FLEET_VEHICLE_IMPORT_STARTED: 'fleet_vehicle_import_started',
+  FLEET_VEHICLE_ADDED: 'fleet_vehicle_added',
   FLEET_VEHICLE_SELECTED_FOR_CONSTAT: 'fleet_vehicle_selected_for_constat',
 } as const;
 
@@ -78,7 +79,7 @@ export type EventName = typeof EVENTS[keyof typeof EVENTS];
 export const ALLOWED_EVENT_NAMES: ReadonlySet<string> = new Set(Object.values(EVENTS));
 
 /** Valeurs autorisées pour la propriété `source` du véhicule. */
-export const VEHICLE_SOURCES = ['garage', 'scan', 'manual'] as const;
+export const VEHICLE_SOURCES = ['garage', 'organization_garage', 'scan', 'manual'] as const;
 export type VehicleSource = typeof VEHICLE_SOURCES[number];
 
 // ───────────────────────── PRIVACY SANITIZATION ─────────────────────────

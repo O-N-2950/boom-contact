@@ -309,6 +309,17 @@ export async function runMigrations() {
       CREATE UNIQUE INDEX IF NOT EXISTS org_members_org_user_uniq ON organization_members(organization_id, user_id);
     `);
 
+    // ── Block 15 : Fleet Value Chain — vehicles.organization_id ─────────
+    // Additif. NULL = véhicule personnel (inchangé) ; non-NULL = véhicule d'org.
+    // userId reste NOT NULL. Aucun effet sur les véhicules existants (tous NULL).
+    await db.execute(`
+      DO $$ BEGIN
+        ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS organization_id VARCHAR(20) REFERENCES organizations(id) ON DELETE SET NULL;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+      CREATE INDEX IF NOT EXISTS vehicles_org_idx ON vehicles(organization_id);
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

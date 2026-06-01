@@ -820,3 +820,19 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Volontairement NON construit : UI, invitation email (user inexistant), vehicles.organizationId, wallet, PDF multi, dashboard.
 ### Garanties anti-régression : webhook Stripe / AASA / assetlinks / users / vehicles / payments / garage perso / flow constat — INTACTS. quality:prestore exit 0, 109 tests, A_BLOCKING=0.
 ### Docs : fleet-b2b-implementation-notes.md (nouveau) + MAJ data-model/roadmap/security-review.
+
+---
+
+## Sprint Fleet B2B Value Chain — Organization Vehicles + Unified Garage + Constat Selection
+**Date** : 2026-05-29
+### Livré
+- Migration Block 15 (additif) : vehicles.organization_id nullable + index vehicles_org_idx. userId reste NOT NULL. Aucun effet sur véhicules existants (tous NULL=perso).
+- Schéma : vehicles.organizationId (réf paresseuse organizations, onDelete set null).
+- Service : listVehicles filtré perso (isNull org) ; +listPersonalVehicles, listOrganizationVehicles, listAccessibleVehicles (garage unifié), guards assertCanRead/Manage/CreateOrganizationVehicle, saveOrganizationVehicle, deleteOrganizationVehicle.
+- Routes : vehicle.listAccessible / saveOrganization / deleteOrganization (list/save/delete perso INCHANGÉES). Erreurs mappées TRPCError.
+- ConstatFlow : sélecteur → listAccessible (perso + org), badge scope (Personnel/🏢 org), sélection véhicule d'org préremplit + SKIP OCR (même mapping), analytics scope-aware (source=organization_garage + fleet_vehicle_selected_for_constat).
+- AccountPage : section « Véhicules d'entreprise » conditionnelle (membres only) ; gestion add/edit/delete pour owner/fleet_admin (saveOrganization/deleteOrganization), lecture pour driver. Chemin perso strictement inchangé.
+- Analytics : VEHICLE_SOURCES + organization_garage ; events fleet_vehicle_added / fleet_vehicle_selected_for_constat câblés (props scope, sans PII).
+- Tests : fleetVehicles.test.ts (11) — mapping pur, guards lecture/gestion, garage unifié. analytics.test.ts MAJ. Total 109→120.
+### Hors scope (volontaire) : wallet entreprise, PDF multi-destinataires, dashboard complet, invitation email, import CSV.
+### Anti-régression : webhook Stripe / AASA / assetlinks / save+delete perso / garage perso / flow constat B2C — INTACTS. quality:prestore exit 0, 120 tests, A_BLOCKING=0. SW v16->v17.

@@ -47,3 +47,16 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 - Génération d'ID : `nanoid(20)` (même pattern que `vehicle.service`).
 - Les guards `assert*` lèvent des `Error` préfixées (`FORBIDDEN`/`NOT_FOUND`/`CONFLICT`) traduites en
   TRPCError par le router.
+
+---
+
+## MAJ sprint Value Chain (2026-05-29) — véhicules d'organisation
+### Maintenant fonctionnel
+- `vehicles.organizationId` nullable (Block 15, additif). NULL=perso (inchangé), non-NULL=org. userId reste NOT NULL (créateur).
+- `listVehicles` filtre désormais `organizationId IS NULL` (perso strict) — aucun changement pour les données existantes (toutes NULL).
+- Service véhicules : listPersonalVehicles, listOrganizationVehicles, **listAccessibleVehicles** (garage unifié), guards assertCanRead/Manage/CreateOrganizationVehicle, saveOrganizationVehicle, deleteOrganizationVehicle.
+- Routes : vehicle.listAccessible, vehicle.saveOrganization, vehicle.deleteOrganization (list/save/delete perso INCHANGÉES).
+- ConstatFlow : sélecteur bascule sur listAccessible → propose perso + org avec badge scope ; sélection véhicule d'org préremplit + **skip OCR** (même mapping) ; analytics scope-aware (source=organization_garage, fleet_vehicle_selected_for_constat).
+- AccountPage : section « Véhicules d'entreprise » visible UNIQUEMENT si membre d'une org ; lecture pour tous, gestion (ajout/édition/suppression) pour owner/fleet_admin.
+- Tests : fleetVehicles.test.ts (11) — mapping pur, guards, garage unifié.
+### Reste : wallet entreprise, PDF multi-destinataires, dashboard flotte, invitation email, import CSV.

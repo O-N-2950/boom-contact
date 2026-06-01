@@ -77,3 +77,7 @@ serveur dédiée (à spécifier en phase 90 j), pas via une modification du webh
 - Le PDF part au driver + 1 destinataire flotte.
 - Le constat débite le wallet org.
 - **Zéro régression** B2C : `quality:prestore` vert, garage perso et flow constat intacts.
+
+---
+## MAJ sprint Value Chain (2026-05-29)
+- vehicles.organizationId nullable livré (Block 15). Garage unifié + sélection véhicule d'org dans le constat opérationnels. Guards lecture/gestion par rôle. UI entreprise conditionnelle (membres seulement). 30j MVP: points 4,5,6 livrés.

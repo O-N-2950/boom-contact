@@ -29,6 +29,7 @@ type VehicleView = 'list' | 'add' | 'edit';
 
 interface VehicleForm {
   id?: string;
+  organizationId?: string;
   nickname?: string;
   plate?: string;
   make?: string;
@@ -70,6 +71,10 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const deleteAccountMut = trpc.auth.deleteAccount.useMutation();
   const saveMut        = trpc.vehicle.save.useMutation();
   const deleteMut      = trpc.vehicle.delete.useMutation();
+  const saveOrgMut     = trpc.vehicle.saveOrganization.useMutation();
+  const deleteOrgMut   = trpc.vehicle.deleteOrganization.useMutation();
+  const accessibleQ    = trpc.vehicle.listAccessible.useQuery(undefined);
+  const myOrgsQ        = trpc.organization.listMine.useQuery(undefined);
   const updateProfileMut = trpc.auth.updateProfile.useMutation();
   const updateEmailMut   = trpc.auth.updateEmail.useMutation();
 
@@ -102,9 +107,15 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     if (!form.plate && !form.make && !form.nickname) { toast('Ajoutez au moins une information.'); return; }
     setSaving(true);
     try {
-      await saveMut.mutateAsync(form as any);
-      track(EVENTS.GARAGE_VEHICLE_ADDED);
+      if (form.organizationId) {
+        await saveOrgMut.mutateAsync(form as any);
+        track(EVENTS.FLEET_VEHICLE_ADDED, { scope: 'organization' });
+      } else {
+        await saveMut.mutateAsync(form as any);
+        track(EVENTS.GARAGE_VEHICLE_ADDED);
+      }
       await vehicleListQ.refetch();
+      await accessibleQ.refetch();
       setVehicleView('list');
       toast('✅ Véhicule sauvegardé !');
     } catch (e: any) { toast('Erreur : ' + e.message); }
@@ -114,6 +125,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
   const handleDelete = async (id: string, name?: string) => {
     if (!confirm('Supprimer ' + (name || 'ce véhicule') + ' ?')) return;
     try { await deleteMut.mutateAsync({ id }); await vehicleListQ.refetch(); }
+    catch (e: any) { toast('Erreur : ' + e.message); }
+  };
+
+  const startAddOrg = (organizationId: string) => { setForm({ organizationId }); setVehicleView('add'); };
+  const handleDeleteOrg = async (id: string, name?: string) => {
+    if (!confirm('Supprimer ' + (name || 'ce véhicule d\'entreprise') + ' ?')) return;
+    try { await deleteOrgMut.mutateAsync({ id }); await accessibleQ.refetch(); }
     catch (e: any) { toast('Erreur : ' + e.message); }
   };
 
@@ -342,6 +360,45 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                 }
               </div>
             ))}
+
+            {/* ── Véhicules d'entreprise — visible UNIQUEMENT si membre d'une organisation ── */}
+            {(myOrgsQ.data?.length ?? 0) > 0 && (() => {
+              const orgVehicles = (accessibleQ.data || []).filter((v: any) => v.scope === 'organization');
+              const manageableOrgs = (myOrgsQ.data || []).filter((o: any) => o.role === 'owner' || o.role === 'fleet_admin');
+              return (
+                <div className="mt-7 pt-5" style={{ borderTop: '1px solid #DDE7F0' }}>
+                  <div className="text-[#102033] font-bold mb-3">🏢 Véhicules d'entreprise ({orgVehicles.length})</div>
+                  {manageableOrgs.map((o: any) => (
+                    <button key={o.id} onClick={() => startAddOrg(o.id)} className="bg-[#123A5A] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2 mb-2 mr-2">
+                      + Ajouter pour {o.name}
+                    </button>
+                  ))}
+                  {orgVehicles.length === 0 && (
+                    <div className="text-[13px] text-[#5D6B7C] mt-1">Aucun véhicule d'entreprise pour le moment.</div>
+                  )}
+                  {orgVehicles.map((v: any) => (
+                    <div key={v.id} className="bg-[#FFFFFF] rounded-[14px] p-4 mb-2.5 mt-2" style={{ border: '1px solid #DDE7F0', borderLeft: '3px solid #123A5A' }}>
+                      <div className="flex justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-[#102033] font-bold">{v.label || 'Véhicule'}</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: '#123A5A', background: '#EEF4FA', border: '1px solid #DDE7F0', borderRadius: 6, padding: '2px 7px' }}>🏢 {v.organizationName || 'Entreprise'}</span>
+                          </div>
+                          {v.plate && <div className="text-sm text-[#123A5A]" style={{ fontFamily: 'monospace' }}>{v.plate}</div>}
+                          <div className="text-xs mt-0.5 text-[#5D6B7C]">{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
+                        </div>
+                        {v.canManage && (
+                          <div className="flex gap-1.5">
+                            <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule d'entreprise">✏️</button>
+                            <button onClick={() => handleDeleteOrg(v.id, v.label)} style={iconBtn} aria-label="Supprimer le véhicule d'entreprise">🗑️</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </>
         )}
 

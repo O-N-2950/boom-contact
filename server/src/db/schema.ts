@@ -265,6 +265,9 @@ export const policeCorrections = pgTable('police_corrections', {
 export const vehicles = pgTable('vehicles', {
   id:           varchar('id', { length: 20 }).primaryKey(),
   userId:       varchar('user_id', { length: 20 }).notNull().references(() => users.id, { onDelete: 'cascade' }),
+  // Fleet B2B : NULL = véhicule personnel (comportement historique) ; non-NULL = véhicule d'organisation.
+  // userId reste notNull = créateur du véhicule (owner/admin de la flotte) — aucune régression perso.
+  organizationId: varchar('organization_id', { length: 20 }).references(() => organizations.id, { onDelete: 'set null' }),
   nickname:     text('nickname'),                          // ex: "Ma Golf bleue"
   plate:        text('plate'),
   make:         text('make'),
@@ -278,6 +281,7 @@ export const vehicles = pgTable('vehicles', {
   updatedAt:    timestamp('updated_at').notNull().defaultNow(),
 }, (t) => ({
   userIdx: index('vehicles_user_idx').on(t.userId),
+  orgIdx:  index('vehicles_org_idx').on(t.organizationId),
 }));
 
 
