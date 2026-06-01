@@ -57,3 +57,11 @@ _Analyse des risques et stratégie. Mise à jour : 2026-05-29._
 - Contrat de sous-traitance RGPD (DPA) entre PEP's Swiss SA et l'entreprise cliente.
 - Durées de rétention par juridiction (CH nLPD / UE RGPD).
 - Sort des constats à la suppression d'un compte chauffeur (anonymisation vs conservation preuve).
+
+---
+
+## MAJ sprint Foundation (2026-05-29) — guards implémentés
+- Filtrage **serveur** en place : `getUserOrganizationRole` + `assertOrganizationMember/Admin/Owner`.
+- Matrice pure testée (16 tests) : driver ne gère rien, fleet_admin ne touche pas owner, viewers lecture seule, dernier owner protégé (demote/remove/leave bloqués).
+- Retrait membre = soft (`status='removed'`) → conserve l'audit, révoque l'accès (toute requête exige `status='active'`).
+- Audit log branché sur create/add/role_update/remove/leave (sans PII).

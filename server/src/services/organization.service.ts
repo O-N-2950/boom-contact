@@ -1,0 +1,249 @@
+/**
+ * Fleet B2B — Organization service (sprint Fleet Foundation).
+ * Additif : ne touche ni users, ni vehicles, ni le flow constat.
+ *
+ * Cœur de permission = fonctions PURES (roleCan + dérivés), testables sans DB.
+ * Les guards `assert*` sont de fins wrappers DB qui appliquent la matrice pure.
+ */
+import crypto from 'crypto';
+import { db } from '../db/index.js';
+import { organizations, organizationMembers, users } from '../db/schema.js';
+import { eq, and, isNull } from 'drizzle-orm';
+import { logger } from '../logger.js';
+
+function nanoid(len = 20): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const bytes = crypto.randomBytes(len);
+  return Array.from(bytes).map(b => chars[b % chars.length]).join('');
+}
+
+// ── Types ────────────────────────────────────────────────────
+export type OrgRole = 'owner' | 'fleet_admin' | 'driver' | 'broker_viewer' | 'insurer_viewer';
+export type OrgMemberStatus = 'active' | 'suspended' | 'removed';
+export type OrgAction =
+  | 'manage_org'        // renommer, supprimer, facturation — owner uniquement
+  | 'manage_members'    // inviter / retirer / changer rôle
+  | 'invite_member'
+  | 'manage_vehicles'   // ajouter / éditer véhicules d'org (sprint futur)
+  | 'view';             // voir l'organisation et ses métadonnées
+
+export const ORG_ROLES: readonly OrgRole[] = ['owner', 'fleet_admin', 'driver', 'broker_viewer', 'insurer_viewer'];
+const VIEWER_ROLES: readonly OrgRole[] = ['broker_viewer', 'insurer_viewer'];
+
+// ── Matrice de permissions — PURE (testable sans DB) ─────────
+export function roleCan(role: OrgRole | null, action: OrgAction): boolean {
+  if (!role) return false;
+  switch (action) {
+    case 'manage_org':
+      return role === 'owner';
+    case 'manage_members':
+    case 'invite_member':
+    case 'manage_vehicles':
+      return role === 'owner' || role === 'fleet_admin';
+    case 'view':
+      return ORG_ROLES.includes(role); // tout membre actif peut voir
+    default:
+      return false;
+  }
+}
+
+// Dérivés purs (sucre)
+export const canInviteOrganizationMemberRole = (role: OrgRole | null) => roleCan(role, 'invite_member');
+export const canManageOrganizationVehiclesRole = (role: OrgRole | null) => roleCan(role, 'manage_vehicles');
+export const isViewerRole = (role: OrgRole | null): boolean => !!role && VIEWER_ROLES.includes(role);
+
+/**
+ * Un acteur peut-il assigner/modifier un membre vers `targetRole` ?
+ * - owner : peut tout (y compris promouvoir owner).
+ * - fleet_admin : peut gérer driver / viewers, mais JAMAIS owner ni un autre fleet_admin→owner.
+ * PURE.
+ */
+export function canAssignRole(actorRole: OrgRole | null, targetRole: OrgRole): boolean {
+  if (actorRole === 'owner') return true;
+  if (actorRole === 'fleet_admin') {
+    return targetRole === 'driver' || VIEWER_ROLES.includes(targetRole);
+  }
+  return false;
+}
+
+/** Un acteur (par rôle) peut-il retirer un membre ayant `targetRole` ? PURE. */
+export function canRemoveRole(actorRole: OrgRole | null, targetRole: OrgRole): boolean {
+  if (actorRole === 'owner') return targetRole !== 'owner' ? true : true; // owner gère, contrôle "dernier owner" en DB
+  if (actorRole === 'fleet_admin') return targetRole !== 'owner' && targetRole !== 'fleet_admin' ? true : false;
+  return false;
+}
+
+// ── Guards DB ────────────────────────────────────────────────
+export async function getUserOrganizationRole(userId: string, organizationId: string): Promise<OrgRole | null> {
+  const m = await db.query.organizationMembers.findFirst({
+    where: and(
+      eq(organizationMembers.organizationId, organizationId),
+      eq(organizationMembers.userId, userId),
+      eq(organizationMembers.status, 'active'),
+    ),
+  });
+  return (m?.role as OrgRole) ?? null;
+}
+
+export async function assertOrganizationMember(userId: string, organizationId: string): Promise<OrgRole> {
+  const role = await getUserOrganizationRole(userId, organizationId);
+  if (!role) throw new Error('FORBIDDEN: not an organization member');
+  return role;
+}
+export async function assertOrganizationAdmin(userId: string, organizationId: string): Promise<OrgRole> {
+  const role = await getUserOrganizationRole(userId, organizationId);
+  if (!roleCan(role, 'manage_members')) throw new Error('FORBIDDEN: admin required');
+  return role as OrgRole;
+}
+export async function assertOrganizationOwner(userId: string, organizationId: string): Promise<OrgRole> {
+  const role = await getUserOrganizationRole(userId, organizationId);
+  if (role !== 'owner') throw new Error('FORBIDDEN: owner required');
+  return role;
+}
+export async function canManageOrganizationVehicles(userId: string, organizationId: string): Promise<boolean> {
+  return roleCan(await getUserOrganizationRole(userId, organizationId), 'manage_vehicles');
+}
+export async function canInviteOrganizationMember(userId: string, organizationId: string): Promise<boolean> {
+  return roleCan(await getUserOrganizationRole(userId, organizationId), 'invite_member');
+}
+
+// ── CRUD ─────────────────────────────────────────────────────
+export async function createOrganization(userId: string, input: { name: string; country?: string; slug?: string }) {
+  const orgId = nanoid();
+  const now = new Date();
+  await db.insert(organizations).values({
+    id: orgId, name: input.name, country: input.country, slug: input.slug,
+    plan: 'free', createdByUserId: userId, createdAt: now, updatedAt: now,
+  });
+  // Le créateur devient owner
+  await db.insert(organizationMembers).values({
+    id: nanoid(), organizationId: orgId, userId, role: 'owner', status: 'active',
+    joinedAt: now, createdAt: now, updatedAt: now,
+  });
+  logger.info('Organization created', { orgId, userId });
+  return { ok: true as const, id: orgId };
+}
+
+export async function listMyOrganizations(userId: string) {
+  const memberships = await db.query.organizationMembers.findMany({
+    where: and(eq(organizationMembers.userId, userId), eq(organizationMembers.status, 'active')),
+  });
+  const out: Array<{ id: string; name: string; role: OrgRole; plan: string; country: string | null }> = [];
+  for (const m of memberships) {
+    const org = await db.query.organizations.findFirst({
+      where: and(eq(organizations.id, m.organizationId), isNull(organizations.deletedAt)),
+    });
+    if (org) out.push({ id: org.id, name: org.name, role: m.role as OrgRole, plan: org.plan, country: org.country });
+  }
+  return out;
+}
+
+export async function getOrganization(userId: string, organizationId: string) {
+  await assertOrganizationMember(userId, organizationId);
+  const org = await db.query.organizations.findFirst({
+    where: and(eq(organizations.id, organizationId), isNull(organizations.deletedAt)),
+  });
+  if (!org) throw new Error('NOT_FOUND: organization');
+  return { id: org.id, name: org.name, slug: org.slug, plan: org.plan, country: org.country, createdAt: org.createdAt };
+}
+
+export async function listMembers(userId: string, organizationId: string) {
+  await assertOrganizationMember(userId, organizationId);
+  const members = await db.query.organizationMembers.findMany({
+    where: and(eq(organizationMembers.organizationId, organizationId), eq(organizationMembers.status, 'active')),
+  });
+  // Renvoie le strict nécessaire (pas de PII superflue)
+  return members.map(m => ({ id: m.id, userId: m.userId, role: m.role as OrgRole, status: m.status as OrgMemberStatus, joinedAt: m.joinedAt }));
+}
+
+/**
+ * Ajoute un membre EXISTANT (par email) à l'organisation.
+ * Le flux d'invitation par email (utilisateur inexistant) est volontairement différé.
+ */
+export async function addMember(actorUserId: string, organizationId: string, email: string, role: OrgRole) {
+  const actorRole = await assertOrganizationAdmin(actorUserId, organizationId);
+  if (!canAssignRole(actorRole, role)) throw new Error('FORBIDDEN: cannot assign this role');
+
+  const target = await db.query.users.findFirst({ where: eq(users.email, email.toLowerCase()) });
+  if (!target) throw new Error('NOT_FOUND: user must have a boom.contact account first');
+
+  const existing = await db.query.organizationMembers.findFirst({
+    where: and(eq(organizationMembers.organizationId, organizationId), eq(organizationMembers.userId, target.id)),
+  });
+  if (existing && existing.status === 'active') throw new Error('CONFLICT: already a member');
+
+  const now = new Date();
+  if (existing) {
+    // réactiver un membre précédemment retiré
+    await db.update(organizationMembers)
+      .set({ role, status: 'active', joinedAt: now, updatedAt: now })
+      .where(eq(organizationMembers.id, existing.id));
+    logger.info('Organization member reactivated', { organizationId, role });
+    return { ok: true as const, id: existing.id, reactivated: true as const };
+  }
+  const id = nanoid();
+  await db.insert(organizationMembers).values({
+    id, organizationId, userId: target.id, invitedEmail: email.toLowerCase(),
+    role, status: 'active', joinedAt: now, createdAt: now, updatedAt: now,
+  });
+  logger.info('Organization member added', { organizationId, role });
+  return { ok: true as const, id, reactivated: false as const };
+}
+
+export async function updateMemberRole(actorUserId: string, organizationId: string, memberId: string, newRole: OrgRole) {
+  const actorRole = await assertOrganizationAdmin(actorUserId, organizationId);
+  const member = await db.query.organizationMembers.findFirst({ where: eq(organizationMembers.id, memberId) });
+  if (!member || member.organizationId !== organizationId) throw new Error('NOT_FOUND: member');
+
+  const currentRole = member.role as OrgRole;
+  if (!canAssignRole(actorRole, currentRole) || !canAssignRole(actorRole, newRole)) {
+    throw new Error('FORBIDDEN: insufficient rights for this role change');
+  }
+  // Protéger le dernier owner
+  if (currentRole === 'owner' && newRole !== 'owner') {
+    const owners = await countActiveOwners(organizationId);
+    if (owners <= 1) throw new Error('CONFLICT: cannot demote the last owner');
+  }
+  await db.update(organizationMembers).set({ role: newRole, updatedAt: new Date() }).where(eq(organizationMembers.id, memberId));
+  logger.info('Organization member role updated', { organizationId, newRole });
+  return { ok: true as const };
+}
+
+export async function removeMember(actorUserId: string, organizationId: string, memberId: string) {
+  const actorRole = await assertOrganizationAdmin(actorUserId, organizationId);
+  const member = await db.query.organizationMembers.findFirst({ where: eq(organizationMembers.id, memberId) });
+  if (!member || member.organizationId !== organizationId) throw new Error('NOT_FOUND: member');
+  const targetRole = member.role as OrgRole;
+  if (!canRemoveRole(actorRole, targetRole)) throw new Error('FORBIDDEN: cannot remove this member');
+  if (targetRole === 'owner') {
+    const owners = await countActiveOwners(organizationId);
+    if (owners <= 1) throw new Error('CONFLICT: cannot remove the last owner');
+  }
+  await db.update(organizationMembers).set({ status: 'removed', updatedAt: new Date() }).where(eq(organizationMembers.id, memberId));
+  logger.info('Organization member removed', { organizationId });
+  return { ok: true as const };
+}
+
+export async function leaveOrganization(userId: string, organizationId: string) {
+  const role = await assertOrganizationMember(userId, organizationId);
+  if (role === 'owner') {
+    const owners = await countActiveOwners(organizationId);
+    if (owners <= 1) throw new Error('CONFLICT: transfer ownership before leaving');
+  }
+  await db.update(organizationMembers)
+    .set({ status: 'removed', updatedAt: new Date() })
+    .where(and(eq(organizationMembers.organizationId, organizationId), eq(organizationMembers.userId, userId)));
+  logger.info('Member left organization', { organizationId });
+  return { ok: true as const };
+}
+
+async function countActiveOwners(organizationId: string): Promise<number> {
+  const owners = await db.query.organizationMembers.findMany({
+    where: and(
+      eq(organizationMembers.organizationId, organizationId),
+      eq(organizationMembers.role, 'owner'),
+      eq(organizationMembers.status, 'active'),
+    ),
+  });
+  return owners.length;
+}

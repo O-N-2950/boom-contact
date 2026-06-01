@@ -137,3 +137,11 @@ org est **ajoutée** seulement si l'utilisateur est membre d'au moins une organi
 - `vehicles.userId` reste `notNull` (un véhicule a toujours un propriétaire/créateur).
 - Garage personnel, garage-to-constat, skip OCR : **inchangés**.
 - `auditLog` : réutilisé, pas de refonte.
+
+---
+
+## MAJ sprint Foundation (2026-05-29) — IMPLÉMENTÉ
+- `organizations` + `organization_members` : **codées** (schema.ts) et **migrées** (migrate.ts Block 14, additif, au boot).
+- Rôles supportés : owner / fleet_admin / driver / broker_viewer / insurer_viewer. status : active/suspended/removed.
+- Unique `(organization_id, user_id)`. `user_id` nullable (prévu pour invitations email futures ; `addMember` exige aujourd'hui un compte existant).
+- **PAS** de `vehicles.organizationId` ce sprint (reporté — garage perso strictement intact).

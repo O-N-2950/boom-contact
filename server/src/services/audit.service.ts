@@ -19,7 +19,12 @@ export type AuditEvent =
   | 'admin.bootstrap'
   | 'session.created'
   | 'session.signed'
-  | 'session.absentPedestrianFilled';
+  | 'session.absentPedestrianFilled'
+  | 'org.created'
+  | 'org.member_added'
+  | 'org.member_role_updated'
+  | 'org.member_removed'
+  | 'org.member_left';
 
 interface AuditParams {
   event: AuditEvent;

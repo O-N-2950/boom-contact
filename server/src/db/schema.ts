@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index, serial } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, jsonb, varchar, integer, boolean, index, serial, uniqueIndex } from 'drizzle-orm/pg-core';
 import type { AccidentData, ParticipantData } from '../../../shared/types/index.js';
 
 // ── JSONB column types for police annotations ────────────────
@@ -312,4 +312,42 @@ export const socialPosts = pgTable('social_posts', {
 }, (t) => ({
   platformIdx: index('social_posts_platform_idx').on(t.platform),
   statusIdx:   index('social_posts_status_idx').on(t.status),
+}));
+
+
+// ── Fleet B2B — Organizations (sprint Fleet Foundation, additif) ──────────────
+// Aucune modification des tables users / vehicles / payments / creditTxns.
+// Le garage personnel et le flow constat ne dépendent pas de ces tables.
+export const organizations = pgTable('organizations', {
+  id:               varchar('id', { length: 20 }).primaryKey(),
+  name:             text('name').notNull(),
+  slug:             varchar('slug', { length: 60 }),
+  plan:             varchar('plan', { length: 20 }).notNull().default('free'),
+  country:          varchar('country', { length: 10 }),
+  createdByUserId:  varchar('created_by_user_id', { length: 20 }).notNull().references(() => users.id),
+  createdAt:        timestamp('created_at').notNull().defaultNow(),
+  updatedAt:        timestamp('updated_at').notNull().defaultNow(),
+  deletedAt:        timestamp('deleted_at'),
+}, (t) => ({
+  createdByIdx: index('organizations_created_by_idx').on(t.createdByUserId),
+}));
+
+// org member roles: 'owner' | 'fleet_admin' | 'driver' | 'broker_viewer' | 'insurer_viewer'
+// status: 'active' | 'suspended' | 'removed'
+export const organizationMembers = pgTable('organization_members', {
+  id:               varchar('id', { length: 20 }).primaryKey(),
+  organizationId:   varchar('organization_id', { length: 20 }).notNull()
+                      .references(() => organizations.id, { onDelete: 'cascade' }),
+  userId:           varchar('user_id', { length: 20 })
+                      .references(() => users.id, { onDelete: 'cascade' }),
+  invitedEmail:     text('invited_email'),
+  role:             varchar('role', { length: 20 }).notNull().default('driver'),
+  status:           varchar('status', { length: 20 }).notNull().default('active'),
+  joinedAt:         timestamp('joined_at'),
+  createdAt:        timestamp('created_at').notNull().defaultNow(),
+  updatedAt:        timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  orgIdx:  index('org_members_org_idx').on(t.organizationId),
+  userIdx: index('org_members_user_idx').on(t.userId),
+  uniq:    uniqueIndex('org_members_org_user_uniq').on(t.organizationId, t.userId),
 }));

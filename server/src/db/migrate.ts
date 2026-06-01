@@ -277,6 +277,38 @@ export async function runMigrations() {
       END $$;
     `);
 
+    // ── Block 14 : Fleet B2B Foundation — organizations + members ───────
+    // Strictement additif. Aucune modification de users/vehicles/payments.
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS organizations (
+        id                  VARCHAR(20) PRIMARY KEY,
+        name                TEXT NOT NULL,
+        slug                VARCHAR(60),
+        plan                VARCHAR(20) NOT NULL DEFAULT 'free',
+        country             VARCHAR(10),
+        created_by_user_id  VARCHAR(20) NOT NULL REFERENCES users(id),
+        created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+        deleted_at          TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS organizations_created_by_idx ON organizations(created_by_user_id);
+
+      CREATE TABLE IF NOT EXISTS organization_members (
+        id               VARCHAR(20) PRIMARY KEY,
+        organization_id  VARCHAR(20) NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+        user_id          VARCHAR(20) REFERENCES users(id) ON DELETE CASCADE,
+        invited_email    TEXT,
+        role             VARCHAR(20) NOT NULL DEFAULT 'driver',
+        status           VARCHAR(20) NOT NULL DEFAULT 'active',
+        joined_at        TIMESTAMP,
+        created_at       TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at       TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE INDEX IF NOT EXISTS org_members_org_idx  ON organization_members(organization_id);
+      CREATE INDEX IF NOT EXISTS org_members_user_idx ON organization_members(user_id);
+      CREATE UNIQUE INDEX IF NOT EXISTS org_members_org_user_uniq ON organization_members(organization_id, user_id);
+    `);
+
     logger.info('✅ DB migrations applied');
   } catch (err: unknown) {
     const code = err && typeof err === 'object' && 'code' in err ? (err as any).code : undefined;

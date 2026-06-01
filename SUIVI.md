@@ -805,3 +805,18 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 ### Quick win APPLIQUÉ (sûr)
 - fleet_cta_clicked câblé sur le CTA B2B de la landing (track + EVENTS déjà importés). Risque nul (additif, consentement-gaté, no PII). Fichier : client/src/pages/LandingPage.tsx. SW v15->v16.
 ### Garanties : webhook Stripe, flow constat, garage perso, auth/crédits, AASA/assetlinks — INTACTS. quality:prestore exit 0, 93 tests, A_BLOCKING=0.
+
+---
+
+## Sprint Fleet B2B Foundation — Organizations + Members + Permission Guards
+**Date** : 2026-05-29
+### Implémenté (backend uniquement, AUCUNE UI publique)
+- Schéma : tables organizations + organization_members (additif, schema.ts).
+- Migration : migrate.ts Block 14 (CREATE TABLE/INDEX IF NOT EXISTS + unique (org,user)), idempotent, exécuté au boot par runMigrations(). Aucune modif users/vehicles/payments/creditTxns.
+- Service organization.service.ts : matrice de permissions PURE (roleCan/canAssignRole/canRemoveRole/isViewerRole) + guards DB (getUserOrganizationRole, assertOrganizationMember/Admin/Owner, canManageOrganizationVehicles, canInviteOrganizationMember) + CRUD (create→owner, listMine, get, listMembers, addMember [user existant], updateMemberRole, removeMember [soft], leave). Protection dernier owner.
+- Router organization.router.ts : 8 routes protectedProcedure, erreurs mappées TRPCError, enregistré dans appRouter.
+- Audit : org.created / member_added / member_role_updated / member_removed / member_left (logAudit, sans PII). AuditEvent étendu.
+- Tests : organization.test.ts — 16 tests (matrice pure + service mock DB). Total suite 93→109.
+### Volontairement NON construit : UI, invitation email (user inexistant), vehicles.organizationId, wallet, PDF multi, dashboard.
+### Garanties anti-régression : webhook Stripe / AASA / assetlinks / users / vehicles / payments / garage perso / flow constat — INTACTS. quality:prestore exit 0, 109 tests, A_BLOCKING=0.
+### Docs : fleet-b2b-implementation-notes.md (nouveau) + MAJ data-model/roadmap/security-review.

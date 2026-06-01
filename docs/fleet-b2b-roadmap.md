@@ -45,3 +45,8 @@ _Mise à jour : 2026-05-29. Voir aussi : mvp-spec, data-model, security-review, 
 - 30 j : 1 org de test fonctionnelle, 0 régression.
 - 90 j : 1 flotte pilote active, PDF multi-destinataires opérationnel, wallet débité correctement.
 - 12 mois : ≥ 1 partenaire intégré, MRR B2B mesurable, funnels B2B alimentés dans PostHog.
+
+---
+
+## MAJ sprint Foundation (2026-05-29)
+**30 jours — point 2 et 3 (partiel) livrés** : migration additive (organizations + organization_members) + service org + guards de permission + routes tRPC + 16 tests. Reste du 30j : `vehicles.organizationId`, garage unifié, sélection véhicule d'org dans le constat, analytics B2B câblés UI.

@@ -76,6 +76,7 @@ import { authRouter } from './auth.router.js';
 import { policeRouter } from './police.router.js';
 import { paymentRouter, userRouter } from './payment.router.js';
 import { vehicleRouter } from './vehicle.router.js';
+import { organizationRouter } from './organization.router.js';
 import { adminRouter, adminDeleteUser, adminSetCredits, adminListUsers, adminCleanupSessions, adminFixOwnerEmails, adminListConstats, adminResendPdf, adminB2BOutreach, marketingRouter } from './admin.router.js';
 
 // Import shared tRPC utilities
@@ -997,6 +998,7 @@ export const appRouter = router({
   police: policeRouter,
   auth: authRouter,
   vehicle: vehicleRouter,
+  organization: organizationRouter,
   admin: adminRouter,
 
   // ── ADMIN MAINTENANCE (top-level procedures) ────────────────────────────────
