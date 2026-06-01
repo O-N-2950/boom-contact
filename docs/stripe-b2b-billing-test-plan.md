@@ -98,3 +98,30 @@ node scripts/verify-org-wallet.mjs <organizationId>
 - `Webhook org already processed, skipping` (idempotence)
 - `Webhook org_credits: metadata manquantes` (anomalie metadata)
 - `credits-granted` / `credit-auto-used` (flux personnel — doit rester inchangé)
+
+---
+## ✅ EXÉCUTION RÉELLE (2026-06-01) — moitié serveur de la boucle prouvée
+
+**Approche retenue** : pas de staging dédié ni de navigateur disponibles ⇒ test d'intégration **réel** contre une **vraie base PostgreSQL locale** (PG 16), avec **vérification de signature Stripe réelle** (`stripe.webhooks.generateTestHeaderString`), exécutant le **vrai** `handleStripeWebhook` + `runMigrations`, puis **rejeu** du même event.
+
+**Fichier** : `server/src/__tests__/stripeWebhookOrg.integration.test.ts` (gardé par `RUN_DB_IT=1`, sauté en CI/quality:prestore).
+
+**Lancement** :
+```bash
+# 1) Postgres local (PG 16) sur :5432, role/base "test" (config vitest)
+initdb -D /tmp/pgdata -A trust && pg_ctl -D /tmp/pgdata -o '-p 5432' start
+psql -p 5432 -U postgres -c "CREATE ROLE test LOGIN PASSWORD 'test' SUPERUSER; CREATE DATABASE test OWNER test;"
+# 2) Test d'intégration réel
+RUN_DB_IT=1 STRIPE_WEBHOOK_SECRET=whsec_local_test STRIPE_SECRET_KEY=sk_test_dummy \
+  npx vitest run server/src/__tests__/stripeWebhookOrg.integration.test.ts
+```
+
+**Résultats prouvés (logs réels)** :
+- `Org wallet credited from purchase … balanceAfter=10` → wallet org crédité (vraie écriture DB).
+- 1 ligne `wallet_transactions` (purchase, balance_after=10, related_payment_id=session) ; `payments.status='paid'`.
+- **Rejeu** du même event → `Webhook org already processed, skipping` ; solde inchangé (10) ; toujours **une seule** transaction → idempotence RÉELLE prouvée.
+- Event **personnel** (sans `kind=org_credits`) → `credits-granted` ; `users.credits=1` ; **aucune** transaction wallet → flux perso intact.
+- Signature invalide → rejet (`signature invalide`).
+- Vérif DB indépendante : `node scripts/verify-org-wallet.mjs <orgId>` → solde + transactions + contrôle doublon + paiements.
+
+**Ce qui reste à valider manuellement (hors sandbox)** : la moitié **hébergée par Stripe** — clic réel sur Checkout, paiement carte `4242…`, et **livraison réelle du webhook par Stripe** vers `/webhook/stripe` en mode test (clés `sk_test`/`whsec` test). C'est de la configuration (endpoint + métadonnées propagées par Stripe), la logique serveur étant désormais prouvée de bout en bout.

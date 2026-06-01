@@ -85,3 +85,7 @@ _Mise à jour : 2026-05-29. Ce qui est réellement codé vs ce qui reste._
 ---
 ## MAJ QA Stripe B2B (2026-05-29)
 - Webhook prouvé par test du vrai handler (mock Stripe SDK + db) : routage org/perso, isolation, idempotence, signature. createOrgCheckout metadata validée. Voir docs/stripe-b2b-billing-test-plan.md + scripts/verify-org-wallet.mjs.
+
+---
+## MAJ exécution réelle (2026-06-01)
+Test d'intégration réel exécuté : vrai handleStripeWebhook + vraie base PostgreSQL + vraie signature Stripe + rejeu. Idempotence org RÉELLE prouvée (pas de double crédit), flux perso intact, signature invalide rejetée. Voir docs/stripe-b2b-billing-test-plan.md. Reste : Checkout hébergé Stripe + livraison webhook réelle (clés test) à valider manuellement.

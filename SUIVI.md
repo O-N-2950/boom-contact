@@ -877,3 +877,15 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Audit : route webhook = POST /webhook/stripe ; prod = clés LIVE → test réel à faire en MODE TEST séparé. analytics fleet_wallet_credit_added consentement-gaté.
 ### Aucun bug trouvé. Aucune modification du webhook perso (code runtime inchangé ce sprint). Aucune migration. quality:prestore à valider.
 ### RESTE : exécuter l'aller-retour Stripe réel en mode test (Olivier, hors sandbox) avant vente B2B / stores.
+
+---
+
+## Sprint Stripe B2B Test Execution — Real Test Mode (2026-06-01)
+### Exécuté RÉELLEMENT (moitié serveur de la boucle)
+- Postgres 16 local + vrai handleStripeWebhook + vraie signature Stripe (generateTestHeaderString) + runMigrations + rejeu.
+- Test : server/src/__tests__/stripeWebhookOrg.integration.test.ts (3, gardé RUN_DB_IT=1 → skipped en CI).
+- PROUVÉ : wallet org crédité (balanceAfter=10), 1 txn purchase, payments paid ; REJEU → skip + solde inchangé + 1 seule txn (idempotence réelle) ; event perso → users.credits=1 sans txn wallet (perso intact) ; signature invalide rejetée.
+- Script scripts/verify-org-wallet.mjs réécrit en postgres.js (dépendance projet), testé lecture seule contre la vraie base.
+- quality:prestore exit 0 : 144 passés + 3 skipped (intégration), A_BLOCKING=0. Aucun code runtime modifié (test+script+docs).
+### RESTE (hors sandbox) : Checkout HÉBERGÉ Stripe + livraison webhook réelle en mode test (clés sk_test/whsec test) — config, à valider par Olivier avant vente B2B / stores.
+### Aucun bug trouvé. Webhook live non touché.
