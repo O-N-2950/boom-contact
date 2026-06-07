@@ -989,3 +989,12 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Secrets GitHub** posés (7) : JELASTIC_TOKEN/ENV_NAME/HEALTH_HOST + VITE_*.
 - **Prod Railway : AUCUNE modification** (lectures seules).
 - **Prochaines étapes** : J-1 = dump/restore à blanc (⚠️ nécessite activation du TCP proxy public sur le service PostgreSQL Railway — accord Olivier requis) + 2e endpoint webhook Stripe vers Jelastic. J0 = dump final + bascule DNS (TTL 300s la veille) + SSL Let's Encrypt. J+7 = coupure Railway.
+
+## Migration Jelastic — Phase J-1 EXÉCUTÉE (2026-06-08, « OK proxy »)
+- **TCP proxy Railway activé** sur le service PostgreSQL (`acela.proxy.rlwy.net:16304`) — unique modification Railway, réversible, à supprimer après J0.
+- ⚠️ Constat : le Postgres Railway n'a pas SSL → dump via proxy en clair (standard Railway). Risque accepté et minimisé : fenêtre de quelques secondes, base early-stage, flux direct Railway→nœud sqldb Jelastic (aucun tiers), dump supprimé après restore.
+- **Dump/restore exécuté SUR le nœud sqldb Jelastic** : dump 3.2 MB, restore 0 erreur.
+- **Parité données prouvée par count(*) exacts** : sessions 254/254 · users 6/6 · payments 10/10 · credit_txns 4/4 · vehicles 2/2 · audit_log 12/12 · organizations 0/0. (n_live_tup s'était révélé non fiable côté source — stats collector remis à zéro.)
+- **Post-restore** : cp redémarré, `/health` 200, `database:{ok:true}`, landing//privacy//cgu/assetlinks 200.
+- **boom-contact-prod (Suisse) = copie fonctionnelle de la prod avec données réelles.**
+- Reste avant J0 : QA device Olivier sur le domaine technique · 2e endpoint webhook Stripe (confirmation Olivier) · TTL DNS 300s la veille · à J0 : dump final delta + bascule DNS + SSL Let's Encrypt.
