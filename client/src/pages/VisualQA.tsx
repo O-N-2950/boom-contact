@@ -97,23 +97,59 @@ function ScreenshotMarketing({ screenKey }: { screenKey: ScreenKey }) {
   }
 
   const title = MARKETING_TITLES[screenKey];
+  const caption = MARKETING_CAPTIONS[screenKey];
+  // Échelle dynamique : on mesure la hauteur naturelle du mockup et l'espace disponible,
+  // puis on scale pour remplir ~96% de la hauteur, borné à ~82% de la largeur (look App Store).
+  const headerRef = React.useRef<HTMLDivElement | null>(null);
+  const phoneRef = React.useRef<HTMLDivElement | null>(null);
+  const [phoneScale, setPhoneScale] = React.useState(1);
+  React.useLayoutEffect(() => {
+    const header = headerRef.current, phone = phoneRef.current;
+    if (!header || !phone) return;
+    const gap = window.innerHeight * 0.04; // espace texte↔phone
+    const availH = window.innerHeight - header.offsetHeight - gap - window.innerHeight * 0.06; // marges bloc
+    const naturalH = phone.offsetHeight || 1;
+    const byHeight = availH / naturalH;
+    const byWidth = (window.innerWidth * 0.90) / 420;
+    setPhoneScale(Math.max(1, Math.min(byHeight, byWidth)));
+  }, [screenKey]);
+  // Le wrapper réserve la hauteur SCALÉE (transform ne change pas le layout) → centrage exact du bloc.
+  const scaledH = (phoneRef.current?.offsetHeight || 0) * phoneScale;
   return (
-    <div style={fullPageGradient}>
-      <div style={{ flex: '0 0 auto', padding: '7vh 8vw 3vh', textAlign: 'center' }}>
-        <h1 style={titleStyle}>{title.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
+    <div style={{ ...fullPageGradient, height: '100vh', overflow: 'hidden', justifyContent: 'center' }}>
+      <div ref={headerRef} style={{ flex: '0 0 auto', padding: '0 6vw', textAlign: 'center' }}>
+        <h1 style={{ ...titleStyle, fontSize: 'clamp(28px, 6.4vw, 96px)' }}>{title.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
+        {caption && (
+          <p style={{ margin: '2.2vh 0 0', fontFamily: 'Manrope, system-ui, sans-serif', fontWeight: 600, fontSize: 'clamp(15px, 2.5vw, 38px)', color: 'var(--muted, #5D6B7C)', letterSpacing: '-0.01em' }}>
+            {caption}
+          </p>
+        )}
       </div>
-      <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '0 8vw', minHeight: 0 }}>
-        <PhoneMarketing screenKey={screenKey} />
+      <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', marginTop: '4vh', height: scaledH || undefined }}>
+        <div ref={phoneRef} style={{ transform: `scale(${phoneScale})`, transformOrigin: 'top center' }}>
+          <PhoneMarketing screenKey={screenKey} />
+        </div>
       </div>
-      <BrandMark />
     </div>
   );
 }
 
+// Sous-textes marketing (cf. docs/store-screenshot-copy-fr-en.md — wording validé prudent)
+const MARKETING_CAPTIONS: Record<Exclude<ScreenKey, 'store'>, string> = {
+  intro:     'Étape par étape, en toute clarté.',
+  qr:        "Jusqu'à 5 véhicules. Chacun son QR.",
+  voice:     "À l'oral ou en texte — comme vous préférez.",
+  photo:     'Vue, dégâts, plaque, lieu, documents.',
+  signature: 'Canvas blanc, encre nette, signé localement.',
+  pdf:       'Packs 1 / 3 / 10 — paiement sécurisé.',
+  done:      'Téléchargement direct ou email.',
+  emergency: '112 · 144 · 117 toujours accessibles.',
+};
+
 const fullPageGradient: React.CSSProperties = {
   minHeight: '100vh',
   width: '100%',
-  background: 'linear-gradient(180deg, #F5F8FC 0%, #EEF4FA 100%)',
+  background: 'linear-gradient(180deg, #F7FAFD 0%, #E3EDF7 100%)',
   color: 'var(--text)',
   fontFamily: 'Manrope, system-ui, sans-serif',
   display: 'flex',
