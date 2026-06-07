@@ -1,0 +1,61 @@
+# Déploiement Infomaniak Jelastic — DÉSACTIVÉ (retirer le suffixe .disabled pour activer)
+# Build l'image Docker (même Dockerfile que Railway) → push GHCR → redeploy du nœud cp Jelastic.
+# Secrets GitHub requis : JELASTIC_TOKEN, JELASTIC_ENV_NAME (ex: boom-contact-prod)
+# + (optionnel build args analytics) VITE_POSTHOG_KEY, VITE_POSTHOG_HOST, VITE_GA4_ID, VITE_SENTRY_DSN
+name: Deploy Jelastic (CH)
+on:
+  workflow_dispatch: {}        # déclenchement MANUEL uniquement pendant la phase de migration
+  # push: { branches: [main] } # à activer après bascule définitive
+
+env:
+  IMAGE: ghcr.io/o-n-2950/boom-contact
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push (même Dockerfile que Railway — parité totale)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+          build-args: |
+            VITE_POSTHOG_KEY=${{ secrets.VITE_POSTHOG_KEY }}
+            VITE_POSTHOG_HOST=${{ secrets.VITE_POSTHOG_HOST }}
+            VITE_GA4_ID=${{ secrets.VITE_GA4_ID }}
+            VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
+
+      - name: Redeploy nœud cp Jelastic (image :latest)
+        run: |
+          set -euo pipefail
+          R=$(curl -s "https://app.jpc.infomaniak.com/1.0/environment/control/rest/redeploycontainersbygroup" \
+            --data-urlencode "session=${{ secrets.JELASTIC_TOKEN }}" \
+            --data-urlencode "envName=${{ secrets.JELASTIC_ENV_NAME }}" \
+            --data-urlencode "nodeGroup=cp" \
+            --data-urlencode "tag=latest" \
+            --data-urlencode "useExistingVolumes=true")
+          echo "$R"
+          echo "$R" | grep -q '"result":0' || { echo "❌ redeploy Jelastic échoué"; exit 1; }
+
+      - name: Healthcheck post-deploy
+        run: |
+          sleep 25
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 10 "https://${{ secrets.JELASTIC_HEALTH_HOST }}/health") && \
+            [ "$code" = "200" ] && echo "✅ /health 200" && exit 0
+            sleep 15
+          done
+          echo "❌ /health KO après 5 tentatives"; exit 1
