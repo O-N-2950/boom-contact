@@ -20,13 +20,14 @@ const DEMO = {
   place: 'Lausanne, Suisse',
 };
 
-type ScreenKey = 'intro' | 'qr' | 'voice' | 'photo' | 'signature' | 'pdf' | 'done' | 'emergency' | 'store';
+type ScreenKey = 'intro' | 'qr' | 'voice' | 'photo' | 'map' | 'signature' | 'pdf' | 'done' | 'emergency' | 'store';
 
 const MARKETING_TITLES: Record<Exclude<ScreenKey, 'store'>, string> = {
   intro:     'Documentez un accident\nen quelques minutes',
   qr:        'Invitez les participants\npar QR',
   voice:     'Ajoutez photos, voix\net informations utiles',
   photo:     'Ajoutez photos, voix\net informations utiles',
+  map:       "Situez l'accident\nsur le plan",
   signature: 'Signez votre déclaration\nen toute clarté',
   pdf:       'Générez un dossier PDF\nhorodaté',
   done:      'À transmettre\nà votre assureur',
@@ -68,7 +69,7 @@ export default function VisualQA() {
     try {
       const k = new URLSearchParams(window.location.search).get('screenshot');
       if (!k) return null;
-      const valid: ScreenKey[] = ['intro', 'qr', 'voice', 'photo', 'signature', 'pdf', 'done', 'emergency', 'store'];
+      const valid: ScreenKey[] = ['intro', 'qr', 'voice', 'photo', 'map', 'signature', 'pdf', 'done', 'emergency', 'store'];
       return (valid as string[]).includes(k) ? (k as ScreenKey) : null;
     } catch { return null; }
   });
@@ -140,6 +141,7 @@ const MARKETING_CAPTIONS: Record<Exclude<ScreenKey, 'store'>, string> = {
   qr:        "Jusqu'à 5 véhicules. Chacun son QR.",
   voice:     "À l'oral ou en texte — comme vous préférez.",
   photo:     'Vue, dégâts, plaque, lieu, documents.',
+  map:       'Croquis : positionnez les véhicules.',
   signature: 'Canvas blanc, encre nette, signé localement.',
   pdf:       'Packs 1 / 3 / 10 — paiement sécurisé.',
   done:      'Téléchargement direct ou email.',
@@ -333,6 +335,68 @@ function renderScreen(key: Exclude<ScreenKey, 'store'> | string): React.ReactNod
             ))}
           </div>
           <button style={ctaStyle}>Continuer</button>
+        </div>
+      );
+
+    case 'map':
+      return (
+        <div style={cardStyle}>
+          <div style={lblStyle}>Lieu · Croquis</div>
+          <div style={h2Style}>Positionnez les véhicules</div>
+          <p style={{ ...mutStyle, margin: '8px 0 12px' }}>Glissez chaque véhicule sur le plan pour situer la collision.</p>
+          <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', marginBottom: 12 }}>
+            <svg viewBox="0 0 384 250" style={{ display: 'block', width: '100%' }} role="img" aria-label="Plan de l'accident">
+              <rect width="384" height="250" fill="#F2F6F9" />
+              {/* blocs bâtiments */}
+              <rect x="14" y="14" width="120" height="74" rx="8" fill="#E3EBF4" />
+              <rect x="252" y="14" width="118" height="74" rx="8" fill="#E3EBF4" />
+              <rect x="14" y="166" width="120" height="70" rx="8" fill="#E3EBF4" />
+              <rect x="252" y="166" width="118" height="70" rx="8" fill="#E3EBF4" />
+              {/* routes */}
+              <rect x="0" y="96" width="384" height="62" fill="#FFFFFF" stroke="#D8E2EC" />
+              <rect x="148" y="0" width="92" height="250" fill="#FFFFFF" stroke="#D8E2EC" />
+              <line x1="0" y1="127" x2="140" y2="127" stroke="#C7D4E2" strokeWidth="2.5" strokeDasharray="12 10" />
+              <line x1="248" y1="127" x2="384" y2="127" stroke="#C7D4E2" strokeWidth="2.5" strokeDasharray="12 10" />
+              <line x1="194" y1="0" x2="194" y2="88" stroke="#C7D4E2" strokeWidth="2.5" strokeDasharray="12 10" />
+              <line x1="194" y1="168" x2="194" y2="250" stroke="#C7D4E2" strokeWidth="2.5" strokeDasharray="12 10" />
+              {/* parc (coin haut-gauche) */}
+              <rect x="14" y="14" width="120" height="74" rx="8" fill="#E2EFE0" />
+              <circle cx="44" cy="42" r="11" fill="#CDE3CB" />
+              <circle cx="78" cy="60" r="13" fill="#CDE3CB" />
+              <circle cx="106" cy="34" r="9" fill="#CDE3CB" />
+              {/* véhicule A (orange) arrivant par la gauche */}
+              <g transform="translate(108,107)">
+                <rect x="6" y="-3" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="46" y="-3" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="6" y="27" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="46" y="27" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect width="64" height="30" rx="9" fill="var(--boom, #FF6B1A)" />
+                <rect x="38" y="4" width="14" height="22" rx="4" fill="#FFD7BF" opacity="0.95" />
+                <text x="20" y="21" fontSize="16" fontWeight="800" fill="#FFFFFF" fontFamily="Manrope, sans-serif" textAnchor="middle">A</text>
+              </g>
+              {/* véhicule B (navy) descendant, tourné vers A */}
+              <g transform="translate(196,58) rotate(78)">
+                <rect x="6" y="-3" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="46" y="-3" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="6" y="27" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect x="46" y="27" width="11" height="6" rx="2" fill="#0F2233" opacity="0.5" />
+                <rect width="64" height="30" rx="9" fill="#123A5A" />
+                <rect x="38" y="4" width="14" height="22" rx="4" fill="#BBD7EA" opacity="0.95" />
+                <text x="20" y="21" fontSize="16" fontWeight="800" fill="#FFFFFF" fontFamily="Manrope, sans-serif" textAnchor="middle" transform="rotate(-78 20 15)">B</text>
+              </g>
+              {/* point d'impact */}
+              <circle cx="183" cy="122" r="16" fill="#DC2626" opacity="0.14" />
+              <circle cx="183" cy="122" r="6.5" fill="#DC2626" />
+              <circle cx="183" cy="122" r="2.6" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderRadius: 10, background: 'var(--card2)', border: '1px solid var(--border)', fontSize: 13, color: 'var(--text)', marginBottom: 12 }}>
+            <span>📍</span><span>Avenue de la Gare 12, 1003 Lausanne</span>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ ...ctaStyle, flex: 1 }}>Plan</button>
+            <button style={{ flex: 1, padding: '12px 0', borderRadius: 12, border: '1px solid var(--border)', background: '#FFFFFF', color: 'var(--muted)', fontWeight: 700, fontSize: 14, fontFamily: 'inherit' }}>Satellite</button>
+          </div>
         </div>
       );
 

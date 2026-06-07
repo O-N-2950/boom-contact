@@ -26,7 +26,7 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 type Viewport = { name: string; width: number; height: number; deviceScaleFactor?: number };
-type ScreenKey = 'intro' | 'qr' | 'voice' | 'photo' | 'signature' | 'pdf' | 'done' | 'emergency' | 'store';
+type ScreenKey = 'intro' | 'qr' | 'voice' | 'photo' | 'map' | 'signature' | 'pdf' | 'done' | 'emergency' | 'store';
 
 const ALL_VIEWPORTS: Viewport[] = [
   // Priorité
@@ -38,7 +38,7 @@ const ALL_VIEWPORTS: Viewport[] = [
   { name: 'android-tab',  width: 1440, height: 2560, deviceScaleFactor: 1 }, // Android phablet/tab
 ];
 
-const ALL_SCREENS: ScreenKey[] = ['intro', 'qr', 'voice', 'photo', 'signature', 'pdf', 'done', 'emergency', 'store'];
+const ALL_SCREENS: ScreenKey[] = ['intro', 'qr', 'voice', 'photo', 'map', 'signature', 'pdf', 'done', 'emergency', 'store'];
 
 const BASE_URL = (process.env.BASE_URL || 'https://www.boom.contact').replace(/\/$/, '');
 const OUT_DIR  = join(process.cwd(), 'artifacts', 'store-screenshots');
