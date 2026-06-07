@@ -977,3 +977,15 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - Docs QA : android-internal-tester-instructions.md (lien réel + parcours), android-internal-feedback-template.md, android-internal-qa-report.md (triage P0/P1/P2/P3 + GO/NO-GO).
 - **Prochaine étape : QA device** (récent + milieu de gamme + Android 8/9 ancien). Bump versionCode + quality:prestore obligatoires avant tout build correctif.
 - iOS/TestFlight : pipeline prêt, en attente clé ASC + lancement.
+
+---
+
+## Migration Jelastic — Phase J-2 EXÉCUTÉE (2026-06-07, GO Olivier)
+- **Image GHCR** : `ghcr.io/o-n-2950/boom-contact:latest` construite par GitHub Actions (workflow `deploy-jelastic.yml`, manuel, input deploy=false) — même Dockerfile que Railway, parité canvas/Chromium.
+- **Env Jelastic créé** : `boom-contact-prod` → `boom-contact-prod.jcloud-ver-jpc.ik-server.com` (DC suisse, même que swissrh-prod). Topologie : bl nginx + cp Docker (2-12 cloudlets) + sqldb postgres16 (1-6).
+- **DB** : rôle `boom` + base `boom_contact` provisionnés ; connexion réseau interne validée ; **16 tables créées automatiquement par runMigrations au boot**.
+- **27 vars d'env** posées sur cp (copie Railway sans RAILWAY_*, CLIENT_URL=https://www.boom.contact, DATABASE_URL interne Jelastic).
+- **Smoke tests** : `/health` 200 · `/api/monitor/health` → `database:{ok:true}, stripe:{ok:true}` **identique à Railway** · AASA + assetlinks **identiques octet-à-octet** à Railway ✅.
+- **Secrets GitHub** posés (7) : JELASTIC_TOKEN/ENV_NAME/HEALTH_HOST + VITE_*.
+- **Prod Railway : AUCUNE modification** (lectures seules).
+- **Prochaines étapes** : J-1 = dump/restore à blanc (⚠️ nécessite activation du TCP proxy public sur le service PostgreSQL Railway — accord Olivier requis) + 2e endpoint webhook Stripe vers Jelastic. J0 = dump final + bascule DNS (TTL 300s la veille) + SSL Let's Encrypt. J+7 = coupure Railway.
