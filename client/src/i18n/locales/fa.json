@@ -22,7 +22,7 @@
       "line3": "LE",
       "line4": "CONTACT"
     },
-    "subtitle": "Constat numérique en 5 minutes. OCR universel, QR code partagé, PDF mondial instantané.",
+    "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
       "start": "شروع گزارش تصادف",
       "pricing": "Voir les tarifs →",
@@ -87,7 +87,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universel",
+          "title": "OCR multi-langues",
           "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
         },
         {
@@ -133,7 +133,7 @@
       ]
     },
     "coverage": {
-      "label": "Couverture mondiale",
+      "label": "Multilingue",
       "title": "De la Suisse à la Chine",
       "more": "+ 30 autres pays · Support RTL intégré"
     },

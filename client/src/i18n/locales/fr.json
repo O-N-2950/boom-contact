@@ -25,7 +25,7 @@
       "title": "Documentez un accident sans papier, sans confusion.",
       "subtitle": "boom.contact vous guide étape par étape pour collecter les informations utiles, ajouter photos, localisation, déclarations et signatures, puis générer un dossier PDF horodaté à transmettre à votre assureur."
     },
-    "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR universel, QR code partagé, double signature digitale, PDF horodaté.",
+    "subtitle": "Remplis ton constat amiable numérique en 5 minutes. OCR multi-langues, QR code partagé, double signature digitale, PDF horodaté.",
     "cta": {
       "start": "Commencer un constat",
       "pricing": "Voir les tarifs →",
@@ -90,7 +90,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universel",
+          "title": "OCR multi-langues",
           "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
         },
         {
@@ -136,7 +136,7 @@
       ]
     },
     "coverage": {
-      "label": "Couverture mondiale",
+      "label": "Multilingue",
       "title": "De la Suisse à la Chine",
       "more": "+ 30 autres pays · Support RTL intégré"
     },
@@ -153,7 +153,7 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
     },
-    "seoLine": "Le constat amiable numérique mondial · Digital accident report"
+    "seoLine": "Le constat amiable numérique multilingue · Digital accident report"
   },
   "steps": {
     "scan": "Scan",

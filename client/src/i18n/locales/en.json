@@ -25,7 +25,7 @@
       "title": "Document an accident — no paper, no confusion.",
       "subtitle": "boom.contact guides you step by step to collect the useful information, add photos, location, statements and signatures, then generate a timestamped PDF file to send to your insurer."
     },
-    "subtitle": "Complete your digital accident report in 5 minutes. Universal OCR, shared QR code, dual digital signature, timestamped PDF.",
+    "subtitle": "Complete your digital accident report in 5 minutes. Multi-language OCR, shared QR code, dual digital signature, timestamped PDF.",
     "cta": {
       "start": "Start a report",
       "pricing": "View pricing →",
@@ -90,7 +90,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "Universal OCR",
+          "title": "Multi-language OCR",
           "desc": "Claude Vision reads your documents in 50+ languages. Registration certificate, RC Book, 行驶证 — zero manual entry."
         },
         {
@@ -136,7 +136,7 @@
       ]
     },
     "coverage": {
-      "label": "Global coverage",
+      "label": "Multilingual",
       "title": "From Switzerland to China",
       "more": "+ 30 other countries · Integrated RTL support"
     },
@@ -153,7 +153,7 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Switzerland"
     },
-    "seoLine": "The worldwide digital accident report · Constat amiable numérique"
+    "seoLine": "The multilingual digital accident report · Constat amiable numérique"
   },
   "steps": {
     "scan": "Scan",
@@ -349,7 +349,7 @@
     "cgu_sections": [
       {
         "title": "1. Purpose",
-        "text": "boom.contact is a digital service published by PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Switzerland. It enables the creation of digital amicable accident reports, usable worldwide."
+        "text": "boom.contact is a digital service published by PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Switzerland. It enables the creation of digital amicable accident reports, to be sent to your insurer."
       },
       {
         "title": "2. Acceptance",

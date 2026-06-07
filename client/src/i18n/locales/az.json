@@ -22,7 +22,7 @@
       "line3": "ƏLAQƏ",
       "line4": "QURUN"
     },
-    "subtitle": "Rəqəmsal qəza hesabatını 5 dəqiqədə tamamlayın. Universal OCR, paylaşılan QR kod, ikili rəqəmsal imza, vaxt damğalı PDF.",
+    "subtitle": "Rəqəmsal qəza hesabatını 5 dəqiqədə tamamlayın. Multi-language OCR, paylaşılan QR kod, ikili rəqəmsal imza, vaxt damğalı PDF.",
     "cta": {
       "start": "Qəza protokolunu başlat",
       "pricing": "Qiymətlərə baxın →",
@@ -87,7 +87,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "Universal OCR",
+          "title": "Multi-language OCR",
           "desc": "Claude Vision sənədlərinizi 50+ dildə oxuyur. Qeydiyyat şəhadətnaməsi, RC Book, 行驶证 — sıfır əl ilə daxiletmə."
         },
         {

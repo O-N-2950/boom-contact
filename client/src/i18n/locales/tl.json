@@ -23,7 +23,7 @@
       "line3": "MABILIS",
       "line4": "NA ULAT"
     },
-    "subtitle": "Digital na ulat ng aksidente sa loob ng 5 minuto. Universal OCR, QR code, mabilis na PDF para sa buong mundo.",
+    "subtitle": "Digital na ulat ng aksidente sa loob ng 5 minuto. Multi-language OCR, QR code, mabilis na PDF para sa buong mundo.",
     "cta": {
       "start": "Magsimula ng ulat",
       "pricing": "Tingnan ang presyo →",
@@ -88,7 +88,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "Universal OCR",
+          "title": "Multi-language OCR",
           "desc": "Binabasa ng Claude Vision ang iyong mga dokumento sa 50+ wika. Walang manual na pagpasok."
         },
         {

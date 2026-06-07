@@ -25,7 +25,7 @@
       "title": "Documenta un incidente senza carta, senza confusione.",
       "subtitle": "boom.contact ti guida passo dopo passo per raccogliere le informazioni utili, aggiungere foto, posizione, dichiarazioni e firme, quindi generare un dossier PDF con marca temporale da trasmettere alla tua assicurazione."
     },
-    "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR universale, QR code condiviso, doppia firma digitale, PDF con marca temporale.",
+    "subtitle": "Completa la tua constatazione amichevole digitale in 5 minuti. OCR multilingue, QR code condiviso, doppia firma digitale, PDF con marca temporale.",
     "cta": {
       "start": "Avvia una constatazione",
       "pricing": "Vedi i prezzi →",
@@ -90,7 +90,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "OCR universale",
+          "title": "OCR multilingue",
           "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — zero inserimento manuale."
         },
         {
@@ -136,7 +136,7 @@
       ]
     },
     "coverage": {
-      "label": "Copertura mondiale",
+      "label": "Multilingue",
       "title": "Dalla Svizzera alla Cina",
       "more": "+ 30 altri paesi · Supporto RTL integrato"
     },
@@ -153,7 +153,7 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Svizzera"
     },
-    "seoLine": "La constatazione amichevole digitale mondiale · Digital accident report"
+    "seoLine": "La constatazione amichevole digitale multilingue · Digital accident report"
   },
   "steps": {
     "scan": "Scansione",
@@ -349,7 +349,7 @@
     "cgu_sections": [
       {
         "title": "1. Oggetto",
-        "text": "boom.contact è un servizio digitale pubblicato da PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Consente la creazione di constatazioni amichevoli di incidente digitali, utilizzabili in tutto il mondo."
+        "text": "boom.contact è un servizio digitale pubblicato da PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Giura, Svizzera. Consente la creazione di constatazioni amichevoli di incidente digitali, da trasmettere al proprio assicuratore."
       },
       {
         "title": "2. Accettazione",

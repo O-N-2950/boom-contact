@@ -109,7 +109,7 @@ export function B2BPage({ onBack }: Props) {
                 icon: '🚗',
               },
               {
-                title: 'Global coverage',
+                title: 'Multilingual',
                 desc: 'Multilingual including RTL (Arabic, Hebrew). Emergency numbers for every country. Works offline (PWA).',
                 icon: '🌐',
               },

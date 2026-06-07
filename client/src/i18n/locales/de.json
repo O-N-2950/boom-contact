@@ -25,7 +25,7 @@
       "title": "Dokumentieren Sie einen Unfall — ohne Papier, ohne Verwirrung.",
       "subtitle": "boom.contact führt Sie Schritt für Schritt: nützliche Informationen erfassen, Fotos, Standort, Angaben und Unterschriften hinzufügen und anschließend eine zeitgestempelte PDF-Akte für Ihre Versicherung erstellen."
     },
-    "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Universelle OCR, geteilter QR-Code, doppelte digitale Unterschrift, zeitgestempeltes PDF.",
+    "subtitle": "Füllen Sie Ihren digitalen Unfallbericht in 5 Minuten aus. Mehrsprachige OCR, geteilter QR-Code, doppelte digitale Unterschrift, zeitgestempeltes PDF.",
     "cta": {
       "start": "Protokoll starten",
       "pricing": "Preise ansehen →",
@@ -90,7 +90,7 @@
       "list": [
         {
           "icon": "📸",
-          "title": "Universelle OCR",
+          "title": "Mehrsprachige OCR",
           "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugschein, RC Book, 行驶证 — null manuelle Eingabe."
         },
         {
@@ -136,7 +136,7 @@
       ]
     },
     "coverage": {
-      "label": "Weltweite Abdeckung",
+      "label": "Mehrsprachig",
       "title": "Von der Schweiz bis nach China",
       "more": "+ 30 weitere Länder · Integrierter RTL-Support"
     },
@@ -153,7 +153,7 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Schweiz"
     },
-    "seoLine": "Der digitale Unfallbericht weltweit · Digital accident report"
+    "seoLine": "Der mehrsprachige digitale Unfallbericht · Digital accident report"
   },
   "steps": {
     "scan": "Scan",
@@ -349,7 +349,7 @@
     "cgu_sections": [
       {
         "title": "1. Gegenstand",
-        "text": "boom.contact ist ein digitaler Dienst von PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. Er ermöglicht die Erstellung digitaler Unfallprotokolle, weltweit nutzbar."
+        "text": "boom.contact ist ein digitaler Dienst von PEP's Swiss SA, Bellevue 7, 2950 Courgenay, Jura, Schweiz. Er ermöglicht die Erstellung digitaler Unfallprotokolle zur Übermittlung an Ihre Versicherung."
       },
       {
         "title": "2. Annahme",
