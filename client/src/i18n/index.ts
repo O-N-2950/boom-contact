@@ -155,7 +155,8 @@ i18n
       caches: ['localStorage'],
     },
     interpolation: { escapeValue: false },
-    parseMissingKeyHandler: (key) => `[${key}]`,
+    // Si un defaultValue est fourni au t(), l'afficher ; sinon la clé nue (jamais de [crochets] visibles en prod).
+    parseMissingKeyHandler: (key, defaultValue) => defaultValue ?? key,
   });
 
 // Eagerly load the detected language if not a core locale

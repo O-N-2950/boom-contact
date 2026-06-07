@@ -152,13 +152,15 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── NAV ─────────────────────────────────────────────── */}
       <header>
         <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box', padding: `16px ${padX}px`, maxWidth: 1180, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="/logo.webp" alt="boom.contact" style={{ width: isDesktop ? 50 : 40, height: isDesktop ? 50 : 40, objectFit: 'contain', display: 'block' }} />
-            <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: C.text }}>
-              <span style={{ color: C.orange }}>boom</span><span style={{ color: C.textSec }}>.contact</span>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <img src="/logo.webp" alt="boom.contact" style={{ width: isDesktop ? 50 : 48, height: isDesktop ? 50 : 48, objectFit: 'contain', display: 'block' }} />
+            {isDesktop && (
+              <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: C.text }}>
+                <span style={{ color: C.orange }}>boom</span><span style={{ color: C.textSec }}>.contact</span>
+              </div>
+            )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 12 : 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 12 : 6, minWidth: 0 }}>
             {isDesktop && <span style={{ fontSize: 11, fontWeight: 700, color: C.navy, border: `1px solid ${C.border}`, background: C.card, borderRadius: 20, padding: '5px 12px' }}>RGPD · nLPD</span>}
             <LanguageSwitcher compact />
             {authUser ? (
