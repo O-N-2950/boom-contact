@@ -852,5 +852,14 @@
     "emergency": {
       "title": "Numeri di emergenza"
     }
+  },
+  "join": {
+    "sessionLabel": "Sessione",
+    "yourEmail": "La tua email",
+    "emailHint": "(per ricevere il PDF)",
+    "emailAria": "Il tuo indirizzo email",
+    "connecting": "Connessione…",
+    "connected": "Connesso! Avvio…",
+    "joinButton": "Unisciti al rapporto"
   }
 }

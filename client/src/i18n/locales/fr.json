@@ -1016,5 +1016,14 @@
     "emergency": {
       "title": "Numéros d'urgence"
     }
+  },
+  "join": {
+    "sessionLabel": "Session",
+    "yourEmail": "Votre email",
+    "emailHint": "(pour recevoir le PDF)",
+    "emailAria": "Votre adresse email",
+    "connecting": "Connexion…",
+    "connected": "Connecté ! Démarrage…",
+    "joinButton": "Rejoindre le constat"
   }
 }

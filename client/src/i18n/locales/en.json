@@ -1016,5 +1016,14 @@
     "emergency": {
       "title": "Emergency numbers"
     }
+  },
+  "join": {
+    "sessionLabel": "Session",
+    "yourEmail": "Your email",
+    "emailHint": "(to receive the PDF)",
+    "emailAria": "Your email address",
+    "connecting": "Connecting…",
+    "connected": "Connected! Starting…",
+    "joinButton": "Join the report"
   }
 }

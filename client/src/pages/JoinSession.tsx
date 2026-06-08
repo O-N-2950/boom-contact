@@ -323,7 +323,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       {/* Session badge */}
       {sessionId && (
         <div className="rounded-xl text-center mb-6 px-5 py-4" style={{ background: 'rgba(255,53,0,0.08)', border: '1px solid rgba(255,53,0,0.2)' }}>
-          <div className="text-[10px] uppercase mb-1.5 opacity-70 tracking-[2px]" style={{ fontFamily: 'DM Mono, monospace' }}>Session</div>
+          <div className="text-[10px] uppercase mb-1.5 opacity-70 tracking-[2px]" style={{ fontFamily: 'DM Mono, monospace' }}>{t('join.sessionLabel', { defaultValue: 'Session' })}</div>
           <div className="text-xl font-bold tracking-[2px]" style={{ fontFamily: 'DM Mono, monospace', color: 'var(--boom)' }}>{sessionId}</div>
         </div>
       )}
@@ -388,8 +388,8 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       {/* Email conducteur B */}
       <div className="mb-4">
         <div className="text-xs font-semibold mb-2 flex items-center gap-1.5 opacity-70" >
-          📧 Votre email
-          <span className="font-normal opacity-70" >(pour recevoir le PDF)</span>
+          📧 {t('join.yourEmail', { defaultValue: 'Votre email' })}
+          <span className="font-normal opacity-70" >{t('join.emailHint', { defaultValue: '(pour recevoir le PDF)' })}</span>
         </div>
         <input
           type="email"
@@ -401,7 +401,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             setParticipantData(prev => ({ ...prev, driver: { ...(prev.driver || {}), email: e.target.value } as any }));
           }}
           placeholder="votre@email.com"
-          aria-label="Votre adresse email"
+          aria-label={t('join.emailAria', { defaultValue: 'Votre adresse email' })}
           className="w-full rounded-[10px] px-3.5 py-[13px] box-border text-[15px]" style={{ border: '1.5px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontFamily: 'inherit' }}
         />
         <div className="text-[11px] opacity-70 mt-1.5" >
@@ -426,11 +426,11 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
 
       <button onClick={join} disabled={joining || !sessionId || !guestAccepted} className="w-full p-[18px] rounded-xl border-0 text-white text-base font-bold transition-all duration-200 flex items-center justify-center gap-3" style={{ background: joining || !sessionId || !guestAccepted ? 'rgba(255,53,0,0.4)' : 'var(--boom)', cursor: joining || !sessionId || !guestAccepted ? 'not-allowed' : 'pointer', boxShadow: '0 8px 32px rgba(255,53,0,0.35)' }}>
         {joining ? (
-          <><span className="text-xl inline-block"  style={{ animation: 'spin 1s linear infinite' }}>⏳</span> Connexion…</>
+          <><span className="text-xl inline-block"  style={{ animation: 'spin 1s linear infinite' }}>⏳</span> {t('join.connecting', { defaultValue: 'Connexion…' })}</>
         ) : joined ? (
-          <><span>🤝</span> Connecté ! Démarrage…</>
+          <><span>🤝</span> {t('join.connected', { defaultValue: 'Connecté ! Démarrage…' })}</>
         ) : (
-          <><span className="text-xl">🤝</span> Rejoindre le constat</>
+          <><span className="text-xl">🤝</span> {t('join.joinButton', { defaultValue: 'Rejoindre le constat' })}</>
         )}
       </button>
 
@@ -456,7 +456,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
         </div>
         <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
-            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← Retour</button>
+            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← {t('constat.nav.back', { defaultValue: 'Retour' })}</button>
           )}
         </div>
       </div>
@@ -476,7 +476,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
       {errorMsg && (
         <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: 'var(--red)', fontSize: 13, margin: '0 16px 12px' }}>
           {errorMsg}
-          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+          <button onClick={() => setErrorMsg('')} aria-label={t('constat.error.close', { defaultValue: "Fermer l'erreur" })} style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
         </div>
       )}
 
@@ -583,7 +583,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
                 Vérifiez avant de signer
               </div>
               <div className="mb-2.5 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(0,229,255,0.05)', border: '1px solid rgba(0,229,255,0.12)' }}>
-                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 Votre véhicule</div>
+                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 {t('constat.summary.yourVehicle', { defaultValue: 'Votre véhicule' })}</div>
                 <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
                   {participantData.vehicle?.licensePlate && <span className="ml-2 text-[#00E5FF]" style={{ fontFamily: 'monospace' }}>{(participantData.vehicle as any).licensePlate}</span>}

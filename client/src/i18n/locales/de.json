@@ -852,5 +852,14 @@
     "emergency": {
       "title": "Notrufnummern"
     }
+  },
+  "join": {
+    "sessionLabel": "Sitzung",
+    "yourEmail": "Ihre E-Mail",
+    "emailHint": "(um das PDF zu erhalten)",
+    "emailAria": "Ihre E-Mail-Adresse",
+    "connecting": "Verbindung…",
+    "connected": "Verbunden! Start…",
+    "joinButton": "Dem Bericht beitreten"
   }
 }
