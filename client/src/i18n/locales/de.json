@@ -818,5 +818,39 @@
     "mic_unavailable": "Mikrofon nicht verfügbar: {{msg}}",
     "transcription_error": "Transkriptionsfehler",
     "textarea_edit_aria": "Unfallschilderung"
+  },
+  "constat": {
+    "nav": {
+      "back": "Zurück",
+      "reset": "Bericht zurücksetzen"
+    },
+    "session": {
+      "expiring": "Ihre Sitzung läuft bald ab. Speichern Sie Ihre Daten."
+    },
+    "error": {
+      "close": "Fehler schließen"
+    },
+    "vehicle": {
+      "pickRegistered": "Gespeichertes Fahrzeug wählen",
+      "autofill": "Automatisches Ausfüllen — kein Scannen nötig",
+      "yourRegistered": "Ihre gespeicherten Fahrzeuge",
+      "org": "Unternehmen",
+      "personal": "Privat",
+      "fallback": "Fahrzeug",
+      "cancel": "Abbrechen",
+      "orScanNew": "oder ein neues Fahrzeug scannen"
+    },
+    "pedestrian": {
+      "title": "Andere Partei: Fußgänger"
+    },
+    "summary": {
+      "yourVehicle": "Ihr Fahrzeug",
+      "accident": "Unfall",
+      "damagedZones_one": "{{count}} beschädigte Zone",
+      "damagedZones_other": "{{count}} beschädigte Zonen"
+    },
+    "emergency": {
+      "title": "Notrufnummern"
+    }
   }
 }

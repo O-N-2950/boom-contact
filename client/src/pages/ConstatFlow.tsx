@@ -454,12 +454,12 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         )}
         <div className="ml-auto flex items-center gap-2">
           {canGoBack && (
-            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← Retour</button>
+            <button onClick={goBack} className="flex items-center gap-1 rounded-lg cursor-pointer text-[13px] font-semibold px-3 py-1.5 touch-manipulation" style={{ border: '1px solid rgba(255,255,255,0.25)', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', WebkitTapHighlightColor: 'transparent' }}>← {t('constat.nav.back', { defaultValue: 'Retour' })}</button>
           )}
           {step !== 'ocr' && step !== 'done' && (
             <button onClick={() => { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }}
               className="text-[11px] bg-transparent border-0 cursor-pointer opacity-75" style={{ color: 'inherit' }}
-              aria-label="Réinitialiser le constat"
+              aria-label={t('constat.nav.reset', { defaultValue: 'Réinitialiser le constat' })}
             >↺</button>
           )}
         </div>
@@ -469,7 +469,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       {showExpiryWarning && step !== 'done' && (
         <div role="alert" className="shrink-0 flex items-center gap-2 text-[12px] font-semibold px-4 py-2.5" style={{ background: 'rgba(234,179,8,0.15)', borderBottom: '1px solid rgba(234,179,8,0.3)', color: 'var(--amber)' }}>
           <span aria-hidden="true">⚠️</span>
-          <span>Votre session expire bientôt. Sauvegardez vos données.</span>
+          <span>{t('constat.session.expiring', { defaultValue: 'Votre session expire bientôt. Sauvegardez vos données.' })}</span>
           <span className="ml-auto text-[11px] opacity-80" style={{ fontFamily: 'monospace' }}>~{expiryTime}</span>
         </div>
       )}
@@ -491,7 +491,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
       {errorMsg && (
         <div role="alert" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 10, padding: '10px 14px', color: 'var(--red)', fontSize: 13, margin: '0 16px 12px' }}>
           {errorMsg}
-          <button onClick={() => setErrorMsg('')} aria-label="Fermer l'erreur" style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
+          <button onClick={() => setErrorMsg('')} aria-label={t('constat.error.close', { defaultValue: "Fermer l'erreur" })} style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', float: 'right', fontSize: 14 }}>✕</button>
         </div>
       )}
 
@@ -538,28 +538,28 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               >
                 <span className="text-2xl" aria-hidden="true">🚗</span>
                 <div className="text-left">
-                  <div style={{ color: '#16A34A', fontWeight: 800, fontSize: 14 }}>Choisir un véhicule enregistré</div>
-                  <div style={{ color: '#5D6B7C', fontSize: 12 }}>Préremplissage automatique — pas besoin de scanner</div>
+                  <div style={{ color: '#16A34A', fontWeight: 800, fontSize: 14 }}>{t('constat.vehicle.pickRegistered', { defaultValue: 'Choisir un véhicule enregistré' })}</div>
+                  <div style={{ color: '#5D6B7C', fontSize: 12 }}>{t('constat.vehicle.autofill', { defaultValue: 'Préremplissage automatique — pas besoin de scanner' })}</div>
                 </div>
                 <span style={{ color: '#16A34A', marginLeft: 'auto', fontWeight: 700 }}>→</span>
               </button>
             ) : (
               <div style={{ background: '#FFFFFF', border: '1px solid #DDE7F0', borderRadius: 14, padding: 16 }}>
-                <div style={{ color: '#102033', fontWeight: 800, marginBottom: 12 }}>Vos véhicules enregistrés</div>
+                <div style={{ color: '#102033', fontWeight: 800, marginBottom: 12 }}>{t('constat.vehicle.yourRegistered', { defaultValue: 'Vos véhicules enregistrés' })}</div>
                 {savedVehicles.map((v: any) => (
                   <button key={v.id} onClick={() => applyVehicle(v)} className="w-full text-left"
                     style={{ display: 'block', borderRadius: 12, marginBottom: 8, padding: '12px 14px', background: '#F5F8FC', border: '1px solid #DDE7F0', cursor: 'pointer' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                       <span style={{ fontWeight: 700, color: '#102033' }}>
-                        {v.label || v.nickname || [v.make, v.model].filter(Boolean).join(' ') || 'Véhicule'}
+                        {v.label || v.nickname || [v.make, v.model].filter(Boolean).join(' ') || t('constat.vehicle.fallback', { defaultValue: 'Véhicule' })}
                       </span>
                       {v.scope === 'organization' ? (
                         <span style={{ fontSize: 11, fontWeight: 700, color: '#123A5A', background: '#EEF4FA', border: '1px solid #DDE7F0', borderRadius: 6, padding: '2px 7px' }}>
-                          🏢 {v.organizationName || 'Entreprise'}
+                          🏢 {v.organizationName || t('constat.vehicle.org', { defaultValue: 'Entreprise' })}
                         </span>
                       ) : (
                         <span style={{ fontSize: 11, fontWeight: 700, color: '#5D6B7C', background: '#F5F8FC', border: '1px solid #DDE7F0', borderRadius: 6, padding: '2px 7px' }}>
-                          Personnel
+                          {t('constat.vehicle.personal', { defaultValue: 'Personnel' })}
                         </span>
                       )}
                     </div>
@@ -568,7 +568,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   </button>
                 ))}
                 <button onClick={() => setShowVehiclePicker(false)} style={{ background: 'transparent', border: 'none', color: '#5D6B7C', cursor: 'pointer', fontSize: 13, padding: '4px 0', textDecoration: 'underline' }}>
-                  Annuler
+                  {t('constat.vehicle.cancel', { defaultValue: 'Annuler' })}
                 </button>
               </div>
             )}
@@ -580,7 +580,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
             {shouldOfferGarage(authToken, savedVehicles.length) && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '4px 0 14px' }}>
                 <div style={{ flex: 1, height: 1, background: '#DDE7F0' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#5D6B7C' }}>ou scanner un nouveau véhicule</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#5D6B7C' }}>{t('constat.vehicle.orScanNew', { defaultValue: 'ou scanner un nouveau véhicule' })}</span>
                 <div style={{ flex: 1, height: 1, background: '#DDE7F0' }} />
               </div>
             )}
@@ -651,7 +651,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
           <div className="p-6 mx-auto max-w-[480px]">
             <div className="text-center mb-7">
               <div className="text-5xl mb-2.5">🚶</div>
-              <h2 className="text-lg font-extrabold m-0">Autre partie : piéton</h2>
+              <h2 className="text-lg font-extrabold m-0">{t('constat.pedestrian.title', { defaultValue: 'Autre partie : piéton' })}</h2>
               <p className="text-[13px] mt-2 opacity-75">
                 Le piéton a-t-il un téléphone mobile pour scanner le QR code ?
               </p>
@@ -822,7 +822,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
 
               {/* Véhicule A */}
               <div className="mb-2.5 rounded-[10px] px-3.5 py-3" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.15)' }}>
-                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 Votre véhicule</div>
+                <div className="text-[11px] mb-1.5 font-semibold opacity-75">🚗 {t('constat.summary.yourVehicle', { defaultValue: 'Votre véhicule' })}</div>
                 <div className="text-[13px] font-bold">
                   {[participantData.vehicle?.brand, participantData.vehicle?.model].filter(Boolean).join(' ') || '—'}
                   {participantData.vehicle?.licensePlate && <span className="ml-2" style={{ fontFamily: 'monospace', color: 'var(--boom)' }}>{participantData.vehicle.licensePlate}</span>}
@@ -834,13 +834,13 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
                   <div className="text-xs mt-0.5 opacity-75">👤 {[participantData.driver.firstName, participantData.driver.lastName].filter(Boolean).join(' ')}</div>
                 )}
                 {damagedZones.length > 0 && (
-                  <div className="text-[11px] mt-1 opacity-70" >💥 {damagedZones.length} zone{damagedZones.length > 1 ? 's' : ''} endommagée{damagedZones.length > 1 ? 's' : ''}</div>
+                  <div className="text-[11px] mt-1 opacity-70" >💥 {t('constat.summary.damagedZones', { count: damagedZones.length })}</div>
                 )}
               </div>
 
               {/* Accident */}
               <div className="mb-2.5 rounded-[10px] px-3.5 py-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                <div className="text-[11px] mb-1 font-semibold opacity-75">📍 Accident</div>
+                <div className="text-[11px] mb-1 font-semibold opacity-75">📍 {t('constat.summary.accident', { defaultValue: 'Accident' })}</div>
                 <div className="text-xs opacity-70" >
                   {accidentData.date && accidentData.time
                     ? `${new Date(accidentData.date + 'T00:00').toLocaleDateString(undefined, { day: '2-digit', month: 'long', year: 'numeric' })} à ${accidentData.time}`
@@ -884,7 +884,7 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
         {step !== 'done' && (
           <button
             onClick={() => setShowEmergency(true)}
-            title="Numéros d'urgence"
+            title={t('constat.emergency.title', { defaultValue: "Numéros d'urgence" })}
             className="fixed bottom-5 right-4 border-0 rounded-full w-12 h-12 text-xl cursor-pointer flex items-center justify-center bg-[#c00]" style={{ zIndex: 500, boxShadow: '0 4px 16px rgba(200,0,0,0.5)' }}
           >
             🆘

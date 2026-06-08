@@ -818,5 +818,39 @@
     "mic_unavailable": "Microfono non disponibile: {{msg}}",
     "transcription_error": "Errore di trascrizione",
     "textarea_edit_aria": "Racconto dell'incidente"
+  },
+  "constat": {
+    "nav": {
+      "back": "Indietro",
+      "reset": "Reimposta il rapporto"
+    },
+    "session": {
+      "expiring": "La tua sessione sta per scadere. Salva i tuoi dati."
+    },
+    "error": {
+      "close": "Chiudi l'errore"
+    },
+    "vehicle": {
+      "pickRegistered": "Scegli un veicolo salvato",
+      "autofill": "Precompilazione automatica — non serve scansionare",
+      "yourRegistered": "I tuoi veicoli salvati",
+      "org": "Azienda",
+      "personal": "Personale",
+      "fallback": "Veicolo",
+      "cancel": "Annulla",
+      "orScanNew": "oppure scansiona un nuovo veicolo"
+    },
+    "pedestrian": {
+      "title": "Altra parte: pedone"
+    },
+    "summary": {
+      "yourVehicle": "Il tuo veicolo",
+      "accident": "Incidente",
+      "damagedZones_one": "{{count}} zona danneggiata",
+      "damagedZones_other": "{{count}} zone danneggiate"
+    },
+    "emergency": {
+      "title": "Numeri di emergenza"
+    }
   }
 }

@@ -982,5 +982,39 @@
     },
     "pdf_ready_title": "Timestamped accident PDF report",
     "pdf_ready_body": "The required signatures have been recorded. The PDF report is ready. Check the information before sending it to your insurer."
+  },
+  "constat": {
+    "nav": {
+      "back": "Back",
+      "reset": "Reset the report"
+    },
+    "session": {
+      "expiring": "Your session expires soon. Save your data."
+    },
+    "error": {
+      "close": "Close the error"
+    },
+    "vehicle": {
+      "pickRegistered": "Choose a saved vehicle",
+      "autofill": "Automatic pre-fill — no need to scan",
+      "yourRegistered": "Your saved vehicles",
+      "org": "Company",
+      "personal": "Personal",
+      "fallback": "Vehicle",
+      "cancel": "Cancel",
+      "orScanNew": "or scan a new vehicle"
+    },
+    "pedestrian": {
+      "title": "Other party: pedestrian"
+    },
+    "summary": {
+      "yourVehicle": "Your vehicle",
+      "accident": "Accident",
+      "damagedZones_one": "{{count}} damaged area",
+      "damagedZones_other": "{{count}} damaged areas"
+    },
+    "emergency": {
+      "title": "Emergency numbers"
+    }
   }
 }

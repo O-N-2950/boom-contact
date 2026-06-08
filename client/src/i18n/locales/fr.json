@@ -982,5 +982,39 @@
     },
     "pdf_ready_title": "Dossier PDF d'accident horodaté",
     "pdf_ready_body": "Les signatures requises ont été enregistrées. Le dossier PDF est prêt. Vérifie les informations avant de le transmettre à ton assureur."
+  },
+  "constat": {
+    "nav": {
+      "back": "Retour",
+      "reset": "Réinitialiser le constat"
+    },
+    "session": {
+      "expiring": "Votre session expire bientôt. Sauvegardez vos données."
+    },
+    "error": {
+      "close": "Fermer l'erreur"
+    },
+    "vehicle": {
+      "pickRegistered": "Choisir un véhicule enregistré",
+      "autofill": "Préremplissage automatique — pas besoin de scanner",
+      "yourRegistered": "Vos véhicules enregistrés",
+      "org": "Entreprise",
+      "personal": "Personnel",
+      "fallback": "Véhicule",
+      "cancel": "Annuler",
+      "orScanNew": "ou scanner un nouveau véhicule"
+    },
+    "pedestrian": {
+      "title": "Autre partie : piéton"
+    },
+    "summary": {
+      "yourVehicle": "Votre véhicule",
+      "accident": "Accident",
+      "damagedZones_one": "{{count}} zone endommagée",
+      "damagedZones_other": "{{count}} zones endommagées"
+    },
+    "emergency": {
+      "title": "Numéros d'urgence"
+    }
   }
 }
