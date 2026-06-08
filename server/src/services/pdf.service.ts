@@ -212,8 +212,17 @@ function drawText(
       const reordered = reverseRTLSegments(text);
       page.drawText(reordered, { x, y, font: rtlFonts.hebrew, size, color });
     } else {
-      // Latin or no RTL font available: use standard font with WinAnsi sanitization
-      page.drawText(sanitizeForWinAnsi(text), { x, y, font, size, color });
+      // NotoSans (Unicode) couvre latin/latin-étendu/cyrillique/grec → texte brut.
+      const isUnicodeFont = font === rtlFonts?.notoRegular || font === rtlFonts?.notoBold;
+      if (isUnicodeFont) {
+        page.drawText(text, { x, y, font, size, color });
+      } else if (rtlFonts?.notoRegular && /[^\x00-\x7F]/.test(text)) {
+        // Police standard fournie mais texte non-ASCII → bascule NotoSans pour rendu correct
+        page.drawText(text, { x, y, font: rtlFonts.notoRegular, size, color });
+      } else {
+        // Police standard (Courier/Helvetica) + ASCII → sanitization WinAnsi
+        page.drawText(sanitizeForWinAnsi(text), { x, y, font, size, color });
+      }
     }
   } catch (e) {
     // Fallback: strip everything non-ASCII if font embedding fails
@@ -951,9 +960,9 @@ export async function generateConstatPDF(
   const page = doc.addPage([595, 842]);
   const { width, height } = page.getSize();
 
-  const bold   = await doc.embedFont(StandardFonts.HelveticaBold);
-  const normal = await doc.embedFont(StandardFonts.Helvetica);
-  const mono   = await doc.embedFont(StandardFonts.Courier);
+  const helvBold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const helv     = await doc.embedFont(StandardFonts.Helvetica);
+  const mono     = await doc.embedFont(StandardFonts.Courier);
 
   // ── Embed RTL / Unicode fonts ──────────────────────────────
   // These fonts enable native Arabic and Hebrew text rendering in the PDF.
@@ -982,6 +991,11 @@ export async function generateConstatPDF(
   } catch (e) {
     logger.warn('[PDF] Could not embed Noto Sans fonts', { error: String(e) });
   }
+
+  // Police de base = NotoSans (latin + latin-étendu + cyrillique + grec) ;
+  // répare polonais/russe/ukrainien/diacritiques. Helvetica en repli si Noto absent.
+  const normal = rtlFonts.notoRegular || helv;
+  const bold   = rtlFonts.notoBold   || helvBold;
 
   const A = session.participantA;
   const B = session.participantB;
