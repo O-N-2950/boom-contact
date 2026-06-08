@@ -3,7 +3,7 @@ import { EVENTS } from '../../analytics-events';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trpc } from '../../trpc';
-import { getPublicOrigin } from '../../apiBase';
+import { getPublicOrigin, isNativeApp } from '../../apiBase';
 
 interface Props {
   sessionId: string;
@@ -19,6 +19,7 @@ interface Props {
 }
 
 export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, participantToken, driverEmail, insurerName, driverName, authUser, authToken, onLogin, onBuyPack }: Props) {
+  const native = isNativeApp();
   const { t } = useTranslation();
   const [loading, setLoading]           = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -208,8 +209,18 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
         <div className="mb-3 p-3 rounded-lg text-[13px] text-[var(--red)]" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>⚠️ {error}</div>
       )}
 
-      {/* ── PAYWALL — pas connecté : 2 options ── */}
-      {!authUser && (
+      {/* ── PAYWALL — pas connecté ── */}
+      {!authUser && native ? (
+        <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.18)' }}>
+          <div className="font-bold text-sm mb-1.5">{t('access.inactiveTitle', { defaultValue: 'Aucun accès actif' })}</div>
+          <div className="text-[13px] mb-3.5 leading-[1.6]" style={{ opacity: 0.78 }}>
+            {t('access.inactiveText', { defaultValue: 'Votre compte ne dispose pas d’un accès actif. Connectez-vous avec un compte actif.' })}
+          </div>
+          <button onClick={() => onLogin?.()} className="w-full p-[13px] rounded-[10px] bg-transparent cursor-pointer text-sm font-medium" style={{ border: '1.5px solid rgba(255,255,255,0.25)', color: 'var(--text)' }}>
+            {t('access.login', { defaultValue: 'Se connecter' })}
+          </button>
+        </div>
+      ) : !authUser ? (
         <div className="mb-4">
           <div className="text-[11px] opacity-70 leading-snug mb-2.5 px-1">
             {t('legal.payment_notice')}
@@ -254,10 +265,17 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
             Pack 3 constats CHF 12.90 · Pack 10 constats CHF 34.90
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* ── PAYWALL — connecté mais 0 crédit ── */}
-      {authUser && !isAdmin && credits <= 0 && !creditUsed && showPaywall && (
+      {authUser && !isAdmin && credits <= 0 && !creditUsed && showPaywall && (native ? (
+        <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.18)' }}>
+          <div className="font-bold text-sm mb-1.5">{t('access.inactiveTitle', { defaultValue: 'Aucun accès actif' })}</div>
+          <div className="text-[13px] leading-[1.6]" style={{ opacity: 0.78 }}>
+            {t('access.inactiveText', { defaultValue: 'Votre compte ne dispose pas d’un accès actif. Connectez-vous avec un compte actif.' })}
+          </div>
+        </div>
+      ) : (
         <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,53,0,0.06)', border: '1px solid rgba(255,53,0,0.2)' }}>
           <div className="font-bold text-sm mb-1.5">
             🔒 1 crédit requis pour télécharger
@@ -272,7 +290,7 @@ export const PDFDownload = React.memo(function PDFDownload({ sessionId, role, pa
             1 constat CHF 4.90 · 3 constats CHF 12.90 · 10 constats CHF 34.90
           </div>
         </div>
-      )}
+      ))}
 
       {/* ── ACTIONS — connecté avec crédit ── */}
       {authUser && (hasCredit || creditUsed) && (

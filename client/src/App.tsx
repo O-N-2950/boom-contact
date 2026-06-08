@@ -6,6 +6,7 @@ import { RouteAnnouncer } from './components/RouteAnnouncer';
 import React, { useState, useEffect, useReducer, useCallback, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { applyDir } from './i18n';
+import { isNativeApp } from './apiBase';
 import { trpc } from './trpc';
 
 type PoliceAgent = {
@@ -94,7 +95,7 @@ function getInitialView(): AppView {
   }
 
   if (pathname === '/b2b' || pathname === '/partners' || params.get('b2b') === 'true') return 'b2b';
-  if (params.get('pricing') === 'true') return 'pricing';
+  if (!isNativeApp() && params.get('pricing') === 'true') return 'pricing';
   if (params.get('police') === 'true' || pathname.startsWith('/police')) {
     const token = localStorage.getItem('boom_police_token');
     return token ? 'police_dashboard' : 'police_login';
@@ -495,7 +496,7 @@ export default function App() {
         onLogin={() => dispatch({ type: 'SHOW_AUTH_MODAL', show: true })}
         onBuyPack={() => dispatch({ type: 'SET_VIEW', view: 'pricing' })}
       />}
-      {view === 'pricing'  && (
+      {view === 'pricing' && !isNativeApp() && (
         <PricingPage
           userEmail={userEmail}
           onBack={() => dispatch({ type: 'SET_VIEW', view: 'landing' })}

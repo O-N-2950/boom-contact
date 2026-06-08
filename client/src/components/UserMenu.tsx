@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isNativeApp } from '../apiBase';
 
 const C = {
   card: '#FFFFFF', elevated: '#EEF4FA', bg: '#F5F8FC',
@@ -22,6 +23,7 @@ export function formatCredits(credits: number): string {
 }
 
 export function UserMenu({ authUser, onAccount, onGarage, onBuyCredits, onLogout, compact = false }: UserMenuProps) {
+  const native = isNativeApp();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -80,6 +82,12 @@ export function UserMenu({ authUser, onAccount, onGarage, onBuyCredits, onLogout
             <span aria-hidden="true">🚗</span> {t('account.menu.garage', { defaultValue: 'Mon garage' })}
           </button>
 
+          {native ? (
+            <div role="menuitem" style={{ ...item, justifyContent: 'space-between', cursor: 'default' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><span aria-hidden="true">💳</span> {t('account.menu.credits', { defaultValue: 'Mes crédits' })}</span>
+              <span style={{ fontWeight: 800, color: authUser.credits === 0 ? C.danger : C.success }}>{credits}</span>
+            </div>
+          ) : (
           <button role="menuitem" style={{ ...item, justifyContent: 'space-between' }} onClick={run(onBuyCredits)}
             onMouseEnter={e => (e.currentTarget.style.background = C.bg)} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}><span aria-hidden="true">💳</span> {t('account.menu.credits', { defaultValue: 'Mes crédits' })}</span>
@@ -88,6 +96,7 @@ export function UserMenu({ authUser, onAccount, onGarage, onBuyCredits, onLogout
               <span style={{ fontSize: 12, fontWeight: 700, color: C.orange }}>{t('account.menu.buy', { defaultValue: 'Acheter' })}</span>
             </span>
           </button>
+          )}
 
           <div style={{ borderTop: `1px solid ${C.border}`, margin: '6px 0' }} />
           <button role="menuitem" style={{ ...item, color: C.danger }} onClick={run(onLogout)}

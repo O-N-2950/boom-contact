@@ -1,5 +1,6 @@
 import { track } from '../analytics';
 import { useTranslation } from 'react-i18next';
+import { isNativeApp } from '../apiBase';
 import { EVENTS, creditsBucket } from '../analytics-events';
 import { useState, useEffect } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
@@ -269,6 +270,7 @@ interface VehicleForm {
 
 export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garage' }: AccountPageProps) {
   const { t } = useTranslation();
+  const native = isNativeApp();
   const [tab, setTab]                 = useState<PageTab>(initialTab);
   useEffect(() => { track(EVENTS.ACCOUNT_VIEWED); }, []);
   useEffect(() => { if (tab === 'garage') track(EVENTS.GARAGE_VIEWED); }, [tab]);
@@ -620,7 +622,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         <div className="text-[13px] font-bold text-[#123A5A]">Crédits entreprise · {w.name}</div>
                         <div className="text-[12px] text-[#5D6B7C]">{w.balance > 0 ? w.balance + ' crédit' + (w.balance > 1 ? 's' : '') + ' disponibles' : 'Aucun crédit entreprise — les constats utilisent vos crédits personnels'}</div>
                       </div>
-                      {(w.canManageBilling) && (
+                      {(w.canManageBilling) && !native && (
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <span className="text-[11px] text-[#5D6B7C] mr-1">{t('account.credits.buy', { defaultValue: 'Acheter :' })}</span>
                           {([['single','1'],['pack3','3'],['pack10','10']] as const).map(([pid, lbl]) => (

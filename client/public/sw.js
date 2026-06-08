@@ -1,8 +1,8 @@
-// boom.contact — Service Worker v31
+// boom.contact — Service Worker v32
 // Full PWA offline mode: CacheFirst for shell, NetworkFirst for API, CacheFirst for tiles
 // Backward-compatible with v24 — all old caches purged on activate
 
-const CACHE_NAME = 'boom-contact-v31';
+const CACHE_NAME = 'boom-contact-v32';
 const TILE_CACHE = 'boom-tiles-v1';
 const API_CACHE = 'boom-api-v1';
 const OFFLINE_URL = '/';
@@ -38,12 +38,12 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.filter((k) => !KEEP.includes(k)).map((k) => {
-          console.log('[SW v31] Suppression cache obsolete:', k);
+          console.log('[SW v32] Suppression cache obsolete:', k);
           return caches.delete(k);
         })
       )
     ).then(() => {
-      console.log('[SW v31] Actif — anciens caches supprimes');
+      console.log('[SW v32] Actif — anciens caches supprimes');
       return self.clients.claim();
     })
   );
@@ -241,7 +241,7 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
   if (event.data === 'GET_VERSION') {
-    event.source?.postMessage({ version: 'v31', cache: CACHE_NAME });
+    event.source?.postMessage({ version: 'v32', cache: CACHE_NAME });
   }
   // Replay mutations — triggered from app when back online
   if (event.data === 'REPLAY_MUTATIONS') {

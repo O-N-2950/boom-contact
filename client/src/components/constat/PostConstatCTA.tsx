@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ShareBoom } from '../ShareBoom';
 import { trpc } from '../../trpc';
+import { isNativeApp } from '../../apiBase';
 
 interface PostConstatCTAProps {
   sessionId: string;
@@ -21,6 +22,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
   onBuyPack,
 }: PostConstatCTAProps) {
   const { t } = useTranslation();
+  const native = isNativeApp();
   const [waLinkCopied, setWaLinkCopied] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [giftResult, setGiftResult]     = useState('');
@@ -87,6 +89,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div style={dividerLine} />
         </div>
 
+        {!native && (<>
         {/* Pack famille */}
         <div style={packCardStyle}>
           <div className="flex justify-between items-start mb-2.5">
@@ -115,6 +118,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
         <button onClick={onBuyPack} style={ghostBtnStyle}>
           {t('postConstat.see_all_packs')}
         </button>
+        </>)}
       </div>
     );
   }
@@ -141,6 +145,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           </button>
         </div>
 
+        {!native && (<>
         {/* Packs avec focus "offrir" */}
         <div style={packCardStyle}>
           <div className="font-black text-[15px] mb-1.5 text-[#FF5533]">
@@ -149,6 +154,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
           <div className="text-[#d0d0d0] text-[13px] leading-relaxed mb-3.5" dangerouslySetInnerHTML={{ __html: t('postConstat.gift_desc') }} />
           <PackChoice onSelect={onBuyPack} />
         </div>
+        </>)}
       </div>
     );
   }
@@ -205,7 +211,7 @@ export const PostConstatCTA = React.memo(function PostConstatCTA({
       </div>
 
       {/* Recharger si peu de crédits */}
-      {authUser.credits <= 2 && (
+      {authUser.credits <= 2 && !native && (
         <div className="rounded-xl p-3.5 bg-[#1a1000]" style={{ border: '1px solid #3a2000' }}>
           <div className="font-bold mb-1.5 text-[#fbbf24]">{t('postConstat.low_credits', { count: authUser.credits })}</div>
           <div className="text-[#d0d0d0] text-[13px] mb-2.5">

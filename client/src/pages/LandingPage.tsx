@@ -3,6 +3,7 @@ import { EVENTS } from '../analytics-events';
 import React, { useEffect, useRef, useState } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
 import { useTranslation } from 'react-i18next';
+import { isNativeApp } from '../apiBase';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { UserMenu } from '../components/UserMenu';
 const CGUModal = React.lazy(() => import('../components/CGUModal').then(m => ({ default: m.CGUModal })));
@@ -108,6 +109,7 @@ interface Props {
 }
 
 export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout, onLogin, authUser }: Props) {
+  const native = isNativeApp();
   const [showShare, setShowShare] = useState(false);
   const [showCGU, setShowCGU] = useState(false);
   const { t } = useTranslation();
@@ -227,9 +229,11 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 </button>
               )}
 
+              {!native && (
               <p style={{ fontSize: 11, color: '#7F95A8', marginTop: 16, letterSpacing: 0.5 }}>
                 {t('landing.cta.from', { defaultValue: 'À partir de CHF / EUR 4.90' })}
               </p>
+              )}
             </div>
 
             {/* Right — light mockup */}
@@ -323,6 +327,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       </div>
 
       {/* ── TARIFS ──────────────────────────────────────────── */}
+      {!native && (
       <div id="tarifs" style={{ padding: `${isDesktop ? 56 : 40}px ${padX}px`, background: C.card, borderTop: `1px solid ${C.border}`, borderBottom: `1px solid ${C.border}` }}>
         <Section>
           <Reveal>
@@ -366,6 +371,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
         </Section>
       </div>
+      )}
+
 
       {/* ── B2B (Swiss Calm) ────────────────────────────────── */}
       <div style={{ padding: `${isDesktop ? 64 : 44}px ${padX}px` }}>
