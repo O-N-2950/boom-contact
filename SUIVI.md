@@ -1010,3 +1010,9 @@ Externalisation des textes codés en dur, traductions fr/de/it/en (check:i18n 10
 NotoSans en police de base du PDF (au lieu d'Helvetica) → répare latin-étendu (pl/cs…), cyrillique (ru/uk), grec qui s'affichaient en carrés. drawText: texte Unicode brut pour NotoSans/arabe/hébreu, WinAnsi réservé à Courier ASCII.
 Prouvé sur PDF réel généré (pl/ru/el/fr) : pdffonts=NotoSans embarquée, pdftotext OK, rendu PNG inspecté = mise en page intacte, 0 carré.
 Reste étape 2 : polices CJK (中日韓) + thaï + devanagari (hindi) + éthiopien + routage detectScript. Et: corriger les libellés PDF polonais/tchèques actuellement en ASCII (la police les supporte désormais).
+
+## PDF priorité 2 — étape 2 (2026-06-08) — commit d459160
+Architecture multi-scripts dans le moteur PDF. Détection par script → police Noto dédiée, embarquée À LA DEMANDE selon le contenu (données + libellés). drawText découpe les chaînes en segments par script (gère latin+CJK mixte). RTL arabe/hébreu inchangé.
+Scripts ACTIVÉS (rendu correct sans shaping, prouvé sur PDF réel inspecté) : CJK (中文, NotoSansSC statique glyf, subset:false, embarqué seulement si CJK présent ~6MB), thaï, géorgien, arménien, éthiopien — en plus de latin/latin-étendu/cyrillique/grec (NotoSans, étape 1).
+Scripts NON activés : indiens (devanagari/bengali/tamoul/télougou/kannada/malayalam/gujarati) → nécessitent un moteur de shaping (HarfBuzz), pdf-lib ne shape pas → rendu incorrect. Repli '?' propre, pas de crash. = ÉTAPE 3 future.
+Vérif déploiement : 9 polices présentes dans l'image (NotoSansSC 10 596 500 o confirmé dans le conteneur), Jelastic 200, Railway 200.
