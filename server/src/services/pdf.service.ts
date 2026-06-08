@@ -1,3 +1,5 @@
+// Polyfill requis par le moteur de shaping indien de fontkit (machine à états des syllabes).
+import 'regenerator-runtime/runtime.js';
 import { renderSketch } from './sketch-renderer.service.js';
 import { fetchAccidentMap, fetchAccidentMapWithVehicles, geocodeAddress } from './osm-map.service.js';
 import { logger } from '../logger.js';
@@ -65,19 +67,33 @@ const RTL_RE     = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB1D-
 // Scripts rendus correctement sans moteur de shaping (alphabétiques + CJK idéographique).
 // Les scripts indiens (devanagari, bengali, tamoul…) nécessitent du shaping HarfBuzz → non activés ici.
 const SCRIPT_RANGES: { key: string; re: RegExp }[] = [
-  { key: 'cjk',      re: /[\u3000-\u303F\u3040-\u30FF\u31F0-\u31FF\u3400-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]/ },
-  { key: 'thai',     re: /[\u0E00-\u0E7F]/ },
-  { key: 'ethiopic', re: /[\u1200-\u137F\u1380-\u139F\u2D80-\u2DDF]/ },
-  { key: 'georgian', re: /[\u10A0-\u10FF\u1C90-\u1CBF]/ },
-  { key: 'armenian', re: /[\u0530-\u058F\uFB13-\uFB17]/ },
+  { key: 'cjk',        re: /[\u3000-\u303F\u3040-\u30FF\u31F0-\u31FF\u3400-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]/ },
+  { key: 'thai',       re: /[\u0E00-\u0E7F]/ },
+  { key: 'devanagari', re: /[\u0900-\u097F]/ },
+  { key: 'bengali',    re: /[\u0980-\u09FF]/ },
+  { key: 'tamil',      re: /[\u0B80-\u0BFF]/ },
+  { key: 'telugu',     re: /[\u0C00-\u0C7F]/ },
+  { key: 'kannada',    re: /[\u0C80-\u0CFF]/ },
+  { key: 'malayalam',  re: /[\u0D00-\u0D7F]/ },
+  { key: 'gujarati',   re: /[\u0A80-\u0AFF]/ },
+  { key: 'ethiopic',   re: /[\u1200-\u137F\u1380-\u139F\u2D80-\u2DDF]/ },
+  { key: 'georgian',   re: /[\u10A0-\u10FF\u1C90-\u1CBF]/ },
+  { key: 'armenian',   re: /[\u0530-\u058F\uFB13-\uFB17]/ },
 ];
 
 const SCRIPT_FONT_FILES: Record<string, { file: string; subset: boolean }> = {
-  cjk:      { file: 'NotoSansSC-Regular.ttf',        subset: false }, // CJK : pas de subset (bug pdf-lib sur grosses polices)
-  thai:     { file: 'NotoSansThai-Regular.ttf',      subset: true },
-  ethiopic: { file: 'NotoSansEthiopic-Regular.ttf',  subset: true },
-  georgian: { file: 'NotoSansGeorgian-Regular.ttf',  subset: true },
-  armenian: { file: 'NotoSansArmenian-Regular.ttf',  subset: true },
+  cjk:        { file: 'NotoSansSC-Regular.ttf',          subset: false }, // CJK : pas de subset (bug pdf-lib sur grosses polices)
+  thai:       { file: 'NotoSansThai-Regular.ttf',        subset: true },
+  devanagari: { file: 'NotoSansDevanagari-Regular.ttf',  subset: true },
+  bengali:    { file: 'NotoSansBengali-Regular.ttf',     subset: true },
+  tamil:      { file: 'NotoSansTamil-Regular.ttf',       subset: true },
+  telugu:     { file: 'NotoSansTelugu-Regular.ttf',      subset: true },
+  kannada:    { file: 'NotoSansKannada-Regular.ttf',     subset: true },
+  malayalam:  { file: 'NotoSansMalayalam-Regular.ttf',   subset: true },
+  gujarati:   { file: 'NotoSansGujarati-Regular.ttf',    subset: true },
+  ethiopic:   { file: 'NotoSansEthiopic-Regular.ttf',    subset: true },
+  georgian:   { file: 'NotoSansGeorgian-Regular.ttf',    subset: true },
+  armenian:   { file: 'NotoSansArmenian-Regular.ttf',    subset: true },
 };
 
 type ScriptType = 'arabic' | 'hebrew' | 'latin';
@@ -293,6 +309,8 @@ function drawText(
           run = '';
         };
         for (const ch of text) {
+          // ZWJ/ZWNJ : liants de conjointes — rester dans le segment courant
+          if (run && (ch === '\u200C' || ch === '\u200D')) { run += ch; continue; }
           const k = charScriptKey(ch);
           if (run && k !== runKey) flush();
           if (!run) runKey = k;
