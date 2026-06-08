@@ -162,7 +162,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: isDesktop ? 12 : 6, minWidth: 0 }}>
             {isDesktop && <span style={{ fontSize: 11, fontWeight: 700, color: C.navy, border: `1px solid ${C.border}`, background: C.card, borderRadius: 20, padding: '5px 12px' }}>RGPD · nLPD</span>}
-            <LanguageSwitcher compact />
+            <LanguageSwitcher compact={!isDesktop} />
             {authUser ? (
               <UserMenu
                 authUser={authUser}
