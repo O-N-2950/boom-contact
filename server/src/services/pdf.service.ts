@@ -61,12 +61,63 @@ const ARABIC_RE  = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-
 const HEBREW_RE  = /[\u0590-\u05FF\uFB1D-\uFB4F]/;
 const RTL_RE     = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB1D-\uFB4F\uFB50-\uFDFF\uFE70-\uFEFF]/;
 
+// Scripts nécessitant une police Noto dédiée (le latin/cyrillique/grec sont couverts par NotoSans).
+// Scripts rendus correctement sans moteur de shaping (alphabétiques + CJK idéographique).
+// Les scripts indiens (devanagari, bengali, tamoul…) nécessitent du shaping HarfBuzz → non activés ici.
+const SCRIPT_RANGES: { key: string; re: RegExp }[] = [
+  { key: 'cjk',      re: /[\u3000-\u303F\u3040-\u30FF\u31F0-\u31FF\u3400-\u9FFF\uF900-\uFAFF\uFF00-\uFFEF]/ },
+  { key: 'thai',     re: /[\u0E00-\u0E7F]/ },
+  { key: 'ethiopic', re: /[\u1200-\u137F\u1380-\u139F\u2D80-\u2DDF]/ },
+  { key: 'georgian', re: /[\u10A0-\u10FF\u1C90-\u1CBF]/ },
+  { key: 'armenian', re: /[\u0530-\u058F\uFB13-\uFB17]/ },
+];
+
+const SCRIPT_FONT_FILES: Record<string, { file: string; subset: boolean }> = {
+  cjk:      { file: 'NotoSansSC-Regular.ttf',        subset: false }, // CJK : pas de subset (bug pdf-lib sur grosses polices)
+  thai:     { file: 'NotoSansThai-Regular.ttf',      subset: true },
+  ethiopic: { file: 'NotoSansEthiopic-Regular.ttf',  subset: true },
+  georgian: { file: 'NotoSansGeorgian-Regular.ttf',  subset: true },
+  armenian: { file: 'NotoSansArmenian-Regular.ttf',  subset: true },
+};
+
 type ScriptType = 'arabic' | 'hebrew' | 'latin';
 
 function detectScript(text: string): ScriptType {
   if (ARABIC_RE.test(text)) return 'arabic';
   if (HEBREW_RE.test(text)) return 'hebrew';
   return 'latin';
+}
+
+// Script d'un caractère unique (clé de SCRIPT_FONT_FILES) ou 'latin'.
+function charScriptKey(ch: string): string {
+  for (const sc of SCRIPT_RANGES) if (sc.re.test(ch)) return sc.key;
+  return 'latin';
+}
+
+// Quels scripts dédiés sont présents dans un texte ?
+function scriptsPresent(text: string): string[] {
+  const out: string[] = [];
+  for (const sc of SCRIPT_RANGES) if (sc.re.test(text)) out.push(sc.key);
+  return out;
+}
+
+// Concatène les textes rendus (données + libellés) pour décider quelles polices embarquer.
+function collectRenderText(session: any, labels?: any): string {
+  const parts: string[] = [];
+  const add = (v: any) => { if (typeof v === 'string' && v) parts.push(v); };
+  for (const r of ['A', 'B', 'C', 'D', 'E']) {
+    const pt: any = session?.['participant' + r];
+    if (!pt) continue;
+    const d = pt.driver || {}; add(d.firstName); add(d.lastName); add(d.address); add(d.city);
+    const v = pt.vehicle || {}; add(v.brand); add(v.model); add(v.color); add(v.licensePlate);
+    const ins = pt.insurance || {}; add(ins.company); add(ins.companyName); add(ins.agentName); add(ins.address);
+    (pt.circumstances || []).forEach(add); (pt.damagedZones || []).forEach(add);
+  }
+  const a: any = session?.accident || {};
+  add(a.description); add(a.witnesses); add(a.policeRef);
+  const loc = a.location || {}; add(loc.address); add(loc.city); add(loc.countryName);
+  if (labels) { try { parts.push(JSON.stringify(labels)); } catch { /* noop */ } }
+  return parts.join(' ');
 }
 
 function isRTL(text: string): boolean {
@@ -193,7 +244,7 @@ function sanitizeForWinAnsi(text: string): string {
 function drawText(
   page: PDFPage, text: string, x: number, y: number,
   font: PDFFont, size: number, color = C.black,
-  rtlFonts?: { arabic?: PDFFont; hebrew?: PDFFont; notoRegular?: PDFFont; notoBold?: PDFFont }
+  rtlFonts?: RtlFonts
 ) {
   if (!text) return;
 
@@ -212,16 +263,42 @@ function drawText(
       const reordered = reverseRTLSegments(text);
       page.drawText(reordered, { x, y, font: rtlFonts.hebrew, size, color });
     } else {
-      // NotoSans (Unicode) couvre latin/latin-étendu/cyrillique/grec → texte brut.
-      const isUnicodeFont = font === rtlFonts?.notoRegular || font === rtlFonts?.notoBold;
-      if (isUnicodeFont) {
-        page.drawText(text, { x, y, font, size, color });
-      } else if (rtlFonts?.notoRegular && /[^\x00-\x7F]/.test(text)) {
-        // Police standard fournie mais texte non-ASCII → bascule NotoSans pour rendu correct
-        page.drawText(text, { x, y, font: rtlFonts.notoRegular, size, color });
+      // LTR : NotoSans (latin/latin-étendu/cyrillique/grec) + polices Noto par script.
+      const sf = rtlFonts?.scriptFonts;
+      const isNoto = font === rtlFonts?.notoRegular || font === rtlFonts?.notoBold;
+      const present = sf ? scriptsPresent(text) : [];
+      if (present.length === 0) {
+        // Chemin rapide : aucun script dédié (cas le plus fréquent)
+        if (isNoto) {
+          page.drawText(text, { x, y, font, size, color });
+        } else if (rtlFonts?.notoRegular && /[^\x00-\x7F]/.test(text)) {
+          page.drawText(text, { x, y, font: rtlFonts.notoRegular, size, color });
+        } else {
+          page.drawText(sanitizeForWinAnsi(text), { x, y, font, size, color });
+        }
       } else {
-        // Police standard (Courier/Helvetica) + ASCII → sanitization WinAnsi
-        page.drawText(sanitizeForWinAnsi(text), { x, y, font, size, color });
+        // Découpage en segments par script : chaque segment rendu avec sa police.
+        const baseFont = isNoto ? font : (rtlFonts?.notoRegular || font);
+        let cx = x, run = '', runKey = 'latin';
+        const flush = () => {
+          if (!run) return;
+          const f = runKey === 'latin' ? baseFont : (sf![runKey] || baseFont);
+          try {
+            page.drawText(run, { x: cx, y, font: f, size, color });
+            cx += f.widthOfTextAtSize(run, size);
+          } catch {
+            const safe = sanitizeForWinAnsi(run);
+            try { page.drawText(safe, { x: cx, y, font: baseFont, size, color }); cx += baseFont.widthOfTextAtSize(safe, size); } catch { /* skip */ }
+          }
+          run = '';
+        };
+        for (const ch of text) {
+          const k = charScriptKey(ch);
+          if (run && k !== runKey) flush();
+          if (!run) runKey = k;
+          run += ch;
+        }
+        flush();
       }
     }
   } catch (e) {
@@ -274,6 +351,8 @@ interface RtlFonts {
   hebrew?: PDFFont;
   notoRegular?: PDFFont;
   notoBold?: PDFFont;
+  // Polices Noto par script (embarquées à la demande selon le contenu du constat)
+  scriptFonts?: Record<string, PDFFont>;
 }
 
 interface PdfContext {
@@ -1005,6 +1084,25 @@ export async function generateConstatPDF(
   const roleLang = (roleParticipant?.language as PdfLang) || undefined;
   const driverLang: PdfLang = forRole === 'A' ? langA : (roleLang || langB);
   const L: PdfLabels = getBilingualLabels(driverLang, langAccident);
+
+  // ── Polices Noto par script présentes dans le constat (données + libellés) ──
+  // Embarquées à la demande : un constat fr/de/it/en/ru/pl… n'embarque aucune police lourde.
+  rtlFonts.scriptFonts = {};
+  try {
+    const needed = new Set(scriptsPresent(collectRenderText(session, L)));
+    for (const key of needed) {
+      const spec = SCRIPT_FONT_FILES[key];
+      if (!spec) continue;
+      try {
+        rtlFonts.scriptFonts[key] = await doc.embedFont(loadFontBytes(spec.file), { subset: spec.subset });
+        logger.info(`[PDF] Embedded script font: ${key} (${spec.file})`);
+      } catch (e) {
+        logger.warn(`[PDF] Could not embed script font ${key}`, { error: String(e) });
+      }
+    }
+  } catch (e) {
+    logger.warn('[PDF] script font scan failed', { error: String(e) });
+  }
 
   const margin = 28;
   const colW = (width - margin * 2 - 8) / 2;
