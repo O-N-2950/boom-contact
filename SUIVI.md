@@ -998,3 +998,10 @@ Mes greps Sprint 1-7 étaient cantonnés à 3 répertoires alors que `client/ind
 - **Post-restore** : cp redémarré, `/health` 200, `database:{ok:true}`, landing//privacy//cgu/assetlinks 200.
 - **boom-contact-prod (Suisse) = copie fonctionnelle de la prod avec données réelles.**
 - Reste avant J0 : QA device Olivier sur le domaine technique · 2e endpoint webhook Stripe (confirmation Olivier) · TTL DNS 300s la veille · à J0 : dump final delta + bascule DNS + SSL Let's Encrypt.
+
+## P0 i18n — Étapes 1-3 (2026-06-08)
+Externalisation des textes codés en dur, traductions fr/de/it/en (check:i18n 100%) :
+- (1) LandingPage — 37 clés (085b77f) · (2) ConstatFlow — 18 clés (7299924) · (3) JoinSession — 7 clés + réutilisation constat.* (355d558).
+- Cœur du parcours accident (accueil → constat → rejoindre) désormais 100% fr/de/it/en, app de bout en bout.
+- Prouvé Playwright (FR/EN/DE basculent réellement). Gate vert à chaque étape. SW v25→v30.
+- Reste P0 : AccountPage (~50 chaînes), B2BPage (EN, statique). Puis : PDF labels+polices (CJK/thaï/devanagari/éthiopien manquantes → carrés vides), emails (>13 langues), portail qualité multi-maillons.
