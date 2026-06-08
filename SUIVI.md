@@ -1005,3 +1005,8 @@ Externalisation des textes codés en dur, traductions fr/de/it/en (check:i18n 10
 - Cœur du parcours accident (accueil → constat → rejoindre) désormais 100% fr/de/it/en, app de bout en bout.
 - Prouvé Playwright (FR/EN/DE basculent réellement). Gate vert à chaque étape. SW v25→v30.
 - Reste P0 : AccountPage (~50 chaînes), B2BPage (EN, statique). Puis : PDF labels+polices (CJK/thaï/devanagari/éthiopien manquantes → carrés vides), emails (>13 langues), portail qualité multi-maillons.
+
+## PDF priorité 2 — étape 1 (2026-06-08) — commit 10056ff
+NotoSans en police de base du PDF (au lieu d'Helvetica) → répare latin-étendu (pl/cs…), cyrillique (ru/uk), grec qui s'affichaient en carrés. drawText: texte Unicode brut pour NotoSans/arabe/hébreu, WinAnsi réservé à Courier ASCII.
+Prouvé sur PDF réel généré (pl/ru/el/fr) : pdffonts=NotoSans embarquée, pdftotext OK, rendu PNG inspecté = mise en page intacte, 0 carré.
+Reste étape 2 : polices CJK (中日韓) + thaï + devanagari (hindi) + éthiopien + routage detectScript. Et: corriger les libellés PDF polonais/tchèques actuellement en ASCII (la police les supporte désormais).
