@@ -1016,3 +1016,9 @@ Architecture multi-scripts dans le moteur PDF. Détection par script → police 
 Scripts ACTIVÉS (rendu correct sans shaping, prouvé sur PDF réel inspecté) : CJK (中文, NotoSansSC statique glyf, subset:false, embarqué seulement si CJK présent ~6MB), thaï, géorgien, arménien, éthiopien — en plus de latin/latin-étendu/cyrillique/grec (NotoSans, étape 1).
 Scripts NON activés : indiens (devanagari/bengali/tamoul/télougou/kannada/malayalam/gujarati) → nécessitent un moteur de shaping (HarfBuzz), pdf-lib ne shape pas → rendu incorrect. Repli '?' propre, pas de crash. = ÉTAPE 3 future.
 Vérif déploiement : 9 polices présentes dans l'image (NotoSansSC 10 596 500 o confirmé dans le conteneur), Jelastic 200, Railway 200.
+
+## PDF priorité 2 — étape 3 (2026-06-08) — commit e547af6 — UNLOCK SCRIPTS INDIENS
+Cause racine du hindi vide : le shaper indien de fontkit (machine à états des syllabes) plantait sur `regeneratorRuntime is not defined`. Fix : `import 'regenerator-runtime/runtime.js'` en tête de pdf.service.ts (dép. regenerator-runtime 0.14.1). Une fois le global défini, fontkit shape correctement l'indien.
+Scripts indiens ACTIVÉS (shaping correct prouvé sur PDF réel inspecté, 2 colonnes) : devanagari (hindi/marathi/népalais), bengali, tamoul, télougou, kannada, malayalam, gujarati. + garde ZWJ/ZWNJ dans le découpage par script.
+COUVERTURE PDF TOTALE : latin/latin-étendu/cyrillique/grec + arabe/hébreu (RTL) + CJK + thaï + géorgien + arménien + éthiopien + 7 scripts indiens.
+Vérif PROD réelle : shaping devanagari exécuté DANS le conteneur Jelastic (PROD_SHAPING_OK, PDF 5246 o), regenerator-runtime présent, 12 polices de script dans l'image, Jelastic 200, Railway 200.
