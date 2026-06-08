@@ -861,5 +861,89 @@
     "connecting": "Connessione…",
     "connected": "Connesso! Avvio…",
     "joinButton": "Unisciti al rapporto"
+  },
+  "account": {
+    "member": {
+      "remove": "Rimuovi",
+      "removeConfirm": "Rimuovere questo membro? Perderà l'accesso ai veicoli e ai crediti dell'azienda.",
+      "loading": "Caricamento…",
+      "none": "Nessun membro.",
+      "invite": "Invita un membro",
+      "inviteBtn": "Invita",
+      "pending": "Inviti in sospeso"
+    },
+    "role": {
+      "owner": "Proprietario",
+      "driver": "Conducente",
+      "fleet_admin": "Admin flotta"
+    },
+    "scan": {
+      "cancel": "Annulla",
+      "photographPre": "Fotografa il tuo",
+      "license": "libretto di circolazione",
+      "and": "e/o la tua",
+      "greenCard": "carta verde",
+      "title": "Scansiona libretto + carta verde",
+      "subtitle": "Riconoscimento automatico · multilingue"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Il mio garage",
+      "add": "Aggiungi",
+      "emptyTitle": "Garage vuoto",
+      "emptySubtitle": "Salva i tuoi veicoli una volta. Mai più scansioni durante un incidente.",
+      "addFirst": "Aggiungi il mio primo veicolo",
+      "noOrgVehicles": "Nessun veicolo aziendale per ora."
+    },
+    "insurance": {
+      "saved": "Assicurazione salvata",
+      "add": "Aggiungi assicurazione"
+    },
+    "nav": {
+      "logout": "Disconnetti"
+    },
+    "vehicle": {
+      "edit": "Modifica veicolo",
+      "delete": "Elimina veicolo",
+      "editOrg": "Modifica veicolo aziendale",
+      "deleteOrg": "Elimina veicolo aziendale"
+    },
+    "fields": {
+      "nickname": "Soprannome",
+      "plate": "Targa",
+      "make": "Marca",
+      "model": "Modello",
+      "color": "Colore",
+      "year": "Anno",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "phone": "Telefono",
+      "company": "Società",
+      "address": "Indirizzo",
+      "newEmail": "Nuova email",
+      "currentPwd": "Password attuale (conferma)",
+      "confirmEmailAria": "Conferma dell'indirizzo email"
+    },
+    "credits": {
+      "buy": "Acquista:",
+      "available": "CREDITI DISPONIBILI",
+      "unit": "1 credito = 1 rapporto d'incidente completo"
+    },
+    "history": {
+      "loading": "Caricamento...",
+      "empty": "Nessun rapporto",
+      "emptySub": "Il tuo prossimo rapporto apparirà qui automaticamente."
+    },
+    "personal": {
+      "title": "Informazioni personali",
+      "none": "Nessuna informazione — tocca Modifica"
+    },
+    "delete": {
+      "willDelete": "COSA SARÀ ELIMINATO DEFINITIVAMENTE:",
+      "text": "Elimina definitivamente il tuo account, i tuoi veicoli e tutti i tuoi rapporti. Questa azione è irreversibile."
+    },
+    "danger": {
+      "title": "Zona pericolosa"
+    }
   }
 }

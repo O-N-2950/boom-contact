@@ -1025,5 +1025,89 @@
     "connecting": "Connexion…",
     "connected": "Connecté ! Démarrage…",
     "joinButton": "Rejoindre le constat"
+  },
+  "account": {
+    "member": {
+      "remove": "Retirer",
+      "removeConfirm": "Retirer ce membre ? Il perdra l'accès aux véhicules et crédits de l'entreprise.",
+      "loading": "Chargement…",
+      "none": "Aucun membre.",
+      "invite": "Inviter un membre",
+      "inviteBtn": "Inviter",
+      "pending": "Invitations en attente"
+    },
+    "role": {
+      "owner": "Propriétaire",
+      "driver": "Chauffeur",
+      "fleet_admin": "Admin flotte"
+    },
+    "scan": {
+      "cancel": "Annuler",
+      "photographPre": "Photographiez votre",
+      "license": "permis de circuler",
+      "and": "et/ou votre",
+      "greenCard": "carte verte",
+      "title": "Scanner permis + carte verte",
+      "subtitle": "Reconnaissance automatique · multilingue"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Mon garage",
+      "add": "Ajouter",
+      "emptyTitle": "Garage vide",
+      "emptySubtitle": "Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.",
+      "addFirst": "Ajouter mon premier véhicule",
+      "noOrgVehicles": "Aucun véhicule d'entreprise pour le moment."
+    },
+    "insurance": {
+      "saved": "Assurance enregistrée",
+      "add": "Ajouter assurance"
+    },
+    "nav": {
+      "logout": "Déconnexion"
+    },
+    "vehicle": {
+      "edit": "Modifier le véhicule",
+      "delete": "Supprimer le véhicule",
+      "editOrg": "Modifier le véhicule d'entreprise",
+      "deleteOrg": "Supprimer le véhicule d'entreprise"
+    },
+    "fields": {
+      "nickname": "Surnom",
+      "plate": "Plaque",
+      "make": "Marque",
+      "model": "Modèle",
+      "color": "Couleur",
+      "year": "Année",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Téléphone",
+      "company": "Société",
+      "address": "Adresse",
+      "newEmail": "Nouvel email",
+      "currentPwd": "Mot de passe actuel (confirmation)",
+      "confirmEmailAria": "Confirmation de l'adresse email"
+    },
+    "credits": {
+      "buy": "Acheter :",
+      "available": "CRÉDITS DISPONIBLES",
+      "unit": "1 crédit = 1 constat amiable complet"
+    },
+    "history": {
+      "loading": "Chargement...",
+      "empty": "Aucun constat",
+      "emptySub": "Votre prochain constat apparaîtra ici automatiquement."
+    },
+    "personal": {
+      "title": "Informations personnelles",
+      "none": "Aucune information — clique sur Modifier"
+    },
+    "delete": {
+      "willDelete": "CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :",
+      "text": "Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible."
+    },
+    "danger": {
+      "title": "Zone dangereuse"
+    }
   }
 }

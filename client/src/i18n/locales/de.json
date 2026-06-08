@@ -861,5 +861,89 @@
     "connecting": "Verbindung…",
     "connected": "Verbunden! Start…",
     "joinButton": "Dem Bericht beitreten"
+  },
+  "account": {
+    "member": {
+      "remove": "Entfernen",
+      "removeConfirm": "Dieses Mitglied entfernen? Es verliert den Zugriff auf die Fahrzeuge und Guthaben des Unternehmens.",
+      "loading": "Wird geladen…",
+      "none": "Keine Mitglieder.",
+      "invite": "Mitglied einladen",
+      "inviteBtn": "Einladen",
+      "pending": "Ausstehende Einladungen"
+    },
+    "role": {
+      "owner": "Eigentümer",
+      "driver": "Fahrer",
+      "fleet_admin": "Flottenadmin"
+    },
+    "scan": {
+      "cancel": "Abbrechen",
+      "photographPre": "Fotografieren Sie Ihren",
+      "license": "Fahrzeugausweis",
+      "and": "und/oder Ihre",
+      "greenCard": "grüne Karte",
+      "title": "Ausweis + grüne Karte scannen",
+      "subtitle": "Automatische Erkennung · mehrsprachig"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Meine Garage",
+      "add": "Hinzufügen",
+      "emptyTitle": "Leere Garage",
+      "emptySubtitle": "Speichern Sie Ihre Fahrzeuge einmal. Nie wieder scannen bei einem Unfall.",
+      "addFirst": "Mein erstes Fahrzeug hinzufügen",
+      "noOrgVehicles": "Noch kein Firmenfahrzeug."
+    },
+    "insurance": {
+      "saved": "Versicherung gespeichert",
+      "add": "Versicherung hinzufügen"
+    },
+    "nav": {
+      "logout": "Abmelden"
+    },
+    "vehicle": {
+      "edit": "Fahrzeug bearbeiten",
+      "delete": "Fahrzeug löschen",
+      "editOrg": "Firmenfahrzeug bearbeiten",
+      "deleteOrg": "Firmenfahrzeug löschen"
+    },
+    "fields": {
+      "nickname": "Spitzname",
+      "plate": "Kennzeichen",
+      "make": "Marke",
+      "model": "Modell",
+      "color": "Farbe",
+      "year": "Jahr",
+      "firstName": "Vorname",
+      "lastName": "Name",
+      "phone": "Telefon",
+      "company": "Firma",
+      "address": "Adresse",
+      "newEmail": "Neue E-Mail",
+      "currentPwd": "Aktuelles Passwort (Bestätigung)",
+      "confirmEmailAria": "Bestätigung der E-Mail-Adresse"
+    },
+    "credits": {
+      "buy": "Kaufen:",
+      "available": "VERFÜGBARE GUTHABEN",
+      "unit": "1 Guthaben = 1 vollständiger Unfallbericht"
+    },
+    "history": {
+      "loading": "Wird geladen...",
+      "empty": "Kein Bericht",
+      "emptySub": "Ihr nächster Bericht erscheint hier automatisch."
+    },
+    "personal": {
+      "title": "Persönliche Angaben",
+      "none": "Keine Angaben — auf Bearbeiten tippen"
+    },
+    "delete": {
+      "willDelete": "WAS ENDGÜLTIG GELÖSCHT WIRD:",
+      "text": "Löschen Sie endgültig Ihr Konto, Ihre Fahrzeuge und alle Ihre Berichte. Diese Aktion ist unwiderruflich."
+    },
+    "danger": {
+      "title": "Gefahrenzone"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { track } from '../analytics';
+import { useTranslation } from 'react-i18next';
 import { EVENTS, creditsBucket } from '../analytics-events';
 import { useState, useEffect } from 'react';
 import { ShareBoom } from '../components/ShareBoom';
@@ -8,6 +9,7 @@ import type { OCRResult } from '../../../shared/types';
 
 // ── Fleet B2B — panneau membres + invitations (owner/fleet_admin) ──
 function OrgMembersPanel({ organizationId, name, actorRole }: { organizationId: string; name: string; actorRole?: string }) {
+  const { t } = useTranslation();
   const membersQ = trpc.organization.listMembers.useQuery({ organizationId });
   const invitesQ = trpc.organization.listInvites.useQuery({ organizationId });
   const [email, setEmail] = useState('');
@@ -79,50 +81,50 @@ function OrgMembersPanel({ organizationId, name, actorRole }: { organizationId: 
                 <select value={m.role} disabled={roleMut.isPending}
                   onChange={(e) => { setMsg(null); track(EVENTS.ORGANIZATION_MEMBER_ROLE_UPDATE_STARTED, { actor_role: actorRole, new_role: e.target.value }); roleMut.mutate({ organizationId, memberId: m.id, role: e.target.value as any }); }}
                   className="rounded-md text-[11px] px-1.5 py-1 text-[#123A5A] cursor-pointer" style={{ border: '1px solid #DDE7F0' }}>
-                  <option value="driver">Chauffeur</option>
-                  <option value="fleet_admin">Admin flotte</option>
+                  <option value="driver">{t('account.role.driver', { defaultValue: 'Chauffeur' })}</option>
+                  <option value="fleet_admin">{t('account.role.fleet_admin', { defaultValue: 'Admin flotte' })}</option>
                 </select>
               ) : (
-                <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: '#123A5A', background: '#EEF4FA' }}>{ROLE_LABEL[m.role] || m.role}</span>
+                <span className="text-[11px] font-bold rounded-md px-2 py-0.5" style={{ color: '#123A5A', background: '#EEF4FA' }}>{t('account.role.'+m.role, { defaultValue: ROLE_LABEL[m.role] || m.role })}</span>
               )}
               {manageable && (
                 <button
-                  onClick={() => { if (window.confirm('Retirer ce membre ? Il perdra l\'accès aux véhicules et crédits de l\'entreprise.')) { setMsg(null); removeMut.mutate({ organizationId, memberId: m.id }); } }}
+                  onClick={() => { if (window.confirm(t('account.member.removeConfirm', { defaultValue: "Retirer ce membre ? Il perdra l'accès aux véhicules et crédits de l'entreprise." }))) { setMsg(null); removeMut.mutate({ organizationId, memberId: m.id }); } }}
                   disabled={removeMut.isPending}
                   className="bg-transparent rounded-md text-[11px] font-bold cursor-pointer px-2 py-1 text-[#DC2626] disabled:opacity-50" style={{ border: '1px solid #DC2626' }}>
-                  Retirer
+                  {t('account.member.remove', { defaultValue: 'Retirer' })}
                 </button>
               )}
             </div>
           );
         })}
-        {(membersQ.data?.length ?? 0) === 0 && <div className="text-[12px] text-[#5D6B7C] py-1">{membersQ.isLoading ? 'Chargement…' : 'Aucun membre.'}</div>}
+        {(membersQ.data?.length ?? 0) === 0 && <div className="text-[12px] text-[#5D6B7C] py-1">{membersQ.isLoading ? t('account.member.loading', { defaultValue: 'Chargement…' }) : t('account.member.none', { defaultValue: 'Aucun membre.' })}</div>}
       </div>
 
-      <div className="text-[12px] font-bold text-[#102033] mb-1">Inviter un membre</div>
+      <div className="text-[12px] font-bold text-[#102033] mb-1">{t('account.member.invite', { defaultValue: 'Inviter un membre' })}</div>
       <div className="flex items-center gap-1.5 flex-wrap mb-1">
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@entreprise.ch"
           className="flex-1 min-w-[160px] rounded-lg text-[13px] px-3 py-2 text-[#102033]" style={{ border: '1px solid #DDE7F0' }} />
         <select value={role} onChange={(e) => setRole(e.target.value as any)}
           className="rounded-lg text-[13px] px-2 py-2 text-[#102033] cursor-pointer" style={{ border: '1px solid #DDE7F0' }}>
-          <option value="driver">Chauffeur</option>
-          <option value="fleet_admin">Admin flotte</option>
+          <option value="driver">{t('account.role.driver', { defaultValue: 'Chauffeur' })}</option>
+          <option value="fleet_admin">{t('account.role.fleet_admin', { defaultValue: 'Admin flotte' })}</option>
         </select>
         <button onClick={submit} disabled={inviteMut.isPending || !email.trim()}
           className="bg-[#FF6B1A] text-white border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2 disabled:opacity-50">
-          Inviter
+          {t('account.member.inviteBtn', { defaultValue: 'Inviter' })}
         </button>
       </div>
       {msg && <div className="text-[12px] mb-2" style={{ color: msg.ok ? '#16A34A' : '#DC2626' }}>{msg.text}</div>}
 
       {pending.length > 0 && (
         <div className="mt-2">
-          <div className="text-[12px] font-bold text-[#102033] mb-1">Invitations en attente</div>
+          <div className="text-[12px] font-bold text-[#102033] mb-1">{t('account.member.pending', { defaultValue: 'Invitations en attente' })}</div>
           {pending.map((i: any) => (
             <div key={i.id} className="flex items-center justify-between text-[12px] py-1 gap-2 flex-wrap" style={{ borderTop: '1px solid #EEF4FA' }}>
               <div className="flex flex-col flex-1 min-w-[140px]">
                 <span className="text-[#102033]">{i.email}</span>
-                <span className="text-[11px] text-[#5D6B7C]">{ROLE_LABEL[i.role] || i.role} · expire le {new Date(i.expiresAt).toLocaleDateString()}</span>
+                <span className="text-[11px] text-[#5D6B7C]">{t('account.role.'+i.role, { defaultValue: ROLE_LABEL[i.role] || i.role })} · expire le {new Date(i.expiresAt).toLocaleDateString()}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <button onClick={() => { setMsg(null); resendMut.mutate({ organizationId, inviteId: i.id }); }} disabled={resendMut.isPending}
@@ -144,6 +146,7 @@ function OrgMembersPanel({ organizationId, name, actorRole }: { organizationId: 
 
 // ── Fleet Finance — panneau historique wallet (owner/fleet_admin), lecture seule ──
 function OrgFinancePanel({ organizationId, name }: { organizationId: string; name: string }) {
+  const { t } = useTranslation();
   const walletQ = trpc.payment.getOrganizationWallet.useQuery({ organizationId });
   const [cursor, setCursor] = useState<string | null>(null);
   const [rows, setRows] = useState<any[]>([]);
@@ -265,6 +268,7 @@ interface VehicleForm {
 }
 
 export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garage' }: AccountPageProps) {
+  const { t } = useTranslation();
   const [tab, setTab]                 = useState<PageTab>(initialTab);
   useEffect(() => { track(EVENTS.ACCOUNT_VIEWED); }, []);
   useEffect(() => { if (tab === 'garage') track(EVENTS.GARAGE_VIEWED); }, [tab]);
@@ -396,7 +400,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
           {/* Ce qui sera supprimé */}
           <div className="rounded-xl p-4 mb-5" style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.2)' }}>
-            <div className="text-[#DC2626] font-bold text-xs mb-2.5">CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :</div>
+            <div className="text-[#DC2626] font-bold text-xs mb-2.5">{t('account.delete.willDelete', { defaultValue: 'CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :' })}</div>
             {[
               '🗑️ Ton compte et tes identifiants',
               '🚗 Tous tes véhicules enregistrés',
@@ -424,7 +428,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               placeholder={emailToConfirm}
               autoCapitalize="none"
               autoCorrect="off"
-              aria-label="Confirmation de l'adresse email"
+              aria-label={t('account.fields.confirmEmailAria', { defaultValue: "Confirmation de l'adresse email" })}
               aria-describedby="delete-confirm-help"
               className="w-full rounded-[10px] text-[#102033] text-sm box-border px-3.5 py-3 bg-[#F5F8FC]" style={{ border: '1px solid #DDE7F0', outline: deleteConfirmText === emailToConfirm ? '2px solid #ef4444' : 'none' }}
             />
@@ -468,9 +472,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     return (
       <div className="min-h-screen bg-[#F5F8FC] p-4">
         <div className="mx-auto max-w-[500px]">
-          <button onClick={() => setScanning(false)} style={backBtn}>← Annuler</button>
+          <button onClick={() => setScanning(false)} style={backBtn}>← {t('account.scan.cancel', { defaultValue: 'Annuler' })}</button>
           <p className="text-[#5D6B7C] text-[13px] mb-4">
-            Photographiez votre <strong className="text-[#102033]">permis de circuler</strong> et/ou votre <strong className="text-[#102033]">carte verte</strong>.
+            {t('account.scan.photographPre', { defaultValue: 'Photographiez votre' })} <strong className="text-[#102033]">{t('account.scan.license', { defaultValue: 'permis de circuler' })}</strong> {t('account.scan.and', { defaultValue: 'et/ou votre' })} <strong className="text-[#102033]">{t('account.scan.greenCard', { defaultValue: 'carte verte' })}</strong>.
           </p>
           <OCRScanner role="A" onComplete={handleScanComplete} />
         </div>
@@ -483,7 +487,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     return (
       <div className="min-h-screen bg-[#F5F8FC] p-4">
         <div className="mx-auto max-w-[500px]">
-          <button onClick={() => setVehicleView('list')} style={backBtn}>← Garage</button>
+          <button onClick={() => setVehicleView('list')} style={backBtn}>← {t('account.garage.back', { defaultValue: 'Garage' })}</button>
           <h2 className="text-[#102033] text-xl font-extrabold mb-1">
             {vehicleView === 'add' ? '➕ Ajouter un véhicule' : '✏️ Modifier le véhicule'}
           </h2>
@@ -496,26 +500,26 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
           <button onClick={() => setScanning(true)} className="w-full rounded-xl cursor-pointer flex items-center gap-3 mb-5 px-4 py-3.5 bg-[#EEF4FA]" style={{ border: '1px solid #DDE7F0' }}>
             <span className="text-[28px]">📄</span>
             <div className="text-left">
-              <div className="font-bold text-[#123A5A]">Scanner permis + carte verte</div>
-              <div className="text-xs text-[#5D6B7C]">Reconnaissance automatique · multilingue</div>
+              <div className="font-bold text-[#123A5A]">{t('account.scan.title', { defaultValue: 'Scanner permis + carte verte' })}</div>
+              <div className="text-xs text-[#5D6B7C]">{t('account.scan.subtitle', { defaultValue: 'Reconnaissance automatique · multilingue' })}</div>
             </div>
           </button>
 
           <div className="flex flex-col gap-3">
-            <Field label="Surnom" placeholder='ex: "Ma Golf bleue"' value={form.nickname || ''} onChange={v => setForm(p => ({ ...p, nickname: v }))} />
-            <Field label="Plaque" placeholder="JU 12345" value={form.plate || ''} onChange={v => setForm(p => ({ ...p, plate: v.toUpperCase() }))} />
+            <Field label={t('account.fields.nickname', { defaultValue: 'Surnom' })} placeholder='ex: "Ma Golf bleue"' value={form.nickname || ''} onChange={v => setForm(p => ({ ...p, nickname: v }))} />
+            <Field label={t('account.fields.plate', { defaultValue: 'Plaque' })} placeholder="JU 12345" value={form.plate || ''} onChange={v => setForm(p => ({ ...p, plate: v.toUpperCase() }))} />
             <div className="flex gap-2.5">
-              <div className="flex-1"><Field label="Marque" placeholder="Volkswagen" value={form.make || ''} onChange={v => setForm(p => ({ ...p, make: v }))} /></div>
-              <div className="flex-1"><Field label="Modèle" placeholder="Golf 8" value={form.model || ''} onChange={v => setForm(p => ({ ...p, model: v }))} /></div>
+              <div className="flex-1"><Field label={t('account.fields.make', { defaultValue: 'Marque' })} placeholder="Volkswagen" value={form.make || ''} onChange={v => setForm(p => ({ ...p, make: v }))} /></div>
+              <div className="flex-1"><Field label={t('account.fields.model', { defaultValue: 'Modèle' })} placeholder="Golf 8" value={form.model || ''} onChange={v => setForm(p => ({ ...p, model: v }))} /></div>
             </div>
             <div className="flex gap-2.5">
-              <div className="flex-1"><Field label="Couleur" placeholder="Bleue" value={form.color || ''} onChange={v => setForm(p => ({ ...p, color: v }))} /></div>
-              <div className="flex-1"><Field label="Année" placeholder="2022" value={form.year || ''} onChange={v => setForm(p => ({ ...p, year: v }))} /></div>
+              <div className="flex-1"><Field label={t('account.fields.color', { defaultValue: 'Couleur' })} placeholder="Bleue" value={form.color || ''} onChange={v => setForm(p => ({ ...p, color: v }))} /></div>
+              <div className="flex-1"><Field label={t('account.fields.year', { defaultValue: 'Année' })} placeholder="2022" value={form.year || ''} onChange={v => setForm(p => ({ ...p, year: v }))} /></div>
             </div>
 
             {form.insuranceData && Object.keys(form.insuranceData).length > 0 && (
               <div className="rounded-[10px] p-3.5 bg-[#ECFDF3]" style={{ border: '1px solid rgba(22,163,74,0.3)' }}>
-                <div className="text-[#16A34A] font-bold text-[13px] mb-1">🛡️ Assurance enregistrée</div>
+                <div className="text-[#16A34A] font-bold text-[13px] mb-1">🛡️ {t('account.insurance.saved', { defaultValue: t('account.insurance.saved', { defaultValue: 'Assurance enregistrée' }) })}</div>
                 {(form.insuranceData as any)?.company && <div className="text-[13px] text-[#5D6B7C]">{(form.insuranceData as any).company}</div>}
                 {(form.insuranceData as any)?.policyNumber && <div className="text-[#5D6B7C] text-xs">Police n° {(form.insuranceData as any).policyNumber}</div>}
                 <button onClick={() => setScanning(true)} className="mt-2 bg-transparent rounded-lg text-[#16A34A] text-xs cursor-pointer px-3 py-1.5" style={{ border: '1px dashed rgba(22,163,74,0.4)' }}>
@@ -541,8 +545,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     <div className="min-h-screen bg-[#F5F8FC] p-4">
       <div className="mx-auto max-w-[500px]">
         <div className="flex justify-between items-center mb-5">
-          <button onClick={onBack} style={backBtn}>← Retour</button>
-          <button onClick={onLogout} className="bg-transparent border-0 cursor-pointer text-[13px] font-medium" style={{ color: '#5D6B7C' }}>Déconnexion</button>
+          <button onClick={onBack} style={backBtn}>← {t('constat.nav.back', { defaultValue: 'Retour' })}</button>
+          <button onClick={onLogout} className="bg-transparent border-0 cursor-pointer text-[13px] font-medium" style={{ color: '#5D6B7C' }}>{t('account.nav.logout', { defaultValue: 'Déconnexion' })}</button>
         </div>
 
         {/* Profile card */}
@@ -572,12 +576,12 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {tab === 'garage' && (
           <>
             <div className="flex justify-between items-center mb-3">
-              <div className="text-[#102033] font-bold">Mon garage ({vehicles.length})</div>
-              <button onClick={startAdd} className="bg-[#FF6B1A] text-[#102033] border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ Ajouter</button>
+              <div className="text-[#102033] font-bold">{t('account.garage.title', { defaultValue: 'Mon garage' })} ({vehicles.length})</div>
+              <button onClick={startAdd} className="bg-[#FF6B1A] text-[#102033] border-0 rounded-lg text-[13px] font-bold cursor-pointer px-3.5 py-2">+ {t('account.garage.add', { defaultValue: 'Ajouter' })}</button>
             </div>
             {vehicles.length === 0 && (
-              <EmptyState icon="🚗" title="Garage vide" subtitle="Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.">
-                <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]" style={{ background: '#FF6B1A', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>➕ Ajouter mon premier véhicule</button>
+              <EmptyState icon="🚗" title={t('account.garage.emptyTitle', { defaultValue: 'Garage vide' })} subtitle={t('account.garage.emptySubtitle', { defaultValue: "Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident." })}>
+                <button onClick={startAdd} className="mt-4 w-auto px-5 py-[11px]" style={{ background: '#FF6B1A', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>➕ {t('account.garage.addFirst', { defaultValue: 'Ajouter mon premier véhicule' })}</button>
               </EmptyState>
             )}
             {vehicles.map((v: any) => (
@@ -591,13 +595,13 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     <div className="text-xs mt-0.5 text-[#5D6B7C]">{[v.make, v.model, v.color, v.year].filter(Boolean).join(' · ')}</div>
                   </div>
                   <div className="flex gap-1.5">
-                    <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule">✏️</button>
-                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn} aria-label="Supprimer le véhicule">🗑️</button>
+                    <button onClick={() => startEdit(v)} style={iconBtn} aria-label={t('account.vehicle.edit', { defaultValue: 'Modifier le véhicule' })}>✏️</button>
+                    <button onClick={() => handleDelete(v.id, v.nickname)} style={iconBtn} aria-label={t('account.vehicle.delete', { defaultValue: 'Supprimer le véhicule' })}>🗑️</button>
                   </div>
                 </div>
                 {v.insuranceData && Object.keys(v.insuranceData).length > 0
                   ? <div className="mt-2.5 rounded-lg text-xs text-[#16A34A] px-3 py-[7px] bg-[#ECFDF3]">🛡️ {v.insuranceData.company || 'Assurance enregistrée'}{v.insuranceData.policyNumber ? ' · ' + v.insuranceData.policyNumber : ''}</div>
-                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer px-2.5 py-[5px] text-[#5D6B7C]" style={{ border: '1px dashed #DDE7F0' }}>+ Ajouter assurance</button>
+                  : <button onClick={() => startEdit(v)} className="mt-2 bg-transparent rounded-lg text-[11px] cursor-pointer px-2.5 py-[5px] text-[#5D6B7C]" style={{ border: '1px dashed #DDE7F0' }}>+ {t('account.insurance.add', { defaultValue: 'Ajouter assurance' })}</button>
                 }
               </div>
             ))}
@@ -618,7 +622,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                       </div>
                       {(w.canManageBilling) && (
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-[11px] text-[#5D6B7C] mr-1">Acheter :</span>
+                          <span className="text-[11px] text-[#5D6B7C] mr-1">{t('account.credits.buy', { defaultValue: 'Acheter :' })}</span>
                           {([['single','1'],['pack3','3'],['pack10','10']] as const).map(([pid, lbl]) => (
                             <button key={pid}
                               onClick={() => orgCheckoutMut.mutate({ organizationId: w.organizationId, packageId: pid as any, currency: 'EUR', locale: (navigator.language || 'fr').split('-')[0] })}
@@ -640,7 +644,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     </button>
                   ))}
                   {orgVehicles.length === 0 && (
-                    <div className="text-[13px] text-[#5D6B7C] mt-1">Aucun véhicule d'entreprise pour le moment.</div>
+                    <div className="text-[13px] text-[#5D6B7C] mt-1">{t('account.garage.noOrgVehicles', { defaultValue: "Aucun véhicule d'entreprise pour le moment." })}</div>
                   )}
                   {orgVehicles.map((v: any) => (
                     <div key={v.id} className="bg-[#FFFFFF] rounded-[14px] p-4 mb-2.5 mt-2" style={{ border: '1px solid #DDE7F0', borderLeft: '3px solid #123A5A' }}>
@@ -655,8 +659,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                         </div>
                         {v.canManage && (
                           <div className="flex gap-1.5">
-                            <button onClick={() => startEdit(v)} style={iconBtn} aria-label="Modifier le véhicule d'entreprise">✏️</button>
-                            <button onClick={() => handleDeleteOrg(v.id, v.label)} style={iconBtn} aria-label="Supprimer le véhicule d'entreprise">🗑️</button>
+                            <button onClick={() => startEdit(v)} style={iconBtn} aria-label={t('account.vehicle.editOrg', { defaultValue: "Modifier le véhicule d'entreprise" })}>✏️</button>
+                            <button onClick={() => handleDeleteOrg(v.id, v.label)} style={iconBtn} aria-label={t('account.vehicle.deleteOrg', { defaultValue: "Supprimer le véhicule d'entreprise" })}>🗑️</button>
                           </div>
                         )}
                       </div>
@@ -672,9 +676,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
         {tab === 'history' && (
           <>
             <div className="text-[#102033] font-bold mb-3">Mes constats ({history.length})</div>
-            {historyQ.isLoading && <div className="text-center p-8 text-[#5D6B7C]">Chargement...</div>}
+            {historyQ.isLoading && <div className="text-center p-8 text-[#5D6B7C]">{t('account.history.loading', { defaultValue: 'Chargement...' })}</div>}
             {!historyQ.isLoading && history.length === 0 && (
-              <EmptyState icon="📋" title="Aucun constat" subtitle="Votre prochain constat apparaîtra ici automatiquement." />
+              <EmptyState icon="📋" title={t('account.history.empty', { defaultValue: 'Aucun constat' })} subtitle={t('account.history.emptySub', { defaultValue: 'Votre prochain constat apparaîtra ici automatiquement.' })} />
             )}
             {history.map((s: any) => {
               const a = s.participantA || {};
@@ -706,9 +710,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Crédits */}
             <div className="bg-[#FFFFFF] rounded-[14px] p-[18px]" style={{ border: '1px solid #DDE7F0' }}>
-              <div className="text-[#5D6B7C] text-xs mb-1">CRÉDITS DISPONIBLES</div>
+              <div className="text-[#5D6B7C] text-xs mb-1">{t('account.credits.available', { defaultValue: 'CRÉDITS DISPONIBLES' })}</div>
               <div className="text-[#FF6B1A] text-[32px] font-black">{freshUser.credits === 999999 ? '∞' : freshUser.credits}</div>
-              <div className="text-xs text-[#5D6B7C]">1 crédit = 1 constat amiable complet</div>
+              <div className="text-xs text-[#5D6B7C]">{t('account.credits.unit', { defaultValue: '1 crédit = 1 constat amiable complet' })}</div>
             </div>
 
             {/* Email — changement */}
@@ -725,8 +729,8 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
               </div>
               {editingEmail && (
                 <div className="flex flex-col gap-2.5">
-                  <Field label="Nouvel email" placeholder="contact@example.com" value={newEmail} onChange={setNewEmail} />
-                  <Field label="Mot de passe actuel (confirmation)" placeholder="••••••••" value={emailPassword} onChange={setEmailPassword} />
+                  <Field label={t('account.fields.newEmail', { defaultValue: 'Nouvel email' })} placeholder="contact@example.com" value={newEmail} onChange={setNewEmail} />
+                  <Field label={t('account.fields.currentPwd', { defaultValue: 'Mot de passe actuel (confirmation)' })} placeholder="••••••••" value={emailPassword} onChange={setEmailPassword} />
                   <button
                     disabled={!newEmail || !emailPassword}
                     onClick={async () => {
@@ -750,7 +754,7 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
             {/* Profil — infos personnelles */}
             <div className="bg-[#FFFFFF] rounded-[14px] p-[18px]" style={{ border: '1px solid #DDE7F0' }}>
               <div className="flex justify-between items-center mb-3.5" >
-                <div className="text-[#102033] font-bold text-sm">👤 Informations personnelles</div>
+                <div className="text-[#102033] font-bold text-sm">👤 {t('account.personal.title', { defaultValue: 'Informations personnelles' })}</div>
                 {!editingProfile && (
                   <button onClick={() => {
                     setProfileForm({
@@ -782,18 +786,18 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
                     </div>
                   ) : null)}
                   {!(user.firstName || user.phone) && (
-                    <div className="text-[13px] text-[#5D6B7C]">Aucune information — clique sur Modifier</div>
+                    <div className="text-[13px] text-[#5D6B7C]">{t('account.personal.none', { defaultValue: 'Aucune information — clique sur Modifier' })}</div>
                   )}
                 </div>
               ) : (
                 <div className="flex flex-col gap-2.5">
                   <div className="flex gap-2.5">
-                    <div className="flex-1"><Field label="Prénom" placeholder="Olivier" value={profileForm.firstName} onChange={v => setProfileForm(p => ({...p, firstName: v}))} /></div>
-                    <div className="flex-1"><Field label="Nom" placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
+                    <div className="flex-1"><Field label={t('account.fields.firstName', { defaultValue: 'Prénom' })} placeholder="Olivier" value={profileForm.firstName} onChange={v => setProfileForm(p => ({...p, firstName: v}))} /></div>
+                    <div className="flex-1"><Field label={t('account.fields.lastName', { defaultValue: 'Nom' })} placeholder="Neukomm" value={profileForm.lastName} onChange={v => setProfileForm(p => ({...p, lastName: v}))} /></div>
                   </div>
-                  <Field label="Téléphone" placeholder="+41 79 123 45 67" value={profileForm.phone} onChange={v => setProfileForm(p => ({...p, phone: v}))} />
-                  <Field label="Société" placeholder="Acme SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
-                  <Field label="Adresse" placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
+                  <Field label={t('account.fields.phone', { defaultValue: 'Téléphone' })} placeholder="+41 79 123 45 67" value={profileForm.phone} onChange={v => setProfileForm(p => ({...p, phone: v}))} />
+                  <Field label={t('account.fields.company', { defaultValue: 'Société' })} placeholder="Acme SA" value={profileForm.company} onChange={v => setProfileForm(p => ({...p, company: v}))} />
+                  <Field label={t('account.fields.address', { defaultValue: 'Adresse' })} placeholder="Bellevue 7, 2950 Courgenay" value={profileForm.address} onChange={v => setProfileForm(p => ({...p, address: v}))} />
                   <div className="flex gap-2 mt-1">
                     <button onClick={() => setEditingProfile(false)}
                       className="flex-1 bg-transparent rounded-[10px] text-[#5D6B7C] cursor-pointer text-[13px] p-[11px]"  style={{ border: '1px solid #DDE7F0' }}>
@@ -832,9 +836,9 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
 
             {/* Zone dangereuse — Suppression compte */}
             <div className="rounded-[14px] p-[18px]" style={{ border: '1px solid rgba(239,68,68,0.2)' }}>
-              <div className="text-[#DC2626] font-bold text-[13px] mb-1.5">⚠️ Zone dangereuse</div>
+              <div className="text-[#DC2626] font-bold text-[13px] mb-1.5">⚠️ {t('account.danger.title', { defaultValue: 'Zone dangereuse' })}</div>
               <div className="text-[#5D6B7C] text-xs leading-relaxed mb-3">
-                Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.
+                {t('account.delete.text', { defaultValue: 'Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible.' })}
               </div>
               <button
                 onClick={() => setShowDeleteModal(true)}

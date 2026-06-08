@@ -1025,5 +1025,89 @@
     "connecting": "Connecting…",
     "connected": "Connected! Starting…",
     "joinButton": "Join the report"
+  },
+  "account": {
+    "member": {
+      "remove": "Remove",
+      "removeConfirm": "Remove this member? They will lose access to the company's vehicles and credits.",
+      "loading": "Loading…",
+      "none": "No members.",
+      "invite": "Invite a member",
+      "inviteBtn": "Invite",
+      "pending": "Pending invitations"
+    },
+    "role": {
+      "owner": "Owner",
+      "driver": "Driver",
+      "fleet_admin": "Fleet admin"
+    },
+    "scan": {
+      "cancel": "Cancel",
+      "photographPre": "Photograph your",
+      "license": "vehicle registration",
+      "and": "and/or your",
+      "greenCard": "green card",
+      "title": "Scan licence + green card",
+      "subtitle": "Automatic recognition · multilingual"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "My garage",
+      "add": "Add",
+      "emptyTitle": "Empty garage",
+      "emptySubtitle": "Save your vehicles once. Never scan again during an accident.",
+      "addFirst": "Add my first vehicle",
+      "noOrgVehicles": "No company vehicle yet."
+    },
+    "insurance": {
+      "saved": "Insurance saved",
+      "add": "Add insurance"
+    },
+    "nav": {
+      "logout": "Sign out"
+    },
+    "vehicle": {
+      "edit": "Edit vehicle",
+      "delete": "Delete vehicle",
+      "editOrg": "Edit company vehicle",
+      "deleteOrg": "Delete company vehicle"
+    },
+    "fields": {
+      "nickname": "Nickname",
+      "plate": "Plate",
+      "make": "Make",
+      "model": "Model",
+      "color": "Colour",
+      "year": "Year",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "company": "Company",
+      "address": "Address",
+      "newEmail": "New email",
+      "currentPwd": "Current password (confirmation)",
+      "confirmEmailAria": "Email address confirmation"
+    },
+    "credits": {
+      "buy": "Buy:",
+      "available": "AVAILABLE CREDITS",
+      "unit": "1 credit = 1 complete accident report"
+    },
+    "history": {
+      "loading": "Loading...",
+      "empty": "No report",
+      "emptySub": "Your next report will appear here automatically."
+    },
+    "personal": {
+      "title": "Personal information",
+      "none": "No information — tap Edit"
+    },
+    "delete": {
+      "willDelete": "WHAT WILL BE PERMANENTLY DELETED:",
+      "text": "Permanently delete your account, your vehicles and all your reports. This action is irreversible."
+    },
+    "danger": {
+      "title": "Danger zone"
+    }
   }
 }
