@@ -36,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Session active",
+      "vehicleA": "VÉHICULE A",
+      "photosSig": "Photos · signature ✓",
+      "vehicleB": "VÉHICULE B",
+      "qrJoined": "QR rejoint · en cours",
+      "payGenerate": "Payer et générer le PDF",
+      "pdfBadge": "PDF horodaté",
+      "qrBadge": "QR partagé"
     },
     "badges": {
       "languages": "Multilingue",
@@ -85,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Invitez par QR code",
+        "desc": "Créez la session, l'autre conducteur scanne le QR depuis son téléphone. Aucune installation, aucune inscription."
+      },
+      {
+        "title": "Photos, voix et signature",
+        "desc": "Ajoutez des photos, dictez vos observations à la voix, placez les véhicules sur le croquis et signez du doigt."
+      },
+      {
+        "title": "Dossier PDF horodaté",
+        "desc": "boom.contact génère un dossier PDF horodaté reprenant les informations saisies par chaque conducteur."
+      },
+      {
+        "title": "À transmettre à votre assureur",
+        "desc": "Téléchargez le PDF ou envoyez-le par email pour accompagner votre déclaration de sinistre auprès de votre assureur."
+      }
+    ],
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -153,7 +129,102 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
     },
-    "seoLine": "Le constat amiable numérique multilingue · Digital accident report"
+    "seoLine": "Le constat amiable numérique multilingue · Digital accident report",
+    "flow": {
+      "label": "Tout en un seul flux",
+      "title": "De l'accident au dossier prêt à transmettre"
+    },
+    "stress": {
+      "label": "Pensé pour le moment de l'accident",
+      "title": "Conçu pour les situations stressantes",
+      "text": "Après un choc, on n'a pas l'esprit clair. boom.contact avance pas à pas, dans votre langue, et garde une trace de chaque information collectée. Tout fonctionne depuis le navigateur du téléphone, même avec une connexion limitée.",
+      "bullets": [
+        "Guidé étape par étape",
+        "Multilingue",
+        "Photos · voix · signature",
+        "Dossier PDF horodaté"
+      ],
+      "emergencyTitle": "En cas d'urgence",
+      "emergencyText": "boom.contact ne remplace pas les secours, la police, un avocat ou l'assureur. En cas de blessé ou de danger, contactez d'abord les services d'urgence."
+    },
+    "pricing": {
+      "label": "Tarifs",
+      "title": "Simple, transparent, sans abonnement",
+      "caption": "1 crédit = 1 constat complet · multilingue · crédits sans expiration",
+      "badgePopular": "Populaire",
+      "plans": [
+        {
+          "label": "1 constat",
+          "desc": "Pour un accident ponctuel"
+        },
+        {
+          "label": "3 constats",
+          "desc": "Pour toute la famille"
+        },
+        {
+          "label": "10 constats",
+          "desc": "Pour flottes et courtiers"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Pour les professionnels",
+      "title": "Pour courtiers, flottes et partenaires assurance",
+      "text": "Équipez vos clients et vos conducteurs d'un outil clair pour documenter un accident et générer un dossier PDF horodaté. Packs de crédits pour les flottes et les courtiers, déploiement simple, sans abonnement.",
+      "cta": "Contacter / partager",
+      "items": [
+        {
+          "title": "Flottes",
+          "desc": "Un dossier structuré pour chaque sinistre conducteur."
+        },
+        {
+          "title": "Courtiers",
+          "desc": "Un service à valeur ajoutée pour vos assurés."
+        },
+        {
+          "title": "Confidentialité",
+          "desc": "Données chiffrées en transit, supprimables sur demande."
+        },
+        {
+          "title": "Transmission",
+          "desc": "PDF horodaté prêt à joindre à la déclaration de sinistre."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Questions fréquentes",
+      "items": [
+        {
+          "q": "Qu'est-ce que boom.contact ?",
+          "a": "boom.contact est une application qui aide à documenter un accident de la route depuis un téléphone : invitation des conducteurs par QR, photos, voix, croquis, signatures, puis génération d'un dossier PDF horodaté à transmettre à votre assureur."
+        },
+        {
+          "q": "Dois-je installer une application ?",
+          "a": "Non. boom.contact fonctionne directement dans le navigateur du téléphone (Safari, Chrome, Firefox). Vous pouvez aussi l'ajouter à votre écran d'accueil comme application web (PWA) pour un accès hors-ligne."
+        },
+        {
+          "q": "Que se passe-t-il si l'autre conducteur n'a pas l'application ?",
+          "a": "Vous créez la session et un QR code s'affiche. L'autre conducteur le scanne avec son téléphone : boom.contact s'ouvre dans son navigateur, sans inscription ni téléchargement."
+        },
+        {
+          "q": "Le dossier PDF est-il accepté par mon assureur ?",
+          "a": "Le dossier PDF horodaté est destiné à accompagner votre déclaration de sinistre. boom.contact ne garantit pas son acceptation, qui relève de votre assureur selon votre contrat et la juridiction."
+        },
+        {
+          "q": "Fonctionne-t-il si l'autre conducteur parle une autre langue ?",
+          "a": "Oui. Chaque conducteur utilise l'interface dans sa propre langue. Le dossier final est généré pour chaque conducteur."
+        },
+        {
+          "q": "Mes données sont-elles protégées ?",
+          "a": "Les données sont chiffrées en transit, les sessions sont automatiquement supprimées après un délai, et la police n'est jamais notifiée automatiquement — uniquement sur action explicite de votre part."
+        },
+        {
+          "q": "Combien ça coûte ?",
+          "a": "À partir de CHF / EUR 4.90 pour un constat. Pack de 3 constats à 12.90 (−12 %), pack de 10 à 34.90 (−29 %). Sans abonnement, crédits sans expiration."
+        }
+      ]
+    }
   },
   "steps": {
     "scan": "Scan",

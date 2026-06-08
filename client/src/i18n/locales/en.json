@@ -36,7 +36,15 @@
       "send": "Send to insurer",
       "done": "Report finalized!",
       "waiting": "Session #8F2K · Waiting…",
-      "capture": "📸 Photograph"
+      "capture": "📸 Photograph",
+      "sessionActive": "Active session",
+      "vehicleA": "VEHICLE A",
+      "photosSig": "Photos · signature ✓",
+      "vehicleB": "VEHICLE B",
+      "qrJoined": "QR joined · in progress",
+      "payGenerate": "Pay and generate the PDF",
+      "pdfBadge": "Timestamped PDF",
+      "qrBadge": "QR shared"
     },
     "badges": {
       "languages": "Multilingual",
@@ -85,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Everything you need",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "Multi-language OCR",
-          "desc": "Claude Vision reads your documents in 50+ languages. Registration certificate, RC Book, 行驶证 — zero manual entry."
-        },
-        {
-          "icon": "📱",
-          "title": "Up to 5 vehicles",
-          "desc": "Accident involving 3, 4 or 5 vehicles? Each driver scans their own QR. A single PDF for everyone."
-        },
-        {
-          "icon": "📷",
-          "title": "Scene photos",
-          "desc": "5 categories: location, damage A, damage B, injuries, documents. Compressed and included in the PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Freehand sketch",
-          "desc": "Draw the position of vehicles, direction arrows, infrastructure. PNG export embedded in the PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Impact diagram",
-          "desc": "700+ models, adapted silhouette, real OCR colour. 18 clickable zones for damage."
-        },
-        {
-          "icon": "✍️",
-          "title": "Multi-party signatures",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "Complete digital document: witnesses, third-party damage, observations, sketch, photos. Recognised by all insurance companies."
-        },
-        {
-          "icon": "🚔",
-          "title": "Police Module (coming soon)",
-          "desc": "Officers join the session via QR. Official digital report. Dashboard by station/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingual · RTL",
-          "desc": "5 billion speakers. Arabic, Hebrew, Farsi, Urdu in native RTL. Geolocated emergencies."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Invite by QR code",
+        "desc": "Create the session, the other driver scans the QR from their phone. No install, no sign-up."
+      },
+      {
+        "title": "Photos, voice and signature",
+        "desc": "Add photos, dictate your notes by voice, place the vehicles on the sketch and sign with your finger."
+      },
+      {
+        "title": "Timestamped PDF report",
+        "desc": "boom.contact generates a timestamped PDF report with the information entered by each driver."
+      },
+      {
+        "title": "To send to your insurer",
+        "desc": "Download the PDF or send it by email to accompany your claim with your insurer."
+      }
+    ],
     "coverage": {
       "label": "Multilingual",
       "title": "From Switzerland to China",
@@ -153,7 +129,102 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Switzerland"
     },
-    "seoLine": "The multilingual digital accident report · Constat amiable numérique"
+    "seoLine": "The multilingual digital accident report · Constat amiable numérique",
+    "flow": {
+      "label": "All in one flow",
+      "title": "From the accident to a report ready to send"
+    },
+    "stress": {
+      "label": "Built for the moment of the accident",
+      "title": "Designed for stressful situations",
+      "text": "After a crash, your mind isn't clear. boom.contact moves step by step, in your language, and keeps a record of every piece of information collected. Everything works from the phone browser, even on a limited connection.",
+      "bullets": [
+        "Step by step",
+        "Multilingual",
+        "Photos · voice · signature",
+        "Timestamped PDF report"
+      ],
+      "emergencyTitle": "In an emergency",
+      "emergencyText": "boom.contact does not replace emergency services, the police, a lawyer or your insurer. If anyone is injured or in danger, contact emergency services first."
+    },
+    "pricing": {
+      "label": "Pricing",
+      "title": "Simple, transparent, no subscription",
+      "caption": "1 credit = 1 complete report · multilingual · credits never expire",
+      "badgePopular": "Popular",
+      "plans": [
+        {
+          "label": "1 report",
+          "desc": "For a one-off accident"
+        },
+        {
+          "label": "3 reports",
+          "desc": "For the whole family"
+        },
+        {
+          "label": "10 reports",
+          "desc": "For fleets and brokers"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "For professionals",
+      "title": "For brokers, fleets and insurance partners",
+      "text": "Equip your clients and drivers with a clear tool to document an accident and generate a timestamped PDF report. Credit packs for fleets and brokers, simple rollout, no subscription.",
+      "cta": "Contact / share",
+      "items": [
+        {
+          "title": "Fleets",
+          "desc": "A structured report for every driver claim."
+        },
+        {
+          "title": "Brokers",
+          "desc": "An added-value service for your policyholders."
+        },
+        {
+          "title": "Confidentiality",
+          "desc": "Data encrypted in transit, deletable on request."
+        },
+        {
+          "title": "Delivery",
+          "desc": "Timestamped PDF ready to attach to the claim."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Frequently asked questions",
+      "items": [
+        {
+          "q": "What is boom.contact?",
+          "a": "boom.contact is an app that helps document a road accident from a phone: inviting drivers by QR, photos, voice, sketch, signatures, then generating a timestamped PDF report to send to your insurer."
+        },
+        {
+          "q": "Do I need to install an app?",
+          "a": "No. boom.contact runs directly in the phone browser (Safari, Chrome, Firefox). You can also add it to your home screen as a web app (PWA) for offline access."
+        },
+        {
+          "q": "What if the other driver doesn't have the app?",
+          "a": "You create the session and a QR code appears. The other driver scans it with their phone: boom.contact opens in their browser, with no sign-up or download."
+        },
+        {
+          "q": "Is the PDF report accepted by my insurer?",
+          "a": "The timestamped PDF report is meant to accompany your claim. boom.contact does not guarantee its acceptance, which is up to your insurer based on your contract and jurisdiction."
+        },
+        {
+          "q": "Does it work if the other driver speaks another language?",
+          "a": "Yes. Each driver uses the interface in their own language. The final report is generated for each driver."
+        },
+        {
+          "q": "Is my data protected?",
+          "a": "Data is encrypted in transit, sessions are automatically deleted after a delay, and the police are never notified automatically — only on your explicit action."
+        },
+        {
+          "q": "How much does it cost?",
+          "a": "From CHF / EUR 4.90 for one report. Pack of 3 reports at 12.90 (−12%), pack of 10 at 34.90 (−29%). No subscription, credits never expire."
+        }
+      ]
+    }
   },
   "steps": {
     "scan": "Scan",

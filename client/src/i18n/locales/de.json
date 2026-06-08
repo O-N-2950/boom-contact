@@ -36,7 +36,15 @@
       "send": "An Versicherung senden",
       "done": "Protokoll abgeschlossen!",
       "waiting": "Sitzung #8F2K · Wartend…",
-      "capture": "📸 Fotografieren"
+      "capture": "📸 Fotografieren",
+      "sessionActive": "Aktive Sitzung",
+      "vehicleA": "FAHRZEUG A",
+      "photosSig": "Fotos · Unterschrift ✓",
+      "vehicleB": "FAHRZEUG B",
+      "qrJoined": "QR beigetreten · läuft",
+      "payGenerate": "Bezahlen und PDF erstellen",
+      "pdfBadge": "Zeitgestempeltes PDF",
+      "qrBadge": "QR geteilt"
     },
     "badges": {
       "languages": "Mehrsprachig",
@@ -85,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Alles, was Sie brauchen",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "Mehrsprachige OCR",
-          "desc": "Claude Vision liest Ihre Dokumente in 50+ Sprachen. Fahrzeugschein, RC Book, 行驶证 — null manuelle Eingabe."
-        },
-        {
-          "icon": "📱",
-          "title": "Bis zu 5 Fahrzeuge",
-          "desc": "Unfall mit 3, 4 oder 5 Fahrzeugen? Jeder Fahrer scannt seinen eigenen QR. Ein einziges PDF für alle."
-        },
-        {
-          "icon": "📷",
-          "title": "Unfallfotos",
-          "desc": "5 Kategorien: Unfallort, Schäden A, Schäden B, Verletzungen, Dokumente. Komprimiert und im PDF enthalten."
-        },
-        {
-          "icon": "✏️",
-          "title": "Freie Skizze",
-          "desc": "Zeichnen Sie die Position der Fahrzeuge, Richtungspfeile, Infrastrukturen. PNG-Export integriert im PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Kollisionsschema",
-          "desc": "700+ Modelle, angepasste Silhouette, reale OCR-Farbe. 18 anklickbare Zonen für Schäden."
-        },
-        {
-          "icon": "✍️",
-          "title": "Mehrparteien-Unterschriften",
-          "desc": "Mehrere gleichzeitige Touch-Unterschriften. QR 24h aktiv für die Polizei."
-        },
-        {
-          "icon": "📄",
-          "title": "Zeitgestempeltes PDF",
-          "desc": "Vollständiges digitales Dokument: Zeugen, Drittschäden, Anmerkungen, Skizze, Fotos. Von allen Versicherungsgesellschaften anerkannt."
-        },
-        {
-          "icon": "🚔",
-          "title": "Polizei-Modul (demnächst)",
-          "desc": "Beamte treten der Sitzung via QR bei. Offizielles digitales Protokoll. Dashboard pro Posten/Kanton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Mehrsprachig · RTL",
-          "desc": "5 Milliarden Sprecher. Arabisch, Hebräisch, Farsi, Urdu in nativem RTL. Geolocalisierte Notrufe."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Per QR-Code einladen",
+        "desc": "Sitzung erstellen, der andere Fahrer scannt den QR-Code mit seinem Telefon. Keine Installation, keine Anmeldung."
+      },
+      {
+        "title": "Fotos, Sprache und Unterschrift",
+        "desc": "Fügen Sie Fotos hinzu, diktieren Sie Ihre Beobachtungen, platzieren Sie die Fahrzeuge auf der Skizze und unterschreiben Sie mit dem Finger."
+      },
+      {
+        "title": "Zeitgestempelter PDF-Bericht",
+        "desc": "boom.contact erstellt einen zeitgestempelten PDF-Bericht mit den von jedem Fahrer erfassten Angaben."
+      },
+      {
+        "title": "Zur Übermittlung an Ihre Versicherung",
+        "desc": "Laden Sie das PDF herunter oder senden Sie es per E-Mail, um Ihre Schadenmeldung bei Ihrer Versicherung zu begleiten."
+      }
+    ],
     "coverage": {
       "label": "Mehrsprachig",
       "title": "Von der Schweiz bis nach China",
@@ -153,7 +129,102 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Schweiz"
     },
-    "seoLine": "Der mehrsprachige digitale Unfallbericht · Digital accident report"
+    "seoLine": "Der mehrsprachige digitale Unfallbericht · Digital accident report",
+    "flow": {
+      "label": "Alles in einem Ablauf",
+      "title": "Vom Unfall zum versandfertigen Bericht"
+    },
+    "stress": {
+      "label": "Für den Moment des Unfalls gemacht",
+      "title": "Für Stresssituationen konzipiert",
+      "text": "Nach einem Aufprall ist der Kopf nicht klar. boom.contact führt Schritt für Schritt, in Ihrer Sprache, und hält jede erfasste Information fest. Alles funktioniert im Telefon-Browser, auch bei eingeschränkter Verbindung.",
+      "bullets": [
+        "Schritt für Schritt",
+        "Mehrsprachig",
+        "Fotos · Sprache · Unterschrift",
+        "Zeitgestempelter PDF-Bericht"
+      ],
+      "emergencyTitle": "Im Notfall",
+      "emergencyText": "boom.contact ersetzt nicht die Rettungsdienste, die Polizei, einen Anwalt oder die Versicherung. Bei Verletzten oder Gefahr kontaktieren Sie zuerst die Notdienste."
+    },
+    "pricing": {
+      "label": "Preise",
+      "title": "Einfach, transparent, ohne Abo",
+      "caption": "1 Guthaben = 1 vollständiger Bericht · mehrsprachig · Guthaben ohne Ablauf",
+      "badgePopular": "Beliebt",
+      "plans": [
+        {
+          "label": "1 Bericht",
+          "desc": "Für einen einmaligen Unfall"
+        },
+        {
+          "label": "3 Berichte",
+          "desc": "Für die ganze Familie"
+        },
+        {
+          "label": "10 Berichte",
+          "desc": "Für Flotten und Makler"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Für Profis",
+      "title": "Für Makler, Flotten und Versicherungspartner",
+      "text": "Statten Sie Ihre Kunden und Fahrer mit einem klaren Werkzeug aus, um einen Unfall zu dokumentieren und einen zeitgestempelten PDF-Bericht zu erstellen. Guthabenpakete für Flotten und Makler, einfache Einführung, ohne Abo.",
+      "cta": "Kontaktieren / teilen",
+      "items": [
+        {
+          "title": "Flotten",
+          "desc": "Ein strukturierter Bericht für jeden Fahrerschaden."
+        },
+        {
+          "title": "Makler",
+          "desc": "Ein Mehrwertdienst für Ihre Versicherten."
+        },
+        {
+          "title": "Vertraulichkeit",
+          "desc": "Daten bei der Übertragung verschlüsselt, auf Anfrage löschbar."
+        },
+        {
+          "title": "Übermittlung",
+          "desc": "Zeitgestempeltes PDF, bereit zum Anhängen an die Schadenmeldung."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Häufige Fragen",
+      "items": [
+        {
+          "q": "Was ist boom.contact?",
+          "a": "boom.contact ist eine App, die hilft, einen Verkehrsunfall vom Telefon aus zu dokumentieren: Fahrer per QR einladen, Fotos, Sprache, Skizze, Unterschriften, dann Erstellung eines zeitgestempelten PDF-Berichts zur Übermittlung an Ihre Versicherung."
+        },
+        {
+          "q": "Muss ich eine App installieren?",
+          "a": "Nein. boom.contact läuft direkt im Telefon-Browser (Safari, Chrome, Firefox). Sie können es auch als Web-App (PWA) zum Startbildschirm hinzufügen, für Offline-Zugriff."
+        },
+        {
+          "q": "Was, wenn der andere Fahrer die App nicht hat?",
+          "a": "Sie erstellen die Sitzung und ein QR-Code erscheint. Der andere Fahrer scannt ihn mit seinem Telefon: boom.contact öffnet sich in seinem Browser, ohne Anmeldung oder Download."
+        },
+        {
+          "q": "Wird der PDF-Bericht von meiner Versicherung akzeptiert?",
+          "a": "Der zeitgestempelte PDF-Bericht soll Ihre Schadenmeldung begleiten. boom.contact garantiert die Annahme nicht; sie liegt bei Ihrer Versicherung gemäß Ihrem Vertrag und der Rechtsordnung."
+        },
+        {
+          "q": "Funktioniert es, wenn der andere Fahrer eine andere Sprache spricht?",
+          "a": "Ja. Jeder Fahrer nutzt die Oberfläche in seiner eigenen Sprache. Der endgültige Bericht wird für jeden Fahrer erstellt."
+        },
+        {
+          "q": "Sind meine Daten geschützt?",
+          "a": "Die Daten werden bei der Übertragung verschlüsselt, Sitzungen werden nach einer Frist automatisch gelöscht, und die Polizei wird nie automatisch benachrichtigt — nur auf Ihre ausdrückliche Handlung."
+        },
+        {
+          "q": "Wie viel kostet es?",
+          "a": "Ab CHF / EUR 4.90 für einen Bericht. 3er-Pack zu 12.90 (−12 %), 10er-Pack zu 34.90 (−29 %). Ohne Abo, Guthaben ohne Ablauf."
+        }
+      ]
+    }
   },
   "steps": {
     "scan": "Scan",

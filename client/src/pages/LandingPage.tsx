@@ -60,6 +60,7 @@ function Reveal({ children, delay = 0, style }: { children: React.ReactNode; del
 
 /* Light product mockup (Hybrid Trust Premium) */
 function ProductMockup() {
+  const { t } = useTranslation();
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: 300, margin: '0 auto' }}>
       <div style={{ borderRadius: 26, padding: 14, background: C.card, border: `1px solid ${C.border}`, boxShadow: C.shadowLg }}>
@@ -68,29 +69,29 @@ function ProductMockup() {
             <div style={{ width: 30, height: 30, borderRadius: 9, background: C.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }} aria-hidden="true">💥</div>
             <div>
               <div style={{ fontSize: 12, fontWeight: 800, color: C.text }}>boom.contact</div>
-              <div style={{ fontSize: 9, color: C.success, fontWeight: 700 }}>● Session active</div>
+              <div style={{ fontSize: 9, color: C.success, fontWeight: 700 }}>● {t('landing.mockup.sessionActive', { defaultValue: 'Session active' })}</div>
             </div>
           </div>
           <div style={{ borderRadius: 12, marginBottom: 8, padding: 12, background: C.card, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.orange}` }}>
-            <div style={{ fontSize: 9, color: C.textSec, fontWeight: 700, letterSpacing: 1 }}>VÉHICULE A</div>
+            <div style={{ fontSize: 9, color: C.textSec, fontWeight: 700, letterSpacing: 1 }}>{t('landing.mockup.vehicleA', { defaultValue: 'VÉHICULE A' })}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.text }}>VW Golf · GE 123 456</div>
-            <div style={{ fontSize: 10, color: C.textSec }}>Photos · signature ✓</div>
+            <div style={{ fontSize: 10, color: C.textSec }}>{t('landing.mockup.photosSig', { defaultValue: 'Photos · signature ✓' })}</div>
           </div>
           <div style={{ borderRadius: 12, marginBottom: 12, padding: 12, background: C.card, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.navy}` }}>
-            <div style={{ fontSize: 9, color: C.textSec, fontWeight: 700, letterSpacing: 1 }}>VÉHICULE B</div>
+            <div style={{ fontSize: 9, color: C.textSec, fontWeight: 700, letterSpacing: 1 }}>{t('landing.mockup.vehicleB', { defaultValue: 'VÉHICULE B' })}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.text }}>Audi A4 · BE 789 012</div>
-            <div style={{ fontSize: 10, color: C.textSec }}>QR rejoint · en cours</div>
+            <div style={{ fontSize: 10, color: C.textSec }}>{t('landing.mockup.qrJoined', { defaultValue: 'QR rejoint · en cours' })}</div>
           </div>
           <div style={{ borderRadius: 10, textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#fff', padding: 11, background: C.navy }}>
-            Payer et générer le PDF
+            {t('landing.mockup.payGenerate', { defaultValue: 'Payer et générer le PDF' })}
           </div>
         </div>
       </div>
       <div style={{ position: 'absolute', bottom: -14, left: -16, background: C.card, border: `1px solid ${C.border}`, boxShadow: C.shadow, borderRadius: 100, fontSize: 11, fontWeight: 700, color: C.text, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span>📄</span> PDF horodaté
+        <span>📄</span> {t('landing.mockup.pdfBadge', { defaultValue: 'PDF horodaté' })}
       </div>
       <div style={{ position: 'absolute', top: 14, right: -18, background: C.card, border: `1px solid ${C.border}`, boxShadow: C.shadow, borderRadius: 100, fontSize: 11, fontWeight: 700, color: C.text, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span>📱</span> QR partagé
+        <span>📱</span> {t('landing.mockup.qrBadge', { defaultValue: 'QR partagé' })}
       </div>
     </div>
   );
@@ -139,12 +140,9 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
   const h2: React.CSSProperties = { fontFamily: C.font, fontWeight: 800, color: C.text, fontSize: isDesktop ? 34 : 26, lineHeight: 1.15, margin: 0 };
   const cardBase: React.CSSProperties = { background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, boxShadow: C.shadow };
 
-  const featureItems = [
-    { icon: '📱', title: 'Invitez par QR code', desc: "Créez la session, l'autre conducteur scanne le QR depuis son téléphone. Aucune installation, aucune inscription." },
-    { icon: '📸', title: 'Photos, voix et signature', desc: 'Ajoutez des photos, dictez vos observations à la voix, placez les véhicules sur le croquis et signez du doigt.' },
-    { icon: '📄', title: 'Dossier PDF horodaté', desc: 'boom.contact génère un dossier PDF horodaté reprenant les informations saisies par chaque conducteur.' },
-    { icon: '📨', title: 'À transmettre à votre assureur', desc: "Téléchargez le PDF ou envoyez-le par email pour accompagner votre déclaration de sinistre auprès de votre assureur." },
-  ];
+  const featureIcons = ['📱', '📸', '📄', '📨'];
+  const featureItems = (t('landing.features', { returnObjects: true }) as { title: string; desc: string }[])
+    .map((f, i) => ({ icon: featureIcons[i] ?? '•', ...f }));
 
   return (
     <div style={{ background: C.bg, color: C.text, fontFamily: C.font, minHeight: '100vh', overflowX: 'hidden' }}>
@@ -273,8 +271,8 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: isDesktop ? 40 : 28 }}>
-              <div style={sectionLabel}>Tout en un seul flux</div>
-              <h2 style={h2}>De l'accident au dossier prêt à transmettre</h2>
+              <div style={sectionLabel}>{t('landing.flow.label', { defaultValue: 'Tout en un seul flux' })}</div>
+              <h2 style={h2}>{t('landing.flow.title', { defaultValue: "De l'accident au dossier prêt à transmettre" })}</h2>
             </div>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr', gap: isDesktop ? 18 : 12 }}>
@@ -299,13 +297,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
           <Reveal>
             <div style={{ ...cardBase, padding: isDesktop ? '36px 40px' : '24px 22px', display: 'flex', flexDirection: isDesktop ? 'row' : 'column', gap: 24, alignItems: isDesktop ? 'center' : 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div style={sectionLabel}>Pensé pour le moment de l'accident</div>
-                <h2 style={{ ...h2, marginBottom: 12 }}>Conçu pour les situations stressantes</h2>
+                <div style={sectionLabel}>{t('landing.stress.label', { defaultValue: "Pensé pour le moment de l'accident" })}</div>
+                <h2 style={{ ...h2, marginBottom: 12 }}>{t('landing.stress.title', { defaultValue: 'Conçu pour les situations stressantes' })}</h2>
                 <p style={{ fontSize: 15, lineHeight: 1.65, color: C.textSec, margin: '0 0 14px' }}>
-                  Après un choc, on n'a pas l'esprit clair. boom.contact avance pas à pas, dans votre langue, et garde une trace de chaque information collectée. Tout fonctionne depuis le navigateur du téléphone, même avec une connexion limitée.
+                  {t('landing.stress.text', { defaultValue: "Après un choc, on n'a pas l'esprit clair. boom.contact avance pas à pas, dans votre langue, et garde une trace de chaque information collectée. Tout fonctionne depuis le navigateur du téléphone, même avec une connexion limitée." })}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {['Guidé étape par étape', 'Multilingue', 'Photos · voix · signature', 'Dossier PDF horodaté'].map(b => (
+                  {(t('landing.stress.bullets', { returnObjects: true }) as string[]).map(b => (
                     <span key={b} style={{ fontSize: 12, fontWeight: 600, color: C.navy, background: C.elevated, borderRadius: 20, padding: '6px 12px' }}>{b}</span>
                   ))}
                 </div>
@@ -313,10 +311,10 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
               <div style={{ flexShrink: 0, background: 'rgba(245,158,11,0.08)', border: `1px solid rgba(245,158,11,0.25)`, borderRadius: 14, padding: 18, maxWidth: isDesktop ? 320 : '100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                   <span style={{ fontSize: 18 }}>⚠️</span>
-                  <strong style={{ fontSize: 14, color: C.text }}>En cas d'urgence</strong>
+                  <strong style={{ fontSize: 14, color: C.text }}>{t('landing.stress.emergencyTitle', { defaultValue: "En cas d'urgence" })}</strong>
                 </div>
                 <p style={{ fontSize: 13, lineHeight: 1.6, color: C.textSec, margin: 0 }}>
-                  boom.contact ne remplace pas les secours, la police, un avocat ou l'assureur. En cas de blessé ou de danger, contactez d'abord les services d'urgence.
+                  {t('landing.stress.emergencyText', { defaultValue: "boom.contact ne remplace pas les secours, la police, un avocat ou l'assureur. En cas de blessé ou de danger, contactez d'abord les services d'urgence." })}
                 </p>
               </div>
             </div>
@@ -329,17 +327,17 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: isDesktop ? 36 : 26 }}>
-              <div style={sectionLabel}>Tarifs</div>
-              <h2 style={h2}>Simple, transparent, sans abonnement</h2>
-              <p style={{ fontSize: 14, color: C.textSec, marginTop: 8 }}>1 crédit = 1 constat complet · multilingue · crédits sans expiration</p>
+              <div style={sectionLabel}>{t('landing.pricing.label', { defaultValue: 'Tarifs' })}</div>
+              <h2 style={h2}>{t('landing.pricing.title', { defaultValue: 'Simple, transparent, sans abonnement' })}</h2>
+              <p style={{ fontSize: 14, color: C.textSec, marginTop: 8 }}>{t('landing.pricing.caption', { defaultValue: '1 crédit = 1 constat complet · multilingue · crédits sans expiration' })}</p>
             </div>
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr 1fr' : '1fr', gap: isDesktop ? 16 : 12, maxWidth: isDesktop ? 'none' : 480, margin: '0 auto' }}>
-            {[
-              { id: 'single', icon: '📄', label: '1 constat', price: '4.90', desc: 'Pour un accident ponctuel', badge: null as string | null, savings: null as string | null },
-              { id: 'pack3', icon: '👨‍👩‍👧', label: '3 constats', price: '12.90', desc: 'Pour toute la famille', badge: '⭐ Populaire', savings: '−12%' },
-              { id: 'pack10', icon: '🚗', label: '10 constats', price: '34.90', desc: 'Pour flottes et courtiers', badge: null, savings: '−29%' },
-            ].map(pkg => (
+            {(() => { const _pp = t('landing.pricing.plans', { returnObjects: true }) as { label: string; desc: string }[]; const _pop = t('landing.pricing.badgePopular', { defaultValue: 'Populaire' }); return [
+              { id: 'single', icon: '📄', label: _pp[0]?.label, price: '4.90', desc: _pp[0]?.desc, badge: null as string | null, savings: null as string | null },
+              { id: 'pack3', icon: '👨‍👩‍👧', label: _pp[1]?.label, price: '12.90', desc: _pp[1]?.desc, badge: `⭐ ${_pop}`, savings: '−12%' },
+              { id: 'pack10', icon: '🚗', label: _pp[2]?.label, price: '34.90', desc: _pp[2]?.desc, badge: null, savings: '−29%' },
+            ]; })().map(pkg => (
               <button key={pkg.id} onClick={onPricing} aria-label={`Voir le pack ${pkg.label}`} style={{ position: 'relative', textAlign: 'left', cursor: 'pointer', borderRadius: 16, padding: isDesktop ? '24px 20px' : '18px 20px', background: pkg.badge ? '#FFF7F2' : C.bg, border: `1.5px solid ${pkg.badge ? 'rgba(255,107,26,0.4)' : C.border}`, display: 'flex', flexDirection: isDesktop ? 'column' : 'row', alignItems: isDesktop ? 'flex-start' : 'center', gap: isDesktop ? 10 : 16, transition: 'transform .15s, box-shadow .15s' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = C.shadow; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = 'none'; }}>
@@ -376,18 +374,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
             <div style={{ background: C.elevated, border: `1px solid ${C.border}`, borderRadius: 20, padding: isDesktop ? '44px 48px' : '28px 24px' }}>
               <div style={{ display: 'flex', flexDirection: isDesktop ? 'row' : 'column', gap: 28, alignItems: isDesktop ? 'center' : 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ ...sectionLabel, color: C.navy }}>Pour les professionnels</div>
-                  <h2 style={{ ...h2, marginBottom: 12 }}>Pour courtiers, flottes et partenaires assurance</h2>
+                  <div style={{ ...sectionLabel, color: C.navy }}>{t('landing.b2b.label', { defaultValue: 'Pour les professionnels' })}</div>
+                  <h2 style={{ ...h2, marginBottom: 12 }}>{t('landing.b2b.title', { defaultValue: 'Pour courtiers, flottes et partenaires assurance' })}</h2>
                   <p style={{ fontSize: 15, lineHeight: 1.65, color: C.textSec, margin: '0 0 18px', maxWidth: 620 }}>
-                    Équipez vos clients et vos conducteurs d'un outil clair pour documenter un accident et générer un dossier PDF horodaté. Packs de crédits pour les flottes et les courtiers, déploiement simple, sans abonnement.
+                    {t('landing.b2b.text', { defaultValue: "Équipez vos clients et vos conducteurs d'un outil clair pour documenter un accident et générer un dossier PDF horodaté. Packs de crédits pour les flottes et les courtiers, déploiement simple, sans abonnement." })}
                   </p>
                   <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr', gap: 10, maxWidth: 620 }}>
-                    {[
-                      ['🚗', 'Flottes', "Un dossier structuré pour chaque sinistre conducteur."],
-                      ['🤝', 'Courtiers', 'Un service à valeur ajoutée pour vos assurés.'],
-                      ['🔒', 'Confidentialité', 'Données chiffrées en transit, supprimables sur demande.'],
-                      ['📨', 'Transmission', 'PDF horodaté prêt à joindre à la déclaration de sinistre.'],
-                    ].map(([ic, ti, de]) => (
+                    {(() => { const _bi = t('landing.b2b.items', { returnObjects: true }) as { title: string; desc: string }[]; const _ic = ['🚗', '🤝', '🔒', '📨']; return _bi.map((it, i) => [_ic[i], it.title, it.desc] as const); })().map(([ic, ti, de]) => (
                       <div key={ti} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 14 }}>
                         <span style={{ fontSize: 18 }} aria-hidden="true">{ic}</span>
                         <div>
@@ -402,7 +395,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                   <button onClick={() => { track(EVENTS.FLEET_CTA_CLICKED); setShowShare(true); }} style={ctaNavyOutline}
                     onMouseEnter={e => (e.currentTarget.style.background = C.card)}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                    Contacter / partager
+                    {t('landing.b2b.cta', { defaultValue: 'Contacter / partager' })}
                   </button>
                 </div>
               </div>
@@ -416,21 +409,13 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section style={{ maxWidth: 760 }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: isDesktop ? 32 : 24 }}>
-              <div style={sectionLabel}>FAQ</div>
-              <h2 style={h2}>Questions fréquentes</h2>
+              <div style={sectionLabel}>{t('landing.faq.label', { defaultValue: 'FAQ' })}</div>
+              <h2 style={h2}>{t('landing.faq.title', { defaultValue: 'Questions fréquentes' })}</h2>
             </div>
           </Reveal>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {[
-              { q: "Qu'est-ce que boom.contact ?", a: "boom.contact est une application qui aide à documenter un accident de la route depuis un téléphone : invitation des conducteurs par QR, photos, voix, croquis, signatures, puis génération d'un dossier PDF horodaté à transmettre à votre assureur." },
-              { q: 'Dois-je installer une application ?', a: "Non. boom.contact fonctionne directement dans le navigateur du téléphone (Safari, Chrome, Firefox). Vous pouvez aussi l'ajouter à votre écran d'accueil comme application web (PWA) pour un accès hors-ligne." },
-              { q: "Que se passe-t-il si l'autre conducteur n'a pas l'application ?", a: "Vous créez la session et un QR code s'affiche. L'autre conducteur le scanne avec son téléphone : boom.contact s'ouvre dans son navigateur, sans inscription ni téléchargement." },
-              { q: 'Le dossier PDF est-il accepté par mon assureur ?', a: "Le dossier PDF horodaté est destiné à accompagner votre déclaration de sinistre. boom.contact ne garantit pas son acceptation, qui relève de votre assureur selon votre contrat et la juridiction." },
-              { q: "Fonctionne-t-il si l'autre conducteur parle une autre langue ?", a: "Oui. Chaque conducteur utilise l'interface dans sa propre langue. Le dossier final est généré pour chaque conducteur." },
-              { q: 'Mes données sont-elles protégées ?', a: "Les données sont chiffrées en transit, les sessions sont automatiquement supprimées après un délai, et la police n'est jamais notifiée automatiquement — uniquement sur action explicite de votre part." },
-              { q: 'Combien ça coûte ?', a: "À partir de CHF / EUR 4.90 pour un constat. Pack de 3 constats à 12.90 (−12 %), pack de 10 à 34.90 (−29 %). Sans abonnement, crédits sans expiration." },
-            ].map((faq, i) => (
-              <details key={i} style={{ borderRadius: 12, overflow: 'hidden', border: `1px solid ${C.border}`, background: C.bg }}>
+            {(t('landing.faq.items', { returnObjects: true }) as { q: string; a: string }[])
+.map((faq, i) => (              <details key={i} style={{ borderRadius: 12, overflow: 'hidden', border: `1px solid ${C.border}`, background: C.bg }}>
                 <summary style={{ cursor: 'pointer', fontSize: 14, fontWeight: 700, color: C.text, display: 'flex', alignItems: 'center', gap: 12, listStyle: 'none', padding: '15px 18px' }}>
                   <span style={{ color: C.orange, fontSize: 18, flexShrink: 0 }}>+</span>{faq.q}
                 </summary>

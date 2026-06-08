@@ -36,7 +36,15 @@
       "send": "Invia all'assicuratore",
       "done": "Constatazione finalizzata!",
       "waiting": "Sessione #8F2K · In attesa…",
-      "capture": "📸 Fotografare"
+      "capture": "📸 Fotografare",
+      "sessionActive": "Sessione attiva",
+      "vehicleA": "VEICOLO A",
+      "photosSig": "Foto · firma ✓",
+      "vehicleB": "VEICOLO B",
+      "qrJoined": "QR collegato · in corso",
+      "payGenerate": "Paga e genera il PDF",
+      "pdfBadge": "PDF con data e ora",
+      "qrBadge": "QR condiviso"
     },
     "badges": {
       "languages": "Multilingue",
@@ -85,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Tutto ciò di cui hai bisogno",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multilingue",
-          "desc": "Claude Vision legge i tuoi documenti in 50+ lingue. Carta di circolazione, RC Book, 行驶证 — zero inserimento manuale."
-        },
-        {
-          "icon": "📱",
-          "title": "Fino a 5 veicoli",
-          "desc": "Incidente con 3, 4 o 5 veicoli? Ogni conducente scansiona il proprio QR. Un solo PDF per tutti."
-        },
-        {
-          "icon": "📷",
-          "title": "Foto della scena",
-          "desc": "5 categorie: luogo, danni A, danni B, lesioni, documenti. Compresse e incluse nel PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Schizzo libero",
-          "desc": "Disegna la posizione dei veicoli, frecce di direzione, infrastrutture. Export PNG integrato nel PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schema dell'urto",
-          "desc": "700+ modelli, sagoma adattata, colore reale OCR. 18 zone cliccabili per i danni."
-        },
-        {
-          "icon": "✍️",
-          "title": "Firme multi-parti",
-          "desc": "Più firme tattili simultanee. QR attivo 24h per la polizia."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "Documento digitale completo: testimoni, danni a terzi, osservazioni, schizzo, foto. Riconosciuto da tutte le compagnie assicurative."
-        },
-        {
-          "icon": "🚔",
-          "title": "Modulo Polizia (presto)",
-          "desc": "Gli agenti si uniscono alla sessione tramite QR. Verbale ufficiale digitale. Dashboard per posto/cantone."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 miliardi di parlanti. Arabo, ebraico, farsi, urdu in RTL nativo. Emergenze geolocalizzate."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Invita tramite QR code",
+        "desc": "Crea la sessione, l'altro conducente scansiona il QR dal suo telefono. Nessuna installazione, nessuna registrazione."
+      },
+      {
+        "title": "Foto, voce e firma",
+        "desc": "Aggiungi foto, detta le tue osservazioni a voce, posiziona i veicoli sullo schizzo e firma con il dito."
+      },
+      {
+        "title": "Rapporto PDF con data e ora",
+        "desc": "boom.contact genera un rapporto PDF con data e ora che riporta le informazioni inserite da ciascun conducente."
+      },
+      {
+        "title": "Da trasmettere al tuo assicuratore",
+        "desc": "Scarica il PDF o invialo via email per accompagnare la tua denuncia di sinistro al tuo assicuratore."
+      }
+    ],
     "coverage": {
       "label": "Multilingue",
       "title": "Dalla Svizzera alla Cina",
@@ -153,7 +129,102 @@
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Svizzera"
     },
-    "seoLine": "La constatazione amichevole digitale multilingue · Digital accident report"
+    "seoLine": "La constatazione amichevole digitale multilingue · Digital accident report",
+    "flow": {
+      "label": "Tutto in un unico flusso",
+      "title": "Dall'incidente al rapporto pronto da inviare"
+    },
+    "stress": {
+      "label": "Pensato per il momento dell'incidente",
+      "title": "Progettato per le situazioni di stress",
+      "text": "Dopo un urto la mente non è lucida. boom.contact procede passo dopo passo, nella tua lingua, e conserva traccia di ogni informazione raccolta. Tutto funziona dal browser del telefono, anche con una connessione limitata.",
+      "bullets": [
+        "Passo dopo passo",
+        "Multilingue",
+        "Foto · voce · firma",
+        "Rapporto PDF con data e ora"
+      ],
+      "emergencyTitle": "In caso di emergenza",
+      "emergencyText": "boom.contact non sostituisce i soccorsi, la polizia, un avvocato o l'assicuratore. In caso di feriti o pericolo, contatta prima i servizi di emergenza."
+    },
+    "pricing": {
+      "label": "Prezzi",
+      "title": "Semplice, trasparente, senza abbonamento",
+      "caption": "1 credito = 1 rapporto completo · multilingue · crediti senza scadenza",
+      "badgePopular": "Popolare",
+      "plans": [
+        {
+          "label": "1 rapporto",
+          "desc": "Per un incidente occasionale"
+        },
+        {
+          "label": "3 rapporti",
+          "desc": "Per tutta la famiglia"
+        },
+        {
+          "label": "10 rapporti",
+          "desc": "Per flotte e broker"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Per i professionisti",
+      "title": "Per broker, flotte e partner assicurativi",
+      "text": "Dota i tuoi clienti e conducenti di uno strumento chiaro per documentare un incidente e generare un rapporto PDF con data e ora. Pacchetti di crediti per flotte e broker, attivazione semplice, senza abbonamento.",
+      "cta": "Contatta / condividi",
+      "items": [
+        {
+          "title": "Flotte",
+          "desc": "Un rapporto strutturato per ogni sinistro del conducente."
+        },
+        {
+          "title": "Broker",
+          "desc": "Un servizio a valore aggiunto per i tuoi assicurati."
+        },
+        {
+          "title": "Riservatezza",
+          "desc": "Dati cifrati in transito, eliminabili su richiesta."
+        },
+        {
+          "title": "Trasmissione",
+          "desc": "PDF con data e ora pronto da allegare alla denuncia."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Domande frequenti",
+      "items": [
+        {
+          "q": "Che cos'è boom.contact?",
+          "a": "boom.contact è un'applicazione che aiuta a documentare un incidente stradale dal telefono: invito dei conducenti tramite QR, foto, voce, schizzo, firme, poi generazione di un rapporto PDF con data e ora da trasmettere al tuo assicuratore."
+        },
+        {
+          "q": "Devo installare un'applicazione?",
+          "a": "No. boom.contact funziona direttamente nel browser del telefono (Safari, Chrome, Firefox). Puoi anche aggiungerlo alla schermata home come app web (PWA) per l'accesso offline."
+        },
+        {
+          "q": "Cosa succede se l'altro conducente non ha l'applicazione?",
+          "a": "Crei la sessione e appare un QR code. L'altro conducente lo scansiona con il telefono: boom.contact si apre nel suo browser, senza registrazione né download."
+        },
+        {
+          "q": "Il rapporto PDF è accettato dal mio assicuratore?",
+          "a": "Il rapporto PDF con data e ora è destinato ad accompagnare la tua denuncia di sinistro. boom.contact non garantisce la sua accettazione, che spetta al tuo assicuratore secondo il tuo contratto e la giurisdizione."
+        },
+        {
+          "q": "Funziona se l'altro conducente parla un'altra lingua?",
+          "a": "Sì. Ogni conducente usa l'interfaccia nella propria lingua. Il rapporto finale è generato per ciascun conducente."
+        },
+        {
+          "q": "I miei dati sono protetti?",
+          "a": "I dati sono cifrati in transito, le sessioni vengono eliminate automaticamente dopo un certo periodo e la polizia non viene mai avvisata automaticamente — solo su tua azione esplicita."
+        },
+        {
+          "q": "Quanto costa?",
+          "a": "A partire da CHF / EUR 4.90 per un rapporto. Pacchetto da 3 rapporti a 12.90 (−12%), pacchetto da 10 a 34.90 (−29%). Senza abbonamento, crediti senza scadenza."
+        }
+      ]
+    }
   },
   "steps": {
     "scan": "Scansione",
