@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, LANG_META, RTL_LANGS, applyLang, getLangOrder } from '../i18n';
+import { LANGUAGE_STATUS } from '../i18n/language-status';
 import type { SupportedLang } from '../i18n';
 
 interface Props {
@@ -17,6 +18,7 @@ const ORANGE = '#FF6B1A';
 const BORDER = '#DDE7F0';
 const TEXT = '#0B1F3A';
 const SEC = '#6B7C93';
+const hdrStyle: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: SEC, letterSpacing: 0.4, padding: '8px 12px 3px', textTransform: 'uppercase' };
 
 export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, compact = false }: Props) {
   const { i18n, t } = useTranslation();
@@ -57,6 +59,15 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
     if (!q) return list;
     return list.filter(l => LANG_META[l].label.toLowerCase().includes(q) || l.toLowerCase().includes(q));
   }, [q]);
+
+  // Certification : langues parfaites de bout en bout (UI 100% + PDF + email) vs partielles.
+  const grouped = useMemo(() => {
+    const base = q ? filtered : filtered.filter(l => !suggested.includes(l));
+    return {
+      full: base.filter(l => LANGUAGE_STATUS[l]?.tier === 'full'),
+      partial: base.filter(l => LANGUAGE_STATUS[l]?.tier !== 'full'),
+    };
+  }, [filtered, q, suggested]);
 
   const choose = (lang: SupportedLang) => { applyLang(lang); setOpen(false); setQuery(''); };
 
@@ -133,17 +144,25 @@ export const LanguageSwitcher = React.memo(function LanguageSwitcher({ style, co
           <div style={{ overflowY: 'auto', padding: 6 }}>
             {!q && suggested.length > 0 && (
               <>
-                <div style={{ fontSize: 11, fontWeight: 700, color: SEC, letterSpacing: 0.4, padding: '6px 12px 2px', textTransform: 'uppercase' }}>
-                  {t('lang.suggested', { defaultValue: 'Suggérées' })}
-                </div>
+                <div style={hdrStyle}>{t('lang.suggested', { defaultValue: 'Suggérées' })}</div>
                 {suggested.map(l => <Row key={`s-${l}`} lang={l} />)}
                 <div style={{ height: 1, background: BORDER, margin: '6px 8px' }} />
-                <div style={{ fontSize: 11, fontWeight: 700, color: SEC, letterSpacing: 0.4, padding: '6px 12px 2px', textTransform: 'uppercase' }}>
-                  {t('lang.all', { defaultValue: 'Toutes les langues' })}
-                </div>
               </>
             )}
-            {filtered.map(l => <Row key={l} lang={l} />)}
+            {grouped.full.length > 0 && (
+              <>
+                <div style={hdrStyle}>{t('lang.complete', { defaultValue: 'Entièrement traduites' })}</div>
+                {grouped.full.map(l => <Row key={l} lang={l} />)}
+              </>
+            )}
+            {grouped.partial.length > 0 && (
+              <>
+                <div style={{ ...hdrStyle, marginTop: grouped.full.length ? 6 : 0 }}>
+                  {t('lang.partialGroup', { defaultValue: 'Autres langues · traduction partielle' })}
+                </div>
+                {grouped.partial.map(l => <Row key={l} lang={l} />)}
+              </>
+            )}
             {filtered.length === 0 && (
               <div style={{ padding: '14px 12px', fontSize: 13, color: SEC, textAlign: 'center' }}>
                 {t('lang.none', { defaultValue: 'Aucune langue trouvée' })}
