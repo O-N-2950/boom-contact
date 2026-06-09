@@ -1022,3 +1022,11 @@ Cause racine du hindi vide : le shaper indien de fontkit (machine à états des 
 Scripts indiens ACTIVÉS (shaping correct prouvé sur PDF réel inspecté, 2 colonnes) : devanagari (hindi/marathi/népalais), bengali, tamoul, télougou, kannada, malayalam, gujarati. + garde ZWJ/ZWNJ dans le découpage par script.
 COUVERTURE PDF TOTALE : latin/latin-étendu/cyrillique/grec + arabe/hébreu (RTL) + CJK + thaï + géorgien + arménien + éthiopien + 7 scripts indiens.
 Vérif PROD réelle : shaping devanagari exécuté DANS le conteneur Jelastic (PROD_SHAPING_OK, PDF 5246 o), regenerator-runtime présent, 12 polices de script dans l'image, Jelastic 200, Railway 200.
+
+## Emails premium — priorité 3 (2026-06-08) — commit 36ec2ae
+Refonte buildEmailHTML (email de constat signé) : UX/UI premium + international.
+- Français codé en dur éliminé : 4 libellés (assureur OCR + hint, "PDF joint", "prochaines étapes") désormais traduits dans 13 langues. Avant : un Japonais/Arabe voyait du français.
+- RTL complet (ar/he/fa/ur) : dir=rtl, cellules inversées, numéros d'étapes à droite, deadline/flèche miroir.
+- Layout 100% tables (compatible Outlook/Gmail/Apple Mail) au lieu de display:flex. Media queries mobile + préheader.
+- Vérifié visuellement (wkhtmltoimage→PNG) : FR premium, AR miroir correct, JA tout en japonais.
+Déployé Jelastic 200 + Railway 200.
