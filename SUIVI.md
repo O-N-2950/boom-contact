@@ -1030,3 +1030,11 @@ Refonte buildEmailHTML (email de constat signé) : UX/UI premium + international
 - Layout 100% tables (compatible Outlook/Gmail/Apple Mail) au lieu de display:flex. Media queries mobile + préheader.
 - Vérifié visuellement (wkhtmltoimage→PNG) : FR premium, AR miroir correct, JA tout en japonais.
 Déployé Jelastic 200 + Railway 200.
+
+## Portail qualité — priorité 4 (2026-06-08) — commit a47e422
+Sélecteur de langue hiérarchisé par certification end-to-end.
+- Manifeste généré (scripts/gen-language-status.ts → client/src/i18n/language-status.ts) : par langue UI%/PDF/email/tier. full (UI 100% + PDF + email) = de/en/fr/it ; 46 autres = partial (~37% UI).
+- LanguageSwitcher : 3 groupes — Suggérées / Entièrement traduites / Autres langues · traduction partielle. Largeur des 50 langues préservée, choix informé. Vérifié à l'écran (Playwright mobile).
+- À régénérer quand locales/PDF/emails changent.
+Déployé : SW v33, Jelastic 200, Railway 200.
+NOTE STRATÉGIE (pour Olivier) : 46/50 langues à ~37% UI (fallback fr). Décider la stratégie de langues au lancement : compléter des traductions par vagues, ou assumer le partiel marqué.
