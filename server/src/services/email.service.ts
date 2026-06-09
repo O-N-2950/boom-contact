@@ -46,6 +46,10 @@ interface EmailResult {
 // ── Email templates per language ──────────────────────────────
 const TEMPLATES: Record<string, {
   subject: string;
+  insurerTitle: string;
+  insurerHint: string;
+  pdfAttached: string;
+  nextStepsLabel: string;
   heading: string;
   intro: string;
   step1: string;
@@ -68,6 +72,10 @@ const TEMPLATES: Record<string, {
   footer: string;
 }> = {
   fr: {
+    insurerTitle: '🟢 Votre assureur identifié par OCR',
+    insurerHint: 'Contactez directement votre assureur. Coordonnées sur votre police ou leur site web.',
+    pdfAttached: 'Le PDF est joint à cet email',
+    nextStepsLabel: 'PROCHAINES ÉTAPES',
     subject: '✅ Votre constat signé — PDF ci-joint · boom.contact',
     heading: 'Constat finalisé & signé',
     intro: 'Le constat est signé. Votre rapport numérique horodaté est joint à cet email en PDF.',
@@ -91,6 +99,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · IDE CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Suisse<br>Constat numérique horodaté · Conforme RGPD',
   },
   de: {
+    insurerTitle: '🟢 Ihr per OCR erkannter Versicherer',
+    insurerHint: 'Kontaktieren Sie Ihren Versicherer direkt. Kontaktdaten auf Ihrer Police oder deren Website.',
+    pdfAttached: 'Das PDF ist dieser E-Mail beigefügt',
+    nextStepsLabel: 'NÄCHSTE SCHRITTE',
     subject: '✅ Ihr unterzeichneter Unfallbericht — PDF anbei · boom.contact',
     heading: 'Unfallbericht abgeschlossen & unterzeichnet',
     intro: 'Der Bericht ist unterschrieben. Ihr digitaler, zeitgestempelter Bericht ist als PDF beigefügt.',
@@ -114,6 +126,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Schweiz',
   },
   it: {
+    insurerTitle: '🟢 Il vostro assicuratore identificato tramite OCR',
+    insurerHint: 'Contattate direttamente il vostro assicuratore. Recapiti sulla vostra polizza o sul loro sito web.',
+    pdfAttached: 'Il PDF è allegato a questa email',
+    nextStepsLabel: 'PROSSIMI PASSI',
     subject: '✅ Il vostro modulo firmato — PDF allegato · boom.contact',
     heading: 'Constatazione completata e firmata',
     intro: 'Il constato è firmato. Il vostro rapporto digitale con marca temporale è allegato in PDF.',
@@ -137,6 +153,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, Giura, Svizzera',
   },
   en: {
+    insurerTitle: '🟢 Your insurer identified by OCR',
+    insurerHint: 'Contact your insurer directly. Details are on your policy or their website.',
+    pdfAttached: 'The PDF is attached to this email',
+    nextStepsLabel: 'NEXT STEPS',
     subject: '✅ Your signed accident report — PDF attached · boom.contact',
     heading: 'Accident report completed & signed',
     intro: 'The report is signed. Your timestamped digital report is attached as a PDF.',
@@ -160,6 +180,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · CHE-476.484.632 · Bellevue 7, 2950 Courgenay, Jura, Switzerland',
   },
   es: {
+    insurerTitle: '🟢 Su aseguradora identificada por OCR',
+    insurerHint: 'Contacte directamente con su aseguradora. Los datos están en su póliza o en su sitio web.',
+    pdfAttached: 'El PDF está adjunto a este correo',
+    nextStepsLabel: 'PRÓXIMOS PASOS',
     subject: '✅ Su declaración firmada — PDF adjunto · boom.contact',
     heading: 'Declaración completada y firmada',
     intro: 'El parte está firmado. Su informe digital con sello de tiempo está adjunto en PDF.',
@@ -183,6 +207,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, Jura, Suiza',
   },
   pt: {
+    insurerTitle: '🟢 A sua seguradora identificada por OCR',
+    insurerHint: 'Contacte diretamente a sua seguradora. Os contactos estão na sua apólice ou no site deles.',
+    pdfAttached: 'O PDF está anexado a este email',
+    nextStepsLabel: 'PRÓXIMOS PASSOS',
     subject: '✅ A sua declaração assinada — PDF em anexo · boom.contact',
     heading: 'Declaração concluída e assinada',
     intro: 'O relatório está assinado. O seu relatório digital com selo temporal está anexado em PDF.',
@@ -206,6 +234,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, Jura, Suíça',
   },
   nl: {
+    insurerTitle: '🟢 Uw verzekeraar herkend via OCR',
+    insurerHint: 'Neem rechtstreeks contact op met uw verzekeraar. Gegevens staan op uw polis of hun website.',
+    pdfAttached: 'De PDF is bijgevoegd bij deze e-mail',
+    nextStepsLabel: 'VOLGENDE STAPPEN',
     subject: '✅ Uw ondertekend aanrijdingsformulier — PDF bijgevoegd · boom.contact',
     heading: 'Aanrijdingsformulier voltooid en ondertekend',
     intro: 'Het rapport is ondertekend. Uw digitale rapport met tijdstempel is bijgevoegd als PDF.',
@@ -229,6 +261,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, Jura, Zwitserland',
   },
   pl: {
+    insurerTitle: '🟢 Twój ubezpieczyciel rozpoznany przez OCR',
+    insurerHint: 'Skontaktuj się bezpośrednio z ubezpieczycielem. Dane są na polisie lub na ich stronie.',
+    pdfAttached: 'PDF jest załączony do tej wiadomości',
+    nextStepsLabel: 'NASTĘPNE KROKI',
     subject: '✅ Twoje podpisane oświadczenie — PDF w załączniku · boom.contact',
     heading: 'Oświadczenie o zdarzeniu zakończone i podpisane',
     intro: 'Protokół został podpisany. Twój cyfrowy raport ze znacznikiem czasu jest dołączony jako PDF.',
@@ -252,6 +288,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, Jura, Szwajcaria',
   },
   ru: {
+    insurerTitle: '🟢 Ваш страховщик определён с помощью OCR',
+    insurerHint: 'Свяжитесь со страховщиком напрямую. Контакты указаны в полисе или на их сайте.',
+    pdfAttached: 'PDF приложён к этому письму',
+    nextStepsLabel: 'ДАЛЬНЕЙШИЕ ШАГИ',
     subject: '✅ Ваш подписанный протокол — PDF во вложении · boom.contact',
     heading: 'Протокол о ДТП завершён и подписан',
     intro: 'Протокол подписан. Ваш цифровой отчёт с отметкой времени прилагается в формате PDF.',
@@ -275,6 +315,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Куржено, Юра, Швейцария',
   },
   ar: {
+    insurerTitle: '🟢 شركة التأمين الخاصة بك مُحدَّدة عبر OCR',
+    insurerHint: 'تواصل مباشرةً مع شركة التأمين. التفاصيل في وثيقتك أو على موقعهم الإلكتروني.',
+    pdfAttached: 'ملف PDF مرفق بهذا البريد الإلكتروني',
+    nextStepsLabel: 'الخطوات التالية',
     subject: '✅ تقريركم الموقع — PDF مرفق · boom.contact',
     heading: 'تقرير الحادث مكتمل وموقع',
     intro: 'تم توقيع التقرير. تقريركم الرقمي المختوم زمنياً مرفق بصيغة PDF.',
@@ -298,6 +342,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay، جورا، سويسرا',
   },
   zh: {
+    insurerTitle: '🟢 通过 OCR 识别的您的保险公司',
+    insurerHint: '请直接联系您的保险公司。详情见您的保单或其官方网站。',
+    pdfAttached: 'PDF 已附在此邮件中',
+    nextStepsLabel: '后续步骤',
     subject: '✅ 您已签署的事故报告 — PDF附件 · boom.contact',
     heading: '事故报告已完成并签署',
     intro: '报告已签署。您的带时间戳的数字报告以PDF格式附上。',
@@ -321,6 +369,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA团 · Bellevue 7, 2950 Courgenay, 瑞士汝拉州',
   },
   ja: {
+    insurerTitle: '🟢 OCRで識別された保険会社',
+    insurerHint: '保険会社に直接ご連絡ください。詳細は保険証券または公式サイトをご覧ください。',
+    pdfAttached: 'PDFはこのメールに添付されています',
+    nextStepsLabel: '次のステップ',
     subject: '✅ 署名済み事故報告書 — PDF添付 · boom.contact',
     heading: '事故報告書が完成・署名されました',
     intro: '報告書は署名されました。タイムスタンプ付きデジタル報告書がPDFで添付されています。',
@@ -344,6 +396,10 @@ const TEMPLATES: Record<string, {
     footer: 'boom.contact · PEP\'s Swiss SA · Bellevue 7, 2950 Courgenay, ジュラ州, スイス',
   },
   tr: {
+    insurerTitle: '🟢 OCR ile belirlenen sigortacınız',
+    insurerHint: 'Sigortacınızla doğrudan iletişime geçin. Bilgiler poliçenizde veya web sitelerindedir.',
+    pdfAttached: 'PDF bu e-postaya eklenmiştir',
+    nextStepsLabel: 'SONRAKİ ADIMLAR',
     subject: '✅ İmzalanmış tutanağınız — PDF ekli · boom.contact',
     heading: 'Kaza tutanağı tamamlandı ve imzalandı',
     intro: 'Tutanak imzalandı. Zaman damgalı dijital raporunuz PDF olarak ekte.',
@@ -386,147 +442,157 @@ function buildEmailHTML(params: SendPDFToDriverParams): string {
   const shareText = encodeURIComponent('boom.contact — Constat d\'accident numérique en quelques minutes, à transmettre à votre assureur');
   const isRegistered = !!params.driverEmail; // s'ils ont un email, peut-être pas encore de compte
 
+  const rtl = ['ar', 'he', 'fa', 'ur'].includes((params.language || '').toLowerCase());
+  const dir = rtl ? 'rtl' : 'ltr';
+  const side = rtl ? 'right' : 'left';
+
   const insurerSection = safeInsurerName ? `
-    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:16px;margin:0 0 20px;">
-      <div style="font-weight:700;color:#166534;font-size:13px;margin-bottom:6px;">🟢 Votre assureur identifié par OCR</div>
-      <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${safeInsurerName}</div>
-      <div style="font-size:12px;color:#595959;line-height:1.5;">
-        Contactez directement votre assureur. Coordonnées sur votre police ou leur site web.
-      </div>
-    </div>
+    <tr><td style="padding:0 0 20px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;">
+        <tr><td style="padding:16px 18px;text-align:${side};">
+          <div style="font-weight:700;color:#166534;font-size:13px;margin-bottom:6px;">${t.insurerTitle}</div>
+          <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:4px;">${safeInsurerName}</div>
+          <div style="font-size:12px;color:#5b6b5f;line-height:1.5;">${t.insurerHint}</div>
+        </td></tr>
+      </table>
+    </td></tr>
   ` : '';
 
+  const stepsRows = [t.step1, t.step2, t.step3].map((step, i) => `
+    <tr><td style="padding:0 0 12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="${dir}"><tr>
+        <td width="34" valign="top" style="padding-top:2px;">
+          <div style="width:28px;height:28px;background:#FF3500;border-radius:50%;color:#ffffff;font-size:13px;font-weight:700;text-align:center;line-height:28px;">${i + 1}</div>
+        </td>
+        <td valign="top" style="font-size:14px;color:#333333;line-height:1.55;padding:4px 12px 0;text-align:${side};">${step}</td>
+      </tr></table>
+    </td></tr>`).join('');
+
+  const googleSection = GOOGLE_REVIEW ? `
+    <tr><td style="padding:0 0 26px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+      <div style="font-size:30px;line-height:1;margin-bottom:8px;">⭐</div>
+      <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.googleTitle}</div>
+      <div style="font-size:13px;color:#6b6b6b;margin:0 auto 16px;line-height:1.55;max-width:380px;">${t.googleText}</div>
+      <a href="${GOOGLE_REVIEW}" style="display:inline-block;background:#4285F4;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.googleBtn}</a>
+    </td></tr></table></td></tr>
+    <tr><td style="padding:0 0 26px;"><div style="border-top:1px solid #f0f0f0;height:1px;line-height:1px;font-size:0;">&nbsp;</div></td></tr>` : '';
+
   return `<!DOCTYPE html>
-<html lang="${safeLang}">
+<html lang="${safeLang}" dir="${dir}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light">
   <title>${t.subject}</title>
+  <style>
+    a { text-decoration:none; }
+    @media only screen and (max-width:600px) {
+      .bc-card { width:100%!important; }
+      .bc-px { padding-left:22px!important; padding-right:22px!important; }
+      .bc-btn { display:block!important; width:100%!important; box-sizing:border-box; }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;background:#F0EDE8;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
-<div style="max-width:580px;margin:0 auto;padding:24px 16px 48px;">
+<body dir="${dir}" style="margin:0;padding:0;background:#F0EDE8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${t.heading} — ${t.intro}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F0EDE8;"><tr><td align="center" style="padding:24px 12px 48px;">
+  <table role="presentation" class="bc-card" width="580" cellpadding="0" cellspacing="0" style="width:580px;max-width:580px;">
 
-  <!-- ═══ HEADER ═══ -->
-  <div style="background:#06060C;border-radius:16px 16px 0 0;padding:28px 32px 24px;">
-    <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td>
-        <div style="background:#FF3500;border-radius:10px;width:44px;height:44px;text-align:center;line-height:44px;font-size:22px;display:inline-block;vertical-align:middle;">💥</div>
-        <span style="vertical-align:middle;margin-left:12px;color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span>
-      </td>
-      <td align="right">
-        <span style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">SESSION ${safeSessionId}</span>
-      </td>
-    </tr></table>
-
-    <!-- Green success banner -->
-    <div style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:16px;margin-top:20px;text-align:center;">
-      <div style="font-size:28px;margin-bottom:6px;">✅</div>
-      <div style="color:#4ade80;font-size:18px;font-weight:700;">${t.heading}</div>
-      <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-top:4px;">${t.intro}</div>
-    </div>
-  </div>
-
-  <!-- ═══ BODY ═══ -->
-  <div style="background:#ffffff;padding:28px 32px;">
-
-    <!-- PDF attached notice -->
-    <div style="background:#fff8f7;border:2px solid #FF3500;border-radius:10px;padding:16px;margin-bottom:24px;text-align:center;">
-      <div style="font-size:32px;margin-bottom:6px;">📎</div>
-      <div style="font-weight:700;font-size:15px;color:#111;">Le PDF est joint à cet email</div>
-      <div style="font-size:12px;color:#595959;margin-top:4px;">constat-${safeSessionId}.pdf</div>
-    </div>
-
-    ${insurerSection}
-
-    <!-- Next steps -->
-    <div style="margin-bottom:24px;">
-      <div style="font-size:11px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">PROCHAINES ÉTAPES</div>
-      ${[t.step1, t.step2, t.step3].map((step, i) => `
-      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
-        <div style="min-width:28px;height:28px;background:#FF3500;border-radius:50%;color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:28px;flex-shrink:0;">${i + 1}</div>
-        <div style="font-size:14px;color:#333;line-height:1.55;padding-top:5px;">${step}</div>
-      </div>`).join('')}
-    </div>
-
-    <!-- Deadline -->
-    <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:28px;">
-      <div style="font-size:13px;color:#92400e;line-height:1.5;">${t.deadline}</div>
-    </div>
-
-    <!-- ─── DIVIDER ─── -->
-    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
-
-    <!-- ═══ FEEDBACK ═══ -->
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:6px;">${t.feedbackTitle}</div>
-      <div style="font-size:14px;color:#595959;margin-bottom:16px;">${t.feedbackQ}</div>
-      <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
-        <td style="padding:0 6px;">
-          <a href="${BASE}/?feedback=good&session=${safeSessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#166534;font-weight:600;">${t.feedbackGood}</a>
+    <!-- HEADER -->
+    <tr><td style="background:#06060C;border-radius:16px 16px 0 0;padding:26px 32px 22px;" class="bc-px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="${dir}"><tr>
+        <td valign="middle">
+          <table role="presentation" cellpadding="0" cellspacing="0" dir="${dir}"><tr>
+            <td valign="middle"><div style="background:#FF3500;border-radius:10px;width:42px;height:42px;text-align:center;line-height:42px;font-size:21px;">💥</div></td>
+            <td valign="middle" style="padding:0 12px;"><span style="color:#FF3500;font-size:20px;font-weight:800;letter-spacing:-0.3px;">boom.contact</span></td>
+          </tr></table>
         </td>
-        <td style="padding:0 6px;">
-          <a href="${BASE}/?feedback=bad&session=${safeSessionId}" style="display:inline-block;background:#fef2f2;border:2px solid #fca5a5;border-radius:10px;padding:12px 24px;font-size:15px;text-decoration:none;color:#991b1b;font-weight:600;">${t.feedbackBad}</a>
+        <td valign="middle" align="${rtl ? 'left' : 'right'}">
+          <span style="color:rgba(255,255,255,0.32);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:monospace;">SESSION ${safeSessionId}</span>
         </td>
       </tr></table>
-    </div>
 
-    <!-- ─── DIVIDER ─── -->
-    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;"><tr><td style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:18px;" align="center">
+        <div style="font-size:30px;line-height:1;margin-bottom:6px;">✅</div>
+        <div style="color:#4ade80;font-size:18px;font-weight:700;line-height:1.3;">${t.heading}</div>
+        <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:6px;line-height:1.5;">${t.intro}</div>
+      </td></tr></table>
+    </td></tr>
 
-    <!-- ═══ GOOGLE REVIEW ═══ -->
-    ${GOOGLE_REVIEW ? `<div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:32px;margin-bottom:8px;">⭐</div>
-      <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.googleTitle}</div>
-      <div style="font-size:13px;color:#595959;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.googleText}</div>
-      <a href="${GOOGLE_REVIEW}" style="display:inline-block;background:#4285F4;color:#fff;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.googleBtn}</a>
-    </div>` : ''}
+    <!-- BODY -->
+    <tr><td style="background:#ffffff;padding:28px 32px 8px;" class="bc-px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 
-    <!-- ─── DIVIDER ─── -->
-    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+        <!-- PDF attached -->
+        <tr><td style="padding:0 0 24px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="background:#fff8f7;border:2px solid #FF3500;border-radius:12px;padding:18px;">
+          <div style="font-size:30px;line-height:1;margin-bottom:6px;">📎</div>
+          <div style="font-weight:700;font-size:15px;color:#111;">${t.pdfAttached}</div>
+          <div style="font-size:12px;color:#8a8a8a;margin-top:4px;font-family:monospace;">constat-${safeSessionId}.pdf</div>
+        </td></tr></table></td></tr>
 
-    <!-- ═══ SHARE ═══ -->
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:32px;margin-bottom:8px;">📲</div>
-      <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.shareTitle}</div>
-      <div style="font-size:13px;color:#595959;margin-bottom:16px;line-height:1.55;max-width:380px;margin-left:auto;margin-right:auto;">${t.shareText}</div>
-      <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
-        <td style="padding:0 4px;">
-          <a href="https://wa.me/?text=${shareText}%20${shareUrl}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">WhatsApp</a>
-        </td>
-        <td style="padding:0 4px;">
-          <a href="https://t.me/share/url?url=${shareUrl}&text=${shareText}" style="display:inline-block;background:#0088CC;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Telegram</a>
-        </td>
-        <td style="padding:0 4px;">
-          <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" style="display:inline-block;background:#1877F2;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Facebook</a>
-        </td>
-        <td style="padding:0 4px;">
-          <a href="sms:?body=${shareText}%20${shareUrl}" style="display:inline-block;background:#34C759;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">SMS</a>
-        </td>
-      </tr></table>
-    </div>
+        ${insurerSection}
 
-    <!-- ─── DIVIDER ─── -->
-    <hr style="border:none;border-top:1px solid #f0f0f0;margin:0 0 28px;">
+        <!-- Next steps -->
+        <tr><td style="padding:0 0 6px;text-align:${side};">
+          <div style="font-size:11px;font-weight:700;color:#FF3500;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">${t.nextStepsLabel}</div>
+        </td></tr>
+        ${stepsRows}
 
-    <!-- ═══ SIGNUP / SAVE VEHICLE ═══ -->
-    <div style="background:#06060C;border-radius:12px;padding:24px;text-align:center;margin-bottom:8px;">
-      <div style="font-size:28px;margin-bottom:8px;">🚗</div>
-      <div style="color:#fff;font-size:15px;font-weight:700;margin-bottom:6px;">${t.signupTitle}</div>
-      <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-bottom:18px;line-height:1.55;">${t.signupText}</div>
-      <a href="${BASE}/?action=signup" style="display:inline-block;background:#FF3500;color:#fff;text-decoration:none;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:700;">${t.signupBtn} →</a>
-    </div>
+        <!-- Deadline -->
+        <tr><td style="padding:6px 0 26px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:#fffbeb;border-${side}:4px solid #f59e0b;border-radius:8px;padding:12px 16px;text-align:${side};">
+            <div style="font-size:13px;color:#92400e;line-height:1.5;">${t.deadline}</div>
+          </td></tr></table>
+        </td></tr>
 
-  </div>
+        <tr><td style="padding:0 0 26px;"><div style="border-top:1px solid #f0f0f0;height:1px;line-height:1px;font-size:0;">&nbsp;</div></td></tr>
 
-  <!-- ═══ FOOTER ═══ -->
-  <div style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:16px 32px;border-top:1px solid #e8e5e0;">
-    <div style="font-size:11px;color:#595959;line-height:1.8;text-align:center;">
-      ${t.footer}
-    </div>
-  </div>
+        <!-- Feedback -->
+        <tr><td style="padding:0 0 26px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:6px;">${t.feedbackTitle}</div>
+          <div style="font-size:14px;color:#6b6b6b;margin-bottom:16px;">${t.feedbackQ}</div>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
+            <td style="padding:0 6px;"><a href="${BASE}/?feedback=good&session=${safeSessionId}" style="display:inline-block;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:12px 22px;font-size:15px;color:#166534;font-weight:600;">${t.feedbackGood}</a></td>
+            <td style="padding:0 6px;"><a href="${BASE}/?feedback=bad&session=${safeSessionId}" style="display:inline-block;background:#fef2f2;border:2px solid #fca5a5;border-radius:10px;padding:12px 22px;font-size:15px;color:#991b1b;font-weight:600;">${t.feedbackBad}</a></td>
+          </tr></table>
+        </td></tr></table></td></tr>
 
-</div>
+        <tr><td style="padding:0 0 26px;"><div style="border-top:1px solid #f0f0f0;height:1px;line-height:1px;font-size:0;">&nbsp;</div></td></tr>
+
+        ${googleSection}
+
+        <!-- Share -->
+        <tr><td style="padding:0 0 26px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
+          <div style="font-size:30px;line-height:1;margin-bottom:8px;">📲</div>
+          <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">${t.shareTitle}</div>
+          <div style="font-size:13px;color:#6b6b6b;margin:0 auto 16px;line-height:1.55;max-width:380px;">${t.shareText}</div>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>
+            <td style="padding:0 4px;"><a href="https://wa.me/?text=${shareText}%20${shareUrl}" style="display:inline-block;background:#25D366;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">WhatsApp</a></td>
+            <td style="padding:0 4px;"><a href="https://t.me/share/url?url=${shareUrl}&text=${shareText}" style="display:inline-block;background:#0088CC;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Telegram</a></td>
+            <td style="padding:0 4px;"><a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" style="display:inline-block;background:#1877F2;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">Facebook</a></td>
+            <td style="padding:0 4px;"><a href="sms:?body=${shareText}%20${shareUrl}" style="display:inline-block;background:#34C759;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;">SMS</a></td>
+          </tr></table>
+        </td></tr></table></td></tr>
+
+        <!-- Signup CTA -->
+        <tr><td style="padding:0 0 8px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="background:#06060C;border-radius:14px;padding:26px 24px;">
+          <div style="font-size:28px;line-height:1;margin-bottom:8px;">🚗</div>
+          <div style="color:#fff;font-size:16px;font-weight:700;margin-bottom:6px;">${t.signupTitle}</div>
+          <div style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:18px;line-height:1.55;">${t.signupText}</div>
+          <a href="${BASE}/?action=signup" class="bc-btn" style="display:inline-block;background:#FF3500;color:#fff;padding:14px 30px;border-radius:10px;font-size:14px;font-weight:700;">${t.signupBtn} ${rtl ? '←' : '→'}</a>
+        </td></tr></table></td></tr>
+
+      </table>
+    </td></tr>
+
+    <!-- FOOTER -->
+    <tr><td style="background:#f8f7f5;border-radius:0 0 16px 16px;padding:18px 32px;border-top:1px solid #e8e5e0;" class="bc-px" align="center">
+      <div style="font-size:11px;color:#7a7a7a;line-height:1.8;text-align:center;">${t.footer}</div>
+    </td></tr>
+
+  </table>
+  </td></tr></table>
 </body>
 </html>`;
 }
