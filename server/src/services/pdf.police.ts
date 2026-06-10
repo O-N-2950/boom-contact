@@ -256,11 +256,9 @@ export async function generatePoliceReport(
     y -= 30;
     field(p1, L.insurer, iB.company || '-', 20, y, 200, normal, bold, isCorrected('B', 'insurance.company'), lang);
     field(p1, L.policyNo, iB.policyNumber || '-', 225, y, 350, normal, bold, isCorrected('B', 'insurance.policyNumber'), lang);
-    y -= 35;
   } else {
     rect(p1, 20, y - 24, W - 40, 28, C.section, C.border, 0.5);
     tx(p1, L.driverBMissing, 26, y - 16, normal, 9, C.mid);
-    y -= 38;
   }
 
   // ── Pied de page p1 ──────────────────────────────────────────
@@ -507,7 +505,6 @@ export async function generatePoliceReport(
       tx(p3, `${intervention.policePhotos.length} ${L.photoCount}`, 26, y - 12, bold, 10);
       const catSummary = Object.entries(catCounts).map(([k, v]) => `${L.photoCatLabels[k] || k}: ${v}`).join(' | ');
       tx(p3, catSummary, 26, y - 24, normal, 8, C.mid);
-      y -= 40;
     }
 
     // Pied de page p3

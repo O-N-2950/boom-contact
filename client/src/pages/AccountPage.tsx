@@ -319,7 +319,6 @@ export function AccountPage({ user, token, onBack, onLogout, initialTab = 'garag
     } else if (p === 'cancelled') {
       window.history.replaceState({}, '', '/account');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => { if (tab === 'garage' && (myOrgsQ.data?.length ?? 0) > 0) track(EVENTS.FLEET_WALLET_VIEWED); }, [tab, myOrgsQ.data]);
   const updateProfileMut = trpc.auth.updateProfile.useMutation();

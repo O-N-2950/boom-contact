@@ -274,7 +274,7 @@ export async function claimGiftLink(token: string, claimerEmail: string): Promis
     await tx.update(magicTokens).set({ usedAt: new Date() }).where(eq(magicTokens.id, record.id));
 
     // Upsert recipient
-    let user = await tx.query.users.findFirst({ where: eq(users.email, claimerEmail) });
+    const user = await tx.query.users.findFirst({ where: eq(users.email, claimerEmail) });
     if (!user) {
       const id = nanoid();
       await tx.insert(users).values({ id, email: claimerEmail, role: 'customer', credits: record.giftCredits, consentCGU: true, consentCGUAt: new Date() });

@@ -60,7 +60,7 @@ export async function loginPoliceUser(email: string, password: string) {
   if (!user) throw new Error('Identifiants incorrects');
 
   const storedHash = user.passwordHash || '';
-  let authenticated = false;
+  let authenticated: boolean;
 
   if (isBcryptHash(storedHash)) {
     // New bcrypt hash — verify with bcrypt

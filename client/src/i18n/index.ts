@@ -10,7 +10,7 @@ import de from './locales/de.json';
 import it from './locales/it.json';
 
 // All other locales are lazy-loaded on demand
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const LAZY_LOCALE_LOADERS: Record<string, () => Promise<{ default: any }>> = {
   es: () => import('./locales/es.json'),
   pt: () => import('./locales/pt.json'),

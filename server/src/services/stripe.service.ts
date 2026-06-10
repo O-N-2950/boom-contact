@@ -254,7 +254,7 @@ export async function handleStripeWebhook(payload: Buffer, signature: string) {
   try {
     event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
   } catch (err) {
-    throw new Error(`Webhook signature invalide: ${err}`);
+    throw new Error(`Webhook signature invalide: ${err}`, { cause: err });
   }
 
   if (event.type === 'checkout.session.completed') {

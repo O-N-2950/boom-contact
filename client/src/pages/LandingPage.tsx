@@ -173,7 +173,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
                 compact={!isDesktop}
               />
             ) : (
-              <button onClick={() => { track(EVENTS.CTA_LOGIN_CLICKED); (onLogin ? onLogin() : onAccount?.()); }}
+              <button onClick={() => { track(EVENTS.CTA_LOGIN_CLICKED); if (onLogin) { onLogin(); } else { onAccount?.(); } }}
                 style={{ background: 'transparent', border: `1px solid ${C.border}`, color: C.navy, fontWeight: 700, fontSize: 13, borderRadius: 11, padding: isDesktop ? '9px 16px' : '8px 12px', cursor: 'pointer', fontFamily: C.font }}>
                 {t('account.login', { defaultValue: 'Me connecter' })}
               </button>

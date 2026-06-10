@@ -254,7 +254,7 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.updateParticipant', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
       },
     }));
 
@@ -264,7 +264,7 @@ async function setupRateLimiting() {
       standardHeaders: true, legacyHeaders: false,
       handler: (req, res) => {
         logger.warn('Rate limit hit session.updateAccident', { ip: req.ip });
-        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
+        res.status(429).json({ error: 'Trop de mises Ã  jour. RÃ©essayez dans 1 minute.' });
       },
     }));
 
@@ -556,7 +556,7 @@ app.use('/trpc', createExpressMiddleware({
 
 // ââ SEO â robots.txt + sitemap.xml âââââââââââââââââââââââââââ
 // CRITIQUE : ces routes DOIVENT Ãªtre AVANT express.static
-// sinon le wildcard SPA renvoie le HTML React Ã  la place
+// sinon le wildcard SPA renvoie le HTML React Ã  la place
 app.get('/robots.txt', (_req, res) => {
   res.type('text/plain').send(
 `User-agent: *

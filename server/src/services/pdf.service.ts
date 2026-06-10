@@ -43,7 +43,7 @@ const __fontDir = (() => {
 })();
 
 // Lazy-load font bytes (cached after first read)
-let _fontCache: Record<string, Uint8Array> = {};
+const _fontCache: Record<string, Uint8Array> = {};
 function loadFontBytes(filename: string): Uint8Array {
   if (!_fontCache[filename]) {
     try {
@@ -287,6 +287,7 @@ function drawText(
         // Chemin rapide : aucun script dédié (cas le plus fréquent)
         if (isNoto) {
           page.drawText(text, { x, y, font, size, color });
+        // eslint-disable-next-line no-control-regex -- détection non-ASCII volontaire (moteur multi-script)
         } else if (rtlFonts?.notoRegular && /[^\x00-\x7F]/.test(text)) {
           page.drawText(text, { x, y, font: rtlFonts.notoRegular, size, color });
         } else {
@@ -424,7 +425,7 @@ function buildHeader(ctx: PdfContext): void {
 async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
   const { doc, page, bold, normal, rtlFonts, margin, width, isUnilateral, partyBStatus } = ctx;
   if (!isUnilateral || !partyBStatus) return;
-  let y = ctx.y;
+  const y = ctx.y;
 
   page.drawRectangle({
     x: margin, y: y - 62, width: width - margin * 2, height: 62,

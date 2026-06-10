@@ -110,14 +110,14 @@ interface AppState {
   routeAnnouncement: string;
   accountInitialTab: 'garage' | 'history' | 'profile';
   userEmail: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   authUser: any;
   authToken: string;
   showAuthModal: boolean;
   showCGU: boolean;
   pendingAction: 'constat' | 'pricing' | 'garage' | null;
   policeToken: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   policeUser: any;
   policeSessionId: string;
   policeFlowToken: string;
