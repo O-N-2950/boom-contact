@@ -1054,3 +1054,11 @@ NOTE STRATÉGIE (pour Olivier) : 46/50 langues à ~37% UI (fallback fr). Décide
 - Audit natif : appId contact.boom.app, bundle local (anti-rejet 4.2), versions 1.0.0/1, 4 UsageDescriptions iOS précises (avec le pourquoi), permissions Android propres (WRITE_EXTERNAL maxSdk=28), icons iOS+Android, AASA prod avec Team ID 7YWB99G6Q8, assetlinks prod avec SHA-256 rempli (C5:CC:A0:97…), intent-filter autoVerify.
 - cap sync exécuté : projets natifs embarquent le build 50 langues (chunks lv/ti vérifiés dans ios/ et android/ public). Dossiers public/ non versionnés (régénérés par les workflows build-ios/build-android).
 - RESTE CÔTÉ OLIVIER pour la soumission : lancer build-ios/build-android (signing local Xcode/Play Console), fiches stores (captures, descriptions), contrat apps payantes Apple.
+
+## Finalisation : error-tracking client + PDF brandé vérifié (2026-06-10) — commit 3e8bdb7
+- Error-tracking first-party LIVRÉ ET PROUVÉ EN PROD : l'endpoint /api/monitor/client-error existait mais était orphelin (aucun handler client). Ajout client/src/monitoring.ts (window.onerror + unhandledrejection, dédup, max 8/session, payload technique tronqué sans donnée personnelle, sendBeacon→fetch keepalive, natif inclus), branché avant le boot React. Serveur : stack/ua/lang ajoutés au log.
+  PREUVE E2E PROD : POST de test → ligne [CLIENT-ERROR] retrouvée dans les logs Railway (avec stack). Bundle prod contient les handlers.
+- PDF brandé : DÉJÀ en place (footer "boom.contact - Constat amiable numérique - www.boom.contact" + PEP's Swiss SA + CHE-476.484.632 + badge horodatage) — correction de l'audit Phase 2 qui l'avait raté.
+- Sentry : code complet présent (client+serveur, privacy-first) mais INACTIF sans DSN → décision/DSN côté Olivier (VITE_SENTRY_DSN + SENTRY_DSN_BACKEND au build).
+- Déployé : CI+ESLint verts, GHCR success, Railway SUCCESS, Jelastic 200. SW v35.
+ÉTAT GLOBAL : CI 100% vert, 0 vulnérabilité npm, 50 langues, stores-ready (paiement natif prouvé, config native conforme). Prochains chantiers produit : boucle virale conducteur B (capture email post-signature), PoliceFlow.tsx (pilote Jura), réduction warnings ESLint (143).
