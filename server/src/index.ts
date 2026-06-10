@@ -473,11 +473,14 @@ app.post('/api/monitor/client-error', (req, res) => {
     slot.n++;
   }
   if (_clientErrHits.size > 5000) _clientErrHits.clear(); // garde-fou mémoire
-  const { type, message, url } = req.body || {};
+  const { type, message, url, stack, ua, lang } = req.body || {};
   logger.warn('[CLIENT-ERROR]', {
     type: String(type ?? '').slice(0, 60),
     message: String(message ?? '').slice(0, 200),
     url: String(url ?? '').slice(0, 300),
+    stack: String(stack ?? '').slice(0, 1500),
+    ua: String(ua ?? '').slice(0, 160),
+    lang: String(lang ?? '').slice(0, 10),
   });
   res.json({ ok: true });
 });

@@ -9,6 +9,10 @@ import './i18n'; // ← i18next init (must be before App)
 import './index.css';
 import { initSentryFrontend, initPostHog, initGA4 } from './analytics';
 import { initTheme } from './components/ThemeToggle';
+import { installErrorTracking } from './monitoring';
+
+// Filet d'erreurs global — AVANT tout le reste pour capter les erreurs de boot
+installErrorTracking();
 
 // Appliquer le thème sauvegardé AVANT le premier render — évite le flash
 initTheme();
