@@ -1038,3 +1038,11 @@ Sélecteur de langue hiérarchisé par certification end-to-end.
 - À régénérer quand locales/PDF/emails changent.
 Déployé : SW v33, Jelastic 200, Railway 200.
 NOTE STRATÉGIE (pour Olivier) : 46/50 langues à ~37% UI (fallback fr). Décider la stratégie de langues au lancement : compléter des traductions par vagues, ou assumer le partiel marqué.
+
+## 50 langues complètes + fix CI Node 22 (2026-06-10) — commits 825adac, 70fd896, 2e6ec20
+- i18n : LES 50 LANGUES À 100% du périmètre grand public (677/677 clés core chacune, hors namespace police B2G). 46 locales étaient à ~37% (fallback fr).
+- Pipeline scripts/translate-locales.py : double moteur Claude API + OpenAI gpt-4o-mini (limites indépendantes), idempotent, sauvegarde par chunk, reconstruction des namespaces à la forme de fr (structures périmées corrigées), validation stricte {{placeholders}}/balises HTML : 0 divergence sur 50 langues, 50/50 JSON valides. Spot-checks qualité : es ru pl ko th uk ja hi ti ar zh.
+- Manifeste régénéré : 11 langues tier "Entièrement traduites" (UI 100% + PDF + email) : ar de en es fr it nl pl pt ru zh. Les 39 autres : UI 100%, PDF/email à compléter pour le tier full.
+- NOTE : traductions IA de haute qualité — relecture native recommandée avant de revendiquer une localisation professionnelle.
+- CI/ESLint : échec EBADENGINE (@capacitor/cli 8.3.1 exige node>=22) → workflows passés en Node 22. Image Docker prod (node:20.19) inchangée volontairement : elle builde et tourne.
+- Déployé + PROUVÉ : Jelastic 200, Railway SUCCESS, chunks lv/ti servis en prod (HTTP 200, motifs letton+Ge'ez présents). SW v34.
