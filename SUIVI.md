@@ -1046,3 +1046,11 @@ NOTE STRATÉGIE (pour Olivier) : 46/50 langues à ~37% UI (fallback fr). Décide
 - NOTE : traductions IA de haute qualité — relecture native recommandée avant de revendiquer une localisation professionnelle.
 - CI/ESLint : échec EBADENGINE (@capacitor/cli 8.3.1 exige node>=22) → workflows passés en Node 22. Image Docker prod (node:20.19) inchangée volontairement : elle builde et tourne.
 - Déployé + PROUVÉ : Jelastic 200, Railway SUCCESS, chunks lv/ti servis en prod (HTTP 200, motifs letton+Ge'ez présents). SW v34.
+
+## Store-readiness Apple/Google + CI vert (2026-06-10) — commit 3e1be0d
+- CI ENTIÈREMENT VERT pour la première fois : ESLint 4966 erreurs → 0 (globals par environnement, ios/android générés ignorés, 9 correctifs chirurgicaux réels, fichier mort sketch-engine.js supprimé — 0 référence, croquis réel = sketch-renderer.service.ts). Seuil warnings 150 (état 143, réduction progressive).
+- RÈGLE PAIEMENT NATIF PROUVÉE PAR LE RENDU (pas par grep) : simulation du pont Capacitor réel (androidBridge) dans Playwright → native:true/platform:android → AUCUN prix ni bouton d'achat, même en forçant ?pricing=true (retombe sur la landing). Triple défense vérifiée : CTA gated (PostConstatCTA {!native}), navigation gated (App.tsx:98), rendu gated (App.tsx:499). Modèle Netflix/Spotify conforme Apple 3.1.1.
+  NB méthodo : injecter window.Capacitor ne marche PAS (@capacitor/core l'écrase) — il faut simuler window.androidBridge.
+- Audit natif : appId contact.boom.app, bundle local (anti-rejet 4.2), versions 1.0.0/1, 4 UsageDescriptions iOS précises (avec le pourquoi), permissions Android propres (WRITE_EXTERNAL maxSdk=28), icons iOS+Android, AASA prod avec Team ID 7YWB99G6Q8, assetlinks prod avec SHA-256 rempli (C5:CC:A0:97…), intent-filter autoVerify.
+- cap sync exécuté : projets natifs embarquent le build 50 langues (chunks lv/ti vérifiés dans ios/ et android/ public). Dossiers public/ non versionnés (régénérés par les workflows build-ios/build-android).
+- RESTE CÔTÉ OLIVIER pour la soumission : lancer build-ios/build-android (signing local Xcode/Play Console), fiches stores (captures, descriptions), contrat apps payantes Apple.
