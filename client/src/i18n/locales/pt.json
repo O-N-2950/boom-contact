@@ -21,7 +21,9 @@
       "line1": "APÓS",
       "line2": "O BOOM",
       "line3": "O",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Documente um acidente sem papel, sem confusão.",
+      "subtitle": "boom.contact orienta você passo a passo para coletar as informações úteis, adicionar fotos, localização, declarações e assinaturas, e gerar um arquivo PDF datado para enviar ao seu segurador."
     },
     "subtitle": "Constatação digital em 5 minutos. OCR universal, QR code partilhado, PDF mundial instantâneo.",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "Enviar à seguradora",
       "done": "Constatação finalizada !",
       "waiting": "Sessão #8F2K · Em espera…",
-      "capture": "📸 Fotografar"
+      "capture": "📸 Fotografar",
+      "sessionActive": "Sessão ativa",
+      "vehicleA": "VEÍCULO A",
+      "photosSig": "Fotos · assinatura ✓",
+      "vehicleB": "VEÍCULO B",
+      "qrJoined": "QR unido · em andamento",
+      "payGenerate": "Pagar e gerar o PDF",
+      "pdfBadge": "PDF datado",
+      "qrBadge": "QR compartilhado"
     },
     "badges": {
       "languages": "50 línguas",
@@ -83,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tudo o que você precisa",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR universal",
-          "desc": "Claude Vision lê seus documentos em 50+ idiomas. Documento do veículo, RC Book, 行驶证 — zero digitação manual."
-        },
-        {
-          "icon": "📱",
-          "title": "Até 5 veículos",
-          "desc": "Acidente com 3, 4 ou 5 veículos? Cada condutor escaneia seu próprio QR. Um único PDF para todos."
-        },
-        {
-          "icon": "📷",
-          "title": "Fotos da cena",
-          "desc": "5 categorias: local, danos A, danos B, ferimentos, documentos. Comprimidas e incluídas no PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croqui livre",
-          "desc": "Desenhe a posição dos veículos, setas de direção, infraestruturas. Exportação PNG integrada no PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Diagrama de colisão",
-          "desc": "700+ modelos, silhueta adaptada, cor real OCR. 18 zonas clicáveis para os danos."
-        },
-        {
-          "icon": "✍️",
-          "title": "Assinaturas multipartes",
-          "desc": "Várias assinaturas táteis simultâneas. QR ativo 24h para a polícia."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF com carimbo de data/hora",
-          "desc": "Documento digital completo: testemunhas, danos a terceiros, observações, croqui, fotos. Reconhecido por todas as seguradoras."
-        },
-        {
-          "icon": "🚔",
-          "title": "Módulo Polícia (em breve)",
-          "desc": "Os agentes entram na sessão via QR. Boletim de ocorrência oficial digital. Dashboard por posto/cantão."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingüe · RTL",
-          "desc": "5 bilhões de falantes. Árabe, hebraico, farsi, urdu em RTL nativo. Emergências geolocalizadas."
-        }
-      ]
-    },
     "coverage": {
       "label": "Cobertura mundial",
       "title": "Da Suíça à China",
@@ -150,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Convide por QR code",
+        "desc": "Crie a sessão, o outro motorista escaneia o QR com seu telefone. Nenhuma instalação, nenhum registro."
+      },
+      {
+        "title": "Fotos, voz e assinatura",
+        "desc": "Adicione fotos, dite suas observações em voz alta, posicione os veículos no esboço e assine com o dedo."
+      },
+      {
+        "title": "Arquivo PDF datado",
+        "desc": "boom.contact gera um arquivo PDF datado com as informações inseridas por cada motorista."
+      },
+      {
+        "title": "Para enviar ao seu segurador",
+        "desc": "Baixe o PDF ou envie por e-mail para acompanhar sua declaração de sinistro ao seu segurador."
+      }
+    ],
+    "seoLine": "O constat amiable digital multilíngue · Relatório de acidente digital",
+    "flow": {
+      "label": "Tudo em um único fluxo",
+      "title": "Do acidente ao arquivo pronto para enviar"
+    },
+    "stress": {
+      "label": "Pensado para o momento do acidente",
+      "title": "Projetado para situações estressantes",
+      "text": "Após um impacto, não temos a mente clara. boom.contact avança passo a passo, no seu idioma, e mantém um registro de cada informação coletada. Tudo funciona a partir do navegador do telefone, mesmo com uma conexão limitada.",
+      "bullets": [
+        "Guiado passo a passo",
+        "Multilíngue",
+        "Fotos · voz · assinatura",
+        "Arquivo PDF datado"
+      ],
+      "emergencyTitle": "Em caso de emergência",
+      "emergencyText": "boom.contact não substitui os serviços de emergência, a polícia, um advogado ou o segurador. Em caso de feridos ou perigo, entre em contato primeiro com os serviços de emergência."
+    },
+    "pricing": {
+      "label": "Preços",
+      "title": "Simples, transparente, sem assinatura",
+      "caption": "1 crédito = 1 relatório completo · multilíngue · créditos sem expiração",
+      "badgePopular": "Popular",
+      "plans": [
+        {
+          "label": "1 relatório",
+          "desc": "Para um acidente pontual"
+        },
+        {
+          "label": "3 relatórios",
+          "desc": "Para toda a família"
+        },
+        {
+          "label": "10 relatórios",
+          "desc": "Para frotas e corretores"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Para profissionais",
+      "title": "Para corretores, frotas e parceiros de seguros",
+      "text": "Equipe seus clientes e motoristas com uma ferramenta clara para documentar um acidente e gerar um arquivo PDF datado. Pacotes de créditos para frotas e corretores, implantação simples, sem assinatura.",
+      "cta": "Contatar / compartilhar",
+      "items": [
+        {
+          "title": "Frotas",
+          "desc": "Um arquivo estruturado para cada sinistro do motorista."
+        },
+        {
+          "title": "Corretores",
+          "desc": "Um serviço de valor agregado para seus segurados."
+        },
+        {
+          "title": "Privacidade",
+          "desc": "Dados criptografados em trânsito, excluíveis a pedido."
+        },
+        {
+          "title": "Transmissão",
+          "desc": "PDF datado pronto para anexar à declaração de sinistro."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Perguntas frequentes",
+      "items": [
+        {
+          "q": "O que é boom.contact?",
+          "a": "boom.contact é um aplicativo que ajuda a documentar um acidente de carro a partir de um telefone: convite dos motoristas por QR, fotos, voz, esboços, assinaturas, e então gera um arquivo PDF datado para enviar ao seu segurador."
+        },
+        {
+          "q": "Preciso instalar um aplicativo?",
+          "a": "Não. boom.contact funciona diretamente no navegador do telefone (Safari, Chrome, Firefox). Você também pode adicioná-lo à sua tela inicial como um aplicativo web (PWA) para acesso offline."
+        },
+        {
+          "q": "O que acontece se o outro motorista não tiver o aplicativo?",
+          "a": "Você cria a sessão e um QR code aparece. O outro motorista o escaneia com seu telefone: boom.contact se abre em seu navegador, sem registro ou download."
+        },
+        {
+          "q": "O arquivo PDF é aceito pelo meu segurador?",
+          "a": "O arquivo PDF datado é destinado a acompanhar sua declaração de sinistro. boom.contact não garante sua aceitação, que depende do seu segurador de acordo com seu contrato e a jurisdição."
+        },
+        {
+          "q": "Funciona se o outro motorista fala outro idioma?",
+          "a": "Sim. Cada motorista usa a interface em seu próprio idioma. O arquivo final é gerado para cada motorista."
+        },
+        {
+          "q": "Meus dados estão protegidos?",
+          "a": "Os dados são criptografados em trânsito, as sessões são automaticamente excluídas após um período, e a polícia nunca é notificada automaticamente — apenas por ação explícita de sua parte."
+        },
+        {
+          "q": "Quanto custa?",
+          "a": "A partir de CHF / EUR 4.90 por um relatório. Pacote de 3 relatórios por 12.90 (−12 %), pacote de 10 por 34.90 (−29 %). Sem assinatura, créditos sem expiração."
+        }
+      ]
     }
   },
   "steps": {
@@ -217,32 +291,6 @@
       "cycles": "Ciclos",
       "other": "Pessoa / Outro"
     },
-    "datetime_label": "Data & hora do acidente",
-    "date_label": "Data",
-    "time_label": "Hora",
-    "datetime_warning": "⚠️ Indique a hora real do acidente, não a hora atual.",
-    "geo_label": "Local do acidente",
-    "gps_captured": "GPS capturado — {{lat}}, {{lng}}",
-    "gps_loading": "A localizar…",
-    "gps_denied": "Acesso GPS recusado — introdução manual",
-    "gps_missing": "Posição GPS não capturada",
-    "gps_saved": "Coordenadas guardadas no documento",
-    "injury_details_title": "🚑 Detalhes das lesões",
-    "severity_label": "Gravidade aparente",
-    "severity_minor": "Leve",
-    "severity_moderate": "Moderada",
-    "severity_serious": "Grave",
-    "injury_desc_label": "Descrição (zona do corpo, dores, lesões visíveis)",
-    "injury_desc_placeholder": "Ex: Dor cervical, contusão no joelho esquerdo, corte na testa…",
-    "ambulance": "🚑 Assistência por ambulância / SMUR",
-    "hospitalized": "🏥 Hospitalização necessária ou prevista",
-    "injury_footer": "Em caso de feridos graves, ligue 112 (UE) ou 144 (CH) imediatamente. Estas informações serão incluídas no documento final.",
-    "cta_no_vehicle": "Selecione o seu tipo de veículo",
-    "cta_no_injuries": "Indique se há feridos",
-    "cta_no_location": "Indique o local do acidente",
-    "emergency_police": "🚔 Polícia · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 Urgências · {{number}} {{label}}",
-    "emergency_voluntary": "Estas chamadas são voluntárias — a polícia nunca é avisada automaticamente.",
     "vehicles": {
       "car": {
         "label": "Carro",
@@ -316,7 +364,43 @@
         "label": "Outro veículo",
         "sub": "Não listado — especificar nas observações"
       }
-    }
+    },
+    "datetime_label": "Data & hora do acidente",
+    "date_label": "Data",
+    "time_label": "Hora",
+    "datetime_warning": "⚠️ Indique a hora real do acidente, não a hora atual.",
+    "geo_label": "Local do acidente",
+    "gps_captured": "GPS capturado — {{lat}}, {{lng}}",
+    "gps_loading": "A localizar…",
+    "gps_denied": "Acesso GPS recusado — introdução manual",
+    "gps_missing": "Posição GPS não capturada",
+    "gps_saved": "Coordenadas guardadas no documento",
+    "injury_details_title": "🚑 Detalhes das lesões",
+    "severity_label": "Gravidade aparente",
+    "severity_minor": "Leve",
+    "severity_moderate": "Moderada",
+    "severity_serious": "Grave",
+    "injury_desc_label": "Descrição (zona do corpo, dores, lesões visíveis)",
+    "injury_desc_placeholder": "Ex: Dor cervical, contusão no joelho esquerdo, corte na testa…",
+    "ambulance": "🚑 Assistência por ambulância / SMUR",
+    "hospitalized": "🏥 Hospitalização necessária ou prevista",
+    "injury_footer": "Em caso de feridos graves, ligue 112 (UE) ou 144 (CH) imediatamente. Estas informações serão incluídas no documento final.",
+    "cta_no_vehicle": "Selecione o seu tipo de veículo",
+    "cta_no_injuries": "Indique se há feridos",
+    "cta_no_location": "Indique o local do acidente",
+    "emergency_police": "🚔 Polícia · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 Urgências · {{number}} {{label}}",
+    "emergency_voluntary": "Estas chamadas são voluntárias — a polícia nunca é avisada automaticamente.",
+    "address_label": "Rua / Localidade / Autoestrada (ex: A1 saída 12, Carrefour das Quatro Estradas)",
+    "address_placeholder": "Ex: Avenida da Estação 4, A1 direção Berna km 47…",
+    "city_label": "Cidade / Localidade",
+    "city_placeholder": "Lausanne, Paris…",
+    "country_label": "País",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 Importante: Indique o local exato do acidente, mesmo que você tenha movido os veículos para o lado. O GPS captura sua posição atual — corrija se você se moveu.",
+    "injuries_label": "Há feridos?",
+    "no_injuries": "Não — nenhum ferido",
+    "yes_injuries": "Sim — ferido(s)"
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -435,5 +519,431 @@
   "language": {
     "select": "Idioma",
     "switch_tooltip": "Mudar de idioma"
+  },
+  "join": {
+    "sessionLabel": "Sessão",
+    "yourEmail": "Seu email",
+    "emailHint": "(para receber o PDF)",
+    "emailAria": "Seu endereço de email",
+    "connecting": "Conectando…",
+    "connected": "Conectado! Iniciando…",
+    "joinButton": "Juntar-se ao relatório"
+  },
+  "signature": {
+    "title": "Assinatura",
+    "driver": "Motorista {{role}}",
+    "other_party": "Outra parte",
+    "no_signature": "sem assinatura",
+    "sign_here": "Assine aqui com seu dedo",
+    "signed": "ASSINADO ✓",
+    "clear": "🗑 Limpar",
+    "saving": "⏳ Salvando…",
+    "confirm_signature": "✍️ Confirmar a assinatura",
+    "waiting_other": "Aguardando a assinatura do outro motorista…",
+    "waiting_pdf": "O PDF será gerado assim que ambas as partes assinarem.",
+    "report_signed": "Relatório assinado!",
+    "generating_pdf": "Gerando o PDF em andamento…",
+    "canvas_aria": "Área de assinatura — Motorista {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Antes de começar",
+      "body": "boom.contact ajuda você a documentar um acidente e gerar um arquivo PDF estruturado. Em caso de ferimento, perigo, fuga, desacordo grave ou obrigação legal, entre em contato imediatamente com os serviços de emergência, a polícia ou as autoridades competentes. As informações fornecidas permanecem sob a responsabilidade dos participantes. Você pode inserir as informações manualmente se não desejar usar a câmera, o microfone ou a localização.",
+      "start": "Entendi, começar",
+      "emergency": "Ver números de emergência",
+      "privacy_cgu": "Privacidade / Termos de uso"
+    },
+    "guest_accept": {
+      "checkbox": "Aceito os Termos gerais de uso e li a Política de privacidade.",
+      "note": "Entendo que minhas informações serão usadas para gerar o arquivo PDF do acidente e que as informações fornecidas permanecem sob minha responsabilidade."
+    },
+    "signature_confirm": "Confirmo que as informações que forneci são precisas ao meu conhecimento e aceito que minha assinatura seja integrada ao arquivo PDF.",
+    "payment_notice": "Ao continuar para o pagamento, você entende que o pagamento cobre a geração e o envio do arquivo PDF. As informações fornecidas permanecem sob a responsabilidade dos participantes.",
+    "mic_notice": "Ao usar o microfone, sua declaração de voz será transcrita para ser integrada ao arquivo do acidente. Você pode usar a entrada de texto em vez disso.",
+    "injury_confirm": {
+      "body": "As fotos de ferimentos podem conter dados sensíveis. Certifique-se de ter o consentimento da pessoa envolvida, a menos que seja uma necessidade de segurança ou obrigação legal.",
+      "continue": "Continuar",
+      "change": "Mudar de categoria"
+    },
+    "pdf_ready_title": "Arquivo PDF de acidente datado",
+    "pdf_ready_body": "As assinaturas necessárias foram registradas. O arquivo PDF está pronto. Verifique as informações antes de enviá-lo ao seu segurador."
+  },
+  "constatForm": {
+    "tab_vehicle": "Veículo",
+    "tab_driver": "Motorista",
+    "tab_insurance": "Seguro",
+    "tab_circumstances": "Circunstâncias",
+    "tab_complement": "Complemento",
+    "field_required": "Este campo é obrigatório",
+    "plate_label": "Registro",
+    "brand_label": "Marca",
+    "model_label": "Modelo",
+    "year_label": "Ano",
+    "vin_label": "N° chassi (VIN)",
+    "firstName_label": "Primeiro nome",
+    "lastName_label": "Sobrenome",
+    "address_label": "Endereço",
+    "postalCode_label": "CEP",
+    "city_label": "Localidade",
+    "country_label": "País",
+    "phone_label": "Telefone",
+    "email_label": "Email",
+    "license_label": "N° da licença de condução",
+    "company_label": "Companhia de seguros",
+    "policyNumber_label": "N° da apólice",
+    "greenCardNumber_label": "N° cartão verde",
+    "greenCardExpiry_label": "Validade do cartão verde",
+    "agentName_label": "Agente / Corretor",
+    "agentPhone_label": "Tel. seguro",
+    "circumstances_desc": "Marque todas as caixas que descrevem a situação do seu veículo <strong>({{role}})</strong> no momento do impacto.",
+    "boxes_checked_one": "{{count}} caixa marcada",
+    "boxes_checked_other": "{{count}} caixas marcadas",
+    "complement_desc": "Informações complementares do relatório — seções 11, 13 e 14.",
+    "datetime_label": "Data e hora do acidente",
+    "visible_damage_label": "Danos aparentes (seção 11)",
+    "visible_damage_placeholder": "Descreva os danos visíveis em seu veículo...",
+    "third_party_label": "Danos materiais a terceiros (outros que A e B)",
+    "witnesses_label": "Testemunhas",
+    "witnesses_placeholder": "Nome, sobrenome, telefone de cada testemunha...",
+    "voice_declaration_label": "🎙️ Declaração vocal (opcional)",
+    "observations_label": "Observações livres — motorista {{role}} (seção 14)",
+    "observations_placeholder": "Adicione qualquer informação útil: condições meteorológicas, estado da estrada, velocidade estimada, observações...",
+    "insurance_holder_label": "Tomador de seguro (se diferente do motorista)",
+    "holder_name_placeholder": "Nome completo do tomador",
+    "holder_name_aria": "Nome do tomador de seguro",
+    "holder_address_placeholder": "Endereço do tomador",
+    "holder_address_aria": "Endereço do tomador de seguro",
+    "save_btn": "Salvar e continuar →",
+    "form_tabs_aria": "Seções do formulário"
+  },
+  "pricingPage": {
+    "sr_title": "Preços — boom.contact",
+    "back": "← Voltar←",
+    "buy_reports": "Comprar relatórios",
+    "credits_no_expiry": "Créditos sem expiração · Compartilháveis por WhatsApp",
+    "credits_available_one": "✅ {{count}} crédito disponível",
+    "credits_available_other": "✅ {{count}} créditos disponíveis",
+    "no_credits": "⚡ Nenhum crédito — recarregue agora",
+    "currency_label": "MOEDA",
+    "currency_detected": "✓ detectada automaticamente",
+    "most_popular": "⭐ MAIS POPULAR · ECONOMIA {{savings}}",
+    "economy": "Economia {{savings}}",
+    "per_pack": "por pacote",
+    "per_report": "/ relatório",
+    "redirecting_stripe": "⏳ Redirecionando para Stripe...",
+    "buy_btn": "Comprar {{label}} — {{price}}",
+    "error_missing_url": "URL de pagamento ausente",
+    "error_generic": "Erro",
+    "error_email_required": "Email necessário para comprar",
+    "trust_stripe": "Pagamento seguro Stripe PCI-DSS",
+    "trust_no_expiry": "Créditos sem expiração",
+    "trust_whatsapp": "Compartilhável por WhatsApp",
+    "trust_worldwide": "Multilíngue",
+    "trust_invoice": "Fatura PDF automática",
+    "trust_fleet": "Ideal para frotas empresariais",
+    "why_title": "POR QUE TER CRÉDITOS ANTECIPADOS?",
+    "scenario_child_title": "Seu filho teve um acidente",
+    "scenario_child_text": "Ele te liga. Você envia um crédito por WhatsApp. Ele faz seu relatório em 5 minutos.",
+    "scenario_company_title": "Veículo da empresa",
+    "scenario_company_text": "Seu entregador teve um acidente. Transfira um crédito instantaneamente do seu celular.",
+    "scenario_abroad_title": "Em viagem ao exterior",
+    "scenario_abroad_text": "Acidente na Alemanha, Austrália ou Japão. Interface disponível em várias línguas.",
+    "pkg_single_label": "1 relatório",
+    "pkg_single_desc": "Para um acidente pontual",
+    "pkg_pack3_label": "3 relatórios",
+    "pkg_pack3_desc": "Para toda a família",
+    "pkg_pack3_marketing": "🎁 Compartilhe por WhatsApp — seu filho, seu funcionário, seu amigo recebe um link instantâneo.",
+    "pkg_pack10_label": "10 relatórios",
+    "pkg_pack10_desc": "Frotas & empresas",
+    "pkg_pack10_marketing": "🏢 Gerencie toda a sua frota. Transfira para seus colaboradores em 1 clique."
+  },
+  "app": {
+    "magic_link_error": "Link de conexão inválido ou expirado.",
+    "gift_credits_added": "🎁 {{credits}} crédito(s) adicionado(s) à sua conta!",
+    "loading_aria": "Carregando",
+    "nav_landing": "Página inicial",
+    "nav_cgu": "Termos de uso",
+    "nav_pricing": "Preços",
+    "nav_constat": "Criação de relatório",
+    "nav_join": "Juntar-se a uma sessão",
+    "nav_account": "Conta do usuário",
+    "nav_admin": "Painel de administrador",
+    "nav_emergency": "Números de emergência",
+    "nav_privacy": "Política de privacidade",
+    "nav_police_login": "Login da polícia",
+    "nav_police_dashboard": "Painel da polícia",
+    "nav_police_flow": "Fluxo da polícia",
+    "nav_police_intervention": "Intervenção da polícia",
+    "nav_to": "Navegação para {{label}}",
+    "title_default": "boom.contact — Constat amiable digital",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Descreva o acidente",
+    "subtitle": "Opcional — descreva o que aconteceu com suas próprias palavras. Sua declaração será registrada no relatório.",
+    "tab_voice": "🎙️ Vocal",
+    "tab_text": "⌨️ Texto",
+    "start_recording": "Começar a gravação",
+    "textarea_aria": "Descrição do acidente",
+    "textarea_placeholder": "Descreva o acidente em algumas frases…",
+    "validate_desc": "✅ Validar minha descrição",
+    "skip_step": "Pular esta etapa →",
+    "recording_in_progress": "Gravação em andamento…",
+    "recording_tip": "💡 Descreva: a direção de cada veículo, o ponto de impacto, as circunstâncias. Fale calmamente.",
+    "stop_recording": "Parar a gravação",
+    "transcribing_title": "Transcrição em andamento…",
+    "transcribing_subtitle": "Sua gravação está sendo processada",
+    "desc_recorded": "Descrição gravada",
+    "desc_in_pdf": "Sua declaração será incluída no relatório PDF",
+    "your_declaration": "Sua declaração",
+    "edit": "✏️ Editar",
+    "edit_placeholder": "Corrija sua declaração se necessário...",
+    "restart": "Recomeçar",
+    "mic_denied": "Acesso ao microfone negado — use a entrada manual.",
+    "mic_unavailable": "Microfone indisponível: {{msg}}",
+    "transcription_error": "Erro de transcrição",
+    "textarea_edit_aria": "Relato do acidente"
+  },
+  "auth": {
+    "default_subtitle": "Conecte-se para salvar seus veículos e não precisar mais inserir nada durante seus relatórios.",
+    "magic_btn": "📧 Conexão por link de email (recomendado)",
+    "password_btn": "🔑 Conexão com senha",
+    "register_btn": "✨ Criar uma conta",
+    "skip_btn": "Continuar sem conta →",
+    "skip_note": "Sem conta, você ainda pode fazer um relatório e pagar com Stripe.",
+    "magic_instructions": "Digite seu email — você receberá um link de conexão válido por 15 minutos.",
+    "send_link": "Enviar o link",
+    "sending": "Enviando...",
+    "back": "← Voltar",
+    "email_sent_title": "Email enviado!",
+    "email_sent_desc": "Verifique sua caixa <strong>{{email}}</strong>.",
+    "email_sent_validity": "O link é válido por 15 minutos.",
+    "login_error": "Email ou senha incorretos.",
+    "logging_in": "Conectando...",
+    "login_btn": "Conectar",
+    "forgot_password": "Esqueceu a senha? Usar um link de email →",
+    "register_desc": "Crie sua conta para salvar seus veículos e preencher automaticamente seus relatórios.",
+    "password_placeholder": "Senha (mín. 6 caracteres)",
+    "creating": "Criando...",
+    "create_btn": "Criar minha conta",
+    "register_legal": "Ao criar uma conta, você aceita nossos Termos de Uso. Seus dados de veículo são criptografados e nunca compartilhados sem seu consentimento.",
+    "register_error": "Erro ao se inscrever.",
+    "generic_error": "Erro"
+  },
+  "account": {
+    "member": {
+      "remove": "Remover",
+      "removeConfirm": "Remover este membro? Ele perderá o acesso aos veículos e créditos da empresa.",
+      "loading": "Carregando…",
+      "none": "Nenhum membro.",
+      "invite": "Convidar um membro",
+      "inviteBtn": "Convidar",
+      "pending": "Convites pendentes"
+    },
+    "role": {
+      "owner": "Proprietário",
+      "driver": "Motorista",
+      "fleet_admin": "Admin da frota"
+    },
+    "scan": {
+      "cancel": "Cancelar",
+      "photographPre": "Fotografe seu",
+      "license": "licença de circulação",
+      "and": "e/ou seu",
+      "greenCard": "cartão verde",
+      "title": "Escanear licença + cartão verde",
+      "subtitle": "Reconhecimento automático · multilíngue"
+    },
+    "garage": {
+      "back": "Garagem",
+      "title": "Minha garagem",
+      "add": "Adicionar",
+      "emptyTitle": "Garagem vazia",
+      "emptySubtitle": "Registre seus veículos uma vez. Nunca mais será necessário escanear durante um acidente.",
+      "addFirst": "Adicionar meu primeiro veículo",
+      "noOrgVehicles": "Nenhum veículo da empresa no momento."
+    },
+    "insurance": {
+      "saved": "Seguro registrado",
+      "add": "Adicionar seguro"
+    },
+    "nav": {
+      "logout": "Sair"
+    },
+    "vehicle": {
+      "edit": "Editar veículo",
+      "delete": "Excluir veículo",
+      "editOrg": "Editar veículo da empresa",
+      "deleteOrg": "Excluir veículo da empresa"
+    },
+    "fields": {
+      "nickname": "Apelido",
+      "plate": "Placa",
+      "make": "Marca",
+      "model": "Modelo",
+      "color": "Cor",
+      "year": "Ano",
+      "firstName": "Primeiro nome",
+      "lastName": "Sobrenome",
+      "phone": "Telefone",
+      "company": "Empresa",
+      "address": "Endereço",
+      "newEmail": "Novo email",
+      "currentPwd": "Senha atual (confirmação)",
+      "confirmEmailAria": "Confirmação do endereço de email"
+    },
+    "credits": {
+      "buy": "Comprar:",
+      "available": "Créditos DISPONÍVEIS",
+      "unit": "1 crédito = 1 relatório amiável completo"
+    },
+    "history": {
+      "loading": "Carregando...",
+      "empty": "Nenhum relatório",
+      "emptySub": "Seu próximo relatório aparecerá aqui automaticamente."
+    },
+    "personal": {
+      "title": "Informações pessoais",
+      "none": "Nenhuma informação — clique em Editar"
+    },
+    "delete": {
+      "willDelete": "O QUE SERÁ EXCLUÍDO DEFINITIVAMENTE:",
+      "text": "Excluir permanentemente sua conta, seus veículos e todos os seus relatórios. Esta ação é irreversível."
+    },
+    "danger": {
+      "title": "Área perigosa"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Nenhum documento reconhecido. Verifique a qualidade das fotos.",
+    "analysis_error": "Erro de análise.",
+    "read_failed": "Leitura falhou",
+    "docs_analyzed_one": "{{count}} documento analisado",
+    "docs_analyzed_other": "{{count}} documentos analisados",
+    "confidence": "Confiança: {{pct}}%",
+    "rescan": "Reanalisar",
+    "vehicle_section": "🚗 Veículo",
+    "plate": "Placa",
+    "driver_section": "👤 Motorista",
+    "firstName": "Primeiro nome",
+    "lastName": "Sobrenome",
+    "insurance_found": "✅ Seguro",
+    "insurance_manual": "⚠️ Seguro — completar manualmente",
+    "company_label": "Companhia",
+    "company_aria": "Companhia de seguros",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "N° da apólice",
+    "policy_manual_hint": "(entrada manual)",
+    "policy_aria": "Número da apólice",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Confirmar →",
+    "scanning_title": "Análise em andamento…",
+    "scanning_subtitle_one": "{{count}} documento · identificação automática",
+    "scanning_subtitle_other": "{{count}} documentos · identificação automática",
+    "photo_title": "Fotografe seus documentos",
+    "photo_subtitle": "Licença de circulação + cartão verde em uma única análise.",
+    "photo_subtitle2": "O aplicativo identifica e extrai tudo automaticamente.",
+    "doc_scanned": "Documento escaneado {{n}}",
+    "doc_label": "Documento {{n}}",
+    "photograph": "Fotografar",
+    "rear_camera": "Câmera traseira",
+    "gallery": "Galeria",
+    "which_docs": "Quais documentos escanear?",
+    "doc_ch": "🇨🇭 Licença de circulação + cartão verde",
+    "doc_fr": "🇫🇷 Documento de registro + cartão verde / atestado",
+    "doc_de": "🇩🇪 Registro + Cartão Verde",
+    "doc_gb": "🇬🇧 V5C + Certificado de Seguro de Veículo",
+    "doc_us": "🇺🇸 🇨🇦 Registro + Cartão de Identificação de Seguro",
+    "doc_world": "🌍 Registro + prova de seguro",
+    "close_error_aria": "Fechar erro",
+    "analyze_btn_one": "🔍 Analisar {{count}} documento",
+    "analyze_btn_other": "🔍 Analisar {{count}} documentos",
+    "skip_manual": "Pular — entrada manual →",
+    "upload_gallery_aria": "Carregar documentos da galeria",
+    "take_photo_aria": "Fotografar um documento"
+  },
+  "postConstat": {
+    "next_time_title": "Na próxima vez: 0 entrada",
+    "next_time_subtitle": "Seus veículos memorizados uma vez por todas",
+    "benefit_scanned": "Licença + cartão verde escaneados uma vez",
+    "benefit_fast": "Relatório em 2 min em vez de 10",
+    "benefit_gift": "Ofereça um relatório aos seus entes queridos em 1 clique",
+    "benefit_family": "Ideal para a família: compartilhe seus créditos",
+    "create_account": "Criar minha conta gratuita →",
+    "share_btn": "Compartilhar com meus entes queridos",
+    "register_vehicle_title": "Em seguida, registre seu veículo",
+    "register_vehicle_subtitle": "Escaneie a licença de circulação + cartão verde · 30 seg · nunca mais será necessário reescrever",
+    "or_skip": "ou pule diretamente",
+    "family_pack": "🔥 Pacote família",
+    "family_pack_desc": "3 relatórios para compartilhar com seus entes queridos",
+    "scenario_child": "Seu filho liga — acidente. Envie-lhe um relatório em 3 segundos no celular.",
+    "scenario_employee": "Funcionário com veículo da empresa. Transfira um crédito por WhatsApp instantaneamente.",
+    "scenario_friend": "Amigo em dificuldade no exterior. Ele recebe um link, sem necessidade de conta.",
+    "buy_3_reports": "Comprar 3 relatórios — CHF/EUR 12.90 →",
+    "see_all_packs": "Ver todos os pacotes →",
+    "ready_title": "Pronto para a próxima vez",
+    "ready_subtitle": "Recarregue agora, compartilhe quando quiser",
+    "account_title": "✅ Sua conta boom.contact",
+    "account_desc": "Seus veículos estão memorizados. Na sua próxima acidente, você vai direto para a etapa QR — nenhuma entrada, nenhum escaneamento.",
+    "manage_garage": "Gerenciar minha garagem →",
+    "gift_title": "🎁 Ofereça um relatório por WhatsApp",
+    "gift_desc": "Um de seus créditos = um link único a ser enviado para <strong>qualquer um</strong>, sem que a pessoa precise de uma conta.",
+    "credits_available_one": "{{count}} crédito disponível",
+    "credits_available_other": "{{count}} créditos disponíveis",
+    "share_protect": "Compartilhe, proteja seus entes queridos",
+    "wa_gift_title": "📲 Oferecer um relatório por WhatsApp",
+    "wa_gift_desc": "Em 1 clique, envie um link para seu filho, funcionário ou amigo. Ele faz seu relatório sem conta ou pagamento — descontado de seus créditos.",
+    "send_1": "📲 Enviar 1 relatório",
+    "send_3": "📲 Enviar 3 relatórios",
+    "gift_link_created": "✅ Link criado — envie-o por WhatsApp!",
+    "share_title": "📤 Compartilhar boom.contact",
+    "share_desc": "Você acabou de fazer seu relatório em 5 min. Seus amigos merecem saber que isso existe.",
+    "memorize_vehicles": "🚗 Memorize seus outros veículos",
+    "memorize_desc": "Frota de empresa, moto, motorhome? Cada veículo escaneado = nunca mais entrada durante um acidente.",
+    "low_credits_one": "⚡ Você tem apenas {{count}} crédito restante",
+    "low_credits_other": "⚡ Você tem apenas {{count}} créditos restantes",
+    "recharge_desc": "Recarregue agora e aproveite os descontos nos pacotes de família e empresa.",
+    "recharge_btn": "Recarregar meus créditos →",
+    "pack_single_label": "1 relatório",
+    "pack_single_note": "Uso pontual",
+    "pack_pack3_label": "3 relatórios",
+    "pack_pack3_note": "Família · economia 12%",
+    "pack_pack10_label": "10 relatórios",
+    "pack_pack10_note": "Empresa · economia 29%",
+    "popular_badge": "⭐ POPULAR"
+  },
+  "constat": {
+    "nav": {
+      "back": "Voltar",
+      "reset": "Reiniciar o relatório"
+    },
+    "session": {
+      "expiring": "Sua sessão está prestes a expirar. Salve seus dados."
+    },
+    "error": {
+      "close": "Fechar erro"
+    },
+    "vehicle": {
+      "pickRegistered": "Escolher um veículo registrado",
+      "autofill": "Preenchimento automático — não é necessário escanear",
+      "yourRegistered": "Seus veículos registrados",
+      "org": "Empresa",
+      "personal": "Pessoal",
+      "fallback": "Veículo",
+      "cancel": "Cancelar",
+      "orScanNew": "ou escanear um novo veículo"
+    },
+    "pedestrian": {
+      "title": "Outra parte: pedestre"
+    },
+    "summary": {
+      "yourVehicle": "Seu veículo",
+      "accident": "Acidente",
+      "damagedZones_one": "{{count}} zona danificada",
+      "damagedZones_other": "{{count}} zonas danificadas"
+    },
+    "emergency": {
+      "title": "Números de emergência"
+    }
   }
 }

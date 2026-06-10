@@ -12,7 +12,8 @@
     "required": "Wajib",
     "yes": "Ya",
     "no": "Tidak",
-    "unknown": "Tidak diketahui"
+    "unknown": "Tidak diketahui",
+    "rescan": "🔄 Imbas semula"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumenkan kemalangan tanpa kertas, tanpa kekeliruan.",
+      "subtitle": "boom.contact membimbing anda langkah demi langkah untuk mengumpul maklumat berguna, menambah foto, lokasi, kenyataan dan tandatangan, kemudian menjana fail PDF bertarikh untuk dihantar kepada syarikat insurans anda."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Sesi aktif",
+      "vehicleA": "KENDERAAN A",
+      "photosSig": "Foto · tandatangan ✓",
+      "vehicleB": "KENDERAAN B",
+      "qrJoined": "QR disertai · sedang berlangsung",
+      "payGenerate": "Bayar dan jana PDF",
+      "pdfBadge": "PDF bertarikh",
+      "qrBadge": "QR dikongsi"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Jemput melalui kod QR",
+        "desc": "Cipta sesi, pemandu lain mengimbas QR dari telefon mereka. Tiada pemasangan, tiada pendaftaran."
+      },
+      {
+        "title": "Foto, suara dan tandatangan",
+        "desc": "Tambah foto, nyatakan pemerhatian anda dengan suara, letakkan kenderaan pada lakaran dan tandatangan dengan jari."
+      },
+      {
+        "title": "Fail PDF bertarikh",
+        "desc": "boom.contact menjana fail PDF bertarikh yang merangkumi maklumat yang dimasukkan oleh setiap pemandu."
+      },
+      {
+        "title": "Untuk dihantar kepada syarikat insurans anda",
+        "desc": "Muat turun PDF atau hantarkan melalui email untuk menyertakan laporan tuntutan anda kepada syarikat insurans."
+      }
+    ],
+    "seoLine": "Laporan kemalangan digital pelbagai bahasa · Digital accident report",
+    "flow": {
+      "label": "Semua dalam satu aliran",
+      "title": "Dari kemalangan ke fail siap untuk dihantar"
+    },
+    "stress": {
+      "label": "Dicipta untuk saat kemalangan",
+      "title": "Direka untuk situasi yang stres",
+      "text": "Selepas satu hentakan, fikiran tidak jelas. boom.contact bergerak langkah demi langkah, dalam bahasa anda, dan menyimpan rekod setiap maklumat yang dikumpul. Semua berfungsi dari pelayar telefon, walaupun dengan sambungan terhad.",
+      "bullets": [
+        "Dibimbing langkah demi langkah",
+        "Pelbagai bahasa",
+        "Foto · suara · tandatangan",
+        "Fail PDF bertarikh"
+      ],
+      "emergencyTitle": "Dalam kes kecemasan",
+      "emergencyText": "boom.contact tidak menggantikan bantuan, polis, peguam atau syarikat insurans. Dalam kes kecederaan atau bahaya, hubungi perkhidmatan kecemasan terlebih dahulu."
+    },
+    "pricing": {
+      "label": "Harga",
+      "title": "Mudah, telus, tanpa langganan",
+      "caption": "1 kredit = 1 laporan lengkap · pelbagai bahasa · kredit tanpa tarikh luput",
+      "badgePopular": "Popular",
+      "plans": [
+        {
+          "label": "1 laporan",
+          "desc": "Untuk kemalangan tunggal"
+        },
+        {
+          "label": "3 laporan",
+          "desc": "Untuk seluruh keluarga"
+        },
+        {
+          "label": "10 laporan",
+          "desc": "Untuk armada dan broker"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Untuk profesional",
+      "title": "Untuk broker, armada dan rakan kongsi insurans",
+      "text": "Lengkapi pelanggan dan pemandu anda dengan alat yang jelas untuk mendokumentasikan kemalangan dan menjana fail PDF bertarikh. Pakej kredit untuk armada dan broker, penyebaran mudah, tanpa langganan.",
+      "cta": "Hubungi / kongsi",
+      "items": [
+        {
+          "title": "Armada",
+          "desc": "Satu fail terstruktur untuk setiap tuntutan pemandu."
+        },
+        {
+          "title": "Broker",
+          "desc": "Satu perkhidmatan bernilai tambah untuk pelanggan anda."
+        },
+        {
+          "title": "Kerahsiaan",
+          "desc": "Data disulitkan dalam transit, boleh dipadam atas permintaan."
+        },
+        {
+          "title": "Penghantaran",
+          "desc": "PDF bertarikh siap untuk dilampirkan kepada laporan tuntutan."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Soalan Lazim",
+      "items": [
+        {
+          "q": "Apakah boom.contact?",
+          "a": "boom.contact adalah aplikasi yang membantu mendokumentasikan kemalangan jalan raya dari telefon: jemput pemandu melalui QR, foto, suara, lakaran, tandatangan, kemudian menjana fail PDF bertarikh untuk dihantar kepada syarikat insurans anda."
+        },
+        {
+          "q": "Adakah saya perlu memasang aplikasi?",
+          "a": "Tidak. boom.contact berfungsi terus dalam pelayar telefon (Safari, Chrome, Firefox). Anda juga boleh menambahnya ke skrin utama anda sebagai aplikasi web (PWA) untuk akses luar talian."
+        },
+        {
+          "q": "Apa yang berlaku jika pemandu lain tidak mempunyai aplikasi?",
+          "a": "Anda mencipta sesi dan kod QR akan dipaparkan. Pemandu lain mengimbasnya dengan telefon mereka: boom.contact dibuka dalam pelayar mereka, tanpa pendaftaran atau muat turun."
+        },
+        {
+          "q": "Adakah fail PDF diterima oleh syarikat insurans saya?",
+          "a": "Fail PDF bertarikh adalah untuk menyertai laporan tuntutan anda. boom.contact tidak menjamin penerimaannya, yang bergantung kepada syarikat insurans anda mengikut kontrak dan bidang kuasa anda."
+        },
+        {
+          "q": "Adakah ia berfungsi jika pemandu lain bercakap dalam bahasa lain?",
+          "a": "Ya. Setiap pemandu menggunakan antara muka dalam bahasa mereka sendiri. Fail akhir dijana untuk setiap pemandu."
+        },
+        {
+          "q": "Adakah data saya dilindungi?",
+          "a": "Data disulitkan dalam transit, sesi secara automatik dipadam selepas tempoh tertentu, dan polis tidak pernah diberitahu secara automatik — hanya atas tindakan eksplisit dari pihak anda."
+        },
+        {
+          "q": "Berapa harganya?",
+          "a": "Bermula dari CHF / EUR 4.90 untuk satu laporan. Pakej 3 laporan pada 12.90 (−12 %), pakej 10 pada 34.90 (−29 %). Tanpa langganan, kredit tanpa tarikh luput."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Sesi",
+    "yourEmail": "Email anda",
+    "emailHint": "(untuk menerima PDF)",
+    "emailAria": "Alamat email anda",
+    "connecting": "Menyambung…",
+    "connected": "Sambung! Memulakan…",
+    "joinButton": "Sertai laporan"
+  },
+  "signature": {
+    "title": "Tandatangan",
+    "driver": "Pemandu {{role}}",
+    "other_party": "Pihak lain",
+    "no_signature": "tanpa tandatangan",
+    "sign_here": "Tandakan di sini dengan jari anda",
+    "signed": "DITANDATANGANI ✓",
+    "clear": "🗑 Kosongkan",
+    "saving": "⏳ Menyimpan…",
+    "confirm_signature": "✍️ Sahkan tandatangan",
+    "waiting_other": "Menunggu tandatangan pemandu lain…",
+    "waiting_pdf": "PDF akan dijana sebaik sahaja kedua-dua pihak menandatangani.",
+    "report_signed": "Laporan ditandatangani!",
+    "generating_pdf": "Jana PDF sedang berlangsung…",
+    "canvas_aria": "Kawasan tandatangan — Pemandu {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Sebelum bermula",
+      "body": "boom.contact membantu anda mendokumentasikan kemalangan dan menjana fail PDF yang terstruktur. Dalam kes kecederaan, bahaya, pelarian, perselisihan serius atau kewajipan undang-undang, hubungi segera bantuan, polis atau pihak berkuasa yang berkenaan. Maklumat yang diberikan adalah di bawah tanggungjawab peserta. Anda boleh memasukkan maklumat secara manual jika anda tidak ingin menggunakan kamera, mikrofon atau lokasi.",
+      "start": "Saya faham, mula",
+      "emergency": "Lihat nombor kecemasan",
+      "privacy_cgu": "Kerahsiaan / Terma dan syarat"
+    },
+    "guest_accept": {
+      "checkbox": "Saya menerima Terma dan syarat dan telah membaca Dasar privasi.",
+      "note": "Saya faham bahawa maklumat saya akan digunakan untuk menjana fail PDF kemalangan dan bahawa maklumat yang diberikan adalah di bawah tanggungjawab saya."
+    },
+    "signature_confirm": "Saya mengesahkan bahawa maklumat yang saya berikan adalah tepat pada pengetahuan saya dan saya bersetuju agar tandatangan saya disertakan dalam fail PDF.",
+    "payment_notice": "Dengan meneruskan ke pembayaran, anda memahami bahawa pembayaran meliputi penghasilan dan penghantaran fail PDF. Maklumat yang diberikan adalah di bawah tanggungjawab peserta.",
+    "mic_notice": "Dengan menggunakan mikrofon, kenyataan suara anda akan ditranskripsikan untuk dimasukkan ke dalam laporan kemalangan. Anda boleh menggunakan input teks sebagai ganti.",
+    "injury_confirm": {
+      "body": "Foto kecederaan mungkin mengandungi data sensitif. Pastikan anda mempunyai persetujuan daripada orang yang terlibat, kecuali jika diperlukan untuk keselamatan atau kewajipan undang-undang.",
+      "continue": "Teruskan",
+      "change": "Tukar kategori"
+    },
+    "pdf_ready_title": "Fail PDF kemalangan bertarikh",
+    "pdf_ready_body": "Tandatangan yang diperlukan telah direkodkan. Fail PDF sudah siap. Semak maklumat sebelum menghantarnya kepada syarikat insurans anda."
+  },
+  "constatForm": {
+    "tab_vehicle": "Kenderaan",
+    "tab_driver": "Pemandu",
+    "tab_insurance": "Insurans",
+    "tab_circumstances": "Keadaan",
+    "tab_complement": "Pelengkap",
+    "field_required": "Medan ini diperlukan",
+    "plate_label": "Nombor pendaftaran",
+    "brand_label": "Jenama",
+    "model_label": "Model",
+    "year_label": "Tahun",
+    "vin_label": "N° rangka (VIN)",
+    "firstName_label": "Nama pertama",
+    "lastName_label": "Nama akhir",
+    "address_label": "Alamat",
+    "postalCode_label": "NPA",
+    "city_label": "Kawasan",
+    "country_label": "Negara",
+    "phone_label": "Telefon",
+    "email_label": "Email",
+    "license_label": "N° lesen memandu",
+    "company_label": "Syarikat insurans",
+    "policyNumber_label": "N° polisi",
+    "greenCardNumber_label": "N° kad hijau",
+    "greenCardExpiry_label": "Tarikh luput kad hijau",
+    "agentName_label": "Ejen / Broker",
+    "agentPhone_label": "Tel. insurans",
+    "circumstances_desc": "Tandakan semua kotak yang menggambarkan keadaan kenderaan anda <strong>({{role}})</strong> pada masa hentakan.",
+    "boxes_checked_one": "{{count}} kotak ditandakan",
+    "boxes_checked_other": "{{count}} kotak ditandakan",
+    "complement_desc": "Maklumat tambahan laporan — seksyen 11, 13 dan 14.",
+    "datetime_label": "Tarikh dan masa kemalangan",
+    "visible_damage_label": "Kerosakan yang jelas (seksyen 11)",
+    "visible_damage_placeholder": "Huraikan kerosakan yang jelas pada kenderaan anda...",
+    "third_party_label": "Kerosakan harta kepada pihak ketiga (selain A dan B)",
+    "witnesses_label": "Saksi",
+    "witnesses_placeholder": "Nama, nama pertama, telefon setiap saksi...",
+    "voice_declaration_label": "🎙️ Kenyataan suara (pilihan)",
+    "observations_label": "Pemerhatian bebas — pemandu {{role}} (seksyen 14)",
+    "observations_placeholder": "Tambah apa-apa maklumat berguna: keadaan cuaca, keadaan jalan, kelajuan anggaran, komen...",
+    "insurance_holder_label": "Pemegang insurans (jika berbeza dari pemandu)",
+    "holder_name_placeholder": "Nama penuh pemegang",
+    "holder_name_aria": "Nama pemegang insurans",
+    "holder_address_placeholder": "Alamat pemegang",
+    "holder_address_aria": "Alamat pemegang insurans",
+    "save_btn": "Simpan dan teruskan →",
+    "form_tabs_aria": "Bahagian borang"
+  },
+  "pricingPage": {
+    "sr_title": "Harga — boom.contact",
+    "back": "← Kembali←",
+    "buy_reports": "Beli laporan",
+    "credits_no_expiry": "Kredit tanpa tarikh luput · Boleh dikongsi melalui WhatsApp",
+    "credits_available_one": "✅ {{count}} kredit tersedia",
+    "credits_available_other": "✅ {{count}} kredit tersedia",
+    "no_credits": "⚡ Tiada kredit — tambah sekarang",
+    "currency_label": "MATA WANG",
+    "currency_detected": "✓ dikesan secara automatik",
+    "most_popular": "⭐ PALING POPULAR · PENJIMATAN {{savings}}",
+    "economy": "Penjimatan {{savings}}",
+    "per_pack": "setiap pek",
+    "per_report": "/ laporan",
+    "redirecting_stripe": "⏳ Pengalihan Stripe...",
+    "buy_btn": "Beli {{label}} — {{price}}",
+    "error_missing_url": "URL pembayaran hilang",
+    "error_generic": "Ralat",
+    "error_email_required": "Email diperlukan untuk membeli",
+    "trust_stripe": "Pembayaran Stripe selamat PCI-DSS",
+    "trust_no_expiry": "Kredit tanpa tarikh luput",
+    "trust_whatsapp": "Boleh dikongsi melalui WhatsApp",
+    "trust_worldwide": "Pelbagai bahasa",
+    "trust_invoice": "Invois PDF automatik",
+    "trust_fleet": "Ideal untuk armada syarikat",
+    "why_title": "KENAPA PERLU KREDIT AWAL?",
+    "scenario_child_title": "Anak anda mengalami kemalangan",
+    "scenario_child_text": "Dia menghubungi anda. Anda menghantarnya kredit melalui WhatsApp. Dia membuat laporannya dalam 5 minit.",
+    "scenario_company_title": "Kenderaan syarikat",
+    "scenario_company_text": "Pemandu anda mengalami kemalangan. Hantar kredit kepadanya secara serta-merta dari telefon anda.",
+    "scenario_abroad_title": "Dalam perjalanan ke luar negara",
+    "scenario_abroad_text": "Kemalangan di Jerman, Australia atau Jepun. Antara muka tersedia dalam pelbagai bahasa.",
+    "pkg_single_label": "1 laporan",
+    "pkg_single_desc": "Untuk kemalangan tunggal",
+    "pkg_pack3_label": "3 laporan",
+    "pkg_pack3_desc": "Untuk seluruh keluarga",
+    "pkg_pack3_marketing": "🎁 Kongsi melalui WhatsApp — anak anda, pekerja anda, rakan anda menerima pautan secara serta-merta.",
+    "pkg_pack10_label": "10 laporan",
+    "pkg_pack10_desc": "Armada & syarikat",
+    "pkg_pack10_marketing": "🏢 Urus seluruh armada anda. Hantar kepada rakan sekerja anda dalam 1 klik."
+  },
+  "app": {
+    "magic_link_error": "Pautan log masuk tidak sah atau telah tamat.",
+    "gift_credits_added": "🎁 {{credits}} kredit ditambah ke akaun anda!",
+    "loading_aria": "Memuatkan",
+    "nav_landing": "Halaman utama",
+    "nav_cgu": "Terma penggunaan",
+    "nav_pricing": "Harga",
+    "nav_constat": "Penciptaan laporan",
+    "nav_join": "Sertai sesi",
+    "nav_account": "Akaun pengguna",
+    "nav_admin": "Papan pemuka pentadbir",
+    "nav_emergency": "Nombor kecemasan",
+    "nav_privacy": "Dasar privasi",
+    "nav_police_login": "Log masuk polis",
+    "nav_police_dashboard": "Papan pemuka polis",
+    "nav_police_flow": "Aliran polis",
+    "nav_police_intervention": "Intervensi polis",
+    "nav_to": "Navigasi ke {{label}}",
+    "title_default": "boom.contact — Laporan kemalangan digital",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Huraikan kemalangan",
+    "subtitle": "Pilihan — huraikan apa yang berlaku dengan kata-kata anda sendiri. Kenyataan anda akan direkodkan dalam laporan.",
+    "tab_voice": "🎙️ Suara",
+    "tab_text": "⌨️ Teks",
+    "start_recording": "Mulakan rakaman",
+    "textarea_aria": "Penerangan kemalangan",
+    "textarea_placeholder": "Huraikan kemalangan dalam beberapa ayat…",
+    "validate_desc": "✅ Sahkan penerangan saya",
+    "skip_step": "Lupakan langkah ini →",
+    "recording_in_progress": "Rakaman sedang berlangsung…",
+    "recording_tip": "💡 Huraikan: arah setiap kenderaan, titik impak, keadaan. Bercakap dengan tenang.",
+    "stop_recording": "Hentikan rakaman",
+    "transcribing_title": "Transkripsi sedang berlangsung…",
+    "transcribing_subtitle": "Rakaman anda sedang diproses",
+    "desc_recorded": "Penerangan direkodkan",
+    "desc_in_pdf": "Kenyataan anda akan disertakan dalam laporan PDF",
+    "your_declaration": "Kenyataan anda",
+    "edit": "✏️ Edit",
+    "edit_placeholder": "Betulkan kenyataan anda jika perlu...",
+    "restart": "Mulakan semula",
+    "mic_denied": "Akses kepada mikrofon ditolak — gunakan input manual.",
+    "mic_unavailable": "Mikrofon tidak tersedia: {{msg}}",
+    "transcription_error": "Ralat transkripsi",
+    "textarea_edit_aria": "Kisah kemalangan"
+  },
+  "auth": {
+    "default_subtitle": "Log masuk untuk menyimpan kenderaan anda dan tidak perlu mengisi apa-apa semasa laporan anda.",
+    "magic_btn": "📧 Log masuk melalui pautan email (disyorkan)",
+    "password_btn": "🔑 Log masuk dengan kata laluan",
+    "register_btn": "✨ Buat akaun",
+    "skip_btn": "Teruskan tanpa akaun →",
+    "skip_note": "Tanpa akaun, anda masih boleh membuat laporan dan membayar dengan Stripe.",
+    "magic_instructions": "Masukkan email anda — anda akan menerima pautan log masuk yang sah selama 15 minit.",
+    "send_link": "Hantar pautan",
+    "sending": "Menghantar...",
+    "back": "← Kembali",
+    "email_sent_title": "Email dihantar!",
+    "email_sent_desc": "Semak peti masuk anda <strong>{{email}}</strong>.",
+    "email_sent_validity": "Pautan ini sah selama 15 minit.",
+    "login_error": "Email atau kata laluan tidak betul.",
+    "logging_in": "Log masuk...",
+    "login_btn": "Log masuk",
+    "forgot_password": "Lupa kata laluan? Gunakan pautan email →",
+    "register_desc": "Buat akaun anda untuk menyimpan kenderaan anda dan mengisi laporan anda secara automatik.",
+    "password_placeholder": "Kata laluan (min. 6 aksara)",
+    "creating": "Mencipta...",
+    "create_btn": "Buat akaun saya",
+    "register_legal": "Dengan membuat akaun anda bersetuju dengan terma dan syarat kami. Data kenderaan anda disulitkan dan tidak pernah dikongsi tanpa persetujuan anda.",
+    "register_error": "Ralat semasa pendaftaran.",
+    "generic_error": "Ralat"
+  },
+  "account": {
+    "member": {
+      "remove": "Buang",
+      "removeConfirm": "Buang ahli ini? Dia akan kehilangan akses kepada kenderaan dan kredit syarikat.",
+      "loading": "Memuatkan…",
+      "none": "Tiada ahli.",
+      "invite": "Jemput ahli",
+      "inviteBtn": "Jemput",
+      "pending": "Jemputan menunggu"
+    },
+    "role": {
+      "owner": "Pemilik",
+      "driver": "Pemandu",
+      "fleet_admin": "Admin armada"
+    },
+    "scan": {
+      "cancel": "Batalkan",
+      "photographPre": "Ambil gambar",
+      "license": "lesen memandu anda",
+      "and": "dan/atau",
+      "greenCard": "kad hijau anda",
+      "title": "Imbas lesen + kad hijau",
+      "subtitle": "Pengenalan automatik · pelbagai bahasa"
+    },
+    "garage": {
+      "back": "Garaj",
+      "title": "Garaj saya",
+      "add": "Tambah",
+      "emptyTitle": "Garaj kosong",
+      "emptySubtitle": "Daftarkan kenderaan anda sekali. Tidak perlu diimbas semula semasa kemalangan.",
+      "addFirst": "Tambah kenderaan pertama saya",
+      "noOrgVehicles": "Tiada kenderaan syarikat buat masa ini."
+    },
+    "insurance": {
+      "saved": "Insurans disimpan",
+      "add": "Tambah insurans"
+    },
+    "nav": {
+      "logout": "Log keluar"
+    },
+    "vehicle": {
+      "edit": "Edit kenderaan",
+      "delete": "Padam kenderaan",
+      "editOrg": "Edit kenderaan syarikat",
+      "deleteOrg": "Padam kenderaan syarikat"
+    },
+    "fields": {
+      "nickname": "Nama panggilan",
+      "plate": "Nombor plat",
+      "make": "Jenama",
+      "model": "Model",
+      "color": "Warna",
+      "year": "Tahun",
+      "firstName": "Nama pertama",
+      "lastName": "Nama akhir",
+      "phone": "Telefon",
+      "company": "Syarikat",
+      "address": "Alamat",
+      "newEmail": "Email baru",
+      "currentPwd": "Kata laluan semasa (pengesahan)",
+      "confirmEmailAria": "Pengesahan alamat email"
+    },
+    "credits": {
+      "buy": "Beli:",
+      "available": "KREDIT YANG TERSEDIA",
+      "unit": "1 kredit = 1 laporan kemalangan lengkap"
+    },
+    "history": {
+      "loading": "Memuatkan...",
+      "empty": "Tiada laporan",
+      "emptySub": "Laporan seterusnya anda akan muncul di sini secara automatik."
+    },
+    "personal": {
+      "title": "Maklumat peribadi",
+      "none": "Tiada maklumat — klik untuk Edit"
+    },
+    "delete": {
+      "willDelete": "APA YANG AKAN DIPADAMKAN SECARA TETAP:",
+      "text": "Padamkan akaun anda secara tetap, kenderaan anda dan semua laporan anda. Tindakan ini tidak boleh dibatalkan."
+    },
+    "danger": {
+      "title": "Zon berbahaya"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Tiada dokumen yang dikenali. Semak kualiti foto.",
+    "analysis_error": "Ralat analisis.",
+    "read_failed": "Pembacaan gagal",
+    "docs_analyzed_one": "{{count}} dokumen dianalisis",
+    "docs_analyzed_other": "{{count}} dokumen dianalisis",
+    "confidence": "Keyakinan: {{pct}}%",
+    "rescan": "Imbas semula",
+    "vehicle_section": "🚗 Kenderaan",
+    "plate": "Nombor plat",
+    "driver_section": "👤 Pemandu",
+    "firstName": "Nama pertama",
+    "lastName": "Nama akhir",
+    "insurance_found": "✅ Insurans",
+    "insurance_manual": "⚠️ Insurans — lengkapkan secara manual",
+    "company_label": "Syarikat",
+    "company_aria": "Syarikat insurans",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "N° polisi",
+    "policy_manual_hint": "(input manual)",
+    "policy_aria": "Nombor polisi",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Sahkan →",
+    "scanning_title": "Analisis sedang berlangsung…",
+    "scanning_subtitle_one": "{{count}} dokumen · pengenalan automatik",
+    "scanning_subtitle_other": "{{count}} dokumen · pengenalan automatik",
+    "photo_title": "Ambil gambar dokumen anda",
+    "photo_subtitle": "Lesen memandu + kad hijau dalam satu analisis.",
+    "photo_subtitle2": "Aplikasi mengenal pasti dan mengekstrak semuanya secara automatik.",
+    "doc_scanned": "Dokumen diimbas {{n}}",
+    "doc_label": "Dokumen {{n}}",
+    "photograph": "Mengambil gambar",
+    "rear_camera": "Kamera belakang",
+    "gallery": "Galeri",
+    "which_docs": "Dokumen mana yang perlu diimbas?",
+    "doc_ch": "🇨🇭 Lesen memandu + kad hijau",
+    "doc_fr": "🇫🇷 Kad pendaftaran + kad hijau / pengesahan",
+    "doc_de": "🇩🇪 Pendaftaran + Kad Hijau",
+    "doc_gb": "🇬🇧 V5C + Sijil Insurans Motor",
+    "doc_us": "🇺🇸 🇨🇦 Pendaftaran + Kad ID Insurans",
+    "doc_world": "🌍 Pendaftaran + bukti insurans",
+    "close_error_aria": "Tutup ralat",
+    "analyze_btn_one": "🔍 Analisis {{count}} dokumen",
+    "analyze_btn_other": "🔍 Analisis {{count}} dokumen",
+    "skip_manual": "Lupakan — input manual →",
+    "upload_gallery_aria": "Muat naik dokumen dari galeri",
+    "take_photo_aria": "Ambil gambar dokumen"
+  },
+  "postConstat": {
+    "next_time_title": "Lain kali: 0 input",
+    "next_time_subtitle": "Kenderaan anda diingati sekali untuk selamanya",
+    "benefit_scanned": "Lesen + kad hijau diimbas sekali",
+    "benefit_fast": "Laporan dalam 2 minit berbanding 10",
+    "benefit_gift": "Berikan laporan kepada orang tersayang anda dalam 1 klik",
+    "benefit_family": "Ideal untuk keluarga: kongsi kredit anda",
+    "create_account": "Buat akaun percuma saya →",
+    "share_btn": "Kongsi kepada orang tersayang",
+    "register_vehicle_title": "Seterusnya, daftarkan kenderaan anda",
+    "register_vehicle_subtitle": "Imbas lesen memandu + kad hijau · 30 saat · tidak perlu diisi semula",
+    "or_skip": "atau teruskan",
+    "family_pack": "🔥 Pakej keluarga",
+    "family_pack_desc": "3 laporan untuk dikongsi dengan orang tersayang",
+    "scenario_child": "Anak anda menghubungi — kemalangan. Hantar laporan kepadanya dalam 3 saat di telefon bimbitnya.",
+    "scenario_employee": "Pekerja dengan kenderaan syarikat. Hantar kredit melalui WhatsApp secara serta-merta.",
+    "scenario_friend": "Rakan dalam kesulitan di luar negara. Dia menerima pautan, tiada akaun diperlukan.",
+    "buy_3_reports": "Beli 3 laporan — CHF/EUR 12.90 →",
+    "see_all_packs": "Lihat semua pakej →",
+    "ready_title": "Sedia untuk lain kali",
+    "ready_subtitle": "Tambah sekarang, kongsi bila-bila masa anda mahu",
+    "account_title": "✅ Akaun boom.contact anda",
+    "account_desc": "Kenderaan anda diingati. Pada kemalangan seterusnya, anda terus ke langkah QR — tiada input, tiada imbasan.",
+    "manage_garage": "Urus garaj saya →",
+    "gift_title": "🎁 Berikan laporan melalui WhatsApp",
+    "gift_desc": "Satu daripada kredit anda = pautan unik untuk dihantar kepada <strong>sesiapa sahaja</strong>, tanpa perlu orang itu mempunyai akaun.",
+    "credits_available_one": "{{count}} kredit tersedia",
+    "credits_available_other": "{{count}} kredit tersedia",
+    "share_protect": "Kongsi, lindungi orang tersayang anda",
+    "wa_gift_title": "📲 Berikan laporan melalui WhatsApp",
+    "wa_gift_desc": "Dalam 1 klik, hantar pautan kepada anak anda, pekerja atau rakan. Dia membuat laporannya tanpa akaun atau pembayaran — ditolak dari kredit anda.",
+    "send_1": "📲 Hantar 1 laporan",
+    "send_3": "📲 Hantar 3 laporan",
+    "gift_link_created": "✅ Pautan dibuat — hantarkan melalui WhatsApp!",
+    "share_title": "📤 Kongsi boom.contact",
+    "share_desc": "Anda baru sahaja membuat laporan dalam 5 minit. Rakan anda berhak tahu bahawa ini wujud.",
+    "memorize_vehicles": "🚗 Ingati kenderaan lain anda",
+    "memorize_desc": "Armada syarikat, motosikal, kenderaan rumah? Setiap kenderaan yang diimbas = tidak perlu diisi semula semasa kemalangan.",
+    "low_credits_one": "⚡ Anda hanya tinggal {{count}} kredit",
+    "low_credits_other": "⚡ Anda hanya tinggal {{count}} kredit",
+    "recharge_desc": "Tambah sekarang dan nikmati diskaun pada pakej keluarga dan syarikat.",
+    "recharge_btn": "Tambah kredit saya →",
+    "pack_single_label": "1 laporan",
+    "pack_single_note": "Penggunaan tunggal",
+    "pack_pack3_label": "3 laporan",
+    "pack_pack3_note": "Keluarga · penjimatan 12%",
+    "pack_pack10_label": "10 laporan",
+    "pack_pack10_note": "Syarikat · penjimatan 29%",
+    "popular_badge": "⭐ POPULAR"
+  },
+  "constat": {
+    "nav": {
+      "back": "Kembali",
+      "reset": "Reset laporan"
+    },
+    "session": {
+      "expiring": "Sesi anda akan tamat tidak lama lagi. Simpan data anda."
+    },
+    "error": {
+      "close": "Tutup ralat"
+    },
+    "vehicle": {
+      "pickRegistered": "Pilih kenderaan yang didaftarkan",
+      "autofill": "Pengisian automatik — tiada imbasan diperlukan",
+      "yourRegistered": "Kenderaan yang didaftarkan",
+      "org": "Syarikat",
+      "personal": "Peribadi",
+      "fallback": "Kenderaan",
+      "cancel": "Batalkan",
+      "orScanNew": "atau imbas kenderaan baru"
+    },
+    "pedestrian": {
+      "title": "Pihak lain: pejalan kaki"
+    },
+    "summary": {
+      "yourVehicle": "Kenderaan anda",
+      "accident": "Kemalangan",
+      "damagedZones_one": "{{count}} zon rosak",
+      "damagedZones_other": "{{count}} zon rosak"
+    },
+    "emergency": {
+      "title": "Nombor kecemasan"
+    }
   }
 }

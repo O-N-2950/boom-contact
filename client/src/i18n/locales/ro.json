@@ -12,7 +12,8 @@
     "required": "Obligatoriu",
     "yes": "Da",
     "no": "Nu",
-    "unknown": "Necunoscut"
+    "unknown": "Necunoscut",
+    "rescan": "🔄 Rescanare"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Documentați un accident fără hârtie, fără confuzie.",
+      "subtitle": "boom.contact vă ghidează pas cu pas pentru a colecta informațiile utile, a adăuga fotografii, locație, declarații și semnături, apoi a genera un dosar PDF cu dată și oră de transmis asigurătorului dumneavoastră."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Ședință activă",
+      "vehicleA": "AUTOVEHICUL A",
+      "photosSig": "Fotografii · semnătură ✓",
+      "vehicleB": "AUTOVEHICUL B",
+      "qrJoined": "QR alăturat · în curs",
+      "payGenerate": "Plătiți și generați PDF-ul",
+      "pdfBadge": "PDF cu dată și oră",
+      "qrBadge": "QR partajat"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Invitați prin cod QR",
+        "desc": "Creați sesiunea, celălalt șofer scanează QR-ul de pe telefonul său. Fără instalare, fără înscriere."
+      },
+      {
+        "title": "Fotografii, voce și semnătură",
+        "desc": "Adăugați fotografii, dictați observațiile cu vocea, plasați vehiculele pe schiță și semnați cu degetul."
+      },
+      {
+        "title": "Dosar PDF cu dată și oră",
+        "desc": "boom.contact generează un dosar PDF cu dată și oră care include informațiile introduse de fiecare șofer."
+      },
+      {
+        "title": "De transmis asigurătorului dumneavoastră",
+        "desc": "Descărcați PDF-ul sau trimiteți-l prin email pentru a însoți declarația de daună la asigurătorul dumneavoastră."
+      }
+    ],
+    "seoLine": "Raport de accident digital multilingv · Raport de accident digital",
+    "flow": {
+      "label": "Totul într-un singur flux",
+      "title": "De la accident la dosar gata de transmis"
+    },
+    "stress": {
+      "label": "Gândit pentru momentul accidentului",
+      "title": "Conceput pentru situații stresante",
+      "text": "După un impact, nu avem mintea limpede. boom.contact avansează pas cu pas, în limba dumneavoastră, și păstrează o evidență a fiecărei informații colectate. Totul funcționează din browserul telefonului, chiar și cu o conexiune limitată.",
+      "bullets": [
+        "Ghidat pas cu pas",
+        "Multilingv",
+        "Fotografii · voce · semnătură",
+        "Dosar PDF cu dată și oră"
+      ],
+      "emergencyTitle": "În caz de urgență",
+      "emergencyText": "boom.contact nu înlocuiește serviciile de urgență, poliția, un avocat sau asigurătorul. În caz de rănire sau pericol, contactați mai întâi serviciile de urgență."
+    },
+    "pricing": {
+      "label": "Tarife",
+      "title": "Simplu, transparent, fără abonament",
+      "caption": "1 credit = 1 raport complet · multilingv · credite fără expirare",
+      "badgePopular": "Popular",
+      "plans": [
+        {
+          "label": "1 raport",
+          "desc": "Pentru un accident ocazional"
+        },
+        {
+          "label": "3 rapoarte",
+          "desc": "Pentru întreaga familie"
+        },
+        {
+          "label": "10 rapoarte",
+          "desc": "Pentru flote și intermediari"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Pentru profesioniști",
+      "title": "Pentru intermediari, flote și parteneri de asigurare",
+      "text": "Echipați-vă clienții și șoferii cu un instrument clar pentru a documenta un accident și a genera un dosar PDF cu dată și oră. Pachete de credite pentru flote și intermediari, desfășurare simplă, fără abonament.",
+      "cta": "Contactați / partajați",
+      "items": [
+        {
+          "title": "Flote",
+          "desc": "Un dosar structurat pentru fiecare accident al șoferului."
+        },
+        {
+          "title": "Intermediari",
+          "desc": "Un serviciu cu valoare adăugată pentru asigurații dumneavoastră."
+        },
+        {
+          "title": "Confidențialitate",
+          "desc": "Date criptate în tranzit, ștergibile la cerere."
+        },
+        {
+          "title": "Transmitere",
+          "desc": "PDF cu dată și oră gata de atașat la declarația de daună."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Întrebări frecvente",
+      "items": [
+        {
+          "q": "Ce este boom.contact?",
+          "a": "boom.contact este o aplicație care ajută la documentarea unui accident rutier de pe un telefon: invitația șoferilor prin QR, fotografii, voce, schițe, semnături, apoi generarea unui dosar PDF cu dată și oră de transmis asigurătorului dumneavoastră."
+        },
+        {
+          "q": "Trebuie să instalez o aplicație?",
+          "a": "Nu. boom.contact funcționează direct în browserul telefonului (Safari, Chrome, Firefox). De asemenea, o puteți adăuga pe ecranul de start ca aplicație web (PWA) pentru acces offline."
+        },
+        {
+          "q": "Ce se întâmplă dacă celălalt șofer nu are aplicația?",
+          "a": "Creezi sesiunea și un cod QR apare. Celălalt șofer îl scanează cu telefonul său: boom.contact se deschide în browserul său, fără înscriere sau descărcare."
+        },
+        {
+          "q": "Dosarul PDF este acceptat de asigurătorul meu?",
+          "a": "Dosarul PDF cu dată și oră este destinat să însoțească declarația de daună. boom.contact nu garantează acceptarea acestuia, care depinde de asigurătorul dumneavoastră conform contractului și jurisdicției."
+        },
+        {
+          "q": "Funcționează dacă celălalt șofer vorbește o altă limbă?",
+          "a": "Da. Fiecare șofer folosește interfața în propria limbă. Dosarul final este generat pentru fiecare șofer."
+        },
+        {
+          "q": "Datele mele sunt protejate?",
+          "a": "Datele sunt criptate în tranzit, sesiunile sunt șterse automat după un timp, iar poliția nu este notificată automat — doar la acțiunea explicită din partea dumneavoastră."
+        },
+        {
+          "q": "Cât costă?",
+          "a": "Începând de la CHF / EUR 4.90 pentru un raport. Pachet de 3 rapoarte la 12.90 (−12 %), pachet de 10 la 34.90 (−29 %). Fără abonament, credite fără expirare."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Sesiune",
+    "yourEmail": "Emailul dumneavoastră",
+    "emailHint": "(pentru a primi PDF-ul)",
+    "emailAria": "Adresa dumneavoastră de email",
+    "connecting": "Conectare…",
+    "connected": "Conectat! Pornire…",
+    "joinButton": "Alăturați-vă raportului"
+  },
+  "signature": {
+    "title": "Semnătură",
+    "driver": "Șofer {{role}}",
+    "other_party": "Cealaltă parte",
+    "no_signature": "fără semnătură",
+    "sign_here": "Semnați aici cu degetul",
+    "signed": "SEMAT ✓",
+    "clear": "🗑 Ștergeți",
+    "saving": "⏳ Salvare…",
+    "confirm_signature": "✍️ Confirmați semnătura",
+    "waiting_other": "Așteptând semnătura celuilalt șofer…",
+    "waiting_pdf": "PDF-ul va fi generat imediat ce ambele părți au semnat.",
+    "report_signed": "Raport semnat!",
+    "generating_pdf": "Generare PDF în curs…",
+    "canvas_aria": "Zonă de semnătură — Șofer {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Înainte de a începe",
+      "body": "boom.contact te ajută să documentezi un accident și să generezi un dosar PDF structurat. În caz de rănire, pericol, fugă, dezacord grav sau obligație legală, contactează imediat serviciile de urgență, poliția sau autoritățile competente. Informațiile furnizate rămân sub responsabilitatea participanților. Poți introduce informațiile manual dacă nu dorești să folosești camera, microfonul sau localizarea.",
+      "start": "Am înțeles, încep",
+      "emergency": "Vezi numerele de urgență",
+      "privacy_cgu": "Confidențialitate / Termeni și condiții"
+    },
+    "guest_accept": {
+      "checkbox": "Accept termenii și condițiile generale și am citit politica de confidențialitate.",
+      "note": "Înțeleg că informațiile mele vor fi folosite pentru a genera dosarul PDF de accident și că informațiile furnizate rămân sub responsabilitatea mea."
+    },
+    "signature_confirm": "Confirm că informațiile pe care le-am furnizat sunt corecte după cunoștința mea și accept ca semnătura mea să fie integrată în dosarul PDF.",
+    "payment_notice": "Continuând spre plată, înțelegi că plata acoperă generarea și trimiterea dosarului PDF. Informațiile furnizate rămân sub responsabilitatea participanților.",
+    "mic_notice": "Folosind microfonul, declarația ta vocală va fi transcrisă pentru a fi integrată în dosarul de accident. Poți folosi introducerea textului în loc.",
+    "injury_confirm": {
+      "body": "Fotografiile cu răni pot conține date sensibile. Asigură-te că ai acordul persoanei implicate, cu excepția cazului de necesitate de securitate sau obligație legală.",
+      "continue": "Continuare",
+      "change": "Schimbare categorie"
+    },
+    "pdf_ready_title": "Dosar PDF de accident cu dată și oră",
+    "pdf_ready_body": "Semnăturile necesare au fost înregistrate. Dosarul PDF este gata. Verifică informațiile înainte de a-l transmite asigurătorului tău."
+  },
+  "constatForm": {
+    "tab_vehicle": "Vehicul",
+    "tab_driver": "Șofer",
+    "tab_insurance": "Asigurare",
+    "tab_circumstances": "Circumstanțe",
+    "tab_complement": "Complement",
+    "field_required": "Acest câmp este necesar",
+    "plate_label": "Înmatriculare",
+    "brand_label": "Marcă",
+    "model_label": "Model",
+    "year_label": "An",
+    "vin_label": "Nr. șasiu (VIN)",
+    "firstName_label": "Prenume",
+    "lastName_label": "Nume",
+    "address_label": "Adresă",
+    "postalCode_label": "Cod poștal",
+    "city_label": "Localitate",
+    "country_label": "Țară",
+    "phone_label": "Telefon",
+    "email_label": "Email",
+    "license_label": "Nr. permis de conducere",
+    "company_label": "Companie de asigurare",
+    "policyNumber_label": "Nr. poliță",
+    "greenCardNumber_label": "Nr. carte verde",
+    "greenCardExpiry_label": "Valabilitate carte verde",
+    "agentName_label": "Agent / Intermediar",
+    "agentPhone_label": "Tel. asigurare",
+    "circumstances_desc": "Bifați toate căsuțele care descriu situația vehiculului dumneavoastră <strong>({{role}})</strong> în momentul impactului.",
+    "boxes_checked_one": "{{count}} căsuță bifată",
+    "boxes_checked_other": "{{count}} căsuțe bifate",
+    "complement_desc": "Informații suplimentare ale raportului — secțiunile 11, 13 și 14.",
+    "datetime_label": "Data și ora accidentului",
+    "visible_damage_label": "Daune vizibile (secțiunea 11)",
+    "visible_damage_placeholder": "Descrieți daunele vizibile pe vehiculul dumneavoastră...",
+    "third_party_label": "Daune materiale la terți (altele decât A și B)",
+    "witnesses_label": "Martori",
+    "witnesses_placeholder": "Nume, prenume, telefonul fiecărui martor...",
+    "voice_declaration_label": "🎙️ Declarație vocală (opțional)",
+    "observations_label": "Observații libere — șofer {{role}} (secțiunea 14)",
+    "observations_placeholder": "Adăugați orice element util: condiții meteo, starea drumului, viteză estimată, observații...",
+    "insurance_holder_label": "Persoană asigurată (dacă diferită de șofer)",
+    "holder_name_placeholder": "Numele complet al asiguratului",
+    "holder_name_aria": "Numele persoanei asigurate",
+    "holder_address_placeholder": "Adresa asiguratului",
+    "holder_address_aria": "Adresa persoanei asigurate",
+    "save_btn": "Salvați și continuați →",
+    "form_tabs_aria": "Secțiuni ale formularului"
+  },
+  "pricingPage": {
+    "sr_title": "Tarife — boom.contact",
+    "back": "← Înapoi←",
+    "buy_reports": "Cumpărați rapoarte",
+    "credits_no_expiry": "Credite fără expirare · Partajabile prin WhatsApp",
+    "credits_available_one": "✅ {{count}} credit disponibil",
+    "credits_available_other": "✅ {{count}} credite disponibile",
+    "no_credits": "⚡ Niciun credit — reîncărcați acum",
+    "currency_label": "VALUTĂ",
+    "currency_detected": "✓ detectată automat",
+    "most_popular": "⭐ CEL MAI POPULAR · ECONOMIE {{savings}}",
+    "economy": "Economisire {{savings}}",
+    "per_pack": "pe pachet",
+    "per_report": "/ raport",
+    "redirecting_stripe": "⏳ Redirecționare Stripe...",
+    "buy_btn": "Cumpărați {{label}} — {{price}}",
+    "error_missing_url": "URL de plată lipsă",
+    "error_generic": "Eroare",
+    "error_email_required": "Email necesar pentru a cumpăra",
+    "trust_stripe": "Plată Stripe securizată PCI-DSS",
+    "trust_no_expiry": "Credite fără expirare",
+    "trust_whatsapp": "Partajabil prin WhatsApp",
+    "trust_worldwide": "Multilingv",
+    "trust_invoice": "Factură PDF automată",
+    "trust_fleet": "Ideal pentru flote de întreprindere",
+    "why_title": "DE CE SĂ AVEȚI CREDITE ÎNAINTE?",
+    "scenario_child_title": "Copilul dumneavoastră are un accident",
+    "scenario_child_text": "Vă sună. Îi trimiteți un credit prin WhatsApp. Își face raportul în 5 minute.",
+    "scenario_company_title": "Vehicul de societate",
+    "scenario_company_text": "Livratorul dumneavoastră are o ciocnire. Transferați-i un credit instantaneu de pe mobilul dumneavoastră.",
+    "scenario_abroad_title": "În călătorie în străinătate",
+    "scenario_abroad_text": "Accident în Germania, Australia sau Japonia. Interfața disponibilă în mai multe limbi.",
+    "pkg_single_label": "1 raport",
+    "pkg_single_desc": "Pentru un accident ocazional",
+    "pkg_pack3_label": "3 rapoarte",
+    "pkg_pack3_desc": "Pentru întreaga familie",
+    "pkg_pack3_marketing": "🎁 Partajați prin WhatsApp — copilul dumneavoastră, angajatul dumneavoastră, prietenul dumneavoastră primește un link instantaneu.",
+    "pkg_pack10_label": "10 rapoarte",
+    "pkg_pack10_desc": "Flote & întreprinderi",
+    "pkg_pack10_marketing": "🏢 Gestionați întreaga flotă. Transferați colegilor dumneavoastră cu 1 clic."
+  },
+  "app": {
+    "magic_link_error": "Link de conectare invalid sau expirat.",
+    "gift_credits_added": "🎁 {{credits}} credit(e) adăugat(e) la contul dumneavoastră!",
+    "loading_aria": "Se încarcă",
+    "nav_landing": "Pagina de start",
+    "nav_cgu": "Termeni și condiții",
+    "nav_pricing": "Tarifare",
+    "nav_constat": "Crearea raportului",
+    "nav_join": "Alăturați-vă unei sesiuni",
+    "nav_account": "Cont utilizator",
+    "nav_admin": "Tabloul de bord al administratorului",
+    "nav_emergency": "Numere de urgență",
+    "nav_privacy": "Politica de confidențialitate",
+    "nav_police_login": "Conectare poliție",
+    "nav_police_dashboard": "Tabloul de bord al poliției",
+    "nav_police_flow": "Flux poliție",
+    "nav_police_intervention": "Intervenție poliție",
+    "nav_to": "Navigare către {{label}}",
+    "title_default": "boom.contact — Raport de accident digital",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Descrieți accidentul",
+    "subtitle": "Opțional — descrieți ce s-a întâmplat cu propriile cuvinte. Declarația dumneavoastră va fi înregistrată în raport.",
+    "tab_voice": "🎙️ Vocal",
+    "tab_text": "⌨️ Text",
+    "start_recording": "Începeți înregistrarea",
+    "textarea_aria": "Descrierea accidentului",
+    "textarea_placeholder": "Descrieți accidentul în câteva fraze…",
+    "validate_desc": "✅ Validare descriere",
+    "skip_step": "Săriți acest pas →",
+    "recording_in_progress": "Înregistrare în curs…",
+    "recording_tip": "💡 Descrieți: direcția fiecărui vehicul, punctul de impact, circumstanțele. Vorbiți calm.",
+    "stop_recording": "Opriți înregistrarea",
+    "transcribing_title": "Transcriere în curs…",
+    "transcribing_subtitle": "Înregistrarea dumneavoastră este procesată",
+    "desc_recorded": "Descriere înregistrată",
+    "desc_in_pdf": "Declarația dumneavoastră va fi inclusă în raportul PDF",
+    "your_declaration": "Declarația dumneavoastră",
+    "edit": "✏️ Modificați",
+    "edit_placeholder": "Corectați declarația dumneavoastră dacă este necesar...",
+    "restart": "Reîncepeți",
+    "mic_denied": "Accesul la microfon a fost refuzat — folosiți introducerea manuală.",
+    "mic_unavailable": "Microfon indisponibil: {{msg}}",
+    "transcription_error": "Eroare de transcriere",
+    "textarea_edit_aria": "Povestea accidentului"
+  },
+  "auth": {
+    "default_subtitle": "Conectați-vă pentru a salva vehiculele dumneavoastră și a nu mai introduce nimic la rapoartele dumneavoastră.",
+    "magic_btn": "📧 Conectare prin link email (recomandat)",
+    "password_btn": "🔑 Conectare cu parolă",
+    "register_btn": "✨ Creați un cont",
+    "skip_btn": "Continuați fără cont →",
+    "skip_note": "Fără cont, puteți totuși să faceți un raport și să plătiți cu Stripe.",
+    "magic_instructions": "Introduceți emailul dumneavoastră — veți primi un link de conectare valabil 15 minute.",
+    "send_link": "Trimiteți linkul",
+    "sending": "Trimitere...",
+    "back": "← Înapoi",
+    "email_sent_title": "Email trimis!",
+    "email_sent_desc": "Verificați căsuța dumneavoastră <strong>{{email}}</strong>.",
+    "email_sent_validity": "Linkul este valabil 15 minute.",
+    "login_error": "Email sau parolă incorectă.",
+    "logging_in": "Conectare...",
+    "login_btn": "Conectați-vă",
+    "forgot_password": "Ați uitat parola? Folosiți un link email →",
+    "register_desc": "Creează-ți contul pentru a salva vehiculele și a completa automat rapoartele.",
+    "password_placeholder": "Parolă (min. 6 caractere)",
+    "creating": "Creare...",
+    "create_btn": "Creează-mi contul",
+    "register_legal": "Prin crearea unui cont, acceptați termenii și condițiile noastre. Datele dumneavoastră despre vehicul sunt criptate și niciodată partajate fără consimțământul dumneavoastră.",
+    "register_error": "Eroare la înscriere.",
+    "generic_error": "Eroare"
+  },
+  "account": {
+    "member": {
+      "remove": "Eliminați",
+      "removeConfirm": "Eliminați acest membru? El va pierde accesul la vehiculele și creditele companiei.",
+      "loading": "Se încarcă…",
+      "none": "Niciun membru.",
+      "invite": "Invitați un membru",
+      "inviteBtn": "Invitați",
+      "pending": "Invitații în așteptare"
+    },
+    "role": {
+      "owner": "Proprietar",
+      "driver": "Șofer",
+      "fleet_admin": "Admin flotă"
+    },
+    "scan": {
+      "cancel": "Anulați",
+      "photographPre": "Fotografiați-vă",
+      "license": "permisul de circulație",
+      "and": "și/sau",
+      "greenCard": "cartea verde",
+      "title": "Scanați permisul + cartea verde",
+      "subtitle": "Recunoaștere automată · multilingv"
+    },
+    "garage": {
+      "back": "Garaj",
+      "title": "Garajul meu",
+      "add": "Adăugați",
+      "emptyTitle": "Garaj gol",
+      "emptySubtitle": "Înregistrați-vă vehiculele o dată. Niciodată mai mult de scanat în caz de accident.",
+      "addFirst": "Adăugați primul vehicul",
+      "noOrgVehicles": "Niciun vehicul de întreprindere deocamdată."
+    },
+    "insurance": {
+      "saved": "Asigurare salvată",
+      "add": "Adăugați asigurare"
+    },
+    "nav": {
+      "logout": "Deconectare"
+    },
+    "vehicle": {
+      "edit": "Modificați vehiculul",
+      "delete": "Ștergeți vehiculul",
+      "editOrg": "Modificați vehiculul de întreprindere",
+      "deleteOrg": "Ștergeți vehiculul de întreprindere"
+    },
+    "fields": {
+      "nickname": "Poreclă",
+      "plate": "Placă",
+      "make": "Marcă",
+      "model": "Model",
+      "color": "Culoare",
+      "year": "An",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "phone": "Telefon",
+      "company": "Companie",
+      "address": "Adresă",
+      "newEmail": "Email nou",
+      "currentPwd": "Parola curentă (confirmare)",
+      "confirmEmailAria": "Confirmarea adresei de email"
+    },
+    "credits": {
+      "buy": "Cumpărați:",
+      "available": "CREDITE DISPONIBILE",
+      "unit": "1 credit = 1 raport complet de accident"
+    },
+    "history": {
+      "loading": "Se încarcă...",
+      "empty": "Niciun raport",
+      "emptySub": "Următorul raport va apărea aici automat."
+    },
+    "personal": {
+      "title": "Informații personale",
+      "none": "Nici o informație — faceți clic pe Modificați"
+    },
+    "delete": {
+      "willDelete": "CE VA FI ȘTERS DEFINITIV:",
+      "text": "Ștergeți definitiv contul dumneavoastră, vehiculele și toate rapoartele dumneavoastră. Această acțiune este ireversibilă."
+    },
+    "danger": {
+      "title": "Zonă periculoasă"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Niciun document recunoscut. Verificați calitatea fotografiilor.",
+    "analysis_error": "Eroare de analiză.",
+    "read_failed": "Citire eșuată",
+    "docs_analyzed_one": "{{count}} document analizat",
+    "docs_analyzed_other": "{{count}} documente analizate",
+    "confidence": "Încredere: {{pct}}%",
+    "rescan": "Rescanare",
+    "vehicle_section": "🚗 Vehicul",
+    "plate": "Placă",
+    "driver_section": "👤 Șofer",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "insurance_found": "✅ Asigurare",
+    "insurance_manual": "⚠️ Asigurare — completare manuală",
+    "company_label": "Companie",
+    "company_aria": "Companie de asigurare",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Nr. poliță",
+    "policy_manual_hint": "(introducere manuală)",
+    "policy_aria": "Număr de poliță",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Confirmați →",
+    "scanning_title": "Analiză în curs…",
+    "scanning_subtitle_one": "{{count}} document · identificare automată",
+    "scanning_subtitle_other": "{{count}} documente · identificare automată",
+    "photo_title": "Fotografiați documentele dumneavoastră",
+    "photo_subtitle": "Permis de circulație + carte verde într-o singură analiză.",
+    "photo_subtitle2": "Aplicația identifică și extrage totul automat.",
+    "doc_scanned": "Document scanat {{n}}",
+    "doc_label": "Document {{n}}",
+    "photograph": "Fotografiați",
+    "rear_camera": "Cameră din spate",
+    "gallery": "Galerie",
+    "which_docs": "Ce documente să scanați?",
+    "doc_ch": "🇨🇭 Permis de circulație + carte verde",
+    "doc_fr": "🇫🇷 Carte de identitate + carte verde / atestare",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Înregistrare + card de identificare a asigurării",
+    "doc_world": "🌍 Înmatriculare + dovadă de asigurare",
+    "close_error_aria": "Închide eroarea",
+    "analyze_btn_one": "🔍 Analizați {{count}} document",
+    "analyze_btn_other": "🔍 Analizați {{count}} documente",
+    "skip_manual": "Săriți — introducere manuală →",
+    "upload_gallery_aria": "Încărcați documente din galerie",
+    "take_photo_aria": "Fotografiați un document"
+  },
+  "postConstat": {
+    "next_time_title": "Data viitoare: 0 introduceri",
+    "next_time_subtitle": "Vehiculele dumneavoastră memorate o dată pentru totdeauna",
+    "benefit_scanned": "Permis + carte verde scanate o dată",
+    "benefit_fast": "Raport în 2 min în loc de 10",
+    "benefit_gift": "Oferiți un raport celor dragi cu un clic",
+    "benefit_family": "Ideal pentru familie: partajați creditele dumneavoastră",
+    "create_account": "Creează-mi contul gratuit →",
+    "share_btn": "Partajați cu cei dragi",
+    "register_vehicle_title": "Apoi, înregistrați-vă vehiculul",
+    "register_vehicle_subtitle": "Scan permis de circulație + carte verde · 30 sec · niciodată mai mult de reintrodus",
+    "or_skip": "sau săriți direct",
+    "family_pack": "🔥 Pachet familie",
+    "family_pack_desc": "3 rapoarte de partajat cu cei dragi",
+    "scenario_child": "Copilul dumneavoastră sună — accident. Trimiteți-i un raport în 3 secunde pe mobil.",
+    "scenario_employee": "Angajat cu vehicul de societate. Transferați un credit prin WhatsApp instantaneu.",
+    "scenario_friend": "Prieten în dificultate în străinătate. El primește un link, fără cont necesar.",
+    "buy_3_reports": "Cumpărați 3 rapoarte — CHF/EUR 12.90 →",
+    "see_all_packs": "Vezi toate pachetele →",
+    "ready_title": "Pregătit pentru data viitoare",
+    "ready_subtitle": "Reîncărcați acum, partajați când doriți",
+    "account_title": "✅ Contul dumneavoastră boom.contact",
+    "account_desc": "Vehiculele dumneavoastră sunt memorate. La următorul accident, începeți direct cu etapa QR — fără introducere, fără scanare.",
+    "manage_garage": "Gestionați-mi garajul →",
+    "gift_title": "🎁 Oferiți un raport prin WhatsApp",
+    "gift_desc": "Unul dintre creditele dumneavoastră = un link unic de trimis la <strong>oricine</strong>, fără ca persoana să aibă nevoie de un cont.",
+    "credits_available_one": "{{count}} credit disponibil",
+    "credits_available_other": "{{count}} credite disponibile",
+    "share_protect": "Partajați, protejați-vă cei dragi",
+    "wa_gift_title": "📲 Oferiți un raport prin WhatsApp",
+    "wa_gift_desc": "În 1 clic, trimiteți un link copilului dumneavoastră, angajatului sau prietenului. El își face raportul fără cont sau plată — scăzut din creditele dumneavoastră.",
+    "send_1": "📲 Trimiteți 1 raport",
+    "send_3": "📲 Trimiteți 3 rapoarte",
+    "gift_link_created": "✅ Link creat — trimiteți-l prin WhatsApp!",
+    "share_title": "📤 Partajare boom.contact",
+    "share_desc": "Ați realizat raportul în 5 min. Prietenii dumneavoastră merită să știe că există.",
+    "memorize_vehicles": "🚗 Memorați-vă celelalte vehicule",
+    "memorize_desc": "Flotă de întreprindere, motocicletă, camper? Fiecare vehicul scanat = niciodată mai mult de reintrodus în caz de accident.",
+    "low_credits_one": "⚡ Vă mai rămâne doar {{count}} credit",
+    "low_credits_other": "⚡ Vă mai rămâne doar {{count}} credite",
+    "recharge_desc": "Reîncărcați acum și profitați de reduceri la pachetele de familie și întreprindere.",
+    "recharge_btn": "Reîncărcați-mi creditele →",
+    "pack_single_label": "1 raport",
+    "pack_single_note": "Utilizare ocazională",
+    "pack_pack3_label": "3 rapoarte",
+    "pack_pack3_note": "Familie · economisire 12%",
+    "pack_pack10_label": "10 rapoarte",
+    "pack_pack10_note": "Întreprindere · economisire 29%",
+    "popular_badge": "⭐ POPULAR"
+  },
+  "constat": {
+    "nav": {
+      "back": "Înapoi",
+      "reset": "Resetare raport"
+    },
+    "session": {
+      "expiring": "Sesiunea dumneavoastră expiră în curând. Salvați datele."
+    },
+    "error": {
+      "close": "Închide eroarea"
+    },
+    "vehicle": {
+      "pickRegistered": "Alegeți un vehicul înregistrat",
+      "autofill": "Completare automată — nu este nevoie să scanați",
+      "yourRegistered": "Vehiculele dumneavoastră înregistrate",
+      "org": "Întreprindere",
+      "personal": "Personal",
+      "fallback": "Vehicul",
+      "cancel": "Anulați",
+      "orScanNew": "sau scanați un vehicul nou"
+    },
+    "pedestrian": {
+      "title": "Cealaltă parte: pieton"
+    },
+    "summary": {
+      "yourVehicle": "Vehiculul dumneavoastră",
+      "accident": "Accident",
+      "damagedZones_one": "{{count}} zonă avariată",
+      "damagedZones_other": "{{count}} zone avariate"
+    },
+    "emergency": {
+      "title": "Numere de urgență"
+    }
   }
 }

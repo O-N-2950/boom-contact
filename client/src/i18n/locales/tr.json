@@ -12,7 +12,8 @@
     "required": "Zorunlu",
     "yes": "Evet",
     "no": "Hayır",
-    "unknown": "Bilinmiyor"
+    "unknown": "Bilinmiyor",
+    "rescan": "🔄 Yeniden Tara"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Kağıtsız, karışıklık olmadan bir kazayı belgeleyin.",
+      "subtitle": "boom.contact, gerekli bilgileri toplamak, fotoğraflar, konum, beyanlar ve imzalar eklemek için adım adım rehberlik eder ve ardından sigortacınıza göndereceğiniz tarih damgalı bir PDF dosyası oluşturur."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktif oturum",
+      "vehicleA": "ARAÇ A",
+      "photosSig": "Fotoğraflar · imza ✓",
+      "vehicleB": "ARAÇ B",
+      "qrJoined": "QR katıldı · devam ediyor",
+      "payGenerate": "Öde ve PDF'yi oluştur",
+      "pdfBadge": "Tarih damgalı PDF",
+      "qrBadge": "Paylaşılan QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "QR kod ile davet edin",
+        "desc": "Oturumu oluşturun, diğer sürücü QR'yi telefonundan tarar. Hiçbir kurulum, hiçbir kayıt yok."
+      },
+      {
+        "title": "Fotoğraflar, ses ve imza",
+        "desc": "Fotoğraflar ekleyin, gözlemlerinizi sesle aktarın, araçları kroki üzerinde yerleştirin ve parmağınızla imzalayın."
+      },
+      {
+        "title": "Tarih damgalı PDF dosyası",
+        "desc": "boom.contact, her sürücü tarafından girilen bilgileri içeren tarih damgalı bir PDF dosyası oluşturur."
+      },
+      {
+        "title": "Sigortacınıza iletilmek üzere",
+        "desc": "PDF'yi indirin veya sigorta talebinize eklemek için e-posta ile gönderin."
+      }
+    ],
+    "seoLine": "Çok dilli dijital kaza raporu · Digital accident report",
+    "flow": {
+      "label": "Hepsi tek bir akışta",
+      "title": "Kaza anından iletilmeye hazır dosyaya"
+    },
+    "stress": {
+      "label": "Kaza anı için düşünülmüş",
+      "title": "Stresli durumlar için tasarlandı",
+      "text": "Bir çarpmanın ardından aklımız net değildir. boom.contact, adım adım, dilinizde ilerler ve toplanan her bilgiyi kaydeder. Her şey telefonun tarayıcısından çalışır, sınırlı bir bağlantı ile bile.",
+      "bullets": [
+        "Adım adım rehberlik",
+        "Çok dilli",
+        "Fotoğraflar · ses · imza",
+        "Tarih damgalı PDF dosyası"
+      ],
+      "emergencyTitle": "Acil durumlarda",
+      "emergencyText": "boom.contact, acil durum hizmetleri, polis, avukat veya sigortacının yerini almaz. Yaralı veya tehlike durumunda, önce acil hizmetleri arayın."
+    },
+    "pricing": {
+      "label": "Fiyatlar",
+      "title": "Basit, şeffaf, abonelik yok",
+      "caption": "1 kredi = 1 tam rapor · çok dilli · krediler süresiz",
+      "badgePopular": "Popüler",
+      "plans": [
+        {
+          "label": "1 rapor",
+          "desc": "Tek seferlik bir kaza için"
+        },
+        {
+          "label": "3 rapor",
+          "desc": "Tüm aile için"
+        },
+        {
+          "label": "10 rapor",
+          "desc": "Filolar ve aracılar için"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Profesyoneller için",
+      "title": "Aracılar, filolar ve sigorta ortakları için",
+      "text": "Müşterilerinizi ve sürücülerinizi bir kazayı belgelemek ve tarih damgalı bir PDF dosyası oluşturmak için net bir araçla donatın. Filolar ve aracılar için kredi paketleri, basit dağıtım, abonelik yok.",
+      "cta": "İletişim / paylaş",
+      "items": [
+        {
+          "title": "Filolar",
+          "desc": "Her sürücü için yapılandırılmış bir dosya."
+        },
+        {
+          "title": "Aracılar",
+          "desc": "Sigortalılarınız için katma değerli bir hizmet."
+        },
+        {
+          "title": "Gizlilik",
+          "desc": "Veriler transit halinde şifrelenir, talep üzerine silinebilir."
+        },
+        {
+          "title": "İletim",
+          "desc": "Sigorta talebine eklenmek üzere tarih damgalı PDF hazır."
+        }
+      ]
+    },
+    "faq": {
+      "label": "SSS",
+      "title": "Sıkça Sorulan Sorular",
+      "items": [
+        {
+          "q": "boom.contact nedir?",
+          "a": "boom.contact, bir kazayı belgelerken telefon üzerinden yardımcı olan bir uygulamadır: sürücüleri QR ile davet etme, fotoğraflar, ses, kroki, imzalar, ardından sigortacınıza göndereceğiniz tarih damgalı bir PDF dosyası oluşturma."
+        },
+        {
+          "q": "Bir uygulama yüklemem gerekiyor mu?",
+          "a": "Hayır. boom.contact doğrudan telefonun tarayıcısında (Safari, Chrome, Firefox) çalışır. Ayrıca, çevrimdışı erişim için web uygulaması (PWA) olarak ana ekranınıza ekleyebilirsiniz."
+        },
+        {
+          "q": "Diğer sürücü uygulamayı yüklemediyse ne olur?",
+          "a": "Oturumu oluşturursunuz ve bir QR kodu görüntülenir. Diğer sürücü bunu telefonuyla tarar: boom.contact, kayıtsız ve indirmeden tarayıcıda açılır."
+        },
+        {
+          "q": "PDF dosyası sigortacım tarafından kabul edilecek mi?",
+          "a": "Tarih damgalı PDF dosyası, sigorta talebinize eklenmek üzere tasarlanmıştır. boom.contact, kabul garantisi vermez; bu, sigortacınıza, sözleşmenize ve yargı yetkisine bağlıdır."
+        },
+        {
+          "q": "Diğer sürücü başka bir dil konuşuyorsa çalışır mı?",
+          "a": "Evet. Her sürücü arayüzü kendi dilinde kullanır. Nihai dosya her sürücü için oluşturulur."
+        },
+        {
+          "q": "Verilerim korunuyor mu?",
+          "a": "Veriler transit halinde şifrelenir, oturumlar otomatik olarak bir süre sonra silinir ve polis asla otomatik olarak bilgilendirilmez — yalnızca sizin açık eyleminizle."
+        },
+        {
+          "q": "Ne kadar?",
+          "a": "Bir rapor için CHF / EUR 4.90'dan başlayan fiyatlar. 3 rapor paketi 12.90 (−%12), 10 rapor paketi 34.90 (−%29). Abonelik yok, krediler süresiz."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "constat": {
+    "nav": {
+      "back": "Geri",
+      "reset": "Raporu sıfırla"
+    },
+    "session": {
+      "expiring": "Oturumunuz yakında sona erecek. Verilerinizi kaydedin."
+    },
+    "error": {
+      "close": "Hata kapat"
+    },
+    "vehicle": {
+      "pickRegistered": "Kayıtlı bir araç seçin",
+      "autofill": "Otomatik doldurma — tarama yapmanıza gerek yok",
+      "yourRegistered": "Kayıtlı araçlarınız",
+      "org": "Şirket",
+      "personal": "Kişisel",
+      "fallback": "Araç",
+      "cancel": "İptal",
+      "orScanNew": "veya yeni bir aracı tarayın"
+    },
+    "pedestrian": {
+      "title": "Diğer taraf: yaya"
+    },
+    "summary": {
+      "yourVehicle": "Araçınız",
+      "accident": "Kaza",
+      "damagedZones_one": "{{count}} hasar gören alan",
+      "damagedZones_other": "{{count}} hasar gören alanlar"
+    },
+    "emergency": {
+      "title": "Acil numaralar"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "Bir sonraki sefer: 0 giriş",
+    "next_time_subtitle": "Araçlarınız bir kez kaydedilir, sonsuza dek",
+    "benefit_scanned": "Ruhsat + yeşil kart bir kez tarandı",
+    "benefit_fast": "Rapor 10 dakika yerine 2 dakikada",
+    "benefit_gift": "Sevdiklerinize 1 tıklama ile bir rapor hediye edin",
+    "benefit_family": "Aile için ideal: kredilerinizi paylaşın",
+    "create_account": "Ücretsiz hesabımı oluştur →",
+    "share_btn": "Sevdiklerimle paylaş",
+    "register_vehicle_title": "Sonra, aracınızı kaydedin",
+    "register_vehicle_subtitle": "Trafik ruhsatını + yeşil kartı tarayın · 30 sn · bir daha asla yeniden girmeyin",
+    "or_skip": "veya doğrudan geçin",
+    "family_pack": "🔥 Aile paketi",
+    "family_pack_desc": "Sevdiklerinizle paylaşabileceğiniz 3 rapor",
+    "scenario_child": "Çocuğunuz arıyor — kaza. Ona 3 saniyede bir rapor gönderin.",
+    "scenario_employee": "Şirket aracı ile çalışan. Anında WhatsApp ile bir kredi aktarın.",
+    "scenario_friend": "Yurtdışında zor durumda bir arkadaş. Ona bir bağlantı gönderir, hesap gerekmez.",
+    "buy_3_reports": "3 rapor satın al — CHF/EUR 12.90 →",
+    "see_all_packs": "Tüm paketleri görün →",
+    "ready_title": "Bir sonraki sefer için hazır",
+    "ready_subtitle": "Şimdi yükleyin, istediğiniz zaman paylaşın",
+    "account_title": "✅ Hesabınız boom.contact",
+    "account_desc": "Araçlarınız kaydedildi. Bir sonraki kazanızda doğrudan QR aşamasına geçersiniz — hiçbir giriş, hiçbir tarama yok.",
+    "manage_garage": "Garajımı yönet →",
+    "gift_title": "🎁 WhatsApp ile bir rapor hediye edin",
+    "gift_desc": "Kredilerinizden biri = <strong>herhangi birine</strong> gönderebileceğiniz benzersiz bir bağlantı.",
+    "credits_available_one": "{{count}} kredi mevcut",
+    "credits_available_other": "{{count}} krediler mevcut",
+    "share_protect": "Paylaşın, sevdiklerinizi koruyun",
+    "wa_gift_title": "📲 WhatsApp ile bir rapor hediye et",
+    "wa_gift_desc": "1 tıklama ile çocuğunuza, çalışanınıza veya arkadaşınıza bir bağlantı gönderin. Hesap veya ödeme gerektirmeden raporunu yapar — kredilerinizden düşülür.",
+    "send_1": "📲 1 rapor gönder",
+    "send_3": "📲 3 rapor gönder",
+    "gift_link_created": "✅ Bağlantı oluşturuldu — WhatsApp ile gönderin!",
+    "share_title": "📤 boom.contact paylaş",
+    "share_desc": "5 dakikada raporunuzu yaptınız. Arkadaşlarınızın bunun var olduğunu bilmeye hakkı var.",
+    "memorize_vehicles": "🚗 Diğer araçlarınızı kaydedin",
+    "memorize_desc": "Şirket filosu, motosiklet, karavan? Her taranan araç = kaza anında bir daha asla giriş yapmayın.",
+    "low_credits_one": "⚡ Sadece {{count}} kredi kaldı",
+    "low_credits_other": "⚡ Sadece {{count}} kredi kaldı",
+    "recharge_desc": "Şimdi yükleyin ve aile ve şirket paketlerinde indirimlerden yararlanın.",
+    "recharge_btn": "Kredilerimi yükle →",
+    "pack_single_label": "1 rapor",
+    "pack_single_note": "Tek seferlik kullanım",
+    "pack_pack3_label": "3 rapor",
+    "pack_pack3_note": "Aile · %12 tasarruf",
+    "pack_pack10_label": "10 rapor",
+    "pack_pack10_note": "Şirket · %29 tasarruf",
+    "popular_badge": "⭐ POPÜLER"
+  },
+  "signature": {
+    "title": "İmza",
+    "driver": "Sürücü {{role}}",
+    "other_party": "Diğer taraf",
+    "no_signature": "imzasız",
+    "sign_here": "Parmağınızla burada imzalayın",
+    "signed": "İMZALANDI ✓",
+    "clear": "🗑 Temizle",
+    "saving": "⏳ Kaydediliyor…",
+    "confirm_signature": "✍️ İmza onayla",
+    "waiting_other": "Diğer sürücünün imzasını bekliyor…",
+    "waiting_pdf": "PDF, her iki taraf da imzaladıktan sonra oluşturulacaktır.",
+    "report_signed": "Rapor imzalandı!",
+    "generating_pdf": "PDF oluşturuluyor…",
+    "canvas_aria": "İmza alanı — Sürücü {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Araç",
+    "tab_driver": "Sürücü",
+    "tab_insurance": "Sigorta",
+    "tab_circumstances": "Koşullar",
+    "tab_complement": "Tamamlayıcı",
+    "field_required": "Bu alan gereklidir",
+    "plate_label": "Tescil",
+    "brand_label": "Marka",
+    "model_label": "Model",
+    "year_label": "Yıl",
+    "vin_label": "Şasi No (VIN)",
+    "firstName_label": "İsim",
+    "lastName_label": "Soyisim",
+    "address_label": "Adres",
+    "postalCode_label": "Posta Kodu",
+    "city_label": "Şehir",
+    "country_label": "Ülke",
+    "phone_label": "Telefon",
+    "email_label": "E-posta",
+    "license_label": "Sürücü belgesi No",
+    "company_label": "Sigorta şirketi",
+    "policyNumber_label": "Poliçe No",
+    "greenCardNumber_label": "Yeşil kart No",
+    "greenCardExpiry_label": "Yeşil kart geçerlilik tarihi",
+    "agentName_label": "Ajan / Aracı",
+    "agentPhone_label": "Sigorta telefonu",
+    "circumstances_desc": "Araç durumunuzu tanımlayan tüm kutuları işaretleyin <strong>({{role}})</strong> çarpma anında.",
+    "boxes_checked_one": "{{count}} kutu işaretlendi",
+    "boxes_checked_other": "{{count}} kutular işaretlendi",
+    "complement_desc": "Raporun tamamlayıcı bilgileri — bölümler 11, 13 ve 14.",
+    "datetime_label": "Kaza tarihi ve saati",
+    "visible_damage_label": "Görünür hasar (bölüm 11)",
+    "visible_damage_placeholder": "Araçtaki görünür hasarları tanımlayın...",
+    "third_party_label": "Üçüncü şahıslara verilen hasar (A ve B dışındaki)",
+    "witnesses_label": "Tanıklar",
+    "witnesses_placeholder": "Her tanığın adı, soyadı, telefonu...",
+    "voice_declaration_label": "🎙️ Sesli beyan (isteğe bağlı)",
+    "observations_label": "Serbest gözlemler — sürücü {{role}} (bölüm 14)",
+    "observations_placeholder": "Yararlı her şeyi ekleyin: hava durumu, yol durumu, tahmini hız, notlar...",
+    "insurance_holder_label": "Sigorta sahibi (sürüciden farklıysa)",
+    "holder_name_placeholder": "Sigorta sahibinin tam adı",
+    "holder_name_aria": "Sigorta sahibinin adı",
+    "holder_address_placeholder": "Sigorta sahibinin adresi",
+    "holder_address_aria": "Sigorta sahibinin adresi",
+    "save_btn": "Kaydet ve devam et →",
+    "form_tabs_aria": "Form bölümleri"
+  },
+  "account": {
+    "member": {
+      "remove": "Kaldır",
+      "removeConfirm": "Bu üyeyi kaldırmak istiyor musunuz? Araçlara ve şirketin kredilerine erişimini kaybedecek.",
+      "loading": "Yükleniyor…",
+      "none": "Hiç üye yok.",
+      "invite": "Bir üye davet et",
+      "inviteBtn": "Davet et",
+      "pending": "Bekleyen davetler"
+    },
+    "role": {
+      "owner": "Sahip",
+      "driver": "Sürücü",
+      "fleet_admin": "Filoya admin"
+    },
+    "scan": {
+      "cancel": "İptal",
+      "photographPre": "Şu belgelerinizi fotoğraflayın",
+      "license": "trafik ruhsatı",
+      "and": "ve/veya",
+      "greenCard": "yeşil kart",
+      "title": "Trafik ruhsatı + yeşil kartı tarayın",
+      "subtitle": "Otomatik tanıma · çok dilli"
+    },
+    "garage": {
+      "back": "Garaj",
+      "title": "Garajım",
+      "add": "Ekle",
+      "emptyTitle": "Garaj boş",
+      "emptySubtitle": "Araçlarınızı bir kez kaydedin. Kaza anında bir daha asla tarama yapmanıza gerek kalmaz.",
+      "addFirst": "İlk aracımı ekle",
+      "noOrgVehicles": "Şu anda şirket aracı yok."
+    },
+    "insurance": {
+      "saved": "Sigorta kaydedildi",
+      "add": "Sigorta ekle"
+    },
+    "nav": {
+      "logout": "Çıkış"
+    },
+    "vehicle": {
+      "edit": "Aracı düzenle",
+      "delete": "Aracı sil",
+      "editOrg": "Şirket aracını düzenle",
+      "deleteOrg": "Şirket aracını sil"
+    },
+    "fields": {
+      "nickname": "Takma ad",
+      "plate": "Plaka",
+      "make": "Marka",
+      "model": "Model",
+      "color": "Renk",
+      "year": "Yıl",
+      "firstName": "İsim",
+      "lastName": "Soyisim",
+      "phone": "Telefon",
+      "company": "Şirket",
+      "address": "Adres",
+      "newEmail": "Yeni e-posta",
+      "currentPwd": "Mevcut şifre (onay)",
+      "confirmEmailAria": "E-posta adresinin onayı"
+    },
+    "credits": {
+      "buy": "Satın al:",
+      "available": "MEVCUT KREDİLER",
+      "unit": "1 kredi = 1 tam kaza raporu"
+    },
+    "history": {
+      "loading": "Yükleniyor...",
+      "empty": "Hiç rapor yok",
+      "emptySub": "Bir sonraki raporunuz burada otomatik olarak görünecektir."
+    },
+    "personal": {
+      "title": "Kişisel bilgiler",
+      "none": "Hiç bilgi yok — Düzenle'ye tıklayın"
+    },
+    "delete": {
+      "willDelete": "SİLİNECEK OLANLAR:",
+      "text": "Hesabınızı, araçlarınızı ve tüm raporlarınızı kalıcı olarak silin. Bu işlem geri alınamaz."
+    },
+    "danger": {
+      "title": "Tehlikeli alan"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Hiçbir belge tanınmadı. Fotoğrafların kalitesini kontrol edin.",
+    "analysis_error": "Analiz hatası.",
+    "read_failed": "Okuma başarısız",
+    "docs_analyzed_one": "{{count}} belge analiz edildi",
+    "docs_analyzed_other": "{{count}} belgeler analiz edildi",
+    "confidence": "Güven: {{pct}}%",
+    "rescan": "Yeniden Tara",
+    "vehicle_section": "🚗 Araç",
+    "plate": "Plaka",
+    "driver_section": "👤 Sürücü",
+    "firstName": "İsim",
+    "lastName": "Soyisim",
+    "insurance_found": "✅ Sigorta",
+    "insurance_manual": "⚠️ Sigorta — manuel olarak tamamlayın",
+    "company_label": "Şirket",
+    "company_aria": "Sigorta şirketi",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Poliçe No",
+    "policy_manual_hint": "(manuel giriş)",
+    "policy_aria": "Poliçe numarası",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Onayla →",
+    "scanning_title": "Analiz ediliyor…",
+    "scanning_subtitle_one": "{{count}} belge · otomatik tanımlama",
+    "scanning_subtitle_other": "{{count}} belgeler · otomatik tanımlama",
+    "photo_title": "Belgelerinizi fotoğraflayın",
+    "photo_subtitle": "Trafik ruhsatı + yeşil kartı tek bir analizde.",
+    "photo_subtitle2": "Uygulama her şeyi otomatik olarak tanımlar ve çıkarır.",
+    "doc_scanned": "Tarayıcıdan geçirilen belge {{n}}",
+    "doc_label": "Belge {{n}}",
+    "photograph": "Fotoğraf Çek",
+    "rear_camera": "Arka kamera",
+    "gallery": "Galeri",
+    "which_docs": "Hangi belgeleri taramalıyım?",
+    "doc_ch": "🇨🇭 Trafik ruhsatı + yeşil kart",
+    "doc_fr": "🇫🇷 Ruhsat + yeşil kart / belge",
+    "doc_de": "🇩🇪 Ruhsat + Yeşil Kart",
+    "doc_gb": "🇬🇧 V5C + Motor Sigortası Sertifikası",
+    "doc_us": "🇺🇸 🇨🇦 Kayıt + Sigorta Kimlik Kartı",
+    "doc_world": "🌍 Tescil + sigorta belgesi",
+    "close_error_aria": "Hata kapat",
+    "analyze_btn_one": "🔍 {{count}} belgeyi analiz et",
+    "analyze_btn_other": "🔍 {{count}} belgeleri analiz et",
+    "skip_manual": "Atla — manuel giriş →",
+    "upload_gallery_aria": "Galeriden belgeleri yükle",
+    "take_photo_aria": "Bir belgeyi fotoğraflayın"
+  },
+  "join": {
+    "sessionLabel": "Oturum",
+    "yourEmail": "E-posta adresiniz",
+    "emailHint": "(PDF almak için)",
+    "emailAria": "E-posta adresiniz",
+    "connecting": "Bağlanıyor…",
+    "connected": "Bağlandı! Başlatılıyor…",
+    "joinButton": "Raporu katıl"
+  },
+  "voice": {
+    "title": "Kazayı tanımlayın",
+    "subtitle": "İsteğe bağlı — ne olduğunu kendi kelimelerinizle tanımlayın. Beyanınız raporda kaydedilecektir.",
+    "tab_voice": "🎙️ Sesli",
+    "tab_text": "⌨️ Metin",
+    "start_recording": "Kaydı başlat",
+    "textarea_aria": "Kaza tanımı",
+    "textarea_placeholder": "Kazayı birkaç cümle ile tanımlayın…",
+    "validate_desc": "✅ Tanımımı onayla",
+    "skip_step": "Bu adımı atla →",
+    "recording_in_progress": "Kayıt devam ediyor…",
+    "recording_tip": "💡 Tanımlayın: her aracın yönü, çarpışma noktası, koşullar. Sakin bir şekilde konuşun.",
+    "stop_recording": "Kaydı durdur",
+    "transcribing_title": "Transkripsiyon devam ediyor…",
+    "transcribing_subtitle": "Kaydınız işleniyor",
+    "desc_recorded": "Tanım kaydedildi",
+    "desc_in_pdf": "Beyanınız PDF raporuna dahil edilecektir",
+    "your_declaration": "Beyanınız",
+    "edit": "✏️ Düzenle",
+    "edit_placeholder": "Gerekirse beyanınızı düzeltin...",
+    "restart": "Yeniden başlat",
+    "mic_denied": "Mikrofona erişim reddedildi — manuel girişi kullanın.",
+    "mic_unavailable": "Mikrofon mevcut değil: {{msg}}",
+    "transcription_error": "Transkripsiyon hatası",
+    "textarea_edit_aria": "Kaza hikayesi"
+  },
+  "auth": {
+    "default_subtitle": "Araçlarınızı kaydetmek ve raporlarınızda hiçbir şey girmemek için giriş yapın.",
+    "magic_btn": "📧 E-posta bağlantısı ile giriş (önerilir)",
+    "password_btn": "🔑 Şifre ile giriş",
+    "register_btn": "✨ Hesap oluştur",
+    "skip_btn": "Hesapsız devam et →",
+    "skip_note": "Hesapsız, yine de bir rapor yapabilir ve Stripe ile ödeme yapabilirsiniz.",
+    "magic_instructions": "E-posta adresinizi girin — 15 dakika geçerli bir giriş bağlantısı alacaksınız.",
+    "send_link": "Bağlantıyı gönder",
+    "sending": "Gönderiliyor...",
+    "back": "← Geri",
+    "email_sent_title": "E-posta gönderildi!",
+    "email_sent_desc": "Lütfen <strong>{{email}}</strong> kutunuzu kontrol edin.",
+    "email_sent_validity": "Bağlantı 15 dakika geçerlidir.",
+    "login_error": "E-posta veya şifre hatalı.",
+    "logging_in": "Giriş yapılıyor...",
+    "login_btn": "Giriş yap",
+    "forgot_password": "Şifremi unuttum? E-posta bağlantısı kullan →",
+    "register_desc": "Araçlarınızı kaydetmek ve raporlarınızı otomatik olarak önceden doldurmak için hesabınızı oluşturun.",
+    "password_placeholder": "Şifre (en az 6 karakter)",
+    "creating": "Oluşturuluyor...",
+    "create_btn": "Hesabımı oluştur",
+    "register_legal": "Hesap oluşturarak, Kullanım Şartlarımızı kabul ediyorsunuz. Araç verileriniz şifrelenir ve izniniz olmadan asla paylaşılmaz.",
+    "register_error": "Kayıt sırasında hata.",
+    "generic_error": "Hata"
+  },
+  "app": {
+    "magic_link_error": "Geçersiz veya süresi dolmuş bağlantı.",
+    "gift_credits_added": "🎁 Hesabınıza {{credits}} kredi eklendi!",
+    "loading_aria": "Yükleniyor",
+    "nav_landing": "Ana sayfa",
+    "nav_cgu": "Kullanım şartları",
+    "nav_pricing": "Fiyatlandırma",
+    "nav_constat": "Rapor oluşturma",
+    "nav_join": "Oturuma katıl",
+    "nav_account": "Kullanıcı hesabı",
+    "nav_admin": "Yönetici paneli",
+    "nav_emergency": "Acil numaralar",
+    "nav_privacy": "Gizlilik politikası",
+    "nav_police_login": "Polis girişi",
+    "nav_police_dashboard": "Polis paneli",
+    "nav_police_flow": "Polis akışı",
+    "nav_police_intervention": "Polis müdahalesi",
+    "nav_to": "{{label}}'ya yönlendirme",
+    "title_default": "boom.contact — Dijital kaza raporu",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Fiyatlar — boom.contact",
+    "back": "← Geri←",
+    "buy_reports": "Rapor satın al",
+    "credits_no_expiry": "Süresiz krediler · WhatsApp ile paylaşılabilir",
+    "credits_available_one": "✅ {{count}} kredi mevcut",
+    "credits_available_other": "✅ {{count}} krediler mevcut",
+    "no_credits": "⚡ Hiç kredi yok — şimdi yükleyin",
+    "currency_label": "PARA BİRİMİ",
+    "currency_detected": "✓ otomatik algılandı",
+    "most_popular": "⭐ EN POPÜLER · TASARRUF {{savings}}",
+    "economy": "Tasarruf {{savings}}",
+    "per_pack": "paket başına",
+    "per_report": "/ rapor",
+    "redirecting_stripe": "⏳ Stripe'a yönlendiriliyor...",
+    "buy_btn": "Satın al {{label}} — {{price}}",
+    "error_missing_url": "Eksik ödeme URL'si",
+    "error_generic": "Hata",
+    "error_email_required": "Satın almak için e-posta gerekli",
+    "trust_stripe": "Güvenli PCI-DSS Stripe ödemesi",
+    "trust_no_expiry": "Süresiz krediler",
+    "trust_whatsapp": "WhatsApp ile paylaşılabilir",
+    "trust_worldwide": "Çok dilli",
+    "trust_invoice": "Otomatik PDF fatura",
+    "trust_fleet": "Şirket filoları için ideal",
+    "why_title": "ÖN ÖDEME KREDİLERİ NEDEN GEREKİYOR?",
+    "scenario_child_title": "Çocuğunuz kaza yaptı",
+    "scenario_child_text": "Sizi arar. Ona WhatsApp ile bir kredi gönderirsiniz. 5 dakikada raporunu oluşturur.",
+    "scenario_company_title": "Şirket aracı",
+    "scenario_company_text": "Teslimatçınız bir kaza yaptı. Mobil cihazınızdan ona anında bir kredi aktarın.",
+    "scenario_abroad_title": "Yurtdışında seyahat",
+    "scenario_abroad_text": "Almanya, Avustralya veya Japonya'da kaza. Arayüz birden fazla dilde mevcuttur.",
+    "pkg_single_label": "1 rapor",
+    "pkg_single_desc": "Tek seferlik bir kaza için",
+    "pkg_pack3_label": "3 rapor",
+    "pkg_pack3_desc": "Tüm aile için",
+    "pkg_pack3_marketing": "🎁 WhatsApp ile paylaşın — çocuğunuz, çalışanınız, arkadaşınız anında bir bağlantı alır.",
+    "pkg_pack10_label": "10 rapor",
+    "pkg_pack10_desc": "Filolar & şirketler",
+    "pkg_pack10_marketing": "🏢 Tüm filonuzu yönetin. Çalışanlarınıza 1 tıklama ile aktarın."
+  },
+  "legal": {
+    "intro": {
+      "title": "Başlamadan önce",
+      "body": "boom.contact, bir kazayı belgelemeye ve yapılandırılmış bir PDF dosyası oluşturmaya yardımcı olur. Yaralanma, tehlike, kaçış, ciddi anlaşmazlık veya yasal zorunluluk durumunda, acil hizmetler, polis veya yetkili otoritelerle hemen iletişime geçin. Sağlanan bilgiler katılımcıların sorumluluğundadır. Kamerayı, mikrofonu veya konumu kullanmak istemiyorsanız, bilgileri manuel olarak girebilirsiniz.",
+      "start": "Anladım, başla",
+      "emergency": "Acil numaraları görüntüle",
+      "privacy_cgu": "Gizlilik / Kullanım şartları"
+    },
+    "guest_accept": {
+      "checkbox": "Kullanım şartlarını kabul ediyorum ve Gizlilik Politikasını okudum.",
+      "note": "Verilerimin kaza dosyası oluşturmak için kullanılacağını ve sağlanan bilgilerin benim sorumluluğumda olduğunu anlıyorum."
+    },
+    "signature_confirm": "Verdiğim bilgilerin doğru olduğunu onaylıyorum ve imzamın PDF dosyasına entegre edilmesini kabul ediyorum.",
+    "payment_notice": "Ödeme işlemine devam ederek, ödemenin PDF dosyasının oluşturulması ve gönderilmesini kapsadığını anlıyorsunuz. Sağlanan bilgiler katılımcıların sorumluluğundadır.",
+    "mic_notice": "Mikrofonu kullanarak, sesli beyanınız transkribe edilecek ve kaza dosyasına entegre edilecektir. Bunun yerine metin girişi kullanabilirsiniz.",
+    "injury_confirm": {
+      "body": "Yaralanma fotoğrafları hassas veriler içerebilir. İlgili kişinin iznini aldığınızdan emin olun, güvenlik gerekliliği veya yasal zorunluluk dışında.",
+      "continue": "Devam et",
+      "change": "Kategoriyi değiştir"
+    },
+    "pdf_ready_title": "Tarih damgalı kaza PDF dosyası",
+    "pdf_ready_body": "Gerekli imzalar kaydedildi. PDF dosyası hazır. Sigortacınıza göndermeden önce bilgileri kontrol edin."
   }
 }

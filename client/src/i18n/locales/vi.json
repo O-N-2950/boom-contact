@@ -12,7 +12,8 @@
     "required": "Bắt buộc",
     "yes": "Có",
     "no": "Không",
-    "unknown": "Không xác định"
+    "unknown": "Không xác định",
+    "rescan": "🔄 Quét lại"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Ghi lại một vụ tai nạn không giấy tờ, không nhầm lẫn.",
+      "subtitle": "boom.contact hướng dẫn bạn từng bước để thu thập thông tin hữu ích, thêm ảnh, vị trí, tuyên bố và chữ ký, sau đó tạo một hồ sơ PDF có dấu thời gian để gửi đến công ty bảo hiểm của bạn."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Phiên hoạt động",
+      "vehicleA": "XE A",
+      "photosSig": "Ảnh · chữ ký ✓",
+      "vehicleB": "XE B",
+      "qrJoined": "QR đã tham gia · đang tiến hành",
+      "payGenerate": "Thanh toán và tạo PDF",
+      "pdfBadge": "PDF có dấu thời gian",
+      "qrBadge": "QR đã chia sẻ"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Mời qua mã QR",
+        "desc": "Tạo phiên, tài xế khác quét mã QR từ điện thoại của họ. Không cần cài đặt, không cần đăng ký."
+      },
+      {
+        "title": "Ảnh, giọng nói và chữ ký",
+        "desc": "Thêm ảnh, ghi âm nhận xét của bạn, đặt các xe trên bản phác thảo và ký bằng ngón tay."
+      },
+      {
+        "title": "Hồ sơ PDF có dấu thời gian",
+        "desc": "boom.contact tạo ra một hồ sơ PDF có dấu thời gian bao gồm thông tin được nhập bởi mỗi tài xế."
+      },
+      {
+        "title": "Để gửi đến công ty bảo hiểm của bạn",
+        "desc": "Tải xuống PDF hoặc gửi qua email để kèm theo tuyên bố yêu cầu bồi thường của bạn với công ty bảo hiểm."
+      }
+    ],
+    "seoLine": "Báo cáo tai nạn kỹ thuật số đa ngôn ngữ · Digital accident report",
+    "flow": {
+      "label": "Tất cả trong một quy trình",
+      "title": "Từ vụ tai nạn đến hồ sơ sẵn sàng gửi"
+    },
+    "stress": {
+      "label": "Được thiết kế cho khoảnh khắc vụ tai nạn",
+      "title": "Thiết kế cho các tình huống căng thẳng",
+      "text": "Sau một cú va chạm, tâm trí không rõ ràng. boom.contact tiến từng bước, bằng ngôn ngữ của bạn, và giữ lại mọi thông tin đã thu thập. Tất cả hoạt động từ trình duyệt điện thoại, ngay cả khi kết nối hạn chế.",
+      "bullets": [
+        "Hướng dẫn từng bước",
+        "Đa ngôn ngữ",
+        "Ảnh · giọng nói · chữ ký",
+        "Hồ sơ PDF có dấu thời gian"
+      ],
+      "emergencyTitle": "Trong trường hợp khẩn cấp",
+      "emergencyText": "boom.contact không thay thế cho cứu hộ, cảnh sát, luật sư hoặc công ty bảo hiểm. Trong trường hợp có người bị thương hoặc nguy hiểm, hãy liên hệ trước với dịch vụ khẩn cấp."
+    },
+    "pricing": {
+      "label": "Giá cả",
+      "title": "Đơn giản, minh bạch, không cần đăng ký",
+      "caption": "1 tín dụng = 1 báo cáo hoàn chỉnh · đa ngôn ngữ · tín dụng không hết hạn",
+      "badgePopular": "Phổ biến",
+      "plans": [
+        {
+          "label": "1 báo cáo",
+          "desc": "Cho một vụ tai nạn đơn lẻ"
+        },
+        {
+          "label": "3 báo cáo",
+          "desc": "Cho cả gia đình"
+        },
+        {
+          "label": "10 báo cáo",
+          "desc": "Cho đội xe và môi giới"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Dành cho các chuyên gia",
+      "title": "Dành cho môi giới, đội xe và đối tác bảo hiểm",
+      "text": "Trang bị cho khách hàng và tài xế của bạn một công cụ rõ ràng để ghi lại một vụ tai nạn và tạo ra một hồ sơ PDF có dấu thời gian. Gói tín dụng cho đội xe và môi giới, triển khai đơn giản, không cần đăng ký.",
+      "cta": "Liên hệ / chia sẻ",
+      "items": [
+        {
+          "title": "Đội xe",
+          "desc": "Một hồ sơ có cấu trúc cho mỗi vụ tai nạn của tài xế."
+        },
+        {
+          "title": "Môi giới",
+          "desc": "Một dịch vụ giá trị gia tăng cho khách hàng của bạn."
+        },
+        {
+          "title": "Bảo mật",
+          "desc": "Dữ liệu được mã hóa trong quá trình truyền, có thể xóa theo yêu cầu."
+        },
+        {
+          "title": "Truyền tải",
+          "desc": "PDF có dấu thời gian sẵn sàng để đính kèm vào tuyên bố yêu cầu bồi thường."
+        }
+      ]
+    },
+    "faq": {
+      "label": "Câu hỏi thường gặp",
+      "title": "Câu hỏi thường gặp",
+      "items": [
+        {
+          "q": "boom.contact là gì?",
+          "a": "boom.contact là một ứng dụng giúp ghi lại một vụ tai nạn giao thông từ điện thoại: mời tài xế qua QR, ảnh, giọng nói, phác thảo, chữ ký, sau đó tạo ra một hồ sơ PDF có dấu thời gian để gửi đến công ty bảo hiểm của bạn."
+        },
+        {
+          "q": "Tôi có cần cài đặt một ứng dụng không?",
+          "a": "Không. boom.contact hoạt động trực tiếp trong trình duyệt của điện thoại (Safari, Chrome, Firefox). Bạn cũng có thể thêm nó vào màn hình chính của bạn như một ứng dụng web (PWA) để truy cập ngoại tuyến."
+        },
+        {
+          "q": "Điều gì xảy ra nếu tài xế khác không có ứng dụng?",
+          "a": "Bạn tạo phiên và một mã QR xuất hiện. Tài xế khác quét nó bằng điện thoại của họ: boom.contact mở trong trình duyệt của họ, không cần đăng ký hay tải xuống."
+        },
+        {
+          "q": "Hồ sơ PDF có được công ty bảo hiểm của tôi chấp nhận không?",
+          "a": "Hồ sơ PDF có dấu thời gian được dùng để kèm theo tuyên bố yêu cầu bồi thường của bạn. boom.contact không đảm bảo sự chấp nhận của nó, điều này phụ thuộc vào công ty bảo hiểm của bạn theo hợp đồng và luật pháp."
+        },
+        {
+          "q": "Nó có hoạt động nếu tài xế khác nói một ngôn ngữ khác không?",
+          "a": "Có. Mỗi tài xế sử dụng giao diện bằng ngôn ngữ của họ. Hồ sơ cuối cùng được tạo cho mỗi tài xế."
+        },
+        {
+          "q": "Dữ liệu của tôi có được bảo vệ không?",
+          "a": "Dữ liệu được mã hóa trong quá trình truyền, các phiên sẽ tự động bị xóa sau một khoảng thời gian, và cảnh sát không bao giờ được thông báo tự động — chỉ khi có hành động rõ ràng từ bạn."
+        },
+        {
+          "q": "Nó có giá bao nhiêu?",
+          "a": "Bắt đầu từ CHF / EUR 4.90 cho một báo cáo. Gói 3 báo cáo giá 12.90 (−12 %), gói 10 giá 34.90 (−29 %). Không cần đăng ký, tín dụng không hết hạn."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Phiên",
+    "yourEmail": "Email của bạn",
+    "emailHint": "(để nhận PDF)",
+    "emailAria": "Địa chỉ email của bạn",
+    "connecting": "Đang kết nối...",
+    "connected": "Đã kết nối! Bắt đầu...",
+    "joinButton": "Tham gia báo cáo"
+  },
+  "constat": {
+    "nav": {
+      "back": "Quay lại",
+      "reset": "Đặt lại báo cáo"
+    },
+    "session": {
+      "expiring": "Phiên của bạn sắp hết hạn. Hãy lưu dữ liệu của bạn."
+    },
+    "error": {
+      "close": "Đóng lỗi"
+    },
+    "vehicle": {
+      "pickRegistered": "Chọn một xe đã đăng ký",
+      "autofill": "Tự động điền — không cần quét",
+      "yourRegistered": "Các xe đã đăng ký của bạn",
+      "org": "Doanh nghiệp",
+      "personal": "Cá nhân",
+      "fallback": "Xe",
+      "cancel": "Hủy bỏ",
+      "orScanNew": "hoặc quét một xe mới"
+    },
+    "pedestrian": {
+      "title": "Bên khác: người đi bộ"
+    },
+    "summary": {
+      "yourVehicle": "Xe của bạn",
+      "accident": "Tai nạn",
+      "damagedZones_one": "{{count}} khu vực bị hư hại",
+      "damagedZones_other": "{{count}} khu vực bị hư hại"
+    },
+    "emergency": {
+      "title": "Số khẩn cấp"
+    }
+  },
+  "auth": {
+    "default_subtitle": "Đăng nhập để lưu các xe của bạn và không phải nhập liệu gì khi thực hiện báo cáo.",
+    "magic_btn": "📧 Đăng nhập qua liên kết email (được khuyến nghị)",
+    "password_btn": "🔑 Đăng nhập bằng mật khẩu",
+    "register_btn": "✨ Tạo tài khoản",
+    "skip_btn": "Tiếp tục mà không có tài khoản →",
+    "skip_note": "Không có tài khoản, bạn vẫn có thể thực hiện một báo cáo và thanh toán qua Stripe.",
+    "magic_instructions": "Nhập email của bạn — bạn sẽ nhận được một liên kết đăng nhập có giá trị trong 15 phút.",
+    "send_link": "Gửi liên kết",
+    "sending": "Đang gửi...",
+    "back": "← Quay lại",
+    "email_sent_title": "Email đã được gửi!",
+    "email_sent_desc": "Kiểm tra hộp thư của bạn <strong>{{email}}</strong>.",
+    "email_sent_validity": "Liên kết có giá trị trong 15 phút.",
+    "login_error": "Email hoặc mật khẩu không chính xác.",
+    "logging_in": "Đang đăng nhập...",
+    "login_btn": "Đăng nhập",
+    "forgot_password": "Quên mật khẩu? Sử dụng liên kết email →",
+    "register_desc": "Tạo tài khoản của bạn để lưu các xe và tự động điền báo cáo của bạn.",
+    "password_placeholder": "Mật khẩu (tối thiểu 6 ký tự)",
+    "creating": "Đang tạo...",
+    "create_btn": "Tạo tài khoản của tôi",
+    "register_legal": "Bằng cách tạo tài khoản, bạn đồng ý với các điều khoản sử dụng của chúng tôi. Dữ liệu xe của bạn được mã hóa và không bao giờ được chia sẻ mà không có sự đồng ý của bạn.",
+    "register_error": "Lỗi khi đăng ký.",
+    "generic_error": "Lỗi"
+  },
+  "postConstat": {
+    "next_time_title": "Lần tới: 0 nhập liệu",
+    "next_time_subtitle": "Các xe của bạn được ghi nhớ mãi mãi",
+    "benefit_scanned": "Giấy phép + thẻ xanh đã quét một lần",
+    "benefit_fast": "Báo cáo trong 2 phút thay vì 10",
+    "benefit_gift": "Tặng một báo cáo cho người thân chỉ với 1 cú nhấp chuột",
+    "benefit_family": "Lý tưởng cho gia đình: chia sẻ tín dụng của bạn",
+    "create_account": "Tạo tài khoản miễn phí của tôi →",
+    "share_btn": "Chia sẻ với người thân của tôi",
+    "register_vehicle_title": "Sau đó, đăng ký xe của bạn",
+    "register_vehicle_subtitle": "Quét giấy phép lái xe + thẻ xanh · 30 giây · không bao giờ phải nhập lại",
+    "or_skip": "hoặc bỏ qua trực tiếp",
+    "family_pack": "🔥 Gói gia đình",
+    "family_pack_desc": "3 báo cáo để chia sẻ với người thân của bạn",
+    "scenario_child": "Con bạn gọi — tai nạn. Gửi cho nó một báo cáo trong 3 giây trên điện thoại của nó.",
+    "scenario_employee": "Nhân viên có xe công ty. Chuyển một tín dụng qua WhatsApp ngay lập tức.",
+    "scenario_friend": "Bạn bè gặp khó khăn ở nước ngoài. Anh ấy nhận được một liên kết, không cần tài khoản.",
+    "buy_3_reports": "Mua 3 báo cáo — CHF/EUR 12.90 →",
+    "see_all_packs": "Xem tất cả các gói →",
+    "ready_title": "Sẵn sàng cho lần tới",
+    "ready_subtitle": "Nạp ngay, chia sẻ khi bạn muốn",
+    "account_title": "✅ Tài khoản boom.contact của bạn",
+    "account_desc": "Các xe của bạn đã được ghi nhớ. Khi vụ tai nạn tiếp theo xảy ra, bạn sẽ đi thẳng đến bước QR — không cần nhập liệu, không cần quét.",
+    "manage_garage": "Quản lý garage của tôi →",
+    "gift_title": "🎁 Tặng một báo cáo qua WhatsApp",
+    "gift_desc": "Một trong những tín dụng của bạn = một liên kết duy nhất để gửi đến <strong>bất kỳ ai</strong>, mà không cần người đó có tài khoản.",
+    "credits_available_one": "{{count}} tín dụng có sẵn",
+    "credits_available_other": "{{count}} tín dụng có sẵn",
+    "share_protect": "Chia sẻ, bảo vệ người thân của bạn",
+    "wa_gift_title": "📲 Tặng một báo cáo qua WhatsApp",
+    "wa_gift_desc": "Chỉ với 1 cú nhấp chuột, gửi một liên kết đến con bạn, nhân viên hoặc bạn bè của bạn. Anh ấy thực hiện báo cáo mà không cần tài khoản hay thanh toán — sẽ trừ vào tín dụng của bạn.",
+    "send_1": "📲 Gửi 1 báo cáo",
+    "send_3": "📲 Gửi 3 báo cáo",
+    "gift_link_created": "✅ Liên kết đã được tạo — gửi nó qua WhatsApp!",
+    "share_title": "📤 Chia sẻ boom.contact",
+    "share_desc": "Bạn vừa thực hiện báo cáo trong 5 phút. Bạn bè của bạn xứng đáng biết rằng điều này tồn tại.",
+    "memorize_vehicles": "🚗 Ghi nhớ các xe khác của bạn",
+    "memorize_desc": "Đội xe doanh nghiệp, xe máy, xe cắm trại? Mỗi xe đã quét = không bao giờ phải nhập lại khi gặp tai nạn.",
+    "low_credits_one": "⚡ Bạn chỉ còn {{count}} tín dụng",
+    "low_credits_other": "⚡ Bạn chỉ còn {{count}} tín dụng",
+    "recharge_desc": "Nạp ngay và tận hưởng các ưu đãi trên các gói gia đình và doanh nghiệp.",
+    "recharge_btn": "Nạp tín dụng của tôi →",
+    "pack_single_label": "1 báo cáo",
+    "pack_single_note": "Sử dụng đơn lẻ",
+    "pack_pack3_label": "3 báo cáo",
+    "pack_pack3_note": "Gia đình · tiết kiệm 12%",
+    "pack_pack10_label": "10 báo cáo",
+    "pack_pack10_note": "Doanh nghiệp · tiết kiệm 29%",
+    "popular_badge": "⭐ PHỔ BIẾN"
+  },
+  "voice": {
+    "title": "Mô tả vụ tai nạn",
+    "subtitle": "Tùy chọn — mô tả những gì đã xảy ra bằng lời của bạn. Tuyên bố của bạn sẽ được ghi lại trong báo cáo.",
+    "tab_voice": "🎙️ Giọng nói",
+    "tab_text": "⌨️ Văn bản",
+    "start_recording": "Bắt đầu ghi âm",
+    "textarea_aria": "Mô tả vụ tai nạn",
+    "textarea_placeholder": "Mô tả vụ tai nạn trong vài câu…",
+    "validate_desc": "✅ Xác nhận mô tả của tôi",
+    "skip_step": "Bỏ qua bước này →",
+    "recording_in_progress": "Đang ghi âm...",
+    "recording_tip": "💡 Mô tả: hướng đi của mỗi xe, điểm va chạm, hoàn cảnh. Nói một cách bình tĩnh.",
+    "stop_recording": "Dừng ghi âm",
+    "transcribing_title": "Đang chuyển đổi...",
+    "transcribing_subtitle": "Ghi âm của bạn đang được xử lý",
+    "desc_recorded": "Mô tả đã được ghi lại",
+    "desc_in_pdf": "Tuyên bố của bạn sẽ được bao gồm trong báo cáo PDF",
+    "your_declaration": "Tuyên bố của bạn",
+    "edit": "✏️ Chỉnh sửa",
+    "edit_placeholder": "Sửa chữa tuyên bố của bạn nếu cần...",
+    "restart": "Bắt đầu lại",
+    "mic_denied": "Truy cập vào microphone bị từ chối — sử dụng nhập liệu thủ công.",
+    "mic_unavailable": "Microphone không khả dụng: {{msg}}",
+    "transcription_error": "Lỗi chuyển đổi",
+    "textarea_edit_aria": "Kể lại vụ tai nạn"
+  },
+  "constatForm": {
+    "tab_vehicle": "Xe",
+    "tab_driver": "Tài xế",
+    "tab_insurance": "Bảo hiểm",
+    "tab_circumstances": "Hoàn cảnh",
+    "tab_complement": "Bổ sung",
+    "field_required": "Trường này là bắt buộc",
+    "plate_label": "Biển số",
+    "brand_label": "Thương hiệu",
+    "model_label": "Mẫu",
+    "year_label": "Năm",
+    "vin_label": "Số khung (VIN)",
+    "firstName_label": "Tên",
+    "lastName_label": "Họ",
+    "address_label": "Địa chỉ",
+    "postalCode_label": "Mã bưu chính",
+    "city_label": "Địa phương",
+    "country_label": "Quốc gia",
+    "phone_label": "Điện thoại",
+    "email_label": "Email",
+    "license_label": "Số giấy phép lái xe",
+    "company_label": "Công ty bảo hiểm",
+    "policyNumber_label": "Số hợp đồng",
+    "greenCardNumber_label": "Số thẻ xanh",
+    "greenCardExpiry_label": "Thời hạn thẻ xanh",
+    "agentName_label": "Đại lý / Môi giới",
+    "agentPhone_label": "Điện thoại bảo hiểm",
+    "circumstances_desc": "Đánh dấu tất cả các ô mô tả tình huống của xe bạn <strong>({{role}})</strong> tại thời điểm va chạm.",
+    "boxes_checked_one": "{{count}} ô đã được đánh dấu",
+    "boxes_checked_other": "{{count}} ô đã được đánh dấu",
+    "complement_desc": "Thông tin bổ sung của báo cáo — các phần 11, 13 và 14.",
+    "datetime_label": "Ngày và giờ của vụ tai nạn",
+    "visible_damage_label": "Thiệt hại rõ ràng (phần 11)",
+    "visible_damage_placeholder": "Mô tả thiệt hại rõ ràng trên xe của bạn...",
+    "third_party_label": "Thiệt hại tài sản cho bên thứ ba (khác A và B)",
+    "witnesses_label": "Nhân chứng",
+    "witnesses_placeholder": "Tên, họ, điện thoại của mỗi nhân chứng...",
+    "voice_declaration_label": "🎙️ Tuyên bố bằng giọng nói (tùy chọn)",
+    "observations_label": "Nhận xét tự do — tài xế {{role}} (phần 14)",
+    "observations_placeholder": "Thêm bất kỳ thông tin hữu ích nào: điều kiện thời tiết, tình trạng mặt đường, tốc độ ước tính, nhận xét...",
+    "insurance_holder_label": "Người mua bảo hiểm (nếu khác tài xế)",
+    "holder_name_placeholder": "Tên đầy đủ của người mua",
+    "holder_name_aria": "Tên của người mua bảo hiểm",
+    "holder_address_placeholder": "Địa chỉ của người mua",
+    "holder_address_aria": "Địa chỉ của người mua bảo hiểm",
+    "save_btn": "Lưu và tiếp tục →",
+    "form_tabs_aria": "Các phần của biểu mẫu"
+  },
+  "legal": {
+    "intro": {
+      "title": "Trước khi bắt đầu",
+      "body": "boom.contact giúp bạn ghi lại một vụ tai nạn và tạo ra một hồ sơ PDF có cấu trúc. Trong trường hợp có thương tích, nguy hiểm, bỏ chạy, bất đồng nghiêm trọng hoặc nghĩa vụ pháp lý, hãy ngay lập tức liên hệ với cứu hộ, cảnh sát hoặc các cơ quan có thẩm quyền. Thông tin được cung cấp vẫn thuộc trách nhiệm của các bên tham gia. Bạn có thể nhập thông tin thủ công nếu không muốn sử dụng camera, microphone hoặc định vị.",
+      "start": "Tôi đã hiểu, bắt đầu",
+      "emergency": "Xem số khẩn cấp",
+      "privacy_cgu": "Bảo mật / Điều khoản sử dụng"
+    },
+    "guest_accept": {
+      "checkbox": "Tôi đồng ý với Điều khoản sử dụng và đã đọc Chính sách bảo mật.",
+      "note": "Tôi hiểu rằng thông tin của tôi sẽ được sử dụng để tạo ra hồ sơ PDF tai nạn và rằng thông tin được cung cấp vẫn thuộc trách nhiệm của tôi."
+    },
+    "signature_confirm": "Tôi xác nhận rằng thông tin tôi đã cung cấp là chính xác theo hiểu biết của tôi và tôi đồng ý rằng chữ ký của tôi sẽ được tích hợp vào hồ sơ PDF.",
+    "payment_notice": "Bằng cách tiếp tục đến thanh toán, bạn hiểu rằng thanh toán bao gồm việc tạo ra và gửi hồ sơ PDF. Thông tin được cung cấp vẫn thuộc trách nhiệm của các bên tham gia.",
+    "mic_notice": "Khi sử dụng microphone, tuyên bố bằng giọng nói của bạn sẽ được chuyển đổi để được tích hợp vào hồ sơ tai nạn. Bạn có thể sử dụng nhập liệu văn bản thay thế.",
+    "injury_confirm": {
+      "body": "Ảnh chụp thương tích có thể chứa dữ liệu nhạy cảm. Hãy đảm bảo bạn có sự đồng ý của người liên quan, trừ khi cần thiết vì lý do an toàn hoặc nghĩa vụ pháp lý.",
+      "continue": "Tiếp tục",
+      "change": "Thay đổi loại"
+    },
+    "pdf_ready_title": "Hồ sơ PDF tai nạn có dấu thời gian",
+    "pdf_ready_body": "Các chữ ký cần thiết đã được ghi lại. Hồ sơ PDF đã sẵn sàng. Kiểm tra thông tin trước khi gửi đến công ty bảo hiểm của bạn."
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Không có tài liệu nào được nhận diện. Kiểm tra chất lượng ảnh.",
+    "analysis_error": "Lỗi phân tích.",
+    "read_failed": "Đọc không thành công",
+    "docs_analyzed_one": "{{count}} tài liệu đã được phân tích",
+    "docs_analyzed_other": "{{count}} tài liệu đã được phân tích",
+    "confidence": "Độ tin cậy: {{pct}}%",
+    "rescan": "Quét lại",
+    "vehicle_section": "🚗 Xe",
+    "plate": "Biển số",
+    "driver_section": "👤 Tài xế",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "insurance_found": "✅ Bảo hiểm",
+    "insurance_manual": "⚠️ Bảo hiểm — hoàn thành thủ công",
+    "company_label": "Công ty",
+    "company_aria": "Công ty bảo hiểm",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Số hợp đồng",
+    "policy_manual_hint": "(nhập thủ công)",
+    "policy_aria": "Số hợp đồng",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Xác nhận →",
+    "scanning_title": "Đang phân tích...",
+    "scanning_subtitle_one": "{{count}} tài liệu · nhận diện tự động",
+    "scanning_subtitle_other": "{{count}} tài liệu · nhận diện tự động",
+    "photo_title": "Chụp ảnh tài liệu của bạn",
+    "photo_subtitle": "Giấy phép lái xe + thẻ xanh trong một lần phân tích.",
+    "photo_subtitle2": "Ứng dụng tự động nhận diện và trích xuất mọi thứ.",
+    "doc_scanned": "Tài liệu đã quét {{n}}",
+    "doc_label": "Tài liệu {{n}}",
+    "photograph": "Chụp ảnh",
+    "rear_camera": "Camera sau",
+    "gallery": "Thư viện",
+    "which_docs": "Tài liệu nào cần quét?",
+    "doc_ch": "🇨🇭 Giấy phép lái xe + thẻ xanh",
+    "doc_fr": "🇫🇷 Giấy đăng ký + thẻ xanh / chứng nhận",
+    "doc_de": "🇩🇪 Giấy phép + Thẻ xanh",
+    "doc_gb": "🇬🇧 V5C + Giấy chứng nhận bảo hiểm xe cơ giới",
+    "doc_us": "🇺🇸 🇨🇦 Đăng ký + Thẻ ID bảo hiểm",
+    "doc_world": "🌍 Đăng ký + chứng minh bảo hiểm",
+    "close_error_aria": "Đóng lỗi",
+    "analyze_btn_one": "🔍 Phân tích {{count}} tài liệu",
+    "analyze_btn_other": "🔍 Phân tích {{count}} tài liệu",
+    "skip_manual": "Bỏ qua — nhập thủ công →",
+    "upload_gallery_aria": "Tải lên tài liệu từ thư viện",
+    "take_photo_aria": "Chụp ảnh tài liệu"
+  },
+  "app": {
+    "magic_link_error": "Liên kết đăng nhập không hợp lệ hoặc đã hết hạn.",
+    "gift_credits_added": "🎁 {{credits}} tín dụng đã được thêm vào tài khoản của bạn!",
+    "loading_aria": "Đang tải",
+    "nav_landing": "Trang chủ",
+    "nav_cgu": "Điều khoản sử dụng",
+    "nav_pricing": "Giá cả",
+    "nav_constat": "Tạo báo cáo",
+    "nav_join": "Tham gia một phiên",
+    "nav_account": "Tài khoản người dùng",
+    "nav_admin": "Bảng điều khiển quản trị",
+    "nav_emergency": "Số khẩn cấp",
+    "nav_privacy": "Chính sách bảo mật",
+    "nav_police_login": "Đăng nhập cảnh sát",
+    "nav_police_dashboard": "Bảng điều khiển cảnh sát",
+    "nav_police_flow": "Quy trình cảnh sát",
+    "nav_police_intervention": "Can thiệp của cảnh sát",
+    "nav_to": "Đi đến {{label}}",
+    "title_default": "boom.contact — Báo cáo tai nạn kỹ thuật số",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Giá cả — boom.contact",
+    "back": "← Quay lại←",
+    "buy_reports": "Mua báo cáo",
+    "credits_no_expiry": "Tín dụng không hết hạn · Có thể chia sẻ qua WhatsApp",
+    "credits_available_one": "✅ {{count}} tín dụng có sẵn",
+    "credits_available_other": "✅ {{count}} tín dụng có sẵn",
+    "no_credits": "⚡ Không có tín dụng — nạp ngay",
+    "currency_label": "TIỀN TỆ",
+    "currency_detected": "✓ tự động phát hiện",
+    "most_popular": "⭐ PHỔ BIẾN NHẤT · TIẾT KIỆM {{savings}}",
+    "economy": "Tiết kiệm {{savings}}",
+    "per_pack": "mỗi gói",
+    "per_report": "/ báo cáo",
+    "redirecting_stripe": "⏳ Đang chuyển hướng đến Stripe...",
+    "buy_btn": "Mua {{label}} — {{price}}",
+    "error_missing_url": "URL thanh toán bị thiếu",
+    "error_generic": "Lỗi",
+    "error_email_required": "Email là bắt buộc để mua",
+    "trust_stripe": "Thanh toán Stripe an toàn PCI-DSS",
+    "trust_no_expiry": "Tín dụng không hết hạn",
+    "trust_whatsapp": "Có thể chia sẻ qua WhatsApp",
+    "trust_worldwide": "Đa ngôn ngữ",
+    "trust_invoice": "Hóa đơn PDF tự động",
+    "trust_fleet": "Lý tưởng cho đội xe doanh nghiệp",
+    "why_title": "TẠI SAO NÊN CÓ TÍN DỤNG TRƯỚC?",
+    "scenario_child_title": "Con bạn gặp tai nạn",
+    "scenario_child_text": "Nó gọi cho bạn. Bạn gửi cho nó một tín dụng qua WhatsApp. Nó lập báo cáo trong 5 phút.",
+    "scenario_company_title": "Xe công ty",
+    "scenario_company_text": "Người giao hàng của bạn gặp va chạm. Chuyển cho anh ta một tín dụng ngay lập tức từ điện thoại của bạn.",
+    "scenario_abroad_title": "Trong chuyến đi nước ngoài",
+    "scenario_abroad_text": "Tai nạn ở Đức, Úc hoặc Nhật Bản. Giao diện có sẵn bằng nhiều ngôn ngữ.",
+    "pkg_single_label": "1 báo cáo",
+    "pkg_single_desc": "Cho một vụ tai nạn đơn lẻ",
+    "pkg_pack3_label": "3 báo cáo",
+    "pkg_pack3_desc": "Cho cả gia đình",
+    "pkg_pack3_marketing": "🎁 Chia sẻ qua WhatsApp — con bạn, nhân viên của bạn, bạn bè của bạn nhận được một liên kết ngay lập tức.",
+    "pkg_pack10_label": "10 báo cáo",
+    "pkg_pack10_desc": "Đội xe & doanh nghiệp",
+    "pkg_pack10_marketing": "🏢 Quản lý toàn bộ đội xe của bạn. Chuyển cho nhân viên của bạn chỉ với 1 cú nhấp chuột."
+  },
+  "signature": {
+    "title": "Chữ ký",
+    "driver": "Tài xế {{role}}",
+    "other_party": "Bên khác",
+    "no_signature": "không có chữ ký",
+    "sign_here": "Ký ở đây bằng ngón tay của bạn",
+    "signed": "ĐÃ KÝ ✓",
+    "clear": "🗑 Xóa",
+    "saving": "⏳ Đang lưu...",
+    "confirm_signature": "✍️ Xác nhận chữ ký",
+    "waiting_other": "Đang chờ chữ ký của tài xế khác...",
+    "waiting_pdf": "PDF sẽ được tạo ngay khi cả hai bên đã ký.",
+    "report_signed": "Báo cáo đã được ký!",
+    "generating_pdf": "Đang tạo PDF...",
+    "canvas_aria": "Khu vực chữ ký — Tài xế {{role}}"
+  },
+  "account": {
+    "member": {
+      "remove": "Xóa",
+      "removeConfirm": "Xóa thành viên này? Anh ấy sẽ mất quyền truy cập vào các xe và tín dụng của công ty.",
+      "loading": "Đang tải...",
+      "none": "Không có thành viên.",
+      "invite": "Mời một thành viên",
+      "inviteBtn": "Mời",
+      "pending": "Lời mời đang chờ"
+    },
+    "role": {
+      "owner": "Chủ sở hữu",
+      "driver": "Tài xế",
+      "fleet_admin": "Quản trị viên đội xe"
+    },
+    "scan": {
+      "cancel": "Hủy bỏ",
+      "photographPre": "Chụp ảnh",
+      "license": "giấy phép lái xe",
+      "and": "và/hoặc",
+      "greenCard": "thẻ xanh",
+      "title": "Quét giấy phép + thẻ xanh",
+      "subtitle": "Nhận diện tự động · đa ngôn ngữ"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Garage của tôi",
+      "add": "Thêm",
+      "emptyTitle": "Garage trống",
+      "emptySubtitle": "Đăng ký xe của bạn một lần. Không bao giờ cần quét lại khi gặp tai nạn.",
+      "addFirst": "Thêm xe đầu tiên của tôi",
+      "noOrgVehicles": "Không có xe doanh nghiệp vào lúc này."
+    },
+    "insurance": {
+      "saved": "Bảo hiểm đã được lưu",
+      "add": "Thêm bảo hiểm"
+    },
+    "nav": {
+      "logout": "Đăng xuất"
+    },
+    "vehicle": {
+      "edit": "Chỉnh sửa xe",
+      "delete": "Xóa xe",
+      "editOrg": "Chỉnh sửa xe doanh nghiệp",
+      "deleteOrg": "Xóa xe doanh nghiệp"
+    },
+    "fields": {
+      "nickname": "Biệt danh",
+      "plate": "Biển số",
+      "make": "Thương hiệu",
+      "model": "Mẫu",
+      "color": "Màu sắc",
+      "year": "Năm",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "phone": "Điện thoại",
+      "company": "Công ty",
+      "address": "Địa chỉ",
+      "newEmail": "Email mới",
+      "currentPwd": "Mật khẩu hiện tại (xác nhận)",
+      "confirmEmailAria": "Xác nhận địa chỉ email"
+    },
+    "credits": {
+      "buy": "Mua:",
+      "available": "TÍN DỤNG CÓ SẴN",
+      "unit": "1 tín dụng = 1 báo cáo tai nạn hoàn chỉnh"
+    },
+    "history": {
+      "loading": "Đang tải...",
+      "empty": "Không có báo cáo",
+      "emptySub": "Báo cáo tiếp theo của bạn sẽ tự động xuất hiện ở đây."
+    },
+    "personal": {
+      "title": "Thông tin cá nhân",
+      "none": "Không có thông tin — nhấp vào Chỉnh sửa"
+    },
+    "delete": {
+      "willDelete": "CÁI GÌ SẼ BỊ XÓA VĨNH VIỄN:",
+      "text": "Xóa vĩnh viễn tài khoản của bạn, các xe của bạn và tất cả các báo cáo của bạn. Hành động này là không thể đảo ngược."
+    },
+    "danger": {
+      "title": "Khu vực nguy hiểm"
+    }
   }
 }

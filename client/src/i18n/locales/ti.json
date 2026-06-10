@@ -21,7 +21,9 @@
       "line1": "ድሕሪ",
       "line2": "ናይ ሓደጋ",
       "line3": "ብኅብረት",
-      "line4": "ምቅርራብ"
+      "line4": "ምቅርራብ",
+      "title": "ኣብ ዝነበረ ኣደጋ ምስ ዘይኮነ ወይ ዘይተረጋገጠ ሰነድ ይወስድ።",
+      "subtitle": "boom.contact ንእሽቶ እምበር ኣብ ዝነበረ ኣደጋ መረጃታት ምስ ኣንቀጽ ይምልከት፣ ፎቶታት፣ ኣካባቢ፣ መግለጺ እንተ ምስ ወይ ወርዳ ይገብር፣ እንተ ወይ ወይ ኣብ ዝነበረ ወይ ወይ ይምልከት።"
     },
     "subtitle": "ዲጂታላዊ ናይ ሓደጋ ሪፖርት ኣብ 5 ደቒቕ። ሓፈሻዊ OCR፣ ብ QR ዝጋራ ሰሽን፣ ኣፍቲ ዓለምለኻዊ PDF።",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "ናብ ብቕዓት ምልኣኽ",
       "done": "ሪፖርት ተፈጺሙ!",
       "waiting": "ሰሽን #8F2K · ይጽበ…",
-      "capture": "📸 ስእሊ ኣልዕል"
+      "capture": "📸 ስእሊ ኣልዕል",
+      "sessionActive": "ኣብ ምርጫ ይኸውን",
+      "vehicleA": "መኪና A",
+      "photosSig": "ፎቶታት · ፊርማ ✓",
+      "vehicleB": "መኪና B",
+      "qrJoined": "QR ተዋውር · ኣብ ምርጫ",
+      "payGenerate": "ክፍል እንተ ወይ ወይ ይምልከት",
+      "pdfBadge": "PDF ዝነበረ",
+      "qrBadge": "QR ዝተለዋወጠ"
     },
     "badges": {
       "languages": "50 ቋንቋታት",
@@ -83,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "ዘድልይ ኩሉ ኣብዚ",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "ሓፈሻዊ OCR",
-          "desc": "Claude Vision ሰነዳትካ ብ 50+ ቋንቋ ይኣምቦ። ዜሮ ኢድ ምእታው።"
-        },
-        {
-          "icon": "📱",
-          "title": "ክሳብ 5 ዓንቀጻት",
-          "desc": "ሓደጋ ምስ 3፣ 4 ወይ 5 ዓንቀጻት? ነፍሲ ወከፍ ሾፌር ናቱ QR ይስካን።"
-        },
-        {
-          "icon": "📷",
-          "title": "ናይ ቦታ ስእልታት",
-          "desc": "5 ምድባት: ቦታ፣ ጉድኣት A፣ ጉድኣት B፣ ቑስሊ፣ ሰነዳት። ናብ PDF ይጽምበሩ።"
-        },
-        {
-          "icon": "✏️",
-          "title": "ናጻ ስኬጅ",
-          "desc": "ቦታ ዓንቀጻት፣ ምልክታት ኣቅጣጫ ስኬጅ ግበር። PNG ኣብ PDF ይኣቱ።"
-        },
-        {
-          "icon": "🚗",
-          "title": "ናይ ምትሕንካፍ ስኬማ",
-          "desc": "700+ ሞዴላት። 18 ኩርናዓት ጠውቕ ን ጉድኣት ምልክት።"
-        },
-        {
-          "icon": "✍️",
-          "title": "ብዙሕ ፊርማ",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "ምሉእ ዲጂታላዊ ሰነድ። ብኩሉ ኩባንያታት ኢንሹራንስ ቅቡል።"
-        },
-        {
-          "icon": "🚔",
-          "title": "ናይ ፖሊስ ሞዱል (ቀልጢፉ)",
-          "desc": "ፖሊስ ብ QR ናብ ሰሽን ይጽምበሩ። ናይ ዲጂታል ናይ ፖሊስ ሪፖርት።"
-        },
-        {
-          "icon": "🌍",
-          "title": "50 ቋንቋታት + RTL",
-          "desc": "5 ቢሊዮን ተዛረብቲ። ዓረብ፣ ዕብራይ፣ ፋርሲ ብ RTL። ዓለምለኻዊ ቁጽሪ ህጹጽ ዕርዳ።"
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "በQR ኮድ ይጋብኡ",
+        "desc": "ምርጫ ይምልከት፣ ሌላ ኣንቀጽ በQR ይምልከት። ኣይኮነ ኣስተዳደር፣ ኣይኮነ ኣብ ዝነበረ ወይ ወይ ይምልከት።"
+      },
+      {
+        "title": "ፎቶታት፣ ድምፅ እንተ ፊርማ",
+        "desc": "ፎቶታት ይገብር፣ ድምፅ ይምልከት፣ መኪናታት በምስል ይምልከት እንተ ፊርማ ይምልከት።"
+      },
+      {
+        "title": "PDF ዝነበረ ወይ ወይ ይምልከት",
+        "desc": "boom.contact ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት ወይ ወይ ይምልከት ይምልከት።"
+      },
+      {
+        "title": "ንእሽቶ ኣይኮነ ወይ ወይ ይምልከት",
+        "desc": "PDF ይምልከት ወይ ወይ ይምልከት ንእሽቶ ወይ ወይ ይምልከት ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት።"
+      }
+    ],
     "coverage": {
       "label": "ዓለምለኻዊ ሽፋን",
       "title": "ካብ ሽወደን ክሳብ ቻይና",
@@ -150,6 +128,102 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suísa"
+    },
+    "seoLine": "ዝነበረ ወይ ወይ ይምልከት · ዲጂታል ኣደጋ ምርጫ",
+    "flow": {
+      "label": "ምርጫ ኣብ አንደኛ ይምልከት",
+      "title": "ኣብ ዝነበረ ኣደጋ እንተ ወይ ወይ ይምልከት"
+    },
+    "stress": {
+      "label": "ኣብ ዝነበረ ኣደጋ ይምልከት",
+      "title": "ኣብ ዝነበረ ኣደጋ ይምልከት",
+      "text": "ኣብ ዝነበረ ወይ ወይ ይምልከት፣ ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት። ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት።",
+      "bullets": [
+        "ኣብ ዝነበረ ወይ ወይ ይምልከት",
+        "በብዙ ቋንቋ",
+        "ፎቶታት · ድምፅ · ፊርማ",
+        "PDF ዝነበረ"
+      ],
+      "emergencyTitle": "ኣብ ኣደጋ",
+      "emergencyText": "boom.contact ኣይኮነ ወይ ወይ ይምልከት፣ ወይ ወይ ይምልከት፣ ወይ ወይ ይምልከት። ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት።"
+    },
+    "pricing": {
+      "label": "ዋጋ",
+      "title": "ቀላል፣ ንብረት፣ ኣይኮነ ኣብ ዝነበረ",
+      "caption": "1 ክሬዲት = 1 ወይ ወይ ይምልከት · በብዙ ቋንቋ · ክሬዲት ኣይኮነ ወይ ወይ ይምልከት",
+      "badgePopular": "ዝተወዳጅ",
+      "plans": [
+        {
+          "label": "1 ወይ ወይ ይምልከት",
+          "desc": "ንእሽቶ ኣደጋ ወይ ወይ ይምልከት"
+        },
+        {
+          "label": "3 ወይ ወይ ይምልከት",
+          "desc": "ንምርጫ ወይ ወይ ይምልከት"
+        },
+        {
+          "label": "10 ወይ ወይ ይምልከት",
+          "desc": "ንብዙ ወይ ወይ ይምልከት"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "ንእሽቶ ወይ ወይ ይምልከት",
+      "title": "ንእሽቶ ወይ ወይ ይምልከት ወይ ወይ ይምልከት",
+      "text": "ንእሽቶ ወይ ወይ ይምልከት ወይ ወይ ይምልከት ወይ ወይ ይምልከት ይምልከት። ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።",
+      "cta": "ይኽእል / ይምልከት",
+      "items": [
+        {
+          "title": "ወይ ወይ ይምልከት",
+          "desc": "ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "title": "ወይ ወይ ይምልከት",
+          "desc": "ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "title": "ወይ ወይ ይምልከት",
+          "desc": "ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "title": "ወይ ወይ ይምልከት",
+          "desc": "PDF ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "ዝነበረ ጥያቄታት",
+      "items": [
+        {
+          "q": "boom.contact ምንድን እንደይ?",
+          "a": "boom.contact ኣብ ዝነበረ ኣደጋ ምርጫ ይምልከት ይምልከት፣ ወይ ወይ ይምልከት፣ ፎቶታት፣ ድምፅ፣ መልእኽቲ፣ ፊርማ ይምልከት ይምልከት።"
+        },
+        {
+          "q": "ኣይኮነ ኣስተዳደር ኣለኹ?",
+          "a": "ኣይኮነ። boom.contact ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት ይምልከት። ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "q": "ኣይኮነ ኣስተዳደር ኣለኹ?",
+          "a": "ኣይኮነ። boom.contact ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "q": "PDF ዝነበረ ይምልከት ወይ ወይ ይምልከት?",
+          "a": "PDF ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "q": "ኣይኮነ ኣስተዳደር ኣለኹ?",
+          "a": "ኣይኮነ። boom.contact ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "q": "ዝነበረ ወይ ወይ ይምልከት?",
+          "a": "ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        },
+        {
+          "q": "ኣብ ዝነበረ ወይ ወይ ይምልከት?",
+          "a": "ኣብ ዝነበረ ወይ ወይ ይምልከት ይምልከት ይምልከት።"
+        }
+      ]
     }
   },
   "steps": {
@@ -445,5 +519,431 @@
   "language": {
     "select": "ቋንቋ",
     "switch_tooltip": "ቋንቋ ቀይር"
+  },
+  "pricingPage": {
+    "sr_title": "ዋጋ — boom.contact",
+    "back": "← ወይ ወይ ይምልከት←",
+    "buy_reports": "ኣገዳሲ ኮንስታት",
+    "credits_no_expiry": "ክሬዲት ዘይተወርወር · በዋታስ ይካፈል",
+    "credits_available_one": "✅ {{count}} ክሬዲት ዝነብር",
+    "credits_available_other": "✅ {{count}} ክሬዲት ዝነብር",
+    "no_credits": "⚡ ኣይኮነን ክሬዲት — እቲ ኣይኮነን እንተወርወር",
+    "currency_label": "ገንዘብ",
+    "currency_detected": "✓ ተወርወር ኣይኮነ",
+    "most_popular": "⭐ በጣም ዝተወዳዳስ · እቅፍ {{savings}}",
+    "economy": "እቅፍ {{savings}}",
+    "per_pack": "በፓኬጅ",
+    "per_report": "/ ኮንስታት",
+    "redirecting_stripe": "⏳ ወደ ስትራይፕ እንደምን እንደምን...",
+    "buy_btn": "ኣገዳሲ {{label}} — {{price}}",
+    "error_missing_url": "የእንተወርወር ዩአርኤል ይኸውን",
+    "error_generic": "ስህተት",
+    "error_email_required": "ኢሜይል ይወርውር እንደምን እንደምን",
+    "trust_stripe": "የስትራይፕ የተደረገ ክፍያ የፒሲአይ-ዲኤስኤስ",
+    "trust_no_expiry": "ክሬዲት ዘይተወርወር",
+    "trust_whatsapp": "በዋታስ ይካፈል",
+    "trust_worldwide": "በቋንቋ በርካታ",
+    "trust_invoice": "የፒዲኤፍ የተወሰነ ታቅድ",
+    "trust_fleet": "ለኩባንያ የተሻለ",
+    "why_title": "ለምን የቀደም ክሬዲት እንደምን?",
+    "scenario_child_title": "ልጅዎ ኣደጋ እንደምን",
+    "scenario_child_text": "እሱ ይወዳድር። እሱን በዋታስ ክሬዲት ይላኩ። እሱ በ5 ደቂቀ ጊዜ ኮንስታት ይወስድ።",
+    "scenario_company_title": "የኩባንያ መኪና",
+    "scenario_company_text": "የእርስዎ ወንበር ኣደጋ እንደምን። ከሞባይልዎ በአንድ ጊዜ ክሬዲት ይላኩ።",
+    "scenario_abroad_title": "በውስጥ ጉዞ",
+    "scenario_abroad_text": "ኣደጋ በጀርመን፣ ኦስትራሊያ ወይም ጃፓን። በቋንቋ በርካታ ይገኛል።",
+    "pkg_single_label": "1 ኮንስታት",
+    "pkg_single_desc": "ለአንድ ኣደጋ",
+    "pkg_pack3_label": "3 ኮንስታት",
+    "pkg_pack3_desc": "ለእያንዳንዱ ቤተሰብ",
+    "pkg_pack3_marketing": "🎁 በዋታስ ይካፈል — ልጅዎ፣ ሰራተኛዎ፣ ጓደኛዎ አንድ የተወሰነ ይቀበሉ።",
+    "pkg_pack10_label": "10 ኮንስታት",
+    "pkg_pack10_desc": "እንደ ኩባንያ ወይም ድርጅት",
+    "pkg_pack10_marketing": "🏢 የእንደ ኩባንያ ይቀበሉ። በአንድ ጊዜ ወደ ሰራተኞች ይላኩ።"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "ኣይኮነን ሰነድ ይታወቅ። የፎቶዎች ጥራት ይመለከቱ።",
+    "analysis_error": "የተወሰነ ስህተት።",
+    "read_failed": "እንደምን እንደምን",
+    "docs_analyzed_one": "{{count}} ሰነድ ተመልክቶ",
+    "docs_analyzed_other": "{{count}} ሰነድ ተመልክቶ",
+    "confidence": "እምነት : {{pct}}%",
+    "rescan": "እንደምን ይቀመጥ",
+    "vehicle_section": "🚗 መኪና",
+    "plate": "ፕላት",
+    "driver_section": "👤 እንደምን",
+    "firstName": "የመጀመሪያ ስም",
+    "lastName": "የመጨረሻ ስም",
+    "insurance_found": "✅ መዋቅር",
+    "insurance_manual": "⚠️ መዋቅር — በእጅ ይሙሉ",
+    "company_label": "ኩባንያ",
+    "company_aria": "የመዋቅር ኩባንያ",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "የፖሊሲ ቁጥር",
+    "policy_manual_hint": "(በእጅ መጻፍ)",
+    "policy_aria": "የፖሊሲ ቁጥር",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "እምነት →",
+    "scanning_title": "በማስተካከል ላይ…",
+    "scanning_subtitle_one": "{{count}} ሰነድ · የተወሰነ መለያ",
+    "scanning_subtitle_other": "{{count}} ሰነድ · የተወሰነ መለያ",
+    "photo_title": "የሰነድዎች ፎቶ ይቀበሉ",
+    "photo_subtitle": "የመኪና ፈቃድ + ካርታ አንድ በአንድ ትንበይ ይቀበሉ።",
+    "photo_subtitle2": "እባኮት ይህ ይቀበሉ እና ይወስዱ ይቀበሉ።",
+    "doc_scanned": "የተሰነዱ ሰነድ {{n}}",
+    "doc_label": "ሰነድ {{n}}",
+    "photograph": "ፎቶ ይቀበሉ",
+    "rear_camera": "የኋላ ካሜራ",
+    "gallery": "ጋላሪ",
+    "which_docs": "እቲ ምንታይ ደረጃ ኣለዎም ይስከር?",
+    "doc_ch": "🇨🇭 ዝንቀሳቀስ ፈቃድ + ካርታ ቫርታ",
+    "doc_fr": "🇫🇷 ካርታ ግሪዝ + ካርታ ቫርታ / ወረቀት",
+    "doc_de": "🇩🇪 ዝንቀሳቀስ + ክሩነ ካርታ",
+    "doc_gb": "🇬🇧 V5C + የመኪና መዝገብ ወረቀት",
+    "doc_us": "🇺🇸 🇨🇦 ዝንቀሳቀስ + የመዋጮ መለያ ካርታ",
+    "doc_world": "🌍 ዝንቀሳቀስ + የመዋጮ ማስረጃ",
+    "close_error_aria": "ኣዝዩ ስህተት ዝበለ",
+    "analyze_btn_one": "🔍 ኣንደኛ ደረጃ ይትንቀሳቀስ {{count}}",
+    "analyze_btn_other": "🔍 ደረጃ ይትንቀሳቀስ {{count}}",
+    "skip_manual": "ይቅርታ — ኣንደኛ መረጃ ይጻፍ →",
+    "upload_gallery_aria": "ካርታ ኣብ ጋላሪ ይገብር",
+    "take_photo_aria": "ደረጃ ይፎታይ"
+  },
+  "auth": {
+    "default_subtitle": "ይስግእ ኣብ ወይ ይስግእ ወይ ይስግእ.",
+    "magic_btn": "📧 ኣብ ወይ ይስግእ ወይ ይስግእ",
+    "password_btn": "🔑 ኣብ ወይ ይስግእ",
+    "register_btn": "✨ ኣብ ወይ ይስግእ",
+    "skip_btn": "ይቅርታ ወይ ይስግእ →",
+    "skip_note": "ወይ ይስግእ, ኣብ ወይ ይስግእ ወይ ይስግእ.",
+    "magic_instructions": "ይስግእ ወይ ይስግእ — ይስግእ ወይ ይስግእ.",
+    "send_link": "ይስግእ ወይ ይስግእ",
+    "sending": "ይስግእ...",
+    "back": "← ወደ ኋላ",
+    "email_sent_title": "ኢሜይል ተላክነዋል!",
+    "email_sent_desc": "ወቅታዊ ቦታውን <strong>{{email}}</strong> ይፈትሹ።",
+    "email_sent_validity": "እባክዎ ይህ አገናኝ 15 ደቂቀ ጊዜ ይሆናል።",
+    "login_error": "ኢሜይል ወይም የይለፍ ቃል ይቅርታ ነው።",
+    "logging_in": "በመግባት ላይ...",
+    "login_btn": "ይግቡ",
+    "forgot_password": "የይለፍ ቃል ይረሱ?",
+    "register_desc": "የእርስዎን መለያ ይፍጠሩ እና ተመን ይዘው ይወዳድሩ ወይም የእርስዎን ኮንስታት በማስተካከል ይሙሉ።",
+    "password_placeholder": "የይለፍ ቃል (ከ6 ቁጥር በታች)",
+    "creating": "በመፍጠር ላይ...",
+    "create_btn": "የእኔ መለያ ይፍጠሩ",
+    "register_legal": "መለያ ማፍጠር በሚደረግ ጊዜ የእኛን የአገልግሎት ውሎች በማስተዋል ይቀበሉ። የእርስዎ የተመን ውሂብ ይቀመጣል እና የእርስዎ ምንጭ ይህ ይህ ይሆናል።",
+    "register_error": "በመመዘገብ ላይ እርስዎ አይተወው።",
+    "generic_error": "እርስዎ አይተወው።"
+  },
+  "postConstat": {
+    "next_time_title": "ቀጥሊ ጊዜ: 0 መረጃ ይጻፍ",
+    "next_time_subtitle": "ዕብይ መኪናታት ኣብ ወይ ይኸውን",
+    "benefit_scanned": "ፈቃድ + ካርታ ቫርታ ይትንቀሳቀስ ኣንደኛ",
+    "benefit_fast": "ኮንስታት በ2 ደቂቀ ወቅታት ወይ 10",
+    "benefit_gift": "ኣብ 1 ክልተ ኮንስታት ይስግእ",
+    "benefit_family": "ይህው ምስል: ኣብ ኣብ ወይ ይስግእ",
+    "create_account": "ኣብ ነፍስ ኣንደኛ ኣንደኛ →",
+    "share_btn": "ይስግእ ኣብ ወይ ይስግእ",
+    "register_vehicle_title": "ኣብ ወይ ይስግእ ይኸውን",
+    "register_vehicle_subtitle": "ይትንቀሳቀስ ፈቃድ + ካርታ ቫርታ · 30 ሰከንድ · ኣብ ወይ ይስግእ",
+    "or_skip": "ወይ ይቅርታ",
+    "family_pack": "🔥 ወይ ይስግእ",
+    "family_pack_desc": "3 ኮንስታት ይስግእ ኣብ ወይ ይስግእ",
+    "scenario_child": "ዕርምዕ ወይ ይስግእ — ኣደር ይስግእ. ኣብ 3 ሰከንድ ይስግእ ኣብ ወይ ይስግእ.",
+    "scenario_employee": "ኣብ ወይ ይስግእ ወይ ይስግእ. ይስግእ ኣብ ወይ ይስግእ.",
+    "scenario_friend": "ዕርምዕ ወይ ይስግእ. ይስግእ ኣብ ወይ ይስግእ.",
+    "buy_3_reports": "3 ኮንስታት ይግዝይ — CHF/EUR 12.90 →",
+    "see_all_packs": "ኣብ ወይ ይስግእ →",
+    "ready_title": "ኣብ ወይ ይስግእ",
+    "ready_subtitle": "ኣብ ወይ ይስግእ ይስግእ",
+    "account_title": "✅ ኣብ ነፍስ ኣንደኛ ኣንደኛ",
+    "account_desc": "ዕብይ መኪናታት ኣብ ወይ ይስግእ. በወይ ይስግእ ወይ ይስግእ.",
+    "manage_garage": "ኣብ ወይ ይስግእ →",
+    "gift_title": "🎁 ኣብ ወይ ይስግእ",
+    "gift_desc": "ኣንደኛ ይስግእ = ኣብ ወይ ይስግእ <strong>ኣብ ወይ ይስግእ</strong>, ወይ ይስግእ.",
+    "credits_available_one": "{{count}} ክሬዲት ይኸውን",
+    "credits_available_other": "{{count}} ክሬዲት ይኸውን",
+    "share_protect": "ይስግእ, ይገድል ወይ ይስግእ",
+    "wa_gift_title": "📲 ኣብ ወይ ይስግእ",
+    "wa_gift_desc": "ኣብ 1 ክልተ ይስግእ ወይ ይስግእ. ይስግእ ወይ ይስግእ — ይኸውን ኣብ ወይ ይስግእ.",
+    "send_1": "📲 ይስግእ 1 ኮንስታት",
+    "send_3": "📲 ይስግእ 3 ኮንስታት",
+    "gift_link_created": "✅ ይስግእ — ይስግእ ኣብ ወይ ይስግእ!",
+    "share_title": "📤 ይስግእ boom.contact",
+    "share_desc": "ኣብ 5 ደቂቀ ወቅታት ይስግእ. ዕርምዕ ይስግእ ወይ ይስግእ.",
+    "memorize_vehicles": "🚗 ይስግእ ዕብይ መኪናታት",
+    "memorize_desc": "ዕብይ መኪናታት, ሞቶ, ካምፕ ካር? እዚ ይስግእ ወይ ይስግእ.",
+    "low_credits_one": "⚡ ኣብ ወይ ይስግእ {{count}} ክሬዲት ይኸውን",
+    "low_credits_other": "⚡ ኣብ ወይ ይስግእ {{count}} ክሬዲት ይኸውን",
+    "recharge_desc": "ኣብ ወይ ይስግእ ይስግእ ወይ ይስግእ ወይ ይስግእ.",
+    "recharge_btn": "ይስግእ ኣብ ወይ ይስግእ →",
+    "pack_single_label": "1 ኮንስታት",
+    "pack_single_note": "ወይ ይስግእ",
+    "pack_pack3_label": "3 ኮንስታት",
+    "pack_pack3_note": "ወይ ይስግእ · ኣብ 12%",
+    "pack_pack10_label": "10 ኮንስታት",
+    "pack_pack10_note": "ወይ ይስግእ · ኣብ 29%",
+    "popular_badge": "⭐ ዝተለዋወጥ"
+  },
+  "signature": {
+    "title": "ፊርማ",
+    "driver": "አሽከርካሪ {{role}}",
+    "other_party": "ሌላ ወንጌል",
+    "no_signature": "የማይኖር ፊርማ",
+    "sign_here": "እባክዎ እዚህ ይፈርሙ",
+    "signed": "ተፈርሟል ✓",
+    "clear": "🗑 ይሰርዝ",
+    "saving": "⏳ በማስታወሻ...",
+    "confirm_signature": "✍️ ፊርማ ይረጋግጡ",
+    "waiting_other": "ከሌላ አሽከርካሪ ፊርማ በጠባቂ ላይ...",
+    "waiting_pdf": "PDF ከሁለቱ ወንጌሎች ይፈርሙ በኋላ ይከነሳል።",
+    "report_signed": "ኮንስታት ተፈርሟል!",
+    "generating_pdf": "PDF በሂደት ላይ...",
+    "canvas_aria": "የፊርማ ቦታ — አሽከርካሪ {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "ተሽከርካሪ",
+    "tab_driver": "አሽከርካሪ",
+    "tab_insurance": "የመዋጮ ድርጅት",
+    "tab_circumstances": "ዝንባር",
+    "tab_complement": "ተጨማሪ",
+    "field_required": "ይህ መስክ ይገባል",
+    "plate_label": "የመኪና ቁጥር",
+    "brand_label": "እቃ",
+    "model_label": "ሞዴል",
+    "year_label": "ዓ.ም.",
+    "vin_label": "ቁጥር የተመን (VIN)",
+    "firstName_label": "የመጀመሪያ ስም",
+    "lastName_label": "የመጨረሻ ስም",
+    "address_label": "አድራሻ",
+    "postalCode_label": "አድራሻ ኮድ",
+    "city_label": "ከተማ",
+    "country_label": "አገር",
+    "phone_label": "ስልክ",
+    "email_label": "ኢሜይል",
+    "license_label": "የመኪና ፈቃድ ቁጥር",
+    "company_label": "የአውታር መዋጮ",
+    "policyNumber_label": "የፖሊሲ ቁጥር",
+    "greenCardNumber_label": "የአረንጓዴ ካርድ ቁጥር",
+    "greenCardExpiry_label": "የአረንጓዴ ካርድ የማረፍ ቀን",
+    "agentName_label": "ወንበር / የአውታር ባለሙያ",
+    "agentPhone_label": "ስልክ ወንበር",
+    "circumstances_desc": "የእርስዎን መኪና <strong>({{role}})</strong> በግጭት ጊዜ የሚገልጹ ሁለት እቃዎችን ይምረጡ።",
+    "boxes_checked_one": "{{count}} እቃ ተመርጧል",
+    "boxes_checked_other": "{{count}} እቃዎች ተመርጧል",
+    "complement_desc": "የተጨማሪ መረጃ የኮንስታት — ክፍል 11, 13 እና 14.",
+    "datetime_label": "የግጭት ቀን እና ሰዓት",
+    "visible_damage_label": "የታይ ጉዳት (ክፍል 11)",
+    "visible_damage_placeholder": "በመኪናዎ ላይ የታይ ጉዳት ይግለጹ...",
+    "third_party_label": "ወጣቶች ላይ የታይ ጉዳት (A እና B ውስጥ የለም)",
+    "witnesses_label": "የምርጫ ምርጫዎች",
+    "witnesses_placeholder": "የእያንዳንዱ ምርጫ ስም, የአባት ስም, ስልክ...",
+    "voice_declaration_label": "🎙️ የድምፅ መግለጫ (አማራጭ)",
+    "observations_label": "ነፃ እንደሚመለከት — አስተያየት {{role}} (ክፍል 14)",
+    "observations_placeholder": "የሚረዳ ዝርዝር ያክሉ: የአየር ሁኔታ, የመንገድ ሁኔታ, የተገኘ ፍጥነት, ማስታወሻ...",
+    "insurance_holder_label": "የአውታር መዋጮ (ከአስተዳደር ይልቅ)",
+    "holder_name_placeholder": "የዋጋ ሙሉ ስም",
+    "holder_name_aria": "የአውታር መዋጮ ስም",
+    "holder_address_placeholder": "የዋጋ አድራሻ",
+    "holder_address_aria": "የአውታር መዋጮ አድራሻ",
+    "save_btn": "ይቀይሩ እና ይቀጥሉ →",
+    "form_tabs_aria": "የቅጽ ክፍሎች"
+  },
+  "voice": {
+    "title": "አደጋውን ይገልጹ",
+    "subtitle": "አማራጭ — የሚከናወን ይገልጹ ወይም የእርስዎን ቃል ይገልጹ። የእርስዎ መግለጫ በኮንስታት ይታይ።",
+    "tab_voice": "🎙️ ድምፅ",
+    "tab_text": "⌨️ ጽሁፍ",
+    "start_recording": "ይጀምሩ ማስታወሻ",
+    "textarea_aria": "የአደጋ መግለጫ",
+    "textarea_placeholder": "በአንዳንድ አንቀጽ ይገልጹ...",
+    "validate_desc": "✅ የእኔን መግለጫ ይረጋግጡ",
+    "skip_step": "ይህን ደረጃ ይወድቁ →",
+    "recording_in_progress": "ማስታወሻ በሂደት ላይ...",
+    "recording_tip": "💡 ይገልጹ: የእያንዳንዱ ተሽከርካሪ አቅጣጫ፣ የተገናኘ ነገር፣ ምንጭ ይነግሩ። በሰላም ይነግሩ።",
+    "stop_recording": "ይቆም ማስታወሻ",
+    "transcribing_title": "ትርጉም በሂደት ላይ...",
+    "transcribing_subtitle": "የእርስዎ ማስታወሻ ተመልክቷል",
+    "desc_recorded": "መግለጫ ተመልክቷል",
+    "desc_in_pdf": "የእርስዎ መግለጫ በPDF ኮንስታት ይታይ።",
+    "your_declaration": "የእርስዎ መግለጫ",
+    "edit": "✏️ ይሻሽ",
+    "edit_placeholder": "የእርስዎን መግለጫ ይሻሽ...",
+    "restart": "ይመለሱ",
+    "mic_denied": "ወይም ወይም ይህ ይሆናል።",
+    "mic_unavailable": "የማይገኝ ማይክሮፕን: {{msg}}",
+    "transcription_error": "የትርጉም እርምጃ",
+    "textarea_edit_aria": "የአደጋ ታሪክ"
+  },
+  "app": {
+    "magic_link_error": "የግንኙነት ሊንክ የተሳሳተ ወይም የተወው ነው።",
+    "gift_credits_added": "🎁 {{credits}} ክሬዲት(ዎች) ወደ እንደነው ተጨምሯል!",
+    "loading_aria": "በማስታወቂያ ላይ",
+    "nav_landing": "ዋና ገጽ",
+    "nav_cgu": "የአጠቃላይ ውል",
+    "nav_pricing": "ዋጋ",
+    "nav_constat": "የኮንስታት ፍጠር",
+    "nav_join": "ወደ ስብሰባ ይቀላቀሉ",
+    "nav_account": "የተጠቃሚ አካውንት",
+    "nav_admin": "የአስተዳደር ዳሰሳ",
+    "nav_emergency": "የአደጋ ቁጥሮች",
+    "nav_privacy": "የግለሰቦች የግል ፖሊሲ",
+    "nav_police_login": "የፖሊስ ግባ",
+    "nav_police_dashboard": "የፖሊስ ዳሰሳ",
+    "nav_police_flow": "የፖሊስ ፍርም",
+    "nav_police_intervention": "የፖሊስ  intervention",
+    "nav_to": "ወደ {{label}} ይሂዱ",
+    "title_default": "boom.contact — የውል መዋጮ ዲጂታል",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "legal": {
+    "intro": {
+      "title": "ከመጀመሪያ በፊት",
+      "body": "boom.contact አንድ ግጭት ማስታወቂያ እና የተወሰነ የPDF ፋይል ማዘጋጀት ይረዳል። በመውሰድ ጊዜ, አደገኛ ወይም የማይታወቅ ነገር ከሆነ ወይም የህግ ግዴታ ከሆነ እባክህ እንዲሁ ወደ አደጋ አድርጉ፣ ወይም ወደ ፖሊስ ወይም ወደ ተመራጭ ተቀባይ ይደውሉ። የተሰጡት መረጃዎች በተሳታፊዎች ተጠቃሚ ናቸው። እባክህ እንዲሁ መረጃዎችን በእጅ ይገቡ እንደማይፈልጉ ወይም ወደ ካሜራ፣ ወይም ወደ ማይክሮፕሰር ወይም ወደ አካባቢ ይገቡ።",
+      "start": "እቅፍ አውት እንደ ምን እንደ እኔ እንደ እኔ እንደ እኔ እንደ እኔ",
+      "emergency": "እንደ እኔ እንደ እኔ እንደ እኔ እንደ እኔ",
+      "privacy_cgu": "የግለሰቦች መረጃ / የግለሰቦች መረጃ"
+    },
+    "guest_accept": {
+      "checkbox": "እኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+      "note": "እኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ"
+    },
+    "signature_confirm": "እኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+    "payment_notice": "እንደ እኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+    "mic_notice": "እንደ እኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+    "injury_confirm": {
+      "body": "የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+      "continue": "ቀጥል",
+      "change": "ይለውጡ"
+    },
+    "pdf_ready_title": "የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ",
+    "pdf_ready_body": "የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ"
+  },
+  "join": {
+    "sessionLabel": "ስብሰባ",
+    "yourEmail": "የእኔ ኢሜይል",
+    "emailHint": "(የPDF ለማግኘት)",
+    "emailAria": "የእኔ ኢሜይል አድራሻ",
+    "connecting": "እንደ እኔ የእኔ የእኔ",
+    "connected": "ተገናኝቷል ! መጀመር…",
+    "joinButton": "ወደ የእኔ የእኔ ይቀርቡ"
+  },
+  "constat": {
+    "nav": {
+      "back": "ወደ ኋላ",
+      "reset": "የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ"
+    },
+    "session": {
+      "expiring": "የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ የእኔ"
+    },
+    "error": {
+      "close": "የእኔ የእኔ የእኔ የእኔ"
+    },
+    "vehicle": {
+      "pickRegistered": "የተመዘገበ መኪና ይምረጡ",
+      "autofill": "የተሞላ የተሞላ የተሞላ የተሞላ",
+      "yourRegistered": "የእኔ የእኔ የእኔ የእኔ",
+      "org": "ድርጅት",
+      "personal": "የግል",
+      "fallback": "መኪና",
+      "cancel": "ይቅርታ",
+      "orScanNew": "ወይም አዲስ መኪና ይምረጡ"
+    },
+    "pedestrian": {
+      "title": "ሌላ ክፍል : እግር ተጓዝ"
+    },
+    "summary": {
+      "yourVehicle": "የእኔ መኪና",
+      "accident": "አደጋ",
+      "damagedZones_one": "{{count}} የተጎዳ ክፍል",
+      "damagedZones_other": "{{count}} የተጎዳ ክፍል"
+    },
+    "emergency": {
+      "title": "የእኔ የእኔ የእኔ"
+    }
+  },
+  "account": {
+    "member": {
+      "remove": "ይሰርዝ",
+      "removeConfirm": "ይሰርዝ ይህ አባል ? ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም ወይም",
+      "loading": "እንደ እኔ የእኔ የእኔ",
+      "none": "አንድ አባል የለም.",
+      "invite": "አባል ይጋባ",
+      "inviteBtn": "አባል ይጋባ",
+      "pending": "የግንዛቤ ጥያቄዎች"
+    },
+    "role": {
+      "owner": "ባለቤት",
+      "driver": "መንግስት",
+      "fleet_admin": "ኣስተዳደር ፍሎት"
+    },
+    "scan": {
+      "cancel": "ይቅርታ",
+      "photographPre": "የእርስዎን ይፎታይ",
+      "license": "የመንግስት ፈቃድ",
+      "and": "እና/ወይም የእርስዎን",
+      "greenCard": "አረንጓዴ ካርድ",
+      "title": "ፈቃድ + አረንጓዴ ካርድ ይስነይ",
+      "subtitle": "ማስታወቂያ አውታረ መረጃ · በበለጠ ቋንቋ"
+    },
+    "garage": {
+      "back": "ጋራጅ",
+      "title": "ጋራጌ",
+      "add": "አንድ ይጨምሩ",
+      "emptyTitle": "ጋራጅ ዝበዝም",
+      "emptySubtitle": "የእርስዎን ተሽከርካሪዎች አንድ ጊዜ ይመዝግቡ። በአደጋ ወቅት ማስነሳት አይኖርም።",
+      "addFirst": "የእኔን የመጀመሪያ ተሽከርካሪ ይጨምሩ",
+      "noOrgVehicles": "እቅፍ ተሽከርካሪ የለም።"
+    },
+    "insurance": {
+      "saved": "የእርስዎ መዋቅር ተመዝግቧል",
+      "add": "የመዋቅር ይጨምሩ"
+    },
+    "nav": {
+      "logout": "ውጣ"
+    },
+    "vehicle": {
+      "edit": "ተሽከርካሪ ይሻሽሉ",
+      "delete": "ተሽከርካሪ ይሰርዝ",
+      "editOrg": "የንግድ ተሽከርካሪ ይሻሽሉ",
+      "deleteOrg": "የንግድ ተሽከርካሪ ይሰርዝ"
+    },
+    "fields": {
+      "nickname": "አይነት",
+      "plate": "ፕላት",
+      "make": "ምርት",
+      "model": "አይነት",
+      "color": "ቀለም",
+      "year": "ዓ.ም.",
+      "firstName": "የመጀመሪያ ስም",
+      "lastName": "የመጨረሻ ስም",
+      "phone": "ስልክ",
+      "company": "ኩባንያ",
+      "address": "አድራሻ",
+      "newEmail": "አዲስ ኢሜይል",
+      "currentPwd": "ወቅታዊ የይለፍ ቃል (ማረጋገጫ)",
+      "confirmEmailAria": "የኢሜይል አድራሻ ማረጋገጫ"
+    },
+    "credits": {
+      "buy": "ግዢ :",
+      "available": "የሚገኙ ክሬዲቶች",
+      "unit": "1 ክሬዲት = 1 ሙሉ ኮንስታ አሚበል"
+    },
+    "history": {
+      "loading": "በማስታወቂያ...",
+      "empty": "አንድ ኮንስታ የለም",
+      "emptySub": "የእርስዎ የቀጣይ ኮንስታ እዚህ በማስታወቂያ ይታይ።"
+    },
+    "personal": {
+      "title": "የግል መረጃ",
+      "none": "ምንም መረጃ የለም — ይሻሽሉ ይጠብቁ"
+    },
+    "delete": {
+      "willDelete": "ይሰርዝ የሚደርስ የሚወድቅ ነገር :",
+      "text": "የእርስዎን መለያ፣ ተሽከርካሪዎች እና ሁሉንም ኮንስታዎች በደረሰ መልክ ይሰርዝ። ይህ እርምጃ ወይም ይቀይር አይቻልም።"
+    },
+    "danger": {
+      "title": "አደገኛ ክልል"
+    }
   }
 }

@@ -12,7 +12,8 @@
     "required": "Kötelező",
     "yes": "Igen",
     "no": "Nem",
-    "unknown": "Ismeretlen"
+    "unknown": "Ismeretlen",
+    "rescan": "🔄 Újrascanner"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentálj egy balesetet papír nélkül, zűrzavar nélkül.",
+      "subtitle": "A boom.contact lépésről lépésre segít összegyűjteni a szükséges információkat, fényképeket, helyszínt, nyilatkozatokat és aláírásokat hozzáadni, majd létrehozni egy időbélyeggel ellátott PDF-dokumentumot, amelyet elküldhetsz a biztosítódnak."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktív session",
+      "vehicleA": "A JÁRMŰ",
+      "photosSig": "Fényképek · aláírás ✓",
+      "vehicleB": "B JÁRMŰ",
+      "qrJoined": "QR csatlakozott · folyamatban",
+      "payGenerate": "Fizetés és PDF generálás",
+      "pdfBadge": "Időbélyeges PDF",
+      "qrBadge": "Megosztott QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "QR kód meghívás",
+        "desc": "Hozd létre a sessiont, a másik sofőr a telefonjával beolvassa a QR-t. Nincs telepítés, nincs regisztráció."
+      },
+      {
+        "title": "Fényképek, hang és aláírás",
+        "desc": "Adj hozzá fényképeket, diktáld a megjegyzéseidet, helyezd el a járműveket a vázlaton és írd alá az ujjaddal."
+      },
+      {
+        "title": "Időbélyeges PDF-dokumentum",
+        "desc": "A boom.contact létrehoz egy időbélyeges PDF-dokumentumot, amely tartalmazza az egyes sofőrök által megadott információkat."
+      },
+      {
+        "title": "Küldd el a biztosítódnak",
+        "desc": "Töltsd le a PDF-et vagy küldd el e-mailben, hogy kísérje a kárbejelentésedet a biztosítódhoz."
+      }
+    ],
+    "seoLine": "A digitális baleseti jelentés több nyelven · Digital accident report",
+    "flow": {
+      "label": "Minden egyetlen folyamatban",
+      "title": "A balesettől a kész dokumentumig"
+    },
+    "stress": {
+      "label": "A baleset pillanatára tervezve",
+      "title": "Stresszes helyzetekre tervezve",
+      "text": "Ütközés után nem vagyunk tiszta fejjel. A boom.contact lépésről lépésre halad, a te nyelveden, és nyilvántartja az összes összegyűjtött információt. Minden a telefon böngészőjéből működik, még korlátozott kapcsolattal is.",
+      "bullets": [
+        "Lépésről lépésre vezetve",
+        "Többnyelvű",
+        "Fényképek · hang · aláírás",
+        "Időbélyeges PDF-dokumentum"
+      ],
+      "emergencyTitle": "Vészhelyzet esetén",
+      "emergencyText": "A boom.contact nem helyettesíti a sürgősségi szolgáltatásokat, a rendőrséget, ügyvédet vagy a biztosítót. Sérülés vagy veszély esetén először értesítsd a sürgősségi szolgáltatásokat."
+    },
+    "pricing": {
+      "label": "Árak",
+      "title": "Egyszerű, átlátható, előfizetés nélkül",
+      "caption": "1 kredit = 1 teljes jelentés · többnyelvű · kreditek lejárat nélkül",
+      "badgePopular": "Népszerű",
+      "plans": [
+        {
+          "label": "1 jelentés",
+          "desc": "Egy alkalmi balesethez"
+        },
+        {
+          "label": "3 jelentés",
+          "desc": "Az egész családnak"
+        },
+        {
+          "label": "10 jelentés",
+          "desc": "Flották és brókerek számára"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Szakembereknek",
+      "title": "Brókerek, flották és biztosítási partnerek számára",
+      "text": "Felszereld ügyfeleidet és sofőrjeidet egy világos eszközzel a baleset dokumentálására és egy időbélyeges PDF-dokumentum generálására. Kreditcsomagok flották és brókerek számára, egyszerű telepítés, előfizetés nélkül.",
+      "cta": "Kapcsolatfelvétel / megosztás",
+      "items": [
+        {
+          "title": "Flották",
+          "desc": "Szervezett dokumentáció minden sofőr balesetéről."
+        },
+        {
+          "title": "Brókerek",
+          "desc": "Hozzáadott értékű szolgáltatás az ügyfeleidnek."
+        },
+        {
+          "title": "Adatvédelem",
+          "desc": "Titkosított adatok átvitel közben, kérésre törölhető."
+        },
+        {
+          "title": "Átadás",
+          "desc": "Időbélyeges PDF, amely csatolható a kárbejelentéshez."
+        }
+      ]
+    },
+    "faq": {
+      "label": "GYIK",
+      "title": "Gyakran ismételt kérdések",
+      "items": [
+        {
+          "q": "Mi az a boom.contact?",
+          "a": "A boom.contact egy alkalmazás, amely segít dokumentálni egy közúti balesetet telefonról: sofőrök meghívása QR-kódon keresztül, fényképek, hang, vázlat, aláírások, majd egy időbélyeges PDF-dokumentum generálása, amelyet elküldhetsz a biztosítódnak."
+        },
+        {
+          "q": "Telepítenem kell egy alkalmazást?",
+          "a": "Nem. A boom.contact közvetlenül a telefon böngészőjében működik (Safari, Chrome, Firefox). Hozzáadhatod az otthoni képernyődhöz mint webalkalmazást (PWA) offline hozzáféréshez."
+        },
+        {
+          "q": "Mi történik, ha a másik sofőrnek nincs alkalmazása?",
+          "a": "Te létrehozod a sessiont, és egy QR-kód jelenik meg. A másik sofőr beolvassa a telefonjával: a boom.contact megnyílik a böngészőjében, regisztráció vagy letöltés nélkül."
+        },
+        {
+          "q": "A PDF-dokumentumot elfogadja a biztosítóm?",
+          "a": "Az időbélyeges PDF-dokumentum a kárbejelentésed kíséretére szolgál. A boom.contact nem garantálja az elfogadást, ez a biztosítód döntése a szerződésed és a joghatóság alapján."
+        },
+        {
+          "q": "Működik, ha a másik sofőr más nyelvet beszél?",
+          "a": "Igen. Minden sofőr a saját nyelvén használja az interfészt. A végső dokumentum minden sofőr számára generálva van."
+        },
+        {
+          "q": "Védve vannak az adataim?",
+          "a": "Az adatok titkosítva vannak átvitel közben, a sessionök automatikusan törlődnek egy idő után, és a rendőrség soha nem értesül automatikusan — csak a te kifejezett kérésedre."
+        },
+        {
+          "q": "Mennyibe kerül?",
+          "a": "CHF / EUR 4.90-tól egy jelentésért. 3 jelentés csomag 12.90-ért (−12 %), 10 jelentés csomag 34.90-ért (−29 %). Előfizetés nélkül, kreditek lejárat nélkül."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "account": {
+    "member": {
+      "remove": "Eltávolítás",
+      "removeConfirm": "Eltávolítod ezt a tagot? El fogja veszíteni a hozzáférést a járművekhez és a céges kreditekhez.",
+      "loading": "Betöltés...",
+      "none": "Nincs tag.",
+      "invite": "Tag meghívása",
+      "inviteBtn": "Meghívás",
+      "pending": "Függőben lévő meghívók"
+    },
+    "role": {
+      "owner": "Tulajdonos",
+      "driver": "Sofőr",
+      "fleet_admin": "Flotta admin"
+    },
+    "scan": {
+      "cancel": "Mégse",
+      "photographPre": "Fényképezd le a",
+      "license": "forgalmi engedélyt",
+      "and": "és/vagy a",
+      "greenCard": "zöld kártyát",
+      "title": "Forgalmi engedély + zöld kártya beolvasása",
+      "subtitle": "Automatikus azonosítás · többnyelvű"
+    },
+    "garage": {
+      "back": "Garázs",
+      "title": "A garázsom",
+      "add": "Hozzáadás",
+      "emptyTitle": "Üres garázs",
+      "emptySubtitle": "Regisztráld a járműveidet egyszer. Soha többé nem kell beolvasni balesetkor.",
+      "addFirst": "Első járművem hozzáadása",
+      "noOrgVehicles": "Jelenleg nincs céges jármű."
+    },
+    "insurance": {
+      "saved": "Biztosítás mentve",
+      "add": "Biztosítás hozzáadása"
+    },
+    "nav": {
+      "logout": "Kijelentkezés"
+    },
+    "vehicle": {
+      "edit": "Jármű szerkesztése",
+      "delete": "Jármű törlése",
+      "editOrg": "Céges jármű szerkesztése",
+      "deleteOrg": "Céges jármű törlése"
+    },
+    "fields": {
+      "nickname": "Becenév",
+      "plate": "Rendszám",
+      "make": "Márka",
+      "model": "Modell",
+      "color": "Szín",
+      "year": "Év",
+      "firstName": "Keresztnév",
+      "lastName": "Vezetéknév",
+      "phone": "Telefon",
+      "company": "Cég",
+      "address": "Cím",
+      "newEmail": "Új e-mail",
+      "currentPwd": "Jelenlegi jelszó (megerősítés)",
+      "confirmEmailAria": "E-mail cím megerősítése"
+    },
+    "credits": {
+      "buy": "Vásárlás:",
+      "available": "ELÉRHETŐ KREDITEK",
+      "unit": "1 kredit = 1 teljes baleseti jelentés"
+    },
+    "history": {
+      "loading": "Betöltés...",
+      "empty": "Nincs jelentés",
+      "emptySub": "A következő jelentésed automatikusan itt fog megjelenni."
+    },
+    "personal": {
+      "title": "Személyes információk",
+      "none": "Nincs információ — kattints a Szerkesztésre"
+    },
+    "delete": {
+      "willDelete": "A KÖVETKEZŐK LESZNEK TÖRÖLVE:",
+      "text": "Töröld véglegesen a fiókodat, a járműveidet és az összes jelentésedet. Ez a művelet visszafordíthatatlan."
+    },
+    "danger": {
+      "title": "Veszélyes zóna"
+    }
+  },
+  "app": {
+    "magic_link_error": "Érvénytelen vagy lejárt bejelentkezési link.",
+    "gift_credits_added": "🎁 {{credits}} kredit(ek) hozzáadva a fiókodhoz!",
+    "loading_aria": "Betöltés folyamatban",
+    "nav_landing": "Főoldal",
+    "nav_cgu": "Felhasználási feltételek",
+    "nav_pricing": "Árazás",
+    "nav_constat": "Jelentés létrehozása",
+    "nav_join": "Csatlakozás egy sessionhöz",
+    "nav_account": "Felhasználói fiók",
+    "nav_admin": "Adminisztrátori irányítópult",
+    "nav_emergency": "Sürgősségi számok",
+    "nav_privacy": "Adatvédelmi irányelvek",
+    "nav_police_login": "Rendőrségi bejelentkezés",
+    "nav_police_dashboard": "Rendőrségi irányítópult",
+    "nav_police_flow": "Rendőrségi folyamat",
+    "nav_police_intervention": "Rendőrségi beavatkozás",
+    "nav_to": "Navigálás a(z) {{label}} felé",
+    "title_default": "boom.contact — Digitális baleseti jelentés",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "constatForm": {
+    "tab_vehicle": "Jármű",
+    "tab_driver": "Sofőr",
+    "tab_insurance": "Biztosítás",
+    "tab_circumstances": "Körülmények",
+    "tab_complement": "Kiegészítés",
+    "field_required": "Ez a mező kötelező",
+    "plate_label": "Rendszám",
+    "brand_label": "Márka",
+    "model_label": "Modell",
+    "year_label": "Év",
+    "vin_label": "Alvázszám (VIN)",
+    "firstName_label": "Keresztnév",
+    "lastName_label": "Vezetéknév",
+    "address_label": "Cím",
+    "postalCode_label": "Irányítószám",
+    "city_label": "Helység",
+    "country_label": "Ország",
+    "phone_label": "Telefon",
+    "email_label": "E-mail",
+    "license_label": "Jogosítvány száma",
+    "company_label": "Biztosítótársaság",
+    "policyNumber_label": "Biztosítási szám",
+    "greenCardNumber_label": "Zöld kártya száma",
+    "greenCardExpiry_label": "Zöld kártya érvényessége",
+    "agentName_label": "Ügynök / Bróker",
+    "agentPhone_label": "Biztosító telefonja",
+    "circumstances_desc": "Jelöld be az összes négyzetet, amely leírja a járműved <strong>({{role}})</strong> helyzetét a baleset pillanatában.",
+    "boxes_checked_one": "{{count}} négyzet bejelölve",
+    "boxes_checked_other": "{{count}} négyzet bejelölve",
+    "complement_desc": "Kiegészítő információk a jelentéshez — 11., 13. és 14. szakasz.",
+    "datetime_label": "Baleset dátuma és időpontja",
+    "visible_damage_label": "Látható károk (11. szakasz)",
+    "visible_damage_placeholder": "Írd le a járműveden látható károkat...",
+    "third_party_label": "Harmadik fél anyagi károk (A és B kivételével)",
+    "witnesses_label": "Tanúk",
+    "witnesses_placeholder": "Minden tanú neve, keresztneve, telefonszáma...",
+    "voice_declaration_label": "🎙️ Hangnyilatkozat (opcionális)",
+    "observations_label": "Szabad megjegyzések — {{role}} sofőr (14. szakasz)",
+    "observations_placeholder": "Adj hozzá minden hasznos elemet: időjárási körülmények, út állapota, becsült sebesség, megjegyzések...",
+    "insurance_holder_label": "Biztosítási kötvény birtokosa (ha eltér a sofőrtől)",
+    "holder_name_placeholder": "A biztosítási kötvény birtokosának teljes neve",
+    "holder_name_aria": "A biztosítási kötvény birtokosának neve",
+    "holder_address_placeholder": "A biztosítási kötvény birtokosának címe",
+    "holder_address_aria": "A biztosítási kötvény birtokosának címe",
+    "save_btn": "Mentés és folytatás →",
+    "form_tabs_aria": "Űrlap szakaszai"
+  },
+  "postConstat": {
+    "next_time_title": "A következő alkalommal: 0 bevitel",
+    "next_time_subtitle": "Járműveid egyszer és mindenkorra megjegyezve",
+    "benefit_scanned": "Forgalmi engedély + zöld kártya egyszer beolvasva",
+    "benefit_fast": "Jelentés 2 perc alatt a 10 helyett",
+    "benefit_gift": "Ajándékozz egy jelentést a szeretteidnek egy kattintással",
+    "benefit_family": "Ideális családoknak: oszd meg a krediteket",
+    "create_account": "Hozd létre ingyenes fiókodat →",
+    "share_btn": "Megosztás a szeretteimmel",
+    "register_vehicle_title": "Ezután regisztráld a járművedet",
+    "register_vehicle_subtitle": "Scan forgalmi engedély + zöld kártya · 30 másodperc · soha többé nem kell újra beírni",
+    "or_skip": "vagy ugorj egyenesen",
+    "family_pack": "🔥 Családi csomag",
+    "family_pack_desc": "3 jelentés, amelyet megoszthatsz a szeretteiddel",
+    "scenario_child": "A gyermeked hív — baleset. Küldj neki egy jelentést 3 másodperc alatt a telefonjára.",
+    "scenario_employee": "Alkalmazott céges járművel. Azonnal küldj át neki egy kreditet WhatsApp-on.",
+    "scenario_friend": "Barát külföldön bajban. Linket kap, nem szükséges fiók.",
+    "buy_3_reports": "3 jelentés vásárlása — CHF/EUR 12.90 →",
+    "see_all_packs": "Minden csomag megtekintése →",
+    "ready_title": "Készen áll a következő alkalomra",
+    "ready_subtitle": "Töltsd fel most, oszd meg, amikor csak akarod",
+    "account_title": "✅ A boom.contact fiókod",
+    "account_desc": "A járműveid megjegyezve. A következő balesetkor közvetlenül a QR lépéshez jutsz — nincs bevitel, nincs beolvasás.",
+    "manage_garage": "Garázs kezelése →",
+    "gift_title": "🎁 Ajándékozz egy jelentést WhatsApp-on",
+    "gift_desc": "Az egyik kredited = egy egyedi link, amelyet <strong>bárkinek</strong> küldhetsz, anélkül, hogy a személynek fiókra lenne szüksége.",
+    "credits_available_one": "{{count}} kredit elérhető",
+    "credits_available_other": "{{count}} kredit elérhető",
+    "share_protect": "Oszd meg, védd meg a szeretteidet",
+    "wa_gift_title": "📲 Ajándékozz egy jelentést WhatsApp-on",
+    "wa_gift_desc": "Egy kattintással küldj egy linket a gyermekednek, alkalmazottadnak vagy barátodnak. Ő elkészíti a jelentését fiók vagy fizetés nélkül — levonva a kreditedből.",
+    "send_1": "📲 Küldj 1 jelentést",
+    "send_3": "📲 Küldj 3 jelentést",
+    "gift_link_created": "✅ Link létrehozva — küldd el WhatsApp-on!",
+    "share_title": "📤 boom.contact megosztása",
+    "share_desc": "Most készítetted el a jelentésed 5 perc alatt. A barátaidnak tudniuk kell, hogy ez létezik.",
+    "memorize_vehicles": "🚗 Jegyezd meg a többi járművedet",
+    "memorize_desc": "Céges flották, motor, lakóautó? Minden beolvasott jármű = soha többé nem kell beírni balesetkor.",
+    "low_credits_one": "⚡ Csak {{count}} kredit maradt",
+    "low_credits_other": "⚡ Csak {{count}} kredit maradt",
+    "recharge_desc": "Töltsd fel most, és élvezd a kedvezményeket a családi és céges csomagokra.",
+    "recharge_btn": "Kreditek feltöltése →",
+    "pack_single_label": "1 jelentés",
+    "pack_single_note": "Alkalmi használatra",
+    "pack_pack3_label": "3 jelentés",
+    "pack_pack3_note": "Család · 12% megtakarítás",
+    "pack_pack10_label": "10 jelentés",
+    "pack_pack10_note": "Vállalat · 29% megtakarítás",
+    "popular_badge": "⭐ NÉPSZERŰ"
+  },
+  "pricingPage": {
+    "sr_title": "Árak — boom.contact",
+    "back": "← Vissza←",
+    "buy_reports": "Jelentések vásárlása",
+    "credits_no_expiry": "Kreditek lejárat nélkül · Megosztható WhatsApp-on",
+    "credits_available_one": "✅ {{count}} kredit elérhető",
+    "credits_available_other": "✅ {{count}} kredit elérhető",
+    "no_credits": "⚡ Nincs kredit — töltsd fel most",
+    "currency_label": "PÉNZNEM",
+    "currency_detected": "✓ automatikusan észlelve",
+    "most_popular": "⭐ LEGPOPULÁRISABB · MEGTAKARÍTÁS {{savings}}",
+    "economy": "Megtakartás {{savings}}",
+    "per_pack": "csomagonként",
+    "per_report": "/ jelentés",
+    "redirecting_stripe": "⏳ Átirányítás Stripe-ra...",
+    "buy_btn": "Vásárlás {{label}} — {{price}}",
+    "error_missing_url": "Hiányzó fizetési URL",
+    "error_generic": "Hiba",
+    "error_email_required": "E-mail szükséges a vásárláshoz",
+    "trust_stripe": "Biztonságos Stripe PCI-DSS fizetés",
+    "trust_no_expiry": "Kreditek lejárat nélkül",
+    "trust_whatsapp": "Megosztható WhatsApp-on",
+    "trust_worldwide": "Többnyelvű",
+    "trust_invoice": "Automatikus PDF számla",
+    "trust_fleet": "Ideális flották számára",
+    "why_title": "MIÉRT KELL ELŐRE KREDITEK?",
+    "scenario_child_title": "A gyermeked balesetet szenvedett",
+    "scenario_child_text": "Felhív. Küldesz neki egy kreditet WhatsApp-on. 5 perc alatt elkészíti a jelentését.",
+    "scenario_company_title": "Céges jármű",
+    "scenario_company_text": "A futárodnak balesete van. Azonnal át tudsz neki küldeni egy kreditet a telefonodról.",
+    "scenario_abroad_title": "Külföldi utazás során",
+    "scenario_abroad_text": "Baleset Németországban, Ausztráliában vagy Japánban. Az interfész több nyelven elérhető.",
+    "pkg_single_label": "1 jelentés",
+    "pkg_single_desc": "Egy alkalmi balesethez",
+    "pkg_pack3_label": "3 jelentés",
+    "pkg_pack3_desc": "Az egész családnak",
+    "pkg_pack3_marketing": "🎁 Megosztható WhatsApp-on — a gyermeked, alkalmazottad, barátod azonnali linket kap.",
+    "pkg_pack10_label": "10 jelentés",
+    "pkg_pack10_desc": "Flották és vállalatok számára",
+    "pkg_pack10_marketing": "🏢 Kezeld az egész flottádat. Át tudod adni az alkalmazottaidnak egy kattintással."
+  },
+  "join": {
+    "sessionLabel": "Session",
+    "yourEmail": "A te e-mailed",
+    "emailHint": "(a PDF megküldéséhez)",
+    "emailAria": "A te e-mail címed",
+    "connecting": "Csatlakozás...",
+    "connected": "Csatlakozva! Indítás...",
+    "joinButton": "Csatlakozás a jelentéshez"
+  },
+  "constat": {
+    "nav": {
+      "back": "Vissza",
+      "reset": "Jelentés visszaállítása"
+    },
+    "session": {
+      "expiring": "A sessioned hamarosan lejár. Mentsd el az adataidat."
+    },
+    "error": {
+      "close": "Hiba bezárása"
+    },
+    "vehicle": {
+      "pickRegistered": "Válassz egy regisztrált járművet",
+      "autofill": "Automatikus kitöltés — nincs szükség beolvasásra",
+      "yourRegistered": "A te regisztrált járműveid",
+      "org": "Cég",
+      "personal": "Személyes",
+      "fallback": "Jármű",
+      "cancel": "Mégse",
+      "orScanNew": "vagy olvass be egy új járművet"
+    },
+    "pedestrian": {
+      "title": "Másik fél: gyalogos"
+    },
+    "summary": {
+      "yourVehicle": "A járműved",
+      "accident": "Baleset",
+      "damagedZones_one": "{{count}} sérült zóna",
+      "damagedZones_other": "{{count}} sérült zóna"
+    },
+    "emergency": {
+      "title": "Sürgősségi számok"
+    }
+  },
+  "signature": {
+    "title": "Aláírás",
+    "driver": "{{role}} sofőr",
+    "other_party": "Másik fél",
+    "no_signature": "nincs aláírás",
+    "sign_here": "Írd alá itt az ujjaddal",
+    "signed": "ALÁÍRVA ✓",
+    "clear": "🗑 Törlés",
+    "saving": "⏳ Mentés...",
+    "confirm_signature": "✍️ Aláírás megerősítése",
+    "waiting_other": "A másik sofőr aláírására várva...",
+    "waiting_pdf": "A PDF generálása a két fél aláírása után kezdődik.",
+    "report_signed": "Jelentés aláírva!",
+    "generating_pdf": "PDF generálása folyamatban...",
+    "canvas_aria": "Aláírási terület — {{role}} sofőr"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Nincs dokumentum felismerve. Ellenőrizd a fényképek minőségét.",
+    "analysis_error": "Elemzési hiba.",
+    "read_failed": "Olvasás sikertelen",
+    "docs_analyzed_one": "{{count}} dokumentum elemezve",
+    "docs_analyzed_other": "{{count}} dokumentum elemezve",
+    "confidence": "Bizalom: {{pct}}%",
+    "rescan": "Újrascanner",
+    "vehicle_section": "🚗 Jármű",
+    "plate": "Rendszám",
+    "driver_section": "👤 Sofőr",
+    "firstName": "Keresztnév",
+    "lastName": "Vezetéknév",
+    "insurance_found": "✅ Biztosítás",
+    "insurance_manual": "⚠️ Biztosítás — manuális kitöltés",
+    "company_label": "Társaság",
+    "company_aria": "Biztosítótársaság",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Rendszám",
+    "policy_manual_hint": "(manuális bevitel)",
+    "policy_aria": "Biztosítási szám",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Megerősítés →",
+    "scanning_title": "Elemzés folyamatban…",
+    "scanning_subtitle_one": "{{count}} dokumentum · automatikus azonosítás",
+    "scanning_subtitle_other": "{{count}} dokumentum · automatikus azonosítás",
+    "photo_title": "Fényképezd le a dokumentumaidat",
+    "photo_subtitle": "Forgalmi engedély + zöld kártya egyetlen elemzésben.",
+    "photo_subtitle2": "Az alkalmazás automatikusan azonosítja és kiemeli mindent.",
+    "doc_scanned": "Dokumentum beolvasva {{n}}",
+    "doc_label": "Dokumentum {{n}}",
+    "photograph": "Fényképezni",
+    "rear_camera": "Hátsó kamera",
+    "gallery": "Galéria",
+    "which_docs": "Mely dokumentumokat kell beolvasni?",
+    "doc_ch": "🇨🇭 Forgalmi engedély + zöld kártya",
+    "doc_fr": "🇫🇷 Zöld kártya + forgalmi engedély / igazolás",
+    "doc_de": "🇩🇪 Engedélyezés + Zöld Kártya",
+    "doc_gb": "🇬🇧 V5C + Gépkocsi Biztosítási Igazolás",
+    "doc_us": "🇺🇸 🇨🇦 Regisztráció + Biztosítási Azonosító kártya",
+    "doc_world": "🌍 Regisztráció + biztosítási igazolás",
+    "close_error_aria": "Hiba bezárása",
+    "analyze_btn_one": "🔍 Elemezni {{count}} dokumentumot",
+    "analyze_btn_other": "🔍 Elemezni {{count}} dokumentumot",
+    "skip_manual": "Átugrás — manuális bevitel →",
+    "upload_gallery_aria": "Dokumentumok feltöltése a galériából",
+    "take_photo_aria": "Dokumentum fényképezése"
+  },
+  "voice": {
+    "title": "Írd le a balesetet",
+    "subtitle": "Opcionális — írd le, mi történt a saját szavaiddal. A nyilatkozatod rögzítve lesz a jelentésben.",
+    "tab_voice": "🎙️ Hang",
+    "tab_text": "⌨️ Szöveg",
+    "start_recording": "Kezd el a felvételt",
+    "textarea_aria": "A baleset leírása",
+    "textarea_placeholder": "Írd le a balesetet néhány mondatban...",
+    "validate_desc": "✅ Érvényesítsd a leírásomat",
+    "skip_step": "Ugorj át ezt a lépést →",
+    "recording_in_progress": "Felvétel folyamatban...",
+    "recording_tip": "💡 Írd le: minden jármű irányát, a hatás pontját, a körülményeket. Beszélj nyugodtan.",
+    "stop_recording": "Állítsd le a felvételt",
+    "transcribing_title": "Átirás folyamatban...",
+    "transcribing_subtitle": "A felvételed feldolgozás alatt",
+    "desc_recorded": "Leírás rögzítve",
+    "desc_in_pdf": "A nyilatkozatod belekerül a PDF-jelentésbe",
+    "your_declaration": "A nyilatkozatod",
+    "edit": "✏️ Szerkesztés",
+    "edit_placeholder": "Javítsd a nyilatkozatodat, ha szükséges...",
+    "restart": "Újra kezdeni",
+    "mic_denied": "A mikrofonhoz való hozzáférés megtagadva — használd a manuális bevitel.",
+    "mic_unavailable": "Mikrofon nem elérhető: {{msg}}",
+    "transcription_error": "Átirási hiba",
+    "textarea_edit_aria": "A baleset elmondása"
+  },
+  "auth": {
+    "default_subtitle": "Jelentkezz be, hogy elmentsd a járműveidet, és ne kelljen semmit megadnod a jelentéseid során.",
+    "magic_btn": "📧 Bejelentkezés e-mail linkkel (ajánlott)",
+    "password_btn": "🔑 Bejelentkezés jelszóval",
+    "register_btn": "✨ Fiók létrehozása",
+    "skip_btn": "Folytatás fiók nélkül →",
+    "skip_note": "Fiók nélkül is készíthetsz jelentést és fizethetsz a Stripe-on.",
+    "magic_instructions": "Add meg az e-mail címed — kapsz egy 15 percig érvényes bejelentkezési linket.",
+    "send_link": "Link küldése",
+    "sending": "Küldés...",
+    "back": "← Vissza",
+    "email_sent_title": "E-mail elküldve!",
+    "email_sent_desc": "Ellenőrizd a <strong>{{email}}</strong> postaládádat.",
+    "email_sent_validity": "A link 15 percig érvényes.",
+    "login_error": "Hibás e-mail vagy jelszó.",
+    "logging_in": "Bejelentkezés...",
+    "login_btn": "Bejelentkezés",
+    "forgot_password": "Elfelejtetted a jelszavad? Használj e-mail linket →",
+    "register_desc": "Hozd létre a fiókodat, hogy elmentsd a járműveidet és automatikusan előtöltsd a jelentéseidet.",
+    "password_placeholder": "Jelszó (min. 6 karakter)",
+    "creating": "Létrehozás...",
+    "create_btn": "Fiók létrehozása",
+    "register_legal": "Fiók létrehozásával elfogadod az ÁSZF-et. Az adataid titkosítva vannak, és soha nem osztjuk meg a beleegyezésed nélkül.",
+    "register_error": "Hiba a regisztráció során.",
+    "generic_error": "Hiba"
+  },
+  "legal": {
+    "intro": {
+      "title": "A kezdés előtt",
+      "body": "A boom.contact segít dokumentálni egy balesetet és létrehozni egy strukturált PDF-dokumentumot. Sérülés, veszély, elmenekülés, súlyos nézeteltérés vagy jogi kötelezettség esetén azonnal értesítsd a sürgősségi szolgáltatásokat, a rendőrséget vagy a megfelelő hatóságokat. Az itt megadott információk a résztvevők felelőssége alatt állnak. Ha nem szeretnéd használni a kamerát, a mikrofont vagy a helymeghatározást, manuálisan is megadhatod az információkat.",
+      "start": "Megértettem, kezdés",
+      "emergency": "Sürgősségi számok megtekintése",
+      "privacy_cgu": "Adatvédelem / ÁSZF"
+    },
+    "guest_accept": {
+      "checkbox": "Elfogadom a Felhasználási feltételeket és elolvastam az Adatvédelmi irányelveket.",
+      "note": "Megértem, hogy az adataimat a baleseti PDF-dokumentum generálásához használják, és hogy a megadott információk a felelősségem alatt állnak."
+    },
+    "signature_confirm": "Megerősítem, hogy az általam megadott információk a tudomásom szerint pontosak, és elfogadom, hogy az aláírásom be legyen építve a PDF-dokumentumba.",
+    "payment_notice": "A fizetés folytatásával megérted, hogy a fizetés a PDF-dokumentum generálására és elküldésére vonatkozik. A megadott információk a résztvevők felelőssége alatt állnak.",
+    "mic_notice": "A mikrofon használatával a hangnyilatkozatod átírásra kerül, hogy beépíthessük a baleseti dokumentumba. Használhatod a szöveges bevitel lehetőségét is.",
+    "injury_confirm": {
+      "body": "A sérülésekről készült fényképek érzékeny adatokat tartalmazhatnak. Győződj meg róla, hogy rendelkezel a sérült személy beleegyezésével, kivéve biztonsági szükséglet vagy jogi kötelezettség esetén.",
+      "continue": "Folyatatás",
+      "change": "Kategória megváltoztatása"
+    },
+    "pdf_ready_title": "Időbélyeges baleseti PDF-dokumentum",
+    "pdf_ready_body": "A szükséges aláírások rögzítve lettek. A PDF-dokumentum kész. Ellenőrizd az információkat, mielőtt elküldenéd a biztosítódnak."
   }
 }

@@ -21,7 +21,9 @@
       "line1": "MATAPOS",
       "line2": "ANG AKSIDENTE",
       "line3": "MABILIS",
-      "line4": "NA ULAT"
+      "line4": "NA ULAT",
+      "title": "Dokumentuhin ang aksidente nang walang papel, walang kalituhan.",
+      "subtitle": "Gguidahan ka ng boom.contact hakbang-hakbang upang mangolekta ng mga kapaki-pakinabang na impormasyon, magdagdag ng mga larawan, lokasyon, pahayag at lagda, at pagkatapos ay bumuo ng isang naka-time stamp na PDF na ipapadala sa iyong tagaseguro."
     },
     "subtitle": "Digital na ulat ng aksidente sa loob ng 5 minuto. Multi-language OCR, QR code, mabilis na PDF para sa buong mundo.",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "Ipadala sa insurance",
       "done": "Tapos na ang ulat!",
       "waiting": "Session #8F2K · Naghihintay…",
-      "capture": "📸 Kumuha ng larawan"
+      "capture": "📸 Kumuha ng larawan",
+      "sessionActive": "Aktibong sesyon",
+      "vehicleA": "SASAKYAN A",
+      "photosSig": "Mga Larawan · lagda ✓",
+      "vehicleB": "SASAKYAN B",
+      "qrJoined": "QR na sumali · nasa proseso",
+      "payGenerate": "Magbayad at bumuo ng PDF",
+      "pdfBadge": "Naka-time stamp na PDF",
+      "qrBadge": "Naka-share na QR"
     },
     "badges": {
       "languages": "50 wika",
@@ -83,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Lahat ng kailangan mo dito",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "Multi-language OCR",
-          "desc": "Binabasa ng Claude Vision ang iyong mga dokumento sa 50+ wika. Walang manual na pagpasok."
-        },
-        {
-          "icon": "📱",
-          "title": "Hanggang 5 sasakyan",
-          "desc": "Aksidente sa 3, 4 o 5 driver? Bawat driver nag-scan ng sariling QR."
-        },
-        {
-          "icon": "📷",
-          "title": "Mga larawan ng eksena",
-          "desc": "5 kategorya: lugar, pinsala A, pinsala B, sugat, dokumento. Lahat kasama sa PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Libreng sketch",
-          "desc": "Iguhit ang posisyon ng mga sasakyan, mga arrow ng direksyon. PNG kasama sa PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Diagram ng pinsala",
-          "desc": "700+ modelo. 18 clickable na zone para sa mga pinsala."
-        },
-        {
-          "icon": "✍️",
-          "title": "Maramihang lagda",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "Kumpleto na digital na dokumento. Tinatanggap ng lahat ng insurance company."
-        },
-        {
-          "icon": "🚔",
-          "title": "Pulis na module (malapit na)",
-          "desc": "Ang mga pulis ay sumasali sa session sa pamamagitan ng QR. Digital na ulat ng pulis."
-        },
-        {
-          "icon": "🌍",
-          "title": "50 wika + RTL",
-          "desc": "5 bilyon na nagsasalita. Arabe, Hebreo, Farsi na may RTL. Emergency numbers sa buong mundo."
-        }
-      ]
-    },
     "coverage": {
       "label": "Pandaigdigang saklaw",
       "title": "Mula Switzerland hanggang Tsina",
@@ -150,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Mag-imbita gamit ang QR code",
+        "desc": "Lumikha ng sesyon, i-scan ng ibang driver ang QR mula sa kanyang telepono. Walang kinakailangang pag-install, walang pagpaparehistro."
+      },
+      {
+        "title": "Mga Larawan, Boses at Lagda",
+        "desc": "Magdagdag ng mga larawan, i-dictate ang iyong mga obserbasyon sa boses, ilagay ang mga sasakyan sa sketch at pirmahan gamit ang daliri."
+      },
+      {
+        "title": "Naka-time stamp na PDF na Dossier",
+        "desc": "Bumubuo ang boom.contact ng naka-time stamp na PDF na dossier na naglalaman ng mga impormasyong ipinasok ng bawat driver."
+      },
+      {
+        "title": "Ipadala sa iyong tagaseguro",
+        "desc": "I-download ang PDF o ipadala ito sa pamamagitan ng email upang samahan ang iyong pahayag ng pinsala sa iyong tagaseguro."
+      }
+    ],
+    "seoLine": "Multilinggwal na digital na constat amiable · Digital accident report",
+    "flow": {
+      "label": "Lahat sa isang daloy",
+      "title": "Mula sa aksidente hanggang sa dossier na handa nang ipadala"
+    },
+    "stress": {
+      "label": "Inisip para sa sandali ng aksidente",
+      "title": "Dinisenyo para sa mga nakababahalang sitwasyon",
+      "text": "Matapos ang isang bangga, hindi malinaw ang isip. Ang boom.contact ay umuusad hakbang-hakbang, sa iyong wika, at nagtatala ng bawat impormasyong nakolekta. Lahat ay gumagana mula sa browser ng telepono, kahit na may limitadong koneksyon.",
+      "bullets": [
+        "Gguidahan hakbang-hakbang",
+        "Multilinggwal",
+        "Mga Larawan · Boses · Lagda",
+        "Naka-time stamp na PDF na Dossier"
+      ],
+      "emergencyTitle": "Sa kaso ng emerhensya",
+      "emergencyText": "Ang boom.contact ay hindi kapalit ng mga serbisyo ng emergency, pulisya, abogado o tagaseguro. Sa kaso ng nasugatan o panganib, makipag-ugnayan muna sa mga serbisyong pang-emergency."
+    },
+    "pricing": {
+      "label": "Mga Presyo",
+      "title": "Simple, transparent, walang subscription",
+      "caption": "1 kredito = 1 kumpletong constat · multilingwal · mga kredito na walang expiration",
+      "badgePopular": "Sikat",
+      "plans": [
+        {
+          "label": "1 constat",
+          "desc": "Para sa isang natatanging aksidente"
+        },
+        {
+          "label": "3 constats",
+          "desc": "Para sa buong pamilya"
+        },
+        {
+          "label": "10 constats",
+          "desc": "Para sa mga fleet at broker"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Para sa mga propesyonal",
+      "title": "Para sa mga broker, fleet at mga kasosyo sa seguro",
+      "text": "Bigyan ang iyong mga kliyente at mga driver ng isang malinaw na tool upang dokumentuhin ang isang aksidente at bumuo ng isang naka-time stamp na PDF na dossier. Mga pack ng kredito para sa mga fleet at broker, simpleng deployment, walang subscription.",
+      "cta": "Makipag-ugnayan / ibahagi",
+      "items": [
+        {
+          "title": "Mga Fleet",
+          "desc": "Isang nakabalangkas na dossier para sa bawat pinsala ng driver."
+        },
+        {
+          "title": "Mga Broker",
+          "desc": "Isang serbisyo na may halaga para sa iyong mga segurado."
+        },
+        {
+          "title": "Pribadong Impormasyon",
+          "desc": "Mga datos na naka-encrypt sa transit, maaaring tanggalin sa kahilingan."
+        },
+        {
+          "title": "Pagpapadala",
+          "desc": "Naka-time stamp na PDF na handa nang isama sa pahayag ng pinsala."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Mga Madalas Itanong",
+      "items": [
+        {
+          "q": "Ano ang boom.contact?",
+          "a": "Ang boom.contact ay isang aplikasyon na tumutulong sa pagdodokumento ng isang aksidente sa kalsada mula sa isang telepono: pag-imbita ng mga driver sa pamamagitan ng QR, mga larawan, boses, sketch, mga lagda, at pagkatapos ay bumuo ng isang naka-time stamp na PDF na dossier na ipapadala sa iyong tagaseguro."
+        },
+        {
+          "q": "Kailangan ko bang mag-install ng aplikasyon?",
+          "a": "Hindi. Ang boom.contact ay direktang gumagana sa browser ng telepono (Safari, Chrome, Firefox). Maaari mo rin itong idagdag sa iyong home screen bilang web application (PWA) para sa offline na access."
+        },
+        {
+          "q": "Ano ang mangyayari kung ang ibang driver ay walang aplikasyon?",
+          "a": "Lilikha ka ng sesyon at isang QR code ang lalabas. I-scan ito ng ibang driver gamit ang kanyang telepono: magbubukas ang boom.contact sa kanyang browser, walang pagpaparehistro o pag-download."
+        },
+        {
+          "q": "Tinatanggap ba ng aking tagaseguro ang PDF na dossier?",
+          "a": "Ang naka-time stamp na PDF na dossier ay nilalayong samahan ang iyong pahayag ng pinsala. Hindi ginagarantiyahan ng boom.contact ang pagtanggap nito, na nakasalalay sa iyong tagaseguro ayon sa iyong kontrata at hurisdiksyon."
+        },
+        {
+          "q": "Gumagana ba ito kung ang ibang driver ay nagsasalita ng ibang wika?",
+          "a": "Oo. Ang bawat driver ay gumagamit ng interface sa kanyang sariling wika. Ang huling dossier ay nabuo para sa bawat driver."
+        },
+        {
+          "q": "Protektado ba ang aking mga datos?",
+          "a": "Ang mga datos ay naka-encrypt sa transit, ang mga sesyon ay awtomatikong tinatanggal pagkatapos ng isang takdang panahon, at ang pulis ay hindi kailanman awtomatikong naipapaalam — tanging sa tahasang aksyon mula sa iyo."
+        },
+        {
+          "q": "Magkano ang halaga nito?",
+          "a": "Mula sa CHF / EUR 4.90 para sa isang constat. Pack ng 3 constats sa 12.90 (−12 %), pack ng 10 sa 34.90 (−29 %). Walang subscription, mga kredito na walang expiration."
+        }
+      ]
     }
   },
   "steps": {
@@ -445,5 +519,431 @@
   "language": {
     "select": "Wika",
     "switch_tooltip": "Palitan ang wika"
+  },
+  "constat": {
+    "nav": {
+      "back": "Bumalik",
+      "reset": "I-reset ang constat"
+    },
+    "session": {
+      "expiring": "Malapit nang mag-expire ang iyong sesyon. I-save ang iyong mga datos."
+    },
+    "error": {
+      "close": "Isara ang error"
+    },
+    "vehicle": {
+      "pickRegistered": "Pumili ng nakarehistrong sasakyan",
+      "autofill": "Awtomatikong pag-puno — walang kinakailangang i-scan",
+      "yourRegistered": "Ang iyong mga nakarehistrong sasakyan",
+      "org": "Kumpanya",
+      "personal": "Personal",
+      "fallback": "Sasakyan",
+      "cancel": "Kanselahin",
+      "orScanNew": "o i-scan ang bagong sasakyan"
+    },
+    "pedestrian": {
+      "title": "Ibang partido: pedestrian"
+    },
+    "summary": {
+      "yourVehicle": "Ang iyong sasakyan",
+      "accident": "Aksidente",
+      "damagedZones_one": "{{count}} nasirang zone",
+      "damagedZones_other": "{{count}} nasirang zones"
+    },
+    "emergency": {
+      "title": "Mga numero ng emerhensya"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "Sa susunod na pagkakataon: 0 na pag-input",
+    "next_time_subtitle": "Ang iyong mga sasakyan ay naitala nang isang beses at para sa lahat",
+    "benefit_scanned": "Lisensya + berdeng card na na-scan nang isang beses",
+    "benefit_fast": "Constat sa loob ng 2 minuto sa halip na 10",
+    "benefit_gift": "Magbigay ng constat sa iyong mga mahal sa buhay sa isang click",
+    "benefit_family": "Perpekto para sa pamilya: ibahagi ang iyong mga kredito",
+    "create_account": "Lumikha ng aking libreng account →",
+    "share_btn": "Ibahagi sa aking mga mahal sa buhay",
+    "register_vehicle_title": "Susunod, irehistro ang iyong sasakyan",
+    "register_vehicle_subtitle": "I-scan ang lisensya sa pagmamaneho + berdeng card · 30 segundo · hindi na kailangang muling ipasok",
+    "or_skip": "o dumaan diretso",
+    "family_pack": "🔥 Pack ng pamilya",
+    "family_pack_desc": "3 constats na maaring ibahagi sa iyong mga mahal sa buhay",
+    "scenario_child": "Tumawag ang iyong anak — aksidente. Magpadala sa kanya ng constat sa loob ng 3 segundo sa kanyang mobile.",
+    "scenario_employee": "Empleyado na may sasakyan ng kumpanya. Agad na ilipat ang kredito sa pamamagitan ng WhatsApp.",
+    "scenario_friend": "Kaibigan na nasa panganib sa ibang bansa. Makakatanggap siya ng link, walang kinakailangang account.",
+    "buy_3_reports": "Bumili ng 3 constats — CHF/EUR 12.90 →",
+    "see_all_packs": "Tingnan ang lahat ng mga pack →",
+    "ready_title": "Handa para sa susunod na pagkakataon",
+    "ready_subtitle": "Mag-recharge ngayon, ibahagi kapag gusto mo",
+    "account_title": "✅ Ang iyong account boom.contact",
+    "account_desc": "Ang iyong mga sasakyan ay naitala. Sa iyong susunod na aksidente, diretso ka nang pupunta sa hakbang ng QR — walang pag-input, walang pag-scan.",
+    "manage_garage": "Pamahalaan ang aking garahe →",
+    "gift_title": "🎁 Magbigay ng constat sa pamamagitan ng WhatsApp",
+    "gift_desc": "Isa sa iyong mga kredito = isang natatanging link na maaring ipadala sa <strong>sinuman</strong>, nang hindi kinakailangang magkaroon ng account.",
+    "credits_available_one": "{{count}} kredito na available",
+    "credits_available_other": "{{count}} mga kredito na available",
+    "share_protect": "Ibahagi, protektahan ang iyong mga mahal sa buhay",
+    "wa_gift_title": "📲 Magbigay ng constat sa pamamagitan ng WhatsApp",
+    "wa_gift_desc": "Sa 1 click, magpadala ng link sa iyong anak, empleyado o kaibigan. Gumagawa siya ng kanyang constat nang walang account o pagbabayad — ibabawas mula sa iyong mga kredito.",
+    "send_1": "📲 Magpadala ng 1 constat",
+    "send_3": "📲 Magpadala ng 3 constats",
+    "gift_link_created": "✅ Link na nalikha — ipadala ito sa pamamagitan ng WhatsApp!",
+    "share_title": "📤 Ibahagi ang boom.contact",
+    "share_desc": "Kakatapos mo lang gumawa ng iyong constat sa loob ng 5 minuto. Karapat-dapat malaman ng iyong mga kaibigan na ito ay umiiral.",
+    "memorize_vehicles": "🚗 I-record ang iyong iba pang mga sasakyan",
+    "memorize_desc": "Fleet ng kumpanya, motorsiklo, camper? Bawat sasakyan na na-scan = hindi na kailangang ipasok muli sa panahon ng aksidente.",
+    "low_credits_one": "⚡ May natitira ka na lamang {{count}} kredito",
+    "low_credits_other": "⚡ May natitira ka na lamang {{count}} mga kredito",
+    "recharge_desc": "Mag-recharge ngayon at tamasahin ang mga diskwento sa mga pack ng pamilya at kumpanya.",
+    "recharge_btn": "Mag-recharge ng aking mga kredito →",
+    "pack_single_label": "1 constat",
+    "pack_single_note": "Pansamantalang paggamit",
+    "pack_pack3_label": "3 constats",
+    "pack_pack3_note": "Pamilya · matipid 12%",
+    "pack_pack10_label": "10 constats",
+    "pack_pack10_note": "Kumpanya · matipid 29%",
+    "popular_badge": "⭐ SIKAT"
+  },
+  "signature": {
+    "title": "Lagda",
+    "driver": "Driver {{role}}",
+    "other_party": "Ibang partido",
+    "no_signature": "walang lagda",
+    "sign_here": "Pumirma dito gamit ang iyong daliri",
+    "signed": "PIRMADO ✓",
+    "clear": "🗑 I-clear",
+    "saving": "⏳ Nagsasagawa ng pag-save…",
+    "confirm_signature": "✍️ Kumpirmahin ang lagda",
+    "waiting_other": "Naghihintay ng lagda ng ibang driver…",
+    "waiting_pdf": "Ang PDF ay bubuuin kapag ang parehong partido ay pumirma na.",
+    "report_signed": "Constat na pinirmahan!",
+    "generating_pdf": "Nasa proseso ng pagbuo ng PDF…",
+    "canvas_aria": "Lugar ng lagda — Driver {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Sasakyan",
+    "tab_driver": "Driver",
+    "tab_insurance": "Seguro",
+    "tab_circumstances": "Mga Kalagayan",
+    "tab_complement": "Karagdagan",
+    "field_required": "Kinakailangan ang larangang ito",
+    "plate_label": "Immatriculation",
+    "brand_label": "Brand",
+    "model_label": "Modelo",
+    "year_label": "Taon",
+    "vin_label": "N° châssis (VIN)",
+    "firstName_label": "Unang Pangalan",
+    "lastName_label": "Apelyido",
+    "address_label": "Tirahan",
+    "postalCode_label": "NPA",
+    "city_label": "Lungsod",
+    "country_label": "Bansa",
+    "phone_label": "Telepono",
+    "email_label": "Email",
+    "license_label": "N° ng lisensya sa pagmamaneho",
+    "company_label": "Kumpanya ng seguro",
+    "policyNumber_label": "N° ng polisiya",
+    "greenCardNumber_label": "N° ng berdeng card",
+    "greenCardExpiry_label": "Validity ng berdeng card",
+    "agentName_label": "Ahente / Broker",
+    "agentPhone_label": "Telepono ng seguro",
+    "circumstances_desc": "Tiyakin ang lahat ng mga kahon na naglalarawan sa sitwasyon ng iyong sasakyan <strong>({{role}})</strong> sa oras ng bangga.",
+    "boxes_checked_one": "{{count}} kahon na naka-check",
+    "boxes_checked_other": "{{count}} mga kahon na naka-check",
+    "complement_desc": "Karagdagang impormasyon ng constat — mga seksyon 11, 13 at 14.",
+    "datetime_label": "Petsa at oras ng aksidente",
+    "visible_damage_label": "Mga nakikitang pinsala (seksyon 11)",
+    "visible_damage_placeholder": "Ilahad ang mga nakikitang pinsala sa iyong sasakyan...",
+    "third_party_label": "Mga pinsala sa mga ikatlong partido (iba pa sa A at B)",
+    "witnesses_label": "Mga Saksi",
+    "witnesses_placeholder": "Pangalan, apelyido, telepono ng bawat saksi...",
+    "voice_declaration_label": "🎙️ Pahayag ng boses (opsyonal)",
+    "observations_label": "Malayang obserbasyon — driver {{role}} (seksyon 14)",
+    "observations_placeholder": "Magdagdag ng anumang kapaki-pakinabang na impormasyon: kondisyon ng panahon, estado ng kalsada, tinatayang bilis, mga komento...",
+    "insurance_holder_label": "Tagapag-ayos ng seguro (kung iba sa driver)",
+    "holder_name_placeholder": "Buong pangalan ng tagapag-ayos",
+    "holder_name_aria": "Pangalan ng tagapag-ayos ng seguro",
+    "holder_address_placeholder": "Tirahan ng tagapag-ayos",
+    "holder_address_aria": "Tirahan ng tagapag-ayos ng seguro",
+    "save_btn": "I-save at magpatuloy →",
+    "form_tabs_aria": "Mga seksyon ng form"
+  },
+  "account": {
+    "member": {
+      "remove": "Alisin",
+      "removeConfirm": "Alisin ang miyembrong ito? Mawawalan siya ng access sa mga sasakyan at kredito ng kumpanya.",
+      "loading": "Nagtutulungan…",
+      "none": "Walang miyembro.",
+      "invite": "Mag-imbita ng miyembro",
+      "inviteBtn": "Mag-imbita",
+      "pending": "Naghihintay ng mga imbitasyon"
+    },
+    "role": {
+      "owner": "May-ari",
+      "driver": "Driver",
+      "fleet_admin": "Admin ng fleet"
+    },
+    "scan": {
+      "cancel": "Kanselahin",
+      "photographPre": "Kumuha ng larawan ng iyong",
+      "license": "lisensya sa pagmamaneho",
+      "and": "at/o ang iyong",
+      "greenCard": "berdeng card",
+      "title": "I-scan ang lisensya + berdeng card",
+      "subtitle": "Awtomatikong pagkilala · multilinggwal"
+    },
+    "garage": {
+      "back": "Garahe",
+      "title": "Aking garahe",
+      "add": "Magdagdag",
+      "emptyTitle": "Walang laman na garahe",
+      "emptySubtitle": "Irehistro ang iyong mga sasakyan nang isang beses. Hindi na kailangang i-scan muli sa panahon ng aksidente.",
+      "addFirst": "Magdagdag ng aking unang sasakyan",
+      "noOrgVehicles": "Walang sasakyan ng kumpanya sa ngayon."
+    },
+    "insurance": {
+      "saved": "Naitala ang seguro",
+      "add": "Magdagdag ng seguro"
+    },
+    "nav": {
+      "logout": "Mag-logout"
+    },
+    "vehicle": {
+      "edit": "I-edit ang sasakyan",
+      "delete": "Tanggalin ang sasakyan",
+      "editOrg": "I-edit ang sasakyan ng kumpanya",
+      "deleteOrg": "Tanggalin ang sasakyan ng kumpanya"
+    },
+    "fields": {
+      "nickname": "Palayaw",
+      "plate": "Plaka",
+      "make": "Brand",
+      "model": "Modelo",
+      "color": "Kulay",
+      "year": "Taon",
+      "firstName": "Unang Pangalan",
+      "lastName": "Apelyido",
+      "phone": "Telepono",
+      "company": "Kumpanya",
+      "address": "Tirahan",
+      "newEmail": "Bagong email",
+      "currentPwd": "Kasalukuyang password (kumpirmasyon)",
+      "confirmEmailAria": "Kumpirmasyon ng email address"
+    },
+    "credits": {
+      "buy": "Bumili:",
+      "available": "MGA KREDITO NA AVAILABLE",
+      "unit": "1 kredito = 1 kumpletong constat amiable"
+    },
+    "history": {
+      "loading": "Nagtutulungan...",
+      "empty": "Walang constat",
+      "emptySub": "Ang iyong susunod na constat ay awtomatikong lilitaw dito."
+    },
+    "personal": {
+      "title": "Personal na impormasyon",
+      "none": "Walang impormasyon — i-click ang I-edit"
+    },
+    "delete": {
+      "willDelete": "ANG MABUBURA AY TULUYAN:",
+      "text": "Tuluyang burahin ang iyong account, mga sasakyan at lahat ng iyong constats. Ang aksyon na ito ay hindi maibabalik."
+    },
+    "danger": {
+      "title": "Mapanganib na Zone"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Walang dokumentong nakilala. Suriin ang kalidad ng mga larawan.",
+    "analysis_error": "Error sa pagsusuri.",
+    "read_failed": "Nabigong basahin",
+    "docs_analyzed_one": "{{count}} dokumento ang nasuri",
+    "docs_analyzed_other": "{{count}} mga dokumento ang nasuri",
+    "confidence": "Kumpiyansa: {{pct}}%",
+    "rescan": "I-scan muli",
+    "vehicle_section": "🚗 Sasakyan",
+    "plate": "Plaka",
+    "driver_section": "👤 Driver",
+    "firstName": "Unang Pangalan",
+    "lastName": "Apelyido",
+    "insurance_found": "✅ Seguro",
+    "insurance_manual": "⚠️ Seguro — kumpletuhin nang manu-mano",
+    "company_label": "Kumpanya",
+    "company_aria": "Kumpanya ng seguro",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "N° ng polisiya",
+    "policy_manual_hint": "(manu-manong pag-input)",
+    "policy_aria": "Numero ng polisiya",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Kumpirmahin →",
+    "scanning_title": "Nasa proseso ng pagsusuri…",
+    "scanning_subtitle_one": "{{count}} dokumento · awtomatikong pagkilala",
+    "scanning_subtitle_other": "{{count}} mga dokumento · awtomatikong pagkilala",
+    "photo_title": "Kunan ng larawan ang iyong mga dokumento",
+    "photo_subtitle": "Lisensya sa pagmamaneho + berdeng card sa isang pagsusuri.",
+    "photo_subtitle2": "Awtomatikong kinikilala at kinukuha ng aplikasyon ang lahat.",
+    "doc_scanned": "Dokumento na na-scan {{n}}",
+    "doc_label": "Dokumento {{n}}",
+    "photograph": "Kumuha ng larawan",
+    "rear_camera": "Likurang kamera",
+    "gallery": "Gallery",
+    "which_docs": "Aling mga dokumento ang i-scan?",
+    "doc_ch": "🇨🇭 Lisensya sa pagmamaneho + berdeng card",
+    "doc_fr": "🇫🇷 Carte grise + berdeng card / sertipiko",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 Immatriculation + patunay ng seguro",
+    "close_error_aria": "Isara ang error",
+    "analyze_btn_one": "🔍 Suriin ang {{count}} dokumento",
+    "analyze_btn_other": "🔍 Suriin ang {{count}} mga dokumento",
+    "skip_manual": "Laktawan — manu-manong pag-input →",
+    "upload_gallery_aria": "I-upload ang mga dokumento mula sa gallery",
+    "take_photo_aria": "Kumuha ng larawan ng dokumento"
+  },
+  "join": {
+    "sessionLabel": "Sesyon",
+    "yourEmail": "Ang iyong email",
+    "emailHint": "(para makatanggap ng PDF)",
+    "emailAria": "Ang iyong email address",
+    "connecting": "Nagtutulungan…",
+    "connected": "Nakakonekta! Nagsisimula…",
+    "joinButton": "Sumali sa constat"
+  },
+  "voice": {
+    "title": "Ilahad ang aksidente",
+    "subtitle": "Opsyonal — ilahad kung ano ang nangyari gamit ang iyong sariling mga salita. Ang iyong pahayag ay maire-record sa constat.",
+    "tab_voice": "🎙️ Boses",
+    "tab_text": "⌨️ Teksto",
+    "start_recording": "Simulan ang pag-record",
+    "textarea_aria": "Paglalarawan ng aksidente",
+    "textarea_placeholder": "Ilahad ang aksidente sa ilang pangungusap…",
+    "validate_desc": "✅ Kumpirmahin ang aking paglalarawan",
+    "skip_step": "Laktawan ang hakbang na ito →",
+    "recording_in_progress": "Nasa proseso ng pag-record…",
+    "recording_tip": "💡 Ilahad: ang direksyon ng bawat sasakyan, ang punto ng impact, ang mga pangyayari. Magsalita nang kalmado.",
+    "stop_recording": "Itigil ang pag-record",
+    "transcribing_title": "Nasa proseso ng transcription…",
+    "transcribing_subtitle": "Ang iyong pag-record ay pinoproseso",
+    "desc_recorded": "Naka-record na paglalarawan",
+    "desc_in_pdf": "Ang iyong pahayag ay isasama sa PDF na constat",
+    "your_declaration": "Ang iyong pahayag",
+    "edit": "✏️ I-edit",
+    "edit_placeholder": "Ayusin ang iyong pahayag kung kinakailangan...",
+    "restart": "Ulitin",
+    "mic_denied": "Tinanggihan ang access sa mikropono — gamitin ang manu-manong pag-input.",
+    "mic_unavailable": "Hindi magagamit ang mikropono: {{msg}}",
+    "transcription_error": "Error sa transcription",
+    "textarea_edit_aria": "Kwento ng aksidente"
+  },
+  "auth": {
+    "default_subtitle": "Mag-login upang i-save ang iyong mga sasakyan at hindi na muling mag-input sa iyong mga constats.",
+    "magic_btn": "📧 Mag-login gamit ang email link (inirerekomenda)",
+    "password_btn": "🔑 Mag-login gamit ang password",
+    "register_btn": "✨ Lumikha ng account",
+    "skip_btn": "Magpatuloy nang walang account →",
+    "skip_note": "Walang account, maaari ka pa ring gumawa ng constat at magbayad gamit ang Stripe.",
+    "magic_instructions": "Ilagay ang iyong email — makakatanggap ka ng link sa pag-login na wasto sa loob ng 15 minuto.",
+    "send_link": "Ipadala ang link",
+    "sending": "Nagpapadala...",
+    "back": "← Bumalik",
+    "email_sent_title": "Naipadala ang email!",
+    "email_sent_desc": "Suriin ang iyong inbox <strong>{{email}}</strong>.",
+    "email_sent_validity": "Ang link ay wasto sa loob ng 15 minuto.",
+    "login_error": "Maling email o password.",
+    "logging_in": "Nag-login...",
+    "login_btn": "Mag-login",
+    "forgot_password": "Nakalimutan ang password? Gumamit ng email link →",
+    "register_desc": "Lumikha ng iyong account upang i-save ang iyong mga sasakyan at awtomatikong punan ang iyong mga constats.",
+    "password_placeholder": "Password (min. 6 na karakter)",
+    "creating": "Nilikha...",
+    "create_btn": "Lumikha ng aking account",
+    "register_legal": "Sa paglikha ng account, tinatanggap mo ang aming mga Tuntunin ng Paggamit. Ang iyong mga datos ng sasakyan ay naka-encrypt at hindi kailanman ibinabahagi nang walang iyong pahintulot.",
+    "register_error": "Error sa pagpaparehistro.",
+    "generic_error": "Error"
+  },
+  "app": {
+    "magic_link_error": "Hindi wasto o nag-expire na link sa pag-login.",
+    "gift_credits_added": "🎁 {{credits}} kredito ang idinagdag sa iyong account!",
+    "loading_aria": "Nasa proseso ng pag-load",
+    "nav_landing": "Pahina ng bahay",
+    "nav_cgu": "Mga Tuntunin ng Paggamit",
+    "nav_pricing": "Pagpepresyo",
+    "nav_constat": "Paglikha ng constat",
+    "nav_join": "Sumali sa isang sesyon",
+    "nav_account": "Account ng gumagamit",
+    "nav_admin": "Dashboard ng administrador",
+    "nav_emergency": "Mga numero ng emerhensya",
+    "nav_privacy": "Patakaran sa Privacy",
+    "nav_police_login": "Pag-login ng pulis",
+    "nav_police_dashboard": "Dashboard ng pulis",
+    "nav_police_flow": "Daloy ng pulis",
+    "nav_police_intervention": "Interbensyon ng pulis",
+    "nav_to": "Nagtutungo sa {{label}}",
+    "title_default": "boom.contact — Digital na constat amiable",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Mga Presyo — boom.contact",
+    "back": "← Bumalik←",
+    "buy_reports": "Bumili ng mga constats",
+    "credits_no_expiry": "Mga kredito na walang expiration · Maaaring ibahagi sa WhatsApp",
+    "credits_available_one": "✅ {{count}} kredito na available",
+    "credits_available_other": "✅ {{count}} mga kredito na available",
+    "no_credits": "⚡ Walang kredito — mag-recharge ngayon",
+    "currency_label": "PAGKALAKAL",
+    "currency_detected": "✓ awtomatikong natukoy",
+    "most_popular": "⭐ PINAKA SIKAT · MATIPID {{savings}}",
+    "economy": "Matipid {{savings}}",
+    "per_pack": "bawat pack",
+    "per_report": "/ constat",
+    "redirecting_stripe": "⏳ Nagre-redirect sa Stripe...",
+    "buy_btn": "Bumili {{label}} — {{price}}",
+    "error_missing_url": "Nawawalang URL ng pagbabayad",
+    "error_generic": "Error",
+    "error_email_required": "Kinakailangan ang email para bumili",
+    "trust_stripe": "Secure na pagbabayad sa Stripe PCI-DSS",
+    "trust_no_expiry": "Mga kredito na walang expiration",
+    "trust_whatsapp": "Maaaring ibahagi sa WhatsApp",
+    "trust_worldwide": "Multilinggwal",
+    "trust_invoice": "Awtomatikong PDF na invoice",
+    "trust_fleet": "Perpekto para sa mga fleet ng kumpanya",
+    "why_title": "BAKIT KAILANGAN NG MGA KREDITO NG MAAGA?",
+    "scenario_child_title": "Ang iyong anak ay nagkaroon ng aksidente",
+    "scenario_child_text": "Tinawagan ka niya. Nagpadala ka sa kanya ng kredito sa pamamagitan ng WhatsApp. Nagtatayo siya ng kanyang constat sa loob ng 5 minuto.",
+    "scenario_company_title": "Sasakyan ng kumpanya",
+    "scenario_company_text": "Ang iyong delivery person ay nagkaroon ng banggaan. Agad mong ilipat sa kanya ang isang kredito mula sa iyong mobile.",
+    "scenario_abroad_title": "Sa paglalakbay sa ibang bansa",
+    "scenario_abroad_text": "Aksidente sa Alemanya, Australia o Japan. Magagamit ang interface sa maraming wika.",
+    "pkg_single_label": "1 constat",
+    "pkg_single_desc": "Para sa isang natatanging aksidente",
+    "pkg_pack3_label": "3 constats",
+    "pkg_pack3_desc": "Para sa buong pamilya",
+    "pkg_pack3_marketing": "🎁 Ibahagi sa pamamagitan ng WhatsApp — ang iyong anak, empleyado, kaibigan ay makakatanggap ng isang instant na link.",
+    "pkg_pack10_label": "10 constats",
+    "pkg_pack10_desc": "Mga fleet at kumpanya",
+    "pkg_pack10_marketing": "🏢 Pamahalaan ang buong fleet mo. Ilipat sa iyong mga kasamahan sa isang click."
+  },
+  "legal": {
+    "intro": {
+      "title": "Bago simulan",
+      "body": "Tinutulungan ka ng boom.contact na idokumento ang isang aksidente at bumuo ng isang nakabalangkas na PDF na dossier. Sa kaso ng pinsala, panganib, pagtakas, malubhang hindi pagkakaunawaan o legal na obligasyon, agad na makipag-ugnayan sa mga serbisyong pang-emergency, pulisya o mga awtoridad. Ang mga impormasyong ibinigay ay mananatiling nasa ilalim ng responsibilidad ng mga kalahok. Maaari mong ipasok ang mga impormasyon nang manu-mano kung ayaw mong gamitin ang camera, mikropono o lokasyon.",
+      "start": "Naiintindihan ko, simulan",
+      "emergency": "Tingnan ang mga numero ng emerhensya",
+      "privacy_cgu": "Privacy / Mga Tuntunin ng Paggamit"
+    },
+    "guest_accept": {
+      "checkbox": "Tinatanggap ko ang Mga Tuntunin ng Paggamit at nabasa ko ang Patakaran sa Privacy.",
+      "note": "Naiintindihan ko na ang aking impormasyon ay gagamitin upang bumuo ng PDF na dossier ng aksidente at ang mga impormasyong ibinigay ay mananatiling nasa ilalim ng aking responsibilidad."
+    },
+    "signature_confirm": "Kumpirmahin ko na ang mga impormasyong ibinigay ko ay tama ayon sa aking kaalaman at tinatanggap ko na ang aking lagda ay isasama sa PDF na dossier.",
+    "payment_notice": "Sa pagpapatuloy sa pagbabayad, naiintindihan mo na ang pagbabayad ay sumasaklaw sa pagbuo at pagpapadala ng PDF na dossier. Ang mga impormasyong ibinigay ay mananatiling nasa ilalim ng responsibilidad ng mga kalahok.",
+    "mic_notice": "Sa paggamit ng mikropono, ang iyong pahayag sa boses ay mai-transcribe upang maisama sa dossier ng aksidente. Maaari mong gamitin ang pag-input ng teksto bilang kapalit.",
+    "injury_confirm": {
+      "body": "Ang mga larawan ng pinsala ay maaaring maglaman ng sensitibong datos. Tiyakin na mayroon kang pahintulot mula sa taong apektado, maliban sa mga kinakailangan ng seguridad o legal na obligasyon.",
+      "continue": "Magpatuloy",
+      "change": "Palitan ang kategorya"
+    },
+    "pdf_ready_title": "Naka-time stamp na PDF na dossier ng aksidente",
+    "pdf_ready_body": "Naitala na ang mga kinakailangang lagda. Ang PDF na dossier ay handa na. Suriin ang mga impormasyon bago ito ipadala sa iyong tagaseguro."
   }
 }

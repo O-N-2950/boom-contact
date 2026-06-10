@@ -12,7 +12,8 @@
     "required": "Obavezno",
     "yes": "Da",
     "no": "Ne",
-    "unknown": "Nepoznato"
+    "unknown": "Nepoznato",
+    "rescan": "🔄 Ponovno skeniraj"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentirajte nesreću bez papira, bez zbrke.",
+      "subtitle": "boom.contact vas vodi korak po korak kako biste prikupili korisne informacije, dodali fotografije, lokaciju, izjave i potpise, a zatim generirali vremenski označen PDF dosje za slanje vašem osiguravatelju."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktivna sesija",
+      "vehicleA": "VOZILO A",
+      "photosSig": "Fotografije · potpis ✓",
+      "vehicleB": "VOZILO B",
+      "qrJoined": "QR pridružen · u tijeku",
+      "payGenerate": "Platite i generirajte PDF",
+      "pdfBadge": "Vremenski označen PDF",
+      "qrBadge": "Podijeljeni QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Pozovite putem QR koda",
+        "desc": "Kreirajte sesiju, drugi vozač skenira QR sa svog telefona. Nema instalacije, nema registracije."
+      },
+      {
+        "title": "Fotografije, glas i potpis",
+        "desc": "Dodajte fotografije, diktirajte svoje zapažanja glasom, postavite vozila na skicu i potpišite prstom."
+      },
+      {
+        "title": "Vremenski označen PDF dosje",
+        "desc": "boom.contact generira vremenski označen PDF dosje koji sadrži informacije unesene od strane svakog vozača."
+      },
+      {
+        "title": "Za slanje vašem osiguravatelju",
+        "desc": "Preuzmite PDF ili ga pošaljite putem e-pošte kako biste pratili svoju prijavu štete kod vašeg osiguravatelja."
+      }
+    ],
+    "seoLine": "Višelingvalni digitalni izvještaj o nesreći · Digitalni izvještaj o nesreći",
+    "flow": {
+      "label": "Sve u jednom toku",
+      "title": "Od nesreće do dosjea spremnog za slanje"
+    },
+    "stress": {
+      "label": "Osmišljen za trenutak nesreće",
+      "title": "Dizajniran za stresne situacije",
+      "text": "Nakon udarca, um nije jasan. boom.contact napreduje korak po korak, na vašem jeziku, i čuva trag svake prikupljene informacije. Sve radi iz preglednika telefona, čak i s ograničenom vezom.",
+      "bullets": [
+        "Vođeni korak po korak",
+        "Višelingvalni",
+        "Fotografije · glas · potpis",
+        "Vremenski označen PDF dosje"
+      ],
+      "emergencyTitle": "U slučaju hitnosti",
+      "emergencyText": "boom.contact ne zamjenjuje hitnu pomoć, policiju, odvjetnika ili osiguravatelja. U slučaju ozljede ili opasnosti, prvo kontaktirajte hitne službe."
+    },
+    "pricing": {
+      "label": "Cijene",
+      "title": "Jednostavno, transparentno, bez pretplate",
+      "caption": "1 kredit = 1 potpuni izvještaj · višelingvalno · krediti bez isteka",
+      "badgePopular": "Popularno",
+      "plans": [
+        {
+          "label": "1 izvještaj",
+          "desc": "Za jednokratnu nesreću"
+        },
+        {
+          "label": "3 izvještaja",
+          "desc": "Za cijelu obitelj"
+        },
+        {
+          "label": "10 izvještaja",
+          "desc": "Za flote i posrednike"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Za profesionalce",
+      "title": "Za posrednike, flote i osiguravateljske partnere",
+      "text": "Opremajte svoje klijente i vozače jasnim alatom za dokumentiranje nesreće i generiranje vremenski označenog PDF dosjea. Paketi kredita za flote i posrednike, jednostavna implementacija, bez pretplate.",
+      "cta": "Kontaktirati / podijeliti",
+      "items": [
+        {
+          "title": "Flote",
+          "desc": "Strukturirani dosje za svaku štetu vozača."
+        },
+        {
+          "title": "Posrednici",
+          "desc": "Usluga dodane vrijednosti za vaše osigurane."
+        },
+        {
+          "title": "Povjerljivost",
+          "desc": "Podaci šifrirani u prijenosu, mogu se izbrisati na zahtjev."
+        },
+        {
+          "title": "Prijenos",
+          "desc": "Vremenski označen PDF spreman za pridruživanje prijavi štete."
+        }
+      ]
+    },
+    "faq": {
+      "label": "ČPP",
+      "title": "Česta pitanja",
+      "items": [
+        {
+          "q": "Što je boom.contact?",
+          "a": "boom.contact je aplikacija koja pomaže dokumentirati prometnu nesreću s telefona: pozivanje vozača putem QR, fotografije, glas, skice, potpisi, a zatim generiranje vremenski označenog PDF dosjea za slanje vašem osiguravatelju."
+        },
+        {
+          "q": "Moram li instalirati aplikaciju?",
+          "a": "Ne. boom.contact radi izravno u pregledniku telefona (Safari, Chrome, Firefox). Također ga možete dodati na svoju početnu stranicu kao web aplikaciju (PWA) za offline pristup."
+        },
+        {
+          "q": "Što se događa ako drugi vozač nema aplikaciju?",
+          "a": "Vi kreirate sesiju i pojavljuje se QR kod. Drugi vozač ga skenira svojim telefonom: boom.contact se otvara u njegovom pregledniku, bez registracije ili preuzimanja."
+        },
+        {
+          "q": "Je li PDF dosje prihvaćen od mog osiguravatelja?",
+          "a": "Vremenski označen PDF dosje namijenjen je za pratnju vaše prijave štete. boom.contact ne jamči njegovo prihvaćanje, što ovisi o vašem osiguravatelju prema vašem ugovoru i jurisdikciji."
+        },
+        {
+          "q": "Radi li ako drugi vozač govori drugi jezik?",
+          "a": "Da. Svaki vozač koristi sučelje na svom jeziku. Konačni dosje generira se za svakog vozača."
+        },
+        {
+          "q": "Jesu li moji podaci zaštićeni?",
+          "a": "Podaci su šifrirani u prijenosu, sesije se automatski brišu nakon određenog vremena, a policija nikada nije automatski obaviještena — samo na izričit zahtjev s vaše strane."
+        },
+        {
+          "q": "Koliko to košta?",
+          "a": "Od CHF / EUR 4.90 za jedan izvještaj. Paket od 3 izvještaja po 12.90 (−12 %), paket od 10 po 34.90 (−29 %). Bez pretplate, krediti bez isteka."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Sesija",
+    "yourEmail": "Vaša e-pošta",
+    "emailHint": "(za primanje PDF-a)",
+    "emailAria": "Vaša adresa e-pošte",
+    "connecting": "Povezivanje…",
+    "connected": "Povezano! Pokretanje…",
+    "joinButton": "Pridružite se izvještaju"
+  },
+  "signature": {
+    "title": "Potpis",
+    "driver": "Vozač {{role}}",
+    "other_party": "Druga strana",
+    "no_signature": "bez potpisa",
+    "sign_here": "Potpišite ovdje prstom",
+    "signed": "POTPISANO ✓",
+    "clear": "🗑 Izbriši",
+    "saving": "⏳ Spremanje…",
+    "confirm_signature": "✍️ Potvrdite potpis",
+    "waiting_other": "Čekanje na potpis drugog vozača…",
+    "waiting_pdf": "PDF će biti generiran čim obje strane potpišu.",
+    "report_signed": "Izvještaj potpisan!",
+    "generating_pdf": "Generiranje PDF-a u tijeku…",
+    "canvas_aria": "Područje potpisa — Vozač {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Prije nego što počnete",
+      "body": "boom.contact vam pomaže dokumentirati nesreću i generirati strukturirani PDF dosje. U slučaju ozljede, opasnosti, bijega, ozbiljnog neslaganja ili zakonske obveze, odmah kontaktirajte hitnu pomoć, policiju ili nadležne vlasti. Informacije koje se daju ostaju pod odgovornošću sudionika. Možete ručno unijeti informacije ako ne želite koristiti kameru, mikrofon ili lokaciju.",
+      "start": "Razumijem, započni",
+      "emergency": "Pogledajte hitne brojeve",
+      "privacy_cgu": "Povjerljivost / Uvjeti korištenja"
+    },
+    "guest_accept": {
+      "checkbox": "Prihvaćam Uvjete korištenja i pročitao/la sam Politiku privatnosti.",
+      "note": "Razumijem da će se moje informacije koristiti za generiranje PDF dosjea o nesreći i da informacije koje se daju ostaju pod mojom odgovornošću."
+    },
+    "signature_confirm": "Potvrđujem da su informacije koje sam dao/la točne prema mom saznanju i prihvaćam da se moj potpis uključi u PDF dosje.",
+    "payment_notice": "Nastavljanjem prema plaćanju, razumijete da plaćanje pokriva generiranje i slanje PDF dosjea. Informacije koje se daju ostaju pod odgovornošću sudionika.",
+    "mic_notice": "Korištenjem mikrofona, vaša glasovna izjava će biti transkribirana kako bi se uključila u dosje o nesreći. Možete koristiti unos teksta umjesto toga.",
+    "injury_confirm": {
+      "body": "Fotografije ozljeda mogu sadržavati osjetljive podatke. Pobrinite se da imate pristanak osobe koja je pogođena, osim u slučaju sigurnosne nužde ili zakonske obveze.",
+      "continue": "Nastaviti",
+      "change": "Promijeniti kategoriju"
+    },
+    "pdf_ready_title": "Vremenski označen PDF dosje o nesreći",
+    "pdf_ready_body": "Potrebni potpisi su zabilježeni. PDF dosje je spreman. Provjerite informacije prije nego što ga pošaljete svom osiguravatelju."
+  },
+  "constatForm": {
+    "tab_vehicle": "Vozilo",
+    "tab_driver": "Vozač",
+    "tab_insurance": "Osiguranje",
+    "tab_circumstances": "Okolnosti",
+    "tab_complement": "Dopuna",
+    "field_required": "Ovo polje je obavezno",
+    "plate_label": "Registracijska oznaka",
+    "brand_label": "Marka",
+    "model_label": "Model",
+    "year_label": "Godina",
+    "vin_label": "Broj šasije (VIN)",
+    "firstName_label": "Ime",
+    "lastName_label": "Prezime",
+    "address_label": "Adresa",
+    "postalCode_label": "Poštanski broj",
+    "city_label": "Mjesto",
+    "country_label": "Zemlja",
+    "phone_label": "Telefon",
+    "email_label": "E-pošta",
+    "license_label": "Broj dozvole za vožnju",
+    "company_label": "Osiguravajuća kompanija",
+    "policyNumber_label": "Broj police",
+    "greenCardNumber_label": "Broj zelene karte",
+    "greenCardExpiry_label": "Valjanost zelene karte",
+    "agentName_label": "Agent / Posrednik",
+    "agentPhone_label": "Tel. osiguranje",
+    "circumstances_desc": "Označite sve okvire koji opisuju situaciju vašeg vozila <strong>({{role}})</strong> u trenutku sudara.",
+    "boxes_checked_one": "{{count}} okvir označen",
+    "boxes_checked_other": "{{count}} okvira označeno",
+    "complement_desc": "Dodatne informacije o izvještaju — odjeljci 11, 13 i 14.",
+    "datetime_label": "Datum i vrijeme nesreće",
+    "visible_damage_label": "Vidljiva oštećenja (odjeljak 11)",
+    "visible_damage_placeholder": "Opišite vidljive štete na vašem vozilu...",
+    "third_party_label": "Materijalna šteta trećim stranama (osim A i B)",
+    "witnesses_label": "Svjedoci",
+    "witnesses_placeholder": "Ime, prezime, telefon svakog svjedoka...",
+    "voice_declaration_label": "🎙️ Glasovna izjava (opcionalno)",
+    "observations_label": "Slobodne opservacije — vozač {{role}} (odjeljak 14)",
+    "observations_placeholder": "Dodajte sve korisne informacije: vremenski uvjeti, stanje ceste, procijenjena brzina, napomene...",
+    "insurance_holder_label": "Osiguratelj (ako se razlikuje od vozača)",
+    "holder_name_placeholder": "Puno ime osiguratelja",
+    "holder_name_aria": "Ime osiguratelja",
+    "holder_address_placeholder": "Adresa osiguratelja",
+    "holder_address_aria": "Adresa osiguratelja",
+    "save_btn": "Spremi i nastavi →",
+    "form_tabs_aria": "Odjeljci obrasca"
+  },
+  "pricingPage": {
+    "sr_title": "Cijene — boom.contact",
+    "back": "← Povratak←",
+    "buy_reports": "Kupiti izvještaje",
+    "credits_no_expiry": "Krediti bez isteka · Mogu se dijeliti putem WhatsApp-a",
+    "credits_available_one": "✅ {{count}} kredit dostupan",
+    "credits_available_other": "✅ {{count}} kredita dostupno",
+    "no_credits": "⚡ Nema kredita — napunite sada",
+    "currency_label": "VALUTA",
+    "currency_detected": "✓ automatski otkrivena",
+    "most_popular": "⭐ NAJPOPULARNIJE · UŠTEDA {{savings}}",
+    "economy": "Ušteda {{savings}}",
+    "per_pack": "po paketu",
+    "per_report": "/ izvještaj",
+    "redirecting_stripe": "⏳ Preusmjeravanje na Stripe...",
+    "buy_btn": "Kupiti {{label}} — {{price}}",
+    "error_missing_url": "URL za plaćanje nedostaje",
+    "error_generic": "Greška",
+    "error_email_required": "E-pošta je obavezna za kupnju",
+    "trust_stripe": "Sigurno plaćanje Stripe PCI-DSS",
+    "trust_no_expiry": "Krediti bez isteka",
+    "trust_whatsapp": "Mogu se dijeliti putem WhatsApp-a",
+    "trust_worldwide": "Višelingvalni",
+    "trust_invoice": "Automatska PDF faktura",
+    "trust_fleet": "Idealno za poslovne flote",
+    "why_title": "ZAŠTO IMATI KREDITE UNAPRIJED?",
+    "scenario_child_title": "Vaše dijete ima nesreću",
+    "scenario_child_text": "Zove vas. Šaljete mu kredit putem WhatsApp-a. On uspostavlja svoj izvještaj za 5 minuta.",
+    "scenario_company_title": "Vozilo tvrtke",
+    "scenario_company_text": "Vaš dostavljač ima sudar. Odmah mu prenesite kredit s vašeg mobitela.",
+    "scenario_abroad_title": "Na putovanju u inozemstvu",
+    "scenario_abroad_text": "Nesreća u Njemačkoj, Australiji ili Japanu. Sučelje dostupno na više jezika.",
+    "pkg_single_label": "1 izvještaj",
+    "pkg_single_desc": "Za jednokratnu nesreću",
+    "pkg_pack3_label": "3 izvještaja",
+    "pkg_pack3_desc": "Za cijelu obitelj",
+    "pkg_pack3_marketing": "🎁 Podijelite putem WhatsApp-a — vaše dijete, vaš zaposlenik, vaš prijatelj dobiva trenutnu vezu.",
+    "pkg_pack10_label": "10 izvještaja",
+    "pkg_pack10_desc": "Flote & tvrtke",
+    "pkg_pack10_marketing": "🏢 Upravljajte cijelom svojom flotom. Prenesite svojim suradnicima jednim klikom."
+  },
+  "app": {
+    "magic_link_error": "Nevažeća ili istekla veza za prijavu.",
+    "gift_credits_added": "🎁 {{credits}} kredit(a) dodano vašem računu!",
+    "loading_aria": "Učitavanje u tijeku",
+    "nav_landing": "Početna stranica",
+    "nav_cgu": "Uvjeti korištenja",
+    "nav_pricing": "Cijene",
+    "nav_constat": "Izrada izvještaja",
+    "nav_join": "Pridružite se sesiji",
+    "nav_account": "Korisnički račun",
+    "nav_admin": "Administratorska nadzorna ploča",
+    "nav_emergency": "Hitni brojevi",
+    "nav_privacy": "Politika privatnosti",
+    "nav_police_login": "Prijava policije",
+    "nav_police_dashboard": "Nadzorna ploča policije",
+    "nav_police_flow": "Policijski tok",
+    "nav_police_intervention": "Policijska intervencija",
+    "nav_to": "Navigacija prema {{label}}",
+    "title_default": "boom.contact — Digitalni izvještaj o nesreći",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Opis nesreće",
+    "subtitle": "Opcionalno — opišite što se dogodilo vlastitim riječima. Vaša izjava bit će zabilježena u izvještaju.",
+    "tab_voice": "🎙️ Glasovno",
+    "tab_text": "⌨️ Tekst",
+    "start_recording": "Započnite snimanje",
+    "textarea_aria": "Opis nesreće",
+    "textarea_placeholder": "Opišite nesreću u nekoliko rečenica…",
+    "validate_desc": "✅ Potvrdite moj opis",
+    "skip_step": "Preskočite ovaj korak →",
+    "recording_in_progress": "Snimanje u tijeku…",
+    "recording_tip": "💡 Opišite: smjer svakog vozila, točku udara, okolnosti. Govorite mirno.",
+    "stop_recording": "Prekinite snimanje",
+    "transcribing_title": "Transkripcija u tijeku…",
+    "transcribing_subtitle": "Vaša snimka se obrađuje",
+    "desc_recorded": "Opis zabilježen",
+    "desc_in_pdf": "Vaša izjava bit će uključena u PDF izvještaj",
+    "your_declaration": "Vaša izjava",
+    "edit": "✏️ Uredi",
+    "edit_placeholder": "Ispravite svoju izjavu ako je potrebno...",
+    "restart": "Ponovno započnite",
+    "mic_denied": "Pristup mikrofonu odbijen — koristite ručno unos.",
+    "mic_unavailable": "Mikrofon nije dostupan: {{msg}}",
+    "transcription_error": "Greška u transkripciji",
+    "textarea_edit_aria": "Priča o nesreći"
+  },
+  "auth": {
+    "default_subtitle": "Prijavite se kako biste spremili svoja vozila i više ništa ne unosili tijekom vaših izvještaja.",
+    "magic_btn": "📧 Prijava putem e-mail veze (preporučeno)",
+    "password_btn": "🔑 Prijava s lozinkom",
+    "register_btn": "✨ Kreirajte račun",
+    "skip_btn": "Nastavite bez računa →",
+    "skip_note": "Bez računa, i dalje možete napraviti izvještaj i platiti putem Stripe-a.",
+    "magic_instructions": "Unesite svoju e-poštu — primit ćete vezu za prijavu koja vrijedi 15 minuta.",
+    "send_link": "Pošaljite vezu",
+    "sending": "Slanje...",
+    "back": "← Povratak",
+    "email_sent_title": "E-pošta poslana!",
+    "email_sent_desc": "Provjerite svoju poštu <strong>{{email}}</strong>.",
+    "email_sent_validity": "Veza vrijedi 15 minuta.",
+    "login_error": "E-pošta ili lozinka su netočni.",
+    "logging_in": "Prijava...",
+    "login_btn": "Prijavite se",
+    "forgot_password": "Zaboravili ste lozinku? Koristite e-mail vezu →",
+    "register_desc": "Kreirajte svoj račun kako biste spremili svoja vozila i automatski unaprijed ispunili svoje izvještaje.",
+    "password_placeholder": "Lozinka (min. 6 znakova)",
+    "creating": "Kreiranje...",
+    "create_btn": "Kreirajte svoj račun",
+    "register_legal": "Kreiranjem računa prihvaćate naše Uvjete korištenja. Vaši podaci o vozilu su šifrirani i nikada se ne dijele bez vašeg pristanka.",
+    "register_error": "Greška prilikom registracije.",
+    "generic_error": "Greška"
+  },
+  "account": {
+    "member": {
+      "remove": "Ukloni",
+      "removeConfirm": "Ukloniti ovog člana? Izgubit će pristup vozilima i kreditima tvrtke.",
+      "loading": "Učitavanje…",
+      "none": "Nema članova.",
+      "invite": "Pozovite člana",
+      "inviteBtn": "Pozovite",
+      "pending": "Pozivnice na čekanju"
+    },
+    "role": {
+      "owner": "Vlasnik",
+      "driver": "Vozač",
+      "fleet_admin": "Admin flote"
+    },
+    "scan": {
+      "cancel": "Otkaži",
+      "photographPre": "Fotografirajte svoj",
+      "license": "dozvolu za vožnju",
+      "and": "i/ili vaš",
+      "greenCard": "zelenu kartu",
+      "title": "Skenirajte dozvolu + zelenu kartu",
+      "subtitle": "Automatsko prepoznavanje · višelingvalno"
+    },
+    "garage": {
+      "back": "Garaža",
+      "title": "Moja garaža",
+      "add": "Dodaj",
+      "emptyTitle": "Garaža prazna",
+      "emptySubtitle": "Registrirajte svoja vozila jednom. Nikada više nećete morati skenirati tijekom nesreće.",
+      "addFirst": "Dodajte svoje prvo vozilo",
+      "noOrgVehicles": "Trenutno nema vozila tvrtke."
+    },
+    "insurance": {
+      "saved": "Osiguranje spremljeno",
+      "add": "Dodajte osiguranje"
+    },
+    "nav": {
+      "logout": "Odjava"
+    },
+    "vehicle": {
+      "edit": "Uredi vozilo",
+      "delete": "Izbriši vozilo",
+      "editOrg": "Uredi vozilo tvrtke",
+      "deleteOrg": "Izbriši vozilo tvrtke"
+    },
+    "fields": {
+      "nickname": "Nadimak",
+      "plate": "Registracijska oznaka",
+      "make": "Marka",
+      "model": "Model",
+      "color": "Boja",
+      "year": "Godina",
+      "firstName": "Ime",
+      "lastName": "Prezime",
+      "phone": "Telefon",
+      "company": "Tvrtka",
+      "address": "Adresa",
+      "newEmail": "Nova e-pošta",
+      "currentPwd": "Trenutna lozinka (potvrda)",
+      "confirmEmailAria": "Potvrda adrese e-pošte"
+    },
+    "credits": {
+      "buy": "Kupiti:",
+      "available": "DOSTUPNI KREDITI",
+      "unit": "1 kredit = 1 potpuni izvještaj o nesreći"
+    },
+    "history": {
+      "loading": "Učitavanje...",
+      "empty": "Nema izvještaja",
+      "emptySub": "Vaš sljedeći izvještaj će se automatski pojaviti ovdje."
+    },
+    "personal": {
+      "title": "Osobne informacije",
+      "none": "Nema informacija — kliknite na Uredi"
+    },
+    "delete": {
+      "willDelete": "ŠTO ĆE BITI TRAJNO IZBRISANO:",
+      "text": "Trajno izbrisati svoj račun, svoja vozila i sve svoje izvještaje. Ova akcija je nepovratna."
+    },
+    "danger": {
+      "title": "Opasna zona"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Nema prepoznatog dokumenta. Provjerite kvalitetu fotografija.",
+    "analysis_error": "Greška u analizi.",
+    "read_failed": "Čitanje nije uspjelo",
+    "docs_analyzed_one": "{{count}} dokument analiziran",
+    "docs_analyzed_other": "{{count}} dokumenta analizirana",
+    "confidence": "Povjerenje: {{pct}}%",
+    "rescan": "Ponovno skeniraj",
+    "vehicle_section": "🚗 Vozilo",
+    "plate": "Registracijska oznaka",
+    "driver_section": "👤 Vozač",
+    "firstName": "Ime",
+    "lastName": "Prezime",
+    "insurance_found": "✅ Osiguranje",
+    "insurance_manual": "⚠️ Osiguranje — ručno dovršavanje",
+    "company_label": "Osiguravajuća kompanija",
+    "company_aria": "Osiguravajuća kompanija",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Broj police",
+    "policy_manual_hint": "(ručno unošenje)",
+    "policy_aria": "Broj police",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Potvrdi →",
+    "scanning_title": "Analiza u tijeku…",
+    "scanning_subtitle_one": "{{count}} dokument · automatska identifikacija",
+    "scanning_subtitle_other": "{{count}} dokumenta · automatska identifikacija",
+    "photo_title": "Fotografirajte svoje dokumente",
+    "photo_subtitle": "Dozvola za vožnju + zelena karta u jednoj analizi.",
+    "photo_subtitle2": "Aplikacija automatski prepoznaje i izvlači sve.",
+    "doc_scanned": "Dokument skeniran {{n}}",
+    "doc_label": "Dokument {{n}}",
+    "photograph": "Fotografirati",
+    "rear_camera": "Stražnja kamera",
+    "gallery": "Galerija",
+    "which_docs": "Koje dokumente skenirati?",
+    "doc_ch": "🇨🇭 Dozvola za vožnju + zelena karta",
+    "doc_fr": "🇫🇷 Registracijska karta + zelena karta / potvrda",
+    "doc_de": "🇩🇪 Registracija + Zelena karta",
+    "doc_gb": "🇬🇧 V5C + Potvrda o osiguranju vozila",
+    "doc_us": "🇺🇸 🇨🇦 Registracija + ID kartica osiguranja",
+    "doc_world": "🌍 Registracija + dokaz osiguranja",
+    "close_error_aria": "Zatvori grešku",
+    "analyze_btn_one": "🔍 Analizirati {{count}} dokument",
+    "analyze_btn_other": "🔍 Analizirati {{count}} dokumenata",
+    "skip_manual": "Preskoči — ručno unošenje →",
+    "upload_gallery_aria": "Prenesite dokumente iz galerije",
+    "take_photo_aria": "Fotografirati dokument"
+  },
+  "postConstat": {
+    "next_time_title": "Sljedeći put: 0 unosa",
+    "next_time_subtitle": "Vaša vozila zapamćena jednom zauvijek",
+    "benefit_scanned": "Dozvola + zelena karta skenirani jednom",
+    "benefit_fast": "Izvještaj za 2 minute umjesto 10",
+    "benefit_gift": "Poklonite izvještaj svojim bližnjima jednim klikom",
+    "benefit_family": "Idealno za obitelj: podijelite svoje kredite",
+    "create_account": "Kreirajte svoj besplatni račun →",
+    "share_btn": "Podijelite s mojim bližnjima",
+    "register_vehicle_title": "Zatim, registrirajte svoje vozilo",
+    "register_vehicle_subtitle": "Skenirajte dozvolu za vožnju + zelenu kartu · 30 sekundi · nikada više ne unosite ponovno",
+    "or_skip": "ili preskočite izravno",
+    "family_pack": "🔥 Obiteljski paket",
+    "family_pack_desc": "3 izvještaja za dijeljenje s vašim bližnjima",
+    "scenario_child": "Vaše dijete zove — nesreća. Pošaljite mu izvještaj u 3 sekunde na njegov mobitel.",
+    "scenario_employee": "Zaposlenik s vozilom tvrtke. Odmah prenesite kredit putem WhatsApp-a.",
+    "scenario_friend": "Prijatelj u nevolji u inozemstvu. Dobiva vezu, bez potrebe za računom.",
+    "buy_3_reports": "Kupiti 3 izvještaja — CHF/EUR 12.90 →",
+    "see_all_packs": "Pogledajte sve pakete →",
+    "ready_title": "Spremni za sljedeći put",
+    "ready_subtitle": "Napunite sada, podijelite kada želite",
+    "account_title": "✅ Vaš boom.contact račun",
+    "account_desc": "Vaša vozila su zapamćena. Prilikom vaše sljedeće nesreće, idete izravno na QR korak — bez unosa, bez skeniranja.",
+    "manage_garage": "Upravljajte svojim garažom →",
+    "gift_title": "🎁 Poklonite izvještaj putem WhatsApp-a",
+    "gift_desc": "Jedan od vaših kredita = jedinstvena veza koju možete poslati <strong>ikome</strong>, bez potrebe da osoba ima račun.",
+    "credits_available_one": "{{count}} kredit dostupan",
+    "credits_available_other": "{{count}} kredita dostupno",
+    "share_protect": "Podijelite, zaštitite svoje bližnje",
+    "wa_gift_title": "📲 Pokloniti izvještaj putem WhatsApp-a",
+    "wa_gift_desc": "Jednim klikom, pošaljite vezu svom djetetu, zaposleniku ili prijatelju. On izrađuje svoj izvještaj bez računa ili plaćanja — odbija se od vaših kredita.",
+    "send_1": "📲 Poslati 1 izvještaj",
+    "send_3": "📲 Poslati 3 izvještaja",
+    "gift_link_created": "✅ Veza stvorena — pošaljite je putem WhatsApp-a!",
+    "share_title": "📤 Podijeli boom.contact",
+    "share_desc": "Upravo ste napravili svoj izvještaj za 5 minuta. Vaši prijatelji zaslužuju znati da to postoji.",
+    "memorize_vehicles": "🚗 Zapamtite svoja druga vozila",
+    "memorize_desc": "Poslovna flota, motocikl, kamp kućica? Svako skenirano vozilo = nikada više unosa tijekom nesreće.",
+    "low_credits_one": "⚡ Ostalo vam je samo {{count}} kredit",
+    "low_credits_other": "⚡ Ostalo vam je samo {{count}} kredita",
+    "recharge_desc": "Napunite sada i iskoristite popuste na obiteljskim i poslovnim paketima.",
+    "recharge_btn": "Napunite svoje kredite →",
+    "pack_single_label": "1 izvještaj",
+    "pack_single_note": "Jednokratna upotreba",
+    "pack_pack3_label": "3 izvještaja",
+    "pack_pack3_note": "Obitelj · ušteda 12%",
+    "pack_pack10_label": "10 izvještaja",
+    "pack_pack10_note": "Tvrtka · ušteda 29%",
+    "popular_badge": "⭐ POPULARNO"
+  },
+  "constat": {
+    "nav": {
+      "back": "Povratak",
+      "reset": "Resetiraj izvještaj"
+    },
+    "session": {
+      "expiring": "Vaša sesija uskoro ističe. Spremite svoje podatke."
+    },
+    "error": {
+      "close": "Zatvori grešku"
+    },
+    "vehicle": {
+      "pickRegistered": "Odaberite registrirano vozilo",
+      "autofill": "Automatsko popunjavanje — nema potrebe za skeniranjem",
+      "yourRegistered": "Vaša registrirana vozila",
+      "org": "Tvrtka",
+      "personal": "Osobno",
+      "fallback": "Vozilo",
+      "cancel": "Otkaži",
+      "orScanNew": "ili skenirajte novo vozilo"
+    },
+    "pedestrian": {
+      "title": "Druga strana: pješak"
+    },
+    "summary": {
+      "yourVehicle": "Vaše vozilo",
+      "accident": "Nesreća",
+      "damagedZones_one": "{{count}} oštećena zona",
+      "damagedZones_other": "{{count}} oštećene zone"
+    },
+    "emergency": {
+      "title": "Hitni brojevi"
+    }
   }
 }

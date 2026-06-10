@@ -21,7 +21,9 @@
       "line1": "አደጋ",
       "line2": "ከደረሰ",
       "line3": "ፈጣን",
-      "line4": "ሪፖርት"
+      "line4": "ሪፖርት",
+      "title": "የአደጋ ሪፖርት ያለ ወረቀት፣ ያለ ግራ መጋባት ያስቀምጡ።",
+      "subtitle": "boom.contact ጠቃሚ መረጃዎችን ለመሰብሰብ፣ ፎቶዎችን፣ አካባቢን፣ መግለጫዎችን እና ፊርማዎችን ለመጨመር እና ለኢንሹራንስዎ ለማስተላለፍ የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ ለማዘጋጀት ደረጃ በደረጃ ይመራዎታል።"
     },
     "subtitle": "በ5 ደቂቃ ዲጂታል የአደጋ ሪፖርት። ሁለንተናዊ OCR፣ QR ኮድ፣ ዓለም አቀፍ PDF።",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "ወደ ኢንሹራንስ ኩባንያ ላክ",
       "done": "ሪፖርቱ ተጠናቋል!",
       "waiting": "ሴሽን #8F2K · በመጠበቅ ላይ…",
-      "capture": "📸 ፎቶ አንሳ"
+      "capture": "📸 ፎቶ አንሳ",
+      "sessionActive": "ክፍለ ጊዜ ነቅቷል",
+      "vehicleA": "ተሽከርካሪ ሀ",
+      "photosSig": "ፎቶዎች · ፊርማ ✓",
+      "vehicleB": "ተሽከርካሪ ለ",
+      "qrJoined": "QR ተቀላቅሏል · በሂደት ላይ",
+      "payGenerate": "ይክፈሉ እና ፒዲኤፍ ያዘጋጁ",
+      "pdfBadge": "የጊዜ ማህተም ያለው ፒዲኤፍ",
+      "qrBadge": "የተጋራ QR"
     },
     "badges": {
       "languages": "50 ቋንቋዎች",
@@ -83,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "ሁሉም የሚያስፈልጉ ነገሮች",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "ሁለንተናዊ OCR",
-          "desc": "Claude Vision ሰነዶቻቹን በ50+ ቋንቋ ያነባል። ምንም የእጅ ግቤት አያስፈልግም።"
-        },
-        {
-          "icon": "📱",
-          "title": "እስከ 5 ተሽከርካሪዎች",
-          "desc": "ከ3፣ 4 ወይም 5 ሹፌሮች ጋር አደጋ? እያንዳንዱ ሹፌር የሚፈለጉን QR ይቃኛል።"
-        },
-        {
-          "icon": "📷",
-          "title": "የቦታ ፎቶዎች",
-          "desc": "5 ምድቦች: ቦታ፣ ጉዳት A፣ ጉዳት B፣ ቁስለት፣ ሰነዶች። ሁሉም ወደ PDF ይጨምራሉ።"
-        },
-        {
-          "icon": "✏️",
-          "title": "ነፃ ስኬች",
-          "desc": "የተሽከርካሪዎቹን ቦታ፣ የአቅጣጫ ምልክቶች ሳሉ። PNG ወደ PDF ይጨምራሉ።"
-        },
-        {
-          "icon": "🚗",
-          "title": "የጉዳት ሥዕል",
-          "desc": "700+ ሞዴሎች። 18 ዞኖች ጉዳቱን ለማመልከት።"
-        },
-        {
-          "icon": "✍️",
-          "title": "ብዙ ፊርማዎች",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "ሙሉ ዲጂታል ሰነድ። በሁሉም ኢንሹራንስ ኩባንያዎች ተቀባይነት አለው።"
-        },
-        {
-          "icon": "🚔",
-          "title": "የፖሊስ ሞጁል (በቅርቡ)",
-          "desc": "ፖሊሶች QR በኩል ሴሽን ይቀላቀላሉ። ዲጂታል ሪፖርት።"
-        },
-        {
-          "icon": "🌍",
-          "title": "50 ቋንቋዎች + RTL",
-          "desc": "5 ቢሊዮን ተናጋሪዎች። አረብኛ፣ ዕብራይስጥ፣ ፋርሲ ከ RTL ጋር። ዓለም አቀፍ ድንገተኛ ቁጥሮች።"
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "በQR ኮድ ይጋብዙ",
+        "desc": "ክፍለ ጊዜውን ይፍጠሩ፣ ሌላው ሹፌር QRን ከስልኩ ይቃኝ። ምንም መጫኛ፣ ምንም ምዝገባ የለም።"
+      },
+      {
+        "title": "ፎቶዎች፣ ድምጽ እና ፊርማ",
+        "desc": "ፎቶዎችን ያክሉ፣ ምልከታዎችዎን በድምጽ ያስቀምጡ፣ ተሽከርካሪዎችን በንድፍ ላይ ያስቀምጡ እና በጣት ይፈርሙ።"
+      },
+      {
+        "title": "የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ",
+        "desc": "boom.contact በእያንዳንዱ ሹፌር የተገባው መረጃ የያዘ የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ ያዘጋጃል።"
+      },
+      {
+        "title": "ለኢንሹራንስዎ ለማስተላለፍ",
+        "desc": "ፒዲኤፍን ያውርዱ ወይም ለኢንሹራንስዎ የአደጋ ክስ ማመልከቻዎን ለማስደገፍ በኢሜይል ይላኩ።"
+      }
+    ],
     "coverage": {
       "label": "ዓለም አቀፍ ሽፋን",
       "title": "ከስዊዘርላንድ እስከ ቻይና",
@@ -150,6 +128,102 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "seoLine": "የዲጂታል አደጋ ሪፖርት በብዙ ቋንቋ · Digital accident report",
+    "flow": {
+      "label": "ሁሉም በአንድ ሂደት",
+      "title": "ከአደጋው እስከ ዝግጁ ለሆነ ሰነድ"
+    },
+    "stress": {
+      "label": "ለአደጋ ጊዜ የተነደፈ",
+      "title": "ለጭንቀት ሁኔታዎች የተዘጋጀ",
+      "text": "ከግጭት በኋላ አእምሮው ግልጽ አይደለም። boom.contact በቋንቋዎ ደረጃ በደረጃ ይራመዳል እና የተሰበሰበውን መረጃ ሁሉ ያስቀምጣል። ሁሉም ነገር ከስልክ ብራውዘር ይሰራል፣ ግንኙነት ውስን እንኳን ቢሆን።",
+      "bullets": [
+        "ደረጃ በደረጃ መመሪያ",
+        "በብዙ ቋንቋ",
+        "ፎቶዎች · ድምጽ · ፊርማ",
+        "የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ"
+      ],
+      "emergencyTitle": "በአደጋ ጊዜ",
+      "emergencyText": "boom.contact የድንገተኛ አደጋ አገልግሎትን፣ ፖሊስን፣ ጠበቃን ወይም ኢንሹራንስን አይተካም። ጉዳተኛ ወይም አደጋ ካለ መጀመሪያ የአደጋ ጊዜ አገልግሎቶችን ያነጋግሩ።"
+    },
+    "pricing": {
+      "label": "ዋጋዎች",
+      "title": "ቀላል፣ ግልጽ፣ ያለ ምዝገባ",
+      "caption": "1 ክሬዲት = 1 ሙሉ ሪፖርట · በብዙ ቋንቋ · ክሬዲቶች ያልሚያልቁ",
+      "badgePopular": "ታዋቂ",
+      "plans": [
+        {
+          "label": "1 ሪፖርት",
+          "desc": "ለአንድ አደጋ"
+        },
+        {
+          "label": "3 ሪፖርቶች",
+          "desc": "ለመላው ቤተሰብ"
+        },
+        {
+          "label": "10 ሪፖርቶች",
+          "desc": "ለተሽከርካሪ መርከቦች እና ደላሎች"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "ለባለሙያዎች",
+      "title": "ለደላሎች፣ ለተሽከርካሪ መርከቦች እና ለኢንሹራንስ አጋሮች",
+      "text": "ደንበኞችዎን እና ሹፌሮችዎን አደጋን ለመመዝገብ እና የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ ለማዘጋጀት ግልጽ መሳሪያ ያስታጥቁ። ለተሽከርካሪ መርከቦች እና ለደላሎች የክሬዲት ፓኬጆች፣ ቀላል አተገባበር፣ ያለ ምዝገባ።",
+      "cta": "ያነጋግሩ / ያጋሩ",
+      "items": [
+        {
+          "title": "ተሽከርካሪ መርከቦች",
+          "desc": "ለእያንዳንዱ የሹፌር አደጋ የተዋቀረ ሰነድ።"
+        },
+        {
+          "title": "ደላሎች",
+          "desc": "ለኢንሹራንስ ያደረጓቸው ሰዎች ተጨማሪ እሴት ያለው አገልግሎት።"
+        },
+        {
+          "title": "ሚስጥራዊነት",
+          "desc": "መረጃ በማስተላለፍ ጊዜ የተመሰጠረ፣ በጥያቄ ሊሰረዝ የሚችል።"
+        },
+        {
+          "title": "ማስተላለፍ",
+          "desc": "የጊዜ ማህተም ያለው ፒዲኤፍ ከአደጋ ክስ ማመልከቻ ጋር ለማያያዝ ዝግጁ።"
+        }
+      ]
+    },
+    "faq": {
+      "label": "ተደጋጋሚ ጥያቄዎች",
+      "title": "ተደጋጋሚ ጥያቄዎች",
+      "items": [
+        {
+          "q": "boom.contact ምንድን ነው?",
+          "a": "boom.contact የመንገድ አደጋን ከስልክ ለመመዝገብ የሚያግዝ መተግበሪያ ነው፡ ሹፌሮችን በQR ማበጀት፣ ፎቶዎች፣ ድምጽ፣ ንድፍ፣ ፊርማዎች፣ ከዚያም ለኢንሹራንስዎ ለማስተላለፍ የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ ማዘጋጀት።"
+        },
+        {
+          "q": "መተግበሪያ መጫን አለብኝ?",
+          "a": "አይ። boom.contact በቀጥታ በስልክ ብራውዘር ውስጥ ይሰራል (Safari፣ Chrome፣ Firefox)። እንዲሁም ለኦፍላይን መዳረሻ እንደ ድር መተግበሪያ (PWA) ወደ መነሻ ስክሪንዎ ማከል ይችላሉ።"
+        },
+        {
+          "q": "ሌላው ሹፌር መተግበሪያው ከሌለው ምን ይሆናል?",
+          "a": "ክፍለ ጊዜውን ይፍጠሩ እና QR ኮድ ይታያል። ሌላው ሹፌር በስልኩ ይቃኛል፡ boom.contact በብራውዘሩ ውስጥ ይከፈታል፣ ምንም ምዝገባ ወይም ማውረድ አያስፈልግም።"
+        },
+        {
+          "q": "የፒዲኤፍ ሰነዱ በኢንሹራንሴ ይቀበላል?",
+          "a": "የጊዜ ማህተም ያለው የፒዲኤፍ ሰነድ የአደጋ ክስ ማመልከቻዎን ለማስደገፍ የታሰበ ነው። boom.contact መቀበሉን አያረጋግጥም፣ ይህም በኮንትራትዎ እና በህግ መሰረት በኢንሹራንስዎ ነው።"
+        },
+        {
+          "q": "ሌላው ሹፌር ሌላ ቋንቋ ከተናገረ ይሰራል?",
+          "a": "አዎ። እያንዳንዱ ሹፌር በራሱ ቋንቋ በይነገጹን ይጠቀማል። የመጨረሻው ሰነድ ለእያንዳንዱ ሹፌር ይዘጋጃል።"
+        },
+        {
+          "q": "መረጃዬ የተጠበቀ ነው?",
+          "a": "መረጃው በማስተላለፍ ጊዜ የተመሰጠረ ነው፣ ክፍለ ጊዜዎች ከጊዜ በኋላ በራስ-ሰር ይሰረዛሉ፣ እና ፖሊስ በራስ-ሰር አይገለጽም — በእርስዎ ግልጽ እርምጃ ብቻ።"
+        },
+        {
+          "q": "ዋጋው ስንት ነው?",
+          "a": "ለ1 ሪፖርት ከCHF / EUR 4.90 ጀምሮ። የ3 ሪፖርቶች ፓኬጅ 12.90 (−12%)፣ የ10 ፓኬጅ 34.90 (−29%)። ምንም ምዝገባ የለም፣ ክሬዲቶች አያልቁም።"
+        }
+      ]
     }
   },
   "steps": {
@@ -445,5 +519,431 @@
   "language": {
     "select": "ቋንቋ",
     "switch_tooltip": "ቋንቋ ቀይር"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "ምንም ሰነድ አልታወቀም። የፎቶዎችን ጥራት ያረጋግጡ።",
+    "analysis_error": "የትንተና ስህተት።",
+    "read_failed": "ንባቡ አልተሳካም",
+    "docs_analyzed_one": "{{count}} ሰነድ ተመርምሯል",
+    "docs_analyzed_other": "{{count}} ሰነዶች ተመርምረዋል",
+    "confidence": "እምነት፡ {{pct}}%",
+    "rescan": "እንደገና ስካን ያድርጉ",
+    "vehicle_section": "🚗 ተሽከርካሪ",
+    "plate": "ታርጋ",
+    "driver_section": "👤 ሹፌር",
+    "firstName": "ስም",
+    "lastName": "የአባት ስም",
+    "insurance_found": "✅ ኢንሹራንስ",
+    "insurance_manual": "⚠️ ኢንሹራንስ — በእጅ ይሙሉ",
+    "company_label": "ኩባንያ",
+    "company_aria": "የኢንሹራንስ ኩባንያ",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "የፖሊሲ ቁጥር",
+    "policy_manual_hint": "(በእጅ ማስገባት)",
+    "policy_aria": "የፖሊሲ ቁጥር",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "ያረጋግጡ →",
+    "scanning_title": "በመተንተን ላይ…",
+    "scanning_subtitle_one": "{{count}} ሰነድ · ራስ-ሰር መለያ",
+    "scanning_subtitle_other": "{{count}} ሰነዶች · ራስ-ሰር መለያ",
+    "photo_title": "ሰነዶችዎን ይቅረጹ",
+    "photo_subtitle": "የማሽከርከር ፈቃድ + አረንጓዴ ካርድ በአንድ ትንታኔ።",
+    "photo_subtitle2": "መተግበሪያው ራስ-ሰር ሁሉንም ነገር ይለያል እና ይወጣል።",
+    "doc_scanned": "ሰነድ ተቀርጿል {{n}}",
+    "doc_label": "ሰነድ {{n}}",
+    "photograph": "ይቅረጹ",
+    "rear_camera": "የኋላ ካሜራ",
+    "gallery": "ማከማቻ",
+    "which_docs": "የትኞቹን ሰነዶች ማንበብ?",
+    "doc_ch": "🇨🇭 የማሽከርከር ፈቃድ + አረንጓዴ ካርድ",
+    "doc_fr": "🇫🇷 የምዝገባ ካርድ + አረንጓዴ ካርድ / የማረጋገጫ ሰነድ",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 ምዝገባ + የኢንሹራንስ ማስረጃ",
+    "close_error_aria": "ስህተት ዝጋ",
+    "analyze_btn_one": "🔍 {{count}} ሰነድ ተንትን",
+    "analyze_btn_other": "🔍 {{count}} ሰነዶች ተንትን",
+    "skip_manual": "ዝለል — በእጅ ማስገባት →",
+    "upload_gallery_aria": "ሰነዶችን ከማከማቻ ይስቀሉ",
+    "take_photo_aria": "ሰነድ ይቅረጹ"
+  },
+  "pricingPage": {
+    "sr_title": "ዋጋዎች — boom.contact",
+    "back": "← ወደ ኋላ",
+    "buy_reports": "ሪፖርቶችን ግዙ",
+    "credits_no_expiry": "ክሬዲቶች አያልቁም · በWhatsApp ሊጋሩ የሚችሉ",
+    "credits_available_one": "✅ {{count}} ክሬዲት ይገኛል",
+    "credits_available_other": "✅ {{count}} ክሬዲቶች ይገኛሉ",
+    "no_credits": "⚡ ምንም ክሬዲት የለም — አሁን ይሙሉ",
+    "currency_label": "ምንዛሪ",
+    "currency_detected": "✓ በራስ-ሰር ተገኝቷል",
+    "most_popular": "⭐ በጣም ታዋቂ · ቁጠባ {{savings}}",
+    "economy": "ቁጠባ {{savings}}",
+    "per_pack": "በፓኬጅ",
+    "per_report": "/ ሪፖርት",
+    "redirecting_stripe": "⏳ ወደ Stripe በማዛወር ላይ...",
+    "buy_btn": "{{label}} ግዛ — {{price}}",
+    "error_missing_url": "የክፍያ URL ጠፍቷል",
+    "error_generic": "ስህተት",
+    "error_email_required": "ለመግዛት ኢሜይል ያስፈልጋል",
+    "trust_stripe": "የተጠበቀ Stripe PCI-DSS ክፍያ",
+    "trust_no_expiry": "ክሬዲቶች አያልቁም",
+    "trust_whatsapp": "በWhatsApp ሊጋራ የሚችል",
+    "trust_worldwide": "በብዙ ቋንቋ",
+    "trust_invoice": "የራስ-ሰር የፒዲኤፍ ደረሰኝ",
+    "trust_fleet": "ለድርጅት ተሽከርካሪዎች ተስማሚ",
+    "why_title": "ለምን ቅድመ ክሬዲቶች ማግኘት?",
+    "scenario_child_title": "ልጅዎ አደጋ ደርሶበታል",
+    "scenario_child_text": "ይደውልልዎታል። በWhatsApp ክሬዲት ይልኩለት። በ5 ደቂቃ ሪፖርቱን ያዘጋጃል።",
+    "scenario_company_title": "የድርጅት ተሽከርካሪ",
+    "scenario_company_text": "አድራሹ ግጭት አጋጥሞታል። ወዲያውኑ ከስልክዎ ክሬዲት ያስተላልፉለት።",
+    "scenario_abroad_title": "በውጭ ሀገር በጉዞ ላይ",
+    "scenario_abroad_text": "በጀርመን፣ አውስትራሊያ ወይም ጃፓን አደጋ። በይነገጹ በበርካታ ቋንቋዎች ይገኛል።",
+    "pkg_single_label": "1 ሪፖርት",
+    "pkg_single_desc": "ለአንድ አደጋ",
+    "pkg_pack3_label": "3 ሪፖርቶች",
+    "pkg_pack3_desc": "ለመላው ቤተሰብ",
+    "pkg_pack3_marketing": "🎁 በWhatsApp ያጋሩ — ልጅዎ፣ ሰራተኛዎ፣ ጓደኛዎ ወዲያውኑ አገናኝ ይቀበላል።",
+    "pkg_pack10_label": "10 ሪፖርቶች",
+    "pkg_pack10_desc": "ተሽከርካሪ መርከቦች እና ድርጅቶች",
+    "pkg_pack10_marketing": "🏢 መላውን የተሽከርካሪ መርከብዎን ያስተዳድሩ። በ1 ጠቅታ ለሰራተኞችዎ ያስተላልፉ።"
+  },
+  "voice": {
+    "title": "አደጋውን ይግለጹ",
+    "subtitle": "አማራጭ — ምን እንደተከሰተ በራስዎ ቃላት ይግለጹ። መግለጫዎ በሪፖርቱ ውስጥ ይመዘገባል።",
+    "tab_voice": "🎙️ ድምጽ",
+    "tab_text": "⌨️ ጽሑፍ",
+    "start_recording": "ቀረጻ ጀምር",
+    "textarea_aria": "የአደጋ መግለጫ",
+    "textarea_placeholder": "አደጋውን በጥቂት ዓረፍተ ነገሮች ይግለጹ…",
+    "validate_desc": "✅ መግለጫዬን አረጋግጥ",
+    "skip_step": "ይህንን ደረጃ ዝለል →",
+    "recording_in_progress": "ቀረጻ በመካሄድ ላይ…",
+    "recording_tip": "💡 ይግለጹ፡ የእያንዳንዱ ተሽከርካሪ አቅጣጫ፣ የመገናኛ ነጥብ፣ ሁኔታዎች። በጸጥታ ይናገሩ።",
+    "stop_recording": "ቀረጻ አቁም",
+    "transcribing_title": "በመተርጎም ላይ…",
+    "transcribing_subtitle": "ቀረጻዎ በማስኬድ ላይ ነው",
+    "desc_recorded": "መግለጫ ተቀርጿል",
+    "desc_in_pdf": "መግለጫዎ በሪፖርቱ PDF ውስጥ ይካተታል",
+    "your_declaration": "መግለጫዎ",
+    "edit": "✏️ አርትዕ",
+    "edit_placeholder": "አስፈላጊ ከሆነ መግለጫዎን ያስተካክሉ...",
+    "restart": "እንደገና ጀምር",
+    "mic_denied": "የማይክሮፎን ፍቃድ ተነፍጓል — በእጅ ማስገባት ይጠቀሙ።",
+    "mic_unavailable": "ማይክሮፎን አይገኝም፡ {{msg}}",
+    "transcription_error": "የትርጉም ስህተት",
+    "textarea_edit_aria": "የአደጋ መግለጫ"
+  },
+  "account": {
+    "member": {
+      "remove": "አስወግድ",
+      "removeConfirm": "ይህንን አባል ማስወገድ? ወደ ተሽከርካሪዎች እና ክሬዲቶች መዳረሻ ያጣል።",
+      "loading": "በመጫን ላይ…",
+      "none": "ምንም አባል የለም።",
+      "invite": "አባል ጋብዝ",
+      "inviteBtn": "ጋብዝ",
+      "pending": "በመጠባበቅ ላይ ያሉ ግብዣዎች"
+    },
+    "role": {
+      "owner": "ባለቤት",
+      "driver": "ሹፌር",
+      "fleet_admin": "የተሽከርካሪዎች አስተዳዳሪ"
+    },
+    "scan": {
+      "cancel": "ሰርዝ",
+      "photographPre": "የእርስዎን",
+      "license": "የመንጃ ፈቃድ",
+      "and": "እና/ወይም የእርስዎን",
+      "greenCard": "አረንጓዴ ካርድ",
+      "title": "ፈቃድ + አረንጓዴ ካርድ ይቅረጹ",
+      "subtitle": "ራስ-ሰር ማወቂያ · ባለብዙ ቋንቋ"
+    },
+    "garage": {
+      "back": "ጋራጅ",
+      "title": "ጋራጄ",
+      "add": "አክል",
+      "emptyTitle": "ጋራጅ ባዶ ነው",
+      "emptySubtitle": "ተሽከርካሪዎችዎን አንድ ጊዜ ያስመዝግቡ። በአደጋ ጊዜ ዳግም መቃኘት አያስፈልግም።",
+      "addFirst": "የመጀመሪያ ተሽከርካሪዬን አክል",
+      "noOrgVehicles": "ለአሁኑ የድርጅት ተሽከርካሪ የለም።"
+    },
+    "insurance": {
+      "saved": "ኢንሹራንስ ተቀምጧል",
+      "add": "ኢንሹራንስ አክል"
+    },
+    "nav": {
+      "logout": "ውጣ"
+    },
+    "vehicle": {
+      "edit": "ተሽከርካሪ አርትዕ",
+      "delete": "ተሽከርካሪ ሰርዝ",
+      "editOrg": "የድርጅት ተሽከርካሪ አርትዕ",
+      "deleteOrg": "የድርጅት ተሽከርካሪ ሰርዝ"
+    },
+    "fields": {
+      "nickname": "መጠሪያ ስም",
+      "plate": "ታርጋ",
+      "make": "ብራንድ",
+      "model": "ሞዴል",
+      "color": "ቀለም",
+      "year": "ዓመት",
+      "firstName": "ስም",
+      "lastName": "የአባት ስም",
+      "phone": "ስልክ",
+      "company": "ኩባንያ",
+      "address": "አድራሻ",
+      "newEmail": "አዲስ ኢሜይል",
+      "currentPwd": "የአሁኑ የይለፍ ቃል (ማረጋገጫ)",
+      "confirmEmailAria": "የኢሜይል አድራሻ ማረጋገጫ"
+    },
+    "credits": {
+      "buy": "ግዛ፡",
+      "available": "ያሉ ክሬዲቶች",
+      "unit": "1 ክሬዲት = 1 ሙሉ የአደጋ ሪፖርት"
+    },
+    "history": {
+      "loading": "በመጫን ላይ...",
+      "empty": "ምንም ሪፖርት የለም",
+      "emptySub": "ቀጣዩ ሪፖርትዎ በራስ-ሰር እዚህ ይታያል።"
+    },
+    "personal": {
+      "title": "የግል መረጃ",
+      "none": "ምንም መረጃ የለም — አርትዕን ጠቅ ያድርጉ"
+    },
+    "delete": {
+      "willDelete": "ለዘለአለም የሚሰረዝ፡",
+      "text": "መለያዎን፣ ተሽከርካሪዎችዎን እና ሁሉንም ሪፖርቶችዎን ለዘለአለም ሰርዝ። ይህ እርምጃ የማይመለስ ነው።"
+    },
+    "danger": {
+      "title": "አደገኛ ቦታ"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "ቀጣይ ጊዜ፡ 0 ማስገባት",
+    "next_time_subtitle": "ተሽከርካሪዎችዎ ለዘለአለም ተመዝግበዋል",
+    "benefit_scanned": "ፈቃድ + አረንጓዴ ካርድ አንድ ጊዜ ተቀርጿል",
+    "benefit_fast": "ሪፖርት በ2 ደቂቃ ከ10 ደቂቃ ይልቅ",
+    "benefit_gift": "ለቤተሰብዎ ሪፖርት በ1 ጠቅታ ያጋሩ",
+    "benefit_family": "ለቤተሰብ ተስማሚ፡ ክሬዲቶችዎን ያጋሩ",
+    "create_account": "ነፃ መለያዬን ፍጠር →",
+    "share_btn": "ለቤተሰቦቼ አጋራ",
+    "register_vehicle_title": "ከዚያ ተሽከርካሪዎን ያስመዝግቡ",
+    "register_vehicle_subtitle": "የማሽከርከር ፈቃድ + አረንጓዴ ካርድ ይቅረጹ · 30 ሰከንድ · ዳግም መሙላት አያስፈልግም",
+    "or_skip": "ወይም በቀጥታ ይለፉ",
+    "family_pack": "🔥 የቤተሰብ ፓኬጅ",
+    "family_pack_desc": "ለቤተሰብዎ ለማጋራት 3 ሪፖርቶች",
+    "scenario_child": "ልጅዎ ይደውላል — አደጋ። በ3 ሰከንድ ወደ ሞባይሉ ሪፖርት ይላኩ።",
+    "scenario_employee": "በኩባንያ ተሽከርካሪ ሰራተኛ። ክሬዲት በWhatsApp በፍጥነት ያስተላልፉ።",
+    "scenario_friend": "በውጭ አገር ችግር ላይ ያለ ወዳጅ። ሊንክ ይቀበላል፣ መለያ አያስፈልግም።",
+    "buy_3_reports": "3 ሪፖርቶች ይግዙ — CHF/EUR 12.90 →",
+    "see_all_packs": "ሁሉንም ፓኬጆች ይመልከቱ →",
+    "ready_title": "ለቀጣይ ጊዜ ዝግጁ",
+    "ready_subtitle": "አሁን ይሙሉ፣ በፈለጉት ጊዜ ያጋሩ",
+    "account_title": "✅ የእርስዎ boom.contact መለያ",
+    "account_desc": "ተሽከርካሪዎችዎ ተመዝግበዋል። በሚቀጥለው አደጋዎ በቀጥታ ወደ QR ደረጃ ይሂዱ — ምንም ማስገባት፣ ምንም ስካን።",
+    "manage_garage": "ጋራጄን አስተዳድር →",
+    "gift_title": "🎁 ሪፖርት በWhatsApp አጋራ",
+    "gift_desc": "አንድ ክሬዲትዎ = ለ<strong>ማንኛውም ሰው</strong> የሚላክ ልዩ ሊንክ፣ ያለ መለያ።",
+    "credits_available_one": "{{count}} ክሬዲት አለ",
+    "credits_available_other": "{{count}} ክሬዲቶች አሉ",
+    "share_protect": "ያጋሩ፣ ቤተሰብዎን ይጠብቁ",
+    "wa_gift_title": "📲 ሪፖርት በWhatsApp አጋራ",
+    "wa_gift_desc": "በ1 ጠቅታ ሊንክ ለልጅዎ፣ ሰራተኛ ወይም ወዳጅ ይላኩ። ያለ መለያ ወይም ክፍያ ሪፖርት ያደርጋል — ከክሬዲትዎ ይቀነሳል።",
+    "send_1": "📲 1 ሪፖርት ላክ",
+    "send_3": "📲 3 ሪፖርቶች ላክ",
+    "gift_link_created": "✅ ሊንክ ተፈጥሯል — በWhatsApp ይላኩ!",
+    "share_title": "📤 boom.contact አጋራ",
+    "share_desc": "ሪፖርትዎን በ5 ደቂቃ አጠናቀዋል። ጓደኞችዎ ይህ እንዳለ ማወቅ ይገባቸዋል።",
+    "memorize_vehicles": "🚗 ሌሎች ተሽከርካሪዎችዎን ያስቀምጡ",
+    "memorize_desc": "የኩባንያ ተሽከርካሪዎች፣ ሞተርሳይክል፣ ካምፒንግ? የተቀረጸ እያንዳንዱ ተሽከርካሪ = በአደጋ ጊዜ ዳግም ማስገባት የለም።",
+    "low_credits_one": "⚡ {{count}} ክሬዲት ብቻ ይቀራል",
+    "low_credits_other": "⚡ {{count}} ክሬዲቶች ብቻ ይቀራሉ",
+    "recharge_desc": "አሁን ይሙሉ እና በቤተሰብ እና ድርጅት ፓኬጆች ቅናሽ ይጠቀሙ።",
+    "recharge_btn": "ክሬዲቶቼን እሙላ →",
+    "pack_single_label": "1 ሪፖርት",
+    "pack_single_note": "አንድ ጊዜ አጠቃቀም",
+    "pack_pack3_label": "3 ሪፖርቶች",
+    "pack_pack3_note": "ቤተሰብ · 12% ቁጠባ",
+    "pack_pack10_label": "10 ሪፖርቶች",
+    "pack_pack10_note": "ድርጅት · 29% ቁጠባ",
+    "popular_badge": "⭐ ተወዳጅ"
+  },
+  "auth": {
+    "default_subtitle": "ተሽከርካሪዎችዎን ለማስቀመጥ እና በሪፖርቶችዎ ላይ ምንም ነገር ላለመሙላት ይግቡ።",
+    "magic_btn": "📧 በኢሜይል ሊንክ ግባ (የሚመከር)",
+    "password_btn": "🔑 በይለፍ ቃል ግባ",
+    "register_btn": "✨ መለያ ፍጠር",
+    "skip_btn": "ያለ መለያ ቀጥል →",
+    "skip_note": "ያለ መለያ፣ ሪፖርት ማድረግ እና በStripe መክፈል ይችላሉ።",
+    "magic_instructions": "ኢሜይልዎን ያስገቡ — ለ15 ደቂቃ የሚሰራ የመግቢያ ሊንክ ይደርስዎታል።",
+    "send_link": "ሊንክ ላክ",
+    "sending": "በመላክ ላይ...",
+    "back": "← ተመለስ",
+    "email_sent_title": "ኢሜይል ተልኳል!",
+    "email_sent_desc": "የእርስዎን <strong>{{email}}</strong> ሳጥን ይመልከቱ።",
+    "email_sent_validity": "ሊንኩ ለ15 ደቂቃ ይሰራል።",
+    "login_error": "ኢሜይል ወይም የይለፍ ቃል ትክክል አይደለም።",
+    "logging_in": "በመግባት ላይ...",
+    "login_btn": "ግባ",
+    "forgot_password": "የይለፍ ቃል ረሱት? የኢሜይል ሊንክ ይጠቀሙ →",
+    "register_desc": "ተሽከርካሪዎችዎን ለማስቀመጥ እና ሪፖርቶችዎን በራስ-ሰር ለመሙላት መለያ ይፍጠሩ።",
+    "password_placeholder": "የይለፍ ቃል (ቢያንስ 6 ቁምፊዎች)",
+    "creating": "በመፍጠር ላይ...",
+    "create_btn": "መለያዬን ፍጠር",
+    "register_legal": "መለያ በመፍጠር የእኛን ውሎች ይቀበላሉ። የተሽከርካሪ መረጃዎ የተመሰጠረ እና ያለፍቃድዎ አይጋራም።",
+    "register_error": "በምዝገባ ላይ ስህተት።",
+    "generic_error": "ስህተት"
+  },
+  "join": {
+    "sessionLabel": "ክፍለ ጊዜ",
+    "yourEmail": "የእርስዎ ኢሜይል",
+    "emailHint": "(PDF ለመቀበል)",
+    "emailAria": "የእርስዎ የኢሜይል አድራሻ",
+    "connecting": "በማገናኘት ላይ…",
+    "connected": "ተገናኝቷል! በማስጀመር ላይ…",
+    "joinButton": "ሪፖርትን ተቀላቀል"
+  },
+  "constat": {
+    "nav": {
+      "back": "ተመለስ",
+      "reset": "ሪፖርት ዳግም አስጀምር"
+    },
+    "session": {
+      "expiring": "ክፍለ ጊዜዎ በቅርቡ ያበቃል። መረጃዎን ያስቀምጡ።"
+    },
+    "error": {
+      "close": "ስህተት ዝጋ"
+    },
+    "vehicle": {
+      "pickRegistered": "የተመዘገበ ተሽከርካሪ ምረጥ",
+      "autofill": "ራስ-ሰር መሙላት — መቃኘት አያስፈልግም",
+      "yourRegistered": "የተመዘገቡ ተሽከርካሪዎችዎ",
+      "org": "ድርጅት",
+      "personal": "ግል",
+      "fallback": "ተሽከርካሪ",
+      "cancel": "ሰርዝ",
+      "orScanNew": "ወይም አዲስ ተሽከርካሪ ስካን ያድርጉ"
+    },
+    "pedestrian": {
+      "title": "ሌላ ወገን፡ እግረኛ"
+    },
+    "summary": {
+      "yourVehicle": "ተሽከርካሪዎ",
+      "accident": "አደጋ",
+      "damagedZones_one": "{{count}} የተጎዳ ቦታ",
+      "damagedZones_other": "{{count}} የተጎዱ ቦታዎች"
+    },
+    "emergency": {
+      "title": "የአደጋ ጊዜ ቁጥሮች"
+    }
+  },
+  "constatForm": {
+    "tab_vehicle": "ተሽከርካሪ",
+    "tab_driver": "ሹፌር",
+    "tab_insurance": "ኢንሹራንስ",
+    "tab_circumstances": "ሁኔታዎች",
+    "tab_complement": "ተጨማሪ",
+    "field_required": "ይህ መስክ ያስፈልጋል",
+    "plate_label": "ታርጋ",
+    "brand_label": "ብራንድ",
+    "model_label": "ሞዴል",
+    "year_label": "ዓመት",
+    "vin_label": "የቻሲስ ቁጥር (VIN)",
+    "firstName_label": "ስም",
+    "lastName_label": "የአባት ስም",
+    "address_label": "አድራሻ",
+    "postalCode_label": "የፖስታ ኮድ",
+    "city_label": "ከተማ",
+    "country_label": "አገር",
+    "phone_label": "ስልክ",
+    "email_label": "ኢሜይል",
+    "license_label": "የመንጃ ፈቃድ ቁጥር",
+    "company_label": "የኢንሹራንስ ኩባንያ",
+    "policyNumber_label": "የፖሊሲ ቁጥር",
+    "greenCardNumber_label": "የአረንጓዴ ካርድ ቁጥር",
+    "greenCardExpiry_label": "የአረንጓዴ ካርድ የአገልግሎት ጊዜ",
+    "agentName_label": "ወኪል / አማካሪ",
+    "agentPhone_label": "የኢንሹራንስ ስልክ",
+    "circumstances_desc": "በድብደባ ጊዜ የተሽከርካሪዎን <strong>({{role}})</strong> ሁኔታ የሚገልጹ ሁሉንም ሳጥኖች ምልክት ያድርጉ።",
+    "boxes_checked_one": "{{count}} ሳጥን ምልክት ተደርጓል",
+    "boxes_checked_other": "{{count}} ሳጥኖች ምልክት ተደርጓል",
+    "complement_desc": "የሪፖርት ተጨማሪ መረጃዎች — ክፍል 11፣ 13 እና 14።",
+    "datetime_label": "የአደጋ ቀን እና ሰዓት",
+    "visible_damage_label": "የሚታየው ጉዳት (ክፍል 11)",
+    "visible_damage_placeholder": "በተሽከርካሪዎ ላይ የሚታዩ ጉዳቶችን ይግለጹ...",
+    "third_party_label": "ለሶስተኛ ወገን የንብረት ጉዳት (ከA እና B ውጭ)",
+    "witnesses_label": "ምስክሮች",
+    "witnesses_placeholder": "የእያንዳንዱ ምስክር ስም፣ የአባት ስም፣ ስልክ...",
+    "voice_declaration_label": "🎙️ የድምጽ መግለጫ (አማራጭ)",
+    "observations_label": "ነፃ አስተያየቶች — ሹፌር {{role}} (ክፍል 14)",
+    "observations_placeholder": "ማንኛውም ጠቃሚ መረጃ ያክሉ፡ የአየር ሁኔታ፣ የመንገድ ሁኔታ፣ የሚገመተው ፍጥነት፣ አስተያየቶች...",
+    "insurance_holder_label": "የኢንሹራንስ ባለይዞታ (ከሹፌር የተለየ ከሆነ)",
+    "holder_name_placeholder": "የባለይዞታ ሙሉ ስም",
+    "holder_name_aria": "የባለይዞታ ስም",
+    "holder_address_placeholder": "የባለይዞታ አድራሻ",
+    "holder_address_aria": "የባለይዞታ አድራሻ",
+    "save_btn": "አስቀምጥና ቀጥል →",
+    "form_tabs_aria": "የቅጽ ክፍሎች"
+  },
+  "legal": {
+    "intro": {
+      "title": "ከመጀመርዎ በፊት",
+      "body": "boom.contact አደጋን ለመመዝገብ እና የተዋቀረ PDF ፋይል ለማመንጨት ይረዳዎታል። ጉዳት፣ አደጋ፣ ማምለጫ፣ ከባድ አለመግባባት ወይም ህጋዊ ግዴታ በሚኖርበት ጊዜ፣ ወዲያውኑ የድንገተኛ አደጋ፣ ፖሊስ ወይም ባለስልጣናትን ያነጋግሩ። የሚቀርቡ መረጃዎች የተሳታፊዎች ሃላፊነት ናቸው። ካሜራ፣ ማይክሮፎን ወይም አካባቢ መጠቀም ካልፈለጉ መረጃን በእጅ ማስገባት ይችላሉ።",
+      "start": "ተረድቻለሁ፣ ጀምር",
+      "emergency": "የአደጋ ጊዜ ቁጥሮችን ይመልከቱ",
+      "privacy_cgu": "ግላዊነት / ውሎች"
+    },
+    "guest_accept": {
+      "checkbox": "የአገልግሎት ውሎችን ተቀብያለሁ እና የግላዊነት ፖሊሲን አንብቤያለሁ።",
+      "note": "መረጃዬ የአደጋ PDF ፋይል ለማመንጨት እንደሚውል ተረድቻለሁ እናም የቀረቡት መረጃዎች የኔ ኃላፊነት ናቸው።"
+    },
+    "signature_confirm": "የሰጠሁት መረጃ በእውቀቴ መሠረት ትክክል መሆኑን አረጋግጣለሁ እና ፊርማዬ በPDF ፋይል ውስጥ እንዲካተት ተስማሚያለሁ።",
+    "payment_notice": "ወደ ክፍያ በመቀጠል፣ ክፍያው PDF ፋይል መፈጠር እና መላክን እንደሚሸፍን ይረዳሉ። የሚቀርቡ መረጃዎች የተሳታፊዎች ኃላፊነት ናቸው።",
+    "mic_notice": "ማይክሮፎንን በመጠቀም፣ የድምጽ መግለጫዎ በአደጋ ፋይል ውስጥ ለመካተት ይተረጎማል። በምትኩ ጽሑፍ ማስገባት ይችላሉ።",
+    "injury_confirm": {
+      "body": "የጉዳት ፎቶዎች ሚስጥራዊ መረጃ ሊይዙ ይችላሉ። ከደህንነት አስፈላጊነት ወይም ህጋዊ ግዴታ በስተቀር የአካባቢውን ሰው ፈቃድ ያረጋግጡ።",
+      "continue": "ቀጥል",
+      "change": "ምድብ ቀይር"
+    },
+    "pdf_ready_title": "ጊዜ የተመዘገበበት የአደጋ PDF ፋይል",
+    "pdf_ready_body": "የሚያስፈልጉ ፊርማዎች ተመዝግበዋል። PDF ፋይሉ ዝግጁ ነው። ወደ አድናቂዎ ከመላክዎ በፊት መረጃው ያረጋግጡ።"
+  },
+  "signature": {
+    "title": "ፊርማ",
+    "driver": "ሹፌር {{role}}",
+    "other_party": "ሌላ ወገን",
+    "no_signature": "ያለ ፊርማ",
+    "sign_here": "በጣትዎ እዚህ ይፈርሙ",
+    "signed": "ተፈርሟል ✓",
+    "clear": "🗑 አጽዳ",
+    "saving": "⏳ በማስቀመጥ ላይ…",
+    "confirm_signature": "✍️ ፊርማ አረጋግጥ",
+    "waiting_other": "የሌላኛው ሹፌር ፊርማ በመጠባበቅ ላይ…",
+    "waiting_pdf": "ሁለቱም ወገኖች ከፈረሙ በኋላ PDF ይፈጠራል።",
+    "report_signed": "ሪፖርት ተፈርሟል!",
+    "generating_pdf": "PDF በማመንጨት ላይ…",
+    "canvas_aria": "የፊርማ ቦታ — ሹፌር {{role}}"
+  },
+  "app": {
+    "magic_link_error": "የመግቢያ ሊንክ ልክ ያልሆነ ወይም ጊዜው ያለፈበት።",
+    "gift_credits_added": "🎁 {{credits}} ክሬዲት(ቶች) ወደ መለያዎ ታክሏል!",
+    "loading_aria": "በመጫን ላይ",
+    "nav_landing": "መነሻ ገጽ",
+    "nav_cgu": "የአገልግሎት ውሎች",
+    "nav_pricing": "ዋጋ አወጣጥ",
+    "nav_constat": "የሪፖርት ፍጠራ",
+    "nav_join": "ክፍለ ጊዜን ተቀላቀል",
+    "nav_account": "የተጠቃሚ መለያ",
+    "nav_admin": "የአስተዳዳሪ ዳሽቦርድ",
+    "nav_emergency": "የአደጋ ጊዜ ቁጥሮች",
+    "nav_privacy": "የግላዊነት ፖሊሲ",
+    "nav_police_login": "የፖሊስ መግቢያ",
+    "nav_police_dashboard": "የፖሊስ ዳሽቦርድ",
+    "nav_police_flow": "የፖሊስ ሂደት",
+    "nav_police_intervention": "የፖሊስ ጣልቃ ገብነት",
+    "nav_to": "ወደ {{label}} አሰሳ",
+    "title_default": "boom.contact — ዲጂታል የአደጋ ሪፖርት",
+    "title_page": "{{label}} — boom.contact"
   }
 }

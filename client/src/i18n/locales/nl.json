@@ -12,7 +12,8 @@
     "required": "Verplicht",
     "yes": "Ja",
     "no": "Nee",
-    "unknown": "Onbekend"
+    "unknown": "Onbekend",
+    "rescan": "🔄 Opnieuw scannen"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Documenteer een ongeval zonder papier, zonder verwarring.",
+      "subtitle": "boom.contact begeleidt u stap voor stap om nuttige informatie te verzamelen, foto's, locatie, verklaringen en handtekeningen toe te voegen, en vervolgens een tijdstempel PDF-dossier te genereren om naar uw verzekeraar te sturen."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Actieve sessie",
+      "vehicleA": "VOERTUIG A",
+      "photosSig": "Foto's · handtekening ✓",
+      "vehicleB": "VOERTUIG B",
+      "qrJoined": "QR verbonden · bezig",
+      "payGenerate": "Betalen en PDF genereren",
+      "pdfBadge": "Tijdstempel PDF",
+      "qrBadge": "Gedeelde QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Uitnodigen via QR-code",
+        "desc": "Creëer de sessie, de andere bestuurder scant de QR-code vanaf zijn telefoon. Geen installatie, geen registratie."
+      },
+      {
+        "title": "Foto's, stem en handtekening",
+        "desc": "Voeg foto's toe, dicteer uw opmerkingen met uw stem, plaats de voertuigen op de schets en teken met uw vinger."
+      },
+      {
+        "title": "Tijdstempel PDF-dossier",
+        "desc": "boom.contact genereert een tijdstempel PDF-dossier met de door elke bestuurder ingevoerde informatie."
+      },
+      {
+        "title": "Te verzenden naar uw verzekeraar",
+        "desc": "Download de PDF of stuur deze per e-mail om uw schadeclaim bij uw verzekeraar te ondersteunen."
+      }
+    ],
+    "seoLine": "Het meertalige digitale schadeformulier · Digitale schadeclaim",
+    "flow": {
+      "label": "Alles in één stroom",
+      "title": "Van het ongeval naar het verzendklare dossier"
+    },
+    "stress": {
+      "label": "Gemaakt voor het moment van het ongeval",
+      "title": "Ontworpen voor stressvolle situaties",
+      "text": "Na een klap is het moeilijk om helder te denken. boom.contact gaat stap voor stap, in uw taal, en houdt een register bij van elke verzamelde informatie. Alles werkt vanuit de browser van de telefoon, zelfs met een beperkte verbinding.",
+      "bullets": [
+        "Stap voor stap begeleid",
+        "Meertalig",
+        "Foto's · stem · handtekening",
+        "Tijdstempel PDF-dossier"
+      ],
+      "emergencyTitle": "In geval van nood",
+      "emergencyText": "boom.contact vervangt geen hulpdiensten, politie, advocaat of verzekeraar. In geval van gewonden of gevaar, neem eerst contact op met de hulpdiensten."
+    },
+    "pricing": {
+      "label": "Tarieven",
+      "title": "Eenvoudig, transparant, zonder abonnement",
+      "caption": "1 krediet = 1 volledig schadeformulier · meertalig · kredieten zonder vervaldatum",
+      "badgePopular": "Populair",
+      "plans": [
+        {
+          "label": "1 schadeformulier",
+          "desc": "Voor een eenmalig ongeval"
+        },
+        {
+          "label": "3 schadeformulieren",
+          "desc": "Voor het hele gezin"
+        },
+        {
+          "label": "10 schadeformulieren",
+          "desc": "Voor wagenparken en makelaars"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Voor professionals",
+      "title": "Voor makelaars, wagenparken en verzekeringspartners",
+      "text": "Voorzie uw klanten en bestuurders van een duidelijk hulpmiddel om een ongeval te documenteren en een tijdstempel PDF-dossier te genereren. Kredietpakketten voor wagenparken en makelaars, eenvoudige implementatie, zonder abonnement.",
+      "cta": "Contact / delen",
+      "items": [
+        {
+          "title": "Wagenparken",
+          "desc": "Een gestructureerd dossier voor elk schadegeval."
+        },
+        {
+          "title": "Makelaars",
+          "desc": "Een waardevolle service voor uw verzekerden."
+        },
+        {
+          "title": "Privacy",
+          "desc": "Gegevens versleuteld tijdens verzending, op verzoek verwijderbaar."
+        },
+        {
+          "title": "Verzending",
+          "desc": "Tijdstempel PDF klaar om bij de schadeclaim te voegen."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Veelgestelde vragen",
+      "items": [
+        {
+          "q": "Wat is boom.contact?",
+          "a": "boom.contact is een applicatie die helpt bij het documenteren van een verkeersongeluk vanaf een telefoon: uitnodigen van bestuurders via QR, foto's, stem, schetsen, handtekeningen, en vervolgens genereren van een tijdstempel PDF-dossier om naar uw verzekeraar te sturen."
+        },
+        {
+          "q": "Moet ik een applicatie installeren?",
+          "a": "Nee. boom.contact werkt rechtstreeks in de browser van de telefoon (Safari, Chrome, Firefox). U kunt het ook aan uw startscherm toevoegen als webapplicatie (PWA) voor offline toegang."
+        },
+        {
+          "q": "Wat gebeurt er als de andere bestuurder de applicatie niet heeft?",
+          "a": "U creëert de sessie en er verschijnt een QR-code. De andere bestuurder scant deze met zijn telefoon: boom.contact opent in zijn browser, zonder registratie of download."
+        },
+        {
+          "q": "Wordt het PDF-dossier geaccepteerd door mijn verzekeraar?",
+          "a": "Het tijdstempel PDF-dossier is bedoeld om uw schadeclaim te ondersteunen. boom.contact garandeert niet dat het wordt geaccepteerd, dit hangt af van uw verzekeraar volgens uw contract en de jurisdictie."
+        },
+        {
+          "q": "Werkt het als de andere bestuurder een andere taal spreekt?",
+          "a": "Ja. Elke bestuurder gebruikt de interface in zijn eigen taal. Het uiteindelijke dossier wordt voor elke bestuurder gegenereerd."
+        },
+        {
+          "q": "Zijn mijn gegevens beschermd?",
+          "a": "Gegevens zijn versleuteld tijdens verzending, sessies worden automatisch verwijderd na een bepaalde tijd, en de politie wordt nooit automatisch op de hoogte gesteld — alleen op expliciete actie van uw kant."
+        },
+        {
+          "q": "Wat kost het?",
+          "a": "Vanaf CHF / EUR 4.90 voor een schadeformulier. Pakket van 3 schadeformulieren voor 12.90 (−12 %), pakket van 10 voor 34.90 (−29 %). Geen abonnement, kredieten zonder vervaldatum."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "constat": {
+    "nav": {
+      "back": "Terug",
+      "reset": "Reset het schadeformulier"
+    },
+    "session": {
+      "expiring": "Uw sessie verloopt binnenkort. Sla uw gegevens op."
+    },
+    "error": {
+      "close": "Sluit de fout"
+    },
+    "vehicle": {
+      "pickRegistered": "Kies een geregistreerd voertuig",
+      "autofill": "Automatisch invullen — geen scan nodig",
+      "yourRegistered": "Uw geregistreerde voertuigen",
+      "org": "Bedrijf",
+      "personal": "Persoonlijk",
+      "fallback": "Voertuig",
+      "cancel": "Annuleren",
+      "orScanNew": "of scan een nieuw voertuig"
+    },
+    "pedestrian": {
+      "title": "Andere partij: voetganger"
+    },
+    "summary": {
+      "yourVehicle": "Uw voertuig",
+      "accident": "Ongeval",
+      "damagedZones_one": "{{count}} beschadigde zone",
+      "damagedZones_other": "{{count}} beschadigde zones"
+    },
+    "emergency": {
+      "title": "Noodnummers"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "De volgende keer: 0 invoer",
+    "next_time_subtitle": "Uw voertuigen zijn voor altijd opgeslagen",
+    "benefit_scanned": "Rijbewijs + groene kaart eenmaal gescand",
+    "benefit_fast": "Schadeformulier in 2 min in plaats van 10",
+    "benefit_gift": "Geef een schadeformulier aan uw dierbaren met 1 klik",
+    "benefit_family": "Ideaal voor gezinnen: deel uw kredieten",
+    "create_account": "Maak mijn gratis account aan →",
+    "share_btn": "Deel met mijn dierbaren",
+    "register_vehicle_title": "Registreer vervolgens uw voertuig",
+    "register_vehicle_subtitle": "Scan rijbewijs + groene kaart · 30 sec · nooit meer opnieuw invoeren",
+    "or_skip": "of ga direct verder",
+    "family_pack": "🔥 Gezinspakket",
+    "family_pack_desc": "3 schadeformulieren te delen met uw dierbaren",
+    "scenario_child": "Uw kind belt — ongeval. Stuur hem of haar in 3 seconden een schadeformulier op zijn of haar mobiel.",
+    "scenario_employee": "Werknemer met bedrijfsvoertuig. Stuur onmiddellijk een krediet via WhatsApp.",
+    "scenario_friend": "Vriend in moeilijkheden in het buitenland. Hij of zij ontvangt een link, geen account vereist.",
+    "buy_3_reports": "Koop 3 schadeformulieren — CHF/EUR 12.90 →",
+    "see_all_packs": "Bekijk alle pakketten →",
+    "ready_title": "Klaar voor de volgende keer",
+    "ready_subtitle": "Laad nu op, deel wanneer u wilt",
+    "account_title": "✅ Uw boom.contact account",
+    "account_desc": "Uw voertuigen zijn opgeslagen. Bij uw volgende ongeval gaat u direct naar de QR-stap — geen invoer, geen scan.",
+    "manage_garage": "Beheer mijn garage →",
+    "gift_title": "🎁 Geef een schadeformulier via WhatsApp",
+    "gift_desc": "Een van uw kredieten = een unieke link om te sturen naar <strong>iedereen</strong>, zonder dat de persoon een account nodig heeft.",
+    "credits_available_one": "{{count}} krediet beschikbaar",
+    "credits_available_other": "{{count}} kredieten beschikbaar",
+    "share_protect": "Deel, bescherm uw dierbaren",
+    "wa_gift_title": "📲 Geef een schadeformulier via WhatsApp",
+    "wa_gift_desc": "Met 1 klik, stuur een link naar uw kind, werknemer of vriend. Hij of zij maakt zijn of haar schadeformulier zonder account of betaling — afgetrokken van uw kredieten.",
+    "send_1": "📲 Stuur 1 schadeformulier",
+    "send_3": "📲 Stuur 3 schadeformulieren",
+    "gift_link_created": "✅ Link aangemaakt — stuur deze via WhatsApp!",
+    "share_title": "📤 Deel boom.contact",
+    "share_desc": "U heeft uw schadeformulier in 5 min gemaakt. Uw vrienden verdienen het om te weten dat dit bestaat.",
+    "memorize_vehicles": "🚗 Onthoud uw andere voertuigen",
+    "memorize_desc": "Bedrijfswagen, motor, camper? Elk gescand voertuig = nooit meer invoeren bij een ongeval.",
+    "low_credits_one": "⚡ U heeft nog maar {{count}} krediet over",
+    "low_credits_other": "⚡ U heeft nog maar {{count}} kredieten over",
+    "recharge_desc": "Laad nu op en profiteer van kortingen op gezins- en bedrijfs pakketten.",
+    "recharge_btn": "Laad mijn kredieten op →",
+    "pack_single_label": "1 schadeformulier",
+    "pack_single_note": "Eenmalig gebruik",
+    "pack_pack3_label": "3 schadeformulieren",
+    "pack_pack3_note": "Gezin · besparing 12%",
+    "pack_pack10_label": "10 schadeformulieren",
+    "pack_pack10_note": "Bedrijf · besparing 29%",
+    "popular_badge": "⭐ POPULAIR"
+  },
+  "signature": {
+    "title": "Handtekening",
+    "driver": "Bestuurder {{role}}",
+    "other_party": "Andere partij",
+    "no_signature": "zonder handtekening",
+    "sign_here": "Teken hier met uw vinger",
+    "signed": "GETEKEND ✓",
+    "clear": "🗑 Wissen",
+    "saving": "⏳ Opslaan…",
+    "confirm_signature": "✍️ Bevestig de handtekening",
+    "waiting_other": "Wachten op de handtekening van de andere bestuurder…",
+    "waiting_pdf": "De PDF wordt gegenereerd zodra beide partijen hebben getekend.",
+    "report_signed": "Schadeformulier getekend!",
+    "generating_pdf": "PDF wordt gegenereerd…",
+    "canvas_aria": "Handtekeninggebied — Bestuurder {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Voertuig",
+    "tab_driver": "Bestuurder",
+    "tab_insurance": "Verzekering",
+    "tab_circumstances": "Omstandigheden",
+    "tab_complement": "Aanvulling",
+    "field_required": "Dit veld is verplicht",
+    "plate_label": "Kenteken",
+    "brand_label": "Merk",
+    "model_label": "Model",
+    "year_label": "Jaar",
+    "vin_label": "Chassisnummer (VIN)",
+    "firstName_label": "Voornaam",
+    "lastName_label": "Achternaam",
+    "address_label": "Adres",
+    "postalCode_label": "Postcode",
+    "city_label": "Plaats",
+    "country_label": "Land",
+    "phone_label": "Telefoon",
+    "email_label": "E-mail",
+    "license_label": "Rijbewijsnummer",
+    "company_label": "Verzekeringsmaatschappij",
+    "policyNumber_label": "Polisnummer",
+    "greenCardNumber_label": "Groene kaartnummer",
+    "greenCardExpiry_label": "Geldigheid groene kaart",
+    "agentName_label": "Agent / Makelaar",
+    "agentPhone_label": "Tel. verzekering",
+    "circumstances_desc": "Vink alle vakjes aan die de situatie van uw voertuig <strong>({{role}})</strong> op het moment van de botsing beschrijven.",
+    "boxes_checked_one": "{{count}} vakje aangevinkt",
+    "boxes_checked_other": "{{count}} vakjes aangevinkt",
+    "complement_desc": "Aanvullende informatie van het schadeformulier — secties 11, 13 en 14.",
+    "datetime_label": "Datum en tijd van het ongeval",
+    "visible_damage_label": "Zichtbare schade (sectie 11)",
+    "visible_damage_placeholder": "Beschrijf de zichtbare schade aan uw voertuig...",
+    "third_party_label": "Materiële schade aan derden (anders dan A en B)",
+    "witnesses_label": "Getuigen",
+    "witnesses_placeholder": "Naam, voornaam, telefoon van elke getuige...",
+    "voice_declaration_label": "🎙️ Stemverklaring (optioneel)",
+    "observations_label": "Vrije opmerkingen — bestuurder {{role}} (sectie 14)",
+    "observations_placeholder": "Voeg alle nuttige elementen toe: weersomstandigheden, staat van de weg, geschatte snelheid, opmerkingen...",
+    "insurance_holder_label": "Verzekeringnemer (indien anders dan de bestuurder)",
+    "holder_name_placeholder": "Volledige naam van de verzekeringnemer",
+    "holder_name_aria": "Naam van de verzekeringnemer",
+    "holder_address_placeholder": "Adres van de verzekeringnemer",
+    "holder_address_aria": "Adres van de verzekeringnemer",
+    "save_btn": "Opslaan en doorgaan →",
+    "form_tabs_aria": "Secties van het formulier"
+  },
+  "account": {
+    "member": {
+      "remove": "Verwijderen",
+      "removeConfirm": "Deze lid verwijderen? Hij of zij verliest de toegang tot de voertuigen en kredieten van het bedrijf.",
+      "loading": "Laden…",
+      "none": "Geen lid.",
+      "invite": "Nodig een lid uit",
+      "inviteBtn": "Uitnodigen",
+      "pending": "Uitnodigingen in behandeling"
+    },
+    "role": {
+      "owner": "Eigenaar",
+      "driver": "Bestuurder",
+      "fleet_admin": "Vlootbeheerder"
+    },
+    "scan": {
+      "cancel": "Annuleren",
+      "photographPre": "Fotografeer uw",
+      "license": "rijbewijs",
+      "and": "en/of uw",
+      "greenCard": "groene kaart",
+      "title": "Scan rijbewijs + groene kaart",
+      "subtitle": "Automatische herkenning · meertalig"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Mijn garage",
+      "add": "Toevoegen",
+      "emptyTitle": "Lege garage",
+      "emptySubtitle": "Registreer uw voertuigen één keer. Nooit meer scannen bij een ongeval.",
+      "addFirst": "Voeg mijn eerste voertuig toe",
+      "noOrgVehicles": "Geen bedrijfsvoertuigen op dit moment."
+    },
+    "insurance": {
+      "saved": "Verzekering opgeslagen",
+      "add": "Verzekering toevoegen"
+    },
+    "nav": {
+      "logout": "Uitloggen"
+    },
+    "vehicle": {
+      "edit": "Wijzig voertuig",
+      "delete": "Verwijder voertuig",
+      "editOrg": "Wijzig bedrijfsvoertuig",
+      "deleteOrg": "Verwijder bedrijfsvoertuig"
+    },
+    "fields": {
+      "nickname": "Bijnaam",
+      "plate": "Kenteken",
+      "make": "Merk",
+      "model": "Model",
+      "color": "Kleur",
+      "year": "Jaar",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "phone": "Telefoon",
+      "company": "Bedrijf",
+      "address": "Adres",
+      "newEmail": "Nieuwe e-mail",
+      "currentPwd": "Huidig wachtwoord (bevestiging)",
+      "confirmEmailAria": "Bevestiging van het e-mailadres"
+    },
+    "credits": {
+      "buy": "Kopen:",
+      "available": "BESCHIKBARE KREDIETEN",
+      "unit": "1 krediet = 1 volledig schadeformulier"
+    },
+    "history": {
+      "loading": "Laden...",
+      "empty": "Geen schadeformulier",
+      "emptySub": "Uw volgende schadeformulier verschijnt hier automatisch."
+    },
+    "personal": {
+      "title": "Persoonlijke informatie",
+      "none": "Geen informatie — klik op Wijzigen"
+    },
+    "delete": {
+      "willDelete": "DIT ZAL DEFINITIEF WORDEN VERWIJDERD:",
+      "text": "Verwijder uw account, voertuigen en alle schadeformulieren definitief. Deze actie is onomkeerbaar."
+    },
+    "danger": {
+      "title": "Gevaarlijke zone"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Geen document herkend. Controleer de kwaliteit van de foto's.",
+    "analysis_error": "Analysefout.",
+    "read_failed": "Lezen mislukt",
+    "docs_analyzed_one": "{{count}} document geanalyseerd",
+    "docs_analyzed_other": "{{count}} documenten geanalyseerd",
+    "confidence": "Vertrouwen: {{pct}}%",
+    "rescan": "Opnieuw scannen",
+    "vehicle_section": "🚗 Voertuig",
+    "plate": "Kenteken",
+    "driver_section": "👤 Bestuurder",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "insurance_found": "✅ Verzekering",
+    "insurance_manual": "⚠️ Verzekering — handmatig aanvullen",
+    "company_label": "Maatschappij",
+    "company_aria": "Verzekeringsmaatschappij",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Polisnummer",
+    "policy_manual_hint": "(handmatige invoer)",
+    "policy_aria": "Polisnummer",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Bevestigen →",
+    "scanning_title": "Bezig met scannen…",
+    "scanning_subtitle_one": "{{count}} document · automatische identificatie",
+    "scanning_subtitle_other": "{{count}} documenten · automatische identificatie",
+    "photo_title": "Fotografeer uw documenten",
+    "photo_subtitle": "Rijbewijs + groene kaart in één scan.",
+    "photo_subtitle2": "De applicatie identificeert en extraheert alles automatisch.",
+    "doc_scanned": "Document gescand {{n}}",
+    "doc_label": "Document {{n}}",
+    "photograph": "Fotograferen",
+    "rear_camera": "Achtercamera",
+    "gallery": "Galerij",
+    "which_docs": "Welke documenten scannen?",
+    "doc_ch": "🇨🇭 Rijbewijs + groene kaart",
+    "doc_fr": "🇫🇷 Kentekenbewijs + groene kaart / attest",
+    "doc_de": "🇩🇪 Toelating + Groene Kaart",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registratie + Verzekerings-ID-kaart",
+    "doc_world": "🌍 Registratie + bewijs van verzekering",
+    "close_error_aria": "Sluit de fout",
+    "analyze_btn_one": "🔍 Analyseer {{count}} document",
+    "analyze_btn_other": "🔍 Analyseer {{count}} documenten",
+    "skip_manual": "Overslaan — handmatige invoer →",
+    "upload_gallery_aria": "Documenten uploaden vanuit de galerij",
+    "take_photo_aria": "Fotografeer een document"
+  },
+  "join": {
+    "sessionLabel": "Sessie",
+    "yourEmail": "Uw e-mail",
+    "emailHint": "(om de PDF te ontvangen)",
+    "emailAria": "Uw e-mailadres",
+    "connecting": "Verbinden…",
+    "connected": "Verbonden! Starten…",
+    "joinButton": "Neem deel aan het schadeformulier"
+  },
+  "voice": {
+    "title": "Beschrijf het ongeval",
+    "subtitle": "Optioneel — beschrijf wat er is gebeurd met uw eigen woorden. Uw verklaring wordt opgenomen in het schadeformulier.",
+    "tab_voice": "🎙️ Stem",
+    "tab_text": "⌨️ Tekst",
+    "start_recording": "Begin met opnemen",
+    "textarea_aria": "Beschrijving van het ongeval",
+    "textarea_placeholder": "Beschrijf het ongeval in een paar zinnen…",
+    "validate_desc": "✅ Bevestig mijn beschrijving",
+    "skip_step": "Deze stap overslaan →",
+    "recording_in_progress": "Opname bezig…",
+    "recording_tip": "💡 Beschrijf: de richting van elk voertuig, het impactpunt, de omstandigheden. Praat rustig.",
+    "stop_recording": "Stop met opnemen",
+    "transcribing_title": "Transcriberen bezig…",
+    "transcribing_subtitle": "Uw opname wordt verwerkt",
+    "desc_recorded": "Beschrijving opgenomen",
+    "desc_in_pdf": "Uw verklaring wordt opgenomen in het PDF-schadeformulier",
+    "your_declaration": "Uw verklaring",
+    "edit": "✏️ Bewerken",
+    "edit_placeholder": "Corrigeer uw verklaring indien nodig...",
+    "restart": "Opnieuw beginnen",
+    "mic_denied": "Toegang tot de microfoon geweigerd — gebruik handmatige invoer.",
+    "mic_unavailable": "Microfoon niet beschikbaar: {{msg}}",
+    "transcription_error": "Transcriptiefout",
+    "textarea_edit_aria": "Verhaal van het ongeval"
+  },
+  "auth": {
+    "default_subtitle": "Log in om uw voertuigen op te slaan en niets meer in te voeren bij uw schadeformulieren.",
+    "magic_btn": "📧 Inloggen via e-maillink (aanbevolen)",
+    "password_btn": "🔑 Inloggen met wachtwoord",
+    "register_btn": "✨ Maak een account aan",
+    "skip_btn": "Doorgaan zonder account →",
+    "skip_note": "Zonder account kunt u nog steeds een schadeformulier maken en betalen met Stripe.",
+    "magic_instructions": "Voer uw e-mailadres in — u ontvangt een inloglink die 15 minuten geldig is.",
+    "send_link": "Stuur de link",
+    "sending": "Verzenden...",
+    "back": "← Terug",
+    "email_sent_title": "E-mail verzonden!",
+    "email_sent_desc": "Controleer uw inbox <strong>{{email}}</strong>.",
+    "email_sent_validity": "De link is 15 minuten geldig.",
+    "login_error": "E-mail of wachtwoord onjuist.",
+    "logging_in": "Inloggen...",
+    "login_btn": "Inloggen",
+    "forgot_password": "Wachtwoord vergeten? Gebruik een e-maillink →",
+    "register_desc": "Maak uw account aan om uw voertuigen op te slaan en uw schadeformulieren automatisch voor te vullen.",
+    "password_placeholder": "Wachtwoord (min. 6 tekens)",
+    "creating": "Aanmaken...",
+    "create_btn": "Maak mijn account aan",
+    "register_legal": "Door een account aan te maken, accepteert u onze Algemene Voorwaarden. Uw voertuiggegevens zijn versleuteld en worden nooit gedeeld zonder uw toestemming.",
+    "register_error": "Fout bij registratie.",
+    "generic_error": "Fout"
+  },
+  "app": {
+    "magic_link_error": "Ongeldige of verlopen inloglink.",
+    "gift_credits_added": "🎁 {{credits}} krediet(en) toegevoegd aan uw account!",
+    "loading_aria": "Bezig met laden",
+    "nav_landing": "Startpagina",
+    "nav_cgu": "Gebruiksvoorwaarden",
+    "nav_pricing": "Prijzen",
+    "nav_constat": "Schadeformulier aanmaken",
+    "nav_join": "Neem deel aan een sessie",
+    "nav_account": "Gebruikersaccount",
+    "nav_admin": "Beheerdersdashboard",
+    "nav_emergency": "Noodnummers",
+    "nav_privacy": "Privacybeleid",
+    "nav_police_login": "Politie inloggen",
+    "nav_police_dashboard": "Politie dashboard",
+    "nav_police_flow": "Politie stroom",
+    "nav_police_intervention": "Politie-interventie",
+    "nav_to": "Navigeren naar {{label}}",
+    "title_default": "boom.contact — Digitale schadeformulier",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Tarieven — boom.contact",
+    "back": "← Terug←",
+    "buy_reports": "Koop schadeformulieren",
+    "credits_no_expiry": "Kredieten zonder vervaldatum · Deelbaar via WhatsApp",
+    "credits_available_one": "✅ {{count}} krediet beschikbaar",
+    "credits_available_other": "✅ {{count}} kredieten beschikbaar",
+    "no_credits": "⚡ Geen krediet — laad nu op",
+    "currency_label": "VALUTA",
+    "currency_detected": "✓ automatisch gedetecteerd",
+    "most_popular": "⭐ MEEST POPULAIR · BESPARING {{savings}}",
+    "economy": "Besparing {{savings}}",
+    "per_pack": "per pakket",
+    "per_report": "/ schadeformulier",
+    "redirecting_stripe": "⏳ Stripe omleiden...",
+    "buy_btn": "Koop {{label}} — {{price}}",
+    "error_missing_url": "Ontbrekende betalings-URL",
+    "error_generic": "Fout",
+    "error_email_required": "E-mail vereist om te kopen",
+    "trust_stripe": "Veilige PCI-DSS Stripe-betaling",
+    "trust_no_expiry": "Kredieten zonder vervaldatum",
+    "trust_whatsapp": "Deelbaar via WhatsApp",
+    "trust_worldwide": "Meertalig",
+    "trust_invoice": "Automatische PDF-factuur",
+    "trust_fleet": "Ideaal voor bedrijfswagens",
+    "why_title": "WAAROM VOORAF KREDIETEN HEBBEN?",
+    "scenario_child_title": "Uw kind heeft een ongeval",
+    "scenario_child_text": "Hij of zij belt u. U stuurt een krediet via WhatsApp. Hij of zij stelt zijn of haar schadeformulier op in 5 minuten.",
+    "scenario_company_title": "Bedrijfsvoertuig",
+    "scenario_company_text": "Uw bezorger heeft een aanrijding. Stuur hem of haar onmiddellijk een krediet vanaf uw mobiel.",
+    "scenario_abroad_title": "Op reis in het buitenland",
+    "scenario_abroad_text": "Ongeval in Duitsland, Australië of Japan. Interface beschikbaar in meerdere talen.",
+    "pkg_single_label": "1 schadeformulier",
+    "pkg_single_desc": "Voor een eenmalig ongeval",
+    "pkg_pack3_label": "3 schadeformulieren",
+    "pkg_pack3_desc": "Voor het hele gezin",
+    "pkg_pack3_marketing": "🎁 Deel via WhatsApp — uw kind, uw werknemer, uw vriend ontvangt een directe link.",
+    "pkg_pack10_label": "10 schadeformulieren",
+    "pkg_pack10_desc": "Wagenparken & bedrijven",
+    "pkg_pack10_marketing": "🏢 Beheer uw hele wagenpark. Stuur naar uw medewerkers met 1 klik."
+  },
+  "legal": {
+    "intro": {
+      "title": "Voordat u begint",
+      "body": "boom.contact helpt u bij het documenteren van een ongeval en het genereren van een gestructureerd PDF-dossier. In geval van letsel, gevaar, vlucht, ernstige onenigheid of wettelijke verplichting, neem onmiddellijk contact op met de hulpdiensten, de politie of de bevoegde autoriteiten. De verstrekte informatie blijft onder de verantwoordelijkheid van de deelnemers. U kunt de informatie handmatig invoeren als u geen gebruik wilt maken van de camera, de microfoon of de locatie.",
+      "start": "Ik begrijp het, beginnen",
+      "emergency": "Bekijk de noodnummers",
+      "privacy_cgu": "Privacy / Gebruiksvoorwaarden"
+    },
+    "guest_accept": {
+      "checkbox": "Ik accepteer de Algemene Voorwaarden en heb het Privacybeleid gelezen.",
+      "note": "Ik begrijp dat mijn informatie zal worden gebruikt om het PDF-dossier van het ongeval te genereren en dat de verstrekte informatie onder mijn verantwoordelijkheid blijft."
+    },
+    "signature_confirm": "Ik bevestig dat de informatie die ik heb verstrekt naar mijn beste weten juist is en ik accepteer dat mijn handtekening in het PDF-dossier wordt opgenomen.",
+    "payment_notice": "Door door te gaan naar de betaling, begrijpt u dat de betaling de generatie en verzending van het PDF-dossier dekt. De verstrekte informatie blijft onder de verantwoordelijkheid van de deelnemers.",
+    "mic_notice": "Door de microfoon te gebruiken, wordt uw stemverklaring getranscribeerd om in het schadeformulier te worden opgenomen. U kunt in plaats daarvan tekstinvoer gebruiken.",
+    "injury_confirm": {
+      "body": "Foto's van verwondingen kunnen gevoelige gegevens bevatten. Zorg ervoor dat u toestemming heeft van de betrokken persoon, tenzij er een veiligheidsnoodzaak of wettelijke verplichting is.",
+      "continue": "Doorgaan",
+      "change": "Categorie wijzigen"
+    },
+    "pdf_ready_title": "Tijdstempel PDF-dossier van het ongeval",
+    "pdf_ready_body": "De vereiste handtekeningen zijn geregistreerd. Het PDF-dossier is klaar. Controleer de informatie voordat u deze naar uw verzekeraar verzendt."
   }
 }

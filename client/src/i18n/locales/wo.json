@@ -21,7 +21,9 @@
       "line1": "NGIR",
       "line2": "ACCIDENT",
       "line3": "YI",
-      "line4": "DÉGLU"
+      "line4": "DÉGLU",
+      "title": "Dokumente ak soppali ak jàmm.",
+      "subtitle": "boom.contact dafa la jàpp ci etape ak etape ngir jëfandikoo njiitu, jëfandikoo suuf, jëfandikoo xibaar ak sañ-sañ, te jëfandikoo PDF bu horodaté ngir jàppal sa jàmm."
     },
     "subtitle": "Rapport numérique ci 5 minit. OCR bu dëkk, QR code, PDF horodaté.",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "Yónn ci assurance",
       "done": "Rapport yëgël!",
       "waiting": "Session #8F2K · Di xaar…",
-      "capture": "📸 Jël foto"
+      "capture": "📸 Jël foto",
+      "sessionActive": "Session bu am",
+      "vehicleA": "VÉHICULE A",
+      "photosSig": "Photos · sañ-sañ ✓",
+      "vehicleB": "VÉHICULE B",
+      "qrJoined": "QR jëkk · ci jëfandikoo",
+      "payGenerate": "Paye te jëfandikoo PDF",
+      "pdfBadge": "PDF bu horodaté",
+      "qrBadge": "QR bu jëfandikoo"
     },
     "badges": {
       "languages": "Làkk 50",
@@ -83,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Li la soxor yépp",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR bu dëkk",
-          "desc": "Claude Vision dafay jàng sa dokkumentey ci làkk 50+. Xam ñu bëgg."
-        },
-        {
-          "icon": "📱",
-          "title": "Ci kenne 5 wotëru",
-          "desc": "Accident ak 3, 4 walla 5 shofër? Kañ kañ dafay scan QR bu xam."
-        },
-        {
-          "icon": "📷",
-          "title": "Foto yu bopp",
-          "desc": "5 catégorie: bopp, dommages A, dommages B, blessures, dokkumentey."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis bu yomb",
-          "desc": "Desinal position wotëru yi, flèche. PNG bi dëkk ci PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma yu xantre",
-          "desc": "Modélu 700+. Zones 18 ngir sért dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatiir yu bari",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "Dokkument numérik bu dëkk. Assurance yépp ko nangu."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (jëm ci kanam)",
-          "desc": "Politaafu dëkk ci session ak QR. Rapport officiel numérik."
-        },
-        {
-          "icon": "🌍",
-          "title": "Làkk 50 + RTL",
-          "desc": "Kile 5 miliyaar yu wax. Arabe, Hébreu, Farsi ci RTL. Numéru d'urgence."
-        }
-      ]
-    },
     "coverage": {
       "label": "Dëkk ci aduna yépp",
       "title": "Ci Suisse ci Siin",
@@ -150,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Ndiaye ci QR code",
+        "desc": "Jëfandikoo session bi, l'autre conducteur jëfandikoo QR bi ci sa téléphone. Naka jëfandikoo, naka jëfandikoo."
+      },
+      {
+        "title": "Photos, xibaar ak sañ-sañ",
+        "desc": "Jëfandikoo photos, xibaar sa xibaar ci xibaar, jëfandikoo véhicules ci croquis ak sañ-sañ ci ngelaw."
+      },
+      {
+        "title": "Dossier PDF bu horodaté",
+        "desc": "boom.contact jëfandikoo dossier PDF bu horodaté bu am ci njiitu jëfandikoo ci chaque conducteur."
+      },
+      {
+        "title": "Ngir jëfandikoo sa jàmm",
+        "desc": "Téléchargez PDF bi walla jëfandikoo ci email ngir jëfandikoo sa jàmm ci sa jàmm."
+      }
+    ],
+    "seoLine": "Le constat amiable numérique multilingue · Digital accident report",
+    "flow": {
+      "label": "Benn ci flux bu am",
+      "title": "Ci jàmm ngir dossier bu am ci jëfandikoo"
+    },
+    "stress": {
+      "label": "Dafa jëfandikoo ngir jàmm",
+      "title": "Dafa jëfandikoo ngir xaalis yu am",
+      "text": "Benn jàmm, amul jàmm. boom.contact jëfandikoo ci etape ak etape, ci sa làkk, te jëfandikoo ci njiitu jëfandikoo. Bokk na ci navigateur bi ci sa téléphone, même ci jàmm yu am.",
+      "bullets": [
+        "Jëfandikoo ci etape ak etape",
+        "Multilingue",
+        "Photos · xibaar · sañ-sañ",
+        "Dossier PDF bu horodaté"
+      ],
+      "emergencyTitle": "Ci xaalis",
+      "emergencyText": "boom.contact duñu jëfandikoo ci secours, police, avocat walla jàmm. Ci xaalis walla jàmm, jëfandikoo ci jàmm."
+    },
+    "pricing": {
+      "label": "Tarifs",
+      "title": "Simplicité, jàmm, duñu jëfandikoo",
+      "caption": "1 crédit = 1 constat complet · multilingue · crédits duñu am",
+      "badgePopular": "Populaire",
+      "plans": [
+        {
+          "label": "1 constat",
+          "desc": "Ngir jàmm bu am"
+        },
+        {
+          "label": "3 constats",
+          "desc": "Ngir toute la famille"
+        },
+        {
+          "label": "10 constats",
+          "desc": "Ngir flottes ak courtiers"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Ngir jëfandikoo",
+      "title": "Ngir courtiers, flottes ak partenaires jàmm",
+      "text": "Jëfandikoo sa jàmm ak sa jëfandikoo ci outil bu jàmm ngir jëfandikoo jàmm ak jëfandikoo dossier PDF bu horodaté. Packs de crédits ngir flottes ak courtiers, jëfandikoo bu am, duñu jëfandikoo.",
+      "cta": "Jëfandikoo / jëfandikoo",
+      "items": [
+        {
+          "title": "Flottes",
+          "desc": "Benn dossier bu am ngir chaque sinistre conducteur."
+        },
+        {
+          "title": "Courtiers",
+          "desc": "Benn service bu am ngir sa jàmm."
+        },
+        {
+          "title": "Confidentialité",
+          "desc": "Données chiffrées ci transit, supprimables ci jëfandikoo."
+        },
+        {
+          "title": "Transmission",
+          "desc": "PDF bu horodaté bu am ngir jëfandikoo ci sa jàmm."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Questions fréquentes",
+      "items": [
+        {
+          "q": "Naka boom.contact ?",
+          "a": "boom.contact dafa benn application bu jëfandikoo ngir jëfandikoo jàmm ci sa téléphone : jëfandikoo sa jàmm ci QR, photos, xibaar, croquis, sañ-sañ, te jëfandikoo dossier PDF bu horodaté ngir jëfandikoo sa jàmm."
+        },
+        {
+          "q": "Dafa jëfandikoo jëfandikoo ?",
+          "a": "Déf, boom.contact jëfandikoo ci navigateur bi ci sa téléphone (Safari, Chrome, Firefox). Dafa jëfandikoo ci sa jàmm ci écran d'accueil ngir accès hors-ligne."
+        },
+        {
+          "q": "Naka jëfandikoo l'autre conducteur duñu am jëfandikoo ?",
+          "a": "Dafa jëfandikoo session bi te QR code bi jëfandikoo. L'autre conducteur jëfandikoo ci sa téléphone : boom.contact jëfandikoo ci sa navigateur, duñu jëfandikoo walla jëfandikoo."
+        },
+        {
+          "q": "Dossier PDF bi duñu am jëfandikoo ci sa jàmm ?",
+          "a": "Dossier PDF bu horodaté dafa jëfandikoo ngir jëfandikoo sa jàmm. boom.contact duñu jëfandikoo sa jëfandikoo, bu am ci sa jàmm ak sa jàmm."
+        },
+        {
+          "q": "Dafa jëfandikoo ci l'autre conducteur jëfandikoo ci làkk bu am ?",
+          "a": "Waaw. Chaque conducteur jëfandikoo interface bi ci sa làkk. Dossier bi bu am jëfandikoo ngir chaque conducteur."
+        },
+        {
+          "q": "Sa données duñu am jëfandikoo ?",
+          "a": "Données chiffrées ci transit, sessions duñu jëfandikoo ci jëfandikoo, te police duñu jëfandikoo ci jëfandikoo — duñu jëfandikoo ci sa jàmm."
+        },
+        {
+          "q": "Naka jëfandikoo ?",
+          "a": "Ci CHF / EUR 4.90 ngir jàmm. Pack de 3 constats ci 12.90 (−12 %), pack de 10 ci 34.90 (−29 %). Duñu jëfandikoo, crédits duñu am."
+        }
+      ]
     }
   },
   "steps": {
@@ -445,5 +519,431 @@
   "language": {
     "select": "Làkk",
     "switch_tooltip": "Soppal làkk"
+  },
+  "constat": {
+    "nav": {
+      "back": "Retour",
+      "reset": "Réinitialiser le constat"
+    },
+    "session": {
+      "expiring": "Votre session expire bientôt. Sauvegardez vos données."
+    },
+    "error": {
+      "close": "Fermer l'erreur"
+    },
+    "vehicle": {
+      "pickRegistered": "Choisir un véhicule enregistré",
+      "autofill": "Préremplissage automatique — pas besoin de scanner",
+      "yourRegistered": "Vos véhicules enregistrés",
+      "org": "Entreprise",
+      "personal": "Personnel",
+      "fallback": "Véhicule",
+      "cancel": "Annuler",
+      "orScanNew": "ou scanner un nouveau véhicule"
+    },
+    "pedestrian": {
+      "title": "Autre partie : piéton"
+    },
+    "summary": {
+      "yourVehicle": "Votre véhicule",
+      "accident": "Accident",
+      "damagedZones_one": "{{count}} zone endommagée",
+      "damagedZones_other": "{{count}} zones endommagées"
+    },
+    "emergency": {
+      "title": "Numéros d'urgence"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "La prochaine fois : 0 saisie",
+    "next_time_subtitle": "Vos véhicules mémorisés une fois pour toujours",
+    "benefit_scanned": "Permis + carte verte scannés une fois",
+    "benefit_fast": "Constat en 2 min au lieu de 10",
+    "benefit_gift": "Offrez un constat à vos proches en 1 clic",
+    "benefit_family": "Idéal famille : partagez vos crédits",
+    "create_account": "Créer mon compte gratuit →",
+    "share_btn": "Partager à mes proches",
+    "register_vehicle_title": "Ensuite, enregistre ton véhicule",
+    "register_vehicle_subtitle": "Scan permis de circuler + carte verte · 30 sec · plus jamais à resaisir",
+    "or_skip": "ou passez directement",
+    "family_pack": "🔥 Pack famille",
+    "family_pack_desc": "3 constats à partager avec vos proches",
+    "scenario_child": "Sa jàmm am — accident. Jëfandikoo ci sa jàmm ci 3 secondes ci sa mobile.",
+    "scenario_employee": "Sa jëfandikoo ak véhicule société. Jëfandikoo ci sa jàmm ci WhatsApp.",
+    "scenario_friend": "Ami ci jàmm ci jàmm. Dafa jëfandikoo ci sa jàmm, duñu jëfandikoo.",
+    "buy_3_reports": "Jëfandikoo 3 constats — CHF/EUR 12.90 →",
+    "see_all_packs": "Voir tous les packs →",
+    "ready_title": "Prêt pour la prochaine fois",
+    "ready_subtitle": "Rechargez maintenant, partagez quand vous voulez",
+    "account_title": "✅ Votre compte boom.contact",
+    "account_desc": "Vos véhicules sont mémorisés. Lors de votre prochain accident, vous partez directement à l'étape QR — aucune saisie, aucun scan.",
+    "manage_garage": "Gérer mon garage →",
+    "gift_title": "🎁 Offrez un constat par WhatsApp",
+    "gift_desc": "Un de vos crédits = un lien unique à envoyer à <strong>n'importe qui</strong>, sans que la personne ait besoin d'un compte.",
+    "credits_available_one": "{{count}} crédit disponible",
+    "credits_available_other": "{{count}} crédits disponibles",
+    "share_protect": "Jëfandikoo, protégez vos proches",
+    "wa_gift_title": "📲 Offrir un constat par WhatsApp",
+    "wa_gift_desc": "En 1 clic, envoyez un lien à votre enfant, employé ou ami. Il fait son constat sans compte ni paiement — décompté de vos crédits.",
+    "send_1": "📲 Envoyer 1 constat",
+    "send_3": "📲 Envoyer 3 constats",
+    "gift_link_created": "✅ Lien créé — envoyez-le par WhatsApp !",
+    "share_title": "📤 Partage boom.contact",
+    "share_desc": "Tu viens de faire ton constat en 5 min. Tes amis méritent de savoir que ça existe.",
+    "memorize_vehicles": "🚗 Mémorisez vos autres véhicules",
+    "memorize_desc": "Flotte d'entreprise, moto, camping-car ? Chaque véhicule scanné = plus jamais de saisie lors d'un accident.",
+    "low_credits_one": "⚡ Il vous reste seulement {{count}} crédit",
+    "low_credits_other": "⚡ Il vous reste seulement {{count}} crédits",
+    "recharge_desc": "Rechargez maintenant et profitez des remises sur les packs famille et entreprise.",
+    "recharge_btn": "Recharger mes crédits →",
+    "pack_single_label": "1 constat",
+    "pack_single_note": "Usage ponctuel",
+    "pack_pack3_label": "3 constats",
+    "pack_pack3_note": "Famille · économie 12%",
+    "pack_pack10_label": "10 constats",
+    "pack_pack10_note": "Entreprise · économie 29%",
+    "popular_badge": "⭐ POPULAIRE"
+  },
+  "signature": {
+    "title": "Sañ-sañ",
+    "driver": "Conducteur {{role}}",
+    "other_party": "Autre partie",
+    "no_signature": "sans sañ-sañ",
+    "sign_here": "Signez ici avec votre doigt",
+    "signed": "SIGNÉ ✓",
+    "clear": "🗑 Effacer",
+    "saving": "⏳ Enregistrement…",
+    "confirm_signature": "✍️ Confirmer la sañ-sañ",
+    "waiting_other": "En attente de la sañ-sañ de l'autre conducteur…",
+    "waiting_pdf": "Le PDF sera généré dès que les deux parties auront signé.",
+    "report_signed": "Constat signé !",
+    "generating_pdf": "Génération du PDF en cours…",
+    "canvas_aria": "Zone de sañ-sañ — Conducteur {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Véhicule",
+    "tab_driver": "Conducteur",
+    "tab_insurance": "Assurance",
+    "tab_circumstances": "Circonstances",
+    "tab_complement": "Complément",
+    "field_required": "Ce champ est requis",
+    "plate_label": "Immatriculation",
+    "brand_label": "Marque",
+    "model_label": "Modèle",
+    "year_label": "Année",
+    "vin_label": "N° châssis (VIN)",
+    "firstName_label": "Prénom",
+    "lastName_label": "Nom",
+    "address_label": "Adresse",
+    "postalCode_label": "NPA",
+    "city_label": "Localité",
+    "country_label": "Pays",
+    "phone_label": "Téléphone",
+    "email_label": "Email",
+    "license_label": "N° permis de conduire",
+    "company_label": "Compagnie d'assurance",
+    "policyNumber_label": "N° de police",
+    "greenCardNumber_label": "N° carte verte",
+    "greenCardExpiry_label": "Validité carte verte",
+    "agentName_label": "Agent / Courtier",
+    "agentPhone_label": "Tél. assurance",
+    "circumstances_desc": "Cochez toutes les cases qui décrivent la situation de votre véhicule <strong>({{role}})</strong> au moment du choc.",
+    "boxes_checked_one": "{{count}} case cochée",
+    "boxes_checked_other": "{{count}} cases cochées",
+    "complement_desc": "Informations complémentaires du constat — sections 11, 13 et 14.",
+    "datetime_label": "Date et heure de l'accident",
+    "visible_damage_label": "Dégâts apparents (section 11)",
+    "visible_damage_placeholder": "Décrivez les dommages visibles sur votre véhicule...",
+    "third_party_label": "Dégâts matériels à des tiers (autres que A et B)",
+    "witnesses_label": "Témoins",
+    "witnesses_placeholder": "Nom, prénom, téléphone de chaque témoin...",
+    "voice_declaration_label": "🎙️ Déclaration vocale (optionnel)",
+    "observations_label": "Observations libres — conducteur {{role}} (section 14)",
+    "observations_placeholder": "Ajoutez tout élément utile : conditions météo, état de la chaussée, vitesse estimée, remarques...",
+    "insurance_holder_label": "Preneur d'assurance (si différent du conducteur)",
+    "holder_name_placeholder": "Nom complet du preneur",
+    "holder_name_aria": "Nom du preneur d'assurance",
+    "holder_address_placeholder": "Adresse du preneur",
+    "holder_address_aria": "Adresse du preneur d'assurance",
+    "save_btn": "Enregistrer et continuer →",
+    "form_tabs_aria": "Sections du formulaire"
+  },
+  "account": {
+    "member": {
+      "remove": "Retirer",
+      "removeConfirm": "Retirer ce membre ? Il perdra l'accès aux véhicules et crédits de l'entreprise.",
+      "loading": "Chargement…",
+      "none": "Aucun membre.",
+      "invite": "Inviter un membre",
+      "inviteBtn": "Inviter",
+      "pending": "Invitations en attente"
+    },
+    "role": {
+      "owner": "Propriétaire",
+      "driver": "Chauffeur",
+      "fleet_admin": "Admin flotte"
+    },
+    "scan": {
+      "cancel": "Annuler",
+      "photographPre": "Photographiez votre",
+      "license": "permis de circuler",
+      "and": "et/ou votre",
+      "greenCard": "carte verte",
+      "title": "Scanner permis + carte verte",
+      "subtitle": "Reconnaissance automatique · multilingue"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Mon garage",
+      "add": "Ajouter",
+      "emptyTitle": "Garage vide",
+      "emptySubtitle": "Enregistrez vos véhicules une fois. Plus jamais besoin de scanner lors d'un accident.",
+      "addFirst": "Ajouter mon premier véhicule",
+      "noOrgVehicles": "Aucun véhicule d'entreprise pour le moment."
+    },
+    "insurance": {
+      "saved": "Assurance enregistrée",
+      "add": "Ajouter assurance"
+    },
+    "nav": {
+      "logout": "Déconnexion"
+    },
+    "vehicle": {
+      "edit": "Modifier le véhicule",
+      "delete": "Supprimer le véhicule",
+      "editOrg": "Modifier le véhicule d'entreprise",
+      "deleteOrg": "Supprimer le véhicule d'entreprise"
+    },
+    "fields": {
+      "nickname": "Surnom",
+      "plate": "Plaque",
+      "make": "Marque",
+      "model": "Modèle",
+      "color": "Couleur",
+      "year": "Année",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Téléphone",
+      "company": "Société",
+      "address": "Adresse",
+      "newEmail": "Nouvel email",
+      "currentPwd": "Mot de passe actuel (confirmation)",
+      "confirmEmailAria": "Confirmation de l'adresse email"
+    },
+    "credits": {
+      "buy": "Jëfandikoo :",
+      "available": "CRÉDITS DISPONIBLES",
+      "unit": "1 crédit = 1 constat amiable complet"
+    },
+    "history": {
+      "loading": "Chargement...",
+      "empty": "Aucun constat",
+      "emptySub": "Votre prochain constat apparaîtra ici automatiquement."
+    },
+    "personal": {
+      "title": "Informations personnelles",
+      "none": "Aucune information — clique sur Modifier"
+    },
+    "delete": {
+      "willDelete": "CE QUI SERA SUPPRIMÉ DÉFINITIVEMENT :",
+      "text": "Supprimer définitivement ton compte, tes véhicules et tous tes constats. Cette action est irréversible."
+    },
+    "danger": {
+      "title": "Zone dangereuse"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Aucun document reconnu. Vérifiez la qualité des photos.",
+    "analysis_error": "Erreur d'analyse.",
+    "read_failed": "Lecture échouée",
+    "docs_analyzed_one": "{{count}} document analysé",
+    "docs_analyzed_other": "{{count}} documents analysés",
+    "confidence": "Confiance : {{pct}}%",
+    "rescan": "Rescanner",
+    "vehicle_section": "🚗 Véhicule",
+    "plate": "Plaque",
+    "driver_section": "👤 Conducteur",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "insurance_found": "✅ Assurance",
+    "insurance_manual": "⚠️ Assurance — compléter manuellement",
+    "company_label": "Compagnie",
+    "company_aria": "Compagnie d'assurance",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "N° de police",
+    "policy_manual_hint": "(saisie manuelle)",
+    "policy_aria": "Numéro de police",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Confirmer →",
+    "scanning_title": "Analyse en cours…",
+    "scanning_subtitle_one": "{{count}} document · identification automatique",
+    "scanning_subtitle_other": "{{count}} documents · identification automatique",
+    "photo_title": "Photographiez vos documents",
+    "photo_subtitle": "Permis de circulation + carte verte en une seule analyse.",
+    "photo_subtitle2": "L'application identifie et extrait tout automatiquement.",
+    "doc_scanned": "Document scanné {{n}}",
+    "doc_label": "Document {{n}}",
+    "photograph": "Photographier",
+    "rear_camera": "Caméra arrière",
+    "gallery": "Galerie",
+    "which_docs": "Quels documents scanner ?",
+    "doc_ch": "🇨🇭 Permis de circulation + carte verte",
+    "doc_fr": "🇫🇷 Carte grise + carte verte / attestation",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 Immatriculation + preuve d'assurance",
+    "close_error_aria": "Fermer l'erreur",
+    "analyze_btn_one": "🔍 Analyser {{count}} document",
+    "analyze_btn_other": "🔍 Analyser {{count}} documents",
+    "skip_manual": "Passer — saisie manuelle →",
+    "upload_gallery_aria": "Télécharger des documents depuis la galerie",
+    "take_photo_aria": "Photographier un document"
+  },
+  "join": {
+    "sessionLabel": "Session",
+    "yourEmail": "Votre email",
+    "emailHint": "(pour recevoir le PDF)",
+    "emailAria": "Votre adresse email",
+    "connecting": "Connexion…",
+    "connected": "Connecté ! Démarrage…",
+    "joinButton": "Rejoindre le constat"
+  },
+  "voice": {
+    "title": "Décrivez l'accident",
+    "subtitle": "Optionnel — décrivez ce qui s'est passé avec vos propres mots. Votre déclaration sera enregistrée dans le constat.",
+    "tab_voice": "🎙️ Vocal",
+    "tab_text": "⌨️ Texte",
+    "start_recording": "Commencer l'enregistrement",
+    "textarea_aria": "Description de l'accident",
+    "textarea_placeholder": "Décrivez l'accident en quelques phrases…",
+    "validate_desc": "✅ Valider ma description",
+    "skip_step": "Passer cette étape →",
+    "recording_in_progress": "Enregistrement en cours…",
+    "recording_tip": "💡 Décrivez : la direction de chaque véhicule, le point d'impact, les circonstances. Parlez calmement.",
+    "stop_recording": "Arrêter l'enregistrement",
+    "transcribing_title": "Transcription en cours…",
+    "transcribing_subtitle": "Votre enregistrement est traité",
+    "desc_recorded": "Description enregistrée",
+    "desc_in_pdf": "Votre déclaration sera incluse dans le constat PDF",
+    "your_declaration": "Votre déclaration",
+    "edit": "✏️ Modifier",
+    "edit_placeholder": "Corrigez votre déclaration si nécessaire...",
+    "restart": "Recommencer",
+    "mic_denied": "Accès au microphone refusé — utilisez la saisie manuelle.",
+    "mic_unavailable": "Microphone indisponible : {{msg}}",
+    "transcription_error": "Erreur de transcription",
+    "textarea_edit_aria": "Récit de l'accident"
+  },
+  "auth": {
+    "default_subtitle": "Jëfandikoo ngir sauvegarder vos véhicules ak duñu jëfandikoo ci sa jàmm.",
+    "magic_btn": "📧 Connexion par lien email (recommandé)",
+    "password_btn": "🔑 Connexion avec mot de passe",
+    "register_btn": "✨ Créer un compte",
+    "skip_btn": "Continuer sans compte →",
+    "skip_note": "Sans compte, vous pouvez quand même faire un constat et payer avec Stripe.",
+    "magic_instructions": "Entrez votre email — vous recevrez un lien de connexion valable 15 minutes.",
+    "send_link": "Envoyer le lien",
+    "sending": "Envoi...",
+    "back": "← Retour",
+    "email_sent_title": "Email envoyé !",
+    "email_sent_desc": "Vérifiez votre boîte <strong>{{email}}</strong>.",
+    "email_sent_validity": "Le lien est valable 15 minutes.",
+    "login_error": "Email walla mot de passe incorrect.",
+    "logging_in": "Connexion...",
+    "login_btn": "Se connecter",
+    "forgot_password": "Mot de passe oublié ? Utiliser un lien email →",
+    "register_desc": "Créez votre compte ngir sauvegarder vos véhicules ak pré-remplir vos constats automatiquement.",
+    "password_placeholder": "Mot de passe (min. 6 caractères)",
+    "creating": "Création...",
+    "create_btn": "Créer mon compte",
+    "register_legal": "En créant un compte vous acceptez nos CGU. Vos données véhicule sont chiffrées et jamais partagées sans votre consentement.",
+    "register_error": "Erreur lors de l'inscription.",
+    "generic_error": "Erreur"
+  },
+  "app": {
+    "magic_link_error": "Lien de connexion invalide ou expiré.",
+    "gift_credits_added": "🎁 {{credits}} crédit(s) ajouté(s) à votre compte !",
+    "loading_aria": "Chargement en cours",
+    "nav_landing": "Page d'accueil",
+    "nav_cgu": "Conditions d'utilisation",
+    "nav_pricing": "Tarification",
+    "nav_constat": "Création de constat",
+    "nav_join": "Rejoindre une session",
+    "nav_account": "Compte utilisateur",
+    "nav_admin": "Tableau de bord administrateur",
+    "nav_emergency": "Numéros d'urgence",
+    "nav_privacy": "Politique de confidentialité",
+    "nav_police_login": "Connexion police",
+    "nav_police_dashboard": "Tableau de bord police",
+    "nav_police_flow": "Flux police",
+    "nav_police_intervention": "Intervention police",
+    "nav_to": "Navigation vers {{label}}",
+    "title_default": "boom.contact — Constat amiable numérique",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Tarifs — boom.contact",
+    "back": "← Retour←",
+    "buy_reports": "Jëfandikoo constats",
+    "credits_no_expiry": "Crédits duñu am · Jëfandikoo ci WhatsApp",
+    "credits_available_one": "✅ {{count}} crédit disponible",
+    "credits_available_other": "✅ {{count}} crédits disponibles",
+    "no_credits": "⚡ Aucune crédit — jëfandikoo ci jëfandikoo",
+    "currency_label": "DEVISE",
+    "currency_detected": "✓ détectée auto",
+    "most_popular": "⭐ PLUS POPULAIRE · ÉCONOMIE {{savings}}",
+    "economy": "Économie {{savings}}",
+    "per_pack": "par pack",
+    "per_report": "/ constat",
+    "redirecting_stripe": "⏳ Redirection Stripe...",
+    "buy_btn": "Jëfandikoo {{label}} — {{price}}",
+    "error_missing_url": "URL de paiement duñu am",
+    "error_generic": "Erreur",
+    "error_email_required": "Email duñu am ngir jëfandikoo",
+    "trust_stripe": "Paiement Stripe sécurisé PCI-DSS",
+    "trust_no_expiry": "Crédits duñu am",
+    "trust_whatsapp": "Jëfandikoo ci WhatsApp",
+    "trust_worldwide": "Multilingue",
+    "trust_invoice": "Facture PDF automatique",
+    "trust_fleet": "Idéal flottes entreprise",
+    "why_title": "POURQUOI AVOIR DES CRÉDITS D'AVANCE ?",
+    "scenario_child_title": "Sa jàmm am ci jàmm",
+    "scenario_child_text": "Dafa jëfandikoo. Jëfandikoo ci sa jàmm ci WhatsApp. Dafa jëfandikoo ci jàmm ci 5 min.",
+    "scenario_company_title": "Véhicule de société",
+    "scenario_company_text": "Sa jëfandikoo am ci jàmm. Jëfandikoo ci sa jàmm ci WhatsApp.",
+    "scenario_abroad_title": "Ci jàmm ci jàmm",
+    "scenario_abroad_text": "Accident ci Allemagne, Australie walla Japon. Interface bu am ci làkk yu am.",
+    "pkg_single_label": "1 constat",
+    "pkg_single_desc": "Ngir jàmm bu am",
+    "pkg_pack3_label": "3 constats",
+    "pkg_pack3_desc": "Ngir toute la famille",
+    "pkg_pack3_marketing": "🎁 Jëfandikoo ci WhatsApp — sa jàmm, sa jëfandikoo, sa jëfandikoo jëfandikoo ci jëfandikoo.",
+    "pkg_pack10_label": "10 constats",
+    "pkg_pack10_desc": "Flottes & entreprises",
+    "pkg_pack10_marketing": "🏢 Jëfandikoo sa flotte. Jëfandikoo ci sa jëfandikoo ci 1 clic."
+  },
+  "legal": {
+    "intro": {
+      "title": "Avant de commencer",
+      "body": "boom.contact t'aide à documenter un accident et à générer un dossier PDF structuré. En cas de blessure, danger, fuite, désaccord grave ou obligation légale, contacte immédiatement les secours, la police ou les autorités compétentes. Les informations fournies restent sous la responsabilité des participants. Tu peux saisir les informations manuellement si tu ne souhaites pas utiliser la caméra, le micro ou la localisation.",
+      "start": "J'ai compris, commencer",
+      "emergency": "Voir les numéros d'urgence",
+      "privacy_cgu": "Confidentialité / CGU"
+    },
+    "guest_accept": {
+      "checkbox": "J'accepte les Conditions générales d'utilisation et j'ai lu la Politique de confidentialité.",
+      "note": "Je comprends que mes informations seront utilisées pour générer le dossier PDF d'accident et que les informations fournies restent sous ma responsabilité."
+    },
+    "signature_confirm": "Je confirme que les informations que j'ai fournies sont exactes à ma connaissance et j'accepte que ma signature soit intégrée au dossier PDF.",
+    "payment_notice": "En continuant vers le paiement, tu comprends que le paiement couvre la génération et l'envoi du dossier PDF. Les informations fournies restent sous la responsabilité des participants.",
+    "mic_notice": "En utilisant le micro, ta déclaration vocale sera transcrite afin d'être intégrée au dossier d'accident. Tu peux utiliser la saisie texte à la place.",
+    "injury_confirm": {
+      "body": "Les photos de blessures peuvent contenir des données sensibles. Assure-toi d'avoir l'accord de la personne concernée, sauf nécessité de sécurité ou obligation légale.",
+      "continue": "Continuer",
+      "change": "Changer de catégorie"
+    },
+    "pdf_ready_title": "Dossier PDF d'accident horodaté",
+    "pdf_ready_body": "Les signatures requises ont été enregistrées. Le dossier PDF est prêt. Vérifie les informations avant de le transmettre à ton assureur."
   }
 }

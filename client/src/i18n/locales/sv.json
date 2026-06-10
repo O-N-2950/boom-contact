@@ -12,7 +12,8 @@
     "required": "Obligatoriskt",
     "yes": "Ja",
     "no": "Nej",
-    "unknown": "Okänt"
+    "unknown": "Okänt",
+    "rescan": "🔄 Skanna om"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentera en olycka utan papper, utan förvirring.",
+      "subtitle": "boom.contact guidar dig steg för steg för att samla in användbar information, lägga till foton, plats, uttalanden och signaturer, och sedan generera en tidsstämplad PDF-fil att skicka till ditt försäkringsbolag."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktiv session",
+      "vehicleA": "FORDON A",
+      "photosSig": "Foton · signatur ✓",
+      "vehicleB": "FORDON B",
+      "qrJoined": "QR ansluten · pågår",
+      "payGenerate": "Betala och generera PDF",
+      "pdfBadge": "Tidsstämplad PDF",
+      "qrBadge": "Delad QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Bjud in med QR-kod",
+        "desc": "Skapa sessionen, den andra föraren skannar QR-koden från sin telefon. Ingen installation, ingen registrering."
+      },
+      {
+        "title": "Foton, röst och signatur",
+        "desc": "Lägg till foton, diktera dina observationer med röst, placera fordonen på skissen och signera med fingret."
+      },
+      {
+        "title": "Tidsstämplad PDF-dokument",
+        "desc": "boom.contact genererar ett tidsstämplat PDF-dokument som innehåller informationen som varje förare har angett."
+      },
+      {
+        "title": "Att skicka till ditt försäkringsbolag",
+        "desc": "Ladda ner PDF:en eller skicka den via e-post för att bifoga din skadeanmälan till ditt försäkringsbolag."
+      }
+    ],
+    "seoLine": "Den flerspråkiga digitala skadeanmälan · Digital accident report",
+    "flow": {
+      "label": "Allt i ett enda flöde",
+      "title": "Från olyckan till färdig anmälan"
+    },
+    "stress": {
+      "label": "Tänkt för olyckstillfället",
+      "title": "Utformad för stressiga situationer",
+      "text": "Efter en kollision är det svårt att tänka klart. boom.contact går steg för steg, på ditt språk, och håller reda på varje insamlad information. Allt fungerar från telefonens webbläsare, även med begränsad anslutning.",
+      "bullets": [
+        "Guidad steg för steg",
+        "Flerspråkig",
+        "Foton · röst · signatur",
+        "Tidsstämplad PDF"
+      ],
+      "emergencyTitle": "Vid nödsituation",
+      "emergencyText": "boom.contact ersätter inte räddningstjänst, polis, advokat eller försäkringsbolag. Vid skada eller fara, kontakta först räddningstjänsten."
+    },
+    "pricing": {
+      "label": "Priser",
+      "title": "Enkelt, transparent, utan abonnemang",
+      "caption": "1 kredit = 1 komplett anmälan · flerspråkig · krediter utan utgångsdatum",
+      "badgePopular": "Populär",
+      "plans": [
+        {
+          "label": "1 anmälan",
+          "desc": "För en engångsolycka"
+        },
+        {
+          "label": "3 anmälningar",
+          "desc": "För hela familjen"
+        },
+        {
+          "label": "10 anmälningar",
+          "desc": "För flottor och mäklare"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "För yrkesverksamma",
+      "title": "För mäklare, flottor och försäkringspartners",
+      "text": "Utrusta dina kunder och förare med ett tydligt verktyg för att dokumentera en olycka och generera en tidsstämplad PDF-dokument. Kreditpaket för flottor och mäklare, enkel distribution, utan abonnemang.",
+      "cta": "Kontakta / dela",
+      "items": [
+        {
+          "title": "Flottor",
+          "desc": "En strukturerad rapport för varje förares skadeärende."
+        },
+        {
+          "title": "Mäklare",
+          "desc": "En mervärdestjänst för dina försäkrade."
+        },
+        {
+          "title": "Sekretess",
+          "desc": "Krypterade data under överföring, kan raderas på begäran."
+        },
+        {
+          "title": "Överföring",
+          "desc": "Tidsstämplad PDF redo att bifoga till skadeanmälan."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Vanliga frågor",
+      "items": [
+        {
+          "q": "Vad är boom.contact?",
+          "a": "boom.contact är en app som hjälper till att dokumentera en trafikolycka från en telefon: bjuda in förare med QR, foton, röst, skisser, signaturer, och sedan generera en tidsstämplad PDF-dokument att skicka till ditt försäkringsbolag."
+        },
+        {
+          "q": "Måste jag installera en app?",
+          "a": "Nej. boom.contact fungerar direkt i telefonens webbläsare (Safari, Chrome, Firefox). Du kan också lägga till den på din hemskärm som en webbapp (PWA) för offlineåtkomst."
+        },
+        {
+          "q": "Vad händer om den andra föraren inte har appen?",
+          "a": "Du skapar sessionen och en QR-kod visas. Den andra föraren skannar den med sin telefon: boom.contact öppnas i hans/hennes webbläsare, utan registrering eller nedladdning."
+        },
+        {
+          "q": "Är PDF-dokumentet accepterat av mitt försäkringsbolag?",
+          "a": "Det tidsstämplade PDF-dokumentet är avsett att bifogas din skadeanmälan. boom.contact garanterar inte dess acceptans, vilket beror på ditt försäkringsbolag enligt ditt avtal och jurisdiktion."
+        },
+        {
+          "q": "Fungerar det om den andra föraren talar ett annat språk?",
+          "a": "Ja. Varje förare använder gränssnittet på sitt eget språk. Den slutliga rapporten genereras för varje förare."
+        },
+        {
+          "q": "Är mina data skyddade?",
+          "a": "Data är krypterade under överföring, sessioner raderas automatiskt efter en viss tid, och polisen meddelas aldrig automatiskt — endast på din uttryckliga begäran."
+        },
+        {
+          "q": "Vad kostar det?",
+          "a": "Från CHF / EUR 4.90 för en anmälan. Paket med 3 anmälningar för 12.90 (−12 %), paket med 10 för 34.90 (−29 %). Utan abonnemang, krediter utan utgångsdatum."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "constat": {
+    "nav": {
+      "back": "Tillbaka",
+      "reset": "Återställ anmälan"
+    },
+    "session": {
+      "expiring": "Din session går snart ut. Spara dina uppgifter."
+    },
+    "error": {
+      "close": "Stäng felet"
+    },
+    "vehicle": {
+      "pickRegistered": "Välj ett registrerat fordon",
+      "autofill": "Automatisk ifyllning — inget behov av att skanna",
+      "yourRegistered": "Dina registrerade fordon",
+      "org": "Företag",
+      "personal": "Personligt",
+      "fallback": "Fordon",
+      "cancel": "Avbryt",
+      "orScanNew": "eller skanna ett nytt fordon"
+    },
+    "pedestrian": {
+      "title": "Andra parten: fotgängare"
+    },
+    "summary": {
+      "yourVehicle": "Ditt fordon",
+      "accident": "Olycka",
+      "damagedZones_one": "{{count}} skadad zon",
+      "damagedZones_other": "{{count}} skadade zoner"
+    },
+    "emergency": {
+      "title": "Nödsnummer"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "Nästa gång: 0 inmatning",
+    "next_time_subtitle": "Dina fordon sparas en gång för alla",
+    "benefit_scanned": "Registreringsbevis + grönt kort skannade en gång",
+    "benefit_fast": "Anmälan på 2 minuter istället för 10",
+    "benefit_gift": "Ge en anmälan till dina nära och kära med ett klick",
+    "benefit_family": "Idealisk för familjen: dela dina krediter",
+    "create_account": "Skapa mitt gratis konto →",
+    "share_btn": "Dela med mina nära och kära",
+    "register_vehicle_title": "Registrera ditt fordon nästa",
+    "register_vehicle_subtitle": "Skanna registreringsbevis + grönt kort · 30 sek · aldrig mer att ange",
+    "or_skip": "eller hoppa direkt",
+    "family_pack": "🔥 Familjepaket",
+    "family_pack_desc": "3 anmälningar att dela med dina nära och kära",
+    "scenario_child": "Ditt barn ringer — olycka. Skicka en anmälan till honom/henne på 3 sekunder på hans/hennes mobil.",
+    "scenario_employee": "Anställd med företagsfordon. Överför en kredit via WhatsApp omedelbart.",
+    "scenario_friend": "Vän i svårigheter utomlands. Han/hon får en länk, inget konto krävs.",
+    "buy_3_reports": "Köpa 3 anmälningar — CHF/EUR 12.90 →",
+    "see_all_packs": "Se alla paket →",
+    "ready_title": "Redo för nästa gång",
+    "ready_subtitle": "Ladda nu, dela när du vill",
+    "account_title": "✅ Ditt boom.contact-konto",
+    "account_desc": "Dina fordon är sparade. Vid din nästa olycka går du direkt till QR-steget — ingen inmatning, ingen skanning.",
+    "manage_garage": "Hantera mitt garage →",
+    "gift_title": "🎁 Ge en anmälan via WhatsApp",
+    "gift_desc": "En av dina krediter = en unik länk att skicka till <strong>vem som helst</strong>, utan att personen behöver ett konto.",
+    "credits_available_one": "{{count}} kredit tillgänglig",
+    "credits_available_other": "{{count}} krediter tillgängliga",
+    "share_protect": "Dela, skydda dina nära och kära",
+    "wa_gift_title": "📲 Ge en anmälan via WhatsApp",
+    "wa_gift_desc": "Med ett klick, skicka en länk till ditt barn, din anställd eller din vän. Han/hon gör sin anmälan utan konto eller betalning — dras från dina krediter.",
+    "send_1": "📲 Skicka 1 anmälan",
+    "send_3": "📲 Skicka 3 anmälningar",
+    "gift_link_created": "✅ Länk skapad — skicka den via WhatsApp!",
+    "share_title": "📤 Dela boom.contact",
+    "share_desc": "Du har just gjort din anmälan på 5 minuter. Dina vänner förtjänar att veta att det finns.",
+    "memorize_vehicles": "🚗 Spara dina andra fordon",
+    "memorize_desc": "Företagsflotta, motorcykel, husbil? Varje skannat fordon = aldrig mer inmatning vid en olycka.",
+    "low_credits_one": "⚡ Du har bara {{count}} kredit kvar",
+    "low_credits_other": "⚡ Du har bara {{count}} krediter kvar",
+    "recharge_desc": "Ladda nu och dra nytta av rabatter på familje- och företagspaket.",
+    "recharge_btn": "Ladda mina krediter →",
+    "pack_single_label": "1 anmälan",
+    "pack_single_note": "Engångsanvändning",
+    "pack_pack3_label": "3 anmälningar",
+    "pack_pack3_note": "Familj · spara 12%",
+    "pack_pack10_label": "10 anmälningar",
+    "pack_pack10_note": "Företag · spara 29%",
+    "popular_badge": "⭐ POPULÄR"
+  },
+  "signature": {
+    "title": "Signatur",
+    "driver": "Förare {{role}}",
+    "other_party": "Andra parten",
+    "no_signature": "utan signatur",
+    "sign_here": "Signera här med ditt finger",
+    "signed": "SIGNERAD ✓",
+    "clear": "🗑 Rensa",
+    "saving": "⏳ Sparar…",
+    "confirm_signature": "✍️ Bekräfta signatur",
+    "waiting_other": "Väntar på signaturen från den andra föraren…",
+    "waiting_pdf": "PDF:en kommer att genereras så snart båda parter har signerat.",
+    "report_signed": "Anmälan signerad!",
+    "generating_pdf": "Genererar PDF pågår…",
+    "canvas_aria": "Signaturområde — Förare {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Fordon",
+    "tab_driver": "Förare",
+    "tab_insurance": "Försäkring",
+    "tab_circumstances": "Omständigheter",
+    "tab_complement": "Komplement",
+    "field_required": "Detta fält är obligatoriskt",
+    "plate_label": "Registreringsskylt",
+    "brand_label": "Märke",
+    "model_label": "Modell",
+    "year_label": "År",
+    "vin_label": "Chassinummer (VIN)",
+    "firstName_label": "Förnamn",
+    "lastName_label": "Efternamn",
+    "address_label": "Adress",
+    "postalCode_label": "Postnummer",
+    "city_label": "Ort",
+    "country_label": "Land",
+    "phone_label": "Telefon",
+    "email_label": "E-post",
+    "license_label": "Körkortnummer",
+    "company_label": "Försäkringsbolag",
+    "policyNumber_label": "Policynummer",
+    "greenCardNumber_label": "Grönt kortnummer",
+    "greenCardExpiry_label": "Giltighet för grönt kort",
+    "agentName_label": "Agent / Mäklare",
+    "agentPhone_label": "Tel. försäkring",
+    "circumstances_desc": "Kryssa i alla rutor som beskriver situationen för ditt fordon <strong>({{role}})</strong> vid kollisionen.",
+    "boxes_checked_one": "{{count}} ruta ikryssad",
+    "boxes_checked_other": "{{count}} rutor ikryssade",
+    "complement_desc": "Kompletterande information om anmälan — avsnitt 11, 13 och 14.",
+    "datetime_label": "Datum och tid för olyckan",
+    "visible_damage_label": "Synliga skador (avsnitt 11)",
+    "visible_damage_placeholder": "Beskriv de synliga skadorna på ditt fordon...",
+    "third_party_label": "Skador på tredje part (andra än A och B)",
+    "witnesses_label": "Vittnen",
+    "witnesses_placeholder": "Namn, förnamn, telefonnummer för varje vittne...",
+    "voice_declaration_label": "🎙️ Röstförklaring (valfritt)",
+    "observations_label": "Fria observationer — förare {{role}} (avsnitt 14)",
+    "observations_placeholder": "Lägg till alla användbara uppgifter: väderförhållanden, vägstatus, uppskattad hastighet, kommentarer...",
+    "insurance_holder_label": "Försäkringstagare (om annan än föraren)",
+    "holder_name_placeholder": "Försäkringstagarens fullständiga namn",
+    "holder_name_aria": "Försäkringstagarens namn",
+    "holder_address_placeholder": "Försäkringstagarens adress",
+    "holder_address_aria": "Försäkringstagarens adress",
+    "save_btn": "Spara och fortsätt →",
+    "form_tabs_aria": "Formulärsektioner"
+  },
+  "account": {
+    "member": {
+      "remove": "Ta bort",
+      "removeConfirm": "Ta bort denna medlem? Han/hon kommer att förlora tillgången till företagets fordon och krediter.",
+      "loading": "Laddar…",
+      "none": "Inga medlemmar.",
+      "invite": "Bjud in en medlem",
+      "inviteBtn": "Bjud in",
+      "pending": "Inbjudningar i väntan"
+    },
+    "role": {
+      "owner": "Ägare",
+      "driver": "Förare",
+      "fleet_admin": "Flottadministratör"
+    },
+    "scan": {
+      "cancel": "Avbryt",
+      "photographPre": "Fotografera din",
+      "license": "registreringsbevis",
+      "and": "och/eller din",
+      "greenCard": "gröna kort",
+      "title": "Skanna registreringsbevis + grönt kort",
+      "subtitle": "Automatisk igenkänning · flerspråkig"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Mitt garage",
+      "add": "Lägg till",
+      "emptyTitle": "Tomt garage",
+      "emptySubtitle": "Registrera dina fordon en gång. Aldrig mer behov av att skanna vid en olycka.",
+      "addFirst": "Lägg till mitt första fordon",
+      "noOrgVehicles": "Inga företagsfordon för tillfället."
+    },
+    "insurance": {
+      "saved": "Försäkring sparad",
+      "add": "Lägg till försäkring"
+    },
+    "nav": {
+      "logout": "Logga ut"
+    },
+    "vehicle": {
+      "edit": "Redigera fordon",
+      "delete": "Ta bort fordon",
+      "editOrg": "Redigera företagsfordon",
+      "deleteOrg": "Ta bort företagsfordon"
+    },
+    "fields": {
+      "nickname": "Smeknamn",
+      "plate": "Registreringsskylt",
+      "make": "Märke",
+      "model": "Modell",
+      "color": "Färg",
+      "year": "År",
+      "firstName": "Förnamn",
+      "lastName": "Efternamn",
+      "phone": "Telefon",
+      "company": "Företag",
+      "address": "Adress",
+      "newEmail": "Ny e-post",
+      "currentPwd": "Aktuellt lösenord (bekräftelse)",
+      "confirmEmailAria": "Bekräftelse av e-postadress"
+    },
+    "credits": {
+      "buy": "Köpa:",
+      "available": "KREDITER TILLGÄNGLIGA",
+      "unit": "1 kredit = 1 komplett skadeanmälan"
+    },
+    "history": {
+      "loading": "Laddar...",
+      "empty": "Inga anmälningar",
+      "emptySub": "Din nästa anmälan kommer automatiskt att visas här."
+    },
+    "personal": {
+      "title": "Personlig information",
+      "none": "Ingen information — klicka på Redigera"
+    },
+    "delete": {
+      "willDelete": "DET SOM KOMMER ATT TAS BORT DEFINITIVT:",
+      "text": "Ta bort ditt konto, dina fordon och alla dina anmälningar permanent. Denna åtgärd är oåterkallelig."
+    },
+    "danger": {
+      "title": "Farlig zon"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Inget dokument igenkänt. Kontrollera kvaliteten på fotona.",
+    "analysis_error": "Analysfel.",
+    "read_failed": "Läsning misslyckades",
+    "docs_analyzed_one": "{{count}} dokument analyserat",
+    "docs_analyzed_other": "{{count}} dokument analyserade",
+    "confidence": "Förtroende: {{pct}}%",
+    "rescan": "Skanna om",
+    "vehicle_section": "🚗 Fordon",
+    "plate": "Registreringsskylt",
+    "driver_section": "👤 Förare",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "insurance_found": "✅ Försäkring",
+    "insurance_manual": "⚠️ Försäkring — fyll i manuellt",
+    "company_label": "Bolag",
+    "company_aria": "Försäkringsbolag",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Policynummer",
+    "policy_manual_hint": "(manuell inmatning)",
+    "policy_aria": "Policynummer",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Bekräfta →",
+    "scanning_title": "Analys pågår…",
+    "scanning_subtitle_one": "{{count}} dokument · automatisk identifiering",
+    "scanning_subtitle_other": "{{count}} dokument · automatisk identifiering",
+    "photo_title": "Fotografera dina dokument",
+    "photo_subtitle": "Registreringsbevis + grönt kort i en enda analys.",
+    "photo_subtitle2": "Appen identifierar och extraherar allt automatiskt.",
+    "doc_scanned": "Dokument skannat {{n}}",
+    "doc_label": "Dokument {{n}}",
+    "photograph": "Fotografera",
+    "rear_camera": "Bakre kamera",
+    "gallery": "Galleri",
+    "which_docs": "Vilka dokument ska skannas?",
+    "doc_ch": "🇨🇭 Registreringsbevis + grönt kort",
+    "doc_fr": "🇫🇷 Registreringsbevis + grönt kort / intyg",
+    "doc_de": "🇩🇪 Registrering + Grön kort",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registrering + Försäkrings-ID-kort",
+    "doc_world": "🌍 Registrering + bevis på försäkring",
+    "close_error_aria": "Stäng felet",
+    "analyze_btn_one": "🔍 Analysera {{count}} dokument",
+    "analyze_btn_other": "🔍 Analysera {{count}} dokument",
+    "skip_manual": "Hoppa över — manuell inmatning →",
+    "upload_gallery_aria": "Ladda upp dokument från galleriet",
+    "take_photo_aria": "Fotografera ett dokument"
+  },
+  "join": {
+    "sessionLabel": "Session",
+    "yourEmail": "Din e-post",
+    "emailHint": "(för att ta emot PDF)",
+    "emailAria": "Din e-postadress",
+    "connecting": "Ansluter…",
+    "connected": "Ansluten! Startar…",
+    "joinButton": "Gå med i anmälan"
+  },
+  "voice": {
+    "title": "Beskriv olyckan",
+    "subtitle": "Valfritt — beskriv vad som hände med dina egna ord. Din förklaring kommer att registreras i anmälan.",
+    "tab_voice": "🎙️ Röst",
+    "tab_text": "⌨️ Text",
+    "start_recording": "Börja spela in",
+    "textarea_aria": "Beskrivning av olyckan",
+    "textarea_placeholder": "Beskriv olyckan i några meningar…",
+    "validate_desc": "✅ Bekräfta min beskrivning",
+    "skip_step": "Hoppa över detta steg →",
+    "recording_in_progress": "Inspelning pågår…",
+    "recording_tip": "💡 Beskriv: riktningen för varje fordon, punkt för kollision, omständigheterna. Prata lugnt.",
+    "stop_recording": "Stoppa inspelningen",
+    "transcribing_title": "Transkribering pågår…",
+    "transcribing_subtitle": "Din inspelning bearbetas",
+    "desc_recorded": "Beskrivning registrerad",
+    "desc_in_pdf": "Din förklaring kommer att inkluderas i PDF-anmälan",
+    "your_declaration": "Din förklaring",
+    "edit": "✏️ Redigera",
+    "edit_placeholder": "Korrigera din förklaring om det behövs...",
+    "restart": "Börja om",
+    "mic_denied": "Åtkomst till mikrofon nekad — använd manuell inmatning.",
+    "mic_unavailable": "Mikrofon otillgänglig: {{msg}}",
+    "transcription_error": "Transkriptionsfel",
+    "textarea_edit_aria": "Berättelse om olyckan"
+  },
+  "auth": {
+    "default_subtitle": "Logga in för att spara dina fordon och slippa ange något vid dina anmälningar.",
+    "magic_btn": "📧 Logga in med e-postlänk (rekommenderas)",
+    "password_btn": "🔑 Logga in med lösenord",
+    "register_btn": "✨ Skapa ett konto",
+    "skip_btn": "Fortsätt utan konto →",
+    "skip_note": "Utan konto kan du fortfarande göra en anmälan och betala med Stripe.",
+    "magic_instructions": "Ange din e-post — du får en inloggningslänk som är giltig i 15 minuter.",
+    "send_link": "Skicka länken",
+    "sending": "Skickar...",
+    "back": "← Tillbaka",
+    "email_sent_title": "E-post skickad!",
+    "email_sent_desc": "Kontrollera din inkorg <strong>{{email}}</strong>.",
+    "email_sent_validity": "Länken är giltig i 15 minuter.",
+    "login_error": "E-post eller lösenord är felaktigt.",
+    "logging_in": "Loggar in...",
+    "login_btn": "Logga in",
+    "forgot_password": "Glömt lösenordet? Använd en e-postlänk →",
+    "register_desc": "Skapa ditt konto för att spara dina fordon och automatiskt förifylla dina anmälningar.",
+    "password_placeholder": "Lösenord (minst 6 tecken)",
+    "creating": "Skapar...",
+    "create_btn": "Skapa mitt konto",
+    "register_legal": "Genom att skapa ett konto godkänner du våra användarvillkor. Dina fordonsdata är krypterade och delas aldrig utan ditt samtycke.",
+    "register_error": "Fel vid registrering.",
+    "generic_error": "Fel"
+  },
+  "app": {
+    "magic_link_error": "Ogiltig eller utgången inloggningslänk.",
+    "gift_credits_added": "🎁 {{credits}} kredit(er) tillagda till ditt konto!",
+    "loading_aria": "Laddar...",
+    "nav_landing": "Startsida",
+    "nav_cgu": "Användarvillkor",
+    "nav_pricing": "Prissättning",
+    "nav_constat": "Skapa anmälan",
+    "nav_join": "Gå med i en session",
+    "nav_account": "Användarkonto",
+    "nav_admin": "Administratörsdashboard",
+    "nav_emergency": "Nödsnummer",
+    "nav_privacy": "Integritetspolicy",
+    "nav_police_login": "Polisinloggning",
+    "nav_police_dashboard": "Polisdashboard",
+    "nav_police_flow": "Polisflöde",
+    "nav_police_intervention": "Polisinsats",
+    "nav_to": "Navigera till {{label}}",
+    "title_default": "boom.contact — Digital skadeanmälan",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Priser — boom.contact",
+    "back": "← Tillbaka←",
+    "buy_reports": "Köpa anmälningar",
+    "credits_no_expiry": "Krediter utan utgångsdatum · Delbara via WhatsApp",
+    "credits_available_one": "✅ {{count}} kredit tillgänglig",
+    "credits_available_other": "✅ {{count}} krediter tillgängliga",
+    "no_credits": "⚡ Inga krediter — ladda nu",
+    "currency_label": "VALUTA",
+    "currency_detected": "✓ automatiskt upptäckt",
+    "most_popular": "⭐ MEST POPULÄR · SPARA {{savings}}",
+    "economy": "Spara {{savings}}",
+    "per_pack": "per paket",
+    "per_report": "/ anmälan",
+    "redirecting_stripe": "⏳ Omdirigering till Stripe...",
+    "buy_btn": "Köpa {{label}} — {{price}}",
+    "error_missing_url": "Betalnings-URL saknas",
+    "error_generic": "Fel",
+    "error_email_required": "E-post krävs för att köpa",
+    "trust_stripe": "Säker betalning via Stripe PCI-DSS",
+    "trust_no_expiry": "Krediter utan utgångsdatum",
+    "trust_whatsapp": "Delbar via WhatsApp",
+    "trust_worldwide": "Flerspråkig",
+    "trust_invoice": "Automatisk PDF-faktura",
+    "trust_fleet": "Idealisk för företagsflottor",
+    "why_title": "VARFÖR HA KREDITER I FÖRVÄG?",
+    "scenario_child_title": "Ditt barn har en olycka",
+    "scenario_child_text": "Han/hon ringer dig. Du skickar en kredit via WhatsApp. Han/hon upprättar sin anmälan på 5 minuter.",
+    "scenario_company_title": "Företagsfordon",
+    "scenario_company_text": "Din leverantör har en kollision. Överför en kredit till honom/henne omedelbart från din mobil.",
+    "scenario_abroad_title": "På resa utomlands",
+    "scenario_abroad_text": "Olycka i Tyskland, Australien eller Japan. Gränssnittet finns på flera språk.",
+    "pkg_single_label": "1 anmälan",
+    "pkg_single_desc": "För en engångsolycka",
+    "pkg_pack3_label": "3 anmälningar",
+    "pkg_pack3_desc": "För hela familjen",
+    "pkg_pack3_marketing": "🎁 Dela via WhatsApp — ditt barn, din anställd, din vän får en omedelbar länk.",
+    "pkg_pack10_label": "10 anmälningar",
+    "pkg_pack10_desc": "Flottor & företag",
+    "pkg_pack10_marketing": "🏢 Hantera hela din flotta. Överför till dina medarbetare med ett klick."
+  },
+  "legal": {
+    "intro": {
+      "title": "Innan du börjar",
+      "body": "boom.contact hjälper dig att dokumentera en olycka och generera en strukturerad PDF-dokument. Vid skada, fara, flykt, allvarlig oenighet eller laglig skyldighet, kontakta omedelbart räddningstjänst, polis eller behöriga myndigheter. Den information som lämnas är deltagarnas ansvar. Du kan ange informationen manuellt om du inte vill använda kamera, mikrofon eller plats.",
+      "start": "Jag förstår, börja",
+      "emergency": "Se nödsnummer",
+      "privacy_cgu": "Integritet / Användarvillkor"
+    },
+    "guest_accept": {
+      "checkbox": "Jag accepterar användarvillkoren och har läst integritetspolicyn.",
+      "note": "Jag förstår att mina uppgifter kommer att användas för att generera PDF-dokumentet för olyckan och att den information som lämnas är mitt ansvar."
+    },
+    "signature_confirm": "Jag bekräftar att de uppgifter jag lämnat är korrekta efter bästa förmåga och jag accepterar att min signatur integreras i PDF-dokumentet.",
+    "payment_notice": "Genom att fortsätta till betalning förstår du att betalningen täcker genereringen och sändningen av PDF-dokumentet. Den information som lämnas är deltagarnas ansvar.",
+    "mic_notice": "Genom att använda mikrofonen kommer din röstförklaring att transkriberas för att integreras i skadeanmälan. Du kan använda textinmatning istället.",
+    "injury_confirm": {
+      "body": "Fotografier av skador kan innehålla känsliga data. Se till att du har den berörda personens samtycke, om det inte är en säkerhetsfråga eller en laglig skyldighet.",
+      "continue": "Fortsätt",
+      "change": "Ändra kategori"
+    },
+    "pdf_ready_title": "Tidsstämplad PDF-dokument för olyckan",
+    "pdf_ready_body": "De nödvändiga signaturerna har registrerats. PDF-dokumentet är klart. Kontrollera uppgifterna innan du skickar det till ditt försäkringsbolag."
   }
 }

@@ -12,7 +12,8 @@
     "required": "חובה",
     "yes": "כן",
     "no": "לא",
-    "unknown": "לא ידוע"
+    "unknown": "לא ידוע",
+    "rescan": "🔄 סרוק מחדש"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "תעדו תאונה ללא נייר, ללא בלבול.",
+      "subtitle": "boom.contact מדריך אתכם שלב אחר שלב לאיסוף המידע הנחוץ, הוספת תמונות, מיקום, הצהרות וחתימות, ולאחר מכן יצירת תיק PDF עם חותמת זמן לשליחה לחברת הביטוח שלכם."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "סשן פעיל",
+      "vehicleA": "רכב א'",
+      "photosSig": "תמונות · חתימה ✓",
+      "vehicleB": "רכב ב'",
+      "qrJoined": "QR הצטרף · בתהליך",
+      "payGenerate": "שלם ויצר PDF",
+      "pdfBadge": "PDF עם חותמת זמן",
+      "qrBadge": "QR משותף"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "הזמנה באמצעות קוד QR",
+        "desc": "צור את הסשן, הנהג השני סורק את ה-QR מהטלפון שלו. אין צורך בהתקנה, אין צורך בהרשמה."
+      },
+      {
+        "title": "תמונות, קול וחתימה",
+        "desc": "הוסף תמונות, הקלט את ההערות שלך בקול, הנח את הרכבים על הסקיצה וחתום באצבע."
+      },
+      {
+        "title": "תיק PDF עם חותמת זמן",
+        "desc": "boom.contact מייצרת תיק PDF עם חותמת זמן הכולל את המידע שהוזן על ידי כל נהג."
+      },
+      {
+        "title": "לשלוח לחברת הביטוח שלכם",
+        "desc": "הורד את ה-PDF או שלח אותו בדוא\"ל כדי לצרף אותו להצהרת הנזק שלך לחברת הביטוח."
+      }
+    ],
+    "seoLine": "דו\"ח תאונה דיגיטלי רב לשוני · Digital accident report",
+    "flow": {
+      "label": "הכל בזרימה אחת",
+      "title": "מתאונה לתיק מוכן לשליחה"
+    },
+    "stress": {
+      "label": "מחשבה על רגע התאונה",
+      "title": "מעוצב למצבים מלחיצים",
+      "text": "אחרי התנגשות, לא תמיד יש לנו את המחשבה הברורה. boom.contact מתקדם שלב אחר שלב, בשפה שלך, ושומר על כל מידע שנאסף. הכל עובד מהדפדפן של הטלפון, גם עם חיבור מוגבל.",
+      "bullets": [
+        "מנחה שלב אחר שלב",
+        "רב לשוני",
+        "תמונות · קול · חתימה",
+        "תיק PDF עם חותמת זמן"
+      ],
+      "emergencyTitle": "במקרה חירום",
+      "emergencyText": "boom.contact לא מחליף את שירותי החירום, המשטרה, עורך דין או חברת הביטוח. במקרה של פציעה או סכנה, צור קשר קודם עם שירותי החירום."
+    },
+    "pricing": {
+      "label": "מחירים",
+      "title": "פשוט, שקוף, ללא מנוי",
+      "caption": "1 קרדיט = 1 דו\"ח מלא · רב לשוני · קרדיטים ללא תאריך תפוגה",
+      "badgePopular": "פופולרי",
+      "plans": [
+        {
+          "label": "1 דו\"ח",
+          "desc": "לתאונה חד פעמית"
+        },
+        {
+          "label": "3 דו\"חות",
+          "desc": "לכל המשפחה"
+        },
+        {
+          "label": "10 דו\"חות",
+          "desc": "לציים וסוכנויות"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "למקצוענים",
+      "title": "לסוכנויות, ציים ושותפי ביטוח",
+      "text": "ציידו את הלקוחות והנהגים שלכם בכלי ברור לתיעוד תאונה וליצירת תיק PDF עם חותמת זמן. חבילות קרדיטים לציים ולסוכנויות, פריסה פשוטה, ללא מנוי.",
+      "cta": "צור קשר / שתף",
+      "items": [
+        {
+          "title": "ציים",
+          "desc": "תיק מובנה לכל תאונת נהג."
+        },
+        {
+          "title": "סוכנויות",
+          "desc": "שירות עם ערך מוסף ללקוחות שלך."
+        },
+        {
+          "title": "פרטיות",
+          "desc": "נתונים מוצפנים במהלך ההעברה, ניתן למחוק לפי בקשה."
+        },
+        {
+          "title": "העברה",
+          "desc": "PDF עם חותמת זמן מוכן לצירוף להצהרת הנזק."
+        }
+      ]
+    },
+    "faq": {
+      "label": "שאלות נפוצות",
+      "title": "שאלות נפוצות",
+      "items": [
+        {
+          "q": "מה זה boom.contact?",
+          "a": "boom.contact היא אפליקציה שעוזרת לתעד תאונת דרכים מהטלפון: הזמנת נהגים באמצעות QR, תמונות, קול, סקיצות, חתימות, ולאחר מכן יצירת תיק PDF עם חותמת זמן לשליחה לחברת הביטוח שלך."
+        },
+        {
+          "q": "האם אני צריך להתקין אפליקציה?",
+          "a": "לא. boom.contact פועלת ישירות בדפדפן של הטלפון (Safari, Chrome, Firefox). אתה יכול גם להוסיף אותה למסך הבית שלך כאפליקציה אינטרנטית (PWA) לגישה לא מקוונת."
+        },
+        {
+          "q": "מה קורה אם הנהג השני אין לו את האפליקציה?",
+          "a": "אתה יוצר את הסשן וקוד QR מוצג. הנהג השני סורק אותו עם הטלפון שלו: boom.contact נפתח בדפדפן שלו, ללא הרשמה או הורדה."
+        },
+        {
+          "q": "האם תיק ה-PDF מתקבל על ידי חברת הביטוח שלי?",
+          "a": "תיק ה-PDF עם חותמת הזמן מיועד לצירוף להצהרת הנזק שלך. boom.contact לא מבטיחה את קבלתו, זה תלוי בחברת הביטוח שלך לפי החוזה שלך והחוק."
+        },
+        {
+          "q": "האם זה עובד אם הנהג השני מדבר שפה אחרת?",
+          "a": "כן. כל נהג משתמש בממשק בשפה שלו. התיק הסופי נוצר עבור כל נהג."
+        },
+        {
+          "q": "האם הנתונים שלי מוגנים?",
+          "a": "הנתונים מוצפנים במהלך ההעברה, הסשנים נמחקים אוטומטית לאחר פרק זמן, והמשטרה לא מתודעת אוטומטית — רק על פי פעולה מפורשת שלך."
+        },
+        {
+          "q": "כמה זה עולה?",
+          "a": "מ-CHF / EUR 4.90 לדו\"ח. חבילת 3 דו\"חות ב-12.90 (−12%), חבילת 10 ב-34.90 (−29%). ללא מנוי, קרדיטים ללא תאריך תפוגה."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "סשן",
+    "yourEmail": "הדוא\"ל שלך",
+    "emailHint": "(כדי לקבל את ה-PDF)",
+    "emailAria": "כתובת הדוא\"ל שלך",
+    "connecting": "מתחבר…",
+    "connected": "מחובר! מתחילים…",
+    "joinButton": "הצטרף לדו\"ח"
+  },
+  "signature": {
+    "title": "חתימה",
+    "driver": "נהג {{role}}",
+    "other_party": "צד אחר",
+    "no_signature": "ללא חתימה",
+    "sign_here": "חתום כאן עם האצבע שלך",
+    "signed": "חתום ✓",
+    "clear": "🗑 נקה",
+    "saving": "⏳ שימור…",
+    "confirm_signature": "✍️ אשר את החתימה",
+    "waiting_other": "ממתין לחתימה של הנהג השני…",
+    "waiting_pdf": "ה-PDF ייווצר ברגע ששני הצדדים יחתמו.",
+    "report_signed": "הדו\"ח נחתם!",
+    "generating_pdf": "יצירת ה-PDF בתהליך…",
+    "canvas_aria": "אזור חתימה — נהג {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "לפני שמתחילים",
+      "body": "boom.contact עוזרת לך לתעד תאונה וליצור תיק PDF מובנה. במקרה של פציעה, סכנה, בריחה, אי הסכמה חמורה או חובה חוקית, צור קשר מיד עם שירותי החירום, המשטרה או הרשויות המוסמכות. המידע שניתן נשאר באחריות המשתתפים. אתה יכול להזין את המידע ידנית אם אינך מעוניין להשתמש במצלמה, במיקרופון או במיקום.",
+      "start": "הבנתי, להתחיל",
+      "emergency": "ראה את מספרי החירום",
+      "privacy_cgu": "פרטיות / תנאי שימוש"
+    },
+    "guest_accept": {
+      "checkbox": "אני מסכים לתנאי השימוש וקראתי את מדיניות הפרטיות.",
+      "note": "אני מבין שהמידע שלי ישמש ליצירת תיק PDF תאונה ושהמידע שניתן נשאר באחריותי."
+    },
+    "signature_confirm": "אני מאשר שהמידע שסיפקתי נכון לדעתם ואני מסכים שהחתימה שלי תיכלל בתיק PDF.",
+    "payment_notice": "בהמשך לתשלום, אתה מבין שהתשלום מכסה את יצירת ושליחת תיק ה-PDF. המידע שניתן נשאר באחריות המשתתפים.",
+    "mic_notice": "בשימוש במיקרופון, ההצהרה הקולית שלך תומר כדי להיכלל בתיק התאונה. אתה יכול להשתמש בהזנה טקסט במקום.",
+    "injury_confirm": {
+      "body": "תמונות של פציעות עשויות להכיל נתונים רגישים. ודא שיש לך את הסכמת האדם המעורב, אלא אם כן יש צורך בביטחון או חובה חוקית.",
+      "continue": "להמשיך",
+      "change": "שנה קטגוריה"
+    },
+    "pdf_ready_title": "תיק PDF תאונה עם חותמת זמן",
+    "pdf_ready_body": "החתימות הנדרשות נשמרו. תיק ה-PDF מוכן. בדוק את המידע לפני שתשלח אותו לחברת הביטוח שלך."
+  },
+  "constatForm": {
+    "tab_vehicle": "רכב",
+    "tab_driver": "נהג",
+    "tab_insurance": "ביטוח",
+    "tab_circumstances": "נסיבות",
+    "tab_complement": "תוספת",
+    "field_required": "שדה זה נדרש",
+    "plate_label": "מספר רישוי",
+    "brand_label": "מותג",
+    "model_label": "דגם",
+    "year_label": "שנה",
+    "vin_label": "מס' שלדה (VIN)",
+    "firstName_label": "שם פרטי",
+    "lastName_label": "שם משפחה",
+    "address_label": "כתובת",
+    "postalCode_label": "מיקוד",
+    "city_label": "עיר",
+    "country_label": "מדינה",
+    "phone_label": "טלפון",
+    "email_label": "דוא\"ל",
+    "license_label": "מס' רישיון נהיגה",
+    "company_label": "חברת ביטוח",
+    "policyNumber_label": "מס' פוליסה",
+    "greenCardNumber_label": "מס' כרטיס ירוק",
+    "greenCardExpiry_label": "תוקף כרטיס ירוק",
+    "agentName_label": "סוכן / מתווך",
+    "agentPhone_label": "טלפון ביטוח",
+    "circumstances_desc": "סמן את כל התיבות שמתארות את המצב של הרכב שלך <strong>({{role}})</strong> בזמן ההתנגשות.",
+    "boxes_checked_one": "{{count}} תיבה מסומנת",
+    "boxes_checked_other": "{{count}} תיבות מסומנות",
+    "complement_desc": "מידע נוסף על הדו\"ח — סעיפים 11, 13 ו-14.",
+    "datetime_label": "תאריך ושעת התאונה",
+    "visible_damage_label": "נזקים נראים (סעיף 11)",
+    "visible_damage_placeholder": "תאר את הנזקים הנראים על הרכב שלך...",
+    "third_party_label": "נזקים לרכוש של צדדים שלישיים (מלבד א' וב')",
+    "witnesses_label": "עדים",
+    "witnesses_placeholder": "שם, שם פרטי, טלפון של כל עד...",
+    "voice_declaration_label": "🎙️ הצהרה קולית (אופציונלי)",
+    "observations_label": "הערות חופשיות — נהג {{role}} (סעיף 14)",
+    "observations_placeholder": "הוסף כל פרט שימושי: תנאי מזג האוויר, מצב הכביש, מהירות משויכת, הערות...",
+    "insurance_holder_label": "נושא הביטוח (אם שונה מהנהג)",
+    "holder_name_placeholder": "שם מלא של הנושא",
+    "holder_name_aria": "שם נושא הביטוח",
+    "holder_address_placeholder": "כתובת הנושא",
+    "holder_address_aria": "כתובת נושא הביטוח",
+    "save_btn": "שמור והמשך →",
+    "form_tabs_aria": "סעיפי הטופס"
+  },
+  "pricingPage": {
+    "sr_title": "מחירים — boom.contact",
+    "back": "← חזרה←",
+    "buy_reports": "קנה דו\"חות",
+    "credits_no_expiry": "קרדיטים ללא תאריך תפוגה · ניתן לשתף בוואטסאפ",
+    "credits_available_one": "✅ {{count}} קרדיט זמין",
+    "credits_available_other": "✅ {{count}} קרדיטים זמינים",
+    "no_credits": "⚡ אין קרדיטים — טען עכשיו",
+    "currency_label": "מטבע",
+    "currency_detected": "✓ זוהה אוטומטית",
+    "most_popular": "⭐ פופולרי ביותר · חיסכון {{savings}}",
+    "economy": "חיסכון {{savings}}",
+    "per_pack": "לפי חבילה",
+    "per_report": "/ דו\"ח",
+    "redirecting_stripe": "⏳ הפניה ל-Stripe...",
+    "buy_btn": "קנה {{label}} — {{price}}",
+    "error_missing_url": "כתובת URL לתשלום חסרה",
+    "error_generic": "שגיאה",
+    "error_email_required": "דרוש דוא\"ל לרכישה",
+    "trust_stripe": "תשלום מאובטח PCI-DSS",
+    "trust_no_expiry": "קרדיטים ללא תאריך תפוגה",
+    "trust_whatsapp": "ניתן לשתף בוואטסאפ",
+    "trust_worldwide": "רב לשוני",
+    "trust_invoice": "חשבונית PDF אוטומטית",
+    "trust_fleet": "אידיאלי לציים עסקיים",
+    "why_title": "למה כדאי שיהיו לך קרדיטים מראש?",
+    "scenario_child_title": "הילד שלך היה בתאונה",
+    "scenario_child_text": "הוא מתקשר אליך. אתה שולח לו קרדיט בוואטסאפ. הוא מכין את הדו\"ח שלו ב-5 דקות.",
+    "scenario_company_title": "רכב חברה",
+    "scenario_company_text": "המוביל שלך היה בתאונה. העבר לו קרדיט מיד מהטלפון שלך.",
+    "scenario_abroad_title": "בנסיעה לחו\"ל",
+    "scenario_abroad_text": "תאונה בגרמניה, אוסטרליה או יפן. ממשק זמין בשפות רבות.",
+    "pkg_single_label": "1 דו\"ח",
+    "pkg_single_desc": "לתאונה חד פעמית",
+    "pkg_pack3_label": "3 דו\"חות",
+    "pkg_pack3_desc": "לכל המשפחה",
+    "pkg_pack3_marketing": "🎁 שתף בוואטסאפ — הילד שלך, העובד שלך, החבר שלך מקבל קישור מיידי.",
+    "pkg_pack10_label": "10 דו\"חות",
+    "pkg_pack10_desc": "ציים ועסקים",
+    "pkg_pack10_marketing": "🏢 נהל את כל הצי שלך. העבר לעובדים שלך בלחיצה אחת."
+  },
+  "app": {
+    "magic_link_error": "קישור התחברות לא תקף או פג תוקף.",
+    "gift_credits_added": "🎁 {{credits}} קרדיט(ים) נוסף(ים) לחשבון שלך!",
+    "loading_aria": "טוען",
+    "nav_landing": "דף הבית",
+    "nav_cgu": "תנאי שימוש",
+    "nav_pricing": "מחירים",
+    "nav_constat": "יצירת דו\"ח",
+    "nav_join": "הצטרף לסשן",
+    "nav_account": "חשבון משתמש",
+    "nav_admin": "לוח בקרה מנהלי",
+    "nav_emergency": "מספרי חירום",
+    "nav_privacy": "מדיניות פרטיות",
+    "nav_police_login": "התחברות משטרה",
+    "nav_police_dashboard": "לוח בקרה משטרתי",
+    "nav_police_flow": "זרימת משטרה",
+    "nav_police_intervention": "התערבות משטרתית",
+    "nav_to": "ניווט ל{{label}}",
+    "title_default": "boom.contact — דו\"ח תאונה דיגיטלי",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "תאר את התאונה",
+    "subtitle": "אופציונלי — תאר מה קרה במילים שלך. ההצהרה שלך תירשם בדו\"ח.",
+    "tab_voice": "🎙️ קול",
+    "tab_text": "⌨️ טקסט",
+    "start_recording": "התחל להקליט",
+    "textarea_aria": "תיאור התאונה",
+    "textarea_placeholder": "תאר את התאונה בכמה משפטים…",
+    "validate_desc": "✅ אשר את התיאור שלי",
+    "skip_step": "דלג על שלב זה →",
+    "recording_in_progress": "הקלטה בתהליך…",
+    "recording_tip": "💡 תאר: את הכיוון של כל רכב, נקודת הפגיעה, הנסיבות. דבר בשקט.",
+    "stop_recording": "עצור את ההקלטה",
+    "transcribing_title": "המרה בתהליך…",
+    "transcribing_subtitle": "ההקלטה שלך מעובדת",
+    "desc_recorded": "תיאור הוקלט",
+    "desc_in_pdf": "ההצהרה שלך תיכלל בדו\"ח PDF",
+    "your_declaration": "ההצהרה שלך",
+    "edit": "✏️ ערוך",
+    "edit_placeholder": "תקן את ההצהרה שלך אם יש צורך...",
+    "restart": "התחל מחדש",
+    "mic_denied": "גישה למיקרופון נדחתה — השתמש בהזנה ידנית.",
+    "mic_unavailable": "מיקרופון לא זמין: {{msg}}",
+    "transcription_error": "שגיאת המרה",
+    "textarea_edit_aria": "סיפור התאונה"
+  },
+  "auth": {
+    "default_subtitle": "התחבר כדי לשמור את הרכבים שלך ולא להזין שוב בעת הדו\"חות שלך.",
+    "magic_btn": "📧 התחברות באמצעות קישור דוא\"ל (מומלץ)",
+    "password_btn": "🔑 התחברות עם סיסמה",
+    "register_btn": "✨ צור חשבון",
+    "skip_btn": "המשך ללא חשבון →",
+    "skip_note": "ללא חשבון, אתה עדיין יכול להכין דו\"ח ולשלם עם Stripe.",
+    "magic_instructions": "הכנס את הדוא\"ל שלך — תקבל קישור התחברות בתוקף ל-15 דקות.",
+    "send_link": "שלח את הקישור",
+    "sending": "שולח...",
+    "back": "← חזרה",
+    "email_sent_title": "דוא\"ל נשלח!",
+    "email_sent_desc": "בדוק את תיבת הדואר שלך <strong>{{email}}</strong>.",
+    "email_sent_validity": "הקישור בתוקף ל-15 דקות.",
+    "login_error": "דוא\"ל או סיסמה לא נכונים.",
+    "logging_in": "מתחבר...",
+    "login_btn": "התחבר",
+    "forgot_password": "שכחת סיסמה? השתמש בקישור דוא\"ל →",
+    "register_desc": "צור את החשבון שלך כדי לשמור את הרכבים שלך ולמלא את הדו\"חות שלך אוטומטית.",
+    "password_placeholder": "סיסמה (מינימום 6 תווים)",
+    "creating": "יוצר...",
+    "create_btn": "צור את החשבון שלי",
+    "register_legal": "על ידי יצירת חשבון אתה מסכים לתנאי השימוש שלנו. הנתונים שלך על הרכב מוצפנים ולא משותפים ללא הסכמתך.",
+    "register_error": "שגיאה במהלך ההרשמה.",
+    "generic_error": "שגיאה"
+  },
+  "account": {
+    "member": {
+      "remove": "הסר",
+      "removeConfirm": "האם להסיר את חבר זה? הוא יאבד את הגישה לרכבים ולקרדיטים של החברה.",
+      "loading": "טוען…",
+      "none": "אין חברים.",
+      "invite": "הזמן חבר",
+      "inviteBtn": "הזמן",
+      "pending": "הזמנות ממתינות"
+    },
+    "role": {
+      "owner": "בעלים",
+      "driver": "נהג",
+      "fleet_admin": "מנהל צי"
+    },
+    "scan": {
+      "cancel": "בטל",
+      "photographPre": "צלם את ה",
+      "license": "רישיון רכב",
+      "and": "ו/או את ה",
+      "greenCard": "כרטיס הירוק",
+      "title": "סרוק רישיון + כרטיס ירוק",
+      "subtitle": "זיהוי אוטומטי · רב לשוני"
+    },
+    "garage": {
+      "back": "מוסך",
+      "title": "המוסך שלי",
+      "add": "הוסף",
+      "emptyTitle": "המוסך ריק",
+      "emptySubtitle": "רשום את רכבים שלך פעם אחת. יותר לא צריך לסרוק בעת תאונה.",
+      "addFirst": "הוסף את הרכב הראשון שלי",
+      "noOrgVehicles": "אין רכבים עסקיים כרגע."
+    },
+    "insurance": {
+      "saved": "ביטוח נשמר",
+      "add": "הוסף ביטוח"
+    },
+    "nav": {
+      "logout": "התנתק"
+    },
+    "vehicle": {
+      "edit": "ערוך את הרכב",
+      "delete": "מחק את הרכב",
+      "editOrg": "ערוך את רכב העסק",
+      "deleteOrg": "מחק את רכב העסק"
+    },
+    "fields": {
+      "nickname": "כינוי",
+      "plate": "מספר רישוי",
+      "make": "מותג",
+      "model": "דגם",
+      "color": "צבע",
+      "year": "שנה",
+      "firstName": "שם פרטי",
+      "lastName": "שם משפחה",
+      "phone": "טלפון",
+      "company": "חברה",
+      "address": "כתובת",
+      "newEmail": "דוא\"ל חדש",
+      "currentPwd": "סיסמה נוכחית (אישור)",
+      "confirmEmailAria": "אישור כתובת דוא\"ל"
+    },
+    "credits": {
+      "buy": "קנה:",
+      "available": "קרדיטים זמינים",
+      "unit": "1 קרדיט = 1 דו\"ח תאונה מלא"
+    },
+    "history": {
+      "loading": "טוען...",
+      "empty": "אין דו\"ח",
+      "emptySub": "הדו\"ח הבא שלך יופיע כאן אוטומטית."
+    },
+    "personal": {
+      "title": "מידע אישי",
+      "none": "אין מידע — לחץ על עריכה"
+    },
+    "delete": {
+      "willDelete": "מה שיימחק לצמיתות:",
+      "text": "מחק לצמיתות את החשבון שלך, את הרכבים שלך ואת כל הדו\"חות שלך. פעולה זו אינה הפיכה."
+    },
+    "danger": {
+      "title": "אזור מסוכן"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "לא זוהה מסמך. בדוק את איכות התמונות.",
+    "analysis_error": "שגיאת ניתוח.",
+    "read_failed": "קריאה נכשלה",
+    "docs_analyzed_one": "{{count}} מסמך נותח",
+    "docs_analyzed_other": "{{count}} מסמכים נותחו",
+    "confidence": "ביטחון: {{pct}}%",
+    "rescan": "סרוק מחדש",
+    "vehicle_section": "🚗 רכב",
+    "plate": "מספר רישוי",
+    "driver_section": "👤 נהג",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "insurance_found": "✅ ביטוח",
+    "insurance_manual": "⚠️ ביטוח — יש להשלים ידנית",
+    "company_label": "חברה",
+    "company_aria": "חברת ביטוח",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "מס' פוליסה",
+    "policy_manual_hint": "(הזנה ידנית)",
+    "policy_aria": "מספר פוליסה",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "אשר →",
+    "scanning_title": "סריקה בתהליך…",
+    "scanning_subtitle_one": "{{count}} מסמך · זיהוי אוטומטי",
+    "scanning_subtitle_other": "{{count}} מסמכים · זיהוי אוטומטי",
+    "photo_title": "צלם את המסמכים שלך",
+    "photo_subtitle": "רישיון רכב + כרטיס ירוק בסריקה אחת.",
+    "photo_subtitle2": "האפליקציה מזהה ומוציאה הכל אוטומטית.",
+    "doc_scanned": "מסמך סרוק {{n}}",
+    "doc_label": "מסמך {{n}}",
+    "photograph": "צלם",
+    "rear_camera": "מצלמה אחורית",
+    "gallery": "גלריה",
+    "which_docs": "אילו מסמכים לסרוק?",
+    "doc_ch": "🇨🇭 רישיון רכב + כרטיס ירוק",
+    "doc_fr": "🇫🇷 רישיון רכב + כרטיס ירוק / אישור",
+    "doc_de": "🇩🇪 רישוי + כרטיס ירוק",
+    "doc_gb": "🇬🇧 V5C + תעודת ביטוח רכב",
+    "doc_us": "🇺🇸 🇨🇦 רישום + כרטיס זיהוי ביטוח",
+    "doc_world": "🌍 רישוי + הוכחת ביטוח",
+    "close_error_aria": "סגור את השגיאה",
+    "analyze_btn_one": "🔍 נתח {{count}} מסמך",
+    "analyze_btn_other": "🔍 נתח {{count}} מסמכים",
+    "skip_manual": "דלג — הזנה ידנית →",
+    "upload_gallery_aria": "העלה מסמכים מהגלריה",
+    "take_photo_aria": "צלם מסמך"
+  },
+  "postConstat": {
+    "next_time_title": "בפעם הבאה: 0 הזנה",
+    "next_time_subtitle": "הרכבים שלך יישמרו לנצח",
+    "benefit_scanned": "רישיון + כרטיס ירוק סרוקים פעם אחת",
+    "benefit_fast": "דו\"ח ב-2 דקות במקום 10",
+    "benefit_gift": "הענק דו\"ח לקרובים שלך בלחיצה אחת",
+    "benefit_family": "אידיאלי למשפחה: שתף את הקרדיטים שלך",
+    "create_account": "צור את החשבון החינמי שלי →",
+    "share_btn": "שתף עם הקרובים שלי",
+    "register_vehicle_title": "לאחר מכן, רשום את הרכב שלך",
+    "register_vehicle_subtitle": "סרוק רישיון רכב + כרטיס ירוק · 30 שניות · יותר לא צריך להזין שוב",
+    "or_skip": "או דלג ישירות",
+    "family_pack": "🔥 חבילת משפחה",
+    "family_pack_desc": "3 דו\"חות לשיתוף עם הקרובים שלך",
+    "scenario_child": "הילד שלך מתקשר — תאונה. שלח לו דו\"ח ב-3 שניות לטלפון שלו.",
+    "scenario_employee": "עובד עם רכב חברה. העבר קרדיט בוואטסאפ מיד.",
+    "scenario_friend": "חבר במצוקה בחו\"ל. הוא מקבל קישור, אין צורך בחשבון.",
+    "buy_3_reports": "קנה 3 דו\"חות — CHF/EUR 12.90 →",
+    "see_all_packs": "ראה את כל החבילות →",
+    "ready_title": "מוכן לפעם הבאה",
+    "ready_subtitle": "טען עכשיו, שתף מתי שתרצה",
+    "account_title": "✅ החשבון שלך ב-boom.contact",
+    "account_desc": "הרכבים שלך נשמרים. בפעם הבאה שתהיה תאונה, תתחיל ישירות בשלב ה-QR — ללא הזנה, ללא סריקה.",
+    "manage_garage": "נהל את המוסך שלי →",
+    "gift_title": "🎁 הענק דו\"ח בוואטסאפ",
+    "gift_desc": "אחד מהקרדיטים שלך = קישור ייחודי לשלוח ל<strong>כל אחד</strong>, מבלי שהאדם יצטרך חשבון.",
+    "credits_available_one": "{{count}} קרדיט זמין",
+    "credits_available_other": "{{count}} קרדיטים זמינים",
+    "share_protect": "שתף, הגן על הקרובים שלך",
+    "wa_gift_title": "📲 הענק דו\"ח בוואטסאפ",
+    "wa_gift_desc": "בלחיצה אחת, שלח קישור לילד שלך, לעובד או לחבר. הוא מכין את הדו\"ח שלו ללא חשבון או תשלום — ינוכה מהקרדיטים שלך.",
+    "send_1": "📲 שלח 1 דו\"ח",
+    "send_3": "📲 שלח 3 דו\"חות",
+    "gift_link_created": "✅ קישור נוצר — שלח אותו בוואטסאפ!",
+    "share_title": "📤 שתף boom.contact",
+    "share_desc": "אתה סיימת את הדו\"ח שלך ב-5 דקות. החברים שלך ראויים לדעת שזה קיים.",
+    "memorize_vehicles": "🚗 זכור את הרכבים האחרים שלך",
+    "memorize_desc": "צי עסקי, אופנוע, קמפינג? כל רכב שנסרק = יותר לא צריך להזין בעת תאונה.",
+    "low_credits_one": "⚡ נשאר לך רק {{count}} קרדיט",
+    "low_credits_other": "⚡ נשארו לך רק {{count}} קרדיטים",
+    "recharge_desc": "טען עכשיו ותהנה מהנחות על חבילות משפחה ועסקים.",
+    "recharge_btn": "טען את הקרדיטים שלי →",
+    "pack_single_label": "1 דו\"ח",
+    "pack_single_note": "שימוש חד פעמי",
+    "pack_pack3_label": "3 דו\"חות",
+    "pack_pack3_note": "משפחה · חיסכון 12%",
+    "pack_pack10_label": "10 דו\"חות",
+    "pack_pack10_note": "עסק · חיסכון 29%",
+    "popular_badge": "⭐ פופולרי"
+  },
+  "constat": {
+    "nav": {
+      "back": "חזרה",
+      "reset": "אפס את הדו\"ח"
+    },
+    "session": {
+      "expiring": "הסשן שלך פג תוקף בקרוב. שמור את הנתונים שלך."
+    },
+    "error": {
+      "close": "סגור את השגיאה"
+    },
+    "vehicle": {
+      "pickRegistered": "בחר רכב רשום",
+      "autofill": "השלמה אוטומטית — אין צורך לסרוק",
+      "yourRegistered": "הרכבים הרשומים שלך",
+      "org": "עסק",
+      "personal": "פרטי",
+      "fallback": "רכב",
+      "cancel": "בטל",
+      "orScanNew": "או סרוק רכב חדש"
+    },
+    "pedestrian": {
+      "title": "צד אחר: הולך רגל"
+    },
+    "summary": {
+      "yourVehicle": "הרכב שלך",
+      "accident": "תאונה",
+      "damagedZones_one": "{{count}} אזור פגוע",
+      "damagedZones_other": "{{count}} אזורים פגועים"
+    },
+    "emergency": {
+      "title": "מספרי חירום"
+    }
   }
 }

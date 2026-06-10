@@ -21,7 +21,9 @@
       "line1": "事故",
       "line2": "之后",
       "line3": "来",
-      "line4": "联系"
+      "line4": "联系",
+      "title": "无纸化、无混淆地记录事故。",
+      "subtitle": "boom.contact逐步指导您收集有用信息，添加照片、位置、声明和签名，然后生成可发送给您的保险公司的带时间戳的PDF文件。"
     },
     "subtitle": "5分钟完成电子事故报告。通用OCR，共享QR码，即时全球PDF。",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "发送给保险公司",
       "done": "事故报告已完成！",
       "waiting": "会话 #8F2K · 等待中…",
-      "capture": "📸 拍照"
+      "capture": "📸 拍照",
+      "sessionActive": "会话活动",
+      "vehicleA": "车辆 A",
+      "photosSig": "照片 · 签名 ✓",
+      "vehicleB": "车辆 B",
+      "qrJoined": "QR已加入 · 进行中",
+      "payGenerate": "支付并生成PDF",
+      "pdfBadge": "带时间戳的PDF",
+      "qrBadge": "共享QR"
     },
     "badges": {
       "languages": "50种语言",
@@ -83,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "您所需的一切",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "通用OCR",
-          "desc": "Claude Vision 可识别50+种语言的文件。行驶证、RC Book、行驶证 — 零手动输入。"
-        },
-        {
-          "icon": "📱",
-          "title": "最多5辆车",
-          "desc": "3、4或5辆车的事故？每位驾驶员扫描自己的QR码。所有人共用一份PDF。"
-        },
-        {
-          "icon": "📷",
-          "title": "现场照片",
-          "desc": "5个类别：现场、A方损伤、B方损伤、伤情、文件。压缩后包含于PDF中。"
-        },
-        {
-          "icon": "✏️",
-          "title": "自由草图",
-          "desc": "绘制车辆位置、行驶方向箭头及基础设施。PNG导出并集成于PDF中。"
-        },
-        {
-          "icon": "🚗",
-          "title": "碰撞示意图",
-          "desc": "700+种模型，适配车辆轮廓，OCR识别真实颜色。18个可点击损伤区域。"
-        },
-        {
-          "icon": "✍️",
-          "title": "多方签名",
-          "desc": "支持多个同时触控签名。QR码24小时有效供警方使用。"
-        },
-        {
-          "icon": "📄",
-          "title": "带时间戳的PDF",
-          "desc": "完整数字文件：证人、第三方损伤、备注、草图、照片。"
-        },
-        {
-          "icon": "🚔",
-          "title": "警察模块（即将推出）",
-          "desc": "警员通过QR码加入会话。官方数字事故报告。按站点/辖区管理的仪表板。"
-        },
-        {
-          "icon": "🌍",
-          "title": "50种语言 + RTL",
-          "desc": "覆盖50亿使用者。阿拉伯语、希伯来语、波斯语、乌尔都语原生RTL支持。紧急情况地理定位。"
-        }
-      ]
-    },
     "coverage": {
       "label": "全球覆盖",
       "title": "从瑞士到中国",
@@ -150,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "通过QR码邀请",
+        "desc": "创建会话，另一位驾驶员用手机扫描QR码。无需安装，无需注册。"
+      },
+      {
+        "title": "照片、语音和签名",
+        "desc": "添加照片，通过语音描述您的观察，将车辆放置在草图上，并用手指签名。"
+      },
+      {
+        "title": "带时间戳的PDF文件",
+        "desc": "boom.contact生成一个带时间戳的PDF文件，包含每位驾驶员输入的信息。"
+      },
+      {
+        "title": "发送给您的保险公司",
+        "desc": "下载PDF或通过电子邮件发送，以便随附您的索赔声明给保险公司。"
+      }
+    ],
+    "seoLine": "多语言数字事故报告 · Digital accident report",
+    "flow": {
+      "label": "一切在一个流程中",
+      "title": "从事故到准备发送的文件"
+    },
+    "stress": {
+      "label": "为事故时刻而设计",
+      "title": "为紧张情况而设计",
+      "text": "在碰撞后，思维不够清晰。boom.contact逐步引导您，以您的语言进行操作，并记录每一条收集的信息。所有操作均可通过手机浏览器完成，即使在有限的连接下也能正常工作。",
+      "bullets": [
+        "逐步指导",
+        "多语言",
+        "照片 · 语音 · 签名",
+        "带时间戳的PDF文件"
+      ],
+      "emergencyTitle": "紧急情况下",
+      "emergencyText": "boom.contact并不能替代急救、警察、律师或保险公司。在有伤者或危险的情况下，请首先联系紧急服务。"
+    },
+    "pricing": {
+      "label": "定价",
+      "title": "简单、透明、无订阅",
+      "caption": "1个积分 = 1份完整的报告 · 多语言 · 积分无过期",
+      "badgePopular": "热门",
+      "plans": [
+        {
+          "label": "1份报告",
+          "desc": "用于一次性事故"
+        },
+        {
+          "label": "3份报告",
+          "desc": "适合全家"
+        },
+        {
+          "label": "10份报告",
+          "desc": "适合车队和经纪人"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "为专业人士",
+      "title": "为经纪人、车队和保险合作伙伴",
+      "text": "为您的客户和驾驶员提供一个清晰的工具，以记录事故并生成带时间戳的PDF文件。为车队和经纪人提供积分包，简单部署，无需订阅。",
+      "cta": "联系/分享",
+      "items": [
+        {
+          "title": "车队",
+          "desc": "每位驾驶员的结构化报告。"
+        },
+        {
+          "title": "经纪人",
+          "desc": "为您的被保险人提供增值服务。"
+        },
+        {
+          "title": "隐私",
+          "desc": "传输中的数据加密，可根据请求删除。"
+        },
+        {
+          "title": "传输",
+          "desc": "带时间戳的PDF文件，准备附加到索赔声明中。"
+        }
+      ]
+    },
+    "faq": {
+      "label": "常见问题",
+      "title": "常见问题",
+      "items": [
+        {
+          "q": "什么是boom.contact？",
+          "a": "boom.contact是一款帮助您通过手机记录交通事故的应用程序：通过QR邀请驾驶员，照片、语音、草图、签名，然后生成带时间戳的PDF文件以发送给您的保险公司。"
+        },
+        {
+          "q": "我需要安装应用程序吗？",
+          "a": "不需要。boom.contact直接在手机浏览器中运行（Safari、Chrome、Firefox）。您也可以将其添加到主屏幕作为网络应用（PWA），以便离线访问。"
+        },
+        {
+          "q": "如果另一位驾驶员没有应用程序怎么办？",
+          "a": "您创建会话后，QR码会显示。另一位驾驶员用手机扫描它：boom.contact会在他的浏览器中打开，无需注册或下载。"
+        },
+        {
+          "q": "我的保险公司接受PDF文件吗？",
+          "a": "带时间戳的PDF文件用于支持您的索赔声明。boom.contact不保证其被接受，这取决于您的保险公司及您的合同和法律管辖权。"
+        },
+        {
+          "q": "如果另一位驾驶员说另一种语言，它能工作吗？",
+          "a": "可以。每位驾驶员使用自己语言的界面。最终文件为每位驾驶员生成。"
+        },
+        {
+          "q": "我的数据是否受到保护？",
+          "a": "数据在传输中加密，会议在一段时间后自动删除，警察不会自动被通知——仅在您明确采取行动时。"
+        },
+        {
+          "q": "费用是多少？",
+          "a": "从CHF / EUR 4.90起，1份报告。3份报告包为12.90（−12%），10份为34.90（−29%）。无订阅，积分无过期。"
+        }
+      ]
     }
   },
   "steps": {
@@ -217,42 +291,6 @@
       "cycles": "自行车",
       "other": "行人／其他"
     },
-    "datetime_label": "事故日期和时间",
-    "date_label": "日期",
-    "time_label": "时间",
-    "datetime_warning": "⚠️ 请填写事故发生的实际时间，而非当前时间。",
-    "geo_label": "事故地点",
-    "gps_captured": "GPS 已捕获 — {{lat}}, {{lng}}",
-    "gps_loading": "正在获取位置…",
-    "gps_denied": "GPS 访问被拒绝 — 请手动输入",
-    "gps_missing": "未捕获 GPS 位置",
-    "gps_saved": "坐标已保存至文档",
-    "address_label": "街道 / 地点 / 高速公路（例：A1 出口 12，四路交叉口）",
-    "address_placeholder": "例：车站大道 4 号，A1 方向伯尔尼 km 47……",
-    "city_label": "城市 / 地区",
-    "city_placeholder": "洛桑，巴黎……",
-    "country_label": "国家",
-    "country_placeholder": "CH，FR……",
-    "location_tip": "💡 重要提示：请填写事故发生的确切地点，即使您已将车辆移到路边。GPS 获取的是您当前位置——如果您已移动，请手动修正。",
-    "injuries_label": "是否有人员受伤？",
-    "no_injuries": "否——无人受伤",
-    "yes_injuries": "是——有人员受伤",
-    "injury_details_title": "🚑 伤情详情",
-    "severity_label": "表观严重程度",
-    "severity_minor": "轻微",
-    "severity_moderate": "中度",
-    "severity_serious": "严重",
-    "injury_desc_label": "描述（身体部位、疼痛、可见伤情）",
-    "injury_desc_placeholder": "例如：颈部疼痛、左膝挫伤、额头割伤……",
-    "ambulance": "🚑 由救护车 / SMUR 接诊",
-    "hospitalized": "🏥 需要或考虑住院治疗",
-    "injury_footer": "如有重伤人员，请立即拨打 112（欧盟）或 144（瑞士）。这些信息将包含在最终文件中。",
-    "cta_no_vehicle": "请选择您的车辆类型",
-    "cta_no_injuries": "请说明是否有人员受伤",
-    "cta_no_location": "请填写事故发生地点",
-    "emergency_police": "🚔 警察 · {{number}} {{label}}",
-    "emergency_ambulance": "🚑 急救 · {{number}} {{label}}",
-    "emergency_voluntary": "拨打这些电话完全自愿——警方不会被自动通知。",
     "vehicles": {
       "car": {
         "label": "轿车",
@@ -326,7 +364,43 @@
         "label": "其他车辆",
         "sub": "未列出 — 请在备注中说明"
       }
-    }
+    },
+    "datetime_label": "事故日期和时间",
+    "date_label": "日期",
+    "time_label": "时间",
+    "datetime_warning": "⚠️ 请填写事故发生的实际时间，而非当前时间。",
+    "geo_label": "事故地点",
+    "gps_captured": "GPS 已捕获 — {{lat}}, {{lng}}",
+    "gps_loading": "正在获取位置…",
+    "gps_denied": "GPS 访问被拒绝 — 请手动输入",
+    "gps_missing": "未捕获 GPS 位置",
+    "gps_saved": "坐标已保存至文档",
+    "address_label": "街道 / 地点 / 高速公路（例：A1 出口 12，四路交叉口）",
+    "address_placeholder": "例：车站大道 4 号，A1 方向伯尔尼 km 47……",
+    "city_label": "城市 / 地区",
+    "city_placeholder": "洛桑，巴黎……",
+    "country_label": "国家",
+    "country_placeholder": "CH，FR……",
+    "location_tip": "💡 重要提示：请填写事故发生的确切地点，即使您已将车辆移到路边。GPS 获取的是您当前位置——如果您已移动，请手动修正。",
+    "injuries_label": "是否有人员受伤？",
+    "no_injuries": "否——无人受伤",
+    "yes_injuries": "是——有人员受伤",
+    "injury_details_title": "🚑 伤情详情",
+    "severity_label": "表观严重程度",
+    "severity_minor": "轻微",
+    "severity_moderate": "中度",
+    "severity_serious": "严重",
+    "injury_desc_label": "描述（身体部位、疼痛、可见伤情）",
+    "injury_desc_placeholder": "例如：颈部疼痛、左膝挫伤、额头割伤……",
+    "ambulance": "🚑 由救护车 / SMUR 接诊",
+    "hospitalized": "🏥 需要或考虑住院治疗",
+    "injury_footer": "如有重伤人员，请立即拨打 112（欧盟）或 144（瑞士）。这些信息将包含在最终文件中。",
+    "cta_no_vehicle": "请选择您的车辆类型",
+    "cta_no_injuries": "请说明是否有人员受伤",
+    "cta_no_location": "请填写事故发生地点",
+    "emergency_police": "🚔 警察 · {{number}} {{label}}",
+    "emergency_ambulance": "🚑 急救 · {{number}} {{label}}",
+    "emergency_voluntary": "拨打这些电话完全自愿——警方不会被自动通知。"
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -445,5 +519,431 @@
   "language": {
     "select": "语言",
     "switch_tooltip": "切换语言"
+  },
+  "join": {
+    "sessionLabel": "会话",
+    "yourEmail": "您的电子邮件",
+    "emailHint": "(用于接收PDF)",
+    "emailAria": "您的电子邮件地址",
+    "connecting": "连接中……",
+    "connected": "已连接！启动中……",
+    "joinButton": "加入报告"
+  },
+  "constat": {
+    "nav": {
+      "back": "返回",
+      "reset": "重置报告"
+    },
+    "session": {
+      "expiring": "您的会话即将过期。请保存您的数据。"
+    },
+    "error": {
+      "close": "关闭错误"
+    },
+    "vehicle": {
+      "pickRegistered": "选择注册车辆",
+      "autofill": "自动填充 — 无需扫描",
+      "yourRegistered": "您的注册车辆",
+      "org": "企业",
+      "personal": "个人",
+      "fallback": "车辆",
+      "cancel": "取消",
+      "orScanNew": "或扫描新车辆"
+    },
+    "pedestrian": {
+      "title": "另一方：行人"
+    },
+    "summary": {
+      "yourVehicle": "您的车辆",
+      "accident": "事故",
+      "damagedZones_one": "{{count}} 受损区域",
+      "damagedZones_other": "{{count}} 受损区域"
+    },
+    "emergency": {
+      "title": "紧急号码"
+    }
+  },
+  "auth": {
+    "default_subtitle": "登录以保存您的车辆，并在报告时无需再次输入。",
+    "magic_btn": "📧 通过电子邮件链接登录（推荐）",
+    "password_btn": "🔑 使用密码登录",
+    "register_btn": "✨ 创建账户",
+    "skip_btn": "继续而不创建账户 →",
+    "skip_note": "没有账户，您仍然可以完成报告并通过Stripe付款。",
+    "magic_instructions": "输入您的电子邮件 — 您将收到一个有效15分钟的登录链接。",
+    "send_link": "发送链接",
+    "sending": "发送中...",
+    "back": "← 返回",
+    "email_sent_title": "电子邮件已发送！",
+    "email_sent_desc": "请检查您的<strong>{{email}}</strong>邮箱。",
+    "email_sent_validity": "链接有效期为15分钟。",
+    "login_error": "电子邮件或密码不正确。",
+    "logging_in": "登录中...",
+    "login_btn": "登录",
+    "forgot_password": "忘记密码？使用电子邮件链接 →",
+    "register_desc": "创建您的账户以保存您的车辆并自动预填您的报告。",
+    "password_placeholder": "密码（至少6个字符）",
+    "creating": "创建中...",
+    "create_btn": "创建我的账户",
+    "register_legal": "创建账户即表示您接受我们的服务条款。您的车辆数据将被加密，并且在未获得您同意的情况下不会被共享。",
+    "register_error": "注册时出错。",
+    "generic_error": "错误"
+  },
+  "postConstat": {
+    "next_time_title": "下次：0 输入",
+    "next_time_subtitle": "您的车辆将永久记忆",
+    "benefit_scanned": "行驶证 + 绿卡已扫描一次",
+    "benefit_fast": "报告在2分钟内完成，而不是10分钟",
+    "benefit_gift": "一键赠送报告给您的亲友",
+    "benefit_family": "理想家庭：分享您的积分",
+    "create_account": "创建我的免费账户 →",
+    "share_btn": "分享给我的亲友",
+    "register_vehicle_title": "接下来，注册您的车辆",
+    "register_vehicle_subtitle": "扫描行驶证 + 绿卡 · 30秒 · 再也不需要重新输入",
+    "or_skip": "或直接跳过",
+    "family_pack": "🔥 家庭包",
+    "family_pack_desc": "3份报告与您的亲友分享",
+    "scenario_child": "您的孩子打电话 — 事故。3秒内通过手机发送给他一份报告。",
+    "scenario_employee": "员工使用公司车辆。通过WhatsApp即时转账一个积分。",
+    "scenario_friend": "在国外遇到困难的朋友。他收到一个链接，无需账户。",
+    "buy_3_reports": "购买3份报告 — CHF/EUR 12.90 →",
+    "see_all_packs": "查看所有套餐 →",
+    "ready_title": "为下次做好准备",
+    "ready_subtitle": "现在充值，随时分享",
+    "account_title": "✅ 您的boom.contact账户",
+    "account_desc": "您的车辆已被记忆。在下次事故中，您将直接进入QR步骤 — 无需输入，无需扫描。",
+    "manage_garage": "管理我的车库 →",
+    "gift_title": "🎁 通过WhatsApp赠送报告",
+    "gift_desc": "您的一积分 = 一个唯一链接，发送给<strong>任何人</strong>，无需对方有账户。",
+    "credits_available_one": "{{count}} 积分可用",
+    "credits_available_other": "{{count}} 积分可用",
+    "share_protect": "分享，保护您的亲友",
+    "wa_gift_title": "📲 通过WhatsApp赠送报告",
+    "wa_gift_desc": "一键发送链接给您的孩子、员工或朋友。他可以在没有账户或付款的情况下完成报告 — 从您的积分中扣除。",
+    "send_1": "📲 发送1份报告",
+    "send_3": "📲 发送3份报告",
+    "gift_link_created": "✅ 链接已创建 — 通过WhatsApp发送！",
+    "share_title": "📤 分享boom.contact",
+    "share_desc": "您刚刚在5分钟内完成了报告。您的朋友值得知道这个。",
+    "memorize_vehicles": "🚗 记住您的其他车辆",
+    "memorize_desc": "企业车队、摩托车、房车？每辆扫描的车辆 = 事故时再也不需要输入。",
+    "low_credits_one": "⚡ 您只剩下 {{count}} 积分",
+    "low_credits_other": "⚡ 您只剩下 {{count}} 积分",
+    "recharge_desc": "现在充值，享受家庭和企业套餐的折扣。",
+    "recharge_btn": "充值我的积分 →",
+    "pack_single_label": "1份报告",
+    "pack_single_note": "一次性使用",
+    "pack_pack3_label": "3份报告",
+    "pack_pack3_note": "家庭 · 节省12%",
+    "pack_pack10_label": "10份报告",
+    "pack_pack10_note": "企业 · 节省29%",
+    "popular_badge": "⭐ 热门"
+  },
+  "voice": {
+    "title": "描述事故",
+    "subtitle": "可选 — 用您自己的话描述发生了什么。您的声明将被记录在报告中。",
+    "tab_voice": "🎙️ 语音",
+    "tab_text": "⌨️ 文本",
+    "start_recording": "开始录音",
+    "textarea_aria": "事故描述",
+    "textarea_placeholder": "用几句话描述事故……",
+    "validate_desc": "✅ 验证我的描述",
+    "skip_step": "跳过此步骤 →",
+    "recording_in_progress": "录音中……",
+    "recording_tip": "💡 描述：每辆车的方向、碰撞点、情况。请平静地说。",
+    "stop_recording": "停止录音",
+    "transcribing_title": "转录中……",
+    "transcribing_subtitle": "您的录音正在处理",
+    "desc_recorded": "描述已录制",
+    "desc_in_pdf": "您的声明将包含在PDF报告中",
+    "your_declaration": "您的声明",
+    "edit": "✏️ 编辑",
+    "edit_placeholder": "如有必要，修正您的声明……",
+    "restart": "重新开始",
+    "mic_denied": "麦克风访问被拒绝 — 请使用手动输入。",
+    "mic_unavailable": "麦克风不可用：{{msg}}",
+    "transcription_error": "转录错误",
+    "textarea_edit_aria": "事故叙述"
+  },
+  "constatForm": {
+    "tab_vehicle": "车辆",
+    "tab_driver": "驾驶员",
+    "tab_insurance": "保险",
+    "tab_circumstances": "情况",
+    "tab_complement": "补充",
+    "field_required": "此字段为必填",
+    "plate_label": "车牌",
+    "brand_label": "品牌",
+    "model_label": "型号",
+    "year_label": "年份",
+    "vin_label": "底盘号（VIN）",
+    "firstName_label": "名字",
+    "lastName_label": "姓氏",
+    "address_label": "地址",
+    "postalCode_label": "邮政编码",
+    "city_label": "城市",
+    "country_label": "国家",
+    "phone_label": "电话",
+    "email_label": "电子邮件",
+    "license_label": "驾驶证号",
+    "company_label": "保险公司",
+    "policyNumber_label": "保单号",
+    "greenCardNumber_label": "绿卡号",
+    "greenCardExpiry_label": "绿卡有效期",
+    "agentName_label": "代理人 / 经纪人",
+    "agentPhone_label": "保险电话",
+    "circumstances_desc": "勾选所有描述您车辆<strong>({{role}})</strong>在碰撞时情况的选项。",
+    "boxes_checked_one": "{{count}} 个选项已勾选",
+    "boxes_checked_other": "{{count}} 个选项已勾选",
+    "complement_desc": "报告的补充信息 — 第11、13和14节。",
+    "datetime_label": "事故日期和时间",
+    "visible_damage_label": "明显损坏（第11节）",
+    "visible_damage_placeholder": "描述您车辆上的明显损坏……",
+    "third_party_label": "对第三方的财产损害（除A和B外）",
+    "witnesses_label": "证人",
+    "witnesses_placeholder": "每位证人的姓名、名字、电话……",
+    "voice_declaration_label": "🎙️ 语音声明（可选）",
+    "observations_label": "自由观察 — 驾驶员 {{role}}（第14节）",
+    "observations_placeholder": "添加任何有用的元素：天气条件、路面状况、估计速度、备注……",
+    "insurance_holder_label": "投保人（如与驾驶员不同）",
+    "holder_name_placeholder": "投保人的全名",
+    "holder_name_aria": "投保人姓名",
+    "holder_address_placeholder": "投保人地址",
+    "holder_address_aria": "投保人地址",
+    "save_btn": "保存并继续 →",
+    "form_tabs_aria": "表单部分"
+  },
+  "legal": {
+    "intro": {
+      "title": "开始之前",
+      "body": "boom.contact帮助您记录事故并生成结构化的PDF文件。如果有伤害、危险、逃逸、严重分歧或法律义务，请立即联系急救、警察或相关当局。提供的信息由参与者负责。如果您不想使用相机、麦克风或定位，可以手动输入信息。",
+      "start": "我明白，开始",
+      "emergency": "查看紧急号码",
+      "privacy_cgu": "隐私 / 使用条款"
+    },
+    "guest_accept": {
+      "checkbox": "我接受使用条款，并已阅读隐私政策。",
+      "note": "我理解我的信息将用于生成事故PDF文件，提供的信息由我负责。"
+    },
+    "signature_confirm": "我确认我提供的信息在我所知的范围内是准确的，并同意将我的签名纳入PDF文件。",
+    "payment_notice": "继续支付时，您理解支付涵盖生成和发送PDF文件。提供的信息由参与者负责。",
+    "mic_notice": "使用麦克风时，您的语音声明将被转录以纳入事故报告。您可以选择使用文本输入。",
+    "injury_confirm": {
+      "body": "伤害照片可能包含敏感数据。请确保获得相关人员的同意，除非出于安全需要或法律义务。",
+      "continue": "继续",
+      "change": "更改类别"
+    },
+    "pdf_ready_title": "带时间戳的事故PDF文件",
+    "pdf_ready_body": "所需的签名已记录。PDF文件已准备好。在将其发送给您的保险公司之前，请检查信息。"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "未识别任何文档。请检查照片质量。",
+    "analysis_error": "分析错误。",
+    "read_failed": "读取失败",
+    "docs_analyzed_one": "{{count}} 文档已分析",
+    "docs_analyzed_other": "{{count}} 文档已分析",
+    "confidence": "置信度：{{pct}}%",
+    "rescan": "重新扫描",
+    "vehicle_section": "🚗 车辆",
+    "plate": "车牌",
+    "driver_section": "👤 驾驶员",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "insurance_found": "✅ 保险",
+    "insurance_manual": "⚠️ 保险 — 手动填写",
+    "company_label": "公司",
+    "company_aria": "保险公司",
+    "company_placeholder": "AXA、苏黎世、安联、艾门塔尔…",
+    "policy_label": "保单号",
+    "policy_manual_hint": "(手动输入)",
+    "policy_aria": "保单号",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "确认 →",
+    "scanning_title": "正在分析…",
+    "scanning_subtitle_one": "{{count}} 文档 · 自动识别",
+    "scanning_subtitle_other": "{{count}} 文档 · 自动识别",
+    "photo_title": "拍摄您的文档",
+    "photo_subtitle": "行驶证 + 绿卡一次分析。",
+    "photo_subtitle2": "应用程序会自动识别和提取所有内容。",
+    "doc_scanned": "文档扫描 {{n}}",
+    "doc_label": "文档 {{n}}",
+    "photograph": "拍照",
+    "rear_camera": "后置摄像头",
+    "gallery": "图库",
+    "which_docs": "扫描哪些文档？",
+    "doc_ch": "🇨🇭 行驶证 + 绿卡",
+    "doc_fr": "🇫🇷 行驶证 + 绿卡 / 证明",
+    "doc_de": "🇩🇪 注册 + 绿卡",
+    "doc_gb": "🇬🇧 V5C + 机动车保险证明",
+    "doc_us": "🇺🇸 🇨🇦 注册 + 保险ID卡",
+    "doc_world": "🌍 注册 + 保险证明",
+    "close_error_aria": "关闭错误",
+    "analyze_btn_one": "🔍 分析 {{count}} 文档",
+    "analyze_btn_other": "🔍 分析 {{count}} 文档",
+    "skip_manual": "跳过 — 手动输入 →",
+    "upload_gallery_aria": "从图库上传文档",
+    "take_photo_aria": "拍摄文档"
+  },
+  "app": {
+    "magic_link_error": "无效或过期的登录链接。",
+    "gift_credits_added": "🎁 {{credits}} 积分已添加到您的账户！",
+    "loading_aria": "加载中",
+    "nav_landing": "主页",
+    "nav_cgu": "使用条款",
+    "nav_pricing": "定价",
+    "nav_constat": "创建报告",
+    "nav_join": "加入会话",
+    "nav_account": "用户账户",
+    "nav_admin": "管理员仪表板",
+    "nav_emergency": "紧急号码",
+    "nav_privacy": "隐私政策",
+    "nav_police_login": "警察登录",
+    "nav_police_dashboard": "警察仪表板",
+    "nav_police_flow": "警察流程",
+    "nav_police_intervention": "警察干预",
+    "nav_to": "导航到 {{label}}",
+    "title_default": "boom.contact — 数字事故报告",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "定价 — boom.contact",
+    "back": "← 返回←",
+    "buy_reports": "购买报告",
+    "credits_no_expiry": "积分无过期 · 可通过WhatsApp分享",
+    "credits_available_one": "✅ {{count}} 积分可用",
+    "credits_available_other": "✅ {{count}} 积分可用",
+    "no_credits": "⚡ 没有积分 — 现在充值",
+    "currency_label": "货币",
+    "currency_detected": "✓ 自动检测",
+    "most_popular": "⭐ 最受欢迎 · 节省 {{savings}}",
+    "economy": "节省 {{savings}}",
+    "per_pack": "每包",
+    "per_report": "/ 报告",
+    "redirecting_stripe": "⏳ 正在重定向到Stripe...",
+    "buy_btn": "购买 {{label}} — {{price}}",
+    "error_missing_url": "缺少支付URL",
+    "error_generic": "错误",
+    "error_email_required": "购买时需要电子邮件",
+    "trust_stripe": "安全的PCI-DSS Stripe支付",
+    "trust_no_expiry": "积分无过期",
+    "trust_whatsapp": "可通过WhatsApp分享",
+    "trust_worldwide": "多语言",
+    "trust_invoice": "自动PDF发票",
+    "trust_fleet": "适合企业车队",
+    "why_title": "为什么要提前购买积分？",
+    "scenario_child_title": "您的孩子发生事故",
+    "scenario_child_text": "他给您打电话。您通过WhatsApp给他发送一个积分。他在5分钟内完成报告。",
+    "scenario_company_title": "公司车辆",
+    "scenario_company_text": "您的送货员发生碰撞。您可以立即从手机转账给他一个积分。",
+    "scenario_abroad_title": "在国外旅行",
+    "scenario_abroad_text": "在德国、澳大利亚或日本发生事故。界面支持多种语言。",
+    "pkg_single_label": "1份报告",
+    "pkg_single_desc": "用于一次性事故",
+    "pkg_pack3_label": "3份报告",
+    "pkg_pack3_desc": "适合全家",
+    "pkg_pack3_marketing": "🎁 通过WhatsApp分享 — 您的孩子、员工或朋友会收到一个即时链接。",
+    "pkg_pack10_label": "10份报告",
+    "pkg_pack10_desc": "车队和企业",
+    "pkg_pack10_marketing": "🏢 管理您的整个车队。1次点击即可转账给您的员工。"
+  },
+  "signature": {
+    "title": "签名",
+    "driver": "驾驶员 {{role}}",
+    "other_party": "另一方",
+    "no_signature": "无签名",
+    "sign_here": "用您的手指在此签名",
+    "signed": "已签名 ✓",
+    "clear": "🗑 清除",
+    "saving": "⏳ 正在保存……",
+    "confirm_signature": "✍️ 确认签名",
+    "waiting_other": "等待另一位驾驶员的签名……",
+    "waiting_pdf": "一旦双方签名，PDF将生成。",
+    "report_signed": "报告已签名！",
+    "generating_pdf": "正在生成PDF……",
+    "canvas_aria": "签名区域 — 驾驶员 {{role}}"
+  },
+  "account": {
+    "member": {
+      "remove": "移除",
+      "removeConfirm": "移除此成员？他将失去对企业车辆和积分的访问权限。",
+      "loading": "加载中……",
+      "none": "没有成员。",
+      "invite": "邀请成员",
+      "inviteBtn": "邀请",
+      "pending": "待处理的邀请"
+    },
+    "role": {
+      "owner": "所有者",
+      "driver": "驾驶员",
+      "fleet_admin": "车队管理员"
+    },
+    "scan": {
+      "cancel": "取消",
+      "photographPre": "拍摄您的",
+      "license": "行驶证",
+      "and": "和/或您的",
+      "greenCard": "绿卡",
+      "title": "扫描行驶证 + 绿卡",
+      "subtitle": "自动识别 · 多语言"
+    },
+    "garage": {
+      "back": "车库",
+      "title": "我的车库",
+      "add": "添加",
+      "emptyTitle": "车库为空",
+      "emptySubtitle": "一次性注册您的车辆。事故时再也不需要扫描。",
+      "addFirst": "添加我的第一辆车",
+      "noOrgVehicles": "目前没有企业车辆。"
+    },
+    "insurance": {
+      "saved": "保险已保存",
+      "add": "添加保险"
+    },
+    "nav": {
+      "logout": "注销"
+    },
+    "vehicle": {
+      "edit": "编辑车辆",
+      "delete": "删除车辆",
+      "editOrg": "编辑企业车辆",
+      "deleteOrg": "删除企业车辆"
+    },
+    "fields": {
+      "nickname": "昵称",
+      "plate": "车牌",
+      "make": "品牌",
+      "model": "型号",
+      "color": "颜色",
+      "year": "年份",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "phone": "电话",
+      "company": "公司",
+      "address": "地址",
+      "newEmail": "新电子邮件",
+      "currentPwd": "当前密码（确认）",
+      "confirmEmailAria": "电子邮件地址确认"
+    },
+    "credits": {
+      "buy": "购买：",
+      "available": "可用积分",
+      "unit": "1积分 = 1份完整的事故报告"
+    },
+    "history": {
+      "loading": "加载中……",
+      "empty": "没有报告",
+      "emptySub": "您的下一个报告将自动出现在这里。"
+    },
+    "personal": {
+      "title": "个人信息",
+      "none": "没有信息 — 点击编辑"
+    },
+    "delete": {
+      "willDelete": "将被永久删除的内容：",
+      "text": "永久删除您的账户、车辆和所有报告。此操作不可逆。"
+    },
+    "danger": {
+      "title": "危险区域"
+    }
   }
 }

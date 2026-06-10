@@ -15,49 +15,49 @@ export interface LangStatus {
 
 export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   am: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   ar: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   az: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   bg: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   bn: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   bs: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   cs: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   da: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
@@ -69,7 +69,7 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
     tier: "full"
   },
   el: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
@@ -81,25 +81,25 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
     tier: "full"
   },
   es: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   et: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   fa: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   fi: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
@@ -111,31 +111,31 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
     tier: "full"
   },
   he: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   hi: {
-    ui: 35,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   hr: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   hu: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   id: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
@@ -147,172 +147,172 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
     tier: "full"
   },
   ja: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": true,
     tier: "partial"
   },
   ka: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   ko: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   lt: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   lv: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   mk: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   ms: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   nb: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   nl: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   pl: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   pt: {
-    ui: 36,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   ro: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   ru: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   sk: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   sl: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   so: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   sq: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   sr: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   sv: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   th: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   ti: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   tl: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   tr: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": true,
     tier: "partial"
   },
   uk: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": false,
     tier: "partial"
   },
   ur: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   vi: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   wo: {
-    ui: 37,
+    ui: 100,
     "pdf": false,
     "email": false,
     tier: "partial"
   },
   zh: {
-    ui: 37,
+    ui: 100,
     "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   }
 } as Record<SupportedLang, LangStatus>;
 

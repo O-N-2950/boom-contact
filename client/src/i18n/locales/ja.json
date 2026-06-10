@@ -12,7 +12,8 @@
     "required": "必須",
     "yes": "はい",
     "no": "いいえ",
-    "unknown": "不明"
+    "unknown": "不明",
+    "rescan": "🔄 再スキャン"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "紙なし、混乱なしで事故を記録します。",
+      "subtitle": "boom.contactは、役立つ情報を収集し、写真、位置情報、声明、署名を追加し、保険会社に送信するためのタイムスタンプ付きPDFファイルを生成するためのステップバイステップガイドを提供します。"
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "セッションがアクティブです",
+      "vehicleA": "車両A",
+      "photosSig": "写真 · 署名 ✓",
+      "vehicleB": "車両B",
+      "qrJoined": "QR参加 · 進行中",
+      "payGenerate": "支払いとPDF生成",
+      "pdfBadge": "タイムスタンプ付きPDF",
+      "qrBadge": "共有QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "QRコードで招待",
+        "desc": "セッションを作成し、他の運転手が電話からQRをスキャンします。インストールや登録は不要です。"
+      },
+      {
+        "title": "写真、音声、署名",
+        "desc": "写真を追加し、音声で観察を伝え、スケッチ上に車両を配置し、指で署名します。"
+      },
+      {
+        "title": "タイムスタンプ付きPDFファイル",
+        "desc": "boom.contactは、各運転手が入力した情報を含むタイムスタンプ付きPDFファイルを生成します。"
+      },
+      {
+        "title": "保険会社に送信するために",
+        "desc": "PDFをダウンロードするか、メールで送信して保険会社への事故報告に添付します。"
+      }
+    ],
+    "seoLine": "多言語デジタル事故報告 · Digital accident report",
+    "flow": {
+      "label": "すべてを一つのフローで",
+      "title": "事故から送信準備完了のファイルへ"
+    },
+    "stress": {
+      "label": "事故の瞬間を考慮して",
+      "title": "ストレスの多い状況に対応",
+      "text": "衝撃の後、頭がクリアではありません。boom.contactは、あなたの言語でステップバイステップで進み、収集されたすべての情報の記録を保持します。すべては電話のブラウザから機能し、接続が制限されていても動作します。",
+      "bullets": [
+        "ステップバイステップでガイド",
+        "多言語対応",
+        "写真 · 音声 · 署名",
+        "タイムスタンプ付きPDFファイル"
+      ],
+      "emergencyTitle": "緊急時に",
+      "emergencyText": "boom.contactは救助、警察、弁護士、または保険会社の代わりにはなりません。負傷者や危険がある場合は、まず緊急サービスに連絡してください。"
+    },
+    "pricing": {
+      "label": "料金",
+      "title": "シンプルで透明、サブスクリプションなし",
+      "caption": "1クレジット = 1完全な報告書 · 多言語 · クレジットの有効期限なし",
+      "badgePopular": "人気",
+      "plans": [
+        {
+          "label": "1報告書",
+          "desc": "単発の事故用"
+        },
+        {
+          "label": "3報告書",
+          "desc": "家族全員用"
+        },
+        {
+          "label": "10報告書",
+          "desc": "フリートとブローカー用"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "プロフェッショナル向け",
+      "title": "ブローカー、フリート、保険パートナー向け",
+      "text": "顧客と運転手に事故を記録し、タイムスタンプ付きPDFファイルを生成するための明確なツールを提供します。フリートとブローカー向けのクレジットパック、簡単な展開、サブスクリプションなし。",
+      "cta": "お問い合わせ / 共有",
+      "items": [
+        {
+          "title": "フリート",
+          "desc": "各運転手のための構造化された報告書。"
+        },
+        {
+          "title": "ブローカー",
+          "desc": "被保険者に対する付加価値サービス。"
+        },
+        {
+          "title": "プライバシー",
+          "desc": "転送中のデータは暗号化され、要求に応じて削除可能。"
+        },
+        {
+          "title": "送信",
+          "desc": "事故報告に添付するためのタイムスタンプ付きPDF。"
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "よくある質問",
+      "items": [
+        {
+          "q": "boom.contactとは何ですか？",
+          "a": "boom.contactは、QRで運転手を招待し、写真、音声、スケッチ、署名を行い、保険会社に送信するためのタイムスタンプ付きPDFファイルを生成するためのアプリです。"
+        },
+        {
+          "q": "アプリをインストールする必要がありますか？",
+          "a": "いいえ。boom.contactは電話のブラウザ（Safari、Chrome、Firefox）で直接動作します。また、オフラインアクセスのためにウェブアプリ（PWA）としてホーム画面に追加することもできます。"
+        },
+        {
+          "q": "他の運転手がアプリを持っていない場合はどうなりますか？",
+          "a": "セッションを作成するとQRコードが表示されます。他の運転手は自分の電話でそれをスキャンします：boom.contactがブラウザで開き、登録やダウンロードは不要です。"
+        },
+        {
+          "q": "PDFファイルは保険会社に受け入れられますか？",
+          "a": "タイムスタンプ付きPDFファイルは、事故報告に添付するためのものです。boom.contactはその受け入れを保証するものではなく、契約や法域に基づいて保険会社の判断に委ねられます。"
+        },
+        {
+          "q": "他の運転手が別の言語を話す場合、機能しますか？",
+          "a": "はい。各運転手は自分の言語でインターフェースを使用します。最終的な報告書は各運転手のために生成されます。"
+        },
+        {
+          "q": "私のデータは保護されていますか？",
+          "a": "データは転送中に暗号化され、セッションは自動的に一定の期間後に削除され、警察には自動的に通知されません — あなたの明示的な行動によってのみ通知されます。"
+        },
+        {
+          "q": "費用はいくらですか？",
+          "a": "1報告書はCHF / EUR 4.90から。3報告書パックは12.90（−12％）、10報告書パックは34.90（−29％）。サブスクリプションなし、クレジットの有効期限なし。"
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "account": {
+    "member": {
+      "remove": "削除",
+      "removeConfirm": "このメンバーを削除しますか？ 彼は企業の車両とクレジットへのアクセスを失います。",
+      "loading": "読み込み中…",
+      "none": "メンバーはありません。",
+      "invite": "メンバーを招待",
+      "inviteBtn": "招待する",
+      "pending": "保留中の招待"
+    },
+    "role": {
+      "owner": "オーナー",
+      "driver": "ドライバー",
+      "fleet_admin": "フリート管理者"
+    },
+    "scan": {
+      "cancel": "キャンセル",
+      "photographPre": "あなたの",
+      "license": "運転免許証を撮影",
+      "and": "および/またはあなたの",
+      "greenCard": "緑のカードを撮影",
+      "title": "運転免許証 + 緑のカードをスキャン",
+      "subtitle": "自動認識 · 多言語対応"
+    },
+    "garage": {
+      "back": "ガレージ",
+      "title": "私のガレージ",
+      "add": "追加",
+      "emptyTitle": "ガレージは空です",
+      "emptySubtitle": "一度車両を登録してください。事故時に再スキャンする必要はありません。",
+      "addFirst": "最初の車両を追加",
+      "noOrgVehicles": "現在、企業の車両はありません。"
+    },
+    "insurance": {
+      "saved": "保険が保存されました",
+      "add": "保険を追加"
+    },
+    "nav": {
+      "logout": "ログアウト"
+    },
+    "vehicle": {
+      "edit": "車両を編集",
+      "delete": "車両を削除",
+      "editOrg": "企業の車両を編集",
+      "deleteOrg": "企業の車両を削除"
+    },
+    "fields": {
+      "nickname": "ニックネーム",
+      "plate": "ナンバープレート",
+      "make": "ブランド",
+      "model": "モデル",
+      "color": "色",
+      "year": "年",
+      "firstName": "名",
+      "lastName": "姓",
+      "phone": "電話",
+      "company": "会社",
+      "address": "住所",
+      "newEmail": "新しいメール",
+      "currentPwd": "現在のパスワード（確認）",
+      "confirmEmailAria": "メールアドレスの確認"
+    },
+    "credits": {
+      "buy": "購入：",
+      "available": "利用可能なクレジット",
+      "unit": "1クレジット = 1完全な事故報告書"
+    },
+    "history": {
+      "loading": "読み込み中...",
+      "empty": "報告書はありません",
+      "emptySub": "次の報告書はここに自動的に表示されます。"
+    },
+    "personal": {
+      "title": "個人情報",
+      "none": "情報はありません — 編集をクリックしてください"
+    },
+    "delete": {
+      "willDelete": "削除されるものは次のとおりです：",
+      "text": "あなたのアカウント、車両、すべての報告書が完全に削除されます。この操作は元に戻せません。"
+    },
+    "danger": {
+      "title": "危険区域"
+    }
+  },
+  "app": {
+    "magic_link_error": "無効または期限切れのログインリンク。",
+    "gift_credits_added": "🎁 {{credits}} クレジットがあなたのアカウントに追加されました！",
+    "loading_aria": "読み込み中",
+    "nav_landing": "ホームページ",
+    "nav_cgu": "利用規約",
+    "nav_pricing": "料金",
+    "nav_constat": "報告書作成",
+    "nav_join": "セッションに参加",
+    "nav_account": "ユーザーアカウント",
+    "nav_admin": "管理者ダッシュボード",
+    "nav_emergency": "緊急番号",
+    "nav_privacy": "プライバシーポリシー",
+    "nav_police_login": "警察ログイン",
+    "nav_police_dashboard": "警察ダッシュボード",
+    "nav_police_flow": "警察フロー",
+    "nav_police_intervention": "警察介入",
+    "nav_to": "{{label}} へナビゲーション",
+    "title_default": "boom.contact — デジタル事故報告",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "constatForm": {
+    "tab_vehicle": "車両",
+    "tab_driver": "運転手",
+    "tab_insurance": "保険",
+    "tab_circumstances": "状況",
+    "tab_complement": "補足",
+    "field_required": "このフィールドは必須です",
+    "plate_label": "ナンバープレート",
+    "brand_label": "ブランド",
+    "model_label": "モデル",
+    "year_label": "年",
+    "vin_label": "シャーシ番号 (VIN)",
+    "firstName_label": "名",
+    "lastName_label": "姓",
+    "address_label": "住所",
+    "postalCode_label": "郵便番号",
+    "city_label": "市町村",
+    "country_label": "国",
+    "phone_label": "電話",
+    "email_label": "メール",
+    "license_label": "運転免許証番号",
+    "company_label": "保険会社",
+    "policyNumber_label": "ポリシー番号",
+    "greenCardNumber_label": "緑のカード番号",
+    "greenCardExpiry_label": "緑のカードの有効期限",
+    "agentName_label": "エージェント / ブローカー",
+    "agentPhone_label": "保険会社の電話",
+    "circumstances_desc": "衝突時のあなたの車両 <strong>({{role}})</strong> の状況を説明するすべてのボックスにチェックを入れてください。",
+    "boxes_checked_one": "{{count}} ボックスがチェックされています",
+    "boxes_checked_other": "{{count}} ボックスがチェックされています",
+    "complement_desc": "報告書の補足情報 — セクション11、13、14。",
+    "datetime_label": "事故の日付と時間",
+    "visible_damage_label": "目に見える損傷 (セクション11)",
+    "visible_damage_placeholder": "あなたの車両の目に見える損傷を説明してください...",
+    "third_party_label": "第三者への物的損害 (AおよびB以外)",
+    "witnesses_label": "目撃者",
+    "witnesses_placeholder": "各目撃者の名前、名、電話...",
+    "voice_declaration_label": "🎙️ 音声声明 (オプション)",
+    "observations_label": "自由な観察 — 運転手 {{role}} (セクション14)",
+    "observations_placeholder": "役立つ要素を追加してください：天候、道路の状態、推定速度、コメント...",
+    "insurance_holder_label": "保険契約者 (運転手と異なる場合)",
+    "holder_name_placeholder": "契約者のフルネーム",
+    "holder_name_aria": "保険契約者の名前",
+    "holder_address_placeholder": "契約者の住所",
+    "holder_address_aria": "保険契約者の住所",
+    "save_btn": "保存して続行 →",
+    "form_tabs_aria": "フォームのセクション"
+  },
+  "postConstat": {
+    "next_time_title": "次回：0入力",
+    "next_time_subtitle": "あなたの車両は永遠に記憶されます",
+    "benefit_scanned": "運転免許証 + 緑のカードが一度スキャンされました",
+    "benefit_fast": "報告書が10分の代わりに2分で作成されます",
+    "benefit_gift": "1クリックで親しい人に報告書を贈ります",
+    "benefit_family": "家族に最適：クレジットを共有",
+    "create_account": "無料アカウントを作成 →",
+    "share_btn": "親しい人に共有",
+    "register_vehicle_title": "次に、あなたの車両を登録してください",
+    "register_vehicle_subtitle": "運転免許証 + 緑のカードをスキャン · 30秒 · もう再入力する必要はありません",
+    "or_skip": "または直接スキップ",
+    "family_pack": "🔥 家族パック",
+    "family_pack_desc": "親しい人と共有できる3つの報告書",
+    "scenario_child": "お子様が電話をかける — 事故。彼に3秒で報告書を送信します。",
+    "scenario_employee": "会社の車両を持つ従業員。WhatsAppで即座にクレジットを転送します。",
+    "scenario_friend": "海外で困っている友人。彼はリンクを受け取り、アカウントは不要です。",
+    "buy_3_reports": "3つの報告書を購入 — CHF/EUR 12.90 →",
+    "see_all_packs": "すべてのパックを見る →",
+    "ready_title": "次回の準備が整いました",
+    "ready_subtitle": "今すぐチャージして、いつでも共有できます",
+    "account_title": "✅ あなたのboom.contactアカウント",
+    "account_desc": "あなたの車両が記憶されています。次回の事故では、QRステップに直接進むことができます — 入力もスキャンも不要です。",
+    "manage_garage": "私のガレージを管理 →",
+    "gift_title": "🎁 WhatsAppで報告書を贈る",
+    "gift_desc": "あなたのクレジットの1つ = <strong>誰にでも</strong>送信できるユニークなリンク。",
+    "credits_available_one": "{{count}} クレジットが利用可能",
+    "credits_available_other": "{{count}} クレジットが利用可能",
+    "share_protect": "共有して、あなたの親しい人を守る",
+    "wa_gift_title": "📲 WhatsAppで報告書を贈る",
+    "wa_gift_desc": "1クリックで、お子様、従業員、友人にリンクを送信します。彼はアカウントや支払いなしで報告書を作成します — あなたのクレジットから差し引かれます。",
+    "send_1": "📲 1つの報告書を送信",
+    "send_3": "📲 3つの報告書を送信",
+    "gift_link_created": "✅ リンクが作成されました — WhatsAppで送信してください！",
+    "share_title": "📤 boom.contactを共有",
+    "share_desc": "あなたは5分で報告書を作成しました。あなたの友人はこれが存在することを知るべきです。",
+    "memorize_vehicles": "🚗 他の車両を記憶する",
+    "memorize_desc": "企業フリート、バイク、キャンピングカー？スキャンされた各車両 = 事故時に再入力する必要はありません。",
+    "low_credits_one": "⚡ 残りはわずか{{count}}クレジットです",
+    "low_credits_other": "⚡ 残りはわずか{{count}}クレジットです",
+    "recharge_desc": "今すぐチャージして、家族や企業向けのパックの割引を利用してください。",
+    "recharge_btn": "クレジットをチャージする →",
+    "pack_single_label": "1報告書",
+    "pack_single_note": "単発使用",
+    "pack_pack3_label": "3報告書",
+    "pack_pack3_note": "家族 · 12%の節約",
+    "pack_pack10_label": "10報告書",
+    "pack_pack10_note": "企業 · 29%の節約",
+    "popular_badge": "⭐ 人気"
+  },
+  "pricingPage": {
+    "sr_title": "料金 — boom.contact",
+    "back": "← 戻る←",
+    "buy_reports": "報告書を購入",
+    "credits_no_expiry": "クレジットの有効期限なし · WhatsAppで共有可能",
+    "credits_available_one": "✅ {{count}} クレジットが利用可能",
+    "credits_available_other": "✅ {{count}} クレジットが利用可能",
+    "no_credits": "⚡ クレジットがありません — 今すぐチャージしてください",
+    "currency_label": "通貨",
+    "currency_detected": "✓ 自動検出",
+    "most_popular": "⭐ 最も人気 · 節約 {{savings}}",
+    "economy": "節約 {{savings}}",
+    "per_pack": "パックあたり",
+    "per_report": "/ 報告書",
+    "redirecting_stripe": "⏳ Stripeにリダイレクト中...",
+    "buy_btn": "購入 {{label}} — {{price}}",
+    "error_missing_url": "支払いURLがありません",
+    "error_generic": "エラー",
+    "error_email_required": "購入にはメールが必要です",
+    "trust_stripe": "安全なPCI-DSS Stripe決済",
+    "trust_no_expiry": "クレジットの有効期限なし",
+    "trust_whatsapp": "WhatsAppで共有可能",
+    "trust_worldwide": "多言語対応",
+    "trust_invoice": "自動PDF請求書",
+    "trust_fleet": "企業フリートに最適",
+    "why_title": "なぜ前払いクレジットが必要ですか？",
+    "scenario_child_title": "お子様が事故に遭った場合",
+    "scenario_child_text": "彼はあなたに電話します。あなたはWhatsAppでクレジットを送ります。彼は5分で報告書を作成します。",
+    "scenario_company_title": "会社の車両",
+    "scenario_company_text": "あなたの配達員が接触事故を起こしました。モバイルから即座にクレジットを転送します。",
+    "scenario_abroad_title": "海外旅行中",
+    "scenario_abroad_text": "ドイツ、オーストラリア、日本での事故。インターフェースは複数の言語で利用可能です。",
+    "pkg_single_label": "1報告書",
+    "pkg_single_desc": "単発の事故用",
+    "pkg_pack3_label": "3報告書",
+    "pkg_pack3_desc": "家族全員用",
+    "pkg_pack3_marketing": "🎁 WhatsAppで共有 — お子様、従業員、友人が瞬時にリンクを受け取ります。",
+    "pkg_pack10_label": "10報告書",
+    "pkg_pack10_desc": "フリート & 企業用",
+    "pkg_pack10_marketing": "🏢 あなたのフリート全体を管理します。1クリックで従業員に転送します。"
+  },
+  "join": {
+    "sessionLabel": "セッション",
+    "yourEmail": "あなたのメール",
+    "emailHint": "(PDFを受け取るため)",
+    "emailAria": "あなたのメールアドレス",
+    "connecting": "接続中…",
+    "connected": "接続されました！開始中…",
+    "joinButton": "報告書に参加"
+  },
+  "constat": {
+    "nav": {
+      "back": "戻る",
+      "reset": "報告書をリセット"
+    },
+    "session": {
+      "expiring": "あなたのセッションはまもなく期限切れになります。データを保存してください。"
+    },
+    "error": {
+      "close": "エラーを閉じる"
+    },
+    "vehicle": {
+      "pickRegistered": "登録された車両を選択",
+      "autofill": "自動入力 — スキャンする必要はありません",
+      "yourRegistered": "あなたの登録された車両",
+      "org": "企業",
+      "personal": "個人",
+      "fallback": "車両",
+      "cancel": "キャンセル",
+      "orScanNew": "または新しい車両をスキャン"
+    },
+    "pedestrian": {
+      "title": "他の当事者：歩行者"
+    },
+    "summary": {
+      "yourVehicle": "あなたの車両",
+      "accident": "事故",
+      "damagedZones_one": "{{count}} ゾーンが損傷しています",
+      "damagedZones_other": "{{count}} ゾーンが損傷しています"
+    },
+    "emergency": {
+      "title": "緊急番号"
+    }
+  },
+  "signature": {
+    "title": "署名",
+    "driver": "運転手 {{role}}",
+    "other_party": "他の当事者",
+    "no_signature": "署名なし",
+    "sign_here": "指でここに署名してください",
+    "signed": "署名済み ✓",
+    "clear": "🗑 消去",
+    "saving": "⏳ 保存中…",
+    "confirm_signature": "✍️ 署名を確認",
+    "waiting_other": "他の運転手の署名を待っています…",
+    "waiting_pdf": "両方の当事者が署名するとPDFが生成されます。",
+    "report_signed": "報告書が署名されました！",
+    "generating_pdf": "PDF生成中…",
+    "canvas_aria": "署名エリア — 運転手 {{role}}"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "ドキュメントが認識されませんでした。写真の品質を確認してください。",
+    "analysis_error": "分析エラー。",
+    "read_failed": "読み取り失敗",
+    "docs_analyzed_one": "{{count}} ドキュメントが分析されました",
+    "docs_analyzed_other": "{{count}} ドキュメントが分析されました",
+    "confidence": "信頼度 : {{pct}}%",
+    "rescan": "再スキャン",
+    "vehicle_section": "🚗 車両",
+    "plate": "ナンバープレート",
+    "driver_section": "👤 運転手",
+    "firstName": "名",
+    "lastName": "姓",
+    "insurance_found": "✅ 保険",
+    "insurance_manual": "⚠️ 保険 — 手動で補完",
+    "company_label": "会社",
+    "company_aria": "保険会社",
+    "company_placeholder": "AXA、チューリッヒ、アリアンツ、エメンタール…",
+    "policy_label": "ポリシー番号",
+    "policy_manual_hint": "(手動入力)",
+    "policy_aria": "ポリシー番号",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "確認 →",
+    "scanning_title": "分析中…",
+    "scanning_subtitle_one": "{{count}} ドキュメント · 自動識別",
+    "scanning_subtitle_other": "{{count}} ドキュメント · 自動識別",
+    "photo_title": "ドキュメントを撮影してください",
+    "photo_subtitle": "運転免許証 + 緑のカードを一度の分析で。",
+    "photo_subtitle2": "アプリがすべてを自動的に識別し、抽出します。",
+    "doc_scanned": "ドキュメントがスキャンされました {{n}}",
+    "doc_label": "ドキュメント {{n}}",
+    "photograph": "撮影",
+    "rear_camera": "背面カメラ",
+    "gallery": "ギャラリー",
+    "which_docs": "どのドキュメントをスキャンしますか？",
+    "doc_ch": "🇨🇭 運転免許証 + 緑のカード",
+    "doc_fr": "🇫🇷 車両登録証 + 緑のカード / 証明書",
+    "doc_de": "🇩🇪 登録証 + 緑のカード",
+    "doc_gb": "🇬🇧 V5C + 自動車保険証明書",
+    "doc_us": "🇺🇸 🇨🇦 登録 + 保険IDカード",
+    "doc_world": "🌍 登録証 + 保険証明書",
+    "close_error_aria": "エラーを閉じる",
+    "analyze_btn_one": "🔍 {{count}} ドキュメントを分析",
+    "analyze_btn_other": "🔍 {{count}} ドキュメントを分析",
+    "skip_manual": "スキップ — 手動入力 →",
+    "upload_gallery_aria": "ギャラリーからドキュメントをアップロード",
+    "take_photo_aria": "ドキュメントを撮影"
+  },
+  "voice": {
+    "title": "事故を説明する",
+    "subtitle": "オプション — 自分の言葉で何が起こったかを説明してください。あなたの声明は報告書に記録されます。",
+    "tab_voice": "🎙️ 音声",
+    "tab_text": "⌨️ テキスト",
+    "start_recording": "録音を開始",
+    "textarea_aria": "事故の説明",
+    "textarea_placeholder": "事故を数文で説明してください…",
+    "validate_desc": "✅ 私の説明を確認",
+    "skip_step": "このステップをスキップ →",
+    "recording_in_progress": "録音中…",
+    "recording_tip": "💡 説明：各車両の進行方向、衝突点、状況を述べてください。落ち着いて話してください。",
+    "stop_recording": "録音を停止",
+    "transcribing_title": "転写中…",
+    "transcribing_subtitle": "あなたの録音が処理されています",
+    "desc_recorded": "説明が記録されました",
+    "desc_in_pdf": "あなたの声明はPDF報告書に含まれます",
+    "your_declaration": "あなたの声明",
+    "edit": "✏️ 編集",
+    "edit_placeholder": "必要に応じて声明を修正してください...",
+    "restart": "再開",
+    "mic_denied": "マイクへのアクセスが拒否されました — 手動入力を使用してください。",
+    "mic_unavailable": "マイクが利用できません：{{msg}}",
+    "transcription_error": "転写エラー",
+    "textarea_edit_aria": "事故の物語"
+  },
+  "auth": {
+    "default_subtitle": "ログインして車両を保存し、報告書作成時に再入力を避けてください。",
+    "magic_btn": "📧 メールリンクでログイン（推奨）",
+    "password_btn": "🔑 パスワードでログイン",
+    "register_btn": "✨ アカウントを作成",
+    "skip_btn": "アカウントなしで続行 →",
+    "skip_note": "アカウントなしでも報告書を作成し、Stripeで支払うことができます。",
+    "magic_instructions": "メールアドレスを入力してください — 15分間有効なログインリンクが送信されます。",
+    "send_link": "リンクを送信",
+    "sending": "送信中...",
+    "back": "← 戻る",
+    "email_sent_title": "メールが送信されました！",
+    "email_sent_desc": "あなたの受信箱を確認してください <strong>{{email}}</strong>。",
+    "email_sent_validity": "リンクは15分間有効です。",
+    "login_error": "メールまたはパスワードが正しくありません。",
+    "logging_in": "ログイン中...",
+    "login_btn": "ログイン",
+    "forgot_password": "パスワードを忘れましたか？メールリンクを使用 →",
+    "register_desc": "アカウントを作成して車両を保存し、報告書を自動的に事前入力します。",
+    "password_placeholder": "パスワード（最小6文字）",
+    "creating": "作成中...",
+    "create_btn": "アカウントを作成",
+    "register_legal": "アカウントを作成することで、利用規約に同意し、あなたの車両データは暗号化され、あなたの同意なしに共有されることはありません。",
+    "register_error": "登録中にエラーが発生しました。",
+    "generic_error": "エラー"
+  },
+  "legal": {
+    "intro": {
+      "title": "始める前に",
+      "body": "boom.contactは、事故を記録し、構造化されたPDFファイルを生成するのを手伝います。負傷、危険、逃走、重大な不一致、または法的義務がある場合は、すぐに救助、警察、または適切な当局に連絡してください。提供された情報は参加者の責任に帰属します。カメラ、マイク、または位置情報を使用したくない場合は、手動で情報を入力できます。",
+      "start": "理解しました、開始",
+      "emergency": "緊急番号を見る",
+      "privacy_cgu": "プライバシー / 利用規約"
+    },
+    "guest_accept": {
+      "checkbox": "利用規約に同意し、プライバシーポリシーを読みました。",
+      "note": "提供された情報は事故のPDFファイルを生成するために使用され、提供された情報は私の責任に帰属します。"
+    },
+    "signature_confirm": "私が提供した情報が私の知識に基づいて正確であることを確認し、私の署名がPDFファイルに統合されることに同意します。",
+    "payment_notice": "支払いを進めることで、支払いがPDFファイルの生成と送信をカバーすることを理解します。提供された情報は参加者の責任に帰属します。",
+    "mic_notice": "マイクを使用すると、あなたの音声声明が転写され、事故報告に統合されます。代わりにテキスト入力を使用できます。",
+    "injury_confirm": {
+      "body": "負傷の写真には敏感なデータが含まれる可能性があります。安全上の必要性や法的義務を除き、関係者の同意を得ていることを確認してください。",
+      "continue": "続ける",
+      "change": "カテゴリを変更"
+    },
+    "pdf_ready_title": "タイムスタンプ付き事故PDFファイル",
+    "pdf_ready_body": "必要な署名が記録されました。PDFファイルが準備できました。保険会社に送信する前に情報を確認してください。"
   }
 }

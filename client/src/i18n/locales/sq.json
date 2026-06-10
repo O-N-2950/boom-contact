@@ -12,7 +12,8 @@
     "required": "I detyrueshëm",
     "yes": "Po",
     "no": "Jo",
-    "unknown": "I panjohur"
+    "unknown": "I panjohur",
+    "rescan": "🔄 Rishk scanning"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentoni një aksident pa letër, pa konfuzion.",
+      "subtitle": "boom.contact ju udhëheq hap pas hapi për të mbledhur informacionet e nevojshme, shtoni foto, vendndodhjen, deklaratat dhe nënshkrimet, pastaj gjeneroni një dosje PDF me datë për t'ia dërguar siguruesit tuaj."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Seanca aktive",
+      "vehicleA": "MJETI A",
+      "photosSig": "Foto · nënshkrim ✓",
+      "vehicleB": "MJETI B",
+      "qrJoined": "QR i bashkuar · në proces",
+      "payGenerate": "Paguaj dhe gjenero PDF-in",
+      "pdfBadge": "PDF me datë",
+      "qrBadge": "QR i ndarë"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Ftoni me kod QR",
+        "desc": "Krijoni seancën, drejtuesi tjetër skanon QR-në nga telefoni i tij. Asnjë instalim, asnjë regjistrim."
+      },
+      {
+        "title": "Foto, zë dhe nënshkrim",
+        "desc": "Shtoni foto, jepni vërejtjet tuaja me zë, vendosni mjetet në skicë dhe nënshkruani me gishta."
+      },
+      {
+        "title": "Dosje PDF me datë",
+        "desc": "boom.contact gjeneron një dosje PDF me datë që përfshin informacionet e futur nga çdo drejtues."
+      },
+      {
+        "title": "Për t'ia dërguar siguruesit tuaj",
+        "desc": "Shkarkoni PDF-in ose dërgojeni me email për të shoqëruar deklaratën tuaj të dëmshpërblimit te siguruesi."
+      }
+    ],
+    "seoLine": "Raporti digjital i aksidentit shumëgjuhësh · Digital accident report",
+    "flow": {
+      "label": "Të gjitha në një rrjedhë",
+      "title": "Nga aksidenti në dosjen e gatshme për t'u dërguar"
+    },
+    "stress": {
+      "label": "Menduar për momentin e aksidentit",
+      "title": "E dizajnuar për situata stresuese",
+      "text": "Pas një goditjeje, nuk kemi mendje të qartë. boom.contact avancon hap pas hapi, në gjuhën tuaj, dhe mban një regjistër të çdo informacioni të mbledhur. Gjithçka funksionon nga shfletuesi i telefonit, madje edhe me një lidhje të kufizuar.",
+      "bullets": [
+        "Udhëhequr hap pas hapi",
+        "Shumëgjuhësh",
+        "Foto · zë · nënshkrim",
+        "Dosje PDF me datë"
+      ],
+      "emergencyTitle": "Në rast emergjence",
+      "emergencyText": "boom.contact nuk zëvendëson ndihmën, policinë, një avokat ose siguruesin. Në rast të të lënduarve ose rrezikut, kontaktoni fillimisht shërbimet e emergjencës."
+    },
+    "pricing": {
+      "label": "Çmimet",
+      "title": "E thjeshtë, transparente, pa abonim",
+      "caption": "1 kredit = 1 raport i plotë · shumëgjuhësh · kredite pa skadim",
+      "badgePopular": "Popullor",
+      "plans": [
+        {
+          "label": "1 raport",
+          "desc": "Për një aksident të vetëm"
+        },
+        {
+          "label": "3 raporte",
+          "desc": "Për të gjithë familjen"
+        },
+        {
+          "label": "10 raporte",
+          "desc": "Për flotat dhe agjentët"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Për profesionistët",
+      "title": "Për agjentët, flotat dhe partnerët e sigurimeve",
+      "text": "Armatosni klientët dhe drejtuesit tuaj me një mjet të qartë për të dokumentuar një aksident dhe për të gjeneruar një dosje PDF me datë. Paketa kreditesh për flotat dhe agjentët, shpërndarje e thjeshtë, pa abonim.",
+      "cta": "Kontaktoni / ndani",
+      "items": [
+        {
+          "title": "Flota",
+          "desc": "Një dosje e strukturuar për çdo aksident drejtuesi."
+        },
+        {
+          "title": "Agjentë",
+          "desc": "Një shërbim me vlerë të shtuar për siguruesit tuaj."
+        },
+        {
+          "title": "Privatësia",
+          "desc": "Të dhënat e koduara në transit, të fshira me kërkesë."
+        },
+        {
+          "title": "Transmetimi",
+          "desc": "PDF me datë i gatshëm për t'u bashkangjitur në deklaratën e dëmshpërblimit."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Pyetje të shpeshta",
+      "items": [
+        {
+          "q": "Çfarë është boom.contact?",
+          "a": "boom.contact është një aplikacion që ndihmon në dokumentimin e një aksidenti rrugor nga një telefon: ftesa e drejtuesve me QR, foto, zë, skica, nënshkrime, pastaj gjenerimi i një dosjeje PDF me datë për t'ia dërguar siguruesit tuaj."
+        },
+        {
+          "q": "A duhet të instaloj një aplikacion?",
+          "a": "Jo. boom.contact funksionon direkt në shfletuesin e telefonit (Safari, Chrome, Firefox). Mund ta shtoni gjithashtu në ekranin tuaj të fillimit si një aplikacion web (PWA) për qasje offline."
+        },
+        {
+          "q": "Çfarë ndodh nëse drejtuesi tjetër nuk ka aplikacionin?",
+          "a": "Ju krijoni seancën dhe një kod QR shfaqet. Drejtuesi tjetër e skanon atë me telefonin e tij: boom.contact hapet në shfletuesin e tij, pa regjistrim ose shkarkim."
+        },
+        {
+          "q": "A pranohet dosja PDF nga siguruesi im?",
+          "a": "Dosja PDF me datë është e destinuar për të shoqëruar deklaratën tuaj të dëmshpërblimit. boom.contact nuk garanton pranimin e saj, që varet nga siguruesi juaj sipas kontratës tuaj dhe juridiksionit."
+        },
+        {
+          "q": "A funksionon nëse drejtuesi tjetër flet një gjuhë tjetër?",
+          "a": "Po. Çdo drejtues përdor ndërfaqen në gjuhën e tij. Dosja përfundimtare gjenerohet për çdo drejtues."
+        },
+        {
+          "q": "A janë të dhënat e mia të mbrojtura?",
+          "a": "Të dhënat janë të koduara në transit, seancat fshihen automatikisht pas një periudhe, dhe policia nuk njoftohet automatikisht — vetëm me veprim të qartë nga ana juaj."
+        },
+        {
+          "q": "Sa kushton?",
+          "a": "Nga CHF / EUR 4.90 për një raport. Paketa me 3 raporte për 12.90 (−12 %), paketa me 10 për 34.90 (−29 %). Pa abonim, kredite pa skadim."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "constat": {
+    "nav": {
+      "back": "Kthehu",
+      "reset": "Rivendosni raportin"
+    },
+    "session": {
+      "expiring": "Seanca juaj po skadon së shpejti. Ruani të dhënat tuaja."
+    },
+    "error": {
+      "close": "Mbyll gabimin"
+    },
+    "vehicle": {
+      "pickRegistered": "Zgjidhni një mjet të regjistruar",
+      "autofill": "Plotësim automatik — nuk ka nevojë të skanoni",
+      "yourRegistered": "Mjetet tuaja të regjistruara",
+      "org": "Kompania",
+      "personal": "Personale",
+      "fallback": "Mjeti",
+      "cancel": "Anulo",
+      "orScanNew": "ose skanoni një mjet të ri"
+    },
+    "pedestrian": {
+      "title": "Pjesa tjetër: këmbësor"
+    },
+    "summary": {
+      "yourVehicle": "Mjeti juaj",
+      "accident": "Aksidenti",
+      "damagedZones_one": "{{count}} zonë e dëmtuar",
+      "damagedZones_other": "{{count}} zona të dëmtuara"
+    },
+    "emergency": {
+      "title": "Numrat e emergjencës"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "Herën tjetër: 0 shtim",
+    "next_time_subtitle": "Mjetet tuaja të memorizuara një herë për gjithmonë",
+    "benefit_scanned": "Leje + kartë e gjelbër të skanuara një herë",
+    "benefit_fast": "Raporti në 2 minuta në vend të 10",
+    "benefit_gift": "Ofroni një raport për të afërmit tuaj me 1 klik",
+    "benefit_family": "Ideale për familjen: ndani kreditë tuaja",
+    "create_account": "Krijoni llogarinë time falas →",
+    "share_btn": "Ndani me të afërmit",
+    "register_vehicle_title": "Më pas, regjistroni mjetin tuaj",
+    "register_vehicle_subtitle": "Skano lejen e qarkullimit + kartën e gjelbër · 30 sek · asnjëherë më nuk do të duhet të rishkruani",
+    "or_skip": "ose kaloni direkt",
+    "family_pack": "🔥 Paketa familjare",
+    "family_pack_desc": "3 raporte për t'u ndarë me të afërmit tuaj",
+    "scenario_child": "Fëmija juaj thërret — aksident. Dërgoni një raport në 3 sekonda në telefonin e tij.",
+    "scenario_employee": "Punonjës me mjet kompanie. Transferoni një kredit përmes WhatsApp menjëherë.",
+    "scenario_friend": "Mik në vështirësi jashtë vendit. Ai merr një lidhje, pa nevojë për llogari.",
+    "buy_3_reports": "Bli 3 raporte — CHF/EUR 12.90 →",
+    "see_all_packs": "Shihni të gjitha paketat →",
+    "ready_title": "Gati për herën tjetër",
+    "ready_subtitle": "Rimbushni tani, ndani kur të doni",
+    "account_title": "✅ Llogaria juaj boom.contact",
+    "account_desc": "Mjetet tuaja janë të memorizuara. Në aksidentin tuaj të ardhshëm, ju filloni direkt në hapin QR — asnjë shtim, asnjë skanim.",
+    "manage_garage": "Menaxhoni garazhin tim →",
+    "gift_title": "🎁 Ofroni një raport përmes WhatsApp",
+    "gift_desc": "Një nga kreditët tuaj = një lidhje unike për t'u dërguar <strong>çdokujt</strong>, pa pasur nevojë që personi të ketë një llogari.",
+    "credits_available_one": "{{count}} kredit i disponueshëm",
+    "credits_available_other": "{{count}} kredite të disponueshme",
+    "share_protect": "Ndani, mbrojini të afërmit tuaj",
+    "wa_gift_title": "📲 Dhuro një raport përmes WhatsApp",
+    "wa_gift_desc": "Me 1 klik, dërgoni një lidhje tek fëmija juaj, punonjësi ose miku. Ai e bën raportin e tij pa llogari dhe pa pagesë — e zbritur nga kreditët tuaj.",
+    "send_1": "📲 Dërgo 1 raport",
+    "send_3": "📲 Dërgo 3 raporte",
+    "gift_link_created": "✅ Lidhja e krijuar — dërgojeni përmes WhatsApp!",
+    "share_title": "📤 Ndani boom.contact",
+    "share_desc": "Ju sapo keni bërë raportin tuaj në 5 minuta. Miqtë tuaj meritojnë të dinë se ekziston.",
+    "memorize_vehicles": "🚗 Memorizoni mjetet tuaja të tjera",
+    "memorize_desc": "Flota e kompanisë, motoçikleta, furgoni? Çdo mjet i skanuar = asnjëherë më nuk do të duhet të shtoni gjatë një aksidenti.",
+    "low_credits_one": "⚡ Ju kanë mbetur vetëm {{count}} kredit",
+    "low_credits_other": "⚡ Ju kanë mbetur vetëm {{count}} kredite",
+    "recharge_desc": "Rimbushni tani dhe përfitoni nga zbritjet në paketat familjare dhe të kompanisë.",
+    "recharge_btn": "Rimbushni kreditët e mi →",
+    "pack_single_label": "1 raport",
+    "pack_single_note": "Përdorim të vetëm",
+    "pack_pack3_label": "3 raporte",
+    "pack_pack3_note": "Familje · kursim 12%",
+    "pack_pack10_label": "10 raporte",
+    "pack_pack10_note": "Kompani · kursim 29%",
+    "popular_badge": "⭐ POPULLORE"
+  },
+  "signature": {
+    "title": "Nënshkrimi",
+    "driver": "Drejtuesi {{role}}",
+    "other_party": "Pjesa tjetër",
+    "no_signature": "pa nënshkrim",
+    "sign_here": "Nënshkruani këtu me gishti tuaj",
+    "signed": "NËNSHKRUAR ✓",
+    "clear": "🗑 Fshij",
+    "saving": "⏳ Ruajtja…",
+    "confirm_signature": "✍️ Konfirmoni nënshkrimin",
+    "waiting_other": "Në pritje të nënshkrimit të drejtuesit tjetër…",
+    "waiting_pdf": "PDF do të gjenerohet sapo të dy palët të kenë nënshkruar.",
+    "report_signed": "Raporti i nënshkruar!",
+    "generating_pdf": "Gjenerimi i PDF-it në proces…",
+    "canvas_aria": "Zona e nënshkrimit — Drejtuesi {{role}}"
+  },
+  "constatForm": {
+    "tab_vehicle": "Mjeti",
+    "tab_driver": "Drejtuesi",
+    "tab_insurance": "Sigurimi",
+    "tab_circumstances": "Rrethanat",
+    "tab_complement": "Plotësim",
+    "field_required": "Ky fushë është e nevojshme",
+    "plate_label": "Regjistrimi",
+    "brand_label": "Marka",
+    "model_label": "Modeli",
+    "year_label": "Viti",
+    "vin_label": "Nr. i shasisë (VIN)",
+    "firstName_label": "Emri",
+    "lastName_label": "Mbiemri",
+    "address_label": "Adresa",
+    "postalCode_label": "KODI POSTAR",
+    "city_label": "Qyteti",
+    "country_label": "Vendi",
+    "phone_label": "Telefoni",
+    "email_label": "Email",
+    "license_label": "Nr. i lejes së drejtimit",
+    "company_label": "Kompania e sigurimeve",
+    "policyNumber_label": "Nr. i policës",
+    "greenCardNumber_label": "Nr. i kartës së gjelbër",
+    "greenCardExpiry_label": "Skadimi i kartës së gjelbër",
+    "agentName_label": "Agjenti / Agjenti",
+    "agentPhone_label": "Tel. sigurimi",
+    "circumstances_desc": "Shënoni të gjitha kutitë që përshkruajnë situatën e mjetit tuaj <strong>({{role}})</strong> në momentin e goditjes.",
+    "boxes_checked_one": "{{count}} kuti e kontrolluar",
+    "boxes_checked_other": "{{count}} kutia të kontrolluara",
+    "complement_desc": "Informacione shtesë të raportit — seksionet 11, 13 dhe 14.",
+    "datetime_label": "Data dhe ora e aksidentit",
+    "visible_damage_label": "Dëmet e dukshme (seksioni 11)",
+    "visible_damage_placeholder": "Përshkruani dëmet e dukshme në mjetin tuaj...",
+    "third_party_label": "Dëmet materiale ndaj palëve të treta (të tjera përveç A dhe B)",
+    "witnesses_label": "Dëshmitarët",
+    "witnesses_placeholder": "Emri, mbiemri, telefoni i çdo dëshmitari...",
+    "voice_declaration_label": "🎙️ Deklarata me zë (opsionale)",
+    "observations_label": "Vërejtje të lira — drejtuesi {{role}} (seksioni 14)",
+    "observations_placeholder": "Shtoni çdo element të dobishëm: kushtet e motit, gjendja e rrugës, shpejtësia e vlerësuar, vërejtjet...",
+    "insurance_holder_label": "Marrësi i sigurimit (nëse ndryshe nga drejtuesi)",
+    "holder_name_placeholder": "Emri i plotë i marrësit",
+    "holder_name_aria": "Emri i marrësit të sigurimit",
+    "holder_address_placeholder": "Adresa e marrësit",
+    "holder_address_aria": "Adresa e marrësit të sigurimit",
+    "save_btn": "Ruaj dhe vazhdo →",
+    "form_tabs_aria": "Seksionet e formularit"
+  },
+  "account": {
+    "member": {
+      "remove": "Hiq",
+      "removeConfirm": "Të hiqet ky anëtar? Ai do të humbasë qasjen në mjetet dhe kreditët e kompanisë.",
+      "loading": "Duke u ngarkuar…",
+      "none": "Asnjë anëtar.",
+      "invite": "Ftoni një anëtar",
+      "inviteBtn": "Ftoni",
+      "pending": "Ftesa në pritje"
+    },
+    "role": {
+      "owner": "Pronari",
+      "driver": "Drejtuesi",
+      "fleet_admin": "Admin i flotës"
+    },
+    "scan": {
+      "cancel": "Anulo",
+      "photographPre": "Fotografoni",
+      "license": "lejen e qarkullimit",
+      "and": "dhe/o",
+      "greenCard": "kartën e gjelbër",
+      "title": "Skanoni lejen + kartën e gjelbër",
+      "subtitle": "Njohje automatikë · shumëgjuhësh"
+    },
+    "garage": {
+      "back": "Garazhi",
+      "title": "Garazhi im",
+      "add": "Shto",
+      "emptyTitle": "Garazhi bosh",
+      "emptySubtitle": "Regjistroni mjetet tuaja një herë. Asnjëherë më nuk do të duhet të skanoni gjatë një aksidenti.",
+      "addFirst": "Shto mjetin tim të parë",
+      "noOrgVehicles": "Asnjë mjet kompanie për momentin."
+    },
+    "insurance": {
+      "saved": "Sigurimi i ruajtur",
+      "add": "Shto sigurimin"
+    },
+    "nav": {
+      "logout": "Shkyçuni"
+    },
+    "vehicle": {
+      "edit": "Modifiko mjetin",
+      "delete": "Fshi mjetin",
+      "editOrg": "Modifiko mjetin e kompanisë",
+      "deleteOrg": "Fshi mjetin e kompanisë"
+    },
+    "fields": {
+      "nickname": "Emri i përdoruesit",
+      "plate": "Targa",
+      "make": "Marka",
+      "model": "Modeli",
+      "color": "Ngjyra",
+      "year": "Viti",
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
+      "phone": "Telefoni",
+      "company": "Kompania",
+      "address": "Adresa",
+      "newEmail": "Email i ri",
+      "currentPwd": "Fjalëkalimi aktual (konfirmimi)",
+      "confirmEmailAria": "Konfirmimi i adresës së emailit"
+    },
+    "credits": {
+      "buy": "Bli:",
+      "available": "KREDITET E DISPONUESHME",
+      "unit": "1 kredit = 1 raport të plotë të aksidentit"
+    },
+    "history": {
+      "loading": "Duke u ngarkuar...",
+      "empty": "Asnjë raport",
+      "emptySub": "Raporti juaj i ardhshëm do të shfaqet këtu automatikisht."
+    },
+    "personal": {
+      "title": "Informacionet personale",
+      "none": "Asnjë informacion — klikoni për të modifikuar"
+    },
+    "delete": {
+      "willDelete": "ÇFARË DO TË FSHIHET PËRHERË:",
+      "text": "Fshini përhershëm llogarinë tuaj, mjetet tuaja dhe të gjitha raportet tuaja. Kjo veprim është e pakthyeshme."
+    },
+    "danger": {
+      "title": "Zona e rrezikshme"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Asnjë dokument i njohur. Kontrolloni cilësinë e fotove.",
+    "analysis_error": "Gabim në analizë.",
+    "read_failed": "Leximi dështoi",
+    "docs_analyzed_one": "{{count}} dokument i analizuar",
+    "docs_analyzed_other": "{{count}} dokumente të analizuar",
+    "confidence": "Besueshmëri: {{pct}}%",
+    "rescan": "Rishk scanning",
+    "vehicle_section": "🚗 Mjeti",
+    "plate": "Targa",
+    "driver_section": "👤 Drejtuesi",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "insurance_found": "✅ Sigurimi",
+    "insurance_manual": "⚠️ Sigurimi — plotëso manualisht",
+    "company_label": "Kompania",
+    "company_aria": "Kompania e sigurimeve",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Nr. i policës",
+    "policy_manual_hint": "(shtim manual)",
+    "policy_aria": "Numri i policës",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Konfirmo →",
+    "scanning_title": "Analizë në proces…",
+    "scanning_subtitle_one": "{{count}} dokument · identifikim automatik",
+    "scanning_subtitle_other": "{{count}} dokumente · identifikim automatik",
+    "photo_title": "Fotografoni dokumentet tuaja",
+    "photo_subtitle": "Leje qarkullimi + kartë e gjelbër në një analizë.",
+    "photo_subtitle2": "Aplikacioni identifikon dhe nxjerr gjithçka automatikisht.",
+    "doc_scanned": "Dokumenti i skanuar {{n}}",
+    "doc_label": "Dokumenti {{n}}",
+    "photograph": "Fotografoni",
+    "rear_camera": "Kamera e pasme",
+    "gallery": "Galeria",
+    "which_docs": "Cilat dokumente të skanoni?",
+    "doc_ch": "🇨🇭 Leje qarkullimi + kartë e gjelbër",
+    "doc_fr": "🇫🇷 Kartë gri + kartë e gjelbër / vërtetim",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certifikata e Sigurimit të Mjetit",
+    "doc_us": "🇺🇸 🇨🇦 Regjistrimi + Kartë identiteti e sigurimit",
+    "doc_world": "🌍 Regjistrimi + provë sigurimi",
+    "close_error_aria": "Mbyll gabimin",
+    "analyze_btn_one": "🔍 Analizoni {{count}} dokument",
+    "analyze_btn_other": "🔍 Analizoni {{count}} dokumente",
+    "skip_manual": "Kalo — shtim manual →",
+    "upload_gallery_aria": "Ngarko dokumente nga galeria",
+    "take_photo_aria": "Fotografoni një dokument"
+  },
+  "join": {
+    "sessionLabel": "Seanca",
+    "yourEmail": "Emaili juaj",
+    "emailHint": "(për të marrë PDF-in)",
+    "emailAria": "Adresa juaj e emailit",
+    "connecting": "Duke u lidhur…",
+    "connected": "I lidhur! Duke filluar…",
+    "joinButton": "Bashkohu në raport"
+  },
+  "voice": {
+    "title": "Përshkruani aksidentin",
+    "subtitle": "Opsionale — përshkruani se çfarë ndodhi me fjalët tuaja. Deklarata juaj do të regjistrohet në raport.",
+    "tab_voice": "🎙️ Zë",
+    "tab_text": "⌨️ Tekst",
+    "start_recording": "Filloni regjistrimin",
+    "textarea_aria": "Përshkrimi i aksidentit",
+    "textarea_placeholder": "Përshkruani aksidentin në disa fraza…",
+    "validate_desc": "✅ Validoni përshkrimin tim",
+    "skip_step": "Kaloni këtë hap →",
+    "recording_in_progress": "Regjistrimi në proces…",
+    "recording_tip": "💡 Përshkruani: drejtimin e çdo mjeti, pikën e goditjes, rrethanat. Flisni qetë.",
+    "stop_recording": "Ndalo regjistrimin",
+    "transcribing_title": "Transkripti në proces…",
+    "transcribing_subtitle": "Regjistrimi juaj po përpunon",
+    "desc_recorded": "Përshkrimi i regjistruar",
+    "desc_in_pdf": "Deklarata juaj do të përfshihet në raportin PDF",
+    "your_declaration": "Deklarata juaj",
+    "edit": "✏️ Modifikoni",
+    "edit_placeholder": "Korrigjoni deklaratën tuaj nëse është e nevojshme...",
+    "restart": "Rifilloni",
+    "mic_denied": "Qasja në mikrofon e refuzuar — përdorni shtimin manual.",
+    "mic_unavailable": "Mikrofoni i paqartë: {{msg}}",
+    "transcription_error": "Gabim në transkriptim",
+    "textarea_edit_aria": "Rrëfimi i aksidentit"
+  },
+  "auth": {
+    "default_subtitle": "Kyçuni për të ruajtur mjetet tuaja dhe për të mos shtuar më asgjë gjatë raporteve tuaja.",
+    "magic_btn": "📧 Kyçuni me lidhje email (e rekomanduar)",
+    "password_btn": "🔑 Kyçuni me fjalëkalim",
+    "register_btn": "✨ Krijoni një llogari",
+    "skip_btn": "Vazhdoni pa llogari →",
+    "skip_note": "Pa llogari, mund të bëni një raport dhe të paguani me Stripe.",
+    "magic_instructions": "Shkruani emailin tuaj — do të merrni një lidhje kyçjeje të vlefshme për 15 minuta.",
+    "send_link": "Dërgo lidhjen",
+    "sending": "Dërgimi...",
+    "back": "← Kthehu",
+    "email_sent_title": "Email i dërguar!",
+    "email_sent_desc": "Kontrolloni kutinë tuaj <strong>{{email}}</strong>.",
+    "email_sent_validity": "Lidhja është e vlefshme për 15 minuta.",
+    "login_error": "Email ose fjalëkalim të gabuar.",
+    "logging_in": "Kyçje...",
+    "login_btn": "Kyçuni",
+    "forgot_password": "Fjalëkalimi i harruar? Përdorni një lidhje email →",
+    "register_desc": "Krijoni llogarinë tuaj për të ruajtur mjetet tuaja dhe për të plotësuar automatikisht raportet tuaja.",
+    "password_placeholder": "Fjalëkalimi (min. 6 karaktere)",
+    "creating": "Krijimi...",
+    "create_btn": "Krijoni llogarinë time",
+    "register_legal": "Duke krijuar një llogari, pranoni kushtet tona të përdorimit. Të dhënat tuaja të mjetit janë të koduara dhe kurrë nuk ndahen pa pëlqimin tuaj.",
+    "register_error": "Gabim gjatë regjistrimit.",
+    "generic_error": "Gabim"
+  },
+  "app": {
+    "magic_link_error": "Lidhja e kyçjes është e pavlefshme ose e skaduar.",
+    "gift_credits_added": "🎁 {{credits}} kredit(e) e shtuar në llogarinë tuaj!",
+    "loading_aria": "Duke u ngarkuar",
+    "nav_landing": "Faqja kryesore",
+    "nav_cgu": "Kushtet e përdorimit",
+    "nav_pricing": "Çmimi",
+    "nav_constat": "Krijimi i raportit",
+    "nav_join": "Bashkohu në një seancë",
+    "nav_account": "Llogaria e përdoruesit",
+    "nav_admin": "Paneli i administratorit",
+    "nav_emergency": "Numrat e emergjencës",
+    "nav_privacy": "Politika e privatësisë",
+    "nav_police_login": "Kyçja e policisë",
+    "nav_police_dashboard": "Paneli i policisë",
+    "nav_police_flow": "Rrjedha e policisë",
+    "nav_police_intervention": "Intervenimi i policisë",
+    "nav_to": "Navigimi drejt {{label}}",
+    "title_default": "boom.contact — Raporti digjital i aksidentit",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "pricingPage": {
+    "sr_title": "Çmimet — boom.contact",
+    "back": "← Kthehu←",
+    "buy_reports": "Bli raporte",
+    "credits_no_expiry": "Kredite pa skadim · Të ndash me WhatsApp",
+    "credits_available_one": "✅ {{count}} kredit i disponueshëm",
+    "credits_available_other": "✅ {{count}} kredite të disponueshme",
+    "no_credits": "⚡ Asnjë kredit — rimbush tani",
+    "currency_label": "MONEDHA",
+    "currency_detected": "✓ e zbuluar automatikisht",
+    "most_popular": "⭐ MË POPULLORE · KURSIM {{savings}}",
+    "economy": "Kursim {{savings}}",
+    "per_pack": "për paketë",
+    "per_report": "/ raport",
+    "redirecting_stripe": "⏳ Rishkruaj Stripe...",
+    "buy_btn": "Bli {{label}} — {{price}}",
+    "error_missing_url": "URL e pagesës e mungon",
+    "error_generic": "Gabim",
+    "error_email_required": "Email i nevojshëm për të blerë",
+    "trust_stripe": "Pagesë e sigurt Stripe PCI-DSS",
+    "trust_no_expiry": "Kredite pa skadim",
+    "trust_whatsapp": "E ndashme me WhatsApp",
+    "trust_worldwide": "Shumëgjuhësh",
+    "trust_invoice": "Faturë PDF automatike",
+    "trust_fleet": "Ideale për flotat e kompanive",
+    "why_title": "PSE TË KENI KREDITE TË PËRPARA?",
+    "scenario_child_title": "Fëmija juaj ka një aksident",
+    "scenario_child_text": "Ai ju thërret. Ju i dërgoni një kredit përmes WhatsApp. Ai e krijon raportin e tij në 5 minuta.",
+    "scenario_company_title": "Mjeti i kompanisë",
+    "scenario_company_text": "Dërguesi juaj ka një përplasje. Transferoni një kredit menjëherë nga telefoni juaj.",
+    "scenario_abroad_title": "Në udhëtim jashtë vendit",
+    "scenario_abroad_text": "Aksident në Gjermani, Australi ose Japoni. Ndërfaqja e disponueshme në disa gjuhë.",
+    "pkg_single_label": "1 raport",
+    "pkg_single_desc": "Për një aksident të vetëm",
+    "pkg_pack3_label": "3 raporte",
+    "pkg_pack3_desc": "Për të gjithë familjen",
+    "pkg_pack3_marketing": "🎁 Ndani me WhatsApp — fëmija juaj, punonjësi juaj, miku juaj merr një lidhje të menjëhershme.",
+    "pkg_pack10_label": "10 raporte",
+    "pkg_pack10_desc": "Flota & kompani",
+    "pkg_pack10_marketing": "🏢 Menaxhoni të gjithë flotën tuaj. Transferoni tek bashkëpunëtorët tuaj me 1 klik."
+  },
+  "legal": {
+    "intro": {
+      "title": "Para se të filloni",
+      "body": "boom.contact ju ndihmon të dokumentoni një aksident dhe të gjeneroni një dosje PDF të strukturuar. Në rast të lëndimeve, rrezikut, ikjes, mosmarrëveshjeve të rënda ose detyrimeve ligjore, kontaktoni menjëherë ndihmën, policinë ose autoritetet përkatëse. Informacionet e dhëna mbeten nën përgjegjësinë e pjesëmarrësve. Ju mund të futni informacionet manualisht nëse nuk dëshironi të përdorni kamerën, mikrofonin ose vendndodhjen.",
+      "start": "E kuptoj, filloni",
+      "emergency": "Shihni numrat e emergjencës",
+      "privacy_cgu": "Privatësia / Kushtet e përdorimit"
+    },
+    "guest_accept": {
+      "checkbox": "Pranoj Kushtet e përgjithshme të përdorimit dhe kam lexuar Politiken e privatësisë.",
+      "note": "E kuptoj që informacionet e mia do të përdoren për të gjeneruar dosjen PDF të aksidentit dhe që informacionet e dhëna mbeten nën përgjegjësinë time."
+    },
+    "signature_confirm": "Konfirmoj që informacionet që kam dhënë janë të sakta sipas njohurive të mia dhe pranoj që nënshkrimi im të integrohet në dosjen PDF.",
+    "payment_notice": "Duke vazhduar drejt pagesës, kuptoni se pagesa mbulon gjenerimin dhe dërgimin e dosjes PDF. Informacionet e dhëna mbeten nën përgjegjësinë e pjesëmarrësve.",
+    "mic_notice": "Duke përdorur mikrofonin, deklarata juaj me zë do të transkriptohet për t'u integruar në dosjen e aksidentit. Ju mund të përdorni shtimin me tekst në vend.",
+    "injury_confirm": {
+      "body": "Fotot e lëndimeve mund të përmbajnë të dhëna të ndjeshme. Sigurohuni që të keni miratimin e personit të prekur, përveç nevojës për siguri ose detyrimeve ligjore.",
+      "continue": "Vazhdoni",
+      "change": "Ndryshoni kategorinë"
+    },
+    "pdf_ready_title": "Dosja PDF e aksidentit me datë",
+    "pdf_ready_body": "Nënshkrimet e kërkuara janë regjistruar. Dosja PDF është gati. Kontrolloni informacionet para se t'ia dërgoni siguruesit tuaj."
   }
 }

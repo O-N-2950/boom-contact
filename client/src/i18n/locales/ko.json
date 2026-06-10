@@ -12,7 +12,8 @@
     "required": "필수",
     "yes": "예",
     "no": "아니오",
-    "unknown": "알 수 없음"
+    "unknown": "알 수 없음",
+    "rescan": "🔄 다시 스캔하기"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "종이 없이, 혼란 없이 사고를 문서화하세요.",
+      "subtitle": "boom.contact가 유용한 정보를 수집하고, 사진, 위치, 진술 및 서명을 추가한 후, 보험사에 전송할 타임스탬프가 있는 PDF 파일을 생성하는 단계별 가이드를 제공합니다."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "활성 세션",
+      "vehicleA": "차량 A",
+      "photosSig": "사진 · 서명 ✓",
+      "vehicleB": "차량 B",
+      "qrJoined": "QR 연결됨 · 진행 중",
+      "payGenerate": "결제 및 PDF 생성",
+      "pdfBadge": "타임스탬프가 있는 PDF",
+      "qrBadge": "공유된 QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "QR 코드로 초대하기",
+        "desc": "세션을 생성하고, 다른 운전자가 자신의 전화로 QR 코드를 스캔합니다. 설치나 등록이 필요 없습니다."
+      },
+      {
+        "title": "사진, 음성 및 서명",
+        "desc": "사진을 추가하고, 음성으로 관찰 내용을 기록하며, 스케치에 차량을 배치하고 손가락으로 서명하세요."
+      },
+      {
+        "title": "타임스탬프가 있는 PDF 파일",
+        "desc": "boom.contact는 각 운전자가 입력한 정보를 포함한 타임스탬프가 있는 PDF 파일을 생성합니다."
+      },
+      {
+        "title": "보험사에 제출할 수 있습니다",
+        "desc": "PDF를 다운로드하거나 이메일로 전송하여 보험사에 사고 신고를 첨부하세요."
+      }
+    ],
+    "seoLine": "다국어 디지털 사고 보고서 · Digital accident report",
+    "flow": {
+      "label": "하나의 흐름으로 모든 것",
+      "title": "사고에서 제출 준비 완료된 파일까지"
+    },
+    "stress": {
+      "label": "사고 순간을 위해 설계됨",
+      "title": "스트레스 상황을 위해 설계됨",
+      "text": "충돌 후에는 마음이 맑지 않습니다. boom.contact는 단계별로 진행되며, 귀하의 언어로 정보를 수집하고 모든 정보를 기록합니다. 전화의 브라우저에서 작동하며, 제한된 연결에서도 가능합니다.",
+      "bullets": [
+        "단계별 안내",
+        "다국어 지원",
+        "사진 · 음성 · 서명",
+        "타임스탬프가 있는 PDF 파일"
+      ],
+      "emergencyTitle": "긴급 상황 시",
+      "emergencyText": "boom.contact는 응급 서비스, 경찰, 변호사 또는 보험사를 대체하지 않습니다. 부상자나 위험이 있는 경우, 먼저 응급 서비스에 연락하세요."
+    },
+    "pricing": {
+      "label": "요금",
+      "title": "간단하고 투명하며 구독 없음",
+      "caption": "1 크레딧 = 1 완전한 사고 보고서 · 다국어 지원 · 만료 없는 크레딧",
+      "badgePopular": "인기",
+      "plans": [
+        {
+          "label": "1 보고서",
+          "desc": "단일 사고를 위한"
+        },
+        {
+          "label": "3 보고서",
+          "desc": "가족 모두를 위한"
+        },
+        {
+          "label": "10 보고서",
+          "desc": "차량 및 중개인을 위한"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "전문가를 위한",
+      "title": "중개인, 차량 및 보험 파트너를 위한",
+      "text": "고객과 운전자가 사고를 문서화하고 타임스탬프가 있는 PDF 파일을 생성할 수 있는 명확한 도구를 제공합니다. 차량 및 중개인을 위한 크레딧 패키지, 간편한 배포, 구독 없음.",
+      "cta": "연락하기 / 공유하기",
+      "items": [
+        {
+          "title": "차량",
+          "desc": "각 운전자의 사고에 대한 구조화된 파일."
+        },
+        {
+          "title": "중개인",
+          "desc": "보험 가입자를 위한 부가 가치 서비스."
+        },
+        {
+          "title": "개인정보 보호",
+          "desc": "전송 중 암호화된 데이터, 요청 시 삭제 가능."
+        },
+        {
+          "title": "전송",
+          "desc": "사고 신고에 첨부할 준비가 된 타임스탬프가 있는 PDF."
+        }
+      ]
+    },
+    "faq": {
+      "label": "자주 묻는 질문",
+      "title": "자주 묻는 질문",
+      "items": [
+        {
+          "q": "boom.contact란 무엇인가요?",
+          "a": "boom.contact는 전화에서 도로 사고를 문서화하는 데 도움을 주는 애플리케이션입니다: 운전자를 QR로 초대하고, 사진, 음성, 스케치, 서명을 추가한 후, 보험사에 전송할 타임스탬프가 있는 PDF 파일을 생성합니다."
+        },
+        {
+          "q": "애플리케이션을 설치해야 하나요?",
+          "a": "아니요. boom.contact는 전화의 브라우저(Safari, Chrome, Firefox)에서 직접 작동합니다. 오프라인 접근을 위해 웹 애플리케이션(PWA)으로 홈 화면에 추가할 수도 있습니다."
+        },
+        {
+          "q": "다른 운전자가 애플리케이션을 가지고 있지 않으면 어떻게 되나요?",
+          "a": "세션을 생성하면 QR 코드가 표시됩니다. 다른 운전자가 자신의 전화로 이를 스캔하면 boom.contact가 그의 브라우저에서 열리며, 등록이나 다운로드가 필요 없습니다."
+        },
+        {
+          "q": "PDF 파일이 내 보험사에서 수용되나요?",
+          "a": "타임스탬프가 있는 PDF 파일은 사고 신고를 지원하기 위해 제공됩니다. boom.contact는 보험사의 수용을 보장하지 않으며, 이는 귀하의 계약 및 관할권에 따라 보험사에 달려 있습니다."
+        },
+        {
+          "q": "다른 운전자가 다른 언어를 사용하면 어떻게 되나요?",
+          "a": "예. 각 운전자는 자신의 언어로 인터페이스를 사용합니다. 최종 파일은 각 운전자를 위해 생성됩니다."
+        },
+        {
+          "q": "내 데이터는 보호되나요?",
+          "a": "데이터는 전송 중 암호화되며, 세션은 일정 시간이 지나면 자동으로 삭제되고, 경찰은 자동으로 통보되지 않습니다 — 귀하의 명시적인 조치에 의해서만 통보됩니다."
+        },
+        {
+          "q": "비용은 얼마인가요?",
+          "a": "사고 보고서 1건에 대해 CHF / EUR 4.90부터 시작합니다. 3건 패키지는 12.90 (−12 %), 10건 패키지는 34.90 (−29 %)입니다. 구독 없이, 만료 없는 크레딧입니다."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "세션",
+    "yourEmail": "귀하의 이메일",
+    "emailHint": "(PDF를 받기 위해)",
+    "emailAria": "귀하의 이메일 주소",
+    "connecting": "연결 중…",
+    "connected": "연결됨! 시작 중…",
+    "joinButton": "사고 보고서에 참여하기"
+  },
+  "signature": {
+    "title": "서명",
+    "driver": "운전사 {{role}}",
+    "other_party": "다른 당사자",
+    "no_signature": "서명 없음",
+    "sign_here": "여기에 손가락으로 서명하세요",
+    "signed": "서명됨 ✓",
+    "clear": "🗑 지우기",
+    "saving": "⏳ 저장 중…",
+    "confirm_signature": "✍️ 서명 확인하기",
+    "waiting_other": "다른 운전사의 서명을 기다리는 중…",
+    "waiting_pdf": "두 당사자가 서명하면 PDF가 생성됩니다.",
+    "report_signed": "보고서에 서명되었습니다!",
+    "generating_pdf": "PDF 생성 중…",
+    "canvas_aria": "서명 영역 — 운전사 {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "시작하기 전에",
+      "body": "boom.contact는 사고를 문서화하고 구조화된 PDF 파일을 생성하는 데 도움을 줍니다. 부상, 위험, 도주, 심각한 불일치 또는 법적 의무가 있는 경우 즉시 응급 서비스, 경찰 또는 관련 당국에 연락하세요. 제공된 정보는 참가자의 책임 하에 있습니다. 카메라, 마이크 또는 위치 서비스를 사용하고 싶지 않으면 수동으로 정보를 입력할 수 있습니다.",
+      "start": "이해했습니다, 시작하기",
+      "emergency": "긴급 전화번호 보기",
+      "privacy_cgu": "개인정보 보호 / 이용 약관"
+    },
+    "guest_accept": {
+      "checkbox": "이용 약관에 동의하며 개인정보 보호정책을 읽었습니다.",
+      "note": "사고 보고서 생성을 위해 제공된 정보가 내 책임임을 이해합니다."
+    },
+    "signature_confirm": "내가 제공한 정보가 내 지식에 따라 정확하다는 것을 확인하며, 내 서명이 PDF 파일에 통합되는 것에 동의합니다.",
+    "payment_notice": "결제로 진행함으로써, 결제가 PDF 파일 생성 및 전송을 포함한다는 것을 이해합니다. 제공된 정보는 참가자의 책임 하에 있습니다.",
+    "mic_notice": "마이크를 사용하면 귀하의 음성 진술이 전사되어 사고 보고서에 통합됩니다. 대신 텍스트 입력을 사용할 수 있습니다.",
+    "injury_confirm": {
+      "body": "부상 사진에는 민감한 데이터가 포함될 수 있습니다. 보안 필요성이나 법적 의무가 아닌 한, 해당 개인의 동의를 받았는지 확인하세요.",
+      "continue": "계속하기",
+      "change": "카테고리 변경"
+    },
+    "pdf_ready_title": "타임스탬프가 있는 사고 PDF 파일",
+    "pdf_ready_body": "필요한 서명이 기록되었습니다. PDF 파일이 준비되었습니다. 보험사에 제출하기 전에 정보를 확인하세요."
+  },
+  "constatForm": {
+    "tab_vehicle": "차량",
+    "tab_driver": "운전사",
+    "tab_insurance": "보험",
+    "tab_circumstances": "상황",
+    "tab_complement": "보충",
+    "field_required": "이 필드는 필수입니다",
+    "plate_label": "번호판",
+    "brand_label": "브랜드",
+    "model_label": "모델",
+    "year_label": "연도",
+    "vin_label": "차대 번호 (VIN)",
+    "firstName_label": "이름",
+    "lastName_label": "성",
+    "address_label": "주소",
+    "postalCode_label": "우편번호",
+    "city_label": "도시",
+    "country_label": "국가",
+    "phone_label": "전화",
+    "email_label": "이메일",
+    "license_label": "운전 면허 번호",
+    "company_label": "보험 회사",
+    "policyNumber_label": "보험 번호",
+    "greenCardNumber_label": "녹색 카드 번호",
+    "greenCardExpiry_label": "녹색 카드 유효 기간",
+    "agentName_label": "대리인 / 중개인",
+    "agentPhone_label": "보험 전화",
+    "circumstances_desc": "충돌 시 귀하의 차량 <strong>({{role}})</strong> 상황을 설명하는 모든 항목을 체크하세요.",
+    "boxes_checked_one": "{{count}} 항목 체크됨",
+    "boxes_checked_other": "{{count}} 항목 체크됨",
+    "complement_desc": "사고 보고서의 추가 정보 — 섹션 11, 13 및 14.",
+    "datetime_label": "사고 날짜 및 시간",
+    "visible_damage_label": "눈에 보이는 손상 (섹션 11)",
+    "visible_damage_placeholder": "귀하의 차량에서 보이는 손상을 설명하세요...",
+    "third_party_label": "제3자에 대한 물질적 손상 (A 및 B 제외)",
+    "witnesses_label": "증인",
+    "witnesses_placeholder": "각 증인의 이름, 성, 전화번호...",
+    "voice_declaration_label": "🎙️ 음성 진술 (선택 사항)",
+    "observations_label": "자유 관찰 — 운전사 {{role}} (섹션 14)",
+    "observations_placeholder": "유용한 모든 요소를 추가하세요: 날씨 조건, 도로 상태, 추정 속도, 비고...",
+    "insurance_holder_label": "보험 가입자 (운전사와 다른 경우)",
+    "holder_name_placeholder": "보험 가입자의 전체 이름",
+    "holder_name_aria": "보험 가입자의 이름",
+    "holder_address_placeholder": "보험 가입자의 주소",
+    "holder_address_aria": "보험 가입자의 주소",
+    "save_btn": "저장하고 계속하기 →",
+    "form_tabs_aria": "양식 섹션"
+  },
+  "pricingPage": {
+    "sr_title": "요금 — boom.contact",
+    "back": "← 돌아가기←",
+    "buy_reports": "사고 보고서 구매",
+    "credits_no_expiry": "만료 없는 크레딧 · WhatsApp으로 공유 가능",
+    "credits_available_one": "✅ {{count}} 크레딧 사용 가능",
+    "credits_available_other": "✅ {{count}} 크레딧 사용 가능",
+    "no_credits": "⚡ 크레딧 없음 — 지금 충전하세요",
+    "currency_label": "통화",
+    "currency_detected": "✓ 자동 감지됨",
+    "most_popular": "⭐ 가장 인기 있는 · 절약 {{savings}}",
+    "economy": "절약 {{savings}}",
+    "per_pack": "패키지당",
+    "per_report": "/ 보고서",
+    "redirecting_stripe": "⏳ Stripe로 리디렉션 중...",
+    "buy_btn": "구매 {{label}} — {{price}}",
+    "error_missing_url": "결제 URL이 누락되었습니다",
+    "error_generic": "오류",
+    "error_email_required": "구매를 위해 이메일이 필요합니다",
+    "trust_stripe": "안전한 PCI-DSS Stripe 결제",
+    "trust_no_expiry": "만료 없는 크레딧",
+    "trust_whatsapp": "WhatsApp으로 공유 가능",
+    "trust_worldwide": "다국어 지원",
+    "trust_invoice": "자동 PDF 청구서",
+    "trust_fleet": "기업 차량에 이상적",
+    "why_title": "사전 크레딧이 필요한 이유는?",
+    "scenario_child_title": "자녀가 사고를 당했을 때",
+    "scenario_child_text": "그가 당신에게 전화합니다. 당신은 WhatsApp으로 크레딧을 보냅니다. 그는 5분 안에 사고 보고서를 작성합니다.",
+    "scenario_company_title": "회사 차량",
+    "scenario_company_text": "배달원이 사고를 당했습니다. 모바일에서 즉시 크레딧을 전송하세요.",
+    "scenario_abroad_title": "해외 여행 중",
+    "scenario_abroad_text": "독일, 호주 또는 일본에서 사고 발생. 여러 언어로 인터페이스 제공.",
+    "pkg_single_label": "1 보고서",
+    "pkg_single_desc": "단일 사고를 위한",
+    "pkg_pack3_label": "3 보고서",
+    "pkg_pack3_desc": "가족 모두를 위한",
+    "pkg_pack3_marketing": "🎁 WhatsApp으로 공유하세요 — 자녀, 직원, 친구가 즉시 링크를 받습니다.",
+    "pkg_pack10_label": "10 보고서",
+    "pkg_pack10_desc": "차량 및 기업을 위한",
+    "pkg_pack10_marketing": "🏢 전체 차량을 관리하세요. 1 클릭으로 직원에게 전송하세요."
+  },
+  "app": {
+    "magic_link_error": "유효하지 않거나 만료된 로그인 링크입니다.",
+    "gift_credits_added": "🎁 {{credits}} 크레딧이 귀하의 계정에 추가되었습니다!",
+    "loading_aria": "로딩 중",
+    "nav_landing": "홈페이지",
+    "nav_cgu": "이용 약관",
+    "nav_pricing": "요금",
+    "nav_constat": "사고 보고서 작성",
+    "nav_join": "세션에 참여하기",
+    "nav_account": "사용자 계정",
+    "nav_admin": "관리자 대시보드",
+    "nav_emergency": "긴급 전화번호",
+    "nav_privacy": "개인정보 보호정책",
+    "nav_police_login": "경찰 로그인",
+    "nav_police_dashboard": "경찰 대시보드",
+    "nav_police_flow": "경찰 흐름",
+    "nav_police_intervention": "경찰 개입",
+    "nav_to": "{{label}}로 이동",
+    "title_default": "boom.contact — 디지털 사고 보고서",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "사고 설명하기",
+    "subtitle": "선택 사항 — 발생한 일을 자신의 말로 설명하세요. 귀하의 진술이 사고 보고서에 기록됩니다.",
+    "tab_voice": "🎙️ 음성",
+    "tab_text": "⌨️ 텍스트",
+    "start_recording": "녹음 시작하기",
+    "textarea_aria": "사고 설명",
+    "textarea_placeholder": "사고를 몇 문장으로 설명하세요…",
+    "validate_desc": "✅ 내 설명 확인하기",
+    "skip_step": "이 단계 건너뛰기 →",
+    "recording_in_progress": "녹음 중…",
+    "recording_tip": "💡 설명하세요: 각 차량의 방향, 충돌 지점, 상황. 차분하게 말씀하세요.",
+    "stop_recording": "녹음 중지",
+    "transcribing_title": "전사 중…",
+    "transcribing_subtitle": "귀하의 녹음이 처리되고 있습니다",
+    "desc_recorded": "설명이 기록되었습니다",
+    "desc_in_pdf": "귀하의 진술이 PDF 보고서에 포함됩니다",
+    "your_declaration": "귀하의 진술",
+    "edit": "✏️ 수정하기",
+    "edit_placeholder": "필요시 진술을 수정하세요...",
+    "restart": "다시 시작하기",
+    "mic_denied": "마이크 접근이 거부되었습니다 — 수동 입력을 사용하세요.",
+    "mic_unavailable": "마이크를 사용할 수 없습니다: {{msg}}",
+    "transcription_error": "전사 오류",
+    "textarea_edit_aria": "사고 이야기"
+  },
+  "auth": {
+    "default_subtitle": "로그인하여 차량을 저장하고 사고 보고서 작성 시 입력하지 않도록 하세요.",
+    "magic_btn": "📧 이메일 링크로 로그인 (추천)",
+    "password_btn": "🔑 비밀번호로 로그인",
+    "register_btn": "✨ 계정 만들기",
+    "skip_btn": "계정 없이 계속하기 →",
+    "skip_note": "계정 없이도 사고 보고서를 작성하고 Stripe로 결제할 수 있습니다.",
+    "magic_instructions": "이메일을 입력하세요 — 15분 동안 유효한 로그인 링크를 받게 됩니다.",
+    "send_link": "링크 보내기",
+    "sending": "전송 중...",
+    "back": "← 돌아가기",
+    "email_sent_title": "이메일이 전송되었습니다!",
+    "email_sent_desc": "귀하의 <strong>{{email}}</strong> 메일함을 확인하세요.",
+    "email_sent_validity": "링크는 15분 동안 유효합니다.",
+    "login_error": "이메일 또는 비밀번호가 올바르지 않습니다.",
+    "logging_in": "로그인 중...",
+    "login_btn": "로그인",
+    "forgot_password": "비밀번호를 잊으셨나요? 이메일 링크 사용 →",
+    "register_desc": "계정을 만들어 차량을 저장하고 사고 보고서를 자동으로 미리 채우세요.",
+    "password_placeholder": "비밀번호 (최소 6자)",
+    "creating": "생성 중...",
+    "create_btn": "내 계정 만들기",
+    "register_legal": "계정을 생성함으로써 귀하는 우리의 이용 약관에 동의합니다. 귀하의 차량 데이터는 암호화되어 있으며 귀하의 동의 없이 공유되지 않습니다.",
+    "register_error": "회원 가입 중 오류가 발생했습니다.",
+    "generic_error": "오류"
+  },
+  "account": {
+    "member": {
+      "remove": "제거",
+      "removeConfirm": "이 멤버를 제거하시겠습니까? 그는 회사의 차량 및 크레딧에 대한 접근 권한을 잃게 됩니다.",
+      "loading": "로딩 중…",
+      "none": "멤버 없음.",
+      "invite": "멤버 초대하기",
+      "inviteBtn": "초대하기",
+      "pending": "대기 중인 초대"
+    },
+    "role": {
+      "owner": "소유자",
+      "driver": "운전사",
+      "fleet_admin": "차량 관리자"
+    },
+    "scan": {
+      "cancel": "취소",
+      "photographPre": "귀하의",
+      "license": "운전 면허증을 촬영하세요",
+      "and": "및/또는 귀하의",
+      "greenCard": "녹색 카드를 촬영하세요",
+      "title": "운전 면허증 + 녹색 카드 스캔하기",
+      "subtitle": "자동 인식 · 다국어 지원"
+    },
+    "garage": {
+      "back": "차고",
+      "title": "내 차고",
+      "add": "추가하기",
+      "emptyTitle": "빈 차고",
+      "emptySubtitle": "차량을 한 번 등록하세요. 사고 시 다시 스캔할 필요가 없습니다.",
+      "addFirst": "내 첫 차량 추가하기",
+      "noOrgVehicles": "현재 기업 차량이 없습니다."
+    },
+    "insurance": {
+      "saved": "보험이 저장되었습니다",
+      "add": "보험 추가하기"
+    },
+    "nav": {
+      "logout": "로그아웃"
+    },
+    "vehicle": {
+      "edit": "차량 수정하기",
+      "delete": "차량 삭제하기",
+      "editOrg": "기업 차량 수정하기",
+      "deleteOrg": "기업 차량 삭제하기"
+    },
+    "fields": {
+      "nickname": "별명",
+      "plate": "번호판",
+      "make": "브랜드",
+      "model": "모델",
+      "color": "색상",
+      "year": "연도",
+      "firstName": "이름",
+      "lastName": "성",
+      "phone": "전화",
+      "company": "회사",
+      "address": "주소",
+      "newEmail": "새 이메일",
+      "currentPwd": "현재 비밀번호 (확인)",
+      "confirmEmailAria": "이메일 주소 확인"
+    },
+    "credits": {
+      "buy": "구매:",
+      "available": "사용 가능한 크레딧",
+      "unit": "1 크레딧 = 1 완전한 사고 보고서"
+    },
+    "history": {
+      "loading": "로딩 중...",
+      "empty": "사고 보고서 없음",
+      "emptySub": "다음 사고 보고서는 여기 자동으로 나타납니다."
+    },
+    "personal": {
+      "title": "개인 정보",
+      "none": "정보 없음 — 수정하기 클릭"
+    },
+    "delete": {
+      "willDelete": "영구적으로 삭제될 항목:",
+      "text": "귀하의 계정, 차량 및 모든 사고 보고서를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다."
+    },
+    "danger": {
+      "title": "위험 지역"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "인식된 문서가 없습니다. 사진의 품질을 확인하세요.",
+    "analysis_error": "분석 오류.",
+    "read_failed": "읽기 실패",
+    "docs_analyzed_one": "{{count}} 문서 분석됨",
+    "docs_analyzed_other": "{{count}} 문서 분석됨",
+    "confidence": "신뢰도: {{pct}}%",
+    "rescan": "다시 스캔하기",
+    "vehicle_section": "🚗 차량",
+    "plate": "번호판",
+    "driver_section": "👤 운전사",
+    "firstName": "이름",
+    "lastName": "성",
+    "insurance_found": "✅ 보험",
+    "insurance_manual": "⚠️ 보험 — 수동으로 입력",
+    "company_label": "회사",
+    "company_aria": "보험 회사",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "보험 번호",
+    "policy_manual_hint": "(수동 입력)",
+    "policy_aria": "보험 번호",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "확인 →",
+    "scanning_title": "분석 중...",
+    "scanning_subtitle_one": "{{count}} 문서 · 자동 식별",
+    "scanning_subtitle_other": "{{count}} 문서 · 자동 식별",
+    "photo_title": "문서를 촬영하세요",
+    "photo_subtitle": "운전 면허증 + 녹색 카드 한 번의 분석으로.",
+    "photo_subtitle2": "애플리케이션이 모든 것을 자동으로 식별하고 추출합니다.",
+    "doc_scanned": "문서 스캔됨 {{n}}",
+    "doc_label": "문서 {{n}}",
+    "photograph": "촬영하기",
+    "rear_camera": "후면 카메라",
+    "gallery": "갤러리",
+    "which_docs": "어떤 문서를 스캔해야 하나요?",
+    "doc_ch": "🇨🇭 운전 면허증 + 녹색 카드",
+    "doc_fr": "🇫🇷 차량 등록증 + 녹색 카드 / 증명서",
+    "doc_de": "🇩🇪 등록증 + 녹색 카드",
+    "doc_gb": "🇬🇧 V5C + 자동차 보험 증명서",
+    "doc_us": "🇺🇸 🇨🇦 등록증 + 보험 ID 카드",
+    "doc_world": "🌍 등록증 + 보험 증명서",
+    "close_error_aria": "오류 닫기",
+    "analyze_btn_one": "🔍 {{count}} 문서 분석하기",
+    "analyze_btn_other": "🔍 {{count}} 문서 분석하기",
+    "skip_manual": "건너뛰기 — 수동 입력 →",
+    "upload_gallery_aria": "갤러리에서 문서 업로드",
+    "take_photo_aria": "문서 촬영하기"
+  },
+  "postConstat": {
+    "next_time_title": "다음 번에는: 0 입력",
+    "next_time_subtitle": "귀하의 차량이 영원히 기억됩니다",
+    "benefit_scanned": "운전 면허증 + 녹색 카드가 한 번 스캔됨",
+    "benefit_fast": "보고서가 10분 대신 2분에 작성됩니다",
+    "benefit_gift": "1 클릭으로 가까운 사람에게 보고서를 선물하세요",
+    "benefit_family": "가족에 이상적: 크레딧을 공유하세요",
+    "create_account": "무료 계정 만들기 →",
+    "share_btn": "가까운 사람에게 공유하기",
+    "register_vehicle_title": "다음으로, 차량을 등록하세요",
+    "register_vehicle_subtitle": "운전 면허증 + 녹색 카드 스캔 · 30초 · 다시 입력할 필요 없음",
+    "or_skip": "또는 바로 건너뛰기",
+    "family_pack": "🔥 가족 패키지",
+    "family_pack_desc": "가까운 사람과 공유할 수 있는 3개의 보고서",
+    "scenario_child": "자녀가 전화합니다 — 사고. 3초 안에 그의 모바일로 보고서를 보내세요.",
+    "scenario_employee": "직원이 회사 차량을 운전 중입니다. WhatsApp으로 즉시 크레딧을 전송하세요.",
+    "scenario_friend": "해외에서 어려움에 처한 친구. 그는 링크를 받고, 계정이 필요 없습니다.",
+    "buy_3_reports": "3개의 보고서 구매 — CHF/EUR 12.90 →",
+    "see_all_packs": "모든 패키지 보기 →",
+    "ready_title": "다음 번을 위한 준비 완료",
+    "ready_subtitle": "지금 충전하고, 원할 때 공유하세요",
+    "account_title": "✅ 귀하의 boom.contact 계정",
+    "account_desc": "귀하의 차량이 기억됩니다. 다음 사고 시 QR 단계로 바로 이동 — 입력이나 스캔이 필요 없습니다.",
+    "manage_garage": "내 차고 관리하기 →",
+    "gift_title": "🎁 WhatsApp으로 보고서 선물하기",
+    "gift_desc": "귀하의 크레딧 중 하나 = <strong>누구에게나</strong> 보낼 수 있는 고유 링크.",
+    "credits_available_one": "{{count}} 크레딧 사용 가능",
+    "credits_available_other": "{{count}} 크레딧 사용 가능",
+    "share_protect": "공유하고, 가까운 사람을 보호하세요",
+    "wa_gift_title": "📲 WhatsApp으로 보고서 선물하기",
+    "wa_gift_desc": "1 클릭으로 자녀, 직원 또는 친구에게 링크를 보내세요. 그는 계정이나 결제 없이 보고서를 작성합니다 — 귀하의 크레딧에서 차감됩니다.",
+    "send_1": "📲 1 보고서 보내기",
+    "send_3": "📲 3 보고서 보내기",
+    "gift_link_created": "✅ 링크 생성됨 — WhatsApp으로 보내세요!",
+    "share_title": "📤 boom.contact 공유하기",
+    "share_desc": "당신은 5분 안에 사고 보고서를 작성했습니다. 친구들에게 이 존재를 알릴 자격이 있습니다.",
+    "memorize_vehicles": "🚗 다른 차량 기억하기",
+    "memorize_desc": "기업 차량, 오토바이, 캠핑카? 스캔된 각 차량 = 사고 시 다시 입력할 필요 없음.",
+    "low_credits_one": "⚡ 남은 크레딧이 {{count}}개 뿐입니다",
+    "low_credits_other": "⚡ 남은 크레딧이 {{count}}개 뿐입니다",
+    "recharge_desc": "지금 충전하고 가족 및 기업 패키지 할인 혜택을 누리세요.",
+    "recharge_btn": "내 크레딧 충전하기 →",
+    "pack_single_label": "1 보고서",
+    "pack_single_note": "단기 사용",
+    "pack_pack3_label": "3 보고서",
+    "pack_pack3_note": "가족 · 12% 절약",
+    "pack_pack10_label": "10 보고서",
+    "pack_pack10_note": "기업 · 29% 절약",
+    "popular_badge": "⭐ 인기"
+  },
+  "constat": {
+    "nav": {
+      "back": "뒤로",
+      "reset": "사고 보고서 초기화"
+    },
+    "session": {
+      "expiring": "세션이 곧 만료됩니다. 데이터를 저장하세요."
+    },
+    "error": {
+      "close": "오류 닫기"
+    },
+    "vehicle": {
+      "pickRegistered": "등록된 차량 선택",
+      "autofill": "자동 채우기 — 스캔할 필요 없음",
+      "yourRegistered": "귀하의 등록된 차량",
+      "org": "기업",
+      "personal": "개인",
+      "fallback": "차량",
+      "cancel": "취소",
+      "orScanNew": "또는 새 차량 스캔하기"
+    },
+    "pedestrian": {
+      "title": "다른 당사자: 보행자"
+    },
+    "summary": {
+      "yourVehicle": "귀하의 차량",
+      "accident": "사고",
+      "damagedZones_one": "{{count}} 손상된 구역",
+      "damagedZones_other": "{{count}} 손상된 구역"
+    },
+    "emergency": {
+      "title": "긴급 전화번호"
+    }
   }
 }

@@ -12,7 +12,8 @@
     "required": "Obligatorisk",
     "yes": "Ja",
     "no": "Nei",
-    "unknown": "Ukjent"
+    "unknown": "Ukjent",
+    "rescan": "🔄 Skann på nytt"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumenter en ulykke uten papir, uten forvirring.",
+      "subtitle": "boom.contact guider deg trinn for trinn for å samle inn nyttig informasjon, legge til bilder, plassering, uttalelser og signaturer, og deretter generere en tidsstemplet PDF-fil som skal sendes til forsikringsselskapet ditt."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktiv sesjon",
+      "vehicleA": "KJØRETØY A",
+      "photosSig": "Bilder · signatur ✓",
+      "vehicleB": "KJØRETØY B",
+      "qrJoined": "QR tilkoblet · pågår",
+      "payGenerate": "Betal og generer PDF",
+      "pdfBadge": "Tidsstemplet PDF",
+      "qrBadge": "Delt QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Inviter med QR-kode",
+        "desc": "Opprett sesjonen, den andre sjåføren skanner QR-koden fra sin telefon. Ingen installasjon, ingen registrering."
+      },
+      {
+        "title": "Bilder, stemme og signatur",
+        "desc": "Legg til bilder, dikter dine observasjoner med stemmen, plasser kjøretøyene på skissen og signer med fingeren."
+      },
+      {
+        "title": "Tidsstemplet PDF-dokument",
+        "desc": "boom.contact genererer et tidsstemplet PDF-dokument som inneholder informasjonen som er fylt ut av hver sjåfør."
+      },
+      {
+        "title": "Til å sende til forsikringsselskapet ditt",
+        "desc": "Last ned PDF-en eller send den via e-post for å følge opp skademeldingen din til forsikringsselskapet."
+      }
+    ],
+    "seoLine": "Det flerspråklige digitale skademeldingsskjemaet · Digital accident report",
+    "flow": {
+      "label": "Alt i én flyt",
+      "title": "Fra ulykken til klar for sending"
+    },
+    "stress": {
+      "label": "Tenk på ulykkesøyeblikket",
+      "title": "Designet for stressende situasjoner",
+      "text": "Etter et sammenstøt er ikke tankene klare. boom.contact går trinn for trinn, på ditt språk, og holder oversikt over hver informasjon som samles inn. Alt fungerer fra telefonens nettleser, selv med begrenset tilkobling.",
+      "bullets": [
+        "Guidet trinn for trinn",
+        "Flerspråklig",
+        "Bilder · stemme · signatur",
+        "Tidsstemplet PDF-dokument"
+      ],
+      "emergencyTitle": "I nødstilfeller",
+      "emergencyText": "boom.contact erstatter ikke nødetater, politi, advokat eller forsikringsselskap. I tilfelle av skader eller fare, kontakt først nødetatene."
+    },
+    "pricing": {
+      "label": "Priser",
+      "title": "Enkel, transparent, uten abonnement",
+      "caption": "1 kreditt = 1 komplett skademelding · flerspråklig · kreditter uten utløp",
+      "badgePopular": "Populær",
+      "plans": [
+        {
+          "label": "1 skademelding",
+          "desc": "For en enkelt ulykke"
+        },
+        {
+          "label": "3 skademeldinger",
+          "desc": "For hele familien"
+        },
+        {
+          "label": "10 skademeldinger",
+          "desc": "For flåter og meglere"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "For profesjonelle",
+      "title": "For meglere, flåter og forsikringspartnere",
+      "text": "Utstyr kundene og sjåførene dine med et klart verktøy for å dokumentere en ulykke og generere et tidsstemplet PDF-dokument. Kredittpakker for flåter og meglere, enkel distribusjon, uten abonnement.",
+      "cta": "Kontakt / del",
+      "items": [
+        {
+          "title": "Flåter",
+          "desc": "Et strukturert dokument for hver sjåførskade."
+        },
+        {
+          "title": "Meglere",
+          "desc": "En merverdi for dine forsikrede."
+        },
+        {
+          "title": "Konfidensialitet",
+          "desc": "Krypterte data under transport, kan slettes på forespørsel."
+        },
+        {
+          "title": "Overføring",
+          "desc": "Tidsstemplet PDF klar til å legges ved skademeldingen."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Vanlige spørsmål",
+      "items": [
+        {
+          "q": "Hva er boom.contact?",
+          "a": "boom.contact er en app som hjelper deg med å dokumentere en bilulykke fra en telefon: invitasjon av sjåfører via QR, bilder, stemme, skisser, signaturer, og deretter generering av et tidsstemplet PDF-dokument som skal sendes til forsikringsselskapet ditt."
+        },
+        {
+          "q": "Må jeg installere en app?",
+          "a": "Nei. boom.contact fungerer direkte i telefonens nettleser (Safari, Chrome, Firefox). Du kan også legge den til hjemmeskjermen som en webapp (PWA) for offline tilgang."
+        },
+        {
+          "q": "Hva skjer hvis den andre sjåføren ikke har appen?",
+          "a": "Du oppretter sesjonen, og en QR-kode vises. Den andre sjåføren skanner den med sin telefon: boom.contact åpnes i nettleseren hans, uten registrering eller nedlasting."
+        },
+        {
+          "q": "Blir PDF-dokumentet akseptert av mitt forsikringsselskap?",
+          "a": "Det tidsstemplede PDF-dokumentet er ment å følge opp skademeldingen din. boom.contact garanterer ikke aksept, som avhenger av ditt forsikringsselskap i henhold til din kontrakt og jurisdiksjon."
+        },
+        {
+          "q": "Fungerer det hvis den andre sjåføren snakker et annet språk?",
+          "a": "Ja. Hver sjåfør bruker grensesnittet på sitt eget språk. Det endelige dokumentet genereres for hver sjåfør."
+        },
+        {
+          "q": "Er dataene mine beskyttet?",
+          "a": "Dataene er kryptert under transport, sesjoner slettes automatisk etter en viss tid, og politiet varsles aldri automatisk — kun ved eksplisitt handling fra deg."
+        },
+        {
+          "q": "Hvor mye koster det?",
+          "a": "Fra CHF / EUR 4.90 for en skademelding. Pakke med 3 skademeldinger til 12.90 (−12 %), pakke med 10 til 34.90 (−29 %). Uten abonnement, kreditter uten utløp."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Sesjon",
+    "yourEmail": "Din e-post",
+    "emailHint": "(for å motta PDF-en)",
+    "emailAria": "Din e-postadresse",
+    "connecting": "Kobler til...",
+    "connected": "Koblet til! Starter...",
+    "joinButton": "Bli med i skademeldingen"
+  },
+  "signature": {
+    "title": "Signatur",
+    "driver": "Sjåfør {{role}}",
+    "other_party": "Andre part",
+    "no_signature": "uten signatur",
+    "sign_here": "Signer her med fingeren",
+    "signed": "SIGNERT ✓",
+    "clear": "🗑 Slett",
+    "saving": "⏳ Lagrer...",
+    "confirm_signature": "✍️ Bekreft signatur",
+    "waiting_other": "Venter på signaturen fra den andre sjåføren...",
+    "waiting_pdf": "PDF-en vil bli generert så snart begge parter har signert.",
+    "report_signed": "Skademelding signert!",
+    "generating_pdf": "Genererer PDF...",
+    "canvas_aria": "Signaturområde — Sjåfør {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Før du begynner",
+      "body": "boom.contact hjelper deg med å dokumentere en ulykke og generere et strukturert PDF-dokument. I tilfelle av skade, fare, flukt, alvorlig uenighet eller lovpålagt forpliktelse, kontakt umiddelbart nødetater, politi eller relevante myndigheter. Informasjonen som gis forblir under ansvar av deltakerne. Du kan skrive inn informasjonen manuelt hvis du ikke ønsker å bruke kamera, mikrofon eller plassering.",
+      "start": "Jeg forstår, begynne",
+      "emergency": "Se nødnummere",
+      "privacy_cgu": "Personvern / Bruksvilkår"
+    },
+    "guest_accept": {
+      "checkbox": "Jeg godtar vilkårene for bruk og har lest personvernerklæringen.",
+      "note": "Jeg forstår at informasjonene mine vil bli brukt til å generere PDF-dokumentet for ulykken, og at informasjonene som gis forblir under mitt ansvar."
+    },
+    "signature_confirm": "Jeg bekrefter at informasjonene jeg har gitt er nøyaktige etter min kunnskap, og jeg godtar at signaturen min blir integrert i PDF-dokumentet.",
+    "payment_notice": "Ved å fortsette til betalingen forstår du at betalingen dekker genereringen og sendingen av PDF-dokumentet. Informasjonen som gis forblir under ansvar av deltakerne.",
+    "mic_notice": "Ved å bruke mikrofonen vil din stemmeuttalelse bli transkribert for å bli integrert i ulykkesdokumentet. Du kan bruke tekstinnskriving i stedet.",
+    "injury_confirm": {
+      "body": "Bilder av skader kan inneholde sensitive data. Sørg for å ha samtykke fra den berørte personen, med mindre det er nødvendig av sikkerhetsgrunner eller lovpålagt.",
+      "continue": "Fortsette",
+      "change": "Endre kategori"
+    },
+    "pdf_ready_title": "Tidsstemplet PDF-dokument for ulykke",
+    "pdf_ready_body": "De nødvendige signaturene er registrert. PDF-dokumentet er klart. Sjekk informasjonene før du sender det til forsikringsselskapet ditt."
+  },
+  "constatForm": {
+    "tab_vehicle": "Kjøretøy",
+    "tab_driver": "Sjåfør",
+    "tab_insurance": "Forsikring",
+    "tab_circumstances": "Omstendigheter",
+    "tab_complement": "Tillegg",
+    "field_required": "Dette feltet er påkrevd",
+    "plate_label": "Registreringsnummer",
+    "brand_label": "Merke",
+    "model_label": "Modell",
+    "year_label": "År",
+    "vin_label": "Chassisnummer (VIN)",
+    "firstName_label": "Fornavn",
+    "lastName_label": "Etternavn",
+    "address_label": "Adresse",
+    "postalCode_label": "Postnummer",
+    "city_label": "Sted",
+    "country_label": "Land",
+    "phone_label": "Telefon",
+    "email_label": "E-post",
+    "license_label": "Førerkortnummer",
+    "company_label": "Forsikringsselskap",
+    "policyNumber_label": "Polisenummer",
+    "greenCardNumber_label": "Grønt kortnummer",
+    "greenCardExpiry_label": "Gyldighet for grønt kort",
+    "agentName_label": "Agent / Megler",
+    "agentPhone_label": "Tlf. forsikring",
+    "circumstances_desc": "Kryss av for alle boksene som beskriver situasjonen til ditt kjøretøy <strong>({{role}})</strong> på tidspunktet for sammenstøtet.",
+    "boxes_checked_one": "{{count}} boks avkrysset",
+    "boxes_checked_other": "{{count}} bokser avkrysset",
+    "complement_desc": "Tilleggsinformasjon til skademeldingen — seksjoner 11, 13 og 14.",
+    "datetime_label": "Dato og klokkeslett for ulykken",
+    "visible_damage_label": "Synlige skader (seksjon 11)",
+    "visible_damage_placeholder": "Beskriv de synlige skadene på ditt kjøretøy...",
+    "third_party_label": "Materielle skader på tredjeparter (andre enn A og B)",
+    "witnesses_label": "Vitner",
+    "witnesses_placeholder": "Navn, fornavn, telefonnummer til hver vitne...",
+    "voice_declaration_label": "🎙️ Stemmeskildring (valgfritt)",
+    "observations_label": "Frie observasjoner — sjåfør {{role}} (seksjon 14)",
+    "observations_placeholder": "Legg til nyttige elementer: værforhold, veistatus, estimert hastighet, bemerkninger...",
+    "insurance_holder_label": "Forsikringstaker (hvis forskjellig fra sjåføren)",
+    "holder_name_placeholder": "Fullt navn på forsikringstaker",
+    "holder_name_aria": "Navn på forsikringstaker",
+    "holder_address_placeholder": "Adresse til forsikringstaker",
+    "holder_address_aria": "Adresse til forsikringstaker",
+    "save_btn": "Lagre og fortsett →",
+    "form_tabs_aria": "Skjema seksjoner"
+  },
+  "pricingPage": {
+    "sr_title": "Priser — boom.contact",
+    "back": "← Tilbake←",
+    "buy_reports": "Kjøp skademeldinger",
+    "credits_no_expiry": "Kreditter uten utløp · Delbart via WhatsApp",
+    "credits_available_one": "✅ {{count}} kreditt tilgjengelig",
+    "credits_available_other": "✅ {{count}} kreditter tilgjengelig",
+    "no_credits": "⚡ Ingen kreditter — fyll på nå",
+    "currency_label": "VALUTA",
+    "currency_detected": "✓ automatisk oppdaget",
+    "most_popular": "⭐ MEST POPULÆR · SPAR {{savings}}",
+    "economy": "Spar {{savings}}",
+    "per_pack": "per pakke",
+    "per_report": "/ skademelding",
+    "redirecting_stripe": "⏳ Omdirigering til Stripe...",
+    "buy_btn": "Kjøp {{label}} — {{price}}",
+    "error_missing_url": "Manglende betalings-URL",
+    "error_generic": "Feil",
+    "error_email_required": "E-post kreves for å kjøpe",
+    "trust_stripe": "Sikker betaling med Stripe PCI-DSS",
+    "trust_no_expiry": "Kreditter uten utløp",
+    "trust_whatsapp": "Delbart via WhatsApp",
+    "trust_worldwide": "Flerspråklig",
+    "trust_invoice": "Automatisk PDF-faktura",
+    "trust_fleet": "Ideell for bedriftsflåter",
+    "why_title": "HVORFOR HA FORHÅNDSKREDITTER?",
+    "scenario_child_title": "Barnet ditt har en ulykke",
+    "scenario_child_text": "Han/hun ringer deg. Du sender ham/henne en kreditt via WhatsApp. Han/hun lager sin skademelding på 5 minutter.",
+    "scenario_company_title": "Bedriftskjøretøy",
+    "scenario_company_text": "Din sjåfør har en kollisjon. Overfør ham/henne en kreditt umiddelbart fra mobilen din.",
+    "scenario_abroad_title": "På reise i utlandet",
+    "scenario_abroad_text": "Ulykke i Tyskland, Australia eller Japan. Grensesnittet er tilgjengelig på flere språk.",
+    "pkg_single_label": "1 skademelding",
+    "pkg_single_desc": "For en enkelt ulykke",
+    "pkg_pack3_label": "3 skademeldinger",
+    "pkg_pack3_desc": "For hele familien",
+    "pkg_pack3_marketing": "🎁 Del via WhatsApp — barnet ditt, din ansatt, din venn får en umiddelbar lenke.",
+    "pkg_pack10_label": "10 skademeldinger",
+    "pkg_pack10_desc": "Flåter & bedrifter",
+    "pkg_pack10_marketing": "🏢 Administrer hele flåten din. Overfør til medarbeiderne dine med ett klikk."
+  },
+  "app": {
+    "magic_link_error": "Ugyldig eller utløpt innloggingslenke.",
+    "gift_credits_added": "🎁 {{credits}} kreditt(er) lagt til kontoen din!",
+    "loading_aria": "Laster...",
+    "nav_landing": "Hjemmeside",
+    "nav_cgu": "Bruksvilkår",
+    "nav_pricing": "Priser",
+    "nav_constat": "Opprett skademelding",
+    "nav_join": "Bli med i en sesjon",
+    "nav_account": "Brukerkonto",
+    "nav_admin": "Administrasjonsdashbord",
+    "nav_emergency": "Nødnummere",
+    "nav_privacy": "Personvernerklæring",
+    "nav_police_login": "Politiinnlogging",
+    "nav_police_dashboard": "Politi dashbord",
+    "nav_police_flow": "Politi flyt",
+    "nav_police_intervention": "Politi intervensjon",
+    "nav_to": "Navigering til {{label}}",
+    "title_default": "boom.contact — Digital skademelding",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Beskriv ulykken",
+    "subtitle": "Valgfritt — beskriv hva som skjedde med dine egne ord. Din uttalelse vil bli registrert i skademeldingen.",
+    "tab_voice": "🎙️ Stemme",
+    "tab_text": "⌨️ Tekst",
+    "start_recording": "Start innspilling",
+    "textarea_aria": "Beskrivelse av ulykken",
+    "textarea_placeholder": "Beskriv ulykken i noen setninger…",
+    "validate_desc": "✅ Bekreft beskrivelsen min",
+    "skip_step": "Hopp over dette trinnet →",
+    "recording_in_progress": "Innspilling pågår...",
+    "recording_tip": "💡 Beskriv: retningen til hvert kjøretøy, punktet for sammenstøt, omstendighetene. Snakk rolig.",
+    "stop_recording": "Stopp innspilling",
+    "transcribing_title": "Transkribering pågår...",
+    "transcribing_subtitle": "Din innspilling behandles",
+    "desc_recorded": "Beskrivelse registrert",
+    "desc_in_pdf": "Din uttalelse vil bli inkludert i PDF-skademeldingen",
+    "your_declaration": "Din uttalelse",
+    "edit": "✏️ Rediger",
+    "edit_placeholder": "Korriger uttalelsen din om nødvendig...",
+    "restart": "Start på nytt",
+    "mic_denied": "Tilgang til mikrofon nektet — bruk manuell inntasting.",
+    "mic_unavailable": "Mikrofon utilgjengelig: {{msg}}",
+    "transcription_error": "Transkripsjonsfeil",
+    "textarea_edit_aria": "Beretning om ulykken"
+  },
+  "auth": {
+    "default_subtitle": "Logg inn for å lagre kjøretøyene dine og unngå å måtte skrive inn noe under skademeldingene.",
+    "magic_btn": "📧 Logg inn med e-postlenke (anbefalt)",
+    "password_btn": "🔑 Logg inn med passord",
+    "register_btn": "✨ Opprett en konto",
+    "skip_btn": "Fortsett uten konto →",
+    "skip_note": "Uten konto kan du fortsatt lage en skademelding og betale med Stripe.",
+    "magic_instructions": "Skriv inn e-posten din — du vil motta en innloggingslenke som er gyldig i 15 minutter.",
+    "send_link": "Send lenken",
+    "sending": "Sender...",
+    "back": "← Tilbake",
+    "email_sent_title": "E-post sendt!",
+    "email_sent_desc": "Sjekk innboksen din <strong>{{email}}</strong>.",
+    "email_sent_validity": "Lenken er gyldig i 15 minutter.",
+    "login_error": "E-post eller passord er feil.",
+    "logging_in": "Logger inn...",
+    "login_btn": "Logg inn",
+    "forgot_password": "Glemt passord? Bruk en e-postlenke →",
+    "register_desc": "Opprett kontoen din for å lagre kjøretøyene dine og forhåndsutfylle skademeldingene automatisk.",
+    "password_placeholder": "Passord (min. 6 tegn)",
+    "creating": "Oppretter...",
+    "create_btn": "Opprett min konto",
+    "register_legal": "Ved å opprette en konto godtar du våre vilkår. Dine kjøretøydata er kryptert og deles aldri uten ditt samtykke.",
+    "register_error": "Feil under registrering.",
+    "generic_error": "Feil"
+  },
+  "account": {
+    "member": {
+      "remove": "Fjern",
+      "removeConfirm": "Fjerne dette medlemmet? Han/hun vil miste tilgangen til selskapets kjøretøy og kreditter.",
+      "loading": "Laster...",
+      "none": "Ingen medlemmer.",
+      "invite": "Inviter et medlem",
+      "inviteBtn": "Inviter",
+      "pending": "Invitasjoner på vent"
+    },
+    "role": {
+      "owner": "Eier",
+      "driver": "Sjåfør",
+      "fleet_admin": "Flåteadministrator"
+    },
+    "scan": {
+      "cancel": "Avbryt",
+      "photographPre": "Ta bilde av din",
+      "license": "kjøretillatelse",
+      "and": "og/eller din",
+      "greenCard": "grønt kort",
+      "title": "Skann kjøretillatelse + grønt kort",
+      "subtitle": "Automatisk gjenkjenning · flerspråklig"
+    },
+    "garage": {
+      "back": "Garasje",
+      "title": "Min garasje",
+      "add": "Legg til",
+      "emptyTitle": "Tom garasje",
+      "emptySubtitle": "Registrer kjøretøyene dine én gang. Aldri mer behov for å skanne ved en ulykke.",
+      "addFirst": "Legg til mitt første kjøretøy",
+      "noOrgVehicles": "Ingen bedriftskjøretøy for øyeblikket."
+    },
+    "insurance": {
+      "saved": "Forsikring lagret",
+      "add": "Legg til forsikring"
+    },
+    "nav": {
+      "logout": "Logg ut"
+    },
+    "vehicle": {
+      "edit": "Rediger kjøretøy",
+      "delete": "Slett kjøretøy",
+      "editOrg": "Rediger bedriftskjøretøy",
+      "deleteOrg": "Slett bedriftskjøretøy"
+    },
+    "fields": {
+      "nickname": "Kallenavn",
+      "plate": "Registreringsnummer",
+      "make": "Merke",
+      "model": "Modell",
+      "color": "Farge",
+      "year": "År",
+      "firstName": "Fornavn",
+      "lastName": "Etternavn",
+      "phone": "Telefon",
+      "company": "Selskap",
+      "address": "Adresse",
+      "newEmail": "Ny e-post",
+      "currentPwd": "Nåværende passord (bekreftelse)",
+      "confirmEmailAria": "Bekreftelse av e-postadresse"
+    },
+    "credits": {
+      "buy": "Kjøp:",
+      "available": "KREDITTER TILGJENGELIGE",
+      "unit": "1 kreditt = 1 komplett skademelding"
+    },
+    "history": {
+      "loading": "Laster...",
+      "empty": "Ingen skademeldinger",
+      "emptySub": "Din neste skademelding vil automatisk vises her."
+    },
+    "personal": {
+      "title": "Personlig informasjon",
+      "none": "Ingen informasjon — klikk på Rediger"
+    },
+    "delete": {
+      "willDelete": "DETTE VIL BLI SLETTET PERMANENT:",
+      "text": "Slett kontoen din, kjøretøyene dine og alle skademeldingene dine permanent. Denne handlingen er irreversibel."
+    },
+    "danger": {
+      "title": "Farlig område"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Ingen dokument gjenkjent. Sjekk kvaliteten på bildene.",
+    "analysis_error": "Analysefeil.",
+    "read_failed": "Lesing mislyktes",
+    "docs_analyzed_one": "{{count}} dokument analysert",
+    "docs_analyzed_other": "{{count}} dokumenter analysert",
+    "confidence": "Tillitt: {{pct}}%",
+    "rescan": "Skann på nytt",
+    "vehicle_section": "🚗 Kjøretøy",
+    "plate": "Registreringsnummer",
+    "driver_section": "👤 Sjåfør",
+    "firstName": "Fornavn",
+    "lastName": "Etternavn",
+    "insurance_found": "✅ Forsikring",
+    "insurance_manual": "⚠️ Forsikring — fullfør manuelt",
+    "company_label": "Selskap",
+    "company_aria": "Forsikringsselskap",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Polisenummer",
+    "policy_manual_hint": "(manuell inntasting)",
+    "policy_aria": "Polisenummer",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Bekreft →",
+    "scanning_title": "Analyserer...",
+    "scanning_subtitle_one": "{{count}} dokument · automatisk identifikasjon",
+    "scanning_subtitle_other": "{{count}} dokumenter · automatisk identifikasjon",
+    "photo_title": "Ta bilder av dokumentene dine",
+    "photo_subtitle": "Kjøretillatelse + grønt kort i én analyse.",
+    "photo_subtitle2": "Appen identifiserer og trekker ut alt automatisk.",
+    "doc_scanned": "Dokument skannet {{n}}",
+    "doc_label": "Dokument {{n}}",
+    "photograph": "Ta bilde",
+    "rear_camera": "Bakre kamera",
+    "gallery": "Galleri",
+    "which_docs": "Hvilke dokumenter skal skannes?",
+    "doc_ch": "🇨🇭 Kjøretillatelse + grønt kort",
+    "doc_fr": "🇫🇷 Vognkort + grønt kort / bekreftelse",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registrering + Forsikrings-ID-kort",
+    "doc_world": "🌍 Registrering + bevis på forsikring",
+    "close_error_aria": "Lukk feilen",
+    "analyze_btn_one": "🔍 Analyser {{count}} dokument",
+    "analyze_btn_other": "🔍 Analyser {{count}} dokumenter",
+    "skip_manual": "Hopp over — manuell inntasting →",
+    "upload_gallery_aria": "Last opp dokumenter fra galleriet",
+    "take_photo_aria": "Ta bilde av et dokument"
+  },
+  "postConstat": {
+    "next_time_title": "Neste gang: 0 inntasting",
+    "next_time_subtitle": "Dine kjøretøy huskes for alltid",
+    "benefit_scanned": "Kjøretillatelse + grønt kort skannet én gang",
+    "benefit_fast": "Skademelding på 2 minutter i stedet for 10",
+    "benefit_gift": "Gi en skademelding til dine nærmeste med ett klikk",
+    "benefit_family": "Ideell for familien: del kreditter",
+    "create_account": "Opprett min gratis konto →",
+    "share_btn": "Del med mine nærmeste",
+    "register_vehicle_title": "Deretter, registrer ditt kjøretøy",
+    "register_vehicle_subtitle": "Skann kjøretillatelse + grønt kort · 30 sek · aldri mer å skrive inn",
+    "or_skip": "eller gå direkte til",
+    "family_pack": "🔥 Familiepakke",
+    "family_pack_desc": "3 skademeldinger å dele med dine nærmeste",
+    "scenario_child": "Barnet ditt ringer — ulykke. Send ham/henne en skademelding på 3 sekunder til mobilen hans/henne.",
+    "scenario_employee": "Ansatt med bedriftskjøretøy. Overfør en kreditt via WhatsApp umiddelbart.",
+    "scenario_friend": "Venn i nød i utlandet. Han/hun får en lenke, ingen konto kreves.",
+    "buy_3_reports": "Kjøp 3 skademeldinger — CHF/EUR 12.90 →",
+    "see_all_packs": "Se alle pakker →",
+    "ready_title": "Klar for neste gang",
+    "ready_subtitle": "Fyll på nå, del når du vil",
+    "account_title": "✅ Din boom.contact-konto",
+    "account_desc": "Dine kjøretøy er husket. Ved neste ulykke går du direkte til QR-trinnet — ingen inntasting, ingen skanning.",
+    "manage_garage": "Administrer garasjen min →",
+    "gift_title": "🎁 Gi en skademelding via WhatsApp",
+    "gift_desc": "En av kreditter = en unik lenke å sende til <strong>hvem som helst</strong>, uten at personen trenger en konto.",
+    "credits_available_one": "{{count}} kreditt tilgjengelig",
+    "credits_available_other": "{{count}} kreditter tilgjengelig",
+    "share_protect": "Del, beskytt dine nærmeste",
+    "wa_gift_title": "📲 Gi en skademelding via WhatsApp",
+    "wa_gift_desc": "Med ett klikk, send en lenke til barnet ditt, ansatt eller venn. Han/hun lager sin skademelding uten konto eller betaling — trukket fra kreditter.",
+    "send_1": "📲 Send 1 skademelding",
+    "send_3": "📲 Send 3 skademeldinger",
+    "gift_link_created": "✅ Lenke opprettet — send den via WhatsApp!",
+    "share_title": "📤 Del boom.contact",
+    "share_desc": "Du har nettopp laget din skademelding på 5 minutter. Dine venner fortjener å vite at dette eksisterer.",
+    "memorize_vehicles": "🚗 Husk dine andre kjøretøy",
+    "memorize_desc": "Bedriftsflåte, motorsykkel, campingvogn? Hvert skannet kjøretøy = aldri mer inntasting ved en ulykke.",
+    "low_credits_one": "⚡ Du har bare {{count}} kreditt igjen",
+    "low_credits_other": "⚡ Du har bare {{count}} kreditter igjen",
+    "recharge_desc": "Fyll på nå og dra nytte av rabatter på familie- og bedriftspakker.",
+    "recharge_btn": "Fyll på mine kreditter →",
+    "pack_single_label": "1 skademelding",
+    "pack_single_note": "Engangsbruk",
+    "pack_pack3_label": "3 skademeldinger",
+    "pack_pack3_note": "Familie · spar 12%",
+    "pack_pack10_label": "10 skademeldinger",
+    "pack_pack10_note": "Bedrift · spar 29%",
+    "popular_badge": "⭐ POPULÆR"
+  },
+  "constat": {
+    "nav": {
+      "back": "Tilbake",
+      "reset": "Tilbakestill skademeldingen"
+    },
+    "session": {
+      "expiring": "Din sesjon utløper snart. Lagre dataene dine."
+    },
+    "error": {
+      "close": "Lukk feilen"
+    },
+    "vehicle": {
+      "pickRegistered": "Velg et registrert kjøretøy",
+      "autofill": "Automatisk utfylling — ingen skanning nødvendig",
+      "yourRegistered": "Dine registrerte kjøretøy",
+      "org": "Bedrift",
+      "personal": "Personlig",
+      "fallback": "Kjøretøy",
+      "cancel": "Avbryt",
+      "orScanNew": "eller skann et nytt kjøretøy"
+    },
+    "pedestrian": {
+      "title": "Andre part: fotgjenger"
+    },
+    "summary": {
+      "yourVehicle": "Ditt kjøretøy",
+      "accident": "Ulykke",
+      "damagedZones_one": "{{count}} skadet sone",
+      "damagedZones_other": "{{count}} skadede soner"
+    },
+    "emergency": {
+      "title": "Nødnummere"
+    }
   }
 }

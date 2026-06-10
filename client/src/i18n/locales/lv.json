@@ -3,6 +3,7 @@
     "continue": "Turpināt →",
     "confirm": "Apstiprināt →",
     "cancel": "Atcelt",
+    "rescan": "🔄 Skenēt vēlreiz",
     "loading": "Ielādē…",
     "saving": "⏳ Saglabā…",
     "error": "Kļūda",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentējiet negadījumu bez papīra, bez jucekļa.",
+      "subtitle": "boom.contact vada jūs soli pa solim, lai savāktu noderīgo informāciju, pievienotu fotogrāfijas, atrašanās vietu, paziņojumus un parakstus, pēc tam ģenerētu laikspiedolu saturošu PDF dokumentu nosūtīšanai apdrošinātājam."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktīva sesija",
+      "vehicleA": "TRANSPORTLĪDZEKLIS A",
+      "photosSig": "Fotogrāfijas · paraksts ✓",
+      "vehicleB": "TRANSPORTLĪDZEKLIS B",
+      "qrJoined": "QR pievienots · procesā",
+      "payGenerate": "Maksāt un ģenerēt PDF",
+      "pdfBadge": "PDF ar laikspiedolu",
+      "qrBadge": "Kopīgots QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Uzaiciniet ar QR kodu",
+        "desc": "Izveidojiet sesiju, otrs vadītājs skenē QR kodu ar savu tālruni. Bez instalēšanas, bez reģistrācijas."
+      },
+      {
+        "title": "Fotogrāfijas, balss un paraksts",
+        "desc": "Pievienojiet fotogrāfijas, diktējiet savus novērojumus ar balsi, novietojiet transportlīdzekļus skicē un parakstiet ar pirkstu."
+      },
+      {
+        "title": "PDF dokuments ar laikspiedolu",
+        "desc": "boom.contact ģenerē PDF dokumentu ar laikspiedolu, kurā iekļauta katra vadītāja ievadītā informācija."
+      },
+      {
+        "title": "Nosūtīšanai apdrošinātājam",
+        "desc": "Lejupielādējiet PDF vai nosūtiet to pa e-pastu, lai pievienotu savam apdrošināšanas atlīdzības pieprasījumam."
+      }
+    ],
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +128,102 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "seoLine": "Daudzvalodu digitālais negadījuma protokols · Digital accident report",
+    "flow": {
+      "label": "Viss vienā plūsmā",
+      "title": "No negadījuma līdz gatavam dokumentam"
+    },
+    "stress": {
+      "label": "Izstrādāts negadījuma brīdim",
+      "title": "Radīts stresa situācijām",
+      "text": "Pēc sadursmes nav skaidras domas. boom.contact virzās soli pa solim, jūsu valodā, un saglabā katru savākto informāciju. Viss darbojas tālruņa pārlūkprogrammā, pat ar ierobežotu savienojumu.",
+      "bullets": [
+        "Vadīts soli pa solim",
+        "Daudzvalodu",
+        "Fotogrāfijas · balss · paraksts",
+        "PDF dokuments ar laikspiedolu"
+      ],
+      "emergencyTitle": "Ārkārtas gadījumā",
+      "emergencyText": "boom.contact neaizstāj glābšanas dienestus, policiju, advokātu vai apdrošinātāju. Ja ir ievainoti vai bīstami, vispirms sazinieties ar ārkārtas dienestiem."
+    },
+    "pricing": {
+      "label": "Cenas",
+      "title": "Vienkārši, pārskatāmi, bez abonēšanas",
+      "caption": "1 kredīts = 1 pilns protokols · daudzvalodu · kredīti bez derīguma termiņa",
+      "badgePopular": "Populārs",
+      "plans": [
+        {
+          "label": "1 protokols",
+          "desc": "Vienam negadījumam"
+        },
+        {
+          "label": "3 protokoli",
+          "desc": "Visai ģimenei"
+        },
+        {
+          "label": "10 protokoli",
+          "desc": "Autoparkam un brokeriem"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Profesionāļiem",
+      "title": "Brokeriem, autoparkam un apdrošināšanas partneriem",
+      "text": "Nodrošiniet saviem klientiem un vadītājiem skaidru rīku negadījuma dokumentēšanai un PDF dokumenta ar laikspiedolu ģenerēšanai. Kredītu paketes autoparkam un brokeriem, vienkārša ieviešana, bez abonēšanas.",
+      "cta": "Sazināties / kopīgot",
+      "items": [
+        {
+          "title": "Autoparks",
+          "desc": "Strukturēts dokuments katram vadītāja negadījumam."
+        },
+        {
+          "title": "Brokeri",
+          "desc": "Pievienotās vērtības pakalpojums jūsu apdrošinātajiem."
+        },
+        {
+          "title": "Konfidencialitāte",
+          "desc": "Dati šifrēti pārsūtīšanas laikā, dzēšami pēc pieprasījuma."
+        },
+        {
+          "title": "Nosūtīšana",
+          "desc": "PDF ar laikspiedolu gatavs pievienošanai apdrošināšanas atlīdzības pieprasījumam."
+        }
+      ]
+    },
+    "faq": {
+      "label": "BUJ",
+      "title": "Biežāk uzdotie jautājumi",
+      "items": [
+        {
+          "q": "Kas ir boom.contact?",
+          "a": "boom.contact ir lietojumprogramma, kas palīdz dokumentēt ceļu satiksmes negadījumu no tālruņa: vadītāju uzaicināšana ar QR, fotogrāfijas, balss, skice, paraksti, pēc tam PDF dokumenta ar laikspiedolu ģenerēšana nosūtīšanai apdrošinātājam."
+        },
+        {
+          "q": "Vai man jāinstalē lietojumprogramma?",
+          "a": "Nē. boom.contact darbojas tieši tālruņa pārlūkprogrammā (Safari, Chrome, Firefox). Varat arī pievienot to savam sākuma ekrānam kā tīmekļa lietojumprogrammu (PWA) bezsaistes piekļuvei."
+        },
+        {
+          "q": "Kas notiek, ja otram vadītājam nav lietojumprogrammas?",
+          "a": "Jūs izveidojat sesiju un parādās QR kods. Otrs vadītājs to skenē ar savu tālruni: boom.contact atveras viņa pārlūkprogrammā, bez reģistrācijas vai lejupielādes."
+        },
+        {
+          "q": "Vai PDF dokumentu pieņem mans apdrošinātājs?",
+          "a": "PDF dokuments ar laikspiedolu ir paredzēts, lai pievienotu jūsu apdrošināšanas atlīdzības pieprasījumam. boom.contact negarantē tā pieņemšanu, kas ir atkarīga no jūsu apdrošinātāja saskaņā ar līgumu un jurisdikciju."
+        },
+        {
+          "q": "Vai tas darbojas, ja otrs vadītājs runā citā valodā?",
+          "a": "Jā. Katrs vadītājs izmanto saskarni savā valodā. Gala dokuments tiek ģenerēts katram vadītājam."
+        },
+        {
+          "q": "Vai mani dati ir aizsargāti?",
+          "a": "Dati ir šifrēti pārsūtīšanas laikā, sesijas automātiski dzēstas pēc noteikta laika, un policija nekad netiek automātiski paziņota — tikai pēc jūsu skaidras darbības."
+        },
+        {
+          "q": "Cik tas maksā?",
+          "a": "Sākot no CHF / EUR 4.90 par vienu protokolu. 3 protokolu pakete 12.90 (−12 %), 10 protokolu pakete 34.90 (−29 %). Bez abonēšanas, kredīti bez derīguma termiņa."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Neviens dokuments nav atpazīts. Pārbaudiet fotogrāfiju kvalitāti.",
+    "analysis_error": "Analīzes kļūda.",
+    "read_failed": "Nolasīšana neizdevās",
+    "docs_analyzed_one": "{{count}} dokuments analizēts",
+    "docs_analyzed_other": "{{count}} dokumenti analizēti",
+    "confidence": "Pārliecība: {{pct}}%",
+    "rescan": "Skenēt vēlreiz",
+    "vehicle_section": "🚗 Transportlīdzeklis",
+    "plate": "Numura zīme",
+    "driver_section": "👤 Vadītājs",
+    "firstName": "Vārds",
+    "lastName": "Uzvārds",
+    "insurance_found": "✅ Apdrošināšana",
+    "insurance_manual": "⚠️ Apdrošināšana — jāaizpilda manuāli",
+    "company_label": "Sabiedrība",
+    "company_aria": "Apdrošināšanas sabiedrība",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Polises Nr.",
+    "policy_manual_hint": "(manuāla ievade)",
+    "policy_aria": "Polises numurs",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Apstiprināt →",
+    "scanning_title": "Notiek analīze…",
+    "scanning_subtitle_one": "{{count}} dokuments · automātiska identificēšana",
+    "scanning_subtitle_other": "{{count}} dokumenti · automātiska identificēšana",
+    "photo_title": "Fotografējiet savus dokumentus",
+    "photo_subtitle": "Reģistrācijas apliecība + zaļā karte vienā analīzē.",
+    "photo_subtitle2": "Lietotne identificē un izvelk visu automātiski.",
+    "doc_scanned": "Dokuments skenēts {{n}}",
+    "doc_label": "Dokuments {{n}}",
+    "photograph": "Fotografēt",
+    "rear_camera": "Aizmugurējā kamera",
+    "gallery": "Galerija",
+    "which_docs": "Kurus dokumentus skenēt?",
+    "doc_ch": "🇨🇭 Reģistrācijas apliecība + zaļā karte",
+    "doc_fr": "🇫🇷 Reģistrācijas apliecība + zaļā karte / apliecinājums",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 Reģistrācija + apdrošināšanas apliecinājums",
+    "close_error_aria": "Aizvērt kļūdu",
+    "analyze_btn_one": "🔍 Analizēt {{count}} dokumentu",
+    "analyze_btn_other": "🔍 Analizēt {{count}} dokumentus",
+    "skip_manual": "Izlaist — manuāla ievade →",
+    "upload_gallery_aria": "Augšupielādēt dokumentus no galerijas",
+    "take_photo_aria": "Fotografēt dokumentu"
+  },
+  "pricingPage": {
+    "sr_title": "Cenas — boom.contact",
+    "back": "← Atpakaļ",
+    "buy_reports": "Iegādāties protokolus",
+    "credits_no_expiry": "Kredīti bez derīguma termiņa · Kopīgojami ar WhatsApp",
+    "credits_available_one": "✅ {{count}} kredīts pieejams",
+    "credits_available_other": "✅ {{count}} kredīti pieejami",
+    "no_credits": "⚡ Nav kredītu — papildiniet tagad",
+    "currency_label": "VALŪTA",
+    "currency_detected": "✓ noteikta automātiski",
+    "most_popular": "⭐ POPULĀRĀKAIS · IETAUPĪJUMS {{savings}}",
+    "economy": "Ietaupījums {{savings}}",
+    "per_pack": "par paketi",
+    "per_report": "/ protokols",
+    "redirecting_stripe": "⏳ Pārvirzīšana uz Stripe...",
+    "buy_btn": "Iegādāties {{label}} — {{price}}",
+    "error_missing_url": "Trūkst maksājuma URL",
+    "error_generic": "Kļūda",
+    "error_email_required": "E-pasts nepieciešams pirkumam",
+    "trust_stripe": "Droša Stripe maksājumu sistēma PCI-DSS",
+    "trust_no_expiry": "Kredīti bez derīguma termiņa",
+    "trust_whatsapp": "Kopīgojams ar WhatsApp",
+    "trust_worldwide": "Daudzvalodu",
+    "trust_invoice": "Automātisks PDF rēķins",
+    "trust_fleet": "Ideāls uzņēmumu autoparkam",
+    "why_title": "KĀPĒC KREDĪTIEM JĀBŪT IEPRIEKŠ?",
+    "scenario_child_title": "Jūsu bērnam negadījums",
+    "scenario_child_text": "Viņš jums piezvanās. Jūs nosūtāt kredītu ar WhatsApp. Viņš sagatavo protokolu 5 minūtēs.",
+    "scenario_company_title": "Uzņēmuma transportlīdzeklis",
+    "scenario_company_text": "Jūsu piegādātājam sadursme. Pārsūtiet viņam kredītu uzreiz no sava mobilā.",
+    "scenario_abroad_title": "Ceļojumā ārzemēs",
+    "scenario_abroad_text": "Negadījums Vācijā, Austrālijā vai Japānā. Saskarne pieejama vairākās valodās.",
+    "pkg_single_label": "1 protokols",
+    "pkg_single_desc": "Vienam negadījumam",
+    "pkg_pack3_label": "3 protokoli",
+    "pkg_pack3_desc": "Visai ģimenei",
+    "pkg_pack3_marketing": "🎁 Kopīgojiet ar WhatsApp — jūsu bērns, darbinieks, draugs saņem tūlītēju saiti.",
+    "pkg_pack10_label": "10 protokoli",
+    "pkg_pack10_desc": "Autoparks un uzņēmumi",
+    "pkg_pack10_marketing": "🏢 Pārvaldiet visu savu autoparku. Pārsūtiet kolēģiem ar 1 klikšķi."
+  },
+  "postConstat": {
+    "next_time_title": "Nākamreiz: 0 ievade",
+    "next_time_subtitle": "Jūsu transportlīdzekļi saglabāti uz visiem laikiem",
+    "benefit_scanned": "Apliecība + zaļā karte skenēta vienu reizi",
+    "benefit_fast": "Protokols 2 min, nevis 10",
+    "benefit_gift": "Dāviniet protokolu tuviniekiem vienā klikšķī",
+    "benefit_family": "Ideāli ģimenei: kopīgojiet kredītus",
+    "create_account": "Izveidot bezmaksas kontu →",
+    "share_btn": "Dalīties ar tuviniekiem",
+    "register_vehicle_title": "Pēc tam reģistrē savu transportlīdzekli",
+    "register_vehicle_subtitle": "Skenē apliecību + zaļo karti · 30 sek · nekad vairs nav jāievada",
+    "or_skip": "vai pāriet tieši",
+    "family_pack": "🔥 Ģimenes pakete",
+    "family_pack_desc": "3 protokoli, kurus dalīt ar tuviniekiem",
+    "scenario_child": "Jūsu bērns zvana — negadījums. Nosūtiet protokolu 3 sekundēs uz viņa mobilo.",
+    "scenario_employee": "Darbinieks ar uzņēmuma auto. Pārsūtiet kredītu ar WhatsApp uzreiz.",
+    "scenario_friend": "Draugs grūtībās ārzemēs. Viņš saņem saiti, konts nav nepieciešams.",
+    "buy_3_reports": "Iegādāties 3 protokolus — CHF/EUR 12.90 →",
+    "see_all_packs": "Skatīt visas paketes →",
+    "ready_title": "Gatavs nākamajai reizei",
+    "ready_subtitle": "Uzlādējiet tagad, dalieties, kad vēlaties",
+    "account_title": "✅ Jūsu boom.contact konts",
+    "account_desc": "Jūsu transportlīdzekļi ir saglabāti. Nākamajā negadījumā jūs sākat tieši ar QR soli — bez ievades, bez skenēšanas.",
+    "manage_garage": "Pārvaldīt manu garāžu →",
+    "gift_title": "🎁 Dāviniet protokolu ar WhatsApp",
+    "gift_desc": "Viens no jūsu kredītiem = unikāla saite, ko nosūtīt <strong>jebkuram</strong>, bez nepieciešamības pēc konta.",
+    "credits_available_one": "{{count}} kredīts pieejams",
+    "credits_available_other": "{{count}} kredīti pieejami",
+    "share_protect": "Dalieties, aizsargājiet savus tuvos",
+    "wa_gift_title": "📲 Dāvināt protokolu ar WhatsApp",
+    "wa_gift_desc": "Vienā klikšķī nosūtiet saiti savam bērnam, darbiniekam vai draugam. Viņš izveido protokolu bez konta vai maksājuma — atskaitīts no jūsu kredītiem.",
+    "send_1": "📲 Nosūtīt 1 protokolu",
+    "send_3": "📲 Nosūtīt 3 protokolus",
+    "gift_link_created": "✅ Saite izveidota — nosūtiet to ar WhatsApp!",
+    "share_title": "📤 Dalīties boom.contact",
+    "share_desc": "Tu tikko izveidoji protokolu 5 min. Taviem draugiem ir jāzina, ka tas eksistē.",
+    "memorize_vehicles": "🚗 Saglabājiet citus transportlīdzekļus",
+    "memorize_desc": "Uzņēmuma flote, motocikls, kemperis? Katrs skenētais transportlīdzeklis = nekad vairs nav jāievada negadījuma gadījumā.",
+    "low_credits_one": "⚡ Jums ir palicis tikai {{count}} kredīts",
+    "low_credits_other": "⚡ Jums ir palicis tikai {{count}} kredīti",
+    "recharge_desc": "Uzlādējiet tagad un izmantojiet atlaides ģimenes un uzņēmuma paketēm.",
+    "recharge_btn": "Uzlādēt kredītus →",
+    "pack_single_label": "1 protokols",
+    "pack_single_note": "Vienreizēja lietošana",
+    "pack_pack3_label": "3 protokoli",
+    "pack_pack3_note": "Ģimene · ietaupījums 12%",
+    "pack_pack10_label": "10 protokoli",
+    "pack_pack10_note": "Uzņēmums · ietaupījums 29%",
+    "popular_badge": "⭐ POPULĀRS"
+  },
+  "auth": {
+    "default_subtitle": "Piesakieties, lai saglabātu savus transportlīdzekļus un nekad vairs neko neievadītu protokolos.",
+    "magic_btn": "📧 Pieslēgšanās ar e-pasta saiti (ieteicams)",
+    "password_btn": "🔑 Pieslēgšanās ar paroli",
+    "register_btn": "✨ Izveidot kontu",
+    "skip_btn": "Turpināt bez konta →",
+    "skip_note": "Bez konta jūs joprojām varat izveidot protokolu un maksāt ar Stripe.",
+    "magic_instructions": "Ievadiet savu e-pastu — jūs saņemsiet pieslēgšanās saiti, derīga 15 minūtes.",
+    "send_link": "Nosūtīt saiti",
+    "sending": "Nosūta...",
+    "back": "← Atpakaļ",
+    "email_sent_title": "E-pasts nosūtīts!",
+    "email_sent_desc": "Pārbaudiet savu pastkasti <strong>{{email}}</strong>.",
+    "email_sent_validity": "Saite ir derīga 15 minūtes.",
+    "login_error": "Nepareizs e-pasts vai parole.",
+    "logging_in": "Piesakās...",
+    "login_btn": "Pieslēgties",
+    "forgot_password": "Aizmirsta parole? Izmantot e-pasta saiti →",
+    "register_desc": "Izveidojiet kontu, lai saglabātu savus transportlīdzekļus un automātiski aizpildītu protokolus.",
+    "password_placeholder": "Parole (min. 6 rakstzīmes)",
+    "creating": "Izveido...",
+    "create_btn": "Izveidot kontu",
+    "register_legal": "Izveidojot kontu, jūs piekrītat mūsu lietošanas noteikumiem. Jūsu transportlīdzekļa dati ir šifrēti un nekad netiek kopīgoti bez jūsu piekrišanas.",
+    "register_error": "Reģistrācijas kļūda.",
+    "generic_error": "Kļūda"
+  },
+  "constatForm": {
+    "tab_vehicle": "Transportlīdzeklis",
+    "tab_driver": "Vadītājs",
+    "tab_insurance": "Apdrošināšana",
+    "tab_circumstances": "Apstākļi",
+    "tab_complement": "Papildinājums",
+    "field_required": "Šis lauks ir obligāts",
+    "plate_label": "Reģistrācijas numurs",
+    "brand_label": "Marka",
+    "model_label": "Modelis",
+    "year_label": "Gads",
+    "vin_label": "VIN kods",
+    "firstName_label": "Vārds",
+    "lastName_label": "Uzvārds",
+    "address_label": "Adrese",
+    "postalCode_label": "Pasta indekss",
+    "city_label": "Pilsēta",
+    "country_label": "Valsts",
+    "phone_label": "Tālrunis",
+    "email_label": "E-pasts",
+    "license_label": "Vadītāja apliecības numurs",
+    "company_label": "Apdrošināšanas sabiedrība",
+    "policyNumber_label": "Polises numurs",
+    "greenCardNumber_label": "Zaļās kartes numurs",
+    "greenCardExpiry_label": "Zaļās kartes derīgums",
+    "agentName_label": "Aģents / Brokeris",
+    "agentPhone_label": "Apdrošinātāja tālrunis",
+    "circumstances_desc": "Atzīmējiet visus lodziņus, kas apraksta jūsu transportlīdzekļa <strong>({{role}})</strong> situāciju sadursmes brīdī.",
+    "boxes_checked_one": "{{count}} lodziņš atzīmēts",
+    "boxes_checked_other": "{{count}} lodziņi atzīmēti",
+    "complement_desc": "Papildinformācija protokolam — sadaļas 11, 13 un 14.",
+    "datetime_label": "Negadījuma datums un laiks",
+    "visible_damage_label": "Redzamie bojājumi (sadaļa 11)",
+    "visible_damage_placeholder": "Aprakstiet redzamos bojājumus jūsu transportlīdzeklim...",
+    "third_party_label": "Materiālie zaudējumi trešajām personām (izņemot A un B)",
+    "witnesses_label": "Liecinieki",
+    "witnesses_placeholder": "Katra liecinieka vārds, uzvārds, tālrunis...",
+    "voice_declaration_label": "🎙️ Balss ziņojums (neobligāti)",
+    "observations_label": "Brīvie novērojumi — vadītājs {{role}} (sadaļa 14)",
+    "observations_placeholder": "Pievienojiet jebkuru noderīgu informāciju: laikapstākļi, ceļa seguma stāvoklis, aptuvens ātrums, piezīmes...",
+    "insurance_holder_label": "Apdrošinātājs (ja atšķiras no vadītāja)",
+    "holder_name_placeholder": "Apdrošinātāja pilns vārds",
+    "holder_name_aria": "Apdrošinātāja vārds",
+    "holder_address_placeholder": "Apdrošinātāja adrese",
+    "holder_address_aria": "Apdrošinātāja adrese",
+    "save_btn": "Saglabāt un turpināt →",
+    "form_tabs_aria": "Veidlapas sadaļas"
+  },
+  "voice": {
+    "title": "Aprakstiet negadījumu",
+    "subtitle": "Neobligāti — aprakstiet saviem vārdiem, kas notika. Jūsu ziņojums tiks ierakstīts protokolā.",
+    "tab_voice": "🎙️ Balss",
+    "tab_text": "⌨️ Teksts",
+    "start_recording": "Sākt ierakstu",
+    "textarea_aria": "Negadījuma apraksts",
+    "textarea_placeholder": "Aprakstiet negadījumu dažos teikumos...",
+    "validate_desc": "✅ Apstiprināt aprakstu",
+    "skip_step": "Izlaist šo soli →",
+    "recording_in_progress": "Notiek ierakstīšana...",
+    "recording_tip": "💡 Aprakstiet: katra transportlīdzekļa virzienu, sadursmes vietu, apstākļus. Runājiet mierīgi.",
+    "stop_recording": "Apturēt ierakstu",
+    "transcribing_title": "Notiek transkribēšana...",
+    "transcribing_subtitle": "Jūsu ieraksts tiek apstrādāts",
+    "desc_recorded": "Apraksts ierakstīts",
+    "desc_in_pdf": "Jūsu ziņojums tiks iekļauts protokola PDF failā",
+    "your_declaration": "Jūsu ziņojums",
+    "edit": "✏️ Rediģēt",
+    "edit_placeholder": "Ja nepieciešams, labojiet savu ziņojumu...",
+    "restart": "Sākt no jauna",
+    "mic_denied": "Piekļuve mikrofonam liegta — izmantojiet manuālo ievadi.",
+    "mic_unavailable": "Mikrofons nav pieejams: {{msg}}",
+    "transcription_error": "Transkribēšanas kļūda",
+    "textarea_edit_aria": "Negadījuma apraksts"
+  },
+  "app": {
+    "magic_link_error": "Nederīga vai beigusies pieteikšanās saite.",
+    "gift_credits_added": "🎁 {{credits}} kredīts(-i) pievienoti jūsu kontam!",
+    "loading_aria": "Notiek ielāde",
+    "nav_landing": "Sākumlapa",
+    "nav_cgu": "Lietošanas noteikumi",
+    "nav_pricing": "Cenas",
+    "nav_constat": "Protokola izveide",
+    "nav_join": "Pievienoties sesijai",
+    "nav_account": "Lietotāja konts",
+    "nav_admin": "Administratora panelis",
+    "nav_emergency": "Ārkārtas numuri",
+    "nav_privacy": "Privātuma politika",
+    "nav_police_login": "Policijas pieteikšanās",
+    "nav_police_dashboard": "Policijas panelis",
+    "nav_police_flow": "Policijas plūsma",
+    "nav_police_intervention": "Policijas iejaukšanās",
+    "nav_to": "Navigācija uz {{label}}",
+    "title_default": "boom.contact — Digitālais negadījumu protokols",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "legal": {
+    "intro": {
+      "title": "Pirms sākšanas",
+      "body": "boom.contact palīdz dokumentēt negadījumu un izveidot strukturētu PDF failu. Ja ir ievainojumi, briesmas, aizbraukšana no notikuma vietas, nopietnas domstarpības vai juridisks pienākums, nekavējoties sazinieties ar glābšanas dienestu, policiju vai kompetentām iestādēm. Sniegtā informācija ir dalībnieku atbildība. Jūs varat ievadīt informāciju manuāli, ja nevēlaties izmantot kameru, mikrofonu vai atrašanās vietas noteikšanu.",
+      "start": "Sapratu, sākt",
+      "emergency": "Skatīt ārkārtas numurus",
+      "privacy_cgu": "Konfidencialitāte / Lietošanas noteikumi"
+    },
+    "guest_accept": {
+      "checkbox": "Es piekrītu Vispārējiem lietošanas noteikumiem un esmu izlasījis Konfidencialitātes politiku.",
+      "note": "Es saprotu, ka mana informācija tiks izmantota negadījuma PDF faila izveidei un ka sniegtā informācija ir mana atbildība."
+    },
+    "signature_confirm": "Es apstiprinu, ka manis sniegtā informācija ir precīza pēc manām zināšanām, un piekrītu, ka mans paraksts tiks iekļauts PDF failā.",
+    "payment_notice": "Turpinot uz maksājumu, jūs saprotat, ka maksājums sedz PDF faila izveidi un nosūtīšanu. Sniegtā informācija ir dalībnieku atbildība.",
+    "mic_notice": "Izmantojot mikrofonu, jūsu balss paziņojums tiks transkribēts un iekļauts negadījuma dokumentos. Jūs varat izmantot teksta ievadi tā vietā.",
+    "injury_confirm": {
+      "body": "Ievainojumu fotoattēli var saturēt sensitīvus datus. Pārliecinieties, ka jums ir attiecīgās personas piekrišana, izņemot gadījumus, kad tas ir nepieciešams drošības vai juridisko pienākumu dēļ.",
+      "continue": "Turpināt",
+      "change": "Mainīt kategoriju"
+    },
+    "pdf_ready_title": "Laikzīmogu negadījuma PDF fails",
+    "pdf_ready_body": "Nepieciešamie paraksti ir reģistrēti. PDF fails ir gatavs. Pārbaudiet informāciju pirms tās nosūtīšanas apdrošinātājam."
+  },
+  "signature": {
+    "title": "Paraksts",
+    "driver": "Vadītājs {{role}}",
+    "other_party": "Otra puse",
+    "no_signature": "bez paraksta",
+    "sign_here": "Parakstiet šeit ar pirkstu",
+    "signed": "PARAKSTĪTS ✓",
+    "clear": "🗑 Dzēst",
+    "saving": "⏳ Saglabā...",
+    "confirm_signature": "✍️ Apstiprināt parakstu",
+    "waiting_other": "Gaida otra vadītāja parakstu...",
+    "waiting_pdf": "PDF fails tiks ģenerēts, kad abas puses būs parakstījušas.",
+    "report_signed": "Protokols parakstīts!",
+    "generating_pdf": "Notiek PDF ģenerēšana...",
+    "canvas_aria": "Paraksta zona — Vadītājs {{role}}"
+  },
+  "account": {
+    "member": {
+      "remove": "Noņemt",
+      "removeConfirm": "Noņemt šo dalībnieku? Viņš zaudēs piekļuvi uzņēmuma transportlīdzekļiem un kredītiem.",
+      "loading": "Ielādē…",
+      "none": "Nav dalībnieku.",
+      "invite": "Uzaicināt dalībnieku",
+      "inviteBtn": "Uzaicināt",
+      "pending": "Gaidošie uzaicinājumi"
+    },
+    "role": {
+      "owner": "Īpašnieks",
+      "driver": "Vadītājs",
+      "fleet_admin": "Autoparka administrators"
+    },
+    "scan": {
+      "cancel": "Atcelt",
+      "photographPre": "Nofotografējiet savu",
+      "license": "reģistrācijas apliecību",
+      "and": "un/vai savu",
+      "greenCard": "zaļo karti",
+      "title": "Skenēt apliecību + zaļo karti",
+      "subtitle": "Automātiska atpazīšana · daudzvalodu"
+    },
+    "garage": {
+      "back": "Garāža",
+      "title": "Mana garāža",
+      "add": "Pievienot",
+      "emptyTitle": "Tukša garāža",
+      "emptySubtitle": "Reģistrējiet savus transportlīdzekļus vienu reizi. Nekad vairs nevajadzēs skenēt negadījuma gadījumā.",
+      "addFirst": "Pievienot manu pirmo transportlīdzekli",
+      "noOrgVehicles": "Pašlaik nav uzņēmuma transportlīdzekļu."
+    },
+    "insurance": {
+      "saved": "Apdrošināšana saglabāta",
+      "add": "Pievienot apdrošināšanu"
+    },
+    "nav": {
+      "logout": "Izrakstīties"
+    },
+    "vehicle": {
+      "edit": "Rediģēt transportlīdzekli",
+      "delete": "Dzēst transportlīdzekli",
+      "editOrg": "Rediģēt uzņēmuma transportlīdzekli",
+      "deleteOrg": "Dzēst uzņēmuma transportlīdzekli"
+    },
+    "fields": {
+      "nickname": "Iesauka",
+      "plate": "Numura zīme",
+      "make": "Marka",
+      "model": "Modelis",
+      "color": "Krāsa",
+      "year": "Gads",
+      "firstName": "Vārds",
+      "lastName": "Uzvārds",
+      "phone": "Tālrunis",
+      "company": "Uzņēmums",
+      "address": "Adrese",
+      "newEmail": "Jauns e-pasts",
+      "currentPwd": "Pašreizējā parole (apstiprinājums)",
+      "confirmEmailAria": "E-pasta adreses apstiprinājums"
+    },
+    "credits": {
+      "buy": "Pirkt:",
+      "available": "PIEEJAMIE KREDĪTI",
+      "unit": "1 kredīts = 1 pilnīgs negadījuma protokols"
+    },
+    "history": {
+      "loading": "Notiek ielāde...",
+      "empty": "Nav protokolu",
+      "emptySub": "Jūsu nākamais protokols parādīsies šeit automātiski."
+    },
+    "personal": {
+      "title": "Personīgā informācija",
+      "none": "Nav informācijas — noklikšķiniet uz Rediģēt"
+    },
+    "delete": {
+      "willDelete": "KAS TIKS NEATGRIEZENISKI DZĒSTS:",
+      "text": "Neatgriezeniski dzēst jūsu kontu, transportlīdzekļus un visus protokolus. Šī darbība ir neatgriezeniska."
+    },
+    "danger": {
+      "title": "Bīstamā zona"
+    }
+  },
+  "join": {
+    "sessionLabel": "Sesija",
+    "yourEmail": "Jūsu e-pasts",
+    "emailHint": "(lai saņemtu PDF)",
+    "emailAria": "Jūsu e-pasta adrese",
+    "connecting": "Savienojas…",
+    "connected": "Savienots! Sākas…",
+    "joinButton": "Pievienoties ziņojumam"
+  },
+  "constat": {
+    "nav": {
+      "back": "Atpakaļ",
+      "reset": "Atiestatīt ziņojumu"
+    },
+    "session": {
+      "expiring": "Jūsu sesija drīz beigsies. Saglabājiet savus datus."
+    },
+    "error": {
+      "close": "Aizvērt kļūdu"
+    },
+    "vehicle": {
+      "pickRegistered": "Izvēlēties reģistrētu transportlīdzekli",
+      "autofill": "Automātiska aizpildīšana — nav nepieciešams skenēt",
+      "yourRegistered": "Jūsu reģistrētie transportlīdzekļi",
+      "org": "Uzņēmums",
+      "personal": "Personīgs",
+      "fallback": "Transportlīdzeklis",
+      "cancel": "Atcelt",
+      "orScanNew": "vai skenēt jaunu transportlīdzekli"
+    },
+    "pedestrian": {
+      "title": "Otra puse: gājējs"
+    },
+    "summary": {
+      "yourVehicle": "Jūsu transportlīdzeklis",
+      "accident": "Negadījums",
+      "damagedZones_one": "{{count}} bojāta zona",
+      "damagedZones_other": "{{count}} bojātas zonas"
+    },
+    "emergency": {
+      "title": "Ārkārtas numuri"
+    }
   }
 }

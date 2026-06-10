@@ -12,7 +12,8 @@
     "required": "اجباری",
     "yes": "بله",
     "no": "خیر",
-    "unknown": "نامشخص"
+    "unknown": "نامشخص",
+    "rescan": "🔄 دوباره اسکن کنید"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "یک تصادف را بدون کاغذ و بدون سردرگمی مستند کنید.",
+      "subtitle": "boom.contact شما را مرحله به مرحله راهنمایی می‌کند تا اطلاعات مفید را جمع‌آوری کنید، عکس‌ها، موقعیت، اظهارات و امضاها را اضافه کنید و سپس یک پرونده PDF زمان‌بندی شده برای ارسال به بیمه‌گر خود تولید کنید."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "جلسه فعال",
+      "vehicleA": "خودرو A",
+      "photosSig": "عکس‌ها · امضا ✓",
+      "vehicleB": "خودرو B",
+      "qrJoined": "QR پیوسته · در حال انجام",
+      "payGenerate": "پرداخت و تولید PDF",
+      "pdfBadge": "PDF زمان‌بندی شده",
+      "qrBadge": "QR به اشتراک گذاشته شده"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "دعوت از طریق کد QR",
+        "desc": "جلسه را ایجاد کنید، راننده دیگر QR را از تلفن خود اسکن می‌کند. نیازی به نصب یا ثبت‌نام نیست."
+      },
+      {
+        "title": "عکس‌ها، صدا و امضا",
+        "desc": "عکس‌ها را اضافه کنید، مشاهدات خود را با صدا بیان کنید، خودروها را روی طرح قرار دهید و با انگشت امضا کنید."
+      },
+      {
+        "title": "پرونده PDF زمان‌بندی شده",
+        "desc": "boom.contact یک پرونده PDF زمان‌بندی شده تولید می‌کند که شامل اطلاعات وارد شده توسط هر راننده است."
+      },
+      {
+        "title": "برای ارسال به بیمه‌گر شما",
+        "desc": "PDF را دانلود کنید یا از طریق ایمیل ارسال کنید تا همراه با اعلام خسارت خود به بیمه‌گر شما باشد."
+      }
+    ],
+    "seoLine": "گزارش تصادف دیجیتال چند زبانه · Digital accident report",
+    "flow": {
+      "label": "همه در یک جریان",
+      "title": "از تصادف تا پرونده آماده ارسال"
+    },
+    "stress": {
+      "label": "طراحی شده برای لحظه تصادف",
+      "title": "طراحی شده برای موقعیت‌های استرس‌زا",
+      "text": "پس از یک ضربه، ذهن ما شفاف نیست. boom.contact قدم به قدم، به زبان شما پیش می‌رود و از هر اطلاعات جمع‌آوری شده یادداشت برمی‌دارد. همه چیز از مرورگر تلفن کار می‌کند، حتی با اتصال محدود.",
+      "bullets": [
+        "راهنمایی مرحله به مرحله",
+        "چند زبانه",
+        "عکس‌ها · صدا · امضا",
+        "پرونده PDF زمان‌بندی شده"
+      ],
+      "emergencyTitle": "در صورت اضطراری",
+      "emergencyText": "boom.contact جایگزین خدمات اضطراری، پلیس، وکیل یا بیمه‌گر نیست. در صورت وجود مجروح یا خطر، ابتدا با خدمات اضطراری تماس بگیرید."
+    },
+    "pricing": {
+      "label": "قیمت‌ها",
+      "title": "ساده، شفاف، بدون اشتراک",
+      "caption": "1 اعتبار = 1 گزارش کامل · چند زبانه · اعتبارات بدون انقضا",
+      "badgePopular": "محبوب",
+      "plans": [
+        {
+          "label": "1 گزارش",
+          "desc": "برای یک تصادف تک‌بار"
+        },
+        {
+          "label": "3 گزارش",
+          "desc": "برای کل خانواده"
+        },
+        {
+          "label": "10 گزارش",
+          "desc": "برای ناوگان و کارگزاران"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "برای حرفه‌ای‌ها",
+      "title": "برای کارگزاران، ناوگان و شرکای بیمه",
+      "text": "مشتریان و رانندگان خود را با ابزاری شفاف برای مستند کردن یک تصادف و تولید یک پرونده PDF زمان‌بندی شده مجهز کنید. بسته‌های اعتباری برای ناوگان و کارگزاران، استقرار ساده، بدون اشتراک.",
+      "cta": "تماس / به اشتراک گذاری",
+      "items": [
+        {
+          "title": "ناوگان",
+          "desc": "یک پرونده ساختاریافته برای هر خسارت راننده."
+        },
+        {
+          "title": "کارگزاران",
+          "desc": "یک خدمت با ارزش افزوده برای بیمه‌شدگان شما."
+        },
+        {
+          "title": "حریم خصوصی",
+          "desc": "داده‌های رمزگذاری شده در حین انتقال، قابل حذف به درخواست."
+        },
+        {
+          "title": "انتقال",
+          "desc": "PDF زمان‌بندی شده آماده برای پیوست به اعلام خسارت."
+        }
+      ]
+    },
+    "faq": {
+      "label": "سوالات متداول",
+      "title": "سوالات متداول",
+      "items": [
+        {
+          "q": "boom.contact چیست؟",
+          "a": "boom.contact یک برنامه است که به مستند کردن یک تصادف جاده‌ای از طریق تلفن کمک می‌کند: دعوت از رانندگان از طریق QR، عکس‌ها، صدا، طرح، امضاها و سپس تولید یک پرونده PDF زمان‌بندی شده برای ارسال به بیمه‌گر شما."
+        },
+        {
+          "q": "آیا باید یک برنامه نصب کنم؟",
+          "a": "خیر. boom.contact به‌طور مستقیم در مرورگر تلفن (Safari، Chrome، Firefox) کار می‌کند. همچنین می‌توانید آن را به صفحه اصلی خود به‌عنوان یک برنامه وب (PWA) اضافه کنید تا به‌صورت آفلاین دسترسی داشته باشید."
+        },
+        {
+          "q": "اگر راننده دیگر برنامه را نداشته باشد، چه اتفاقی می‌افتد؟",
+          "a": "شما جلسه را ایجاد می‌کنید و یک کد QR نمایش داده می‌شود. راننده دیگر آن را با تلفن خود اسکن می‌کند: boom.contact در مرورگر او باز می‌شود، بدون نیاز به ثبت‌نام یا دانلود."
+        },
+        {
+          "q": "آیا پرونده PDF توسط بیمه‌گر من پذیرفته می‌شود؟",
+          "a": "پرونده PDF زمان‌بندی شده برای همراهی با اعلام خسارت شما طراحی شده است. boom.contact تضمینی برای پذیرش آن ندارد، که به بیمه‌گر شما بستگی دارد بر اساس قرارداد و حوزه قضایی شما."
+        },
+        {
+          "q": "آیا اگر راننده دیگر به زبان دیگری صحبت کند، کار می‌کند؟",
+          "a": "بله. هر راننده از رابط کاربری به زبان خود استفاده می‌کند. پرونده نهایی برای هر راننده تولید می‌شود."
+        },
+        {
+          "q": "آیا داده‌های من محافظت شده‌اند؟",
+          "a": "داده‌ها در حین انتقال رمزگذاری شده‌اند، جلسات به‌طور خودکار پس از مدتی حذف می‌شوند و پلیس هرگز به‌طور خودکار مطلع نمی‌شود — فقط با اقدام صریح شما."
+        },
+        {
+          "q": "هزینه آن چقدر است؟",
+          "a": "از CHF / EUR 4.90 برای یک گزارش. بسته 3 گزارشی به قیمت 12.90 (−12 %)، بسته 10 به قیمت 34.90 (−29 %). بدون اشتراک، اعتبارات بدون انقضا."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "جلسه",
+    "yourEmail": "ایمیل شما",
+    "emailHint": "(برای دریافت PDF)",
+    "emailAria": "آدرس ایمیل شما",
+    "connecting": "در حال اتصال…",
+    "connected": "متصل شد! در حال شروع…",
+    "joinButton": "به گزارش بپیوندید"
+  },
+  "signature": {
+    "title": "امضا",
+    "driver": "راننده {{role}}",
+    "other_party": "طرف دیگر",
+    "no_signature": "بدون امضا",
+    "sign_here": "اینجا با انگشت خود امضا کنید",
+    "signed": "امضا شده ✓",
+    "clear": "🗑 پاک کردن",
+    "saving": "⏳ در حال ذخیره…",
+    "confirm_signature": "✍️ تأیید امضا",
+    "waiting_other": "در انتظار امضای راننده دیگر…",
+    "waiting_pdf": "PDF پس از امضای هر دو طرف تولید خواهد شد.",
+    "report_signed": "گزارش امضا شده!",
+    "generating_pdf": "در حال تولید PDF…",
+    "canvas_aria": "منطقه امضا — راننده {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "قبل از شروع",
+      "body": "boom.contact به شما کمک می‌کند تا یک تصادف را مستند کرده و یک پرونده PDF ساختاریافته تولید کنید. در صورت وجود جراحت، خطر، فرار، اختلاف جدی یا الزام قانونی، فوراً با خدمات اضطراری، پلیس یا مقامات مربوطه تماس بگیرید. اطلاعات ارائه شده تحت مسئولیت شرکت‌کنندگان باقی می‌ماند. اگر نمی‌خواهید از دوربین، میکروفن یا موقعیت‌یابی استفاده کنید، می‌توانید اطلاعات را به‌صورت دستی وارد کنید.",
+      "start": "متوجه شدم، شروع کنید",
+      "emergency": "شماره‌های اضطراری را ببینید",
+      "privacy_cgu": "حریم خصوصی / شرایط استفاده"
+    },
+    "guest_accept": {
+      "checkbox": "من شرایط عمومی استفاده را می‌پذیرم و سیاست حریم خصوصی را خوانده‌ام.",
+      "note": "من درک می‌کنم که اطلاعات من برای تولید پرونده PDF تصادف استفاده خواهد شد و اطلاعات ارائه شده تحت مسئولیت من باقی می‌ماند."
+    },
+    "signature_confirm": "من تأیید می‌کنم که اطلاعاتی که ارائه داده‌ام به بهترین دانش من صحیح است و موافقت می‌کنم که امضای من در پرونده PDF گنجانده شود.",
+    "payment_notice": "با ادامه به سمت پرداخت، شما درک می‌کنید که پرداخت هزینه تولید و ارسال پرونده PDF را پوشش می‌دهد. اطلاعات ارائه شده تحت مسئولیت شرکت‌کنندگان باقی می‌ماند.",
+    "mic_notice": "با استفاده از میکروفن، اظهارات صوتی شما به‌منظور گنجاندن در پرونده تصادف تبدیل به متن خواهد شد. شما می‌توانید به جای آن از ورودی متنی استفاده کنید.",
+    "injury_confirm": {
+      "body": "عکس‌های جراحت ممکن است حاوی داده‌های حساس باشند. اطمینان حاصل کنید که اجازه شخص مربوطه را دارید، مگر در موارد ضروری ایمنی یا الزام قانونی.",
+      "continue": "ادامه",
+      "change": "تغییر دسته"
+    },
+    "pdf_ready_title": "پرونده PDF تصادف زمان‌بندی شده",
+    "pdf_ready_body": "امضاهای مورد نیاز ثبت شده‌اند. پرونده PDF آماده است. اطلاعات را قبل از ارسال به بیمه‌گر خود بررسی کنید."
+  },
+  "constatForm": {
+    "tab_vehicle": "خودرو",
+    "tab_driver": "راننده",
+    "tab_insurance": "بیمه",
+    "tab_circumstances": "شرایط",
+    "tab_complement": "تکمیلی",
+    "field_required": "این فیلد الزامی است",
+    "plate_label": "پلاک",
+    "brand_label": "مارک",
+    "model_label": "مدل",
+    "year_label": "سال",
+    "vin_label": "شماره شاسی (VIN)",
+    "firstName_label": "نام",
+    "lastName_label": "نام خانوادگی",
+    "address_label": "آدرس",
+    "postalCode_label": "کد پستی",
+    "city_label": "شهر",
+    "country_label": "کشور",
+    "phone_label": "تلفن",
+    "email_label": "ایمیل",
+    "license_label": "شماره گواهینامه رانندگی",
+    "company_label": "شرکت بیمه",
+    "policyNumber_label": "شماره بیمه‌نامه",
+    "greenCardNumber_label": "شماره کارت سبز",
+    "greenCardExpiry_label": "اعتبار کارت سبز",
+    "agentName_label": "نماینده / کارگزار",
+    "agentPhone_label": "تلفن بیمه",
+    "circumstances_desc": "تمام مواردی را که وضعیت خودروی شما <strong>({{role}})</strong> را در زمان برخورد توصیف می‌کند، علامت بزنید.",
+    "boxes_checked_one": "{{count}} مورد علامت زده شده",
+    "boxes_checked_other": "{{count}} مورد علامت زده شده",
+    "complement_desc": "اطلاعات تکمیلی گزارش — بخش‌های 11، 13 و 14.",
+    "datetime_label": "تاریخ و ساعت تصادف",
+    "visible_damage_label": "آسیب‌های قابل مشاهده (بخش 11)",
+    "visible_damage_placeholder": "آسیب‌های قابل مشاهده روی خودروی خود را توصیف کنید...",
+    "third_party_label": "آسیب‌های مادی به اشخاص ثالث (غیر از A و B)",
+    "witnesses_label": "شاهدان",
+    "witnesses_placeholder": "نام، نام خانوادگی، تلفن هر شاهد...",
+    "voice_declaration_label": "🎙️ اظهارات صوتی (اختیاری)",
+    "observations_label": "مشاهدات آزاد — راننده {{role}} (بخش 14)",
+    "observations_placeholder": "هر عنصر مفیدی را اضافه کنید: شرایط جوی، وضعیت جاده، سرعت تخمینی، یادداشت‌ها...",
+    "insurance_holder_label": "بیمه‌گذار (اگر متفاوت از راننده باشد)",
+    "holder_name_placeholder": "نام کامل بیمه‌گذار",
+    "holder_name_aria": "نام بیمه‌گذار",
+    "holder_address_placeholder": "آدرس بیمه‌گذار",
+    "holder_address_aria": "آدرس بیمه‌گذار",
+    "save_btn": "ذخیره و ادامه →",
+    "form_tabs_aria": "بخش‌های فرم"
+  },
+  "pricingPage": {
+    "sr_title": "قیمت‌ها — boom.contact",
+    "back": "← بازگشت←",
+    "buy_reports": "خرید گزارش‌ها",
+    "credits_no_expiry": "اعتبارات بدون انقضا · قابل به اشتراک‌گذاری از طریق WhatsApp",
+    "credits_available_one": "✅ {{count}} اعتبار موجود",
+    "credits_available_other": "✅ {{count}} اعتبار موجود",
+    "no_credits": "⚡ هیچ اعتباری نیست — اکنون شارژ کنید",
+    "currency_label": "ارز",
+    "currency_detected": "✓ شناسایی خودکار",
+    "most_popular": "⭐ محبوب‌ترین · صرفه‌جویی {{savings}}",
+    "economy": "صرفه‌جویی {{savings}}",
+    "per_pack": "به ازای هر بسته",
+    "per_report": "/ گزارش",
+    "redirecting_stripe": "⏳ در حال انتقال به Stripe...",
+    "buy_btn": "خرید {{label}} — {{price}}",
+    "error_missing_url": "آدرس URL پرداخت گم شده است",
+    "error_generic": "خطا",
+    "error_email_required": "ایمیل برای خرید الزامی است",
+    "trust_stripe": "پرداخت امن Stripe PCI-DSS",
+    "trust_no_expiry": "اعتبارات بدون انقضا",
+    "trust_whatsapp": "قابل به اشتراک‌گذاری از طریق WhatsApp",
+    "trust_worldwide": "چند زبانه",
+    "trust_invoice": "فاکتور PDF خودکار",
+    "trust_fleet": "ایده‌آل برای ناوگان شرکتی",
+    "why_title": "چرا اعتبار پیش‌خرید داشته باشم؟",
+    "scenario_child_title": "فرزند شما تصادف می‌کند",
+    "scenario_child_text": "او به شما زنگ می‌زند. شما یک اعتبار از طریق WhatsApp برای او ارسال می‌کنید. او گزارش خود را در 5 دقیقه تنظیم می‌کند.",
+    "scenario_company_title": "خودروی شرکتی",
+    "scenario_company_text": "تحویل‌دهنده شما تصادف می‌کند. به‌طور آنی یک اعتبار از تلفن خود به او منتقل کنید.",
+    "scenario_abroad_title": "در سفر به خارج از کشور",
+    "scenario_abroad_text": "تصادف در آلمان، استرالیا یا ژاپن. رابط کاربری به چندین زبان در دسترس است.",
+    "pkg_single_label": "1 گزارش",
+    "pkg_single_desc": "برای یک تصادف تک‌بار",
+    "pkg_pack3_label": "3 گزارش",
+    "pkg_pack3_desc": "برای کل خانواده",
+    "pkg_pack3_marketing": "🎁 به اشتراک‌گذاری از طریق WhatsApp — فرزند شما، کارمند شما، دوست شما یک لینک فوری دریافت می‌کند.",
+    "pkg_pack10_label": "10 گزارش",
+    "pkg_pack10_desc": "ناوگان و شرکت‌ها",
+    "pkg_pack10_marketing": "🏢 تمام ناوگان خود را مدیریت کنید. به همکاران خود با یک کلیک منتقل کنید."
+  },
+  "app": {
+    "magic_link_error": "لینک ورود نامعتبر یا منقضی شده است.",
+    "gift_credits_added": "🎁 {{credits}} اعتبار(ات) به حساب شما اضافه شد!",
+    "loading_aria": "در حال بارگذاری",
+    "nav_landing": "صفحه اصلی",
+    "nav_cgu": "شرایط استفاده",
+    "nav_pricing": "قیمت‌گذاری",
+    "nav_constat": "ایجاد گزارش",
+    "nav_join": "پیوستن به یک جلسه",
+    "nav_account": "حساب کاربری",
+    "nav_admin": "داشبورد مدیر",
+    "nav_emergency": "شماره‌های اضطراری",
+    "nav_privacy": "سیاست حریم خصوصی",
+    "nav_police_login": "ورود پلیس",
+    "nav_police_dashboard": "داشبورد پلیس",
+    "nav_police_flow": "جریان پلیس",
+    "nav_police_intervention": "مداخله پلیس",
+    "nav_to": "ناوبری به {{label}}",
+    "title_default": "boom.contact — گزارش تصادف دیجیتال",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "توصیف تصادف",
+    "subtitle": "اختیاری — آنچه را که اتفاق افتاده با کلمات خود توصیف کنید. اظهارات شما در گزارش ثبت خواهد شد.",
+    "tab_voice": "🎙️ صوتی",
+    "tab_text": "⌨️ متن",
+    "start_recording": "شروع ضبط",
+    "textarea_aria": "توصیف تصادف",
+    "textarea_placeholder": "توصیف تصادف را در چند جمله بیان کنید…",
+    "validate_desc": "✅ تأیید توصیف من",
+    "skip_step": "این مرحله را رد کنید →",
+    "recording_in_progress": "در حال ضبط…",
+    "recording_tip": "💡 توصیف کنید: جهت هر خودرو، نقطه برخورد، شرایط. آرام صحبت کنید.",
+    "stop_recording": "ضبط را متوقف کنید",
+    "transcribing_title": "در حال تبدیل به متن…",
+    "transcribing_subtitle": "ضبط شما در حال پردازش است",
+    "desc_recorded": "توصیف ثبت شده",
+    "desc_in_pdf": "اظهارنامه شما در گزارش PDF گنجانده خواهد شد",
+    "your_declaration": "اظهارنامه شما",
+    "edit": "✏️ ویرایش",
+    "edit_placeholder": "در صورت نیاز توصیف خود را اصلاح کنید...",
+    "restart": "از نو شروع کنید",
+    "mic_denied": "دسترسی به میکروفن رد شد — از ورودی دستی استفاده کنید.",
+    "mic_unavailable": "میکروفن در دسترس نیست: {{msg}}",
+    "transcription_error": "خطای تبدیل به متن",
+    "textarea_edit_aria": "داستان تصادف"
+  },
+  "auth": {
+    "default_subtitle": "برای ذخیره خودروهای خود وارد شوید و دیگر هیچ چیزی را در گزارش‌های خود وارد نکنید.",
+    "magic_btn": "📧 ورود از طریق لینک ایمیل (توصیه شده)",
+    "password_btn": "🔑 ورود با رمز عبور",
+    "register_btn": "✨ ایجاد حساب کاربری",
+    "skip_btn": "ادامه بدون حساب →",
+    "skip_note": "بدون حساب، شما هنوز هم می‌توانید یک گزارش انجام دهید و با Stripe پرداخت کنید.",
+    "magic_instructions": "ایمیل خود را وارد کنید — شما یک لینک ورود دریافت خواهید کرد که 15 دقیقه معتبر است.",
+    "send_link": "ارسال لینک",
+    "sending": "در حال ارسال...",
+    "back": "← بازگشت",
+    "email_sent_title": "ایمیل ارسال شد!",
+    "email_sent_desc": "صندوق ورودی خود را بررسی کنید <strong>{{email}}</strong>.",
+    "email_sent_validity": "لینک 15 دقیقه معتبر است.",
+    "login_error": "ایمیل یا رمز عبور نادرست است.",
+    "logging_in": "در حال ورود...",
+    "login_btn": "وارد شوید",
+    "forgot_password": "رمز عبور را فراموش کرده‌اید؟ از لینک ایمیل استفاده کنید →",
+    "register_desc": "حساب خود را ایجاد کنید تا خودروهای خود را ذخیره کرده و گزارش‌های خود را به‌طور خودکار پر کنید.",
+    "password_placeholder": "رمز عبور (حداقل 6 کاراکتر)",
+    "creating": "در حال ایجاد...",
+    "create_btn": "حساب کاربری من را ایجاد کنید",
+    "register_legal": "با ایجاد یک حساب، شما شرایط استفاده ما را می‌پذیرید. داده‌های خودرو شما رمزگذاری شده و هرگز بدون رضایت شما به اشتراک گذاشته نمی‌شود.",
+    "register_error": "خطا در ثبت‌نام.",
+    "generic_error": "خطا"
+  },
+  "account": {
+    "member": {
+      "remove": "حذف",
+      "removeConfirm": "آیا این عضو را حذف کنید؟ او دسترسی به خودروها و اعتبارات شرکت را از دست خواهد داد.",
+      "loading": "در حال بارگذاری…",
+      "none": "هیچ عضوی وجود ندارد.",
+      "invite": "دعوت از یک عضو",
+      "inviteBtn": "دعوت",
+      "pending": "دعوت‌های در انتظار"
+    },
+    "role": {
+      "owner": "مالک",
+      "driver": "راننده",
+      "fleet_admin": "مدیر ناوگان"
+    },
+    "scan": {
+      "cancel": "لغو",
+      "photographPre": "عکس بگیرید از",
+      "license": "گواهینامه",
+      "and": "و/یا",
+      "greenCard": "کارت سبز",
+      "title": "اسکن گواهینامه + کارت سبز",
+      "subtitle": "شناسایی خودکار · چند زبانه"
+    },
+    "garage": {
+      "back": "گاراژ",
+      "title": "گاراژ من",
+      "add": "اضافه کردن",
+      "emptyTitle": "گاراژ خالی",
+      "emptySubtitle": "خودروهای خود را یک بار ثبت کنید. هرگز نیازی به اسکن در هنگام تصادف نخواهید داشت.",
+      "addFirst": "اضافه کردن اولین خودرو من",
+      "noOrgVehicles": "در حال حاضر هیچ خودروی شرکتی وجود ندارد."
+    },
+    "insurance": {
+      "saved": "بیمه ذخیره شد",
+      "add": "اضافه کردن بیمه"
+    },
+    "nav": {
+      "logout": "خروج"
+    },
+    "vehicle": {
+      "edit": "ویرایش خودرو",
+      "delete": "حذف خودرو",
+      "editOrg": "ویرایش خودرو شرکتی",
+      "deleteOrg": "حذف خودرو شرکتی"
+    },
+    "fields": {
+      "nickname": "نام مستعار",
+      "plate": "پلاک",
+      "make": "مارک",
+      "model": "مدل",
+      "color": "رنگ",
+      "year": "سال",
+      "firstName": "نام",
+      "lastName": "نام خانوادگی",
+      "phone": "تلفن",
+      "company": "شرکت",
+      "address": "آدرس",
+      "newEmail": "ایمیل جدید",
+      "currentPwd": "رمز عبور فعلی (تأیید)",
+      "confirmEmailAria": "تأیید آدرس ایمیل"
+    },
+    "credits": {
+      "buy": "خرید:",
+      "available": "اعتبارات موجود",
+      "unit": "1 اعتبار = 1 گزارش کامل"
+    },
+    "history": {
+      "loading": "در حال بارگذاری...",
+      "empty": "هیچ گزارشی وجود ندارد",
+      "emptySub": "گزارش بعدی شما به‌طور خودکار در اینجا ظاهر خواهد شد."
+    },
+    "personal": {
+      "title": "اطلاعات شخصی",
+      "none": "هیچ اطلاعاتی وجود ندارد — روی ویرایش کلیک کنید"
+    },
+    "delete": {
+      "willDelete": "چیزی که به‌طور دائمی حذف خواهد شد:",
+      "text": "حساب، خودروها و تمام گزارش‌های شما به‌طور دائمی حذف خواهند شد. این عمل غیرقابل بازگشت است."
+    },
+    "danger": {
+      "title": "منطقه خطرناک"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "هیچ مدرکی شناسایی نشد. کیفیت عکس‌ها را بررسی کنید.",
+    "analysis_error": "خطای تحلیل.",
+    "read_failed": "خواندن ناموفق",
+    "docs_analyzed_one": "{{count}} مدرک تحلیل شده",
+    "docs_analyzed_other": "{{count}} مدرک تحلیل شده",
+    "confidence": "اعتماد: {{pct}}%",
+    "rescan": "دوباره اسکن کنید",
+    "vehicle_section": "🚗 خودرو",
+    "plate": "پلاک",
+    "driver_section": "👤 راننده",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "insurance_found": "✅ بیمه",
+    "insurance_manual": "⚠️ بیمه — به‌صورت دستی تکمیل کنید",
+    "company_label": "شرکت",
+    "company_aria": "شرکت بیمه",
+    "company_placeholder": "AXA، Zurich، Allianz، emmental…",
+    "policy_label": "شماره بیمه‌نامه",
+    "policy_manual_hint": "(وارد کردن دستی)",
+    "policy_aria": "شماره بیمه‌نامه",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "تأیید →",
+    "scanning_title": "در حال تحلیل…",
+    "scanning_subtitle_one": "{{count}} مدرک · شناسایی خودکار",
+    "scanning_subtitle_other": "{{count}} مدرک · شناسایی خودکار",
+    "photo_title": "عکس مدارک خود را بگیرید",
+    "photo_subtitle": "گواهینامه + کارت سبز در یک تحلیل.",
+    "photo_subtitle2": "برنامه به‌طور خودکار همه چیز را شناسایی و استخراج می‌کند.",
+    "doc_scanned": "مدرک اسکن شده {{n}}",
+    "doc_label": "مدرک {{n}}",
+    "photograph": "عکس بگیرید",
+    "rear_camera": "دوربین عقب",
+    "gallery": "گالری",
+    "which_docs": "کدام مدارک را اسکن کنم؟",
+    "doc_ch": "🇨🇭 گواهینامه + کارت سبز",
+    "doc_fr": "🇫🇷 کارت شناسایی + کارت سبز / گواهی",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 ثبت‌نام + مدرک بیمه",
+    "close_error_aria": "بستن خطا",
+    "analyze_btn_one": "🔍 تحلیل {{count}} مدرک",
+    "analyze_btn_other": "🔍 تحلیل {{count}} مدارک",
+    "skip_manual": "رد کردن — وارد کردن دستی →",
+    "upload_gallery_aria": "بارگذاری مدارک از گالری",
+    "take_photo_aria": "عکس گرفتن از یک مدرک"
+  },
+  "postConstat": {
+    "next_time_title": "بار بعد: 0 ورودی",
+    "next_time_subtitle": "خودروهای شما برای همیشه ذخیره می‌شوند",
+    "benefit_scanned": "گواهینامه + کارت سبز یک بار اسکن شده",
+    "benefit_fast": "گزارش در 2 دقیقه به جای 10 دقیقه",
+    "benefit_gift": "یک گزارش به عزیزان خود با یک کلیک هدیه دهید",
+    "benefit_family": "ایده‌آل برای خانواده: اعتبارات خود را به اشتراک بگذارید",
+    "create_account": "ایجاد حساب کاربری رایگان من →",
+    "share_btn": "به عزیزانم به اشتراک بگذارید",
+    "register_vehicle_title": "سپس، خودروی خود را ثبت کنید",
+    "register_vehicle_subtitle": "اسکن گواهینامه + کارت سبز · 30 ثانیه · هرگز دوباره وارد نکنید",
+    "or_skip": "یا مستقیماً بگذرید",
+    "family_pack": "🔥 بسته خانواده",
+    "family_pack_desc": "3 گزارش برای به اشتراک‌گذاری با عزیزان شما",
+    "scenario_child": "فرزند شما تماس می‌گیرد — تصادف. در 3 ثانیه یک گزارش برای او ارسال کنید.",
+    "scenario_employee": "کارمندی با خودرو شرکتی. به‌طور آنی یک اعتبار از طریق WhatsApp منتقل کنید.",
+    "scenario_friend": "دوستی در خارج از کشور در مشکل. او یک لینک دریافت می‌کند، نیازی به حساب نیست.",
+    "buy_3_reports": "خرید 3 گزارش — CHF/EUR 12.90 →",
+    "see_all_packs": "مشاهده همه بسته‌ها →",
+    "ready_title": "آماده برای بار بعد",
+    "ready_subtitle": "اکنون شارژ کنید، هر زمان که بخواهید به اشتراک بگذارید",
+    "account_title": "✅ حساب شما در boom.contact",
+    "account_desc": "خودروهای شما ذخیره شده‌اند. در تصادف بعدی، مستقیماً به مرحله QR می‌روید — هیچ ورودی، هیچ اسکن.",
+    "manage_garage": "مدیریت گاراژ من →",
+    "gift_title": "🎁 یک گزارش از طریق WhatsApp هدیه دهید",
+    "gift_desc": "یکی از اعتبارات شما = یک لینک منحصر به فرد برای ارسال به <strong>هر کسی</strong>، بدون اینکه شخص نیاز به حساب داشته باشد.",
+    "credits_available_one": "{{count}} اعتبار موجود",
+    "credits_available_other": "{{count}} اعتبار موجود",
+    "share_protect": "به اشتراک بگذارید، عزیزان خود را محافظت کنید",
+    "wa_gift_title": "📲 هدیه یک گزارش از طریق WhatsApp",
+    "wa_gift_desc": "با یک کلیک، یک لینک به فرزند، کارمند یا دوست خود ارسال کنید. او گزارش خود را بدون حساب و پرداخت انجام می‌دهد — از اعتبارات شما کسر می‌شود.",
+    "send_1": "📲 ارسال 1 گزارش",
+    "send_3": "📲 ارسال 3 گزارش",
+    "gift_link_created": "✅ لینک ایجاد شد — آن را از طریق WhatsApp ارسال کنید!",
+    "share_title": "📤 به اشتراک‌گذاری boom.contact",
+    "share_desc": "شما گزارش خود را در 5 دقیقه انجام دادید. دوستان شما شایسته دانستن این هستند که این وجود دارد.",
+    "memorize_vehicles": "🚗 خودروهای دیگر خود را به خاطر بسپارید",
+    "memorize_desc": "ناوگان شرکتی، موتور، کاروان؟ هر خودرو اسکن شده = هرگز دوباره در تصادف وارد نکنید.",
+    "low_credits_one": "⚡ فقط {{count}} اعتبار باقی مانده است",
+    "low_credits_other": "⚡ فقط {{count}} اعتبار باقی مانده است",
+    "recharge_desc": "اکنون شارژ کنید و از تخفیف‌ها بر روی بسته‌های خانواده و شرکت بهره‌مند شوید.",
+    "recharge_btn": "شارژ اعتبارات من →",
+    "pack_single_label": "1 گزارش",
+    "pack_single_note": "استفاده تک‌بار",
+    "pack_pack3_label": "3 گزارش",
+    "pack_pack3_note": "خانواده · صرفه‌جویی 12%",
+    "pack_pack10_label": "10 گزارش",
+    "pack_pack10_note": "شرکت · صرفه‌جویی 29%",
+    "popular_badge": "⭐ محبوب"
+  },
+  "constat": {
+    "nav": {
+      "back": "بازگشت",
+      "reset": "تنظیم مجدد گزارش"
+    },
+    "session": {
+      "expiring": "جلسه شما به زودی منقضی می‌شود. داده‌های خود را ذخیره کنید."
+    },
+    "error": {
+      "close": "بستن خطا"
+    },
+    "vehicle": {
+      "pickRegistered": "انتخاب یک خودرو ثبت شده",
+      "autofill": "پر کردن خودکار — نیازی به اسکن نیست",
+      "yourRegistered": "خودروهای ثبت شده شما",
+      "org": "شرکت",
+      "personal": "شخصی",
+      "fallback": "خودرو",
+      "cancel": "لغو",
+      "orScanNew": "یا یک خودرو جدید اسکن کنید"
+    },
+    "pedestrian": {
+      "title": "طرف دیگر: عابر پیاده"
+    },
+    "summary": {
+      "yourVehicle": "خودروی شما",
+      "accident": "تصادف",
+      "damagedZones_one": "{{count}} منطقه آسیب‌دیده",
+      "damagedZones_other": "{{count}} منطقه آسیب‌دیده"
+    },
+    "emergency": {
+      "title": "شماره‌های اضطراری"
+    }
   }
 }

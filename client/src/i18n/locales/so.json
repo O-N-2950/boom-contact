@@ -21,7 +21,9 @@
       "line1": "DABADEED",
       "line2": "SHIL",
       "line3": "WARBIXIN",
-      "line4": "DEGDEG"
+      "line4": "DEGDEG",
+      "title": "Diiwaangeli shil adoonin waraaq, adoonin jahwareer.",
+      "subtitle": "boom.contact waxay ku hagi doontaa talaabo talaabo si aad u ururiso macluumaadka muhiimka ah, ku darto sawirro, goob, bayaanno iyo saxiixyo, ka dibna soo saarto fayl PDF ah oo waqtiga lagu xusay si aad ugu dirto caymiskaaga."
     },
     "subtitle": "Warbixin dhijitaal ah oo 5 daqiiqo gudahood. OCR caalami, QR code la wadaago, PDF adduunka si degdeg.",
     "cta": {
@@ -34,7 +36,15 @@
       "send": "U dir shirkadda caymiska",
       "done": "Warbixinta waa dhamaatay!",
       "waiting": "Xulashada #8F2K · Sugaya…",
-      "capture": "📸 Sawir ka qaad"
+      "capture": "📸 Sawir ka qaad",
+      "sessionActive": "Kulan firfircoon",
+      "vehicleA": "GAADIID A",
+      "photosSig": "Sawirro · saxiix ✓",
+      "vehicleB": "GAADIID B",
+      "qrJoined": "QR la midowday · socda",
+      "payGenerate": "Bixi oo soo saar PDF",
+      "pdfBadge": "PDF waqtiga lagu xusay",
+      "qrBadge": "QR la wadaagay"
     },
     "badges": {
       "languages": "50 luqadood",
@@ -83,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Waxa aad u baahan tahay oo dhan",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR caalami",
-          "desc": "Claude Vision waxay aqrisaa dukumiintadaada 50+ luqadood. Gelin gacmeed majirto."
-        },
-        {
-          "icon": "📱",
-          "title": "Ilaa 5 baabuur",
-          "desc": "Shil oo leh 3, 4 ama 5 darawal? Darawalka kastaa scan gareeya QR-kiisa."
-        },
-        {
-          "icon": "📷",
-          "title": "Sawirrada goobta",
-          "desc": "5 qeybood: goob, xadeyn A, xadeyn B, dhaawac, dukumiinto. Oo dhan PDF waxaa lagu dara."
-        },
-        {
-          "icon": "✏️",
-          "title": "Sawir xor ah",
-          "desc": "Sawir meesha baabuurta, fallaadhooyinka xagga. PNG waxaa PDF lagu dara."
-        },
-        {
-          "icon": "🚗",
-          "title": "Sawirka xadeynta",
-          "desc": "700+ nooc. 18 zone oo la riixin karo xadeynta."
-        },
-        {
-          "icon": "✍️",
-          "title": "Saxeexyo badan",
-          "desc": "Multiple simultaneous touch signatures. QR active for 24h for the police."
-        },
-        {
-          "icon": "📄",
-          "title": "Timestamped PDF",
-          "desc": "Dukumiint dhijitaal ah oo buuxda. Shirkadaha caymiska oo dhan way aqbalaan."
-        },
-        {
-          "icon": "🚔",
-          "title": "Qaybta Booliska (dhawaan)",
-          "desc": "Booliska QR iyagoo xulashada ku biiraya. Warbixin booliska dhijitaal."
-        },
-        {
-          "icon": "🌍",
-          "title": "50 luqadood + RTL",
-          "desc": "5 bilyan oo hadla. Carabi, Cibraani, Faarisi RTL. Lambarka degdegga caalamiga."
-        }
-      ]
-    },
     "coverage": {
       "label": "Daah-furis adduunka oo dhan",
       "title": "Iswiisirka ilaa Shiinaha",
@@ -150,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Ku casuum QR code",
+        "desc": "Abuur kulanka, darawalka kale wuxuu sawiraa QR ka taleefankiisa. Ma jiro rakibid, ma jiro diiwaangelin."
+      },
+      {
+        "title": "Sawirro, cod iyo saxiix",
+        "desc": "Ku dar sawirro, ku dhawaaq aragtidaada, dhig gaadiidka khariidadda, oo saxiix farahaaga."
+      },
+      {
+        "title": "Fayl PDF waqtiga lagu xusay",
+        "desc": "boom.contact waxay soo saartaa fayl PDF waqtiga lagu xusay oo ka kooban macluumaadka ay gelisay darawalka kasta."
+      },
+      {
+        "title": "Si loo gudbiyo caymiskaaga",
+        "desc": "Soo dejiso PDF ama u dir email si aad ugu darto bayaankaaga shilka ee caymiskaaga."
+      }
+    ],
+    "seoLine": "Warbixinta shilka dijitaalka ah ee luqadaha badan · Digital accident report",
+    "flow": {
+      "label": "Wax walba hal socod",
+      "title": "Laga bilaabo shilka ilaa fayl diyaar ah"
+    },
+    "stress": {
+      "label": "Loo fikiray waqtiga shilka",
+      "title": "Loo naqshadeeyay xaaladaha culus",
+      "text": "Kadib dhawaq, maskaxda ma cadda. boom.contact waxay horumarisaa talaabo talaabo, luqaddaada, waxayna kaydisaa dhammaan macluumaadka la ururiyey. Wax walba waxay ka shaqeeyaan biraawsarka taleefanka, xitaa xitaa xariir xadidan.",
+      "bullets": [
+        "Hagitaan talaabo talaabo",
+        "Luqado badan",
+        "Sawirro · cod · saxiix",
+        "Fayl PDF waqtiga lagu xusay"
+      ],
+      "emergencyTitle": "Haddii ay jirto degdeg",
+      "emergencyText": "boom.contact ma beddelayo gargaarka, booliska, qareenka ama caymiska. Haddii dhaawac ama khatar jirto, marka hore la xiriir adeegyada degdega."
+    },
+    "pricing": {
+      "label": "Qiimaha",
+      "title": "Fudud, hufan, aan lahayn rukhsad",
+      "caption": "1 deyn = 1 warbixin dhameystiran · luqado badan · deyn aan dhicin",
+      "badgePopular": "Caan",
+      "plans": [
+        {
+          "label": "1 warbixin",
+          "desc": "Shil hal mar ah"
+        },
+        {
+          "label": "3 warbixin",
+          "desc": "Qoyska oo dhan"
+        },
+        {
+          "label": "10 warbixin",
+          "desc": "Dhaqdhaqaaqyo iyo wakiillo"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Xirfadlayaasha",
+      "title": "Wakiillo, dhaqdhaqaaqyo iyo lamaanayaasha caymiska",
+      "text": "Ku qalabeey macaamiishaada iyo darawalladaada qalab cad oo loogu talagalay in lagu diiwaangeliyo shil iyo in la soo saaro fayl PDF waqtiga lagu xusay. Xirmooyinka deynta ee dhaqdhaqaaqyada iyo wakiillada, hawlgelin fudud, aan rukhsad lahayn.",
+      "cta": "La xiriir / wadaag",
+      "items": [
+        {
+          "title": "Dhaqdhaqaaqyada",
+          "desc": "Fayl nidaamsan oo loogu talagalay shil kasta oo darawal."
+        },
+        {
+          "title": "Wakiillo",
+          "desc": "Adeeg qiimo leh oo loogu talagalay caymiskaaga."
+        },
+        {
+          "title": "Sir",
+          "desc": "Xogta la sirgaxay inta lagu jiro, la tirtiri karo codsi."
+        },
+        {
+          "title": "Gudbinta",
+          "desc": "Fayl PDF waqtiga lagu xusay oo diyaar u ah in lagu daro bayaanka shilka."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Su'aalaha inta badan la isweydiiyo",
+      "items": [
+        {
+          "q": "Waa maxay boom.contact?",
+          "a": "boom.contact waa codsi kaa caawinaysa in la diiwaangeliyo shil wadada laga bilaabo taleefanka: casuumida darawallada adoo adeegsanaya QR, sawirro, cod, khariidado, saxiixyo, ka dibna soo saar fayl PDF waqtiga lagu xusay si loogu diro caymiskaaga."
+        },
+        {
+          "q": "Ma u baahanahay inaan rakibo codsi?",
+          "a": "Maya. boom.contact waxay si toos ah uga shaqeysaa biraawsarka taleefanka (Safari, Chrome, Firefox). Waxaad sidoo kale ku dari kartaa shaashaddaada guriga sida codsi web (PWA) si aad u hesho offline."
+        },
+        {
+          "q": "Maxaa dhacaya haddii darawalka kale uusan haysan codsiga?",
+          "a": "Waxaad abuurtaa kulanka oo QR code ayaa soo baxaya. Darawalka kale wuxuu sawiraa taleefankiisa: boom.contact waxay ka furmaysaa biraawsarkiisa, iyada oo aan diiwaangelin ama soo dejin."
+        },
+        {
+          "q": "Faylka PDF ma aqbalaa caymiskeyga?",
+          "a": "Faylka PDF waqtiga lagu xusay waxaa loogu talagalay in lagu daro bayaankaaga shilka. boom.contact ma dammaanad qaadayo aqbalaadiisa, taas oo ku xiran caymiskaaga iyadoo loo eegayo heshiiskaaga iyo sharciga."
+        },
+        {
+          "q": "Ma shaqeysaa haddii darawalka kale uu ku hadlo luqad kale?",
+          "a": "Haa. Darawal kasta wuxuu isticmaalaa interface-ka luqaddiisa. Faylka ugu dambeeya waxaa lagu soo saaray darawal kasta."
+        },
+        {
+          "q": "Ma xogtaydu waa la ilaaliyaa?",
+          "a": "Xogta waxaa la sirgaxay inta lagu jiro, kulamada si otomaatig ah ayaa loo tirtiraa ka dib waqti, booliska marna lama ogeysiiyo si otomaatig ah — kaliya ficil cad oo kaaga yimaada."
+        },
+        {
+          "q": "Imisa ayey ku kacaysaa?",
+          "a": "Laga bilaabo CHF / EUR 4.90 warbixin. Xirmo 3 warbixin ah 12.90 (−12 %), xirmo 10 ah 34.90 (−29 %). Ma jiraan rukhsado, deyn aan dhicin."
+        }
+      ]
     }
   },
   "steps": {
@@ -445,5 +519,431 @@
   "language": {
     "select": "Luuqadda",
     "switch_tooltip": "Bedel luuqadda"
+  },
+  "join": {
+    "sessionLabel": "Kulan",
+    "yourEmail": "Emailkaaga",
+    "emailHint": "(si aad u hesho PDF)",
+    "emailAria": "Cinwaankaaga email",
+    "connecting": "Isku xidh...",
+    "connected": "Xidhiidhka la sameeyay! Bilow...",
+    "joinButton": "Ku biir warbixinta"
+  },
+  "signature": {
+    "title": "Saxiix",
+    "driver": "Darawal {{role}}",
+    "other_party": "Qaybta kale",
+    "no_signature": "ma jiro saxiix",
+    "sign_here": "Halkan ku saxiix farahaaga",
+    "signed": "LA SAXIIXAY ✓",
+    "clear": "🗑 Tirtir",
+    "saving": "⏳ Kaydinta…",
+    "confirm_signature": "✍️ Xaqiiji saxiixa",
+    "waiting_other": "Sugitaanka saxiixa darawalka kale…",
+    "waiting_pdf": "Faylka PDF waxaa la soo saari doonaa marka labada dhinac ay saxiixaan.",
+    "report_signed": "Warbixinta waxaa la saxiixay!",
+    "generating_pdf": "Soo saarista faylka PDF socota…",
+    "canvas_aria": "Aagga saxiixa — Darawal {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Ka hor inta aan la bilaabin",
+      "body": "boom.contact waxay kaa caawinaysaa inaad diiwaangeliso shil iyo inaad soo saarto fayl PDF nidaamsan. Haddii dhaawac, khatar, ka tagid, khilaaf weyn ama waajibaad sharci ah ay jiraan, si degdeg ah ula xiriir gargaarka, booliska ama hay'adaha ku habboon. Macluumaadka la bixiyay waxay ku jiraan mas'uuliyadda ka qaybgalayaasha. Waxaad si gacanta ah u gelin kartaa macluumaadka haddii aadan rabin inaad isticmaasho kamarad, makarafoon ama goob.",
+      "start": "Waan fahmay, bilaab",
+      "emergency": "Eeg lambarrada degdega",
+      "privacy_cgu": "Asturnaanta / Shuruudaha adeegga"
+    },
+    "guest_accept": {
+      "checkbox": "Waxaan aqbalayaa Shuruudaha adeegga iyo waxaan akhriyay Siyaasadda Asturnaanta.",
+      "note": "Waxaan fahamsanahay in macluumaadkayga loo isticmaali doono in lagu soo saaro faylka PDF shilka iyo in macluumaadka la bixiyay ay ku jiraan mas'uuliyaddayda."
+    },
+    "signature_confirm": "Waxaan xaqiijinayaa in macluumaadka aan bixiyay ay sax yihiin sida aan u garanayo waxaanan aqbalayaa in saxiixaygu lagu daro faylka PDF.",
+    "payment_notice": "Markaad sii wado lacag bixinta, waxaad fahamsan tahay in lacag bixintu ay daboolayso soo saarista iyo dirista faylka PDF. Macluumaadka la bixiyay waxay ku jiraan mas'uuliyadda ka qaybgalayaasha.",
+    "mic_notice": "Markaad isticmaasho makarafoonka, bayaankaaga codka waxaa la falanqeyn doonaa si loogu daro faylka shilka. Waxaad isticmaali kartaa gelinta qoraalka halkii.",
+    "injury_confirm": {
+      "body": "Sawirrada dhaawacyadu waxay ka koobnaan karaan xog xasaasi ah. Fadlan hubi inaad haysato ogolaanshaha qofka la xiriira, marka laga reebo haddii ay jirto baahi amni ama waajibaad sharci ah.",
+      "continue": "Sii wad",
+      "change": "Beddel qaybta"
+    },
+    "pdf_ready_title": "Fayl PDF shil waqtiga lagu xusay",
+    "pdf_ready_body": "Saxiixyada loo baahan yahay waa la diiwaangeliyay. Faylka PDF waa diyaar. Fadlan hubi macluumaadka ka hor inta aanad u dirin caymiskaaga."
+  },
+  "constatForm": {
+    "tab_vehicle": "Gaadiid",
+    "tab_driver": "Darawal",
+    "tab_insurance": "Caymis",
+    "tab_circumstances": "Duruufaha",
+    "tab_complement": "Kordhin",
+    "field_required": "Foomkan waa la baahan yahay",
+    "plate_label": "Diiwaangelin",
+    "brand_label": "Summad",
+    "model_label": "Muuqaal",
+    "year_label": "Sannad",
+    "vin_label": "N° chassis (VIN)",
+    "firstName_label": "Magaca koowaad",
+    "lastName_label": "Magaca",
+    "address_label": "Cinwaanka",
+    "postalCode_label": "NPA",
+    "city_label": "Magaalada",
+    "country_label": "Dalka",
+    "phone_label": "Telefoon",
+    "email_label": "Email",
+    "license_label": "N° liisanka wadista",
+    "company_label": "Shirkadda caymiska",
+    "policyNumber_label": "N° siyaasadda",
+    "greenCardNumber_label": "N° kaarka cagaaran",
+    "greenCardExpiry_label": "Ansaxnimada kaarka cagaaran",
+    "agentName_label": "Wakiil / Wakiil",
+    "agentPhone_label": "Telfoonka caymiska",
+    "circumstances_desc": "Xulo dhammaan sanduuqyada qeexaya xaaladda gaadiidkaaga <strong>({{role}})</strong> waqtiga saameynta.",
+    "boxes_checked_one": "{{count}} sanduuq ayaa la xushay",
+    "boxes_checked_other": "{{count}} sanduuq ayaa la xushay",
+    "complement_desc": "Macluumaadka dheeraadka ah ee warbixinta — qaybaha 11, 13 iyo 14.",
+    "datetime_label": "Taariikhda iyo waqtiga shilka",
+    "visible_damage_label": "Dhibaatooyinka muuqda (qaybta 11)",
+    "visible_damage_placeholder": "Sharax dhibaatooyinka muuqda ee gaadiidkaaga...",
+    "third_party_label": "Dhibaatooyinka hantida dhinacyada kale (ka sokow A iyo B)",
+    "witnesses_label": "Markhaatiyaal",
+    "witnesses_placeholder": "Magaca, magaca koowaad, telefoonka markhaatiga kasta...",
+    "voice_declaration_label": "🎙️ Bayaanka codka (ikhtiyaari)",
+    "observations_label": "Aragtida furan — darawal {{role}} (qaybta 14)",
+    "observations_placeholder": "Ku dar wax kasta oo waxtar leh: xaaladaha cimilada, xaaladda waddada, xawaaraha la qiyaasay, faallooyinka...",
+    "insurance_holder_label": "Qaadashada caymiska (haddii ka duwan darawalka)",
+    "holder_name_placeholder": "Magaca buuxa ee qaadashada",
+    "holder_name_aria": "Magaca qaadashada caymiska",
+    "holder_address_placeholder": "Cinwaanka qaadashada",
+    "holder_address_aria": "Cinwaanka qaadashada caymiska",
+    "save_btn": "Kaydi oo sii wad →",
+    "form_tabs_aria": "Qaybaha foomka"
+  },
+  "pricingPage": {
+    "sr_title": "Qiimaha — boom.contact",
+    "back": "← Dib←",
+    "buy_reports": "Iibso warbixinno",
+    "credits_no_expiry": "Deymaha aan dhicin · La wadaagi karo WhatsApp",
+    "credits_available_one": "✅ {{count}} deyn diyaar ah",
+    "credits_available_other": "✅ {{count}} deyn diyaar ah",
+    "no_credits": "⚡ Ma jiraan deyn — hadda dib u soo celi",
+    "currency_label": "CURRENCY",
+    "currency_detected": "✓ si otomaatig ah ayaa loo ogaaday",
+    "most_popular": "⭐ CAAWIMAAD · KEYD {{savings}}",
+    "economy": "Keyd {{savings}}",
+    "per_pack": "xirmo kasta",
+    "per_report": "/ warbixin",
+    "redirecting_stripe": "⏳ Dib u habeyn Stripe...",
+    "buy_btn": "Iibso {{label}} — {{price}}",
+    "error_missing_url": "URL lacag bixinta maqan",
+    "error_generic": "Khalad",
+    "error_email_required": "Email ayaa loo baahan yahay si loo iibsado",
+    "trust_stripe": "Lacag bixinta Stripe oo ammaan ah PCI-DSS",
+    "trust_no_expiry": "Deymaha aan dhicin",
+    "trust_whatsapp": "La wadaagi karo WhatsApp",
+    "trust_worldwide": "Luqado badan",
+    "trust_invoice": "Fatura PDF otomaatig ah",
+    "trust_fleet": "Ku habboon dhaqdhaqaaqyada shirkadda",
+    "why_title": "MAXAA LOOGU BAANAA DEYNDA HORE?",
+    "scenario_child_title": "Carruurtaada ayaa shil galay",
+    "scenario_child_text": "Wuxuu ku wacayaa. Waxaad u dirtaa deyn adoo adeegsanaya WhatsApp. Wuxuu sameeyaa warbixintiisa 5 daqiiqo gudaheed.",
+    "scenario_company_title": "Gaadiidka shirkadda",
+    "scenario_company_text": "Qandaraaslahaagu wuxuu ku dhacay. Si degdeg ah ugu wareeji deyn taleefankaaga.",
+    "scenario_abroad_title": "Safar dibadda",
+    "scenario_abroad_text": "Shil ka dhacay Jarmalka, Australia ama Japan. Interface-ka ayaa diyaar ah luqado badan.",
+    "pkg_single_label": "1 warbixin",
+    "pkg_single_desc": "Shil hal mar ah",
+    "pkg_pack3_label": "3 warbixin",
+    "pkg_pack3_desc": "Qoyska oo dhan",
+    "pkg_pack3_marketing": "🎁 La wadaag WhatsApp — carruurtaada, shaqaalahaaga, saaxiibkaaga waxay helayaan xiriir degdeg ah.",
+    "pkg_pack10_label": "10 warbixin",
+    "pkg_pack10_desc": "Dhaqdhaqaaqyada & shirkadaha",
+    "pkg_pack10_marketing": "🏢 Maaree dhammaan dhaqdhaqaaqyadaada. Si degdeg ah ugu wareeji shaqaalahaaga hal guji."
+  },
+  "app": {
+    "magic_link_error": "Xiriir isku xidh ah oo aan sax ahayn ama waqtigiisu dhammaaday.",
+    "gift_credits_added": "🎁 {{credits}} deyn(da) lagu daray akoonkaaga!",
+    "loading_aria": "Loading...",
+    "nav_landing": "Bogga hore",
+    "nav_cgu": "Shuruudaha adeegga",
+    "nav_pricing": "Qiimaha",
+    "nav_constat": "Abuurista warbixinta",
+    "nav_join": "Ku biir kulan",
+    "nav_account": "Akaawnka isticmaale",
+    "nav_admin": "Dashboard-ka maamulka",
+    "nav_emergency": "Lambarrada degdega",
+    "nav_privacy": "Hannaanka asturnaanta",
+    "nav_police_login": "Isku xidh booliska",
+    "nav_police_dashboard": "Dashboard-ka booliska",
+    "nav_police_flow": "Socodka booliska",
+    "nav_police_intervention": "Faragelinta booliska",
+    "nav_to": "Navigation to {{label}}",
+    "title_default": "boom.contact — Warbixinta shilka dijitaalka ah",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Sharax shilka",
+    "subtitle": "Ikhtiyaari — sharax waxa dhacay adigoo adeegsanaya erayadaada. Bayaankaaga waxaa lagu diiwaangelin doonaa warbixinta.",
+    "tab_voice": "🎙️ Cod",
+    "tab_text": "⌨️ Qoraal",
+    "start_recording": "Bilow duubista",
+    "textarea_aria": "Sharaxa shilka",
+    "textarea_placeholder": "Sharax shilka dhowr jumlad…",
+    "validate_desc": "✅ Xaqiiji sharaxaada",
+    "skip_step": "Ka bood talaabadan →",
+    "recording_in_progress": "Duubista socota…",
+    "recording_tip": "💡 Sharax: jihada gaadiidka kasta, dhibicda saameynta, duruufaha. Si deggan u hadal.",
+    "stop_recording": "Jooji duubista",
+    "transcribing_title": "Falanqaynta socota…",
+    "transcribing_subtitle": "Duubistaada waxaa la farsameynayaa",
+    "desc_recorded": "Sharaxaada la duubay",
+    "desc_in_pdf": "Bayaankaaga waxaa lagu dari doonaa faylka PDF",
+    "your_declaration": "Bayaankaaga",
+    "edit": "✏️ Wax ka beddel",
+    "edit_placeholder": "Hagaaji bayaankaaga haddii loo baahdo...",
+    "restart": "Dib u bilow",
+    "mic_denied": "Ogolaanshaha makarafoonka waa la diiday — isticmaal gelinta gacanta.",
+    "mic_unavailable": "Makarafoonka ma heli karo: {{msg}}",
+    "transcription_error": "Khalad falanqayn",
+    "textarea_edit_aria": "Qisada shilka"
+  },
+  "auth": {
+    "default_subtitle": "Isku xidh si aad u keydiso gaadiidkaaga oo aan waxba ku gelin marka aad sameyso warbixin.",
+    "magic_btn": "📧 Isku xidh adoo adeegsanaya xiriir email (la talinayo)",
+    "password_btn": "🔑 Isku xidh adoo adeegsanaya erayga sirta",
+    "register_btn": "✨ Abuur akoon",
+    "skip_btn": "Sii wad adoon akoon lahayn →",
+    "skip_note": "Adigoon akoon lahayn, waxaad weli sameyn kartaa warbixin oo lacag bixin kartaa adoo adeegsanaya Stripe.",
+    "magic_instructions": "Geli emailkaaga — waxaad heli doontaa xiriir isku xidh ah oo ansax ah 15 daqiiqo.",
+    "send_link": "Dir xiriirka",
+    "sending": "Dirid...",
+    "back": "← Dib",
+    "email_sent_title": "Email la diray!",
+    "email_sent_desc": "Fadlan hubi sanduuqaaga <strong>{{email}}</strong>.",
+    "email_sent_validity": "Xiriirku wuxuu ansax yahay 15 daqiiqo.",
+    "login_error": "Email ama eray sir ah ayaa khaldan.",
+    "logging_in": "Isku xidh...",
+    "login_btn": "Isku xidh",
+    "forgot_password": "Ma hilmaantay erayga sirta? Isticmaal xiriir email →",
+    "register_desc": "Abuur akoonkaaga si aad u keydiso gaadiidkaaga oo si otomaatig ah u buuxiso warbixinadaada.",
+    "password_placeholder": "Erayga sirta (ugu yaraan 6 xaraf)",
+    "creating": "Abuurista...",
+    "create_btn": "Abuur akoonkeyga",
+    "register_legal": "Markaad abuurto akoon waxaad aqbashaa shuruudaha adeegga. Xogtaada gaadiidka waxaa la sirgaxay mana la wadaagayo adoon ogolaansho.",
+    "register_error": "Khalad ayaa dhacay markii la diiwaangelinayay.",
+    "generic_error": "Khalad"
+  },
+  "account": {
+    "member": {
+      "remove": "Ka saar",
+      "removeConfirm": "Ma ka saari kartaa xubintan? Wuxuu lumin doonaa gelitaanka gaadiidka iyo deynta shirkadda.",
+      "loading": "Loading...",
+      "none": "Xubin ma jirto.",
+      "invite": "Ku casuum xubinta",
+      "inviteBtn": "Ku casuum",
+      "pending": "Casuumid sugaysa"
+    },
+    "role": {
+      "owner": "Milkiile",
+      "driver": "Darawal",
+      "fleet_admin": "Maamulaha dhaqdhaqaaqa"
+    },
+    "scan": {
+      "cancel": "Jooji",
+      "photographPre": "Sawir qaado",
+      "license": "liisanka wadista",
+      "and": "iyo/ama",
+      "greenCard": "kaarka cagaaran",
+      "title": "Sawir liisanka + kaarka cagaaran",
+      "subtitle": "Aqoonsiga otomaatiga ah · luqado badan"
+    },
+    "garage": {
+      "back": "Garage",
+      "title": "Garagekeyga",
+      "add": "Ku dar",
+      "emptyTitle": "Garage madhan",
+      "emptySubtitle": "Diiwaangeli gaadiidkaaga hal mar. Marna ma baahnid inaad sawirto marka shil dhaco.",
+      "addFirst": "Ku dar gaadiidkaaga ugu horreeya",
+      "noOrgVehicles": "Ma jiraan gaadiid shirkadeed waqtigan."
+    },
+    "insurance": {
+      "saved": "Caymiska waa la keydiyay",
+      "add": "Ku dar caymis"
+    },
+    "nav": {
+      "logout": "Ka bax"
+    },
+    "vehicle": {
+      "edit": "Beddel gaadiidka",
+      "delete": "Tirtir gaadiidka",
+      "editOrg": "Beddel gaadiidka shirkadda",
+      "deleteOrg": "Tirtir gaadiidka shirkadda"
+    },
+    "fields": {
+      "nickname": "Magaca",
+      "plate": "Lambarka",
+      "make": "Summad",
+      "model": "Muuqaal",
+      "color": "Midabka",
+      "year": "Sannad",
+      "firstName": "Magaca koowaad",
+      "lastName": "Magaca",
+      "phone": "Telefoon",
+      "company": "Shirkad",
+      "address": "Cinwaanka",
+      "newEmail": "Email cusub",
+      "currentPwd": "Erayga sirta hadda (xaqiijinta)",
+      "confirmEmailAria": "Xaqiijinta cinwaanka email"
+    },
+    "credits": {
+      "buy": "Iibso:",
+      "available": "DEYNTA DIYAAR AH",
+      "unit": "1 deyn = 1 warbixin dhameystiran"
+    },
+    "history": {
+      "loading": "Loading...",
+      "empty": "Ma jiraan warbixin",
+      "emptySub": "Warbixintaada xigta waxay halkan si otomaatig ah u soo bixi doontaa."
+    },
+    "personal": {
+      "title": "Macluumaadka shakhsiyeed",
+      "none": "Macluumaad ma jiro — guji Beddel"
+    },
+    "delete": {
+      "willDelete": "WAXA LA TIRTIRAY DHEERAAD AH:",
+      "text": "Si joogto ah u tirtir akoonkaaga, gaadiidkaaga iyo dhammaan warbixinadaada. Tallaabadan waa aan la soo celin karin."
+    },
+    "danger": {
+      "title": "Aagga khatarta"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Wax dokument ah lama aqoonsan. Fadlan hubi tayada sawirrada.",
+    "analysis_error": "Khalad falanqayn.",
+    "read_failed": "Akhrinta way fashilantay",
+    "docs_analyzed_one": "{{count}} dokument ayaa la falanqeeyay",
+    "docs_analyzed_other": "{{count}} dokument ayaa la falanqeeyay",
+    "confidence": "Kalsoonida: {{pct}}%",
+    "rescan": "Dib u sawir",
+    "vehicle_section": "🚗 Gaadiid",
+    "plate": "Lambarka",
+    "driver_section": "👤 Darawal",
+    "firstName": "Magaca koowaad",
+    "lastName": "Magaca",
+    "insurance_found": "✅ Caymis",
+    "insurance_manual": "⚠️ Caymis — si gacanta ah u dhameystir",
+    "company_label": "Shirkad",
+    "company_aria": "Shirkadda caymiska",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "N° siyaasadda",
+    "policy_manual_hint": "(gacan gelin)",
+    "policy_aria": "Lambarka siyaasadda",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Xaqiiji →",
+    "scanning_title": "Falanqayn socota…",
+    "scanning_subtitle_one": "{{count}} dokument · aqoonsi otomaatig ah",
+    "scanning_subtitle_other": "{{count}} dokument · aqoonsi otomaatig ah",
+    "photo_title": "Sawir qaado dokumentiyadaada",
+    "photo_subtitle": "Liisanka wadista + kaarka cagaaran hal falanqayn gudaheeda.",
+    "photo_subtitle2": "Codsiga ayaa si otomaatig ah u aqoonsanaya oo ka saaraya dhammaan.",
+    "doc_scanned": "Dokumenti la sawiray {{n}}",
+    "doc_label": "Dokumenti {{n}}",
+    "photograph": "Sawir qaado",
+    "rear_camera": "Kaamirada gadaal",
+    "gallery": "Gallery",
+    "which_docs": "Dokumentiyada noocee ah ayaa la sawiraa?",
+    "doc_ch": "🇨🇭 Liisanka wadista + kaarka cagaaran",
+    "doc_fr": "🇫🇷 Kaarka caddaan + kaarka cagaaran / shahaadada",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Diiwaangelinta + Kaarka Aqoonsiga Caymiska",
+    "doc_world": "🌍 Diiwaangelinta + caddeyn caymis",
+    "close_error_aria": "Xir khaladka",
+    "analyze_btn_one": "🔍 Falanqee {{count}} dokument",
+    "analyze_btn_other": "🔍 Falanqee {{count}} dokument",
+    "skip_manual": "Ka bood — gacan gelin →",
+    "upload_gallery_aria": "Soo rar dokumentiyada laga soo qaaday gallery",
+    "take_photo_aria": "Sawir qaado dokument"
+  },
+  "postConstat": {
+    "next_time_title": "Marka xigta: 0 gelin",
+    "next_time_subtitle": "Gaadiidkaaga ayaa la xasuusan doonaa mar walba",
+    "benefit_scanned": "Liisanka + kaarka cagaaran ayaa la sawiray hal mar",
+    "benefit_fast": "Warbixinta 2 daqiiqo halkii 10",
+    "benefit_gift": "Hadiyad warbixin u dir qaraabadaada hal guji",
+    "benefit_family": "Ku habboon qoyska: wadaag deyntaada",
+    "create_account": "Abuur akoonkeyga bilaash ah →",
+    "share_btn": "Wadaag qaraabadaada",
+    "register_vehicle_title": "Kadib, diiwaangeli gaadiidkaaga",
+    "register_vehicle_subtitle": "Sawir liisanka wadista + kaarka cagaaran · 30 ilbiriqsi · marna dib uma gelin",
+    "or_skip": "ama si toos ah u bood",
+    "family_pack": "🔥 Xirmada qoyska",
+    "family_pack_desc": "3 warbixin oo la wadaagi karo qaraabadaada",
+    "scenario_child": "Carruurtaada ayaa wacaysa — shil. U dir warbixin 3 ilbiriqsi gudaheed taleefankiisa.",
+    "scenario_employee": "Shaqaalaha leh gaadiid shirkad. Si degdeg ah ugu wareeji deyn adoo adeegsanaya WhatsApp.",
+    "scenario_friend": "Saaxiib dhibaato ku jira dibadda. Wuxuu helayaa xiriir, ma jiro akoon loo baahan yahay.",
+    "buy_3_reports": "Iibso 3 warbixin — CHF/EUR 12.90 →",
+    "see_all_packs": "Eeg dhammaan xirmooyinka →",
+    "ready_title": "Diyaar u ah marka xigta",
+    "ready_subtitle": "Hadda dib u soo celi, wadaag marka aad rabto",
+    "account_title": "✅ Akoonkaaga boom.contact",
+    "account_desc": "Gaadiidkaaga ayaa la xasuusan doonaa. Markaad shil kale gasho, waxaad si toos ah u bilaabi doontaa talaabada QR — wax gelin ah, wax sawir ah.",
+    "manage_garage": "Maaree garagekeyga →",
+    "gift_title": "🎁 Hadiyad warbixin adoo adeegsanaya WhatsApp",
+    "gift_desc": "Hal deyn oo ka mid ah = xiriir gaar ah oo loo diro <strong>qof kasta</strong>, iyada oo aan qofka u baahnayn akoon.",
+    "credits_available_one": "{{count}} deyn diyaar ah",
+    "credits_available_other": "{{count}} deyn diyaar ah",
+    "share_protect": "Wadaag, ilaali qaraabadaada",
+    "wa_gift_title": "📲 Hadiyad warbixin adoo adeegsanaya WhatsApp",
+    "wa_gift_desc": "Hal guji, u dir xiriir carruurtaada, shaqaalahaaga ama saaxiibkaaga. Wuxuu sameeyaa warbixintiisa adoon akoon ama lacag bixin — laga jaray deyntaada.",
+    "send_1": "📲 Dir 1 warbixin",
+    "send_3": "📲 Dir 3 warbixin",
+    "gift_link_created": "✅ Xiriir la sameeyay — u dir WhatsApp!",
+    "share_title": "📤 Wadaag boom.contact",
+    "share_desc": "Waxaad hadda sameysay warbixintaada 5 daqiiqo. Saaxiibadaa waxay mudan yihiin inay ogaadaan in ay jiraan.",
+    "memorize_vehicles": "🚗 Xasuuso gaadiidkaaga kale",
+    "memorize_desc": "Dhaqdhaqaaqyada shirkadda, mooto, baabuurka camping? Gaadiid kasta oo la sawiray = marna ma gelin marka shil dhaco.",
+    "low_credits_one": "⚡ Kaliya {{count}} deyn ayaa kuu hartay",
+    "low_credits_other": "⚡ Kaliya {{count}} deyn ayaa kuu hartay",
+    "recharge_desc": "Hadda dib u soo celi oo ka faa'iidayso qiimo dhimis xirmooyinka qoyska iyo shirkadda.",
+    "recharge_btn": "Dib u soo celi deyntaada →",
+    "pack_single_label": "1 warbixin",
+    "pack_single_note": "Isticmaal hal mar ah",
+    "pack_pack3_label": "3 warbixin",
+    "pack_pack3_note": "Qoyska · keyd 12%",
+    "pack_pack10_label": "10 warbixin",
+    "pack_pack10_note": "Shirkadda · keyd 29%",
+    "popular_badge": "⭐ CAAWIMAAD"
+  },
+  "constat": {
+    "nav": {
+      "back": "Dib",
+      "reset": "Dib u dejinta warbixinta"
+    },
+    "session": {
+      "expiring": "Kulanagu wuxuu dhamaanayaa dhawaan. Kaydi macluumaadkaaga."
+    },
+    "error": {
+      "close": "Xir khaladka"
+    },
+    "vehicle": {
+      "pickRegistered": "Dooro gaadiid diiwaangashan",
+      "autofill": "Dib u buuxinta otomaatiga ah — ma jiraan baahi ah in la sawiro",
+      "yourRegistered": "Gaadiidkaaga diiwaangashan",
+      "org": "Shirkad",
+      "personal": "Shaqsiyadeed",
+      "fallback": "Gaadiid",
+      "cancel": "Jooji",
+      "orScanNew": "ama sawir gaadiid cusub"
+    },
+    "pedestrian": {
+      "title": "Qaybta kale: lugta"
+    },
+    "summary": {
+      "yourVehicle": "Gaadiidkaaga",
+      "accident": "Shil",
+      "damagedZones_one": "{{count}} aag dhaawacmay",
+      "damagedZones_other": "{{count}} aagag dhaawacmay"
+    },
+    "emergency": {
+      "title": "Lambarrada degdega"
+    }
   }
 }

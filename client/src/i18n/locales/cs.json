@@ -3,6 +3,7 @@
     "continue": "Pokračovat →",
     "confirm": "Potvrdit →",
     "cancel": "Zrušit",
+    "rescan": "🔄 Naskenovat znovu",
     "loading": "Načítání…",
     "saving": "⏳ Ukládání…",
     "error": "Chyba",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Zdokumentujte nehodu bez papírů a nejasností.",
+      "subtitle": "boom.contact vás krok za krokem provede sběrem důležitých informací, přidáním fotografií, polohy, prohlášení a podpisů a následně vygeneruje časově označený soubor PDF k předání vaší pojišťovně."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktivní relace",
+      "vehicleA": "VOZIDLO A",
+      "photosSig": "Fotografie · podpis ✓",
+      "vehicleB": "VOZIDLO B",
+      "qrJoined": "QR připojeno · probíhá",
+      "payGenerate": "Zaplatit a vygenerovat PDF",
+      "pdfBadge": "Časově označený PDF",
+      "qrBadge": "Sdílený QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,24 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
+    "features": [
+      {
+        "title": "Pozvěte pomocí QR kódu",
+        "desc": "Vytvořte relaci, druhý řidič naskenuje QR kód ze svého telefonu. Žádná instalace, žádná registrace."
+      },
+      {
+        "title": "Fotografie, hlas a podpis",
+        "desc": "Přidejte fotografie, nadiktujte svá pozorování hlasem, umístěte vozidla na náčrtek a podepište se prstem."
+      },
+      {
+        "title": "Časově označený soubor PDF",
+        "desc": "boom.contact vygeneruje časově označený soubor PDF obsahující informace zadané každým řidičem."
+      },
+      {
+        "title": "K předání vaší pojišťovně",
+        "desc": "Stáhněte si PDF nebo jej odešlete e-mailem jako přílohu k vašemu hlášení škodní události vaší pojišťovně."
+      }
+    ],
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +128,102 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "seoLine": "Digitální záznam o nehodě ve více jazycích · Digital accident report",
+    "flow": {
+      "label": "Vše v jednom procesu",
+      "title": "Od nehody k dokumentaci připravené k předání"
+    },
+    "stress": {
+      "label": "Navrženo pro okamžik nehody",
+      "title": "Vytvořeno pro stresové situace",
+      "text": "Po nárazu člověk nemá jasnou mysl. boom.contact postupuje krok za krokem, ve vašem jazyce a uchovává záznam každé shromážděné informace. Vše funguje přímo v prohlížeči telefonu, i s omezeným připojením.",
+      "bullets": [
+        "Vedeno krok za krokem",
+        "Vícejazyčné",
+        "Fotografie · hlas · podpis",
+        "Časově označený soubor PDF"
+      ],
+      "emergencyTitle": "V případě nouze",
+      "emergencyText": "boom.contact nenahrazuje záchranné služby, policii, advokáta ani pojišťovnu. V případě zranění nebo nebezpečí nejprve kontaktujte tísňové služby."
+    },
+    "pricing": {
+      "label": "Ceník",
+      "title": "Jednoduché, transparentní, bez předplatného",
+      "caption": "1 kredit = 1 kompletní záznam · vícejazyčný · kredity bez vypršení platnosti",
+      "badgePopular": "Nejoblíbenější",
+      "plans": [
+        {
+          "label": "1 záznam",
+          "desc": "Pro jednorázovou nehodu"
+        },
+        {
+          "label": "3 záznamy",
+          "desc": "Pro celou rodinu"
+        },
+        {
+          "label": "10 záznamů",
+          "desc": "Pro flotily a makléře"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Pro profesionály",
+      "title": "Pro makléře, flotily a pojišťovací partnery",
+      "text": "Vybavte své klienty a řidiče přehledným nástrojem k dokumentaci nehody a generování časově označeného souboru PDF. Balíčky kreditů pro flotily a makléře, jednoduché nasazení, bez předplatného.",
+      "cta": "Kontaktovat / sdílet",
+      "items": [
+        {
+          "title": "Flotily",
+          "desc": "Strukturovaná dokumentace pro každou škodní událost řidiče."
+        },
+        {
+          "title": "Makléři",
+          "desc": "Služba s přidanou hodnotou pro vaše pojištěnce."
+        },
+        {
+          "title": "Důvěrnost",
+          "desc": "Data šifrována při přenosu, odstranitelná na vyžádání."
+        },
+        {
+          "title": "Předání",
+          "desc": "Časově označený PDF připravený k přiložení k hlášení škodní události."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Často kladené otázky",
+      "items": [
+        {
+          "q": "Co je boom.contact?",
+          "a": "boom.contact je aplikace, která pomáhá zdokumentovat dopravní nehodu z telefonu: pozvání řidičů pomocí QR kódu, fotografie, hlas, náčrtek, podpisy a následné vygenerování časově označeného souboru PDF k předání vaší pojišťovně."
+        },
+        {
+          "q": "Musím si instalovat aplikaci?",
+          "a": "Ne. boom.contact funguje přímo v prohlížeči telefonu (Safari, Chrome, Firefox). Můžete jej také přidat na domovskou obrazovku jako webovou aplikaci (PWA) pro offline přístup."
+        },
+        {
+          "q": "Co se stane, když druhý řidič nemá aplikaci?",
+          "a": "Vytvoříte relaci a zobrazí se QR kód. Druhý řidič jej naskenuje svým telefonem: boom.contact se otevře v jeho prohlížeči, bez registrace či stahování."
+        },
+        {
+          "q": "Bude soubor PDF přijat mou pojišťovnou?",
+          "a": "Časově označený soubor PDF je určen jako příloha k vašemu hlášení škodní události. boom.contact nezaručuje jeho přijetí, které závisí na vaší pojišťovně podle vaší smlouvy a jurisdikce."
+        },
+        {
+          "q": "Funguje to, pokud druhý řidič mluví jiným jazykem?",
+          "a": "Ano. Každý řidič používá rozhraní ve svém vlastním jazyce. Finální dokumentace je vygenerována pro každého řidiče."
+        },
+        {
+          "q": "Jsou moje data chráněna?",
+          "a": "Data jsou šifrována při přenosu, relace jsou automaticky odstraněny po uplynutí lhůty a policie není nikdy automaticky upozorněna — pouze na základě vašeho výslovného jednání."
+        },
+        {
+          "q": "Kolik to stojí?",
+          "a": "Od CHF / EUR 4.90 za jeden záznam. Balíček 3 záznamů za 12.90 (−12 %), balíček 10 za 34.90 (−29 %). Bez předplatného, kredity bez vypršení platnosti."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Nebyl rozpoznán žádný doklad. Zkontrolujte kvalitu fotografií.",
+    "analysis_error": "Chyba analýzy.",
+    "read_failed": "Čtení selhalo",
+    "docs_analyzed_one": "{{count}} dokument analyzován",
+    "docs_analyzed_other": "{{count}} dokumenty analyzovány",
+    "confidence": "Spolehlivost: {{pct}}%",
+    "rescan": "Naskenovat znovu",
+    "vehicle_section": "🚗 Vozidlo",
+    "plate": "SPZ",
+    "driver_section": "👤 Řidič",
+    "firstName": "Jméno",
+    "lastName": "Příjmení",
+    "insurance_found": "✅ Pojištění",
+    "insurance_manual": "⚠️ Pojištění — doplnit ručně",
+    "company_label": "Pojišťovna",
+    "company_aria": "Pojišťovna",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Číslo pojistky",
+    "policy_manual_hint": "(ruční zadání)",
+    "policy_aria": "Číslo pojistky",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Potvrdit →",
+    "scanning_title": "Probíhá analýza…",
+    "scanning_subtitle_one": "{{count}} dokument · automatická identifikace",
+    "scanning_subtitle_other": "{{count}} dokumenty · automatická identifikace",
+    "photo_title": "Vyfotografujte své dokumenty",
+    "photo_subtitle": "Technický průkaz + zelená karta v jedné analýze.",
+    "photo_subtitle2": "Aplikace vše automaticky identifikuje a extrahuje.",
+    "doc_scanned": "Naskenovaný dokument {{n}}",
+    "doc_label": "Dokument {{n}}",
+    "photograph": "Vyfotografovat",
+    "rear_camera": "Zadní fotoaparát",
+    "gallery": "Galerie",
+    "which_docs": "Které dokumenty naskenovat?",
+    "doc_ch": "🇨🇭 Technický průkaz + zelená karta",
+    "doc_fr": "🇫🇷 Technický průkaz + zelená karta / potvrzení",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 Registrace + doklad o pojištění",
+    "close_error_aria": "Zavřít chybu",
+    "analyze_btn_one": "🔍 Analyzovat {{count}} dokument",
+    "analyze_btn_other": "🔍 Analyzovat {{count}} dokumenty",
+    "skip_manual": "Přeskočit — ruční zadání →",
+    "upload_gallery_aria": "Nahrát dokumenty z galerie",
+    "take_photo_aria": "Vyfotografovat dokument"
+  },
+  "pricingPage": {
+    "sr_title": "Ceník — boom.contact",
+    "back": "← Zpět",
+    "buy_reports": "Koupit záznamy",
+    "credits_no_expiry": "Kredity bez vypršení platnosti · Sdílené přes WhatsApp",
+    "credits_available_one": "✅ {{count}} kredit k dispozici",
+    "credits_available_other": "✅ {{count}} kreditů k dispozici",
+    "no_credits": "⚡ Žádné kredity — dobijte nyní",
+    "currency_label": "MĚNA",
+    "currency_detected": "✓ detekována automaticky",
+    "most_popular": "⭐ NEJOBLÍBENĚJŠÍ · ÚSPORA {{savings}}",
+    "economy": "Úspora {{savings}}",
+    "per_pack": "za balíček",
+    "per_report": "/ záznam",
+    "redirecting_stripe": "⏳ Přesměrování na Stripe...",
+    "buy_btn": "Koupit {{label}} — {{price}}",
+    "error_missing_url": "Platební URL chybí",
+    "error_generic": "Chyba",
+    "error_email_required": "Pro nákup je vyžadován e-mail",
+    "trust_stripe": "Zabezpečená platba Stripe PCI-DSS",
+    "trust_no_expiry": "Kredity bez vypršení platnosti",
+    "trust_whatsapp": "Sdílené přes WhatsApp",
+    "trust_worldwide": "Vícejazyčné",
+    "trust_invoice": "Automatická faktura PDF",
+    "trust_fleet": "Ideální pro firemní flotily",
+    "why_title": "PROČ MÍT KREDITY PŘEDEM?",
+    "scenario_child_title": "Vaše dítě má nehodu",
+    "scenario_child_text": "Zavolá vám. Pošlete mu kredit přes WhatsApp. Za 5 minut vyplní záznam.",
+    "scenario_company_title": "Firemní vozidlo",
+    "scenario_company_text": "Váš doručovatel má nehodu. Okamžitě mu převedete kredit ze svého mobilu.",
+    "scenario_abroad_title": "Na cestách v zahraničí",
+    "scenario_abroad_text": "Nehoda v Německu, Austrálii nebo Japonsku. Rozhraní dostupné ve více jazycích.",
+    "pkg_single_label": "1 záznam",
+    "pkg_single_desc": "Pro jednorázovou nehodu",
+    "pkg_pack3_label": "3 záznamy",
+    "pkg_pack3_desc": "Pro celou rodinu",
+    "pkg_pack3_marketing": "🎁 Sdílejte přes WhatsApp — vaše dítě, váš zaměstnanec, váš přítel obdrží okamžitý odkaz.",
+    "pkg_pack10_label": "10 záznamů",
+    "pkg_pack10_desc": "Flotily a firmy",
+    "pkg_pack10_marketing": "🏢 Spravujte celou svou flotilu. Převádějte svým spolupracovníkům na 1 kliknutí."
+  },
+  "voice": {
+    "title": "Popište nehodu",
+    "subtitle": "Volitelné — popište vlastními slovy, co se stalo. Vaše prohlášení bude zahrnuto v záznamu.",
+    "tab_voice": "🎙️ Hlasově",
+    "tab_text": "⌨️ Text",
+    "start_recording": "Spustit nahrávání",
+    "textarea_aria": "Popis nehody",
+    "textarea_placeholder": "Popište nehodu v několika větách…",
+    "validate_desc": "✅ Potvrdit můj popis",
+    "skip_step": "Přeskočit tento krok →",
+    "recording_in_progress": "Probíhá nahrávání…",
+    "recording_tip": "💡 Popište: směr každého vozidla, místo nárazu, okolnosti. Mluvte klidně.",
+    "stop_recording": "Zastavit nahrávání",
+    "transcribing_title": "Probíhá přepis…",
+    "transcribing_subtitle": "Vaše nahrávka se zpracovává",
+    "desc_recorded": "Popis nahraný",
+    "desc_in_pdf": "Vaše prohlášení bude zahrnuto v PDF záznamu",
+    "your_declaration": "Vaše prohlášení",
+    "edit": "✏️ Upravit",
+    "edit_placeholder": "V případě potřeby opravte své prohlášení...",
+    "restart": "Začít znovu",
+    "mic_denied": "Přístup k mikrofonu zamítnut — použijte ruční zadání.",
+    "mic_unavailable": "Mikrofon nedostupný: {{msg}}",
+    "transcription_error": "Chyba přepisu",
+    "textarea_edit_aria": "Vyprávění o nehodě"
+  },
+  "account": {
+    "member": {
+      "remove": "Odebrat",
+      "removeConfirm": "Odebrat tohoto člena? Ztratí přístup k vozidlům a kreditům firmy.",
+      "loading": "Načítání…",
+      "none": "Žádní členové.",
+      "invite": "Pozvat člena",
+      "inviteBtn": "Pozvat",
+      "pending": "Čekající pozvánky"
+    },
+    "role": {
+      "owner": "Vlastník",
+      "driver": "Řidič",
+      "fleet_admin": "Správce vozového parku"
+    },
+    "scan": {
+      "cancel": "Zrušit",
+      "photographPre": "Vyfotografujte svůj",
+      "license": "technický průkaz",
+      "and": "a/nebo svou",
+      "greenCard": "zelenou kartu",
+      "title": "Naskenovat průkaz + zelenou kartu",
+      "subtitle": "Automatické rozpoznání · vícejazyčné"
+    },
+    "garage": {
+      "back": "Garáž",
+      "title": "Moje garáž",
+      "add": "Přidat",
+      "emptyTitle": "Prázdná garáž",
+      "emptySubtitle": "Zaregistrujte svá vozidla jednou. Už nikdy nemusíte skenovat při nehodě.",
+      "addFirst": "Přidat své první vozidlo",
+      "noOrgVehicles": "Žádná firemní vozidla zatím."
+    },
+    "insurance": {
+      "saved": "Pojištění uloženo",
+      "add": "Přidat pojištění"
+    },
+    "nav": {
+      "logout": "Odhlásit se"
+    },
+    "vehicle": {
+      "edit": "Upravit vozidlo",
+      "delete": "Smazat vozidlo",
+      "editOrg": "Upravit firemní vozidlo",
+      "deleteOrg": "Smazat firemní vozidlo"
+    },
+    "fields": {
+      "nickname": "Přezdívka",
+      "plate": "SPZ",
+      "make": "Značka",
+      "model": "Model",
+      "color": "Barva",
+      "year": "Rok",
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "phone": "Telefon",
+      "company": "Společnost",
+      "address": "Adresa",
+      "newEmail": "Nový e-mail",
+      "currentPwd": "Aktuální heslo (potvrzení)",
+      "confirmEmailAria": "Potvrzení e-mailové adresy"
+    },
+    "credits": {
+      "buy": "Koupit:",
+      "available": "DOSTUPNÉ KREDITY",
+      "unit": "1 kredit = 1 kompletní záznam o nehodě"
+    },
+    "history": {
+      "loading": "Načítání...",
+      "empty": "Žádné záznamy",
+      "emptySub": "Váš příští záznam se zde automaticky zobrazí."
+    },
+    "personal": {
+      "title": "Osobní údaje",
+      "none": "Žádné údaje — klikněte na Upravit"
+    },
+    "delete": {
+      "willDelete": "CO BUDE TRVALE SMAZÁNO:",
+      "text": "Trvale smazat váš účet, vozidla a všechny záznamy. Tuto akci nelze vrátit zpět."
+    },
+    "danger": {
+      "title": "Nebezpečná zóna"
+    }
+  },
+  "constat": {
+    "nav": {
+      "back": "Zpět",
+      "reset": "Resetovat záznam"
+    },
+    "session": {
+      "expiring": "Vaše relace brzy vyprší. Uložte své údaje."
+    },
+    "error": {
+      "close": "Zavřít chybu"
+    },
+    "vehicle": {
+      "pickRegistered": "Vybrat registrované vozidlo",
+      "autofill": "Automatické předvyplnění — není třeba skenovat",
+      "yourRegistered": "Vaše registrovaná vozidla",
+      "org": "Firma",
+      "personal": "Osobní",
+      "fallback": "Vozidlo",
+      "cancel": "Zrušit",
+      "orScanNew": "nebo naskenovat nové vozidlo"
+    },
+    "pedestrian": {
+      "title": "Druhá strana: chodec"
+    },
+    "summary": {
+      "yourVehicle": "Vaše vozidlo",
+      "accident": "Nehoda",
+      "damagedZones_one": "{{count}} poškozená zóna",
+      "damagedZones_other": "{{count}} poškozené zóny"
+    },
+    "emergency": {
+      "title": "Tísňová čísla"
+    }
+  },
+  "postConstat": {
+    "next_time_title": "Příště: 0 zadávání",
+    "next_time_subtitle": "Vaše vozidla uložena jednou provždy",
+    "benefit_scanned": "Průkaz + zelená karta naskenovány jednou",
+    "benefit_fast": "Záznam za 2 min místo 10",
+    "benefit_gift": "Darujte záznam svým blízkým na 1 kliknutí",
+    "benefit_family": "Ideální pro rodiny: sdílejte své kredity",
+    "create_account": "Vytvořit bezplatný účet →",
+    "share_btn": "Sdílet s blízkými",
+    "register_vehicle_title": "Poté zaregistrujte své vozidlo",
+    "register_vehicle_subtitle": "Naskenujte technický průkaz + zelená karta · 30 s · už nikdy zadávat",
+    "or_skip": "nebo přejít přímo",
+    "family_pack": "🔥 Rodinný balíček",
+    "family_pack_desc": "3 záznamy ke sdílení s blízkými",
+    "scenario_child": "Vaše dítě volá — nehoda. Pošlete mu záznam za 3 sekundy na mobil.",
+    "scenario_employee": "Zaměstnanec s firemním vozidlem. Převeďte kredit přes WhatsApp okamžitě.",
+    "scenario_friend": "Přítel v nouzi v zahraničí. Obdrží odkaz, není potřeba účet.",
+    "buy_3_reports": "Koupit 3 záznamy — CHF/EUR 12,90 →",
+    "see_all_packs": "Zobrazit všechny balíčky →",
+    "ready_title": "Připraveno na příště",
+    "ready_subtitle": "Nabijte nyní, sdílejte kdy chcete",
+    "account_title": "✅ Váš účet boom.contact",
+    "account_desc": "Vaše vozidla jsou uložena. Při příští nehodě začnete přímo u QR kódu — žádné zadávání, žádné skenování.",
+    "manage_garage": "Spravovat garáž →",
+    "gift_title": "🎁 Darujte záznam přes WhatsApp",
+    "gift_desc": "Jeden z vašich kreditů = jedinečný odkaz k odeslání <strong>komukoli</strong>, aniž by osoba potřebovala účet.",
+    "credits_available_one": "{{count}} kredit k dispozici",
+    "credits_available_other": "{{count}} kredity k dispozici",
+    "share_protect": "Sdílejte, chraňte své blízké",
+    "wa_gift_title": "📲 Darovat záznam přes WhatsApp",
+    "wa_gift_desc": "Na 1 kliknutí pošlete odkaz svému dítěti, zaměstnanci nebo příteli. Vytvoří záznam bez účtu či platby — odečte se z vašich kreditů.",
+    "send_1": "📲 Poslat 1 záznam",
+    "send_3": "📲 Poslat 3 záznamy",
+    "gift_link_created": "✅ Odkaz vytvořen — pošlete ho přes WhatsApp!",
+    "share_title": "📤 Sdílení boom.contact",
+    "share_desc": "Právě jste vytvořili záznam za 5 minut. Vaši přátelé si zaslouží vědět, že to existuje.",
+    "memorize_vehicles": "🚗 Uložte svá další vozidla",
+    "memorize_desc": "Firemní vozový park, motorka, obytný vůz? Každé naskenované vozidlo = už nikdy zadávat při nehodě.",
+    "low_credits_one": "⚡ Zbývá vám pouze {{count}} kredit",
+    "low_credits_other": "⚡ Zbývá vám pouze {{count}} kredity",
+    "recharge_desc": "Dobijte nyní a využijte slevy na rodinné a firemní balíčky.",
+    "recharge_btn": "Dobít kredity →",
+    "pack_single_label": "1 záznam",
+    "pack_single_note": "Jednorázové použití",
+    "pack_pack3_label": "3 záznamy",
+    "pack_pack3_note": "Rodina · úspora 12%",
+    "pack_pack10_label": "10 záznamů",
+    "pack_pack10_note": "Firma · úspora 29%",
+    "popular_badge": "⭐ OBLÍBENÉ"
+  },
+  "constatForm": {
+    "tab_vehicle": "Vozidlo",
+    "tab_driver": "Řidič",
+    "tab_insurance": "Pojištění",
+    "tab_circumstances": "Okolnosti",
+    "tab_complement": "Doplněk",
+    "field_required": "Toto pole je povinné",
+    "plate_label": "SPZ",
+    "brand_label": "Značka",
+    "model_label": "Model",
+    "year_label": "Rok",
+    "vin_label": "VIN",
+    "firstName_label": "Jméno",
+    "lastName_label": "Příjmení",
+    "address_label": "Adresa",
+    "postalCode_label": "PSČ",
+    "city_label": "Město",
+    "country_label": "Země",
+    "phone_label": "Telefon",
+    "email_label": "E-mail",
+    "license_label": "Číslo řidičského průkazu",
+    "company_label": "Pojišťovna",
+    "policyNumber_label": "Číslo pojistky",
+    "greenCardNumber_label": "Číslo zelené karty",
+    "greenCardExpiry_label": "Platnost zelené karty",
+    "agentName_label": "Agent / Makléř",
+    "agentPhone_label": "Tel. pojišťovny",
+    "circumstances_desc": "Zaškrtněte všechna políčka popisující situaci vašeho vozidla <strong>({{role}})</strong> v okamžiku nárazu.",
+    "boxes_checked_one": "{{count}} políčko zaškrtnuto",
+    "boxes_checked_other": "{{count}} políčka zaškrtnuta",
+    "complement_desc": "Doplňkové informace k záznamu — sekce 11, 13 a 14.",
+    "datetime_label": "Datum a čas nehody",
+    "visible_damage_label": "Viditelné škody (sekce 11)",
+    "visible_damage_placeholder": "Popište viditelné škody na vašem vozidle...",
+    "third_party_label": "Hmotné škody na třetích stranách (jiných než A a B)",
+    "witnesses_label": "Svědci",
+    "witnesses_placeholder": "Jméno, příjmení, telefon každého svědka...",
+    "voice_declaration_label": "🎙️ Hlasové prohlášení (volitelné)",
+    "observations_label": "Volné poznámky — řidič {{role}} (sekce 14)",
+    "observations_placeholder": "Přidejte jakékoli užitečné informace: povětrnostní podmínky, stav vozovky, odhadovaná rychlost, poznámky...",
+    "insurance_holder_label": "Pojistník (pokud odlišný od řidiče)",
+    "holder_name_placeholder": "Celé jméno pojistníka",
+    "holder_name_aria": "Jméno pojistníka",
+    "holder_address_placeholder": "Adresa pojistníka",
+    "holder_address_aria": "Adresa pojistníka",
+    "save_btn": "Uložit a pokračovat →",
+    "form_tabs_aria": "Sekce formuláře"
+  },
+  "auth": {
+    "default_subtitle": "Přihlaste se pro uložení vozidel a nemusíte už nic vyplňovat při záznamech.",
+    "magic_btn": "📧 Přihlášení přes e-mailový odkaz (doporučeno)",
+    "password_btn": "🔑 Přihlášení heslem",
+    "register_btn": "✨ Vytvořit účet",
+    "skip_btn": "Pokračovat bez účtu →",
+    "skip_note": "Bez účtu můžete stejně vytvořit záznam a zaplatit přes Stripe.",
+    "magic_instructions": "Zadejte svůj e-mail — obdržíte přihlašovací odkaz platný 15 minut.",
+    "send_link": "Odeslat odkaz",
+    "sending": "Odesílání...",
+    "back": "← Zpět",
+    "email_sent_title": "E-mail odeslán!",
+    "email_sent_desc": "Zkontrolujte svou schránku <strong>{{email}}</strong>.",
+    "email_sent_validity": "Odkaz je platný 15 minut.",
+    "login_error": "Nesprávný e-mail nebo heslo.",
+    "logging_in": "Přihlašování...",
+    "login_btn": "Přihlásit se",
+    "forgot_password": "Zapomenuté heslo? Použít e-mailový odkaz →",
+    "register_desc": "Vytvořte si účet pro uložení vozidel a automatické předvyplnění záznamů.",
+    "password_placeholder": "Heslo (min. 6 znaků)",
+    "creating": "Vytváření...",
+    "create_btn": "Vytvořit účet",
+    "register_legal": "Vytvořením účtu přijímáte naše obchodní podmínky. Údaje o vašich vozidlech jsou šifrované a nikdy sdílené bez vašeho souhlasu.",
+    "register_error": "Chyba při registraci.",
+    "generic_error": "Chyba"
+  },
+  "signature": {
+    "title": "Podpis",
+    "driver": "Řidič {{role}}",
+    "other_party": "Druhá strana",
+    "no_signature": "bez podpisu",
+    "sign_here": "Podepište zde prstem",
+    "signed": "PODEPSÁNO ✓",
+    "clear": "🗑 Vymazat",
+    "saving": "⏳ Ukládání…",
+    "confirm_signature": "✍️ Potvrdit podpis",
+    "waiting_other": "Čeká se na podpis druhého řidiče…",
+    "waiting_pdf": "PDF bude vygenerováno, jakmile obě strany podepíší.",
+    "report_signed": "Záznam podepsán!",
+    "generating_pdf": "Probíhá generování PDF…",
+    "canvas_aria": "Oblast pro podpis — Řidič {{role}}"
+  },
+  "app": {
+    "magic_link_error": "Přihlašovací odkaz neplatný nebo vypršel.",
+    "gift_credits_added": "🎁 {{credits}} kredit(y) přidány na váš účet!",
+    "loading_aria": "Probíhá načítání",
+    "nav_landing": "Hlavní stránka",
+    "nav_cgu": "Obchodní podmínky",
+    "nav_pricing": "Ceník",
+    "nav_constat": "Tvorba záznamu",
+    "nav_join": "Připojit se k relaci",
+    "nav_account": "Uživatelský účet",
+    "nav_admin": "Administrátorský panel",
+    "nav_emergency": "Tísňová čísla",
+    "nav_privacy": "Zásady ochrany osobních údajů",
+    "nav_police_login": "Přihlášení policie",
+    "nav_police_dashboard": "Panel policie",
+    "nav_police_flow": "Tok policie",
+    "nav_police_intervention": "Zásah policie",
+    "nav_to": "Navigace na {{label}}",
+    "title_default": "boom.contact — Digitální záznam o nehodě",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "legal": {
+    "intro": {
+      "title": "Než začnete",
+      "body": "boom.contact vám pomáhá zdokumentovat nehodu a vytvořit strukturovaný PDF soubor. V případě zranění, nebezpečí, ujíždění, závažného nesouhlasu nebo zákonné povinnosti okamžitě kontaktujte záchranné služby, policii nebo příslušné orgány. Poskytnuté informace zůstávají odpovědností účastníků. Údaje můžete zadat ručně, pokud nechcete používat fotoaparát, mikrofon nebo polohu.",
+      "start": "Rozumím, začít",
+      "emergency": "Zobrazit tísňová čísla",
+      "privacy_cgu": "Ochrana osobních údajů / Obchodní podmínky"
+    },
+    "guest_accept": {
+      "checkbox": "Přijímám Obchodní podmínky a přečetl/a jsem si Zásady ochrany osobních údajů.",
+      "note": "Rozumím tomu, že mé údaje budou použity k vygenerování PDF záznamu o nehodě a že poskytnuté informace zůstávají mou odpovědností."
+    },
+    "signature_confirm": "Potvrzuji, že údaje, které jsem poskytl/a, jsou podle mého nejlepšího vědomí přesné a souhlasím s tím, že můj podpis bude zahrnut do PDF záznamu.",
+    "payment_notice": "Pokračováním k platbě rozumíte, že platba pokrývá generování a odeslání PDF záznamu. Poskytnuté informace zůstávají odpovědností účastníků.",
+    "mic_notice": "Použitím mikrofonu bude vaše hlasové prohlášení přepsáno a zahrnuto do záznamu o nehodě. Místo toho můžete použít textové zadání.",
+    "injury_confirm": {
+      "body": "Fotografie zranění mohou obsahovat citlivé údaje. Ujistěte se, že máte souhlas dotčené osoby, pokud to není nutné z bezpečnostních důvodů nebo zákonné povinnosti.",
+      "continue": "Pokračovat",
+      "change": "Změnit kategorii"
+    },
+    "pdf_ready_title": "Časově označený PDF záznam o nehodě",
+    "pdf_ready_body": "Požadované podpisy byly zaznamenány. PDF záznam je připraven. Zkontrolujte údaje před odesláním pojišťovně."
+  },
+  "join": {
+    "sessionLabel": "Relace",
+    "yourEmail": "Váš e-mail",
+    "emailHint": "(pro obdržení PDF)",
+    "emailAria": "Vaše e-mailová adresa",
+    "connecting": "Připojování…",
+    "connected": "Připojeno! Spouštění…",
+    "joinButton": "Připojit se k záznamu"
   }
 }

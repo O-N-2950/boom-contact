@@ -12,7 +12,8 @@
     "required": "Privaloma",
     "yes": "Taip",
     "no": "Ne",
-    "unknown": "Nežinoma"
+    "unknown": "Nežinoma",
+    "rescan": "🔄 Peržiūrėti"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentuokite avariją be popieriaus, be painiavos.",
+      "subtitle": "boom.contact jus veda žingsnis po žingsnio, kad surinktumėte naudingą informaciją, pridėtumėte nuotraukas, vietą, pareiškimus ir parašus, o tada sugeneruotumėte laiko žymą turintį PDF failą, kurį galite perduoti savo draudikui."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Aktyvi sesija",
+      "vehicleA": "TRANSPORTO PRIEMONĖ A",
+      "photosSig": "Nuotraukos · parašas ✓",
+      "vehicleB": "TRANSPORTO PRIEMONĖ B",
+      "qrJoined": "QR prisijungė · vyksta",
+      "payGenerate": "Mokėti ir generuoti PDF",
+      "pdfBadge": "Laiko žymą turintis PDF",
+      "qrBadge": "Bendrinamas QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Kviečiate per QR kodą",
+        "desc": "Sukurkite sesiją, kitas vairuotojas nuskenuoja QR kodą iš savo telefono. Nereikia diegti, nereikia registruotis."
+      },
+      {
+        "title": "Nuotraukos, balsas ir parašas",
+        "desc": "Pridėkite nuotraukas, diktuokite savo pastebėjimus balsu, pažymėkite transporto priemones brėžinyje ir pasirašykite pirštu."
+      },
+      {
+        "title": "Laiko žymą turintis PDF failas",
+        "desc": "boom.contact generuoja laiko žymą turintį PDF failą, kuriame pateikiama kiekvieno vairuotojo įvesta informacija."
+      },
+      {
+        "title": "Perduoti savo draudikui",
+        "desc": "Atsisiųskite PDF arba siųskite jį el. paštu, kad lydėtų jūsų draudimo reikalavimą jūsų draudikui."
+      }
+    ],
+    "seoLine": "Daugiakalbis skaitmeninis avarijos pranešimas · Digital accident report",
+    "flow": {
+      "label": "Viskas viename sraute",
+      "title": "Nuo avarijos iki paruošto dokumento"
+    },
+    "stress": {
+      "label": "Pagalvota avarijos momentui",
+      "title": "Sukurtas stresinėms situacijoms",
+      "text": "Po smūgio galva nebūna aiški. boom.contact žengia žingsnis po žingsnio, jūsų kalba, ir fiksuoja kiekvieną surinktą informaciją. Viskas veikia iš telefono naršyklės, net ir su ribotu ryšiu.",
+      "bullets": [
+        "Veda žingsnis po žingsnio",
+        "Daugiakalbis",
+        "Nuotraukos · balsas · parašas",
+        "Laiko žymą turintis PDF"
+      ],
+      "emergencyTitle": "Skubios pagalbos atveju",
+      "emergencyText": "boom.contact nepakeičia pagalbos, policijos, advokato ar draudiko. Jei yra sužeistųjų ar pavojus, pirmiausia susisiekite su skubios pagalbos tarnybomis."
+    },
+    "pricing": {
+      "label": "Kainos",
+      "title": "Paprasčiausiai, skaidriai, be prenumeratos",
+      "caption": "1 kreditas = 1 pilnas pranešimas · daugiakalbis · kreditai be galiojimo",
+      "badgePopular": "Populiaru",
+      "plans": [
+        {
+          "label": "1 pranešimas",
+          "desc": "Vienkartinei avarijai"
+        },
+        {
+          "label": "3 pranešimai",
+          "desc": "Visai šeimai"
+        },
+        {
+          "label": "10 pranešimų",
+          "desc": "Flotoms ir tarpininkams"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Profesionalams",
+      "title": "Tarpininkams, flotoms ir draudimo partneriams",
+      "text": "Aprūpinkite savo klientus ir vairuotojus aiškiu įrankiu dokumentuoti avariją ir generuoti laiko žymą turintį PDF failą. Kreditų paketai flotoms ir tarpininkams, paprastas diegimas, be prenumeratos.",
+      "cta": "Susisiekti / bendrinti",
+      "items": [
+        {
+          "title": "Flotoms",
+          "desc": "Struktūrizuotas dokumentas kiekvienam vairuotojo įvykiui."
+        },
+        {
+          "title": "Tarpininkams",
+          "desc": "Pridėtinės vertės paslauga jūsų draudėjams."
+        },
+        {
+          "title": "Privatumas",
+          "desc": "Duomenys šifruojami perduodant, gali būti ištrinti pagal prašymą."
+        },
+        {
+          "title": "Perdavimas",
+          "desc": "Laiko žymą turintis PDF, paruoštas pridėti prie draudimo reikalavimo."
+        }
+      ]
+    },
+    "faq": {
+      "label": "DUK",
+      "title": "Dažnai užduodami klausimai",
+      "items": [
+        {
+          "q": "Kas yra boom.contact?",
+          "a": "boom.contact yra programa, kuri padeda dokumentuoti eismo įvykį iš telefono: vairuotojų kvietimas per QR, nuotraukos, balsas, brėžiniai, parašai, o tada generuojamas laiko žymą turintis PDF failas, kurį galite perduoti savo draudikui."
+        },
+        {
+          "q": "Ar turiu įdiegti programą?",
+          "a": "Ne. boom.contact veikia tiesiogiai telefono naršyklėje (Safari, Chrome, Firefox). Taip pat galite pridėti ją prie savo pagrindinio ekrano kaip internetinę programą (PWA) neprisijungus."
+        },
+        {
+          "q": "Ką daryti, jei kitas vairuotojas neturi programos?",
+          "a": "Sukuriate sesiją, ir QR kodas pasirodo. Kitas vairuotojas jį nuskenuoja su savo telefonu: boom.contact atsidaro jo naršyklėje, be registracijos ar atsisiuntimo."
+        },
+        {
+          "q": "Ar mano draudikas priima PDF failą?",
+          "a": "Laiko žymą turintis PDF failas skirtas lydėti jūsų draudimo reikalavimą. boom.contact negarantuoja jo priėmimo, tai priklauso nuo jūsų draudiko pagal jūsų sutartį ir jurisdikciją."
+        },
+        {
+          "q": "Ar tai veikia, jei kitas vairuotojas kalba kita kalba?",
+          "a": "Taip. Kiekvienas vairuotojas naudoja sąsają savo kalba. Galutinis dokumentas generuojamas kiekvienam vairuotojui."
+        },
+        {
+          "q": "Ar mano duomenys yra apsaugoti?",
+          "a": "Duomenys šifruojami perduodant, sesijos automatiškai ištrinamos po tam tikro laiko, o policija niekada automatiškai neinformuojama — tik jūsų aiškiai nurodytu veiksmu."
+        },
+        {
+          "q": "Kiek tai kainuoja?",
+          "a": "Nuo CHF / EUR 4.90 už pranešimą. 3 pranešimų paketas už 12.90 (−12 %), 10 pranešimų paketas už 34.90 (−29 %). Be prenumeratos, kreditai be galiojimo."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "join": {
+    "sessionLabel": "Sesija",
+    "yourEmail": "Jūsų el. paštas",
+    "emailHint": "(gauti PDF)",
+    "emailAria": "Jūsų el. pašto adresas",
+    "connecting": "Jungiamasi…",
+    "connected": "Prisijungta! Pradedama…",
+    "joinButton": "Prisijungti prie pranešimo"
+  },
+  "signature": {
+    "title": "Parašas",
+    "driver": "Vairuotojas {{role}}",
+    "other_party": "Kita šalis",
+    "no_signature": "be parašo",
+    "sign_here": "Pasirašykite čia savo pirštu",
+    "signed": "PASIRAŠYTA ✓",
+    "clear": "🗑 Išvalyti",
+    "saving": "⏳ Išsaugoma…",
+    "confirm_signature": "✍️ Patvirtinti parašą",
+    "waiting_other": "Laukiama kito vairuotojo parašo…",
+    "waiting_pdf": "PDF bus sugeneruotas, kai abi šalys pasirašys.",
+    "report_signed": "Pranešimas pasirašytas!",
+    "generating_pdf": "PDF generavimas vyksta…",
+    "canvas_aria": "Parašo zona — Vairuotojas {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Prieš pradedant",
+      "body": "boom.contact padeda jums dokumentuoti avariją ir sugeneruoti struktūrizuotą PDF failą. Jei yra sužeistųjų, pavojus, pabėgimas, rimtas nesutarimas ar teisinė prievolė, nedelsdami susisiekite su pagalba, policija ar kompetentingomis institucijomis. Pateikta informacija lieka dalyvių atsakomybė.",
+      "start": "Supratau, pradėti",
+      "emergency": "Peržiūrėti skubios pagalbos numerius",
+      "privacy_cgu": "Privatumas / Taisyklių ir sąlygų"
+    },
+    "guest_accept": {
+      "checkbox": "Sutinku su Taisyklių ir sąlygų ir perskaičiau Privatumo politiką.",
+      "note": "Suprantu, kad mano informacija bus naudojama generuoti avarijos PDF failą ir kad pateikta informacija lieka mano atsakomybė."
+    },
+    "signature_confirm": "Patvirtinu, kad pateikta informacija yra teisinga mano žiniomis ir sutinku, kad mano parašas būtų įtrauktas į PDF failą.",
+    "payment_notice": "Tęsdami mokėjimą, suprantate, kad mokėjimas apima PDF failo generavimą ir siuntimą. Pateikta informacija lieka dalyvių atsakomybė.",
+    "mic_notice": "Naudodami mikrofoną, jūsų balsinė deklaracija bus transkribuota, kad būtų įtraukta į avarijos dokumentą. Galite naudoti tekstinį įvedimą vietoj to.",
+    "injury_confirm": {
+      "body": "Sužeidimų nuotraukos gali turėti jautrių duomenų. Įsitikinkite, kad turite susijusios asmens sutikimą, išskyrus saugumo būtinybę ar teisinę prievolę.",
+      "continue": "Tęsti",
+      "change": "Keisti kategoriją"
+    },
+    "pdf_ready_title": "Laiko žymą turintis avarijos PDF failas",
+    "pdf_ready_body": "Reikalingi parašai buvo užfiksuoti. PDF failas paruoštas. Patikrinkite informaciją prieš perduodami ją savo draudikui."
+  },
+  "constatForm": {
+    "tab_vehicle": "Transporto priemonė",
+    "tab_driver": "Vairuotojas",
+    "tab_insurance": "Draudimas",
+    "tab_circumstances": "Aplinkybės",
+    "tab_complement": "Papildoma informacija",
+    "field_required": "Šis laukas yra privalomas",
+    "plate_label": "Numeris",
+    "brand_label": "Markė",
+    "model_label": "Modelis",
+    "year_label": "Metai",
+    "vin_label": "Kėbulo numeris (VIN)",
+    "firstName_label": "Vardas",
+    "lastName_label": "Pavardė",
+    "address_label": "Adresas",
+    "postalCode_label": "Pašto kodas",
+    "city_label": "Miestas",
+    "country_label": "Šalis",
+    "phone_label": "Telefonas",
+    "email_label": "El. paštas",
+    "license_label": "Vairuotojo pažymėjimo numeris",
+    "company_label": "Draudimo įmonė",
+    "policyNumber_label": "Poliso numeris",
+    "greenCardNumber_label": "Žalios kortelės numeris",
+    "greenCardExpiry_label": "Žalios kortelės galiojimas",
+    "agentName_label": "Agentas / Tarpininkas",
+    "agentPhone_label": "Draudimo tel.",
+    "circumstances_desc": "Pažymėkite visas langelius, kurie apibūdina jūsų transporto priemonės <strong>({{role}})</strong> situaciją smūgio metu.",
+    "boxes_checked_one": "{{count}} langelis pažymėtas",
+    "boxes_checked_other": "{{count}} langeliai pažymėti",
+    "complement_desc": "Papildoma informacija apie pranešimą — 11, 13 ir 14 skyriai.",
+    "datetime_label": "Avarijos data ir laikas",
+    "visible_damage_label": "Matomi nuostoliai (11 skyrius)",
+    "visible_damage_placeholder": "Apibūdinkite matomus nuostolius jūsų transporto priemonėje...",
+    "third_party_label": "Materialiniai nuostoliai trečiosioms šalims (kiti nei A ir B)",
+    "witnesses_label": "Liudytojai",
+    "witnesses_placeholder": "Kiekvieno liudytojo vardas, pavardė, telefonas...",
+    "voice_declaration_label": "🎙️ Balsinė deklaracija (pasirinktinai)",
+    "observations_label": "Laisvi pastebėjimai — vairuotojas {{role}} (14 skyrius)",
+    "observations_placeholder": "Pridėkite viską, kas gali būti naudinga: oro sąlygos, kelio būklė, numatomas greitis, pastabos...",
+    "insurance_holder_label": "Draudimo privalomas (jei skiriasi nuo vairuotojo)",
+    "holder_name_placeholder": "Visas draudėjo vardas",
+    "holder_name_aria": "Draudėjo vardas",
+    "holder_address_placeholder": "Draudėjo adresas",
+    "holder_address_aria": "Draudėjo adresas",
+    "save_btn": "Išsaugoti ir tęsti →",
+    "form_tabs_aria": "Formos skyriai"
+  },
+  "pricingPage": {
+    "sr_title": "Kainos — boom.contact",
+    "back": "← Atgal←",
+    "buy_reports": "Pirkti pranešimus",
+    "credits_no_expiry": "Kreditai be galiojimo · Bendrinami per WhatsApp",
+    "credits_available_one": "✅ {{count}} kreditas prieinamas",
+    "credits_available_other": "✅ {{count}} kreditai prieinami",
+    "no_credits": "⚡ Nėra kreditų — papildykite dabar",
+    "currency_label": "VALIUTA",
+    "currency_detected": "✓ automatiškai aptikta",
+    "most_popular": "⭐ POPULIARIAUSIAS · TAUPYMAS {{savings}}",
+    "economy": "Taupyti {{savings}}",
+    "per_pack": "už paketą",
+    "per_report": "/ pranešimas",
+    "redirecting_stripe": "⏳ Nukreipimas į Stripe...",
+    "buy_btn": "Pirkti {{label}} — {{price}}",
+    "error_missing_url": "Trūksta mokėjimo URL",
+    "error_generic": "Klaida",
+    "error_email_required": "Reikalingas el. paštas pirkimui",
+    "trust_stripe": "Saugus PCI-DSS Stripe mokėjimas",
+    "trust_no_expiry": "Kreditai be galiojimo",
+    "trust_whatsapp": "Bendrinama per WhatsApp",
+    "trust_worldwide": "Daugiakalbis",
+    "trust_invoice": "Automatinė PDF sąskaita",
+    "trust_fleet": "Idealiai tinka įmonių flotoms",
+    "why_title": "KODĖL TURĖTI KREDITŲ IŠ ANKSTO?",
+    "scenario_child_title": "Jūsų vaikas turi avariją",
+    "scenario_child_text": "Jis jums skambina. Jūs jam siunčiate kreditą per WhatsApp. Jis parengia savo pranešimą per 5 minutes.",
+    "scenario_company_title": "Įmonės transporto priemonė",
+    "scenario_company_text": "Jūsų kurjeris turi avariją. Perduokite jam kreditą iš karto iš savo mobiliojo telefono.",
+    "scenario_abroad_title": "Keliaujant užsienyje",
+    "scenario_abroad_text": "Avarija Vokietijoje, Australijoje ar Japonijoje. Sąsaja prieinama keliomis kalbomis.",
+    "pkg_single_label": "1 pranešimas",
+    "pkg_single_desc": "Vienkartinei avarijai",
+    "pkg_pack3_label": "3 pranešimai",
+    "pkg_pack3_desc": "Visai šeimai",
+    "pkg_pack3_marketing": "🎁 Bendrinkite per WhatsApp — jūsų vaikas, jūsų darbuotojas, jūsų draugas gauna momentinį nuorodą.",
+    "pkg_pack10_label": "10 pranešimų",
+    "pkg_pack10_desc": "Flotoms ir įmonėms",
+    "pkg_pack10_marketing": "🏢 Valdykite visą savo flotą. Perduokite savo darbuotojams vienu paspaudimu."
+  },
+  "app": {
+    "magic_link_error": "Neteisingas arba pasibaigęs prisijungimo nuoroda.",
+    "gift_credits_added": "🎁 {{credits}} kreditas(-ai) pridėti prie jūsų paskyros!",
+    "loading_aria": "Kraunama",
+    "nav_landing": "Pagrindinis puslapis",
+    "nav_cgu": "Naudojimo sąlygos",
+    "nav_pricing": "Kainodara",
+    "nav_constat": "Pranešimo kūrimas",
+    "nav_join": "Prisijungti prie sesijos",
+    "nav_account": "Vartotojo paskyra",
+    "nav_admin": "Administratoriaus skydelis",
+    "nav_emergency": "Skubios pagalbos numeriai",
+    "nav_privacy": "Privatumo politika",
+    "nav_police_login": "Policijos prisijungimas",
+    "nav_police_dashboard": "Policijos skydelis",
+    "nav_police_flow": "Policijos srautas",
+    "nav_police_intervention": "Policijos intervencija",
+    "nav_to": "Navigacija į {{label}}",
+    "title_default": "boom.contact — Skaitmeninis avarijos pranešimas",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "voice": {
+    "title": "Apibūdinkite avariją",
+    "subtitle": "Pasirinktinai — apibūdinkite, kas įvyko savo žodžiais. Jūsų pareiškimas bus įrašytas į pranešimą.",
+    "tab_voice": "🎙️ Balsu",
+    "tab_text": "⌨️ Tekstu",
+    "start_recording": "Pradėti įrašymą",
+    "textarea_aria": "Avarijos aprašymas",
+    "textarea_placeholder": "Apibūdinkite avariją keliais sakiniais…",
+    "validate_desc": "✅ Patvirtinti mano aprašymą",
+    "skip_step": "Praleisti šį žingsnį →",
+    "recording_in_progress": "Įrašymas vyksta…",
+    "recording_tip": "💡 Apibūdinkite: kiekvienos transporto priemonės kryptį, smūgio tašką, aplinkybes. Kalbėkite ramiai.",
+    "stop_recording": "Sustabdyti įrašymą",
+    "transcribing_title": "Transkripcija vyksta…",
+    "transcribing_subtitle": "Jūsų įrašymas apdorojamas",
+    "desc_recorded": "Aprašymas įrašytas",
+    "desc_in_pdf": "Jūsų pareiškimas bus įtrauktas į PDF pranešimą",
+    "your_declaration": "Jūsų pareiškimas",
+    "edit": "✏️ Redaguoti",
+    "edit_placeholder": "Pataisykite savo pareiškimą, jei reikia...",
+    "restart": "Pradėti iš naujo",
+    "mic_denied": "Prieiga prie mikrofono atmesta — naudokite rankinį įvedimą.",
+    "mic_unavailable": "Mikrofonas neprieinamas: {{msg}}",
+    "transcription_error": "Transkripcijos klaida",
+    "textarea_edit_aria": "Avarijos pasakojimas"
+  },
+  "auth": {
+    "default_subtitle": "Prisijunkite, kad išsaugotumėte savo transporto priemones ir daugiau nieko neįvestumėte, kai rengiate pranešimus.",
+    "magic_btn": "📧 Prisijungti per el. laišką (rekomenduojama)",
+    "password_btn": "🔑 Prisijungti su slaptažodžiu",
+    "register_btn": "✨ Sukurti paskyrą",
+    "skip_btn": "Tęsti be paskyros →",
+    "skip_note": "Be paskyros galite vis tiek parengti pranešimą ir sumokėti su Stripe.",
+    "magic_instructions": "Įveskite savo el. paštą — gausite prisijungimo nuorodą, galiojančią 15 minučių.",
+    "send_link": "Siųsti nuorodą",
+    "sending": "Siunčiama...",
+    "back": "← Atgal",
+    "email_sent_title": "El. laiškas išsiųstas!",
+    "email_sent_desc": "Patikrinkite savo <strong>{{email}}</strong> pašto dėžutę.",
+    "email_sent_validity": "Nuoroda galioja 15 minučių.",
+    "login_error": "Neteisingas el. paštas arba slaptažodis.",
+    "logging_in": "Prisijungimas...",
+    "login_btn": "Prisijungti",
+    "forgot_password": "Pamiršote slaptažodį? Naudokite el. laiško nuorodą →",
+    "register_desc": "Sukurkite savo paskyrą, kad išsaugotumėte savo transporto priemones ir automatiškai užpildytumėte savo pranešimus.",
+    "password_placeholder": "Slaptažodis (min. 6 simboliai)",
+    "creating": "Kuriama...",
+    "create_btn": "Sukurti savo paskyrą",
+    "register_legal": "Sukurdami paskyrą, jūs sutinkate su mūsų Taisyklių ir sąlygų. Jūsų transporto priemonės duomenys yra šifruojami ir niekada nesidalijami be jūsų sutikimo.",
+    "register_error": "Klaida registruojantis.",
+    "generic_error": "Klaida"
+  },
+  "account": {
+    "member": {
+      "remove": "Pašalinti",
+      "removeConfirm": "Pašalinti šį narį? Jis praras prieigą prie įmonės transporto priemonių ir kreditų.",
+      "loading": "Kraunama…",
+      "none": "Nėra narių.",
+      "invite": "Kviesti narį",
+      "inviteBtn": "Kviesti",
+      "pending": "Laukiama kvietimų"
+    },
+    "role": {
+      "owner": "Savininkas",
+      "driver": "Vairuotojas",
+      "fleet_admin": "Flotų administratorius"
+    },
+    "scan": {
+      "cancel": "Atšaukti",
+      "photographPre": "Nufotografuokite savo",
+      "license": "registracijos pažymėjimą",
+      "and": "ir / arba jūsų",
+      "greenCard": "žalią kortelę",
+      "title": "Nuskenuoti registracijos pažymėjimą + žalią kortelę",
+      "subtitle": "Automatinis atpažinimas · daugiakalbis"
+    },
+    "garage": {
+      "back": "Garažas",
+      "title": "Mano garažas",
+      "add": "Pridėti",
+      "emptyTitle": "Garažas tuščias",
+      "emptySubtitle": "Užregistruokite savo transporto priemones vieną kartą. Niekada daugiau nereikės skenuoti avarijos metu.",
+      "addFirst": "Pridėti savo pirmą transporto priemonę",
+      "noOrgVehicles": "Šiuo metu nėra įmonės transporto priemonių."
+    },
+    "insurance": {
+      "saved": "Draudimas išsaugotas",
+      "add": "Pridėti draudimą"
+    },
+    "nav": {
+      "logout": "Atsijungti"
+    },
+    "vehicle": {
+      "edit": "Redaguoti transporto priemonę",
+      "delete": "Ištrinti transporto priemonę",
+      "editOrg": "Redaguoti įmonės transporto priemonę",
+      "deleteOrg": "Ištrinti įmonės transporto priemonę"
+    },
+    "fields": {
+      "nickname": "Slapyvardis",
+      "plate": "Numeris",
+      "make": "Markė",
+      "model": "Modelis",
+      "color": "Spalva",
+      "year": "Metai",
+      "firstName": "Vardas",
+      "lastName": "Pavardė",
+      "phone": "Telefonas",
+      "company": "Įmonė",
+      "address": "Adresas",
+      "newEmail": "Naujas el. paštas",
+      "currentPwd": "Dabartinis slaptažodis (patvirtinimas)",
+      "confirmEmailAria": "El. pašto adreso patvirtinimas"
+    },
+    "credits": {
+      "buy": "Pirkti:",
+      "available": "PRIEINAMI KREDITAI",
+      "unit": "1 kreditas = 1 pilnas avarijos pranešimas"
+    },
+    "history": {
+      "loading": "Kraunama...",
+      "empty": "Nėra pranešimų",
+      "emptySub": "Jūsų kitas pranešimas automatiškai pasirodys čia."
+    },
+    "personal": {
+      "title": "Asmeninė informacija",
+      "none": "Nėra informacijos — spustelėkite Redaguoti"
+    },
+    "delete": {
+      "willDelete": "KAS BUS IŠTRINTA NEGRįŽTAMAI:",
+      "text": "Negrįžtamai ištrinkite savo paskyrą, transporto priemones ir visus pranešimus. Šis veiksmas yra negrįžtamas."
+    },
+    "danger": {
+      "title": "Pavojinga zona"
+    }
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Nėra atpažinto dokumento. Patikrinkite nuotraukų kokybę.",
+    "analysis_error": "Analizės klaida.",
+    "read_failed": "Skaitymas nepavyko",
+    "docs_analyzed_one": "{{count}} dokumentas analizuotas",
+    "docs_analyzed_other": "{{count}} dokumentai analizuoti",
+    "confidence": "Pasitikėjimas: {{pct}}%",
+    "rescan": "Peržiūrėti",
+    "vehicle_section": "🚗 Transporto priemonė",
+    "plate": "Numeris",
+    "driver_section": "👤 Vairuotojas",
+    "firstName": "Vardas",
+    "lastName": "Pavardė",
+    "insurance_found": "✅ Draudimas",
+    "insurance_manual": "⚠️ Draudimas — užpildyti rankiniu būdu",
+    "company_label": "Įmonė",
+    "company_aria": "Draudimo įmonė",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Poliso numeris",
+    "policy_manual_hint": "(rankinis įvedimas)",
+    "policy_aria": "Poliso numeris",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Patvirtinti →",
+    "scanning_title": "Analizė vyksta…",
+    "scanning_subtitle_one": "{{count}} dokumentas · automatinis atpažinimas",
+    "scanning_subtitle_other": "{{count}} dokumentai · automatinis atpažinimas",
+    "photo_title": "Nufotografuokite savo dokumentus",
+    "photo_subtitle": "Registracijos pažymėjimas + žalia kortelė vienoje analizėje.",
+    "photo_subtitle2": "Programa automatiškai atpažįsta ir ištraukia viską.",
+    "doc_scanned": "Nufotografuotas dokumentas {{n}}",
+    "doc_label": "Dokumentas {{n}}",
+    "photograph": "Nufotografuoti",
+    "rear_camera": "Galinė kamera",
+    "gallery": "Galerija",
+    "which_docs": "Kokius dokumentus nuskenuoti?",
+    "doc_ch": "🇨🇭 Registracijos pažymėjimas + žalia kortelė",
+    "doc_fr": "🇫🇷 Registracijos pažymėjimas + žalia kortelė / pažyma",
+    "doc_de": "🇩🇪 Registracijos pažymėjimas + žalia kortelė",
+    "doc_gb": "🇬🇧 V5C + Motorinės draudimo pažyma",
+    "doc_us": "🇺🇸 🇨🇦 Registracija + Draudimo ID kortelė",
+    "doc_world": "🌍 Registracija + draudimo įrodymas",
+    "close_error_aria": "Uždaryti klaidą",
+    "analyze_btn_one": "🔍 Analizuoti {{count}} dokumentą",
+    "analyze_btn_other": "🔍 Analizuoti {{count}} dokumentus",
+    "skip_manual": "Praleisti — rankinis įvedimas →",
+    "upload_gallery_aria": "Įkelti dokumentus iš galerijos",
+    "take_photo_aria": "Nufotografuoti dokumentą"
+  },
+  "postConstat": {
+    "next_time_title": "Kitą kartą: 0 įvedimų",
+    "next_time_subtitle": "Jūsų transporto priemonės įsimintos amžinai",
+    "benefit_scanned": "Registracijos pažymėjimas + žalia kortelė nufotografuoti vieną kartą",
+    "benefit_fast": "Pranešimas per 2 minutes vietoj 10",
+    "benefit_gift": "Dovanokite pranešimą savo artimiesiems vienu paspaudimu",
+    "benefit_family": "Idealiai šeimai: dalinkitės savo kreditais",
+    "create_account": "Sukurti nemokamą paskyrą →",
+    "share_btn": "Bendrinkite su savo artimaisiais",
+    "register_vehicle_title": "Tada užregistruokite savo transporto priemonę",
+    "register_vehicle_subtitle": "Nuskenuokite registracijos pažymėjimą + žalią kortelę · 30 sek. · niekada daugiau nereikės įvesti",
+    "or_skip": "arba praleiskite tiesiogiai",
+    "family_pack": "🔥 Šeimos paketas",
+    "family_pack_desc": "3 pranešimai, kuriuos galima dalintis su jūsų artimaisiais",
+    "scenario_child": "Jūsų vaikas skambina — avarija. Siųskite jam pranešimą per 3 sekundes į jo mobilųjį telefoną.",
+    "scenario_employee": "Darbuotojas su įmonės transporto priemone. Perduokite kreditą per WhatsApp iš karto.",
+    "scenario_friend": "Draugas, turintis problemų užsienyje. Jis gauna nuorodą, nereikia paskyros.",
+    "buy_3_reports": "Pirkti 3 pranešimus — CHF/EUR 12.90 →",
+    "see_all_packs": "Peržiūrėti visus paketus →",
+    "ready_title": "Pasiruošę kitam kartui",
+    "ready_subtitle": "Papildykite dabar, dalinkitės, kai norite",
+    "account_title": "✅ Jūsų boom.contact paskyra",
+    "account_desc": "Jūsų transporto priemonės įsimintos. Kitą kartą įvykus avarijai, jūs tiesiogiai pereisite prie QR žingsnio — jokios įvesties, jokio skenavimo.",
+    "manage_garage": "Tvarkyti savo garažą →",
+    "gift_title": "🎁 Dovanokite pranešimą per WhatsApp",
+    "gift_desc": "Vienas iš jūsų kreditų = unikali nuoroda, kurią galite siųsti <strong>bet kam</strong>, be to, kad asmuo turėtų paskyrą.",
+    "credits_available_one": "{{count}} kreditas prieinamas",
+    "credits_available_other": "{{count}} kreditai prieinami",
+    "share_protect": "Bendrinkite, apsaugokite savo artimuosius",
+    "wa_gift_title": "📲 Dovanoti pranešimą per WhatsApp",
+    "wa_gift_desc": "Vienu paspaudimu siųskite nuorodą savo vaikui, darbuotojui ar draugui. Jis parengia savo pranešimą be paskyros ar mokėjimo — atimama iš jūsų kreditų.",
+    "send_1": "📲 Siųsti 1 pranešimą",
+    "send_3": "📲 Siųsti 3 pranešimus",
+    "gift_link_created": "✅ Nuoroda sukurta — siųskite ją per WhatsApp!",
+    "share_title": "📤 boom.contact bendrinimas",
+    "share_desc": "Jūs ką tik parengėte savo pranešimą per 5 minutes. Jūsų draugai turi žinoti, kad tai egzistuoja.",
+    "memorize_vehicles": "🚗 Įsiminkite savo kitas transporto priemones",
+    "memorize_desc": "Įmonės flotą, motociklą, kemperį? Kiekviena nufotografuota transporto priemonė = niekada daugiau nereikės įvesti avarijos metu.",
+    "low_credits_one": "⚡ Jums liko tik {{count}} kreditas",
+    "low_credits_other": "⚡ Jums liko tik {{count}} kreditai",
+    "recharge_desc": "Papildykite dabar ir pasinaudokite nuolaidomis šeimos ir įmonių paketams.",
+    "recharge_btn": "Papildyti savo kreditus →",
+    "pack_single_label": "1 pranešimas",
+    "pack_single_note": "Vienkartinis naudojimas",
+    "pack_pack3_label": "3 pranešimai",
+    "pack_pack3_note": "Šeimai · taupymas 12%",
+    "pack_pack10_label": "10 pranešimų",
+    "pack_pack10_note": "Įmonei · taupymas 29%",
+    "popular_badge": "⭐ POPULIARU"
+  },
+  "constat": {
+    "nav": {
+      "back": "Atgal",
+      "reset": "Atstatyti pranešimą"
+    },
+    "session": {
+      "expiring": "Jūsų sesija greitai baigsis. Išsaugokite savo duomenis."
+    },
+    "error": {
+      "close": "Uždaryti klaidą"
+    },
+    "vehicle": {
+      "pickRegistered": "Pasirinkite užregistruotą transporto priemonę",
+      "autofill": "Automatinis užpildymas — nereikia skenuoti",
+      "yourRegistered": "Jūsų užregistruotos transporto priemonės",
+      "org": "Įmonė",
+      "personal": "Asmeninis",
+      "fallback": "Transporto priemonė",
+      "cancel": "Atšaukti",
+      "orScanNew": "arba nuskenuoti naują transporto priemonę"
+    },
+    "pedestrian": {
+      "title": "Kita šalis: pėsčiasis"
+    },
+    "summary": {
+      "yourVehicle": "Jūsų transporto priemonė",
+      "accident": "Avarija",
+      "damagedZones_one": "{{count}} pažeista zona",
+      "damagedZones_other": "{{count}} pažeistos zonos"
+    },
+    "emergency": {
+      "title": "Skubios pagalbos numeriai"
+    }
   }
 }

@@ -12,7 +12,8 @@
     "required": "Kohustuslik",
     "yes": "Jah",
     "no": "Ei",
-    "unknown": "Teadmata"
+    "unknown": "Teadmata",
+    "rescan": "🔄 Uuesti skaneerimine"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumenteerige õnnetus ilma paberita, ilma segaduseta.",
+      "subtitle": "boom.contact juhendab teid samm-sammult, et koguda vajalikke andmeid, lisada fotosid, asukohta, avaldusi ja allkirju ning genereerida ajastatud PDF-dokument, mille saadate oma kindlustusele."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Seanss aktiivne",
+      "vehicleA": "SÕIDUK A",
+      "photosSig": "Fotod · allkiri ✓",
+      "vehicleB": "SÕIDUK B",
+      "qrJoined": "QR liitunud · käimas",
+      "payGenerate": "Maksa ja genereeri PDF",
+      "pdfBadge": "Ajastatud PDF",
+      "qrBadge": "Jagatud QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Kutsu QR koodi kaudu",
+        "desc": "Looge seanss, teine juht skaneerib QR koodi oma telefonist. Ei mingit installatsiooni, ei mingit registreerimist."
+      },
+      {
+        "title": "Fotod, hääl ja allkiri",
+        "desc": "Lisage fotosid, dikteerige oma tähelepanekud häälega, asetage sõidukid joonisele ja allkirjastage sõrmega."
+      },
+      {
+        "title": "Ajastatud PDF-dokument",
+        "desc": "boom.contact genereerib ajastatud PDF-dokumendi, mis sisaldab iga juhi sisestatud andmeid."
+      },
+      {
+        "title": "Saadetav teie kindlustusele",
+        "desc": "Laadige PDF alla või saatke see e-posti teel, et saata oma kahjujuhtumi avaldusega koos oma kindlustusele."
+      }
+    ],
+    "seoLine": "Mitmekeelne digitaalne õnnetusraport · Digital accident report",
+    "flow": {
+      "label": "Kõik ühes voos",
+      "title": "Õnnetusest kuni edastamiseks valmis dokumendini"
+    },
+    "stress": {
+      "label": "Mõeldud õnnetuse hetkeks",
+      "title": "Kujundatud stressirohkete olukordade jaoks",
+      "text": "Pärast kokkupõrget ei ole mõte selge. boom.contact juhendab teid samm-sammult, teie keeles, ja hoiab iga kogutud teabe jälge. Kõik töötab telefoni brauseris, isegi piiratud ühenduse korral.",
+      "bullets": [
+        "Juhendatud samm-sammult",
+        "Mitmekeelne",
+        "Fotod · hääl · allkiri",
+        "Ajastatud PDF-dokument"
+      ],
+      "emergencyTitle": "Hädaolukorras",
+      "emergencyText": "boom.contact ei asenda päästeteenistust, politseid, advokaati ega kindlustust. Kui keegi on vigastatud või ohtlik olukord, võtke esmalt ühendust hädaabiteenistustega."
+    },
+    "pricing": {
+      "label": "Hinnad",
+      "title": "Lihtne, läbipaistev, ilma tellimuseta",
+      "caption": "1 krediit = 1 täiskohane raport · mitmekeelne · krediidid ilma aegumise tähtaegadeta",
+      "badgePopular": "Populaarne",
+      "plans": [
+        {
+          "label": "1 raport",
+          "desc": "Üheainsa õnnetuse jaoks"
+        },
+        {
+          "label": "3 raportit",
+          "desc": "Kogu pere jaoks"
+        },
+        {
+          "label": "10 raportit",
+          "desc": "Flottidele ja maakleritele"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Professionaalidele",
+      "title": "Maakleritele, flotidele ja kindlustuspartneritele",
+      "text": "Varustage oma kliente ja juhte selge tööriistaga õnnetuse dokumenteerimiseks ja ajastatud PDF-dokumendi genereerimiseks. Krediidipaketid flotidele ja maakleritele, lihtne juurutamine, ilma tellimuseta.",
+      "cta": "Võtke ühendust / jagage",
+      "items": [
+        {
+          "title": "Flotid",
+          "desc": "Iga juhi jaoks struktureeritud dokument."
+        },
+        {
+          "title": "Maaklerid",
+          "desc": "Lisandväärtusteenus teie kindlustatutele."
+        },
+        {
+          "title": "Privaatsus",
+          "desc": "Andmed on krüpteeritud edastamise ajal, kustutatavad soovi korral."
+        },
+        {
+          "title": "Edevus",
+          "desc": "Ajastatud PDF, valmis kahjujuhtumi avaldusega liitmiseks."
+        }
+      ]
+    },
+    "faq": {
+      "label": "KKK",
+      "title": "Korduma kippuvad küsimused",
+      "items": [
+        {
+          "q": "Mis on boom.contact?",
+          "a": "boom.contact on rakendus, mis aitab dokumenteerida liiklusõnnetust telefonist: juhtide kutse QR koodi kaudu, fotod, hääl, joonised, allkirjad, seejärel ajastatud PDF-dokumendi genereerimine, mille saadate oma kindlustusele."
+        },
+        {
+          "q": "Kas pean rakendust installima?",
+          "a": "Ei. boom.contact töötab otse telefoni brauseris (Safari, Chrome, Firefox). Samuti saate selle lisada oma avalehele veebirakendusena (PWA) juurdepääsuks offline."
+        },
+        {
+          "q": "Mis juhtub, kui teisel juhil ei ole rakendust?",
+          "a": "Te loote seansi ja QR kood kuvatakse. Teine juht skaneerib selle oma telefoniga: boom.contact avaneb tema brauseris, ilma registreerimise või allalaadimiseta."
+        },
+        {
+          "q": "Kas PDF-dokument on minu kindlustuse poolt aktsepteeritud?",
+          "a": "Ajastatud PDF-dokument on mõeldud teie kahjujuhtumi avalduse saatmiseks. boom.contact ei garanteeri selle aktsepteerimist, mis sõltub teie kindlustusest vastavalt teie lepingule ja jurisdiktsioonile."
+        },
+        {
+          "q": "Kas see töötab, kui teine juht räägib teises keeles?",
+          "a": "Jah. Iga juht kasutab liidest oma keeles. Lõplik dokument genereeritakse iga juhi jaoks."
+        },
+        {
+          "q": "Kas mu andmed on kaitstud?",
+          "a": "Andmed on edastamise ajal krüpteeritud, seansid kustutatakse automaatselt pärast teatud aega, ja politsei ei teavitata automaatselt — ainult teie selge tegevuse korral."
+        },
+        {
+          "q": "Kui palju see maksab?",
+          "a": "Alates CHF / EUR 4.90 ühe raporti eest. 3 raporti pakett 12.90 (−12 %), 10 raporti pakett 34.90 (−29 %). Ilma tellimuseta, krediidid ilma aegumise tähtaegadeta."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "postConstat": {
+    "next_time_title": "Järgmine kord: 0 sisestamist",
+    "next_time_subtitle": "Teie sõidukid salvestatakse korraks ja igaveseks",
+    "benefit_scanned": "Luba + roheline kaart skäneeritud üks kord",
+    "benefit_fast": "Avariiraport 2 minutiga 10 minuti asemel",
+    "benefit_gift": "Kinkige oma lähedastele avariiraport 1 klikiga",
+    "benefit_family": "Ideaalne perele: jagage oma krediite",
+    "create_account": "Loo tasuta konto →",
+    "share_btn": "Jaga lähedastega",
+    "register_vehicle_title": "Seejärel registreerige oma sõiduk",
+    "register_vehicle_subtitle": "Skaneerige liiklusluba + roheline kaart · 30 sek · enam kunagi uuesti sisestada",
+    "or_skip": "või jätkake otse",
+    "family_pack": "🔥 Perepakett",
+    "family_pack_desc": "3 avariraportit lähedastega jagamiseks",
+    "scenario_child": "Teie laps helistab — õnnetus. Saatke talle 3 sekundiga avariiraport mobiili.",
+    "scenario_employee": "Töötaja firma sõidukiga. Edastage krediit WhatsAppi kaudu koheselt.",
+    "scenario_friend": "Sõber hädas välismaal. Ta saab lingi, konto pole vajalik.",
+    "buy_3_reports": "Osta 3 avariraportit — CHF/EUR 12.90 →",
+    "see_all_packs": "Vaata kõiki pakette →",
+    "ready_title": "Valmis järgmiseks korraks",
+    "ready_subtitle": "Laadige nüüd, jagage kui soovite",
+    "account_title": "✅ Teie boom.contact konto",
+    "account_desc": "Teie sõidukid on salvestatud. Järgmisel õnnetusel alustate otse QR-koodist — ei mingit sisestamist, ei mingit skaneerimist.",
+    "manage_garage": "Halda minu garaaži →",
+    "gift_title": "🎁 Kinkige avariiraport WhatsAppi kaudu",
+    "gift_desc": "Üks teie krediitidest = unikaalne link saatmiseks <strong>kellelegi</strong>, ilma et inimesel oleks vaja kontot.",
+    "credits_available_one": "{{count}} krediit saadaval",
+    "credits_available_other": "{{count}} krediiti saadaval",
+    "share_protect": "Jagage, kaitske oma lähedasi",
+    "wa_gift_title": "📲 Kinkige avariiraport WhatsAppi kaudu",
+    "wa_gift_desc": "Ühe klikiga saatke link oma lapsele, töötajale või sõbrale. Ta teeb oma avariraporti ilma konto või makseteta — arvestatakse teie krediitidest.",
+    "send_1": "📲 Saada 1 avariiraport",
+    "send_3": "📲 Saada 3 avariraportit",
+    "gift_link_created": "✅ Link loodud — saatke see WhatsAppi kaudu!",
+    "share_title": "📤 Jaga boom.contact",
+    "share_desc": "Tegite just oma avariraporti 5 minutiga. Teie sõbrad väärivad teada, et see on olemas.",
+    "memorize_vehicles": "🚗 Salvestage oma teised sõidukid",
+    "memorize_desc": "Ettevõtte park, mootorratas, haagissuvila? Iga skäneeritud sõiduk = enam kunagi sisestamist õnnetuse korral.",
+    "low_credits_one": "⚡ Teil on alles ainult {{count}} krediit",
+    "low_credits_other": "⚡ Teil on alles ainult {{count}} krediiti",
+    "recharge_desc": "Laadige nüüd ja kasutage pere- ja ettevõttepakettide soodustusi.",
+    "recharge_btn": "Laadi krediite →",
+    "pack_single_label": "1 avariiraport",
+    "pack_single_note": "Ühekordseks kasutamiseks",
+    "pack_pack3_label": "3 avariraportit",
+    "pack_pack3_note": "Pere · sääst 12%",
+    "pack_pack10_label": "10 avariraportit",
+    "pack_pack10_note": "Ettevõte · sääst 29%",
+    "popular_badge": "⭐ POPULAARNE"
+  },
+  "ocrScanner": {
+    "read_failed": "Lugemine ebaõnnestus",
+    "docs_analyzed_one": "{{count}} dokument analüüsitud",
+    "docs_analyzed_other": "{{count}} dokumenti analüüsitud",
+    "confidence": "Usaldusväärsus: {{pct}}%",
+    "rescan": "Skaneeri uuesti",
+    "vehicle_section": "🚗 Sõiduk",
+    "plate": "Numbrimärk",
+    "driver_section": "👤 Juht",
+    "firstName": "Eesnimi",
+    "lastName": "Perekonnanimi",
+    "insurance_found": "✅ Kindlustus",
+    "insurance_manual": "⚠️ Kindlustus — täitke käsitsi",
+    "company_label": "Kindlustusselts",
+    "company_aria": "Kindlustusselts",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Poliisi number",
+    "policy_manual_hint": "(käsitsi sisestamine)",
+    "policy_aria": "Poliisi number",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Kinnita →",
+    "scanning_title": "Analüüsimine käib…",
+    "scanning_subtitle_one": "{{count}} dokument · automaatne tuvastamine",
+    "scanning_subtitle_other": "{{count}} dokumenti · automaatne tuvastamine",
+    "photo_title": "Pildistage oma dokumendid",
+    "photo_subtitle": "Sõiduki registreerimistunnistus + roheline kaart ühes analüüsis.",
+    "photo_subtitle2": "Rakendus tuvastab ja ekstraktib kõik automaatselt.",
+    "doc_scanned": "Dokument {{n}} skäneeritud",
+    "doc_label": "Dokument {{n}}",
+    "photograph": "Pildista",
+    "rear_camera": "Tagumine kaamera",
+    "gallery": "Galerii",
+    "which_docs": "Milliseid dokumente skaneerida?",
+    "doc_ch": "🇨🇭 Liiklusluba + roheline kaart",
+    "doc_fr": "🇫🇷 Registreerimistunnistus + roheline kaart / tõend",
+    "doc_de": "🇩🇪 Zulassung + Grüne Karte",
+    "doc_gb": "🇬🇧 V5C + Certificate of Motor Insurance",
+    "doc_us": "🇺🇸 🇨🇦 Registration + Insurance ID card",
+    "doc_world": "🌍 Registreerimistunnistus + kindlustustõend",
+    "close_error_aria": "Sulge veateade",
+    "analyze_btn_one": "🔍 Analüüsi {{count}} dokument",
+    "analyze_btn_other": "🔍 Analüüsi {{count}} dokumenti",
+    "skip_manual": "Jäta vahele — käsitsi sisestamine →",
+    "upload_gallery_aria": "Laadi dokumendid galeriist üles",
+    "take_photo_aria": "Pildista dokument",
+    "no_doc_recognized": "Ühtegi dokumenti ei tuvastatud. Kontrollige fotode kvaliteeti.",
+    "analysis_error": "Analüüsi viga."
+  },
+  "auth": {
+    "default_subtitle": "Logige sisse, et salvestada oma sõidukid ja mitte enam midagi avariraportite tegemisel sisestada.",
+    "magic_btn": "📧 Sisselogimine e-posti lingi kaudu (soovitatav)",
+    "password_btn": "🔑 Sisselogimine parooliga",
+    "register_btn": "✨ Loo konto",
+    "skip_btn": "Jätka ilma kontota →",
+    "skip_note": "Ilma kontota saate siiski avariraporti teha ja Stripe'iga maksta.",
+    "magic_instructions": "Sisestage oma e-posti aadress — saate sisselogimislingi, mis kehtib 15 minutit.",
+    "send_link": "Saada link",
+    "sending": "Saatmine...",
+    "back": "← Tagasi",
+    "email_sent_title": "E-post saadetud!",
+    "email_sent_desc": "Kontrollige oma postkasti <strong>{{email}}</strong>.",
+    "email_sent_validity": "Link kehtib 15 minutit.",
+    "login_error": "Vale e-posti aadress või parool.",
+    "logging_in": "Sisselogimine...",
+    "login_btn": "Logi sisse",
+    "forgot_password": "Unustasid parooli? Kasuta e-posti linki →",
+    "register_desc": "Looge konto, et salvestada oma sõidukid ja täita oma avariiraportid automaatselt eelnevalt.",
+    "password_placeholder": "Parool (min. 6 tähemärki)",
+    "creating": "Loomine...",
+    "create_btn": "Loo minu konto",
+    "register_legal": "Konto loomisega nõustute meie kasutustingimustega. Teie sõiduki andmed on krüpteeritud ega jagata kunagi ilma teie nõusolekuta.",
+    "register_error": "Viga registreerimisel.",
+    "generic_error": "Viga"
+  },
+  "app": {
+    "magic_link_error": "Vale või aegunud sisselogimislink.",
+    "gift_credits_added": "🎁 {{credits}} krediit(i) lisatud teie kontole!",
+    "loading_aria": "Laadimine käib",
+    "nav_landing": "Avaleht",
+    "nav_cgu": "Kasutustingimused",
+    "nav_pricing": "Hinnad",
+    "nav_constat": "Protokolli loomine",
+    "nav_join": "Liitu sessiooniga",
+    "nav_account": "Kasutajakonto",
+    "nav_admin": "Administraatori töölaud",
+    "nav_emergency": "Hädaabinumbrid",
+    "nav_privacy": "Privaatsuspoliitika",
+    "nav_police_login": "Politsei sisselogimine",
+    "nav_police_dashboard": "Politsei töölaud",
+    "nav_police_flow": "Politsei töövoog",
+    "nav_police_intervention": "Politsei sekkumine",
+    "nav_to": "Navigeerimine lehele {{label}}",
+    "title_default": "boom.contact — Digitaalne liiklusõnnetuse protokoll",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "constatForm": {
+    "tab_vehicle": "Sõiduk",
+    "tab_driver": "Juht",
+    "tab_insurance": "Kindlustus",
+    "tab_circumstances": "Asjaolud",
+    "tab_complement": "Täiendus",
+    "field_required": "See väli on kohustuslik",
+    "plate_label": "Registreerimismärk",
+    "brand_label": "Mark",
+    "model_label": "Mudel",
+    "year_label": "Aasta",
+    "vin_label": "Kere number (VIN)",
+    "firstName_label": "Eesnimi",
+    "lastName_label": "Perekonnanimi",
+    "address_label": "Aadress",
+    "postalCode_label": "Postiindeks",
+    "city_label": "Linn",
+    "country_label": "Riik",
+    "phone_label": "Telefon",
+    "email_label": "E-post",
+    "license_label": "Juhiloa number",
+    "company_label": "Kindlustusselts",
+    "policyNumber_label": "Poliisi number",
+    "greenCardNumber_label": "Rohelise kaardi number",
+    "greenCardExpiry_label": "Rohelise kaardi kehtivus",
+    "agentName_label": "Agent / Maakler",
+    "agentPhone_label": "Kindlustuse tel",
+    "circumstances_desc": "Märkige kõik ruudud, mis kirjeldavad teie sõiduki <strong>({{role}})</strong> olukorda kokkupõrke hetkel.",
+    "boxes_checked_one": "{{count}} ruut märgitud",
+    "boxes_checked_other": "{{count}} ruutu märgitud",
+    "complement_desc": "Protokolli täiendavad andmed — osad 11, 13 ja 14.",
+    "datetime_label": "Õnnetuse kuupäev ja kellaaeg",
+    "visible_damage_label": "Nähtavad kahjustused (osa 11)",
+    "visible_damage_placeholder": "Kirjeldage oma sõidukil nähtavaid kahjustusi...",
+    "third_party_label": "Kolmandate isikute varaline kahju (peale A ja B)",
+    "witnesses_label": "Tunnistajad",
+    "witnesses_placeholder": "Iga tunnistaja ees- ja perekonnanimi, telefon...",
+    "voice_declaration_label": "🎙️ Häälsalvestus (valikuline)",
+    "observations_label": "Vabad märkused — juht {{role}} (osa 14)",
+    "observations_placeholder": "Lisage kasulik teave: ilmastikuolud, teekate seisund, hinnanguline kiirus, märkused...",
+    "insurance_holder_label": "Kindlustusvõtja (kui erineb juhist)",
+    "holder_name_placeholder": "Kindlustusvõtja täisnimi",
+    "holder_name_aria": "Kindlustusvõtja nimi",
+    "holder_address_placeholder": "Kindlustusvõtja aadress",
+    "holder_address_aria": "Kindlustusvõtja aadress",
+    "save_btn": "Salvesta ja jätka →",
+    "form_tabs_aria": "Vormi osad"
+  },
+  "voice": {
+    "title": "Kirjeldage õnnetust",
+    "subtitle": "Valikuline — kirjeldage oma sõnadega, mis juhtus. Teie avaldus salvestatakse liiklusõnnetuse protokolli.",
+    "tab_voice": "🎙️ Hääl",
+    "tab_text": "⌨️ Tekst",
+    "start_recording": "Alusta salvestamist",
+    "textarea_aria": "Õnnetuse kirjeldus",
+    "textarea_placeholder": "Kirjeldage õnnetust mõne lausega...",
+    "validate_desc": "✅ Kinnita minu kirjeldus",
+    "skip_step": "Jäta see samm vahele →",
+    "recording_in_progress": "Salvestamine käib...",
+    "recording_tip": "💡 Kirjeldage: iga sõiduki suund, kokkupõrke koht, asjaolud. Rääkige rahulikult.",
+    "stop_recording": "Peata salvestamine",
+    "transcribing_title": "Transkribeerimine käib...",
+    "transcribing_subtitle": "Teie salvestist töödeldakse",
+    "desc_recorded": "Kirjeldus salvestatud",
+    "desc_in_pdf": "Teie avaldus lisatakse protokolli PDF-i",
+    "your_declaration": "Teie avaldus",
+    "edit": "✏️ Muuda",
+    "edit_placeholder": "Parandage oma avaldust vajadusel...",
+    "restart": "Alusta uuesti",
+    "mic_denied": "Mikrofoni juurdepääs keelatud — kasutage käsitsi sisestamist.",
+    "mic_unavailable": "Mikrofon ei ole saadaval: {{msg}}",
+    "transcription_error": "Transkribeerimise viga",
+    "textarea_edit_aria": "Õnnetuse kirjeldus"
+  },
+  "signature": {
+    "title": "Allkiri",
+    "driver": "Juht {{role}}",
+    "other_party": "Teine osapool",
+    "no_signature": "allkirjata",
+    "sign_here": "Allkirjastage siin oma sõrmega",
+    "signed": "ALLKIRJASTATUD ✓",
+    "clear": "🗑 Kustuta",
+    "saving": "⏳ Salvestamine...",
+    "confirm_signature": "✍️ Kinnita allkiri",
+    "waiting_other": "Ootan teise juhi allkirja...",
+    "waiting_pdf": "PDF luuakse pärast mõlema osapoole allkirjastamist.",
+    "report_signed": "Protokoll allkirjastatud!",
+    "generating_pdf": "PDF-i loomine käib...",
+    "canvas_aria": "Allkirja ala — Juht {{role}}"
+  },
+  "legal": {
+    "intro": {
+      "title": "Enne alustamist",
+      "body": "boom.contact aitab dokumenteerida õnnetust ja luua struktureeritud PDF-toimiku. Vigastuse, ohu, sündmuskohalt lahkumise, tõsise erimeelsuse või seadusliku kohustuse korral võtke viivitamatult ühendust kiirabi, politsei või pädevate asutustega. Esitatud teabe eest vastutavad osalejad. Saate sisestada teavet käsitsi, kui te ei soovi kasutada kaamerat, mikrofoni või asukohta.",
+      "start": "Olen aru saanud, alustada",
+      "emergency": "Vaadata hädaabinumbreid",
+      "privacy_cgu": "Privaatsus / Kasutustingimused"
+    },
+    "guest_accept": {
+      "checkbox": "Nõustun kasutustingimustega ning olen tutvunud privaatsuspoliitikaga.",
+      "note": "Mõistan, et minu teavet kasutatakse õnnetuse PDF-toimiku loomiseks ja et esitatud teabe eest vastutan mina ise."
+    },
+    "signature_confirm": "Kinnitan, et minu esitatud teave on minu teadmiste kohaselt täpne, ning nõustun, et minu allkiri lisatakse PDF-toimikusse.",
+    "payment_notice": "Maksele jätkates mõistate, et makse katab PDF-toimiku loomise ja saatmise. Esitatud teabe eest vastutavad osalejad.",
+    "mic_notice": "Mikrofoni kasutamisel transkribeeritakse Teie hääldeklaarimine, et lisada see õnnetustoimikusse. Saate selle asemel kasutada tekstisisestust.",
+    "injury_confirm": {
+      "body": "Vigastuste fotod võivad sisaldada delikaatseid andmeid. Veenduge, et Teil on asjaomase isiku nõusolek, välja arvatud juhul, kui see on vajalik ohutuse tagamiseks või seadusest tulenev kohustus.",
+      "continue": "Jätkata",
+      "change": "Muuta kategooriat"
+    },
+    "pdf_ready_title": "Ajatemplitega õnnetuse PDF-toimik",
+    "pdf_ready_body": "Nõutud allkirjad on salvestatud. PDF-toimik on valmis. Kontrollige teavet enne kindlustusandjale edastamist."
+  },
+  "account": {
+    "member": {
+      "remove": "Eemaldada",
+      "removeConfirm": "Eemaldada see liige? Ta kaotab juurdepääsu ettevõtte sõidukitele ja krediitidele.",
+      "loading": "Laadimine…",
+      "none": "Liikmeid pole.",
+      "invite": "Kutsuda liiget",
+      "inviteBtn": "Kutsuda",
+      "pending": "Ootel kutsed"
+    },
+    "role": {
+      "owner": "Omanik",
+      "driver": "Juht",
+      "fleet_admin": "Autopargi administraator"
+    },
+    "scan": {
+      "cancel": "Tühistada",
+      "photographPre": "Pildistage oma",
+      "license": "liikluskindlustus",
+      "and": "ja/või oma",
+      "greenCard": "roheline kaart",
+      "title": "Skannida liikluskindlustus + roheline kaart",
+      "subtitle": "Automaatne tuvastamine · mitmekeelne"
+    },
+    "garage": {
+      "back": "Garaaž",
+      "title": "Minu garaaž",
+      "add": "Lisada",
+      "emptyTitle": "Garaaž on tühi",
+      "emptySubtitle": "Registreerige oma sõidukid üks kord. Õnnetuse korral pole enam kunagi vaja skannida.",
+      "addFirst": "Lisada minu esimene sõiduk",
+      "noOrgVehicles": "Praegu pole ettevõtte sõidukeid."
+    },
+    "insurance": {
+      "saved": "Kindlustus salvestatud",
+      "add": "Lisada kindlustus"
+    },
+    "nav": {
+      "logout": "Logi välja"
+    },
+    "vehicle": {
+      "edit": "Muuta sõidukit",
+      "delete": "Kustutada sõiduk",
+      "editOrg": "Muuta ettevõtte sõidukit",
+      "deleteOrg": "Kustutada ettevõtte sõiduk"
+    },
+    "fields": {
+      "nickname": "Hüüdnimi",
+      "plate": "Numbrimärk",
+      "make": "Mark",
+      "model": "Mudel",
+      "color": "Värv",
+      "year": "Aasta",
+      "firstName": "Eesnimi",
+      "lastName": "Perekonnanimi",
+      "phone": "Telefon",
+      "company": "Ettevõte",
+      "address": "Aadress",
+      "newEmail": "Uus e-post",
+      "currentPwd": "Praegune parool (kinnitus)",
+      "confirmEmailAria": "E-posti aadressi kinnitus"
+    },
+    "credits": {
+      "buy": "Osta:",
+      "available": "SAADAOLEVAD KREDIIDID",
+      "unit": "1 krediit = 1 täielik avariiraport"
+    },
+    "history": {
+      "loading": "Laadimine...",
+      "empty": "Avariiraporiteid pole",
+      "emptySub": "Teie järgmine avariiraport ilmub siia automaatselt."
+    },
+    "personal": {
+      "title": "Isikuandmed",
+      "none": "Andmeid pole — klõpsake Muuta"
+    },
+    "delete": {
+      "willDelete": "MIS KUSTUTATAKSE JÄÄDAVALT:",
+      "text": "Kustutada jäädavalt Teie konto, sõidukid ja kõik avariirapordid. See tegevus on pöördumatu."
+    },
+    "danger": {
+      "title": "Ohutsoon"
+    }
+  },
+  "join": {
+    "sessionLabel": "Seanss",
+    "yourEmail": "Teie e-post",
+    "emailHint": "(PDF saamiseks)",
+    "emailAria": "Teie e-posti aadress",
+    "connecting": "Ühendumine…",
+    "connected": "Ühendatud! Käivitamine…",
+    "joinButton": "Liituda avariirapordiga"
+  },
+  "constat": {
+    "nav": {
+      "back": "Tagasi",
+      "reset": "Lähtestada avariiraporti"
+    },
+    "session": {
+      "expiring": "Teie seanss aegub varsti. Salvestage oma andmed."
+    },
+    "error": {
+      "close": "Sulgeda viga"
+    },
+    "vehicle": {
+      "pickRegistered": "Valida registreeritud sõiduk",
+      "autofill": "Automaatne eeltäitmine — pole vaja skannida",
+      "yourRegistered": "Teie registreeritud sõidukid",
+      "org": "Ettevõte",
+      "personal": "Isiklik",
+      "fallback": "Sõiduk",
+      "cancel": "Tühistada",
+      "orScanNew": "või skannida uut sõidukit"
+    },
+    "pedestrian": {
+      "title": "Teine osapool: jalakäija"
+    },
+    "summary": {
+      "yourVehicle": "Teie sõiduk",
+      "accident": "Õnnetus",
+      "damagedZones_one": "{{count}} kahjustatud tsoon",
+      "damagedZones_other": "{{count}} kahjustatud tsooni"
+    },
+    "emergency": {
+      "title": "Hädaabinumbrid"
+    }
+  },
+  "pricingPage": {
+    "sr_title": "Hinnad — boom.contact",
+    "back": "← Tagasi←",
+    "buy_reports": "Osta raporteid",
+    "credits_no_expiry": "Krediidid ilma aegumise tähtaegadeta · Jagatavad WhatsAppiga",
+    "credits_available_one": "✅ {{count}} krediit saadaval",
+    "credits_available_other": "✅ {{count}} krediiti saadaval",
+    "no_credits": "⚡ Ühtegi krediiti ei ole — laadige nüüd",
+    "currency_label": "VALUTA",
+    "currency_detected": "✓ automaatselt tuvastatud",
+    "most_popular": "⭐ ENIM POPULAARNE · SÄÄSTUS {{savings}}",
+    "economy": "Sääst {{savings}}",
+    "per_pack": "pakendi kohta",
+    "per_report": "/ raport",
+    "redirecting_stripe": "⏳ Ümber suunamine Stripe'i...",
+    "buy_btn": "Osta {{label}} — {{price}}",
+    "error_missing_url": "Puuduv makse URL",
+    "error_generic": "Viga",
+    "error_email_required": "E-post on vajalik ostmiseks",
+    "trust_stripe": "Turvaline makse Stripe PCI-DSS",
+    "trust_no_expiry": "Krediidid ilma aegumise tähtaegadeta",
+    "trust_whatsapp": "Jagatav WhatsAppiga",
+    "trust_worldwide": "Mitmekeelne",
+    "trust_invoice": "Automaatne PDF arve",
+    "trust_fleet": "Ideaalne ettevõtte flotidele",
+    "why_title": "MIKS OMANDADA KREDIITE EELNEVALT?",
+    "scenario_child_title": "Teie lapsel on õnnetus",
+    "scenario_child_text": "Ta helistab teile. Te saadate talle krediidi WhatsAppi kaudu. Ta koostab oma raporti 5 minutiga.",
+    "scenario_company_title": "Ettevõtte sõiduk",
+    "scenario_company_text": "Teie kulleril on kokkupõrge. Edastage talle krediit koheselt oma mobiiltelefonist.",
+    "scenario_abroad_title": "Reisil välismaal",
+    "scenario_abroad_text": "Õnnetus Saksamaal, Austraalias või Jaapanis. Liides on saadaval mitmes keeles.",
+    "pkg_single_label": "1 raport",
+    "pkg_single_desc": "Üheainsa õnnetuse jaoks",
+    "pkg_pack3_label": "3 raportit",
+    "pkg_pack3_desc": "Kogu pere jaoks",
+    "pkg_pack3_marketing": "🎁 Jagage WhatsAppi kaudu — teie laps, teie töötaja, teie sõber saab kohese lingi.",
+    "pkg_pack10_label": "10 raportit",
+    "pkg_pack10_desc": "Flotid ja ettevõtted",
+    "pkg_pack10_marketing": "🏢 Hallake kogu oma floti. Edastage oma töötajatele ühe klikiga."
   }
 }

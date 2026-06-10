@@ -12,7 +12,8 @@
     "required": "Pakollinen",
     "yes": "Kyllä",
     "no": "Ei",
-    "unknown": "Tuntematon"
+    "unknown": "Tuntematon",
+    "rescan": "🔄 Skannaa uudelleen"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -20,7 +21,9 @@
       "line1": "APRÈS",
       "line2": "LE BOOM",
       "line3": "LE",
-      "line4": "CONTACT"
+      "line4": "CONTACT",
+      "title": "Dokumentoi onnettomuus ilman paperia, ilman hämmennystä.",
+      "subtitle": "boom.contact ohjaa sinua vaihe vaiheelta keräämään hyödylliset tiedot, lisäämään valokuvia, sijainnin, lausuntoja ja allekirjoituksia, ja luomaan aikaleimalla varustetun PDF-dokumentin lähetettäväksi vakuutusyhtiöllesi."
     },
     "subtitle": "Constat numérique en 5 minutes. OCR multi-langues, QR code partagé, PDF horodaté instantané.",
     "cta": {
@@ -33,7 +36,15 @@
       "send": "Envoyer à l'assureur",
       "done": "Constat finalisé !",
       "waiting": "Session #8F2K · En attente…",
-      "capture": "📸 Photographier"
+      "capture": "📸 Photographier",
+      "sessionActive": "Istunto aktiivinen",
+      "vehicleA": "AJONEUVO A",
+      "photosSig": "Valokuvat · allekirjoitus ✓",
+      "vehicleB": "AJONEUVO B",
+      "qrJoined": "QR liittynyt · käynnissä",
+      "payGenerate": "Maksa ja luo PDF",
+      "pdfBadge": "Aikaleimalla varustettu PDF",
+      "qrBadge": "Jaettu QR"
     },
     "badges": {
       "languages": "Multilingue",
@@ -82,56 +93,6 @@
         }
       ]
     },
-    "features": {
-      "title": "Tout ce dont vous avez besoin",
-      "list": [
-        {
-          "icon": "📸",
-          "title": "OCR multi-langues",
-          "desc": "Claude Vision lit vos documents en 50+ langues. Carte grise, RC Book, 行驶证 — zéro saisie manuelle."
-        },
-        {
-          "icon": "📱",
-          "title": "Jusqu'à 5 véhicules",
-          "desc": "Accident à 3, 4 ou 5 véhicules ? Chaque conducteur scanne son propre QR. Un seul PDF pour tout le monde."
-        },
-        {
-          "icon": "📷",
-          "title": "Photos de scène",
-          "desc": "5 catégories : lieu, dommages A, dommages B, blessures, documents. Compressées et incluses dans le PDF."
-        },
-        {
-          "icon": "✏️",
-          "title": "Croquis libre",
-          "desc": "Dessinez la position des véhicules, flèches de direction, infrastructures. Export PNG intégré dans le PDF."
-        },
-        {
-          "icon": "🚗",
-          "title": "Schéma de choc",
-          "desc": "700+ modèles, silhouette adaptée, couleur réelle OCR. 18 zones cliquables pour les dommages."
-        },
-        {
-          "icon": "✍️",
-          "title": "Signatures multi-parties",
-          "desc": "Plusieurs signatures tactiles simultanées. QR actif 24h pour la police."
-        },
-        {
-          "icon": "📄",
-          "title": "PDF horodaté",
-          "desc": "Document numérique complet : témoins, dégâts tiers, observations, croquis, photos."
-        },
-        {
-          "icon": "🚔",
-          "title": "Module Police (bientôt)",
-          "desc": "Les agents rejoignent la session via QR. PV officiel numérique. Dashboard par poste/canton."
-        },
-        {
-          "icon": "🌍",
-          "title": "Multilingue · RTL",
-          "desc": "5 milliards de locuteurs. Arabe, hébreu, farsi, ourdou en RTL natif. Urgences géolocalisées."
-        }
-      ]
-    },
     "coverage": {
       "label": "Multilingue",
       "title": "De la Suisse à la Chine",
@@ -149,6 +110,120 @@
     "footer": {
       "copyright": "© 2026 PEP's Swiss SA",
       "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
+    "features": [
+      {
+        "title": "Kutsu QR-koodilla",
+        "desc": "Luo istunto, toinen kuljettaja skannaa QR-koodin puhelimellaan. Ei asennusta, ei rekisteröitymistä."
+      },
+      {
+        "title": "Valokuvat, ääni ja allekirjoitus",
+        "desc": "Lisää valokuvia, diktaa havaintosi ääneen, sijoita ajoneuvot luonnokseen ja allekirjoita sormella."
+      },
+      {
+        "title": "Aikaleimalla varustettu PDF-dokumentti",
+        "desc": "boom.contact luo aikaleimalla varustetun PDF-dokumentin, joka sisältää jokaisen kuljettajan syöttämät tiedot."
+      },
+      {
+        "title": "Lähetettävä vakuutusyhtiöllesi",
+        "desc": "Lataa PDF tai lähetä se sähköpostitse liitteeksi vakuutusilmoituksellesi."
+      }
+    ],
+    "seoLine": "Monikielinen digitaalinen onnettomuusilmoitus · Digital accident report",
+    "flow": {
+      "label": "Kaikki yhdessä virrassa",
+      "title": "Onnettomuudesta valmiiseen asiakirjaan"
+    },
+    "stress": {
+      "label": "Ajateltu onnettomuuden hetkelle",
+      "title": "Suunniteltu stressaaviin tilanteisiin",
+      "text": "Iskun jälkeen mieli ei ole kirkas. boom.contact etenee askel askeleelta, omalla kielelläsi, ja pitää kirjaa kaikista kerätyistä tiedoista. Kaikki toimii puhelimen selaimessa, jopa rajoitetulla yhteydellä.",
+      "bullets": [
+        "Ohjattu vaihe vaiheelta",
+        "Monikielinen",
+        "Valokuvat · ääni · allekirjoitus",
+        "Aikaleimalla varustettu PDF-dokumentti"
+      ],
+      "emergencyTitle": "Hätätilanteessa",
+      "emergencyText": "boom.contact ei korvaa hätäpalveluja, poliisia, asianajajaa tai vakuutusyhtiötä. Jos on loukkaantuneita tai vaara, ota ensin yhteyttä hätäpalveluihin."
+    },
+    "pricing": {
+      "label": "Hinnat",
+      "title": "Yksinkertainen, läpinäkyvä, ilman tilausta",
+      "caption": "1 krediitti = 1 täydellinen ilmoitus · monikielinen · krediitit ilman vanhentumista",
+      "badgePopular": "Suosittu",
+      "plans": [
+        {
+          "label": "1 ilmoitus",
+          "desc": "Yhden onnettomuuden varalle"
+        },
+        {
+          "label": "3 ilmoitusta",
+          "desc": "Koko perheelle"
+        },
+        {
+          "label": "10 ilmoitusta",
+          "desc": "Laivastoille ja välittäjille"
+        }
+      ]
+    },
+    "b2b": {
+      "label": "Ammattikäyttäjille",
+      "title": "Välittäjille, laivastoille ja vakuutuskumppaneille",
+      "text": "Varusta asiakkaasi ja kuljettajasi selkeällä työkalulla onnettomuuden dokumentointiin ja aikaleimalla varustetun PDF-dokumentin luomiseen. Krediittipaketit laivastoille ja välittäjille, helppo käyttöönotto, ilman tilausta.",
+      "cta": "Ota yhteyttä / jaa",
+      "items": [
+        {
+          "title": "Laivastot",
+          "desc": "Rakennettu asiakirja jokaiselle kuljettajan vahingolle."
+        },
+        {
+          "title": "Välittäjät",
+          "desc": "Arvopalvelu vakuutettavillesi."
+        },
+        {
+          "title": "Yksityisyys",
+          "desc": "Tietoja salataan siirron aikana, poistettavissa pyynnöstä."
+        },
+        {
+          "title": "Siirto",
+          "desc": "Aikaleimalla varustettu PDF valmis liitettäväksi vahinkoilmoitukseen."
+        }
+      ]
+    },
+    "faq": {
+      "label": "UKK",
+      "title": "Usein kysytyt kysymykset",
+      "items": [
+        {
+          "q": "Mikä on boom.contact?",
+          "a": "boom.contact on sovellus, joka auttaa dokumentoimaan liikenneonnettomuuden puhelimesta: kuljettajien kutsuminen QR-koodilla, valokuvat, ääni, luonnokset, allekirjoitukset, ja sitten aikaleimalla varustetun PDF-dokumentin luominen lähetettäväksi vakuutusyhtiöllesi."
+        },
+        {
+          "q": "Onko minun asennettava sovellus?",
+          "a": "Ei. boom.contact toimii suoraan puhelimen selaimessa (Safari, Chrome, Firefox). Voit myös lisätä sen aloitusnäyttöösi verkkosovelluksena (PWA) offline-käyttöä varten."
+        },
+        {
+          "q": "Mitä tapahtuu, jos toinen kuljettaja ei ole asentanut sovellusta?",
+          "a": "Luo istunto ja QR-koodi näkyy. Toinen kuljettaja skannaa sen puhelimellaan: boom.contact avautuu hänen selaimessaan, ilman rekisteröitymistä tai lataamista."
+        },
+        {
+          "q": "Hyväksyykö vakuutusyhtiö PDF-dokumentin?",
+          "a": "Aikaleimalla varustettu PDF-dokumentti on tarkoitettu liitteeksi vahinkoilmoituksellesi. boom.contact ei takaa sen hyväksymistä, joka riippuu vakuutusyhtiöstäsi sopimuksesi ja lainkäyttöalueesi mukaan."
+        },
+        {
+          "q": "Toimiiko se, jos toinen kuljettaja puhuu eri kieltä?",
+          "a": "Kyllä. Jokainen kuljettaja käyttää käyttöliittymää omalla kielellään. Lopullinen asiakirja luodaan jokaiselle kuljettajalle."
+        },
+        {
+          "q": "Ovatko tietoni suojattuja?",
+          "a": "Tietoja salataan siirron aikana, istunnot poistetaan automaattisesti määräajan jälkeen, ja poliisille ei ilmoiteta automaattisesti — vain sinun erikseen tekemäsi toimenpiteen perusteella."
+        },
+        {
+          "q": "Paljonko se maksaa?",
+          "a": "Alkaen CHF / EUR 4.90 yhdestä ilmoituksesta. 3 ilmoituksen paketti 12.90 (−12 %), 10 ilmoituksen paketti 34.90 (−29 %). Ilman tilausta, krediitit ilman vanhentumista."
+        }
+      ]
     }
   },
   "steps": {
@@ -444,5 +519,431 @@
   "language": {
     "select": "Langue",
     "switch_tooltip": "Changer de langue"
+  },
+  "account": {
+    "member": {
+      "remove": "Poista",
+      "removeConfirm": "Poistetaanko tämä jäsen? Hän menettää pääsyn yrityksen ajoneuvoihin ja krediitteihin.",
+      "loading": "Ladataan…",
+      "none": "Ei jäseniä.",
+      "invite": "Kutsu jäsen",
+      "inviteBtn": "Kutsu",
+      "pending": "Kutsut odottavat"
+    },
+    "role": {
+      "owner": "Omistaja",
+      "driver": "Kuljettaja",
+      "fleet_admin": "Laivaston ylläpitäjä"
+    },
+    "scan": {
+      "cancel": "Peruuta",
+      "photographPre": "Ota valokuva",
+      "license": "rekisteröintitodistuksesta",
+      "and": "ja/tai",
+      "greenCard": "vihreästä kortista",
+      "title": "Skannaa rekisteröintitodistus + vihreä kortti",
+      "subtitle": "Automaattinen tunnistus · monikielinen"
+    },
+    "garage": {
+      "back": "Autotalli",
+      "title": "Oma autotallini",
+      "add": "Lisää",
+      "emptyTitle": "Autotalli tyhjillään",
+      "emptySubtitle": "Rekisteröi ajoneuvosi kerran. Ei enää skannausta onnettomuuden yhteydessä.",
+      "addFirst": "Lisää ensimmäinen ajoneuvoni",
+      "noOrgVehicles": "Ei yritysajoneuvoja tällä hetkellä."
+    },
+    "insurance": {
+      "saved": "Vakuutus tallennettu",
+      "add": "Lisää vakuutus"
+    },
+    "nav": {
+      "logout": "Kirjaudu ulos"
+    },
+    "vehicle": {
+      "edit": "Muokkaa ajoneuvoa",
+      "delete": "Poista ajoneuvo",
+      "editOrg": "Muokkaa yritysajoneuvoa",
+      "deleteOrg": "Poista yritysajoneuvo"
+    },
+    "fields": {
+      "nickname": "Lempinimi",
+      "plate": "Rekisterinumero",
+      "make": "Merkki",
+      "model": "Malli",
+      "color": "Väri",
+      "year": "Vuosi",
+      "firstName": "Etunimi",
+      "lastName": "Sukunimi",
+      "phone": "Puhelin",
+      "company": "Yritys",
+      "address": "Osoite",
+      "newEmail": "Uusi sähköposti",
+      "currentPwd": "Nykyinen salasana (vahvistus)",
+      "confirmEmailAria": "Sähköpostiosoitteen vahvistus"
+    },
+    "credits": {
+      "buy": "Osta:",
+      "available": "KREDIITIT KÄYTETTÄVISSÄ",
+      "unit": "1 krediitti = 1 täydellinen onnettomuusilmoitus"
+    },
+    "history": {
+      "loading": "Ladataan...",
+      "empty": "Ei ilmoituksia",
+      "emptySub": "Seuraava ilmoituksesi ilmestyy tänne automaattisesti."
+    },
+    "personal": {
+      "title": "Henkilökohtaiset tiedot",
+      "none": "Ei tietoja — napsauta Muokkaa"
+    },
+    "delete": {
+      "willDelete": "TÄMÄ POISTETAAN PYSYVÄSTI:",
+      "text": "Poista pysyvästi tilisi, ajoneuvosi ja kaikki ilmoituksesi. Tämä toimenpide on peruuttamaton."
+    },
+    "danger": {
+      "title": "Vaarallinen alue"
+    }
+  },
+  "app": {
+    "magic_link_error": "Virheellinen tai vanhentunut kirjautumislinkki.",
+    "gift_credits_added": "🎁 {{credits}} krediittiä lisätty tiliisi!",
+    "loading_aria": "Ladataan",
+    "nav_landing": "Etusivu",
+    "nav_cgu": "Käyttöehdot",
+    "nav_pricing": "Hinnoittelu",
+    "nav_constat": "Ilmoituksen luominen",
+    "nav_join": "Liity istuntoon",
+    "nav_account": "Käyttäjätili",
+    "nav_admin": "Ylläpito",
+    "nav_emergency": "Hätänumerot",
+    "nav_privacy": "Tietosuojakäytäntö",
+    "nav_police_login": "Poliisin kirjautuminen",
+    "nav_police_dashboard": "Poliisin hallintapaneeli",
+    "nav_police_flow": "Poliisin virta",
+    "nav_police_intervention": "Poliisin toimenpide",
+    "nav_to": "Navigoi {{label}}",
+    "title_default": "boom.contact — Digitaalinen onnettomuusilmoitus",
+    "title_page": "{{label}} — boom.contact"
+  },
+  "constatForm": {
+    "tab_vehicle": "Ajoneuvo",
+    "tab_driver": "Kuljettaja",
+    "tab_insurance": "Vakuutus",
+    "tab_circumstances": "Olosuhteet",
+    "tab_complement": "Lisäosa",
+    "field_required": "Tämä kenttä on pakollinen",
+    "plate_label": "Rekisterinumero",
+    "brand_label": "Merkki",
+    "model_label": "Malli",
+    "year_label": "Vuosi",
+    "vin_label": "Käyttöoikeusnumero (VIN)",
+    "firstName_label": "Etunimi",
+    "lastName_label": "Sukunimi",
+    "address_label": "Osoite",
+    "postalCode_label": "Postinumero",
+    "city_label": "Kaupunki",
+    "country_label": "Maa",
+    "phone_label": "Puhelin",
+    "email_label": "Sähköposti",
+    "license_label": "Ajokortin numero",
+    "company_label": "Vakuutusyhtiö",
+    "policyNumber_label": "Vakuutussopimuksen numero",
+    "greenCardNumber_label": "Vihreän kortin numero",
+    "greenCardExpiry_label": "Vihreän kortin voimassaoloaika",
+    "agentName_label": "Välittäjä / Agentti",
+    "agentPhone_label": "Vakuutuksen puhelin",
+    "circumstances_desc": "Ruksaa kaikki laatikot, jotka kuvaavat ajoneuvosi <strong>({{role}})</strong> tilannetta iskuaikana.",
+    "boxes_checked_one": "{{count}} laatikko ruksattu",
+    "boxes_checked_other": "{{count}} laatikkoa ruksattu",
+    "complement_desc": "Ilmoituksen lisätiedot — osiot 11, 13 ja 14.",
+    "datetime_label": "Onnettomuuden päivämäärä ja aika",
+    "visible_damage_label": "Näkyvät vauriot (osio 11)",
+    "visible_damage_placeholder": "Kuvaile näkyvät vauriot ajoneuvossasi...",
+    "third_party_label": "Vahingot kolmansille osapuolille (muut kuin A ja B)",
+    "witnesses_label": "Todistajat",
+    "witnesses_placeholder": "Jokaisen todistajan nimi, etunimi, puhelin...",
+    "voice_declaration_label": "🎙️ Äänilausunto (valinnainen)",
+    "observations_label": "Vapaamuotoiset havainnot — kuljettaja {{role}} (osio 14)",
+    "observations_placeholder": "Lisää kaikki hyödyllinen tieto: sääolosuhteet, tien kunto, arvioitu nopeus, huomautukset...",
+    "insurance_holder_label": "Vakuutuksen ottaja (jos eri kuin kuljettaja)",
+    "holder_name_placeholder": "Vakuutuksenottajan koko nimi",
+    "holder_name_aria": "Vakuutuksenottajan nimi",
+    "holder_address_placeholder": "Vakuutuksenottajan osoite",
+    "holder_address_aria": "Vakuutuksenottajan osoite",
+    "save_btn": "Tallenna ja jatka →",
+    "form_tabs_aria": "Lomakkeen osiot"
+  },
+  "postConstat": {
+    "next_time_title": "Seuraavalla kerralla: 0 syöttöä",
+    "next_time_subtitle": "Ajoneuvosi muistetaan ikuisesti",
+    "benefit_scanned": "Rekisteröintitodistus + vihreä kortti skannattu kerran",
+    "benefit_fast": "Ilmoitus 2 minuutissa sen sijaan, että 10",
+    "benefit_gift": "Lahjoita ilmoitus läheisillesi yhdellä napsautuksella",
+    "benefit_family": "Ihanteellinen perheelle: jaa krediittisi",
+    "create_account": "Luo ilmainen tilini →",
+    "share_btn": "Jaa läheisilleni",
+    "register_vehicle_title": "Seuraavaksi, rekisteröi ajoneuvosi",
+    "register_vehicle_subtitle": "Skannaa rekisteröintitodistus + vihreä kortti · 30 sekuntia · ei enää syöttöä",
+    "or_skip": "tai ohita suoraan",
+    "family_pack": "🔥 Perhepaketti",
+    "family_pack_desc": "3 ilmoitusta jaettavaksi läheisillesi",
+    "scenario_child": "Lapsesi soittaa — onnettomuus. Lähetä hänelle ilmoitus 3 sekunnissa hänen puhelimeensa.",
+    "scenario_employee": "Työntekijä yritysajoneuvolla. Siirrä krediitti WhatsAppilla välittömästi.",
+    "scenario_friend": "Ystävä vaikeuksissa ulkomailla. Hän saa linkin, ei tiliä vaadita.",
+    "buy_3_reports": "Osta 3 ilmoitusta — CHF/EUR 12.90 →",
+    "see_all_packs": "Näytä kaikki paketit →",
+    "ready_title": "Valmis seuraavaa kertaa varten",
+    "ready_subtitle": "Lataa nyt, jaa milloin haluat",
+    "account_title": "✅ Tilisi boom.contact",
+    "account_desc": "Ajoneuvosi on tallennettu. Seuraavassa onnettomuudessasi siirryt suoraan QR-vaiheeseen — ei syöttöä, ei skannausta.",
+    "manage_garage": "Hallitse autotalliani →",
+    "gift_title": "🎁 Lahjoita ilmoitus WhatsAppilla",
+    "gift_desc": "Yksi krediittisi = ainutlaatuinen linkki lähetettäväksi <strong>kenelle tahansa</strong>, ilman että henkilön tarvitsee olla tilillä.",
+    "credits_available_one": "{{count}} krediitti käytettävissä",
+    "credits_available_other": "{{count}} krediittiä käytettävissä",
+    "share_protect": "Jaa, suojaa läheisesi",
+    "wa_gift_title": "📲 Lahjoita ilmoitus WhatsAppilla",
+    "wa_gift_desc": "Yhdellä napsautuksella lähetä linkki lapsellesi, työntekijällesi tai ystävällesi. Hän tekee ilmoituksensa ilman tiliä tai maksua — vähennetään krediiteistäsi.",
+    "send_1": "📲 Lähetä 1 ilmoitus",
+    "send_3": "📲 Lähetä 3 ilmoitusta",
+    "gift_link_created": "✅ Linkki luotu — lähetä se WhatsAppilla!",
+    "share_title": "📤 Jaa boom.contact",
+    "share_desc": "Olet juuri tehnyt ilmoituksesi 5 minuutissa. Ystäväsi ansaitsevat tietää, että tämä on olemassa.",
+    "memorize_vehicles": "🚗 Muista muut ajoneuvosi",
+    "memorize_desc": "Yrityslaivasto, moottoripyörä, matkailuauto? Jokainen skannattu ajoneuvo = ei enää syöttöä onnettomuuden yhteydessä.",
+    "low_credits_one": "⚡ Sinulla on vain {{count}} krediitti jäljellä",
+    "low_credits_other": "⚡ Sinulla on vain {{count}} krediittiä jäljellä",
+    "recharge_desc": "Lataa nyt ja hyödynnä alennuksia perhe- ja yrityspaketeista.",
+    "recharge_btn": "Lataa krediittini →",
+    "pack_single_label": "1 ilmoitus",
+    "pack_single_note": "Satunnainen käyttö",
+    "pack_pack3_label": "3 ilmoitusta",
+    "pack_pack3_note": "Perhe · säästö 12%",
+    "pack_pack10_label": "10 ilmoitusta",
+    "pack_pack10_note": "Yritys · säästö 29%",
+    "popular_badge": "⭐ SUOSITTU"
+  },
+  "pricingPage": {
+    "sr_title": "Hinnat — boom.contact",
+    "back": "← Takaisin←",
+    "buy_reports": "Osta ilmoituksia",
+    "credits_no_expiry": "Krediitit ilman vanhentumista · Jaettavissa WhatsAppilla",
+    "credits_available_one": "✅ {{count}} krediitti käytettävissä",
+    "credits_available_other": "✅ {{count}} krediittiä käytettävissä",
+    "no_credits": "⚡ Ei krediittejä — lataa nyt",
+    "currency_label": "VALUUTTA",
+    "currency_detected": "✓ havaittu automaattisesti",
+    "most_popular": "⭐ SUOSITUIN · SÄÄSTÖ {{savings}}",
+    "economy": "Säästö {{savings}}",
+    "per_pack": "per paketti",
+    "per_report": "/ ilmoitus",
+    "redirecting_stripe": "⏳ Ohjataan Stripeen...",
+    "buy_btn": "Osta {{label}} — {{price}}",
+    "error_missing_url": "Maksu-URL puuttuu",
+    "error_generic": "Virhe",
+    "error_email_required": "Sähköposti vaaditaan ostamista varten",
+    "trust_stripe": "Turvallinen PCI-DSS Stripe-maksu",
+    "trust_no_expiry": "Krediitit ilman vanhentumista",
+    "trust_whatsapp": "Jaettavissa WhatsAppilla",
+    "trust_worldwide": "Monikielinen",
+    "trust_invoice": "Automaattinen PDF-lasku",
+    "trust_fleet": "Ihanteellinen yrityslaivastoille",
+    "why_title": "MIKSI HANKKIA KREDIITTEJÄ ETUKÄTEEN?",
+    "scenario_child_title": "Lapsesi on onnettomuudessa",
+    "scenario_child_text": "Hän soittaa sinulle. Lähetät hänelle krediitin WhatsAppilla. Hän tekee ilmoituksensa 5 minuutissa.",
+    "scenario_company_title": "Yrityksen ajoneuvo",
+    "scenario_company_text": "Toimituksesi on saanut kolauksen. Siirrä hänelle krediitti välittömästi puhelimestasi.",
+    "scenario_abroad_title": "Matkalla ulkomailla",
+    "scenario_abroad_text": "Onnettomuus Saksassa, Australiassa tai Japanissa. Käyttöliittymä saatavilla useilla kielillä.",
+    "pkg_single_label": "1 ilmoitus",
+    "pkg_single_desc": "Yhden onnettomuuden varalle",
+    "pkg_pack3_label": "3 ilmoitusta",
+    "pkg_pack3_desc": "Koko perheelle",
+    "pkg_pack3_marketing": "🎁 Jaa WhatsAppilla — lapsesi, työntekijäsi, ystäväsi saa välittömän linkin.",
+    "pkg_pack10_label": "10 ilmoitusta",
+    "pkg_pack10_desc": "Laivastot & yritykset",
+    "pkg_pack10_marketing": "🏢 Hallitse koko laivastoasi. Siirrä työntekijöillesi yhdellä napsautuksella."
+  },
+  "join": {
+    "sessionLabel": "Istunto",
+    "yourEmail": "Sähköpostisi",
+    "emailHint": "(PDF:n vastaanottamiseksi)",
+    "emailAria": "Sähköpostiosoitteesi",
+    "connecting": "Yhdistetään…",
+    "connected": "Yhdistetty! Aloitetaan…",
+    "joinButton": "Liity ilmoitukseen"
+  },
+  "constat": {
+    "nav": {
+      "back": "Takaisin",
+      "reset": "Nollaa ilmoitus"
+    },
+    "session": {
+      "expiring": "Istuntosi vanhenee pian. Tallenna tietosi."
+    },
+    "error": {
+      "close": "Sulje virhe"
+    },
+    "vehicle": {
+      "pickRegistered": "Valitse rekisteröity ajoneuvo",
+      "autofill": "Automaattinen täyttö — ei tarvitse skannata",
+      "yourRegistered": "Rekisteröidyt ajoneuvosi",
+      "org": "Yritys",
+      "personal": "Henkilökohtainen",
+      "fallback": "Ajoneuvo",
+      "cancel": "Peruuta",
+      "orScanNew": "tai skannaa uusi ajoneuvo"
+    },
+    "pedestrian": {
+      "title": "Muu osapuoli: jalankulkija"
+    },
+    "summary": {
+      "yourVehicle": "Ajoneuvosi",
+      "accident": "Onnettomuus",
+      "damagedZones_one": "{{count}} vaurioitunut alue",
+      "damagedZones_other": "{{count}} vaurioitunutta aluetta"
+    },
+    "emergency": {
+      "title": "Hätänumerot"
+    }
+  },
+  "signature": {
+    "title": "Allekirjoitus",
+    "driver": "Kuljettaja {{role}}",
+    "other_party": "Muu osapuoli",
+    "no_signature": "ilman allekirjoitusta",
+    "sign_here": "Allekirjoita tähän sormellasi",
+    "signed": "ALLEKIRJOITETTU ✓",
+    "clear": "🗑 Tyhjennä",
+    "saving": "⏳ Tallennetaan…",
+    "confirm_signature": "✍️ Vahvista allekirjoitus",
+    "waiting_other": "Odotetaan toisen kuljettajan allekirjoitusta…",
+    "waiting_pdf": "PDF luodaan heti, kun molemmat osapuolet ovat allekirjoittaneet.",
+    "report_signed": "Ilmoitus allekirjoitettu!",
+    "generating_pdf": "PDF:n luonti käynnissä…",
+    "canvas_aria": "Allekirjoitusalue — Kuljettaja {{role}}"
+  },
+  "ocrScanner": {
+    "no_doc_recognized": "Ei tunnistettuja asiakirjoja. Tarkista valokuvien laatu.",
+    "analysis_error": "Analyysivirhe.",
+    "read_failed": "Luku epäonnistui",
+    "docs_analyzed_one": "{{count}} asiakirja analysoitu",
+    "docs_analyzed_other": "{{count}} asiakirjaa analysoitu",
+    "confidence": "Luottamus: {{pct}}%",
+    "rescan": "Skannaa uudelleen",
+    "vehicle_section": "🚗 Ajoneuvo",
+    "plate": "Rekisterinumero",
+    "driver_section": "👤 Kuljettaja",
+    "firstName": "Etunimi",
+    "lastName": "Sukunimi",
+    "insurance_found": "✅ Vakuutus",
+    "insurance_manual": "⚠️ Vakuutus — täytä manuaalisesti",
+    "company_label": "Vakuutusyhtiö",
+    "company_aria": "Vakuutusyhtiö",
+    "company_placeholder": "AXA, Zurich, Allianz, emmental…",
+    "policy_label": "Vakuutussopimuksen numero",
+    "policy_manual_hint": "(manuaalinen syöttö)",
+    "policy_aria": "Vakuutussopimuksen numero",
+    "policy_placeholder": "50194120 / FR-2026-XXXXX…",
+    "confirm": "Vahvista →",
+    "scanning_title": "Analysoidaan...",
+    "scanning_subtitle_one": "{{count}} asiakirja · automaattinen tunnistus",
+    "scanning_subtitle_other": "{{count}} asiakirjaa · automaattinen tunnistus",
+    "photo_title": "Ota valokuvia asiakirjoistasi",
+    "photo_subtitle": "Rekisteröintitodistus + vihreä kortti yhdessä analyysissä.",
+    "photo_subtitle2": "Sovellus tunnistaa ja poimii kaiken automaattisesti.",
+    "doc_scanned": "Asiakirja skannattu {{n}}",
+    "doc_label": "Asiakirja {{n}}",
+    "photograph": "Ota valokuva",
+    "rear_camera": "Takakamera",
+    "gallery": "Galleria",
+    "which_docs": "Mitä asiakirjoja skannata?",
+    "doc_ch": "🇨🇭 Rekisteröintitodistus + vihreä kortti",
+    "doc_fr": "🇫🇷 Rekisteröintitodistus + vihreä kortti / todistus",
+    "doc_de": "🇩🇪 Rekisteröinti + vihreä kortti",
+    "doc_gb": "🇬🇧 V5C + Moottorivakuutustodistus",
+    "doc_us": "🇺🇸 🇨🇦 Rekisteröinti + Vakuutustodistus",
+    "doc_world": "🌍 Rekisteröinti + vakuutustodistus",
+    "close_error_aria": "Sulje virhe",
+    "analyze_btn_one": "🔍 Analysoi {{count}} asiakirja",
+    "analyze_btn_other": "🔍 Analysoi {{count}} asiakirjaa",
+    "skip_manual": "Ohita — manuaalinen syöttö →",
+    "upload_gallery_aria": "Lataa asiakirjoja galleriasta",
+    "take_photo_aria": "Ota valokuva asiakirjasta"
+  },
+  "voice": {
+    "title": "Kuvaile onnettomuus",
+    "subtitle": "Valinnainen — kuvaile, mitä tapahtui omilla sanoillasi. Lausuntosi tallennetaan ilmoitukseen.",
+    "tab_voice": "🎙️ Ääni",
+    "tab_text": "⌨️ Teksti",
+    "start_recording": "Aloita nauhoitus",
+    "textarea_aria": "Onnettomuuden kuvaus",
+    "textarea_placeholder": "Kuvaile onnettomuus muutamalla lauseella…",
+    "validate_desc": "✅ Vahvista kuvaukseni",
+    "skip_step": "Ohita tämä vaihe →",
+    "recording_in_progress": "Nauhoitus käynnissä…",
+    "recording_tip": "💡 Kuvaile: jokaisen ajoneuvon suunta, iskupiste, olosuhteet. Puhu rauhallisesti.",
+    "stop_recording": "Pysäytä nauhoitus",
+    "transcribing_title": "Transkripti käynnissä…",
+    "transcribing_subtitle": "Nauhoituksesi käsitellään",
+    "desc_recorded": "Kuvaus tallennettu",
+    "desc_in_pdf": "Lausuntosi sisältyy PDF-ilmoitukseen",
+    "your_declaration": "Lausuntosi",
+    "edit": "✏️ Muokkaa",
+    "edit_placeholder": "Korjaa lausuntoasi tarvittaessa...",
+    "restart": "Aloita alusta",
+    "mic_denied": "Mikrofonin käyttöoikeus evätty — käytä manuaalista syöttöä.",
+    "mic_unavailable": "Mikrofoni ei käytettävissä: {{msg}}",
+    "transcription_error": "Transkriptiovirhe",
+    "textarea_edit_aria": "Onnettomuuden kertomus"
+  },
+  "auth": {
+    "default_subtitle": "Kirjaudu sisään tallentaaksesi ajoneuvosi ja välttääksesi syöttämisen ilmoituksissasi.",
+    "magic_btn": "📧 Kirjaudu sähköpostilinkillä (suositellaan)",
+    "password_btn": "🔑 Kirjaudu salasanalla",
+    "register_btn": "✨ Luo tili",
+    "skip_btn": "Jatka ilman tiliä →",
+    "skip_note": "Ilman tiliä voit silti tehdä ilmoituksen ja maksaa Stripesilla.",
+    "magic_instructions": "Syötä sähköpostisi — saat kirjautumislinkin, joka on voimassa 15 minuuttia.",
+    "send_link": "Lähetä linkki",
+    "sending": "Lähetetään...",
+    "back": "← Takaisin",
+    "email_sent_title": "Sähköposti lähetetty!",
+    "email_sent_desc": "Tarkista laatikkosi <strong>{{email}}</strong>.",
+    "email_sent_validity": "Linkki on voimassa 15 minuuttia.",
+    "login_error": "Sähköposti tai salasana virheellinen.",
+    "logging_in": "Kirjaudutaan sisään...",
+    "login_btn": "Kirjaudu sisään",
+    "forgot_password": "Unohditko salasanan? Käytä sähköpostilinkkiä →",
+    "register_desc": "Luo tili tallentaaksesi ajoneuvosi ja esitäyttääksesi ilmoituksesi automaattisesti.",
+    "password_placeholder": "Salasana (vähintään 6 merkkiä)",
+    "creating": "Luodaan...",
+    "create_btn": "Luo tili",
+    "register_legal": "Tilin luomalla hyväksyt käyttöehtomme. Ajoneuvotietosi salataan eikä niitä koskaan jaeta ilman suostumustasi.",
+    "register_error": "Virhe rekisteröinnissä.",
+    "generic_error": "Virhe"
+  },
+  "legal": {
+    "intro": {
+      "title": "Ennen aloittamista",
+      "body": "boom.contact auttaa sinua dokumentoimaan onnettomuuden ja luomaan rakenteellisen PDF-dokumentin. Jos on loukkaantumisia, vaaraa, pakenemista, vakavaa erimielisyyttä tai lainmukaista velvoitetta, ota heti yhteyttä hätäpalveluihin, poliisiin tai asianomaisiin viranomaisiin. Annetut tiedot ovat osallistujien vastuulla. Voit syöttää tiedot manuaalisesti, jos et halua käyttää kameraa, mikrofonia tai sijaintia.",
+      "start": "Ymmärrän, aloita",
+      "emergency": "Katso hätänumerot",
+      "privacy_cgu": "Tietosuoja / Käyttöehdot"
+    },
+    "guest_accept": {
+      "checkbox": "Hyväksyn käyttöehdot ja olen lukenut tietosuojakäytännön.",
+      "note": "Ymmärrän, että tietojani käytetään onnettomuusdokumentin luomiseen ja että annetut tiedot ovat vastuullani."
+    },
+    "signature_confirm": "Vahvistan, että antamani tiedot ovat tietojeni mukaan oikeat ja hyväksyn, että allekirjoitukseni liitetään PDF-dokumenttiin.",
+    "payment_notice": "Jatkamalla maksamiseen ymmärrät, että maksu kattaa PDF-dokumentin luomisen ja lähettämisen. Annetut tiedot ovat osallistujien vastuulla.",
+    "mic_notice": "Käyttämällä mikrofonia äänilausuntosi transkriptoidaan, jotta se voidaan liittää onnettomuusdokumenttiin. Voit käyttää tekstisyöttöä sen sijaan.",
+    "injury_confirm": {
+      "body": "Vammojen valokuvat voivat sisältää arkaluontoisia tietoja. Varmista, että sinulla on asianomaisen suostumus, ellei turvallisuus tai lainmukainen velvoite sitä vaadi.",
+      "continue": "Jatka",
+      "change": "Vaihda kategoriaa"
+    },
+    "pdf_ready_title": "Aikaleimalla varustettu onnettomuus PDF-dokumentti",
+    "pdf_ready_body": "Vaaditut allekirjoitukset on tallennettu. PDF-dokumentti on valmis. Tarkista tiedot ennen kuin lähetät sen vakuutusyhtiöllesi."
   }
 }
