@@ -44,7 +44,23 @@ jobs:
           VERSION_CODE=$(echo "${{ inputs.version }}" | tr -d '.' | sed 's/^0*//')
           sed -i "s/versionCode .*/versionCode ${VERSION_CODE}/" app/build.gradle
 
+      - name: Decode upload keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > android/app/boom-contact-release.keystore
+            echo "Keystore decoded."
+          else
+            echo "::warning::Secret KEYSTORE_BASE64 absent — bundleRelease echouera (fail-fast attendu). Ajouter les secrets de signature."
+          fi
+
       - name: Build AAB (release)
+        env:
+          KEYSTORE_FILE: boom-contact-release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
           cd android
           chmod +x gradlew
