@@ -8,6 +8,7 @@ import { trpc } from '../trpc';
 import { z } from 'zod';
 import { StepIndicator } from '../components/constat/StepIndicator';
 import { PDFDownload } from '../components/constat/PDFDownload';
+import { KeepReportCTA } from '../components/constat/KeepReportCTA';
 import { ocrCategoryToVehicleType } from '../../../shared/utils/ocrCategoryToVehicleType';
 import type { OCRResult, ParticipantData, ScenePhoto, AccidentData, ParticipantRole } from '../../../shared/types';
 
@@ -606,7 +607,7 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
           </>
         )}
 
-        {step === 'done' && (
+        {step === 'done' && (<>
           <PDFDownload
             sessionId={sessionId}
             role={urlRole as any}
@@ -619,7 +620,8 @@ export function JoinSession({ authUser, authToken, onLogin, onBuyPack }: JoinSes
             onLogin={onLogin || (() => {})}
             onBuyPack={onBuyPack || (() => {})}
           />
-        )}
+          <KeepReportCTA initialEmail={participantData.driver?.email} isLoggedIn={!!authUser} />
+        </>)}
       </div>
       </Suspense>
     </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SignaturePad } from '../components/constat/SignaturePad';
+import { KeepReportCTA } from '../components/constat/KeepReportCTA';
 
 // /visual-qa — Production UI Visual QA + Mode screenshot marketing.
 // - sans ?screenshot= : page QA interne (10 écrans en grille).
@@ -469,6 +470,8 @@ function renderScreen(key: Exclude<ScreenKey, 'store'> | string): React.ReactNod
             </div>
           </div>
           <button style={ctaStyle}>📥 Télécharger le PDF</button>
+          {/* Boucle conducteur B : capture post-signature (composant réel) */}
+          <KeepReportCTA initialEmail="conducteur.b@example.com" isLoggedIn={false} />
           <div style={{ height: 10 }} />
           <div style={{ background: 'var(--card2)', borderRadius: 12, padding: 10, marginBottom: 10 }}>
             <div style={{ ...mutStyle, fontSize: 11, marginBottom: 6 }}>Envoyer à</div>

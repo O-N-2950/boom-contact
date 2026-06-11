@@ -235,8 +235,14 @@ export async function updateParticipant(
     const current = currentMap[role] ?? {};
     const merged = { ...current, ...data };
 
+    // Boucle conducteur B : indexer son email (capture post-signature + historique)
+    const extra: Record<string, unknown> = {};
+    if (role === 'B' && typeof data.driver?.email === 'string' && data.driver.email.includes('@')) {
+      extra.participantBEmail = data.driver.email.trim().toLowerCase().slice(0, 320);
+    }
+
     const [row] = await tx.update(schema.sessions)
-      .set({ [key]: merged })
+      .set({ [key]: merged, ...extra })
       .where(eq(schema.sessions.id, id))
       .returning();
 

@@ -945,5 +945,15 @@
     "danger": {
       "title": "Təhlükəli zona"
     }
+  },
+  "keepReport": {
+    "title": "Nüsxənizi saxlayın",
+    "body": "Pulsuz hesabınızı bir kliklə yaradın: sizin constat burada əlçatan olacaq və növbəti qəza zamanı hazır olacaqsınız.",
+    "emailPlaceholder": "sizin@email.com",
+    "cta": "Mənim constatımı saxla — hesabımı yaradın",
+    "sending": "Göndərilir…",
+    "sentTitle": "Email göndərildi!",
+    "sentBody": "Hesabınızı aktivləşdirmək üçün alınan linki açın — sizin constat burada saxlanılacaq.",
+    "error": "Göndərmə uğursuz oldu. Bir az sonra yenidən cəhd edin."
   }
 }

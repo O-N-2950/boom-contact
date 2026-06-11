@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Cobertura mundial",
-      "title": "Da Suíça à China",
-      "more": "+ 30 outros países · Suporte RTL integrado"
-    },
-    "legal": {
-      "title": "Padrão internacional",
-      "text": "Nosso PDF digital tem carimbo de data/hora e assinatura digital, para transmitir à sua seguradora."
-    },
-    "finalCta": {
-      "title": "Preparado para um acidente?",
-      "subtitle": "Mantenha boom.contact na sua tela inicial. 5 minutos para finalizar tudo.",
-      "button": "Iniciar um constat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Convide por QR code",
@@ -129,6 +111,24 @@
         "desc": "Baixe o PDF ou envie por e-mail para acompanhar sua declaração de sinistro ao seu segurador."
       }
     ],
+    "coverage": {
+      "label": "Cobertura mundial",
+      "title": "Da Suíça à China",
+      "more": "+ 30 outros países · Suporte RTL integrado"
+    },
+    "legal": {
+      "title": "Padrão internacional",
+      "text": "Nosso PDF digital tem carimbo de data/hora e assinatura digital, para transmitir à sua seguradora."
+    },
+    "finalCta": {
+      "title": "Preparado para um acidente?",
+      "subtitle": "Mantenha boom.contact na sua tela inicial. 5 minutos para finalizar tudo.",
+      "button": "Iniciar um constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "O constat amiable digital multilíngue · Relatório de acidente digital",
     "flow": {
       "label": "Tudo em um único fluxo",
@@ -375,6 +375,16 @@
     "gps_denied": "Acesso GPS recusado — introdução manual",
     "gps_missing": "Posição GPS não capturada",
     "gps_saved": "Coordenadas guardadas no documento",
+    "address_label": "Rua / Localidade / Autoestrada (ex: A1 saída 12, Carrefour das Quatro Estradas)",
+    "address_placeholder": "Ex: Avenida da Estação 4, A1 direção Berna km 47…",
+    "city_label": "Cidade / Localidade",
+    "city_placeholder": "Lausanne, Paris…",
+    "country_label": "País",
+    "country_placeholder": "CH, FR…",
+    "location_tip": "💡 Importante: Indique o local exato do acidente, mesmo que você tenha movido os veículos para o lado. O GPS captura sua posição atual — corrija se você se moveu.",
+    "injuries_label": "Há feridos?",
+    "no_injuries": "Não — nenhum ferido",
+    "yes_injuries": "Sim — ferido(s)",
     "injury_details_title": "🚑 Detalhes das lesões",
     "severity_label": "Gravidade aparente",
     "severity_minor": "Leve",
@@ -390,17 +400,7 @@
     "cta_no_location": "Indique o local do acidente",
     "emergency_police": "🚔 Polícia · {{number}} {{label}}",
     "emergency_ambulance": "🚑 Urgências · {{number}} {{label}}",
-    "emergency_voluntary": "Estas chamadas são voluntárias — a polícia nunca é avisada automaticamente.",
-    "address_label": "Rua / Localidade / Autoestrada (ex: A1 saída 12, Carrefour das Quatro Estradas)",
-    "address_placeholder": "Ex: Avenida da Estação 4, A1 direção Berna km 47…",
-    "city_label": "Cidade / Localidade",
-    "city_placeholder": "Lausanne, Paris…",
-    "country_label": "País",
-    "country_placeholder": "CH, FR…",
-    "location_tip": "💡 Importante: Indique o local exato do acidente, mesmo que você tenha movido os veículos para o lado. O GPS captura sua posição atual — corrija se você se moveu.",
-    "injuries_label": "Há feridos?",
-    "no_injuries": "Não — nenhum ferido",
-    "yes_injuries": "Sim — ferido(s)"
+    "emergency_voluntary": "Estas chamadas são voluntárias — a polícia nunca é avisada automaticamente."
   },
   "cgu": {
     "before_continue": "AVANT DE CONTINUER",
@@ -945,5 +945,15 @@
     "emergency": {
       "title": "Números de emergência"
     }
+  },
+  "keepReport": {
+    "title": "Conserve o seu exemplar",
+    "body": "Crie a sua conta gratuita num clique: a sua declaração permanece acessível e fica preparado para um próximo acidente.",
+    "emailPlaceholder": "seu@email.com",
+    "cta": "Conservar a minha declaração — criar a minha conta",
+    "sending": "A enviar…",
+    "sentTitle": "Email enviado!",
+    "sentBody": "Abra o link recebido para ativar a sua conta — a sua declaração ficará guardada.",
+    "error": "O envio falhou. Tente novamente dentro de instantes."
   }
 }

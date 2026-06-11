@@ -945,5 +945,15 @@
     "emergency": {
       "title": "Ārkārtas numuri"
     }
+  },
+  "keepReport": {
+    "title": "Saglabājiet savu eksemplāru",
+    "body": "Izveidojiet savu bezmaksas kontu ar vienu klikšķi: jūsu konstatējums būs pieejams, un jūs būsiet gatavs nākamajam negadījumam.",
+    "emailPlaceholder": "jūsu@email.com",
+    "cta": "Saglabāt manu konstatējumu — izveidot manu kontu",
+    "sending": "Sūta…",
+    "sentTitle": "E-pasts nosūtīts!",
+    "sentBody": "Atveriet saiti, ko saņēmāt, lai aktivizētu savu kontu — jūsu konstatējums tur tiks saglabāts.",
+    "error": "Sūtīšana neizdevās. Mēģiniet vēlreiz pēc brīža."
   }
 }

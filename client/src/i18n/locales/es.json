@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Cobertura mundial",
-      "title": "De Suiza a China",
-      "more": "+ 30 países más · Soporte RTL integrado"
-    },
-    "legal": {
-      "title": "Estándar internacional",
-      "text": "Nuestro PDF digital tiene marca de tiempo y firma digital, para transmitir a tu aseguradora."
-    },
-    "finalCta": {
-      "title": "¿Listo en caso de accidente?",
-      "subtitle": "Guarda boom.contact en tu pantalla de inicio. 5 minutos para finalizarlo todo.",
-      "button": "Iniciar un parte"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Invite por código QR",
@@ -129,6 +111,24 @@
         "desc": "Descargue el PDF o envíelo por email para acompañar su declaración de siniestro ante su aseguradora."
       }
     ],
+    "coverage": {
+      "label": "Cobertura mundial",
+      "title": "De Suiza a China",
+      "more": "+ 30 países más · Soporte RTL integrado"
+    },
+    "legal": {
+      "title": "Estándar internacional",
+      "text": "Nuestro PDF digital tiene marca de tiempo y firma digital, para transmitir a tu aseguradora."
+    },
+    "finalCta": {
+      "title": "¿Listo en caso de accidente?",
+      "subtitle": "Guarda boom.contact en tu pantalla de inicio. 5 minutos para finalizarlo todo.",
+      "button": "Iniciar un parte"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "El parte amistoso digital multilingüe · Digital accident report",
     "flow": {
       "label": "Todo en un solo flujo",
@@ -521,6 +521,9 @@
     "switch_tooltip": "Cambiar de idioma"
   },
   "ocrScanner": {
+    "no_doc_recognized": "Ningún documento reconocido. Verifique la calidad de las fotos.",
+    "analysis_error": "Error de análisis.",
+    "read_failed": "Lectura fallida",
     "docs_analyzed_one": "{{count}} documento analizado",
     "docs_analyzed_other": "{{count}} documentos analizados",
     "confidence": "Confianza: {{pct}}%",
@@ -563,10 +566,7 @@
     "analyze_btn_other": "🔍 Analizar {{count}} documentos",
     "skip_manual": "Omitir — introducción manual →",
     "upload_gallery_aria": "Cargar documentos desde la galería",
-    "take_photo_aria": "Fotografiar un documento",
-    "no_doc_recognized": "Ningún documento reconocido. Verifique la calidad de las fotos.",
-    "analysis_error": "Error de análisis.",
-    "read_failed": "Lectura fallida"
+    "take_photo_aria": "Fotografiar un documento"
   },
   "postConstat": {
     "next_time_title": "La próxima vez: 0 introducciones",
@@ -945,5 +945,15 @@
     "pkg_pack10_label": "10 partes",
     "pkg_pack10_desc": "Flotas y empresas",
     "pkg_pack10_marketing": "🏢 Gestione toda su flota. Transfiera a sus colaboradores en 1 clic."
+  },
+  "keepReport": {
+    "title": "Conserve tu copia",
+    "body": "Crea tu cuenta gratuita en un clic: tu informe estará accesible y estarás preparado en caso de un próximo accidente.",
+    "emailPlaceholder": "tu@email.com",
+    "cta": "Conservar mi informe — crear mi cuenta",
+    "sending": "Enviando…",
+    "sentTitle": "¡Correo enviado!",
+    "sentBody": "Abre el enlace recibido para activar tu cuenta — tu informe será conservado allí.",
+    "error": "El envío ha fallado. Inténtalo de nuevo en un momento."
   }
 }

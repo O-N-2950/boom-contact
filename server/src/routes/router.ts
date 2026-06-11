@@ -18,7 +18,7 @@ import { io } from '../index';
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions as sessionsTable } from '../db/schema.js';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, or } from 'drizzle-orm';
 import { CLIENT_URL } from '../constants.js';
 
 // ── File upload validation helpers ──────────────────────────────
@@ -592,8 +592,13 @@ export const appRouter = router({
       .query(async ({ ctx, input }) => {
         const limit = input?.limit ?? 50;
         const offset = input?.offset ?? 0;
+        // Boucle conducteur B : l'historique inclut les constats où l'on est
+        // créateur (A) OU participant B identifié par email
         return db.query.sessions.findMany({
-          where: eq(sessionsTable.ownerEmail, ctx.authUser.email),
+          where: or(
+            eq(sessionsTable.ownerEmail, ctx.authUser.email),
+            eq(sessionsTable.participantBEmail, ctx.authUser.email.toLowerCase()),
+          ),
           orderBy: [desc(sessionsTable.createdAt)],
           limit,
           offset,

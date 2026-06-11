@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Daah-furis adduunka oo dhan",
-      "title": "Iswiisirka ilaa Shiinaha",
-      "more": "+ 30 wadan oo kale · Taageero RTL"
-    },
-    "legal": {
-      "title": "Heerka caalamiga ah",
-      "text": "PDF dhijitaalka ah ee boom.contact waxaa aqbalay shirkadaha caymiska 50+ wadan."
-    },
-    "finalCta": {
-      "title": "Ma diyaar u tahay shil?",
-      "subtitle": "boom.contact dhig shaashadaada. 5 daqiiqo oo dhammaystira.",
-      "button": "Bilow warbixin"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Ku casuum QR code",
@@ -129,6 +111,24 @@
         "desc": "Soo dejiso PDF ama u dir email si aad ugu darto bayaankaaga shilka ee caymiskaaga."
       }
     ],
+    "coverage": {
+      "label": "Daah-furis adduunka oo dhan",
+      "title": "Iswiisirka ilaa Shiinaha",
+      "more": "+ 30 wadan oo kale · Taageero RTL"
+    },
+    "legal": {
+      "title": "Heerka caalamiga ah",
+      "text": "PDF dhijitaalka ah ee boom.contact waxaa aqbalay shirkadaha caymiska 50+ wadan."
+    },
+    "finalCta": {
+      "title": "Ma diyaar u tahay shil?",
+      "subtitle": "boom.contact dhig shaashadaada. 5 daqiiqo oo dhammaystira.",
+      "button": "Bilow warbixin"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "Warbixinta shilka dijitaalka ah ee luqadaha badan · Digital accident report",
     "flow": {
       "label": "Wax walba hal socod",
@@ -945,5 +945,15 @@
     "emergency": {
       "title": "Lambarrada degdega"
     }
+  },
+  "keepReport": {
+    "title": "Kaydso nuqulkaaga",
+    "body": "Abuur akoonkaaga bilaashka ah hal guji: warbixintaadu waxay ahaan doontaa mid la heli karo, waxaadna diyaar u tahay shil kasta oo xiga.",
+    "emailPlaceholder": "votre@email.com",
+    "cta": "Kaydso warbixintayda — abuur akoonkeyga",
+    "sending": "Dirid…",
+    "sentTitle": "Email la diray!",
+    "sentBody": "Fur xiriirka la helay si aad u dhaqaajiso akoonkaaga — warbixintaadu halkaas ayay ku jiri doontaa.",
+    "error": "Diridu way fashilantay. Fadlan isku day mar kale daqiiqad gudaheed."
   }
 }

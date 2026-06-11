@@ -945,5 +945,15 @@
     "connecting": "Připojování…",
     "connected": "Připojeno! Spouštění…",
     "joinButton": "Připojit se k záznamu"
+  },
+  "keepReport": {
+    "title": "Uložte si svou kopii",
+    "body": "Vytvořte si svůj bezplatný účet jedním kliknutím: váš záznam bude dostupný a budete připraveni na případnou další nehodu.",
+    "emailPlaceholder": "váš@email.com",
+    "cta": "Uložit můj záznam — vytvořit můj účet",
+    "sending": "Odesílání…",
+    "sentTitle": "Email odeslán!",
+    "sentBody": "Otevřete odkaz, který jste obdrželi, abyste aktivovali svůj účet — váš záznam bude tam uložen.",
+    "error": "Odeslání se nezdařilo. Zkuste to prosím za chvíli znovu."
   }
 }

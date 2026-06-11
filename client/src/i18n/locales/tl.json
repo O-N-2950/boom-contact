@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Pandaigdigang saklaw",
-      "title": "Mula Switzerland hanggang Tsina",
-      "more": "+ 30 pang bansa · RTL support"
-    },
-    "legal": {
-      "title": "International na pamantayan",
-      "text": "Ang digital PDF ng boom.contact ay tinatanggap ng mga insurance company sa 50+ bansa."
-    },
-    "finalCta": {
-      "title": "Handa ka ba sa aksidente?",
-      "subtitle": "Ilagay ang boom.contact sa iyong screen. 5 minuto para matapos lahat.",
-      "button": "Magsimula ng ulat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Mag-imbita gamit ang QR code",
@@ -129,6 +111,24 @@
         "desc": "I-download ang PDF o ipadala ito sa pamamagitan ng email upang samahan ang iyong pahayag ng pinsala sa iyong tagaseguro."
       }
     ],
+    "coverage": {
+      "label": "Pandaigdigang saklaw",
+      "title": "Mula Switzerland hanggang Tsina",
+      "more": "+ 30 pang bansa · RTL support"
+    },
+    "legal": {
+      "title": "International na pamantayan",
+      "text": "Ang digital PDF ng boom.contact ay tinatanggap ng mga insurance company sa 50+ bansa."
+    },
+    "finalCta": {
+      "title": "Handa ka ba sa aksidente?",
+      "subtitle": "Ilagay ang boom.contact sa iyong screen. 5 minuto para matapos lahat.",
+      "button": "Magsimula ng ulat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "Multilinggwal na digital na constat amiable · Digital accident report",
     "flow": {
       "label": "Lahat sa isang daloy",
@@ -945,5 +945,15 @@
     },
     "pdf_ready_title": "Naka-time stamp na PDF na dossier ng aksidente",
     "pdf_ready_body": "Naitala na ang mga kinakailangang lagda. Ang PDF na dossier ay handa na. Suriin ang mga impormasyon bago ito ipadala sa iyong tagaseguro."
+  },
+  "keepReport": {
+    "title": "Itago ang iyong kopya",
+    "body": "Gumawa ng iyong libreng account sa isang click: ang iyong ulat ay mananatiling maa-access, at handa ka sa susunod na aksidente.",
+    "emailPlaceholder": "iyong@email.com",
+    "cta": "Itago ang aking ulat — gumawa ng aking account",
+    "sending": "Nagpapadala…",
+    "sentTitle": "Nakapadala ng Email!",
+    "sentBody": "Buksan ang natanggap na link upang i-activate ang iyong account — ang iyong ulat ay dito itatago.",
+    "error": "Nabigo ang pagpapadala. Subukan muli sa isang sandali."
   }
 }

@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Dëkk ci aduna yépp",
-      "title": "Ci Suisse ci Siin",
-      "more": "+ Réew 30 ñëpp · RTL dëkk"
-    },
-    "legal": {
-      "title": "Standard international",
-      "text": "PDF numérik bu boom.contact nangu ko assurance yi ci réew 50+."
-    },
-    "finalCta": {
-      "title": "Xam na ka ci accident?",
-      "subtitle": "Dëkkal boom.contact ci sa écran. 5 minit ngir yépp jeex.",
-      "button": "Tambali rapport"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Ndiaye ci QR code",
@@ -129,6 +111,24 @@
         "desc": "Téléchargez PDF bi walla jëfandikoo ci email ngir jëfandikoo sa jàmm ci sa jàmm."
       }
     ],
+    "coverage": {
+      "label": "Dëkk ci aduna yépp",
+      "title": "Ci Suisse ci Siin",
+      "more": "+ Réew 30 ñëpp · RTL dëkk"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "PDF numérik bu boom.contact nangu ko assurance yi ci réew 50+."
+    },
+    "finalCta": {
+      "title": "Xam na ka ci accident?",
+      "subtitle": "Dëkkal boom.contact ci sa écran. 5 minit ngir yépp jeex.",
+      "button": "Tambali rapport"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "Le constat amiable numérique multilingue · Digital accident report",
     "flow": {
       "label": "Benn ci flux bu am",
@@ -945,5 +945,15 @@
     },
     "pdf_ready_title": "Dossier PDF d'accident horodaté",
     "pdf_ready_body": "Les signatures requises ont été enregistrées. Le dossier PDF est prêt. Vérifie les informations avant de le transmettre à ton assureur."
+  },
+  "keepReport": {
+    "title": "Tëral sa kopi",
+    "body": "Sos sa konte bu njëkk ci benn clik: sa konsta bi dina am fi, te nga topp ci benn aksidaan bu ñëw.",
+    "emailPlaceholder": "sa@email.com",
+    "cta": "Tëral sama konsta — sos sama konte",
+    "sending": "Yàgg…",
+    "sentTitle": "Email bi yàgg na!",
+    "sentBody": "Ubbi lëkkalekaay bi nga jot ngir tànneel sa konte — sa konsta bi dinañu ko tëral fii.",
+    "error": "Yàgg bi amul njariñ. Jéemaat ci biir benn ay simili."
   }
 }

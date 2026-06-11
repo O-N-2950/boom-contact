@@ -24,6 +24,13 @@ export async function runMigrations() {
       EXCEPTION WHEN duplicate_column THEN NULL;
       END $$;
 
+      -- Boucle conducteur B : email du participant B (capture post-signature, historique)
+      DO $$ BEGIN
+        ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_b_email TEXT;
+      EXCEPTION WHEN duplicate_column THEN NULL;
+      END $$;
+      CREATE INDEX IF NOT EXISTS sessions_participant_b_email_idx ON sessions(participant_b_email);
+
       DO $$ BEGIN
         ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_c JSONB;
         ALTER TABLE sessions ADD COLUMN IF NOT EXISTS participant_d JSONB;

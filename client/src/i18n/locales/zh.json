@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "全球覆盖",
-      "title": "从瑞士到中国",
-      "more": "+ 30个其他国家 · 内置RTL支持"
-    },
-    "legal": {
-      "title": "国际标准",
-      "text": "我们的数字PDF带时间戳并经数字签名，可提交给您的保险公司。"
-    },
-    "finalCta": {
-      "title": "发生事故时已准备好了吗？",
-      "subtitle": "将 boom.contact 保存到主屏幕。5分钟完成所有流程。",
-      "button": "开始填写事故报告"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "通过QR码邀请",
@@ -129,6 +111,24 @@
         "desc": "下载PDF或通过电子邮件发送，以便随附您的索赔声明给保险公司。"
       }
     ],
+    "coverage": {
+      "label": "全球覆盖",
+      "title": "从瑞士到中国",
+      "more": "+ 30个其他国家 · 内置RTL支持"
+    },
+    "legal": {
+      "title": "国际标准",
+      "text": "我们的数字PDF带时间戳并经数字签名，可提交给您的保险公司。"
+    },
+    "finalCta": {
+      "title": "发生事故时已准备好了吗？",
+      "subtitle": "将 boom.contact 保存到主屏幕。5分钟完成所有流程。",
+      "button": "开始填写事故报告"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "多语言数字事故报告 · Digital accident report",
     "flow": {
       "label": "一切在一个流程中",
@@ -945,5 +945,15 @@
     "danger": {
       "title": "危险区域"
     }
+  },
+  "keepReport": {
+    "title": "保存您的副本",
+    "body": "只需点击一下即可创建您的免费账户：您的报告将保持可访问状态，并且您在下次事故时已做好准备。",
+    "emailPlaceholder": "您的@email.com",
+    "cta": "保存我的报告 — 创建我的账户",
+    "sending": "发送中…",
+    "sentTitle": "邮件已发送！",
+    "sentBody": "打开收到的链接以激活您的账户 — 您的报告将被保留。",
+    "error": "发送失败。请稍后再试。"
   }
 }

@@ -3,6 +3,7 @@
     "continue": "계속 →",
     "confirm": "확인 →",
     "cancel": "취소",
+    "rescan": "🔄 다시 스캔하기",
     "loading": "로딩 중…",
     "saving": "⏳ 저장 중…",
     "error": "오류",
@@ -12,8 +13,7 @@
     "required": "필수",
     "yes": "예",
     "no": "아니오",
-    "unknown": "알 수 없음",
-    "rescan": "🔄 다시 스캔하기"
+    "unknown": "알 수 없음"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Multilingue",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
-    },
-    "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
-    },
-    "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "QR 코드로 초대하기",
@@ -129,6 +111,24 @@
         "desc": "PDF를 다운로드하거나 이메일로 전송하여 보험사에 사고 신고를 첨부하세요."
       }
     ],
+    "coverage": {
+      "label": "Multilingue",
+      "title": "De la Suisse à la Chine",
+      "more": "+ 30 autres pays · Support RTL intégré"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
+    },
+    "finalCta": {
+      "title": "Prêt en cas d'accident ?",
+      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "button": "Démarrer un constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "다국어 디지털 사고 보고서 · Digital accident report",
     "flow": {
       "label": "하나의 흐름으로 모든 것",
@@ -945,5 +945,15 @@
     "emergency": {
       "title": "긴급 전화번호"
     }
+  },
+  "keepReport": {
+    "title": "사본을 보관하세요",
+    "body": "클릭 한 번으로 무료 계정을 만드세요. 사고 보고서에 계속 접근할 수 있으며, 다음 사고에 대비할 수 있습니다.",
+    "emailPlaceholder": "your@email.com",
+    "cta": "사고 보고서 보관 — 계정 만들기",
+    "sending": "전송 중…",
+    "sentTitle": "이메일이 전송되었습니다!",
+    "sentBody": "수신한 링크를 열어 계정을 활성화하세요. 사고 보고서가 보관됩니다.",
+    "error": "전송에 실패했습니다. 잠시 후 다시 시도하세요."
   }
 }

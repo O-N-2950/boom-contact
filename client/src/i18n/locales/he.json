@@ -3,6 +3,7 @@
     "continue": "המשך →",
     "confirm": "אישור →",
     "cancel": "ביטול",
+    "rescan": "🔄 סרוק מחדש",
     "loading": "טוען…",
     "saving": "⏳ שומר…",
     "error": "שגיאה",
@@ -12,8 +13,7 @@
     "required": "חובה",
     "yes": "כן",
     "no": "לא",
-    "unknown": "לא ידוע",
-    "rescan": "🔄 סרוק מחדש"
+    "unknown": "לא ידוע"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Multilingue",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
-    },
-    "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
-    },
-    "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "הזמנה באמצעות קוד QR",
@@ -129,6 +111,24 @@
         "desc": "הורד את ה-PDF או שלח אותו בדוא\"ל כדי לצרף אותו להצהרת הנזק שלך לחברת הביטוח."
       }
     ],
+    "coverage": {
+      "label": "Multilingue",
+      "title": "De la Suisse à la Chine",
+      "more": "+ 30 autres pays · Support RTL intégré"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
+    },
+    "finalCta": {
+      "title": "Prêt en cas d'accident ?",
+      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "button": "Démarrer un constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "דו\"ח תאונה דיגיטלי רב לשוני · Digital accident report",
     "flow": {
       "label": "הכל בזרימה אחת",
@@ -945,5 +945,15 @@
     "emergency": {
       "title": "מספרי חירום"
     }
+  },
+  "keepReport": {
+    "title": "שמרו את העותק שלכם",
+    "body": "צור את החשבון החינמי שלך בלחיצה אחת: הדו\"ח שלך יישאר נגיש, ואתה מוכן במקרה של תאונה הבאה.",
+    "emailPlaceholder": "your@email.com",
+    "cta": "שמור את הדו\"ח שלי — צור את החשבון שלי",
+    "sending": "שולח…",
+    "sentTitle": "המייל נשלח!",
+    "sentBody": "פתח את הקישור שהתקבל כדי להפעיל את החשבון שלך — הדו\"ח שלך יישמר שם.",
+    "error": "שליחה נכשלה. נסה שוב בעוד רגע."
   }
 }

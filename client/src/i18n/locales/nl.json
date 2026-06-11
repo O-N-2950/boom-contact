@@ -3,6 +3,7 @@
     "continue": "Doorgaan →",
     "confirm": "Bevestigen →",
     "cancel": "Annuleren",
+    "rescan": "🔄 Opnieuw scannen",
     "loading": "Laden…",
     "saving": "⏳ Opslaan…",
     "error": "Fout",
@@ -12,8 +13,7 @@
     "required": "Verplicht",
     "yes": "Ja",
     "no": "Nee",
-    "unknown": "Onbekend",
-    "rescan": "🔄 Opnieuw scannen"
+    "unknown": "Onbekend"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Multilingue",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
-    },
-    "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
-    },
-    "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Uitnodigen via QR-code",
@@ -129,6 +111,24 @@
         "desc": "Download de PDF of stuur deze per e-mail om uw schadeclaim bij uw verzekeraar te ondersteunen."
       }
     ],
+    "coverage": {
+      "label": "Multilingue",
+      "title": "De la Suisse à la Chine",
+      "more": "+ 30 autres pays · Support RTL intégré"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
+    },
+    "finalCta": {
+      "title": "Prêt en cas d'accident ?",
+      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "button": "Démarrer un constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "Het meertalige digitale schadeformulier · Digitale schadeclaim",
     "flow": {
       "label": "Alles in één stroom",
@@ -945,5 +945,15 @@
     },
     "pdf_ready_title": "Tijdstempel PDF-dossier van het ongeval",
     "pdf_ready_body": "De vereiste handtekeningen zijn geregistreerd. Het PDF-dossier is klaar. Controleer de informatie voordat u deze naar uw verzekeraar verzendt."
+  },
+  "keepReport": {
+    "title": "Bewaar uw exemplaar",
+    "body": "Maak in één klik uw gratis account aan: uw rapport blijft toegankelijk en u bent voorbereid voor het volgende ongeval.",
+    "emailPlaceholder": "uw@email.com",
+    "cta": "Bewaar mijn rapport — maak mijn account aan",
+    "sending": "Verzenden…",
+    "sentTitle": "E-mail verzonden!",
+    "sentBody": "Open de ontvangen link om uw account te activeren — uw rapport wordt daar bewaard.",
+    "error": "De verzending is mislukt. Probeer het over een moment opnieuw."
   }
 }

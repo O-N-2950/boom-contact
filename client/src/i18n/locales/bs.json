@@ -945,5 +945,15 @@
     "connecting": "Povezivanje…",
     "connected": "Povezano! Pokretanje…",
     "joinButton": "Pridruži se zapisniku"
+  },
+  "keepReport": {
+    "title": "Sačuvajte svoj primjerak",
+    "body": "Kreirajte svoj besplatni račun jednim klikom: vaš izvještaj će biti dostupan, a vi ste spremni u slučaju sljedeće nesreće.",
+    "emailPlaceholder": "vaša@email.com",
+    "cta": "Sačuvaj moj izvještaj — kreiraj moj račun",
+    "sending": "Slanje…",
+    "sentTitle": "Email poslan!",
+    "sentBody": "Otvorite link koji ste primili da aktivirate svoj račun — vaš izvještaj će biti sačuvan.",
+    "error": "Slanje nije uspjelo. Pokušajte ponovo za trenutak."
   }
 }

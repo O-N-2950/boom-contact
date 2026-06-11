@@ -3,6 +3,7 @@
     "continue": "Nastavi →",
     "confirm": "Potvrdi →",
     "cancel": "Odustani",
+    "rescan": "🔄 Ponovno skeniraj",
     "loading": "Učitavanje…",
     "saving": "⏳ Spremanje…",
     "error": "Greška",
@@ -12,8 +13,7 @@
     "required": "Obavezno",
     "yes": "Da",
     "no": "Ne",
-    "unknown": "Nepoznato",
-    "rescan": "🔄 Ponovno skeniraj"
+    "unknown": "Nepoznato"
   },
   "landing": {
     "badge": "Constat amiable numérique",
@@ -93,24 +93,6 @@
         }
       ]
     },
-    "coverage": {
-      "label": "Multilingue",
-      "title": "De la Suisse à la Chine",
-      "more": "+ 30 autres pays · Support RTL intégré"
-    },
-    "legal": {
-      "title": "Standard international",
-      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
-    },
-    "finalCta": {
-      "title": "Prêt en cas d'accident ?",
-      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
-      "button": "Démarrer un constat"
-    },
-    "footer": {
-      "copyright": "© 2026 PEP's Swiss SA",
-      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
-    },
     "features": [
       {
         "title": "Pozovite putem QR koda",
@@ -129,6 +111,24 @@
         "desc": "Preuzmite PDF ili ga pošaljite putem e-pošte kako biste pratili svoju prijavu štete kod vašeg osiguravatelja."
       }
     ],
+    "coverage": {
+      "label": "Multilingue",
+      "title": "De la Suisse à la Chine",
+      "more": "+ 30 autres pays · Support RTL intégré"
+    },
+    "legal": {
+      "title": "Standard international",
+      "text": "Notre PDF numérique est horodaté et signé numériquement, destiné à être transmis à votre assureur."
+    },
+    "finalCta": {
+      "title": "Prêt en cas d'accident ?",
+      "subtitle": "Gardez boom.contact sur votre écran d'accueil. 5 minutes pour tout finaliser.",
+      "button": "Démarrer un constat"
+    },
+    "footer": {
+      "copyright": "© 2026 PEP's Swiss SA",
+      "address": "PEP's Swiss SA · CHE-476.484.632\nBellevue 7, 2950 Courgenay, Jura, Suisse"
+    },
     "seoLine": "Višelingvalni digitalni izvještaj o nesreći · Digitalni izvještaj o nesreći",
     "flow": {
       "label": "Sve u jednom toku",
@@ -945,5 +945,15 @@
     "emergency": {
       "title": "Hitni brojevi"
     }
+  },
+  "keepReport": {
+    "title": "Sačuvajte svoj primjerak",
+    "body": "Kreirajte svoj besplatni račun jednim klikom: vaš izvještaj će biti dostupan, a vi ste spremni u slučaju sljedeće nesreće.",
+    "emailPlaceholder": "vaša@email.com",
+    "cta": "Sačuvaj moj izvještaj — kreiraj moj račun",
+    "sending": "Slanje…",
+    "sentTitle": "Email poslan!",
+    "sentBody": "Otvorite primljeni link za aktivaciju vašeg računa — vaš izvještaj će biti sačuvan.",
+    "error": "Slanje nije uspjelo. Pokušajte ponovo za trenutak."
   }
 }

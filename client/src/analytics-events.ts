@@ -60,6 +60,9 @@ export const EVENTS = {
   // Growth loops
   PARTICIPANT_QR_DISPLAYED: 'participant_qr_displayed',
   PARTICIPANT_JOINED_VIA_QR: 'participant_joined_via_qr',
+  // Boucle conducteur B : capture post-signature
+  B_KEEP_REPORT_VIEWED: 'b_keep_report_viewed',
+  B_KEEP_REPORT_SUBMITTED: 'b_keep_report_submitted',
   PARTICIPANT_COMPLETED: 'participant_completed',
   REPORT_SHARED: 'report_shared',
   INSURER_EMAIL_ADDED: 'insurer_email_added',

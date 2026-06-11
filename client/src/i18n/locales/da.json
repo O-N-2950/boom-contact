@@ -945,5 +945,15 @@
     "connecting": "Forbinder…",
     "connected": "Forbundet! Starter…",
     "joinButton": "Deltag i skadesanmeldelse"
+  },
+  "keepReport": {
+    "title": "Behold din kopi",
+    "body": "Opret din gratis konto med et klik: din rapport forbliver tilgængelig, og du er klar til næste uheld.",
+    "emailPlaceholder": "din@email.com",
+    "cta": "Behold min rapport — opret min konto",
+    "sending": "Sender…",
+    "sentTitle": "Email sendt!",
+    "sentBody": "Åbn det modtagne link for at aktivere din konto — din rapport vil blive opbevaret der.",
+    "error": "Afsendelsen mislykkedes. Prøv igen om et øjeblik."
   }
 }

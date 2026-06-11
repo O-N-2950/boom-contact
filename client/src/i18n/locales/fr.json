@@ -1109,5 +1109,15 @@
     "danger": {
       "title": "Zone dangereuse"
     }
+  },
+  "keepReport": {
+    "title": "Conservez votre exemplaire",
+    "body": "Créez votre compte gratuit en un clic : votre constat y reste accessible, et vous êtes prêt en cas de prochain accident.",
+    "emailPlaceholder": "votre@email.com",
+    "cta": "Conserver mon constat — créer mon compte",
+    "sending": "Envoi…",
+    "sentTitle": "Email envoyé !",
+    "sentBody": "Ouvrez le lien reçu pour activer votre compte — votre constat y sera conservé.",
+    "error": "L'envoi a échoué. Réessayez dans un instant."
   }
 }

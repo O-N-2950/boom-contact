@@ -42,6 +42,7 @@ export const sessions = pgTable('sessions', {
   vehicleCount: integer('vehicle_count').notNull().default(2),
   pdfUrl:       text('pdf_url'),
   ownerEmail:   text('owner_email'),
+  participantBEmail: text('participant_b_email'),
   tokenA:       text('token_a'),            // participant token for party A
   tokenB:       text('token_b'),            // participant token for party B
   // Fleet billing : organisation à débiter si le constat utilise un véhicule d'org (NULL = perso)
@@ -57,6 +58,7 @@ export const sessions = pgTable('sessions', {
   createdAtIdx:  index('sessions_created_at_idx').on(t.createdAt),
   expiresAtIdx:  index('sessions_expires_at_idx').on(t.expiresAt),
   ownerEmailIdx: index('sessions_owner_email_idx').on(t.ownerEmail),
+  participantBEmailIdx: index('sessions_participant_b_email_idx').on(t.participantBEmail),
   statusCreatedIdx: index('sessions_status_created_idx').on(t.status, t.createdAt),
 }));
 
