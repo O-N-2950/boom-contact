@@ -1,8 +1,8 @@
-// boom.contact — Service Worker v36
+// boom.contact — Service Worker v37
 // Full PWA offline mode: CacheFirst for shell, NetworkFirst for API, CacheFirst for tiles
 // Backward-compatible with v24 — all old caches purged on activate
 
-const CACHE_NAME = 'boom-contact-v36';
+const CACHE_NAME = 'boom-contact-v37';
 const TILE_CACHE = 'boom-tiles-v1';
 const API_CACHE = 'boom-api-v1';
 const OFFLINE_URL = '/';
@@ -13,7 +13,7 @@ const APP_SHELL = [
   '/',
   '/manifest.json',
   '/favicon.svg',
-  '/logo.webp',
+  '/logo-mark.webp',
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
@@ -38,12 +38,12 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys.filter((k) => !KEEP.includes(k)).map((k) => {
-          console.log('[SW v36] Suppression cache obsolete:', k);
+          console.log('[SW v37] Suppression cache obsolete:', k);
           return caches.delete(k);
         })
       )
     ).then(() => {
-      console.log('[SW v36] Actif — anciens caches supprimes');
+      console.log('[SW v37] Actif — anciens caches supprimes');
       return self.clients.claim();
     })
   );
@@ -241,7 +241,7 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
   if (event.data === 'GET_VERSION') {
-    event.source?.postMessage({ version: 'v36', cache: CACHE_NAME });
+    event.source?.postMessage({ version: 'v37', cache: CACHE_NAME });
   }
   // Replay mutations — triggered from app when back online
   if (event.data === 'REPLAY_MUTATIONS') {

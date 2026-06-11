@@ -23,6 +23,6 @@ export default [
     },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', '*.config.js', '*.config.ts', 'ios/**', 'android/**', 'scripts/__pycache__/**'],
+    ignores: ['dist/**', 'node_modules/**', '*.config.js', '*.config.ts', 'ios/**', 'android/**', 'scripts/__pycache__/**', 'scripts/*.cjs'],
   },
 ];
