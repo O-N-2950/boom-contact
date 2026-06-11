@@ -153,7 +153,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       <header>
         <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box', padding: `16px ${padX}px`, maxWidth: 1180, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <img src="/logo-mark.webp" alt="boom.contact" style={{ width: isDesktop ? 50 : 48, height: isDesktop ? 50 : 48, objectFit: 'contain', display: 'block' }} />
+            <img src="/logo-mark.webp" alt="boom.contact" style={{ height: isDesktop ? 58 : 46, width: 'auto', objectFit: 'contain', display: 'block' }} />
             {isDesktop && (
               <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.5px', color: C.text }}>
                 <span style={{ color: C.orange }}>boom</span><span style={{ color: C.textSec }}>.contact</span>
@@ -436,7 +436,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
       {/* ── FINAL CTA ───────────────────────────────────────── */}
       <div style={{ textAlign: 'center', padding: `${isDesktop ? 64 : 44}px ${padX}px` }}>
         <Reveal>
-          <img src="/logo-mark.webp" alt="boom.contact" loading="lazy" style={{ width: 88, height: 88, objectFit: 'contain', marginBottom: 14 }} />
+          <img src="/logo-mark.webp" alt="boom.contact" loading="lazy" style={{ height: 96, width: 'auto', objectFit: 'contain', marginBottom: 14 }} />
           <h2 style={{ ...h2, fontSize: isDesktop ? 32 : 24, marginBottom: 10 }}>{t('landing.finalCta.title', { defaultValue: 'Prêt à documenter votre accident ?' })}</h2>
           <p style={{ fontSize: 14, color: C.textSec, maxWidth: 420, margin: '0 auto 24px', lineHeight: 1.6 }}>{t('landing.finalCta.subtitle', { defaultValue: 'Commencez en quelques secondes, sans inscription.' })}</p>
           <button onClick={trackedStart} style={ctaOrange}
@@ -453,7 +453,7 @@ export function LandingPage({ onStart, onPricing, onGarage, onAccount, onLogout,
         <Section>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: isDesktop ? 'center' : 'flex-start', flexDirection: isDesktop ? 'row' : 'column', gap: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src="/logo-mark.webp" alt="boom.contact" loading="lazy" style={{ height: 34, objectFit: 'contain' }} />
+              <img src="/logo-mark.webp" alt="boom.contact" loading="lazy" style={{ height: 42, width: 'auto', objectFit: 'contain' }} />
               <div>
                 <div style={{ fontSize: 12, fontWeight: 800, color: C.text }}>boom.contact</div>
                 <div style={{ fontSize: 10, color: C.textSec }}>PEP's Swiss SA · CHE-476.484.632</div>
