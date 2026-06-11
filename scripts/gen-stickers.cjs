@@ -4,9 +4,11 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 
 const MM = 2.83465;
-const BOOM = rgb(1, 0.208, 0);        // #FF3500
-const AMBER = rgb(1, 0.702, 0);       // #FFB300
-const NAVY = rgb(0.039, 0.039, 0.078); // #0a0a14
+// Palette canonique — themeTokens.ts (Boom Dark Signature, landing marketing)
+// verifiee par pixel-sampling prod : CTA rgb(255,107,26), fond rgb(6,6,12)
+const BOOM = rgb(1, 0.4196, 0.102);    // #FF6B1A — orange boom actuel
+const CYAN = rgb(0, 0.8314, 1);        // #00D4FF — accent signature
+const NAVY = rgb(0.0235, 0.0235, 0.047); // #06060C — fond landing prod
 const WHITE = rgb(1, 1, 1);
 const GREY = rgb(0.72, 0.75, 0.8);
 
@@ -59,7 +61,7 @@ async function main() {
     const q = 30 * MM;
     p.drawRectangle({ x: (W - q) / 2 - 2 * MM, y: H - 25 * MM - q - 2 * MM, width: q + 4 * MM, height: q + 4 * MM, color: WHITE });
     p.drawImage(qrSticker, { x: (W - q) / 2, y: H - 25 * MM - q, width: q, height: q });
-    center(p, bold, 'EN CAS D\u2019ACCIDENT : SCANNEZ', 9, 12.5 * MM, AMBER);
+    center(p, bold, 'EN CAS D\u2019ACCIDENT : SCANNEZ', 9, 12.5 * MM, CYAN);
     center(p, bold, 'www.boom.contact', 9.5, 7 * MM, WHITE);
     cropMarks(p, bleed, W, H);
   }
@@ -76,8 +78,8 @@ async function main() {
     const tx = 9 * MM;
     p.drawText('boom', { x: tx, y: H - 13 * MM, size: 14.5, font: bold, color: WHITE });
     p.drawText('.contact', { x: tx + bold.widthOfTextAtSize('boom', 14.5), y: H - 13 * MM, size: 14.5, font: bold, color: BOOM });
-    p.drawText('Gardez cette carte', { x: tx, y: H - 20 * MM, size: 8.2, font: bold, color: AMBER });
-    p.drawText('dans votre boîte à gants.', { x: tx, y: H - 24 * MM, size: 8.2, font: bold, color: AMBER });
+    p.drawText('Gardez cette carte', { x: tx, y: H - 20 * MM, size: 8.2, font: bold, color: CYAN });
+    p.drawText('dans votre boîte à gants.', { x: tx, y: H - 24 * MM, size: 8.2, font: bold, color: CYAN });
     for (const [i, line] of ['Accident ? Scannez le code :', 'photos, croquis, signatures,', 'PDF envoyé à votre assureur.'].entries()) {
       p.drawText(line, { x: tx, y: H - 31 * MM - i * 4 * MM, size: 7.2, font: reg, color: GREY });
     }
@@ -95,7 +97,7 @@ async function main() {
     const q = 30 * MM;
     p.drawRectangle({ x: (W - q) / 2 - 2 * MM, y: H - 20 * MM - q - 2 * MM, width: q + 4 * MM, height: q + 4 * MM, color: WHITE });
     p.drawImage(qrPartner, { x: (W - q) / 2, y: H - 20 * MM - q, width: q, height: q });
-    center(p, bold, 'EN CAS D\u2019ACCIDENT : SCANNEZ', 8.2, 17.5 * MM, AMBER);
+    center(p, bold, 'EN CAS D\u2019ACCIDENT : SCANNEZ', 8.2, 17.5 * MM, CYAN);
     // Bandeau co-branding : zone logo partenaire réservée
     const bw = 50 * MM, bh = 9 * MM, bx = (W - bw) / 2, by = 5 * MM;
     p.drawRectangle({ x: bx, y: by, width: bw, height: bh, borderColor: GREY, borderWidth: 0.6, borderDashArray: [3, 2.2], color: rgb(0.075, 0.075, 0.13) });
