@@ -7,8 +7,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": { "@/*": ["client/src/*"] },
     "customConditions": ["@zod/source"],
     "skipLibCheck": true,
     "resolveJsonModule": true

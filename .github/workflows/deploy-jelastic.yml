@@ -62,7 +62,7 @@ jobs:
         run: |
           sleep 25
           for i in 1 2 3 4 5; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' -m 10 "https://${{ secrets.JELASTIC_HEALTH_HOST }}/health") && \
+            code=$(curl -sL -o /dev/null -w '%{http_code}' -m 10 "https://${{ secrets.JELASTIC_HEALTH_HOST }}/health") && \
             [ "$code" = "200" ] && echo "✅ /health 200" && exit 0
             sleep 15
           done
