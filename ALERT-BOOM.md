@@ -1,6 +1,6 @@
 # ALERT — boom.contact monitoring
 
-**Date** : 2026-05-23 (mis à jour — alerte persistante depuis 2026-05-02)  
+**Date** : 2026-06-15 (mis à jour — alerte persistante depuis 2026-05-02)  
 **Heure** : vérification automatique
 
 ---
@@ -15,18 +15,18 @@
 
 ### 2. Derniers commits (OK)
 ```
-eceebbd Legal Pack — questions à passer à Soluris (pré-validation juriste)
-bc17bff Phase 1 — Legal Pack v1.0 (8 documents, drafts juriste)
-4b04bd4 SUIVI post-audit #5
-e6534c1 Post-audit #5 — 3 derniers points code (A1/A2/A3)
-e99c9ba SUIVI — audit profond proactif
+87b67f4 fix(brand): logo header 2x plus present — ratio paysage natif
+b3eff5c fix(brand): logo header illisible — extraction du mark
+bcdfab2 fix(marketing): autocollants QR — palette canonique
+ece7908 marketing: generateur autocollants/carte QR print-ready
+0043e90 growth: boucle virale conducteur B — capture post-signature
 ```
 
 ### 3. TypeScript — avertissement
 - `tsconfig.json:10` — TS5101 : option `baseUrl` dépréciée (sera supprimée en TS 7.0)
 - Aucune erreur bloquante
 
-### 4. Tâches urgentes (TODO.md — état 23 mai 2026)
+### 4. Tâches urgentes (TODO.md — état 15 juin 2026)
 
 **🔴 Bloquant soumission stores**
 - Runtime natif : IPA/AAB signés + tests iPhone/Android réels (manque Xcode/Android Studio + certificats)
