@@ -714,6 +714,8 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
   const { doc, session, A, B, L, acc, margin, mono, bold, normal, rtlFonts } = ctx;
 
   let finalSketchBase64 = acc.sketchImage || null;
+  let mapFallbackBase64: string | undefined;
+  let mapHasGpsMarkers = false;
   try {
     const hasParticipants = A && B;
     if (hasParticipants) {
@@ -732,34 +734,8 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
       const dirA = circA.includes('c12') ? 'west' : 'east';
       const dirB = 'west';
 
-      logger.info('[pdf] Rendu sketch Puppeteer...');
-      const puppeteerPng = await renderSketch({
-        scenario, trafficSide,
-        vehicleAType: (A.vehicle?.vehicleType || 'car') as string,
-        vehicleAColor: A.vehicle?.color || 'bleu',
-        vehicleADirection: dirA,
-        vehicleAImpactZone: (A.damagedZones?.[0] || 'front').replace('-','_'),
-        vehicleAMoving: true, vehicleAReversing: circA.includes('c13'),
-        vehicleABrand: A.vehicle?.brand, vehicleAModel: A.vehicle?.model, vehicleAPlate: A.vehicle?.licensePlate,
-        vehicleBType: (B.vehicle?.vehicleType || 'car') as string,
-        vehicleBColor: B.vehicle?.color || 'rouge',
-        vehicleBDirection: dirB,
-        vehicleBImpactZone: (B.damagedZones?.[0] || 'rear').replace('-','_'),
-        vehicleBMoving: true, vehicleBReversing: circB.includes('c13'),
-        vehicleBBrand: B.vehicle?.brand, vehicleBModel: B.vehicle?.model, vehicleBPlate: B.vehicle?.licensePlate,
-        // Voie B — véhicules additionnels présents (C/D/E) représentés dans la scène
-        extraVehicles: (['C','D','E'] as const).flatMap((r) => {
-          const p: any = (session as any)[`participant${r}`];
-          const has = p && (p.vehicle?.licensePlate || p.vehicle?.brand || p.vehicle?.vehicleType || p.driver?.lastName);
-          if (!has) return [];
-          return [{
-            label: `${r} · ${[p.vehicle?.brand, p.vehicle?.model].filter(Boolean).join(' ') || ('Véhicule ' + r)}`,
-            type: (p.vehicle?.vehicleType || 'car') as string,
-            color: p.vehicle?.color || 'gris',
-            plate: p.vehicle?.licensePlate || '',
-          }];
-        }),
-        mapImageBase64: await (async () => {
+      // Map OSM avec véhicules — calculée une fois, réutilisée en fallback si Puppeteer échoue
+      mapFallbackBase64 = await (async () => {
           const loc = acc.location as any;
           const lat = loc?.lat || loc?.latitude;
           const lng = loc?.lng || loc?.longitude || loc?.lon;
@@ -777,7 +753,19 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
               try {
                 const centerLat = markers.length >= 2 ? (markers[0].lat + markers[1].lat) / 2 : markers[0].lat;
                 const centerLng = markers.length >= 2 ? (markers[0].lng + markers[1].lng) / 2 : markers[0].lng;
-                return await fetchAccidentMapWithVehicles(centerLat, centerLng, markers);
+                // Point d'impact = milieu entre A et B (meilleure approximation sans saisie dédiée)
+                const impact = markers.length >= 2
+                  ? { lat: (markers[0].lat + markers[1].lat) / 2, lng: (markers[0].lng + markers[1].lng) / 2 }
+                  : undefined;
+                const headerBits = [loc?.address, loc?.city].filter(Boolean).join(', ');
+                const headerDate = [acc.date, acc.time].filter(Boolean).join(' · ');
+                const header = [headerBits, headerDate].filter(Boolean).join('  ·  ') || undefined;
+                const annotated = await fetchAccidentMapWithVehicles(
+                  centerLat, centerLng, markers, 900, 650, undefined,
+                  { impact, header },
+                );
+                mapHasGpsMarkers = true; // carte GPS annotée prête → pas besoin de Puppeteer
+                return annotated;
               } catch (e) { logger.warn('[PDF] Map with vehicles failed', { error: String(e) }); }
             }
           }
@@ -805,34 +793,87 @@ async function buildSketchSection(ctx: PdfContext): Promise<void> {
             }
           }
           return undefined;
-        })(),
-        width: 900, height: 650,
-      });
-      finalSketchBase64 = puppeteerPng;
-      logger.info('[pdf] ✅ Sketch Puppeteer rendu');
+        })();
+
+      // Si la carte GPS annotée existe (marqueurs aux vraies coordonnées, fond clair,
+      // véhicules orientés), elle EST le croquis final. On NE repasse PAS par Puppeteer :
+      // cela superposerait une 2e couche de véhicules à des positions abstraites → illisible.
+      // Puppeteer (scénario schématique) reste le rendu quand il n'y a pas de GPS.
+      if (mapHasGpsMarkers && mapFallbackBase64) {
+        finalSketchBase64 = mapFallbackBase64;
+        logger.info('[pdf] ✅ Croquis = carte GPS annotée (1 seule couche, lisible)');
+      } else {
+        logger.info('[pdf] Rendu sketch Puppeteer...');
+        const puppeteerPng = await renderSketch({
+          scenario, trafficSide,
+          vehicleAType: (A.vehicle?.vehicleType || 'car') as string,
+          vehicleAColor: A.vehicle?.color || 'bleu',
+          vehicleADirection: dirA,
+          vehicleAImpactZone: (A.damagedZones?.[0] || 'front').replace('-','_'),
+          vehicleAMoving: true, vehicleAReversing: circA.includes('c13'),
+          vehicleABrand: A.vehicle?.brand, vehicleAModel: A.vehicle?.model, vehicleAPlate: A.vehicle?.licensePlate,
+          vehicleBType: (B.vehicle?.vehicleType || 'car') as string,
+          vehicleBColor: B.vehicle?.color || 'rouge',
+          vehicleBDirection: dirB,
+          vehicleBImpactZone: (B.damagedZones?.[0] || 'rear').replace('-','_'),
+          vehicleBMoving: true, vehicleBReversing: circB.includes('c13'),
+          vehicleBBrand: B.vehicle?.brand, vehicleBModel: B.vehicle?.model, vehicleBPlate: B.vehicle?.licensePlate,
+          // Voie B — véhicules additionnels présents (C/D/E) représentés dans la scène
+          extraVehicles: (['C','D','E'] as const).flatMap((r) => {
+            const p: any = (session as any)[`participant${r}`];
+            const has = p && (p.vehicle?.licensePlate || p.vehicle?.brand || p.vehicle?.vehicleType || p.driver?.lastName);
+            if (!has) return [];
+            return [{
+              label: `${r} · ${[p.vehicle?.brand, p.vehicle?.model].filter(Boolean).join(' ') || ('Véhicule ' + r)}`,
+              type: (p.vehicle?.vehicleType || 'car') as string,
+              color: p.vehicle?.color || 'gris',
+              plate: p.vehicle?.licensePlate || '',
+            }];
+          }),
+          mapImageBase64: mapFallbackBase64,
+          width: 900, height: 650,
+        });
+        finalSketchBase64 = puppeteerPng;
+        logger.info('[pdf] ✅ Sketch Puppeteer rendu');
+      }
     }
   } catch (sketchErr: unknown) {
     const msg = sketchErr instanceof Error ? sketchErr.message : String(sketchErr);
     logger.warn('[pdf] Sketch Puppeteer fallback:', msg as any);
+    // FALLBACK CRITIQUE : la position des véhicules sur la carte est l'élément clé
+    // pour l'assureur. Si Puppeteer échoue mais que la map OSM avec véhicules existe,
+    // on l'utilise directement — elle ne doit JAMAIS disparaître du PDF.
+    if (!finalSketchBase64 && mapFallbackBase64) {
+      finalSketchBase64 = mapFallbackBase64;
+      logger.info('[pdf] ↪ Fallback : map OSM avec véhicules utilisée directement');
+    }
   }
 
   if (finalSketchBase64) {
     try {
       const sketchPage = doc.addPage([595, 842]);
       sketchPage.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: rgb(1, 1, 1) });
-      drawText(sketchPage, L.sketchTitle, margin, 820, bold, 10, C.boom, rtlFonts);
-      drawText(sketchPage, `Position des véhicules A & B  ·  Session: ${session.id}`, margin, 808, mono, 7, C.mid, rtlFonts);
-      drawText(sketchPage, '© OpenStreetMap contributors  |  IA BOOM.CONTACT', margin, 798, mono, 6, C.light, rtlFonts);
+      drawText(sketchPage, L.sketchTitle, margin, 812, bold, 11, C.boom, rtlFonts);
+      drawText(sketchPage, `Position des véhicules · Session: ${session.id}`, margin, 798, mono, 7, C.mid, rtlFonts);
       const sketchBytes = Buffer.from(finalSketchBase64, 'base64');
       const isJpeg = sketchBytes[0] === 0xFF && sketchBytes[1] === 0xD8;
       const sketchImg = isJpeg ? await doc.embedJpg(sketchBytes) : await doc.embedPng(sketchBytes);
       const maxW = 595 - margin * 2;
-      const maxH = 700;
+      const maxH = 660;
       const scale = Math.min(maxW / sketchImg.width, maxH / sketchImg.height, 1);
-      const sketchY = 820 - 10 - sketchImg.height * scale;
+      const imgW = sketchImg.width * scale;
+      const imgH = sketchImg.height * scale;
+      const sketchTop = 786; // sous l'en-tête, avec de l'air
+      const sketchY = sketchTop - imgH;
+      // Cadre fin autour de la carte (finition document)
+      sketchPage.drawRectangle({
+        x: margin + (maxW - imgW) / 2 - 1, y: sketchY - 1,
+        width: imgW + 2, height: imgH + 2,
+        borderColor: rgb(0.82, 0.86, 0.90), borderWidth: 1, color: rgb(1, 1, 1),
+      });
       sketchPage.drawImage(sketchImg, {
-        x: margin, y: sketchY,
-        width: sketchImg.width * scale, height: sketchImg.height * scale,
+        x: margin + (maxW - imgW) / 2, y: sketchY,
+        width: imgW, height: imgH,
       });
 
       // ── Légende véhicules sous le croquis ────────────────

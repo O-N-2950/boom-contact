@@ -19,8 +19,10 @@ function latlngToTile(lat: number, lng: number, zoom: number) {
 }
 
 async function fetchTile(tx: number, ty: number, zoom: number): Promise<any> {
-  const s = ['a','b','c'][tx % 3];
-  const url = `https://${s}.tile.openstreetmap.org/${zoom}/${tx}/${ty}.png`;
+  const s = ['a','b','c','d'][tx % 4];
+  // CartoDB Voyager : fond clair lisible, routes bien dessinées et contrastées,
+  // sans la surcharge de POI d'OSM standard. Meilleur compromis pour un croquis d'accident.
+  const url = `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/${zoom}/${tx}/${ty}.png`;
   const res = await fetch(url, {
     headers: {
       'User-Agent': 'boom.contact/1.0 (contact@boom.contact)',
@@ -128,7 +130,8 @@ function drawVehicleMarker(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, angle: number,
   color: string, label: string,
-  vehicleType?: string
+  vehicleType?: string,
+  badgeDir?: { dx: number; dy: number },
 ) {
   const isPedOrCycle = ['pedestrian','escooter','bicycle','cargo_bike'].includes(vehicleType || '');
   const emoji = getMarkerEmoji(vehicleType);
@@ -148,42 +151,50 @@ function drawVehicleMarker(
     // Silhouette vue du dessus pour voitures/motos/camions
     const isLarge = ['truck','bus','tram'].includes(vehicleType || '');
     const isMoto  = ['motorcycle','scooter','moped'].includes(vehicleType || '');
-    const length = isLarge ? 54 : isMoto ? 26 : 38;
-    const width  = isLarge ? 22 : isMoto ? 10 : 18;
+    const length = isLarge ? 70 : isMoto ? 34 : 50;
+    const width  = isLarge ? 30 : isMoto ? 14 : 24;
 
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate((angle * Math.PI) / 180);
 
+    // Halo blanc pour détacher le véhicule du fond de carte
+    ctx.shadowColor = 'rgba(0,0,0,0.35)';
+    ctx.shadowBlur = 6;
     ctx.fillStyle = color;
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.roundRect(-length/2, -width/2, length, width, 4);
+    ctx.roundRect(-length/2, -width/2, length, width, 5);
     ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
 
     // Toit
-    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
     if (!isMoto) ctx.fillRect(-length/4, -width/2.5, length/2, width/1.25);
 
-    // Pare-brise
-    ctx.fillStyle = 'rgba(200,230,245,0.7)';
+    // Pare-brise (indique l'avant)
+    ctx.fillStyle = 'rgba(200,230,245,0.85)';
     ctx.fillRect(length/4, -width/3, length/6, width * 0.66);
 
     ctx.restore();
   }
 
-  // Badge rôle — toujours visible, pas de rotation
+  // Badge rôle — toujours visible, pas de rotation, décalé à l'opposé de l'autre véhicule
+  const bd = badgeDir || { dx: 1, dy: -1 };
+  const bnorm = Math.hypot(bd.dx, bd.dy) || 1;
+  const bx = x + (bd.dx / bnorm) * 26;
+  const by = y + (bd.dy / bnorm) * 26;
   ctx.fillStyle = color;
   ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
-  ctx.arc(x + 16, y - 16, 11, 0, Math.PI * 2);
+  ctx.arc(bx, by, 13, 0, Math.PI * 2);
   ctx.fill(); ctx.stroke();
   ctx.fillStyle = '#fff';
-  ctx.font = 'bold 11px sans-serif';
+  ctx.font = 'bold 14px sans-serif';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(label, x + 16, y - 16);
+  ctx.fillText(label, bx, by);
   ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
 }
 
@@ -197,47 +208,157 @@ export interface VehicleMarker {
   vehicleType?: string; // car, motorcycle, escooter, bicycle, pedestrian, truck, van, bus...
 }
 
+export interface AccidentMapMeta {
+  /** Point d'impact (collision) — affiché comme repère central. */
+  impact?: { lat: number; lng: number };
+  /** Cartouche d'en-tête optionnel rendu sur la carte (lieu · date · heure). */
+  header?: string;
+}
+
+/**
+ * Choisit le zoom OSM le plus serré (le plus détaillé) tel que tous les
+ * marqueurs tiennent dans le cadre avec une marge confortable. Garantit
+ * une vue centrée sur l'accident plutôt qu'un zoom fixe inadapté.
+ */
+function pickZoomForMarkers(
+  vehicles: VehicleMarker[], impact: { lat: number; lng: number } | undefined,
+  W: number, H: number, minZoom = 16, maxZoom = 19,
+): number {
+  const pts = [...vehicles.map(v => ({ lat: v.lat, lng: v.lng })), ...(impact ? [impact] : [])];
+  if (pts.length < 2) return maxZoom; // un seul point : vue la plus serrée
+  const marginPx = 150; // garde une marge autour des véhicules (badges, labels)
+  for (let z = maxZoom; z >= minZoom; z--) {
+    const xs = pts.map(p => lngToWorldX(p.lng, z));
+    const ys = pts.map(p => latToWorldY(p.lat, z));
+    const spanX = Math.max(...xs) - Math.min(...xs);
+    const spanY = Math.max(...ys) - Math.min(...ys);
+    if (spanX <= W - 2 * marginPx && spanY <= H - 2 * marginPx) return z;
+  }
+  return minZoom;
+}
+
+function lngToWorldX(lng: number, zoom: number): number {
+  return (lng + 180) / 360 * Math.pow(2, zoom) * TILE_SIZE;
+}
+function latToWorldY(lat: number, zoom: number): number {
+  return (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom) * TILE_SIZE;
+}
+
 export async function fetchAccidentMapWithVehicles(
   centerLat: number,
   centerLng: number,
   vehicles: VehicleMarker[],
   W = 900,
   H = 650,
-  zoom = 18
+  zoom?: number,
+  meta: AccidentMapMeta = {},
 ): Promise<string> {
-  // 1. Générer la carte OSM de base
-  const mapBase64 = await fetchAccidentMap(centerLat, centerLng, W, H, zoom);
+  // Cadrage intelligent : centre = barycentre des véhicules (+ impact), zoom auto
+  const impact = meta.impact;
+  const framePts = [...vehicles.map(v => ({ lat: v.lat, lng: v.lng })), ...(impact ? [impact] : [])];
+  const cLat = framePts.length ? framePts.reduce((s, p) => s + p.lat, 0) / framePts.length : centerLat;
+  const cLng = framePts.length ? framePts.reduce((s, p) => s + p.lng, 0) / framePts.length : centerLng;
+  const z = zoom ?? pickZoomForMarkers(vehicles, impact, W, H);
 
-  // 2. Charger l'image de base dans un nouveau canvas pour y superposer les marqueurs
+  // 1. Carte de base claire, centrée sur le barycentre de l'accident
+  const mapBase64 = await fetchAccidentMap(cLat, cLng, W, H, z);
+
   const canvas2 = createCanvas(W, H);
   const ctx2 = canvas2.getContext('2d');
   const mapImg = await loadImage(Buffer.from(mapBase64, 'base64'));
   ctx2.drawImage(mapImg as any, 0, 0, W, H);
 
-  // 3. Dessiner chaque marqueur véhicule
-  const roleColors: Record<string, string> = { A: '#1a44cc', B: '#cc3300', C: '#228833', D: '#9933cc' };
-  for (const v of vehicles) {
-    const { x, y } = latlngToPixel(v.lat, v.lng, centerLat, centerLng, zoom, W, H);
+  const roleColors: Record<string, string> = { A: '#1a44cc', B: '#cc3300', C: '#228833', D: '#9933cc', E: '#cc8800' };
+
+  // 2. Trait reliant les véhicules au point d'impact (raconte la collision)
+  if (impact) {
+    const ip = latlngToPixel(impact.lat, impact.lng, cLat, cLng, z, W, H);
+    for (const v of vehicles) {
+      const vp = latlngToPixel(v.lat, v.lng, cLat, cLng, z, W, H);
+      ctx2.strokeStyle = 'rgba(40,40,40,0.35)';
+      ctx2.lineWidth = 2;
+      ctx2.setLineDash([6, 5]);
+      ctx2.beginPath(); ctx2.moveTo(vp.x, vp.y); ctx2.lineTo(ip.x, ip.y); ctx2.stroke();
+      ctx2.setLineDash([]);
+    }
+  }
+
+  // 3. Marqueurs véhicules (silhouettes orientées, badges décalés pour ne pas se chevaucher)
+  const pixelPos = vehicles.map(v => latlngToPixel(v.lat, v.lng, cLat, cLng, z, W, H));
+  for (let i = 0; i < vehicles.length; i++) {
+    const v = vehicles[i];
+    const { x, y } = pixelPos[i];
     const color = v.color || roleColors[v.label] || '#444';
-    drawVehicleMarker(ctx2 as any, x, y, v.angle || 0, color, v.label);
+    // Badge décalé à l'opposé du barycentre des AUTRES véhicules (évite la superposition)
+    let bdx = 1, bdy = -1;
+    if (vehicles.length > 1) {
+      const others = pixelPos.filter((_, j) => j !== i);
+      const ox = others.reduce((s, p) => s + p.x, 0) / others.length;
+      const oy = others.reduce((s, p) => s + p.y, 0) / others.length;
+      bdx = x - ox; bdy = y - oy;
+      if (Math.abs(bdx) < 1 && Math.abs(bdy) < 1) { bdx = 1; bdy = -1; }
+    }
+    drawVehicleMarker(ctx2 as any, x, y, v.angle || 0, color, v.label, v.vehicleType, { dx: bdx, dy: bdy });
   }
 
-  // 4. Légende en bas à gauche
-  if (vehicles.length > 0) {
-    ctx2.fillStyle = 'rgba(0,0,0,0.65)';
-    ctx2.fillRect(10, H - 30 - vehicles.length * 22, 160, 10 + vehicles.length * 22);
-    vehicles.forEach((v, i) => {
-      const roleColors2: Record<string, string> = { A: '#1a44cc', B: '#cc3300', C: '#228833', D: '#9933cc' };
-      ctx2.fillStyle = v.color || roleColors2[v.label] || '#444';
-      ctx2.fillRect(16, H - 22 - (vehicles.length - i - 1) * 22, 12, 12);
-      ctx2.fillStyle = '#fff';
-      ctx2.font = '11px sans-serif';
-      ctx2.fillText(`Conducteur ${v.label}`, 34, H - 13 - (vehicles.length - i - 1) * 22);
-    });
+  // 4. Repère d'impact (étoile rouge) par-dessus
+  if (impact) {
+    const ip = latlngToPixel(impact.lat, impact.lng, cLat, cLng, z, W, H);
+    drawImpactStar(ctx2 as any, ip.x, ip.y);
   }
 
-  logger.info(`[osm-map] Carte avec ${vehicles.length} véhicule(s) rendue`);
+  // 5. Cartouche d'en-tête (lieu · date) — carte auto-suffisante
+  if (meta.header) {
+    ctx2.font = 'bold 15px sans-serif';
+    const tw = ctx2.measureText(meta.header).width;
+    ctx2.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx2.strokeStyle = 'rgba(0,0,0,0.12)';
+    ctx2.lineWidth = 1;
+    roundRectPath(ctx2 as any, 12, 12, tw + 28, 34, 8);
+    ctx2.fill(); ctx2.stroke();
+    ctx2.fillStyle = '#102033';
+    ctx2.textBaseline = 'middle';
+    ctx2.fillText(meta.header, 26, 30);
+    ctx2.textBaseline = 'alphabetic';
+  }
+
+  // (l'attribution © OpenStreetMap est déjà rendue par fetchAccidentMap)
+
+  logger.info(`[osm-map] Carte avec ${vehicles.length} véhicule(s) rendue (zoom auto=${z})`);
   return canvas2.toBuffer('image/png').toString('base64');
+}
+
+/** Étoile rouge "impact" au point de collision. */
+function drawImpactStar(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  const spikes = 8, outer = 15, inner = 6;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.beginPath();
+  for (let i = 0; i < spikes * 2; i++) {
+    const r = i % 2 === 0 ? outer : inner;
+    const a = (i * Math.PI) / spikes - Math.PI / 2;
+    ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+  }
+  ctx.closePath();
+  ctx.fillStyle = '#e8090c';
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.shadowColor = 'rgba(0,0,0,0.4)';
+  ctx.shadowBlur = 5;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function roundRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
 }
 
 export async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
