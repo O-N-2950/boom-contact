@@ -16,9 +16,9 @@ export interface LangStatus {
 export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   am: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   ar: {
     ui: 100,
@@ -28,39 +28,39 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   az: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   bg: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   bn: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   bs: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   cs: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   da: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   de: {
     ui: 100,
@@ -70,9 +70,9 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   el: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   en: {
     ui: 100,
@@ -88,21 +88,21 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   et: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   fa: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   fi: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   fr: {
     ui: 100,
@@ -112,33 +112,33 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   he: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   hi: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   hr: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   hu: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   id: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   it: {
     ui: 100,
@@ -148,51 +148,51 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   ja: {
     ui: 100,
-    "pdf": false,
+    "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   ka: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   ko: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   lt: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   lv: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   mk: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   ms: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   nb: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   nl: {
     ui: 100,
@@ -214,9 +214,9 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   ro: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   ru: {
     ui: 100,
@@ -226,87 +226,87 @@ export const LANGUAGE_STATUS: Record<SupportedLang, LangStatus> = {
   },
   sk: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   sl: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   so: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   sq: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   sr: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   sv: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   th: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   ti: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   tl: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   tr: {
     ui: 100,
-    "pdf": false,
+    "pdf": true,
     "email": true,
-    tier: "partial"
+    tier: "full"
   },
   uk: {
     ui: 100,
     "pdf": true,
-    "email": false,
-    tier: "partial"
+    "email": true,
+    tier: "full"
   },
   ur: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   vi: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   wo: {
     ui: 100,
-    "pdf": false,
-    "email": false,
-    tier: "partial"
+    "pdf": true,
+    "email": true,
+    tier: "full"
   },
   zh: {
     ui: 100,
