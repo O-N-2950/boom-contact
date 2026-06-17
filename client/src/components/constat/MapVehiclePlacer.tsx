@@ -35,9 +35,10 @@ function getTileUrl(x: number, y: number, zoom: number, satellite: boolean): str
     // ESRI World Imagery — satellite haute résolution, gratuit
     return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${zoom}/${y}/${x}`;
   }
-  // OSM Plan — routes dessinées, aucune voiture sur la carte
-  const s = ['a','b','c'][Math.abs(x + y) % 3];
-  return `https://${s}.tile.openstreetmap.org/${zoom}/${x}/${y}.png`;
+  // Plan clair CartoDB Voyager — routes lisibles, sans POI surchargés.
+  // MÊME fond que le PDF : ce que le conducteur place est ce que l'assureur verra.
+  const s = ['a','b','c','d'][Math.abs(x + y) % 4];
+  return `https://${s}.basemaps.cartocdn.com/rastertiles/voyager/${zoom}/${x}/${y}.png`;
 }
 
 // ── Conversions ───────────────────────────────────────────────
@@ -119,6 +120,19 @@ function drawVehicle(
   }
   ctx.save();
   ctx.translate(x, y);
+
+  // Halo lumineux sous le véhicule en cours de placement (le détache du fond,
+  // indique clairement lequel on déplace).
+  if (selected) {
+    const halo = ctx.createRadialGradient(0, 0, 2, 0, 0, length * 0.9);
+    halo.addColorStop(0, 'rgba(255,255,255,0.55)');
+    halo.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(0, 0, length * 0.9, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   ctx.rotate(angleDeg * Math.PI / 180);
 
   // Ombre
@@ -194,12 +208,12 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const tilesRef  = useRef<Map<string, HTMLImageElement>>(new Map());
 
-  // Zoom level — user-controllable (15–19)
-  const [zoom, setZoom] = useState(18);
+  // Zoom level — user-controllable (15–20)
+  const [zoom, setZoom] = useState(19);
   const MIN_ZOOM = 15;
-  const MAX_ZOOM = 19;
+  const MAX_ZOOM = 20;
   const pinchStartDist = useRef<number | null>(null);
-  const pinchStartZoom = useRef<number>(18);
+  const pinchStartZoom = useRef<number>(19);
 
   // Plan OSM par défaut — pas de voitures sur la carte
   const [satellite, setSatellite] = useState(false);
@@ -208,7 +222,13 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
   const [geoStatus, setGeoStatus] = useState<'loading'|'ok'|'error'|'waiting'>('loading');
   const [tilesLoaded, setTilesLoaded] = useState(0);
   const [totalTiles, setTotalTiles] = useState(25);
-  const [position, setPosition] = useState({ x: CANVAS_W/2, y: CANVAS_H/2 });
+  // Position initiale décalée selon le rôle : A et B ne démarrent plus superposés
+  // au centre exact, ce qui évite qu'un conducteur valide deux véhicules au même point.
+  const initialOffset: Record<string, { dx: number; dy: number }> = {
+    A: { dx: -34, dy: 0 }, B: { dx: 34, dy: 0 }, C: { dx: 0, dy: -34 }, D: { dx: 0, dy: 34 },
+  };
+  const _off = initialOffset[role] || { dx: 0, dy: 0 };
+  const [position, setPosition] = useState({ x: CANVAS_W/2 + _off.dx, y: CANVAS_H/2 + _off.dy });
   const [angle, setAngle] = useState(0);
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef<{ x: number; y: number; posX: number; posY: number } | null>(null);
@@ -418,11 +438,15 @@ export const MapVehiclePlacer = React.memo(function MapVehiclePlacer({ role, req
                 : '✓ Position confirmée';
     ctx.fillText(instr, CANVAS_W/2, CANVAS_H-9);
 
-    // Attribution
-    ctx.fillStyle = 'rgba(0,0,0,0.45)';
-    ctx.fillRect(0, 0, satellite ? 195 : 205, 14);
-    ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '8px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(satellite ? '© Esri, Maxar, Earthstar Geographics' : '© OpenStreetMap contributors', 4, 10);
+    // Attribution — discrète, en bas à droite au-dessus du bandeau
+    const attr = satellite ? '© Esri, Maxar' : '© OpenStreetMap · CARTO';
+    ctx.font = '8px sans-serif'; ctx.textAlign = 'right';
+    const aw = ctx.measureText(attr).width;
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillRect(CANVAS_W - aw - 10, CANVAS_H - 26 - 13, aw + 8, 12);
+    ctx.fillStyle = 'rgba(60,60,70,0.9)';
+    ctx.fillText(attr, CANVAS_W - 6, CANVAS_H - 26 - 4);
+    ctx.textAlign = 'left';
   }, [position, angle, bodyColor, role, roleColor, livePositions, step, tilesLoaded, centerLat, centerLng, satellite, zoom]);
 
   useEffect(() => { render(); }, [render]);
