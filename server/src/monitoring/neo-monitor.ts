@@ -150,11 +150,15 @@ export async function runHealthCheck() {
 async function purgeExpiredSessions(): Promise<number> {
   try {
     const { db } = await import('../db/index.js');
-    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // 30 days
-    const result = await db.execute(
-      `DELETE FROM sessions WHERE expires_at < $1 RETURNING id` as any
-    );
-    const count = (result as any).rows?.length ?? 0;
+    const { sessions } = await import('../db/schema.js');
+    const { lt } = await import('drizzle-orm');
+    // Purge les sessions expirées depuis plus de 30 jours (marge de grâce :
+    // permet de reprendre un constat, et prudence avant suppression définitive RGPD).
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const deleted = await db.delete(sessions)
+      .where(lt(sessions.expiresAt, cutoff))
+      .returning({ id: sessions.id });
+    const count = deleted.length;
     if (count > 0) logger.info(`[NEO-MONITOR] 🧹 ${count} session(s) expirée(s) supprimées`);
     return count;
   } catch (e: unknown) {

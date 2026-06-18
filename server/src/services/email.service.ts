@@ -1768,7 +1768,7 @@ export async function sendMagicLink(email: string, magicUrl: string): Promise<vo
   </div>
   <div style="padding:28px;">
     <h2 style="margin:0 0 12px;font-size:20px;color:#102033;">Votre lien de connexion</h2>
-    <p style="color:#5D6B7C;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>15 minutes</strong>.</p>
+    <p style="color:#5D6B7C;margin:0 0 24px;line-height:1.6;">Cliquez sur le bouton ci-dessous pour vous connecter. Ce lien est valable <strong>1 heure</strong>.</p>
     <a href="${magicUrl}" style="display:inline-block;background:#FF6B1A;color:#fff;text-decoration:none;padding:14px 28px;border-radius:12px;font-weight:700;font-size:16px;">Se connecter →</a>
     <p style="color:#5D6B7C;font-size:13px;margin:24px 0 6px;">Ou copiez ce lien dans votre navigateur :</p>
     <p style="margin:0 0 24px;"><a href="${magicUrl}" style="color:#123A5A;font-size:13px;word-break:break-all;">${magicUrl}</a></p>
