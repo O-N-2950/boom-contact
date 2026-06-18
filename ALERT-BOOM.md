@@ -1,48 +1,54 @@
-# Monitoring — boom.contact
+# ALERT — boom.contact monitoring — 2026-06-18
 
-**Dernière vérification réelle** : 2026-06-15T14:39:58Z
-**Statut global** : 🟢 OPÉRATIONNEL
+## 🔴 Health check : ÉCHEC (persistant depuis 2026-05-02)
+
+| Endpoint | Attendu | Obtenu |
+|---|---|---|
+| `https://www.boom.contact/health` | `{ok: true}` | HTTP 403 Forbidden |
+| `https://www.boom.contact` | 200 OK | HTTP 403 Forbidden |
+
+**Le site retourne 403 sur toutes les routes.** Hypothèses :
+- Cloudflare/Railway WAF bloquant l'IP du monitoring
+- Misconfiguration middleware (auth/IP whitelist trop restrictive)
+- Deployment Railway en erreur
+
+**Action requise** : vérifier le dashboard Railway + logs Express + règles WAF/Cloudflare.
 
 ---
 
-## Health check — ✅ OK
+## ⚠️ TypeScript : erreurs détectées
 
-Vérifié en direct sous plusieurs méthodes et User-Agents :
+Les erreurs TS dans `client/src/App.tsx` semblent liées à des `node_modules` manquants
+dans l'environnement sandbox (react non installé localement). À confirmer en CI/Railway.
 
 ```
-GET  https://www.boom.contact/health      → 200  {"ok":true,"service":"boom.contact","env":"production"}
-HEAD https://www.boom.contact/health      → 200
-GET  https://www.boom.contact/api/health  → 200
+client/src/App.tsx(6,79): error TS2307: Cannot find module 'react'
+client/src/App.tsx(7,32): error TS2307: Cannot find module 'react-i18next'
+client/src/App.tsx(44,5): error TS7026: JSX element implicitly has type 'any'
+client/src/App.tsx(241,23): error TS7006: Parameter 'res' implicitly has type 'any'
+client/src/App.tsx(285,21): error TS7006: Parameter 'res' implicitly has type 'any'
 ```
 
-Servi directement par Railway (`server: railway-hikari`), sans WAF/Cloudflare intermédiaire.
+---
 
-### Note sur l'ancien "403 persistant" (résolu — faux positif)
-L'alerte 403 datée du 2026-05-02 était un **faux positif de l'outil de monitoring**.
-Cause identifiée : le domaine apex `https://boom.contact/health` (sans `www`) renvoie un
-**301** vers `https://www.boom.contact/health` (redirection voulue et correcte). Un moniteur
-qui ne suit pas les redirections, ou qui teste l'apex, peut logger ce non-200 comme un échec.
-➡️ **Correctif monitoring** : tester `https://www.boom.contact/health` (avec www) et suivre
-les redirections (`curl -L`). Le endpoint est public, sans auth, et répond 200.
+## 📋 Derniers commits
+
+```
+dd3fbed fix: email magic link '15 min'→'1 heure' + purge sessions cassee
+dcbf0f4 fix(auth): magic link robuste — TTL 15min trop court + erreur sans issue
+2f3994f i18n(email): emails transactionnels 50/50 langues
+d609ad9 feat(placer): ecran placement vehicules premium
+2df556f feat(pdf): croquis accident de qualite production
+```
 
 ---
 
-## Build & qualité
+## 📌 TODO urgents (TODO.md)
 
-- **TypeScript** : ✅ propre (warning TS5101 `baseUrl` corrigé le 2026-06-15)
-- **Derniers commits** : fix brand logo (ratio paysage), boucle virale conducteur B, PDF 50 langues
+- **Bloquant soumission stores** : IPA/AAB signés + tests iPhone/Android réels
+- **Décision juridique** : claims PDF « légalement valable / 46 pays » → juriste requis
+- **Session 16 P. haute** : API B2B assureurs, IA estimation responsabilité, PoliceFlow
 
 ---
 
-## Vraies tâches restantes (hors code — accès humains requis)
-
-**🔴 Bloquant soumission stores**
-- Runtime natif : IPA/AAB signés + tests iPhone/Android réels (certificats Apple/Google — Olivier)
-- Validation juridique des claims PDF (« valable N pays ») — juriste/Soluris
-
-**🟠 Session suivante (priorité produit)**
-- PoliceFlow pilote Canton Jura (subdomain + auth + audit trail RGPD)
-- API B2B assureurs (REST/tRPC + dashboard partenaire)
-
-**⚠️ Legal Pack**
-- Questions transmises à Soluris (pré-validation juriste) — en attente de retour
+*Généré automatiquement par le monitoring boom.contact — 2026-06-18*
