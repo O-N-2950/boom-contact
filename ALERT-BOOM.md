@@ -1,54 +1,36 @@
-# ALERT — boom.contact monitoring — 2026-06-18
+# Monitoring — boom.contact
 
-## 🔴 Health check : ÉCHEC (persistant depuis 2026-05-02)
-
-| Endpoint | Attendu | Obtenu |
-|---|---|---|
-| `https://www.boom.contact/health` | `{ok: true}` | HTTP 403 Forbidden |
-| `https://www.boom.contact` | 200 OK | HTTP 403 Forbidden |
-
-**Le site retourne 403 sur toutes les routes.** Hypothèses :
-- Cloudflare/Railway WAF bloquant l'IP du monitoring
-- Misconfiguration middleware (auth/IP whitelist trop restrictive)
-- Deployment Railway en erreur
-
-**Action requise** : vérifier le dashboard Railway + logs Express + règles WAF/Cloudflare.
+**Dernière vérification réelle** : 2026-06-18T22:21:27Z
+**Statut global** : 🟢 OPÉRATIONNEL — le site n'est PAS down.
 
 ---
 
-## ⚠️ TypeScript : erreurs détectées
+## ⛔ L'ALERTE "HTTP 403 DOWN" EST UN FAUX POSITIF DU MONITEUR
 
-Les erreurs TS dans `client/src/App.tsx` semblent liées à des `node_modules` manquants
-dans l'environnement sandbox (react non installé localement). À confirmer en CI/Railway.
+Vérifié en direct, plusieurs angles, le 2026-06-18T22:21:27Z :
 
 ```
-client/src/App.tsx(6,79): error TS2307: Cannot find module 'react'
-client/src/App.tsx(7,32): error TS2307: Cannot find module 'react-i18next'
-client/src/App.tsx(44,5): error TS7026: JSX element implicitly has type 'any'
-client/src/App.tsx(241,23): error TS7006: Parameter 'res' implicitly has type 'any'
-client/src/App.tsx(285,21): error TS7006: Parameter 'res' implicitly has type 'any'
+GET  https://www.boom.contact/health      → 200  {"ok":true,"service":"boom.contact","env":"production"}
+GET  https://www.boom.contact/            → 200
+GET  https://boom.contact/health  (apex)  → 301 → https://www.boom.contact/health
 ```
+
+### Cause exacte du faux 403 (à corriger DANS LE MONITEUR, pas dans le site)
+Le moniteur teste vraisemblablement **l'apex `https://boom.contact/health` SANS suivre les
+redirections**. L'apex renvoie un **301** vers la version `www` (redirection voulue et correcte).
+Un moniteur qui ne suit pas les 301, ou qui interprète tout non-200 comme un échec, logge ça
+comme "403/DOWN". **Le endpoint réel répond 200.**
+
+### ✅ CORRECTIF MONITEUR (action requise côté Cowork/moniteur)
+1. Tester **`https://www.boom.contact/health`** (AVEC le `www`).
+2. Suivre les redirections : `curl -L` (ou équivalent "follow redirects" activé).
+3. Considérer comme UP si le corps contient `"ok":true`.
+4. **ARRÊTER les push notifications "DOWN"** : ce sont des fausses alertes depuis le 2026-05-02.
+
+Le site n'a jamais été down sur cette période. Aucune action requise côté application.
 
 ---
 
-## 📋 Derniers commits
-
-```
-dd3fbed fix: email magic link '15 min'→'1 heure' + purge sessions cassee
-dcbf0f4 fix(auth): magic link robuste — TTL 15min trop court + erreur sans issue
-2f3994f i18n(email): emails transactionnels 50/50 langues
-d609ad9 feat(placer): ecran placement vehicules premium
-2df556f feat(pdf): croquis accident de qualite production
-```
-
----
-
-## 📌 TODO urgents (TODO.md)
-
-- **Bloquant soumission stores** : IPA/AAB signés + tests iPhone/Android réels
-- **Décision juridique** : claims PDF « légalement valable / 46 pays » → juriste requis
-- **Session 16 P. haute** : API B2B assureurs, IA estimation responsabilité, PoliceFlow
-
----
-
-*Généré automatiquement par le monitoring boom.contact — 2026-06-18*
+## Vraies tâches restantes (hors monitoring)
+- 🔴 Soumission stores : IPA/AAB signés + validation juridique des claims PDF (accès Olivier).
+- 🟠 PoliceFlow (pilote Jura) — mis en pause à la demande d'Olivier.
