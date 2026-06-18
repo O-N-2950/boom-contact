@@ -15,7 +15,7 @@ export const CRON_CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 // Auth
 export const JWT_EXPIRES_DAYS = 7;
 export const BCRYPT_ROUNDS = 12;
-export const MAGIC_LINK_TTL_MS = 15 * 60 * 1000; // 15 minutes
+export const MAGIC_LINK_TTL_MS = 60 * 60 * 1000; // 60 minutes (tolère les délais d'acheminement email)
 export const GIFT_LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 // Rate limits

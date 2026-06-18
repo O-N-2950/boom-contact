@@ -776,7 +776,7 @@
     "form_tabs_aria": "Sections du formulaire"
   },
   "app": {
-    "magic_link_error": "Lien de connexion invalide ou expiré.",
+    "magic_link_error": "Ce lien de connexion a expiré ou a déjà été utilisé. Saisissez votre email pour en recevoir un nouveau.",
     "gift_credits_added": "🎁 {{credits}} crédit(s) ajouté(s) à votre compte !",
     "loading_aria": "Chargement en cours",
     "nav_landing": "Page d'accueil",

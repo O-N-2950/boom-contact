@@ -219,7 +219,10 @@ export default function App() {
           track(EVENTS.AUTH_MAGIC_LINK_SUCCESS);
           dispatch({ type: 'SET_VIEW', view: 'account' });
         },
-        onError: () => alert(t('app.magic_link_error')),
+        onError: () => {
+          alert(t('app.magic_link_error'));
+          dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
+        },
       });
     }
 
