@@ -53,5 +53,7 @@
 	<string>boom.contact utilise le microphone pour la description vocale de l'accident (transcription automatique).</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>boom.contact accède à vos photos pour joindre des photos de dégâts au constat.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
