@@ -11,6 +11,7 @@ import { sendPDFToDriver } from '../services/email.service.js';
 import { timestampPDF } from '../services/timestamp.service.js';
 import { transcribeAudio } from '../services/voice.service.js';
 import { analyzeAccidentTranscript } from '../services/accident-analyzer.service.js';
+import { estimateResponsibility } from '../services/responsibility.service.js';
 import { renderSketch } from '../services/sketch-renderer.service.js';
 import { getInsuranceAssistance } from '../services/insurance-assistance.service.js';
 import { getCountryEmergencyNumbers } from '../services/emergency-numbers.service.js';
@@ -642,6 +643,38 @@ export const appRouter = router({
           sha256Stored: storedSha256,
           timestampProof: timestampProof ?? null,
         };
+      }),
+
+    // Estimation de responsabilité IDA/IRSA
+    estimateResponsibility: publicProcedure
+      .input(z.object({
+        sessionId: z.string().trim().max(50),
+        tokenA: z.string().trim().max(500),
+      }))
+      .query(async ({ input }) => {
+        const session = await getSession(input.sessionId);
+        if (!session) throw new TRPCError({ code: 'NOT_FOUND', message: 'Session not found' });
+
+        // Verify tokenA
+        const valid = await verifyParticipantToken(input.sessionId, input.tokenA, 'A');
+        if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
+
+        const acc = session.accidentData as any;
+        const A = session.participantA as any;
+        const B = session.participantB as any;
+
+        const result = await estimateResponsibility({
+          circumstances: {
+            A: A?.circumstances ?? [],
+            B: B?.circumstances ?? [],
+          },
+          fault: acc?.fault,
+          scenario: acc?.scenario,
+          description: acc?.description,
+          language: A?.driver?.language ?? A?.language ?? 'fr',
+        });
+
+        return result;
       }),
 
   }),

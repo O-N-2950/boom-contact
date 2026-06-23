@@ -2,6 +2,7 @@
 import 'regenerator-runtime/runtime.js';
 import { renderSketch } from './sketch-renderer.service.js';
 import { fetchAccidentMap, fetchAccidentMapWithVehicles, geocodeAddress } from './osm-map.service.js';
+import { ensureJpegOrPng } from './image-convert.service.js';
 import { logger } from '../logger.js';
 import { PDFDocument, rgb, StandardFonts, PDFPage, PDFFont } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
@@ -456,9 +457,17 @@ async function buildUnilateralBanner(ctx: PdfContext): Promise<void> {
 
   if (partyBStatus.platePhoto) {
     try {
-      const plateBytes = Buffer.from(partyBStatus.platePhoto, 'base64');
+      const plateConverted = await ensureJpegOrPng(partyBStatus.platePhoto);
+      if (Buffer.from(partyBStatus.platePhoto, 'base64').slice(0, 4).toString('hex') === '52494646') {
+        logger.info('[PDF] Plate photo converted from WebP to JPEG');
+      }
+      const plateFmt = plateConverted[0] === 0xff ? 'jpeg' : 'png';
       let plateImg;
-      try { plateImg = await doc.embedJpg(plateBytes); } catch { plateImg = await doc.embedPng(plateBytes); }
+      if (plateFmt === 'jpeg') {
+        plateImg = await doc.embedJpg(plateConverted);
+      } else {
+        plateImg = await doc.embedPng(plateConverted);
+      }
       const plateH = 52;
       const plateW = Math.min(90, plateImg.width * plateH / plateImg.height);
       page.drawImage(plateImg, {
@@ -957,10 +966,18 @@ async function buildPhotosSection(ctx: PdfContext): Promise<void> {
       }
       const photo = acc.photos[i];
       try {
-        const imgBytes = Buffer.from(photo.base64, 'base64');
+        const rawBytes = Buffer.from(photo.base64, 'base64');
+        const isWebP = rawBytes.length >= 12 &&
+          rawBytes[0] === 0x52 && rawBytes[1] === 0x49 && rawBytes[2] === 0x46 && rawBytes[3] === 0x46 &&
+          rawBytes[8] === 0x57 && rawBytes[9] === 0x45 && rawBytes[10] === 0x42 && rawBytes[11] === 0x50;
+        if (isWebP) logger.info('[PDF] Photo converted from WebP to JPEG', { index: i });
+        const imgBytes = await ensureJpegOrPng(photo.base64);
         let img;
-        try { img = await doc.embedJpg(imgBytes); }
-        catch { img = await doc.embedPng(imgBytes); } // fallback PNG (capture d'écran, etc.)
+        if (imgBytes[0] === 0xff) {
+          img = await doc.embedJpg(imgBytes); // JPEG
+        } else {
+          img = await doc.embedPng(imgBytes); // PNG
+        }
         const scale = Math.min(photoW / img.width, photoH / img.height, 1);
         const iw = img.width * scale;
         const ih = img.height * scale;

@@ -90,6 +90,143 @@ interface ConstatFlowProps {
   onBuyPack?: () => void;
 }
 
+// ── Estimation de responsabilité IDA/IRSA ─────────────────────
+function ResponsibilityEstimateWidget({ sessionId, tokenA }: { sessionId: string; tokenA: string }) {
+  const { t } = useTranslation();
+
+  const estimateQ = trpc.session.estimateResponsibility.useQuery(
+    { sessionId, tokenA },
+    {
+      retry: 1,
+      staleTime: Infinity, // calcul unique post-constat
+    }
+  );
+
+  if (estimateQ.isLoading) {
+    return (
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 12,
+          padding: '20px 24px',
+          margin: '16px 0',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.6)', fontSize: 14 }}>
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              border: '2px solid rgba(255,255,255,0.2)',
+              borderTopColor: 'var(--boom, #FF3500)',
+              borderRadius: '50%',
+              animation: 'spin 0.8s linear infinite',
+              flexShrink: 0,
+            }}
+          />
+          {t('responsibility.loading', 'Calcul de la responsabilité estimée...')}
+        </div>
+      </div>
+    );
+  }
+
+  if (estimateQ.isError || !estimateQ.data) return null;
+
+  const est = estimateQ.data;
+
+  // N'afficher que si confidence !== 'low'
+  if (est.confidence === 'low') return null;
+
+  const pctA = Math.round(est.percentA);
+  const pctB = Math.round(est.percentB);
+
+  return (
+    <div
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 12,
+        padding: '20px 24px',
+        margin: '16px 0',
+      }}
+    >
+      <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 600, color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span style={{ fontSize: 18 }}>⚖️</span>
+        {t('responsibility.title', 'Estimation de responsabilité')}
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 500,
+            padding: '2px 7px',
+            borderRadius: 4,
+            background: est.confidence === 'high' ? 'rgba(34,197,94,0.15)' : 'rgba(251,191,36,0.15)',
+            color: est.confidence === 'high' ? '#4ade80' : '#fbbf24',
+            marginLeft: 4,
+          }}
+        >
+          {est.confidence === 'high'
+            ? t('responsibility.confidence_high', 'Fiabilité haute')
+            : t('responsibility.confidence_medium', 'Fiabilité moyenne')}
+        </span>
+      </h3>
+
+      {/* Barre de progression A / B */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
+          <span>{t('responsibility.driver_a', 'Conducteur A')} — <strong style={{ color: '#fff' }}>{pctA}%</strong></span>
+          <span><strong style={{ color: '#fff' }}>{pctB}%</strong> — {t('responsibility.driver_b', 'Conducteur B')}</span>
+        </div>
+        <div style={{ height: 12, borderRadius: 6, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex' }}>
+          <div
+            style={{
+              width: `${pctA}%`,
+              background: pctA > 60 ? '#ef4444' : pctA > 40 ? '#f97316' : '#22c55e',
+              borderRadius: pctA === 100 ? 6 : '6px 0 0 6px',
+              transition: 'width 0.6s ease',
+            }}
+          />
+          <div
+            style={{
+              flex: 1,
+              background: pctB > 60 ? '#ef4444' : pctB > 40 ? '#f97316' : '#22c55e',
+              borderRadius: pctB === 100 ? 6 : '0 6px 6px 0',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Règles appliquées */}
+      {est.appliedRules && est.appliedRules.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+            {t('responsibility.rules_applied', 'Règles appliquées')}
+          </div>
+          <ul style={{ margin: 0, paddingLeft: 18, listStyleType: 'disc' }}>
+            {est.appliedRules.map((rule: string, i: number) => (
+              <li key={i} style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginBottom: 2 }}>
+                {rule}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Raisonnement */}
+      {est.reasoning && (
+        <p style={{ margin: '0 0 12px', fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
+          {est.reasoning}
+        </p>
+      )}
+
+      {/* Disclaimer légal */}
+      <p style={{ margin: 0, fontSize: 12, color: 'rgba(255,255,255,0.35)', fontStyle: 'italic', lineHeight: 1.5 }}>
+        {est.disclaimer}
+      </p>
+    </div>
+  );
+}
+
 export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth, onAccount, onBuyPack }: ConstatFlowProps = {}) {
   const { t, i18n } = useTranslation();
   const [showExpiryWarning, setShowExpiryWarning] = useState(false);
@@ -905,6 +1042,9 @@ export function ConstatFlow({ initialSessionId, authToken, authUser, onShowAuth,
               onLogin={onShowAuth || (() => {})}
               onBuyPack={onBuyPack || (() => {})}
             />
+            {sessionId && tokenA && (
+              <ResponsibilityEstimateWidget sessionId={sessionId} tokenA={tokenA} />
+            )}
             <InsuranceAssistance
               insurerA={participantData.insurance?.companyName || participantData.insurance?.company}
               insurerB={accidentData?.insurerB}

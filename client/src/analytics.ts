@@ -71,8 +71,17 @@ export function phCapture(event: string, props: Record<string, unknown> = {}) {
   try { _ph?.capture(event, props); } catch (e) { console.warn('[Analytics] PostHog capture failed', e); }
 }
 
-export function phIdentify(email: string, props: Record<string, unknown> = {}) {
-  try { _ph?.identify(email, props); } catch (e) { console.warn('[Analytics] PostHog identify failed', e); }
+export async function phIdentify(email: string, props: Record<string, unknown> = {}) {
+  try {
+    const hash = await hashEmail(email);
+    _ph?.identify(hash, props);
+  } catch (e) { console.warn('[Analytics] PostHog identify failed', e); }
+}
+
+async function hashEmail(email: string): Promise<string> {
+  const enc = new TextEncoder();
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(email.toLowerCase().trim()));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ── GA4 ──────────────────────────────────────────────────────

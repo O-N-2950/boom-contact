@@ -1,4 +1,4 @@
-import { track } from './analytics';
+import { track, phIdentify } from './analytics';
 import { EVENTS } from './analytics-events';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import OfflineBanner from './components/OfflineBanner';
@@ -273,6 +273,9 @@ export default function App() {
     localStorage.setItem(USER_TOKEN_KEY, token);
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
     dispatch({ type: 'SET_AUTH', token, user });
+    if (typeof user.email === 'string' && user.email) {
+      phIdentify(user.email).catch(() => {});
+    }
   }, []);
 
   // Handle post-login redirect based on pendingAction (runs after authUser is set)
