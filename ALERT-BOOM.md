@@ -1,7 +1,21 @@
 # Monitoring — boom.contact
 
 **Dernière vérification réelle** : 2026-06-18T22:21:27Z
+**Dernier check monitoring** : 2026-06-25 (faux 403 toujours présent — voir ci-dessous)
 **Statut global** : 🟢 OPÉRATIONNEL — le site n'est PAS down.
+
+---
+
+## ⚠️ ERREURS TYPESCRIPT — CHECK 2026-06-25
+
+10 erreurs `error TS` détectées dans `client/src/App.tsx` :
+- `TS2307: Cannot find module 'react'` / `'react-i18next'` (déclarations de types manquantes)
+- `TS7026: JSX element implicitly has type 'any'` (no interface JSX.IntrinsicElements)
+- `TS7006: Parameter 'res' implicitly has an 'any' type`
+
+**Action requise** : `cd client && npm install --save-dev @types/react @types/react-dom`
+et vérifier que `tsconfig.json` contient `"jsx": "react-jsx"`.
+Précédent état connu : TS 0 erreurs (Session 16b). Il s'agit d'une régression.
 
 ---
 
@@ -33,4 +47,5 @@ Le site n'a jamais été down sur cette période. Aucune action requise côté a
 
 ## Vraies tâches restantes (hors monitoring)
 - 🔴 Soumission stores : IPA/AAB signés + validation juridique des claims PDF (accès Olivier).
+- 🔴 Erreurs TypeScript App.tsx : corriger `@types/react` manquants (régression Session 16b).
 - 🟠 PoliceFlow (pilote Jura) — mis en pause à la demande d'Olivier.
