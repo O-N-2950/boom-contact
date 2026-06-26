@@ -539,7 +539,11 @@
     "nav_police_intervention": "Intervento polizia",
     "nav_to": "Navigazione verso {{label}}",
     "title_default": "boom.contact — Constatazione amichevole digitale",
-    "title_page": "{{label}} — boom.contact"
+    "title_page": "{{label}} — boom.contact",
+    "magic_confirm_title": "Conferma il tuo accesso",
+    "magic_confirm_body": "Ci siamo quasi. Clicca sul pulsante qui sotto per accedere al tuo account boom.contact.",
+    "magic_confirm_button": "Accedi →",
+    "magic_confirm_loading": "Accesso in corso…"
   },
   "auth": {
     "default_subtitle": "Acceda per salvare i suoi veicoli e non dover più inserire dati durante le sue constatazioni amichevoli.",

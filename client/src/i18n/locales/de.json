@@ -539,7 +539,11 @@
     "nav_police_intervention": "Polizei-Intervention",
     "nav_to": "Navigation zu {{label}}",
     "title_default": "boom.contact — Digitaler Unfallbericht",
-    "title_page": "{{label}} — boom.contact"
+    "title_page": "{{label}} — boom.contact",
+    "magic_confirm_title": "Bestätigen Sie Ihre Anmeldung",
+    "magic_confirm_body": "Fast geschafft. Klicken Sie auf die Schaltfläche unten, um sich bei Ihrem boom.contact-Konto anzumelden.",
+    "magic_confirm_button": "Anmelden →",
+    "magic_confirm_loading": "Anmeldung läuft…"
   },
   "auth": {
     "default_subtitle": "Melden Sie sich an, um Ihre Fahrzeuge zu speichern und bei künftigen Berichten nichts mehr eingeben zu müssen.",

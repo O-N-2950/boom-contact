@@ -659,7 +659,7 @@ export const appRouter = router({
         const valid = await verifyParticipantToken(input.sessionId, input.tokenA, 'A');
         if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid participant token' });
 
-        const acc = session.accidentData as any;
+        const acc = session.accident as any;
         const A = session.participantA as any;
         const B = session.participantB as any;
 

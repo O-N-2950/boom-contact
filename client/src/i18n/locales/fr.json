@@ -777,6 +777,10 @@
   },
   "app": {
     "magic_link_error": "Ce lien de connexion a expiré ou a déjà été utilisé. Saisissez votre email pour en recevoir un nouveau.",
+    "magic_confirm_title": "Confirmez votre connexion",
+    "magic_confirm_body": "Vous y êtes presque. Cliquez sur le bouton ci-dessous pour vous connecter à votre compte boom.contact.",
+    "magic_confirm_button": "Me connecter →",
+    "magic_confirm_loading": "Connexion en cours…",
     "gift_credits_added": "🎁 {{credits}} crédit(s) ajouté(s) à votre compte !",
     "loading_aria": "Chargement en cours",
     "nav_landing": "Page d'accueil",

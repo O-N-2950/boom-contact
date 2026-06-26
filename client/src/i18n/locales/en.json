@@ -794,7 +794,11 @@
     "nav_police_intervention": "Police intervention",
     "nav_to": "Navigating to {{label}}",
     "title_default": "boom.contact — Digital accident report",
-    "title_page": "{{label}} — boom.contact"
+    "title_page": "{{label}} — boom.contact",
+    "magic_confirm_title": "Confirm your login",
+    "magic_confirm_body": "You're almost there. Click the button below to log in to your boom.contact account.",
+    "magic_confirm_button": "Log in →",
+    "magic_confirm_loading": "Logging in…"
   },
   "police": {
     "infractions": {

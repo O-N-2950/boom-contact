@@ -199,6 +199,13 @@ export default function App() {
   const [state, dispatch] = useReducer(appReducer, undefined, getInitialAppState);
   const { view, routeAnnouncement, accountInitialTab, userEmail, authUser, authToken, showAuthModal, showCGU, pendingAction, policeToken, policeUser, policeSessionId, policeFlowToken } = state;
 
+  // Token magic en attente de confirmation explicite (anti-préchargement mail).
+  // On ne consomme PAS le token au simple chargement de la page : certains clients
+  // mail (Infomaniak, iOS, antivirus) préchargent les liens et grilleraient le token
+  // à usage unique avant que l'utilisateur ne clique. On exige donc un clic explicite.
+  const [magicPendingToken, setMagicPendingToken] = useState<string | null>(null);
+  const [magicVerifying, setMagicVerifying] = useState(false);
+
   const magicVerifyMut  = trpc.auth.magicLinkVerify.useMutation();  const verifyEmailMut  = trpc.auth.verifyEmailToken.useMutation();
   const claimGiftMut    = trpc.auth.claimGift.useMutation();
   const acceptInviteMut = trpc.organization.acceptInvite.useMutation();
@@ -210,20 +217,11 @@ export default function App() {
     const giftToken  = params.get('gift');
     const verifyToken = params.get('verify');
     if (magicToken) {
+      // Anti-préchargement : on retire le token de l'URL et on le met en attente
+      // d'une confirmation explicite par l'utilisateur (clic sur un bouton).
+      // Le token n'est PAS vérifié ici → un préchargement mail ne le consomme pas.
       window.history.replaceState({}, '', '/');
-      magicVerifyMut.mutate({ token: magicToken }, {
-        onSuccess: (res: any) => {
-          localStorage.setItem(USER_TOKEN_KEY, res.token);
-          localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
-          dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
-          track(EVENTS.AUTH_MAGIC_LINK_SUCCESS);
-          dispatch({ type: 'SET_VIEW', view: 'account' });
-        },
-        onError: () => {
-          alert(t('app.magic_link_error'));
-          dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
-        },
-      });
+      setMagicPendingToken(magicToken);
     }
 
     if (verifyToken) {
@@ -268,6 +266,30 @@ export default function App() {
       }
     }
   }, []);
+
+  // Confirmation explicite du magic link : vérifie le token UNIQUEMENT au clic
+  // de l'utilisateur (protège contre la consommation par préchargement mail).
+  const confirmMagicLogin = useCallback(() => {
+    if (!magicPendingToken) return;
+    setMagicVerifying(true);
+    magicVerifyMut.mutate({ token: magicPendingToken }, {
+      onSuccess: (res: any) => {
+        localStorage.setItem(USER_TOKEN_KEY, res.token);
+        localStorage.setItem(USER_DATA_KEY, JSON.stringify(res.user));
+        dispatch({ type: 'SET_AUTH', token: res.token, user: res.user });
+        track(EVENTS.AUTH_MAGIC_LINK_SUCCESS);
+        setMagicPendingToken(null);
+        setMagicVerifying(false);
+        dispatch({ type: 'SET_VIEW', view: 'account' });
+      },
+      onError: () => {
+        setMagicPendingToken(null);
+        setMagicVerifying(false);
+        alert(t('app.magic_link_error'));
+        dispatch({ type: 'SHOW_AUTH_MODAL', show: true });
+      },
+    });
+  }, [magicPendingToken, magicVerifyMut, t]);
 
   const handleAuth = useCallback((token: string, user: Record<string, unknown>) => {
     localStorage.setItem(USER_TOKEN_KEY, token);
@@ -581,6 +603,28 @@ export default function App() {
           onLogout={handleLogout}
           initialTab={accountInitialTab}
         />
+      )}
+
+      {magicPendingToken && (
+        <div style={{position:'fixed',inset:0,zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(6,6,12,0.92)',padding:'20px'}}>
+          <div style={{maxWidth:'380px',width:'100%',background:'#fff',borderRadius:'18px',overflow:'hidden',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
+            <div style={{background:'#123A5A',padding:'20px 24px',display:'flex',alignItems:'center',gap:'10px'}}>
+              <span style={{fontSize:'22px'}}>🔑</span>
+              <span style={{color:'#fff',fontWeight:800,fontSize:'18px'}}>boom.contact</span>
+            </div>
+            <div style={{padding:'28px 24px'}}>
+              <h2 style={{margin:'0 0 12px',color:'#123A5A',fontSize:'20px',fontWeight:800}}>{t('app.magic_confirm_title')}</h2>
+              <p style={{margin:'0 0 24px',color:'#5D6B7C',lineHeight:1.6,fontSize:'15px'}}>{t('app.magic_confirm_body')}</p>
+              <button
+                onClick={confirmMagicLogin}
+                disabled={magicVerifying}
+                style={{display:'inline-block',width:'100%',background:'#FF6B1A',color:'#fff',border:'none',padding:'15px',borderRadius:'12px',fontWeight:700,fontSize:'16px',cursor:magicVerifying?'wait':'pointer',opacity:magicVerifying?0.7:1}}
+              >
+                {magicVerifying ? t('app.magic_confirm_loading') : t('app.magic_confirm_button')}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {showAuthModal && (
