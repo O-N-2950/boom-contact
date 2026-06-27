@@ -1,12 +1,12 @@
 # Monitoring — boom.contact
 
 **Dernière vérification réelle** : 2026-06-18T22:21:27Z
-**Dernier check monitoring** : 2026-06-25 (faux 403 toujours présent — voir ci-dessous)
-**Statut global** : 🟢 OPÉRATIONNEL — le site n'est PAS down.
+**Dernier check monitoring** : 2026-06-27 (faux 403 toujours présent — voir ci-dessous)
+**Statut global** : OPÉRATIONNEL — le site n'est PAS down.
 
 ---
 
-## ⚠️ ERREURS TYPESCRIPT — CHECK 2026-06-25
+## ERREURS TYPESCRIPT — CHECK 2026-06-27 (inchangées depuis 2026-06-25)
 
 10 erreurs `error TS` détectées dans `client/src/App.tsx` :
 - `TS2307: Cannot find module 'react'` / `'react-i18next'` (déclarations de types manquantes)
@@ -19,7 +19,7 @@ Précédent état connu : TS 0 erreurs (Session 16b). Il s'agit d'une régressio
 
 ---
 
-## ⛔ L'ALERTE "HTTP 403 DOWN" EST UN FAUX POSITIF DU MONITEUR
+## L'ALERTE "HTTP 403 DOWN" EST UN FAUX POSITIF DU MONITEUR
 
 Vérifié en direct, plusieurs angles, le 2026-06-18T22:21:27Z :
 
@@ -35,7 +35,7 @@ redirections**. L'apex renvoie un **301** vers la version `www` (redirection vou
 Un moniteur qui ne suit pas les 301, ou qui interprète tout non-200 comme un échec, logge ça
 comme "403/DOWN". **Le endpoint réel répond 200.**
 
-### ✅ CORRECTIF MONITEUR (action requise côté Cowork/moniteur)
+### CORRECTIF MONITEUR (action requise côté Cowork/moniteur)
 1. Tester **`https://www.boom.contact/health`** (AVEC le `www`).
 2. Suivre les redirections : `curl -L` (ou équivalent "follow redirects" activé).
 3. Considérer comme UP si le corps contient `"ok":true`.
@@ -46,6 +46,6 @@ Le site n'a jamais été down sur cette période. Aucune action requise côté a
 ---
 
 ## Vraies tâches restantes (hors monitoring)
-- 🔴 Soumission stores : IPA/AAB signés + validation juridique des claims PDF (accès Olivier).
-- 🔴 Erreurs TypeScript App.tsx : corriger `@types/react` manquants (régression Session 16b).
-- 🟠 PoliceFlow (pilote Jura) — mis en pause à la demande d'Olivier.
+- Soumission stores : IPA/AAB signés + validation juridique des claims PDF (accès Olivier).
+- Erreurs TypeScript App.tsx : corriger `@types/react` manquants (régression Session 16b).
+- PoliceFlow (pilote Jura) — mis en pause à la demande d'Olivier.
