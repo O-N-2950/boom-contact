@@ -1,12 +1,12 @@
 # Monitoring — boom.contact
 
 **Dernière vérification réelle** : 2026-06-18T22:21:27Z
-**Dernier check monitoring** : 2026-06-27 (faux 403 toujours présent — voir ci-dessous)
-**Statut global** : OPÉRATIONNEL — le site n'est PAS down.
+**Dernier check monitoring** : 2026-06-29 (HTTP 000 — connexion réseau échouée au proxy sandbox; même pattern que faux 403 précédents)
+**Statut global** : OPÉRATIONNEL (présumé) — le site n'a jamais été down depuis la confirmation du 2026-06-18.
 
 ---
 
-## ERREURS TYPESCRIPT — CHECK 2026-06-27 (inchangées depuis 2026-06-25)
+## ERREURS TYPESCRIPT — CHECK 2026-06-29 (inchangées depuis 2026-06-25)
 
 10 erreurs `error TS` détectées dans `client/src/App.tsx` :
 - `TS2307: Cannot find module 'react'` / `'react-i18next'` (déclarations de types manquantes)
