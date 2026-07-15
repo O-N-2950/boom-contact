@@ -606,6 +606,25 @@ app.get('/sitemap.xml', (_req, res) => {
 
 
 
+// ── Pages légales pré-rendues (HTML statique, 200, SANS JS) ──────────
+// CRITIQUE : AVANT express.static et le wildcard SPA, sinon le shell React
+// est renvoyé à la place. Requis pour les stores (Google Play « Sécurité des
+// données » : URL de suppression de compte + politique lisible par un robot).
+// 100 % public, aucune authentification, aucun prix/achat.
+app.get(['/privacy', '/confidentialite', '/politique-confidentialite'], async (req, res) => {
+  const { renderPrivacyPage } = await import('./legal-pages.js');
+  const lang = (req.query.lang as string) || (req.headers['accept-language'] as string);
+  res.status(200).type('html').send(renderPrivacyPage(lang));
+});
+
+app.get(['/supprimer-compte', '/account-deletion', '/suppression-compte'], async (req, res) => {
+  const { renderDeletionPage } = await import('./legal-pages.js');
+  const lang = (req.query.lang as string) || (req.headers['accept-language'] as string);
+  res.status(200).type('html').send(renderDeletionPage(lang));
+});
+
+
+
 // ── Social media — endpoint auto-publish (sécurisé) ─────────
 // Déclenché par cron-job.org ou Make.com toutes les 24h à 9h00 Europe/Zurich
 app.post('/social/auto-publish', express.json(), async (req, res) => {
