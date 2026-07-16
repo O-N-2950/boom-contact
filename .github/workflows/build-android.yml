@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version (ex: 1.0.0)'
-        required: true
-        default: '1.0.0'
+        description: 'versionName (vide = garder celle du repo, ex: 1.0.1)'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -37,22 +37,57 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Set version
+      - name: Set versionName (optionnel — versionCode reste celui du repo)
+        if: ${{ inputs.version != '' }}
         run: |
           cd android
           sed -i "s/versionName \".*\"/versionName \"${{ inputs.version }}\"/" app/build.gradle
-          VERSION_CODE=$(echo "${{ inputs.version }}" | tr -d '.' | sed 's/^0*//')
-          sed -i "s/versionCode .*/versionCode ${VERSION_CODE}/" app/build.gradle
+          echo "versionName forcé à ${{ inputs.version }} ; versionCode inchangé (repo) :"
+          grep -E "versionCode|versionName" app/build.gradle
 
-      - name: Build AAB (release)
+      - name: Decode upload keystore (secret KEYSTORE_BASE64)
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload.keystore
+          ls -la android/app/upload.keystore
+
+      - name: Print keystore signing SHA1 (certificat de la clé d'upload)
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          keytool -list -v -keystore android/app/upload.keystore \
+            -alias "$KEY_ALIAS" -storepass "$KEYSTORE_PASSWORD" 2>/dev/null \
+            | grep -E "SHA1|Alias" || keytool -list -v -keystore android/app/upload.keystore \
+            -storepass "$KEYSTORE_PASSWORD" 2>/dev/null | grep -E "SHA1|Alias"
+
+      - name: Build AAB (release, signé)
+        env:
+          KEYSTORE_FILE: upload.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease
 
+      - name: Verify AAB — permissions (plus de READ_MEDIA_*) + SHA1 de signature
+        run: |
+          AAB=$(ls android/app/build/outputs/bundle/release/*.aab | head -1)
+          echo "AAB: $AAB"
+          echo "── Permissions dans l'AAB (READ_MEDIA ne doit PAS apparaître) ──"
+          unzip -p "$AAB" base/manifest/AndroidManifest.xml | strings | grep -i "permission" | sort -u || true
+          if unzip -p "$AAB" base/manifest/AndroidManifest.xml | strings | grep -qi "READ_MEDIA"; then
+            echo "❌ READ_MEDIA_* présent — ÉCHEC"; exit 1
+          else
+            echo "✅ Aucune permission READ_MEDIA_*"
+          fi
+          echo "── SHA1 de la signature de l'AAB ──"
+          keytool -printcert -jarfile "$AAB" | grep -E "SHA1|Propriétaire|Owner" || true
+
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: boom-contact-${{ inputs.version }}.aab
+          name: boom-contact-aab-signed
           path: android/app/build/outputs/bundle/release/*.aab
           retention-days: 30
