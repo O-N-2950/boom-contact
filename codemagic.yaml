@@ -72,9 +72,9 @@ workflows:
     name: iOS — IPA signé → TestFlight
     instance_type: mac_mini_m2
     max_build_duration: 90
-    integrations:
-      app_store_connect: boom_contact_asc_key # nom de la clé ASC configurée dans Codemagic
     environment:
+      groups:
+        - app_store_connect   # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY
       node: 22
       xcode: latest
       cocoapods: default
@@ -89,7 +89,7 @@ workflows:
       - name: Pods
         script: |
           cd ios/App && pod install
-      - name: Récupérer les fichiers de signature (ASC API key)
+      - name: Récupérer les fichiers de signature (ASC API key via variables)
         script: |
           app-store-connect fetch-signing-files contact.boom.app \
             --type IOS_APP_STORE --create
@@ -107,6 +107,8 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
     publishing:
       app_store_connect:
-        auth: integration
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         # PAS de submit_to_app_store : soumission App Store déclenchée manuellement après QA.
