@@ -384,6 +384,29 @@ export async function runMigrations() {
       CREATE INDEX IF NOT EXISTS org_invites_org_idx   ON organization_invites(organization_id);
       CREATE INDEX IF NOT EXISTS org_invites_email_idx ON organization_invites(email);
       CREATE INDEX IF NOT EXISTS org_invites_token_idx ON organization_invites(token_hash);
+
+      -- QR-facture suisse (additif) : factures payables par virement, réconciliation manuelle
+      CREATE TABLE IF NOT EXISTS invoices (
+        id              VARCHAR(20) PRIMARY KEY,
+        invoice_number  SERIAL NOT NULL,
+        email           TEXT NOT NULL,
+        user_id         VARCHAR(20),
+        package_id      VARCHAR(20) NOT NULL,
+        credits         INTEGER NOT NULL,
+        amount_cents    INTEGER NOT NULL,
+        currency        VARCHAR(3) NOT NULL DEFAULT 'CHF',
+        qr_reference    VARCHAR(27),
+        status          VARCHAR(20) NOT NULL DEFAULT 'pending',
+        language        VARCHAR(5) NOT NULL DEFAULT 'fr',
+        paid_at         TIMESTAMP,
+        paid_by_admin   TEXT,
+        created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS invoices_number_idx       ON invoices(invoice_number);
+      CREATE UNIQUE INDEX IF NOT EXISTS invoices_qr_reference_idx ON invoices(qr_reference);
+      CREATE INDEX IF NOT EXISTS invoices_email_idx  ON invoices(email);
+      CREATE INDEX IF NOT EXISTS invoices_status_idx ON invoices(status);
     `);
 
     logger.info('✅ DB migrations applied');

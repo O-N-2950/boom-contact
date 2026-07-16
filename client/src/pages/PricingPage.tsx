@@ -109,6 +109,22 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
     onError: (err) => { setError(err.message || t('pricingPage.error_generic')); setLoading(null); },
   });
 
+  // QR-facture suisse (virement) — CHF uniquement, gating natif hérité de la page
+  const [invoiceSuccess, setInvoiceSuccess] = useState<string | null>(null);
+  const [invoicePkg, setInvoicePkg] = useState<string>('pack3');
+  const invoiceMutation = trpc.payment.createInvoice.useMutation({
+    onSuccess: (data) => {
+      setInvoiceSuccess(t('pricingPage.invoice_sent', { number: data.displayNumber }));
+      setLoading(null); setError(null);
+    },
+    onError: (err) => { setError(err.message || t('pricingPage.error_generic')); setLoading(null); },
+  });
+  const handleInvoice = () => {
+    if (!effectiveEmail) { setError(t('pricingPage.error_email_required')); return; }
+    setLoading('invoice'); setError(null); setInvoiceSuccess(null);
+    invoiceMutation.mutate({ packageId: invoicePkg as any, email: effectiveEmail, language: navigator.language?.split('-')[0] || 'fr' });
+  };
+
   const effectiveEmail = authUser?.email || userEmail;
 
   const handleBuy = (packageId: string) => {
@@ -221,6 +237,35 @@ export function PricingPage({ userEmail, onBack, authUser, onAuthSuccess }: Prop
       {error && (
         <div role="alert" style={{ borderRadius:10, padding:12, marginBottom:16, fontSize:13, background:'rgba(220,38,38,0.08)', color:C.danger, border:'1px solid rgba(220,38,38,0.25)' }}>
           ⚠️ {error}
+        </div>
+      )}
+
+      {/* QR-facture suisse — virement bancaire (CHF uniquement) */}
+      {currency === 'CHF' && (
+        <div style={{ borderRadius:14, padding:16, marginBottom:16, background:C.card, border:`1px solid ${C.border}` }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+            <span style={{ fontSize:18 }}>🧾</span>
+            <span style={{ fontSize:13, fontWeight:700, color:C.text }}>{t('pricingPage.invoice_title')}</span>
+          </div>
+          <div style={{ fontSize:12, color:C.sec, lineHeight:1.5, marginBottom:12 }}>{t('pricingPage.invoice_desc')}</div>
+          {invoiceSuccess ? (
+            <div role="status" style={{ borderRadius:10, padding:12, fontSize:13, background:'rgba(22,163,74,0.08)', color:C.success, border:'1px solid rgba(22,163,74,0.25)' }}>
+              ✅ {invoiceSuccess}
+            </div>
+          ) : (
+            <div style={{ display:'flex', gap:8 }}>
+              <select value={invoicePkg} onChange={e => setInvoicePkg(e.target.value)} aria-label={t('pricingPage.invoice_select')}
+                style={{ flex:1, borderRadius:10, border:`1px solid ${C.border}`, padding:'10px 12px', fontSize:13, background:C.card, color:C.text, minHeight:44 }}>
+                {PACKAGES.map(pkg => (
+                  <option key={pkg.id} value={pkg.id}>{pkg.label} — CHF {(PRICES[pkg.id as keyof typeof PRICES].CHF/100).toFixed(2)}</option>
+                ))}
+              </select>
+              <button onClick={handleInvoice} disabled={!!loading}
+                style={{ borderRadius:10, border:'none', fontSize:13, fontWeight:700, color:'#fff', padding:'10px 16px', minHeight:44, cursor: loading ? 'not-allowed' : 'pointer', background:C.navy, opacity: loading ? 0.6 : 1 }}>
+                {loading === 'invoice' ? t('pricingPage.invoice_sending') : t('pricingPage.invoice_btn')}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

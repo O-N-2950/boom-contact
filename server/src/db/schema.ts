@@ -415,3 +415,30 @@ export const organizationInvites = pgTable('organization_invites', {
   emailIdx: index('org_invites_email_idx').on(t.email),
   tokenIdx: index('org_invites_token_idx').on(t.tokenHash),
 }));
+
+// ── QR-facture suisse — factures payables par virement (additif) ─────────────
+// status = 'pending' | 'paid' | 'cancelled'. Référence QRR (27 chiffres) unique :
+// c'est elle qui relie un virement reçu (e-banking / camt.054) à sa facture.
+// Réconciliation OPTION A : l'admin marque payée → crédits attribués.
+export const invoices = pgTable('invoices', {
+  id:             varchar('id', { length: 20 }).primaryKey(),
+  invoiceNumber:  serial('invoice_number').notNull(),           // numérotation séquentielle légale
+  email:          text('email').notNull(),
+  userId:         varchar('user_id', { length: 20 }),
+  packageId:      varchar('package_id', { length: 20 }).notNull(),
+  credits:        integer('credits').notNull(),
+  amountCents:    integer('amount_cents').notNull(),
+  currency:       varchar('currency', { length: 3 }).notNull().default('CHF'),
+  qrReference:    varchar('qr_reference', { length: 27 }),      // rempli juste après insert (dépend du n°)
+  status:         varchar('status', { length: 20 }).notNull().default('pending'),
+  language:       varchar('language', { length: 5 }).notNull().default('fr'),
+  paidAt:         timestamp('paid_at'),
+  paidByAdmin:    text('paid_by_admin'),
+  createdAt:      timestamp('created_at').notNull().defaultNow(),
+  updatedAt:      timestamp('updated_at').notNull().defaultNow(),
+}, (t) => ({
+  numberIdx:    uniqueIndex('invoices_number_idx').on(t.invoiceNumber),
+  qrRefIdx:     uniqueIndex('invoices_qr_reference_idx').on(t.qrReference),
+  emailIdx:     index('invoices_email_idx').on(t.email),
+  statusIdx:    index('invoices_status_idx').on(t.status),
+}));

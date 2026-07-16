@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Context } from '../middleware/context.js';
 import { router, adminProcedure, TRPCError } from './trpc.js';
-import { adminStatsOutput, adminUsersOutput, adminDeleteUserOutput, adminSetCreditsOutput, adminListUsersOutput, adminCleanupSessionsOutput, adminFixOwnerEmailsOutput, marketingPostsOutput, marketingActionOutput } from './output-schemas.js';
+import { adminStatsOutput, adminUsersOutput, adminDeleteUserOutput, adminSetCreditsOutput, adminListUsersOutput, adminCleanupSessionsOutput, adminFixOwnerEmailsOutput, adminInvoicesOutput, adminMarkInvoicePaidOutput, marketingPostsOutput, marketingActionOutput } from './output-schemas.js';
 import { logger, maskEmail } from '../logger.js';
 import { db, schema } from '../db/index.js';
 import { sessions, users, payments, creditTxns, vehicles, magicTokens, socialPosts } from '../db/schema.js';
@@ -164,6 +164,39 @@ export const adminSetCredits = adminProcedure
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Utilisateur introuvable: ' + input.email });
     await db.update(users).set({ credits: input.credits }).where(eq(users.id, user.id));
     return { ok: true, email: emailLower, credits: input.credits };
+  });
+
+// GET adminListInvoices — lister les QR-factures (réconciliation manuelle)
+export const adminListInvoices = adminProcedure
+  .output(adminInvoicesOutput)
+  .query(async () => {
+    const { listInvoices, displayNumber } = await import('../services/invoice.service.js');
+    const rows = await listInvoices(200);
+    return rows.map((r) => ({
+      id: r.id, invoiceNumber: r.invoiceNumber,
+      displayNumber: displayNumber(r.invoiceNumber, r.createdAt),
+      email: r.email, packageId: r.packageId, credits: r.credits,
+      amountCents: r.amountCents, currency: r.currency,
+      qrReference: r.qrReference, status: r.status,
+      paidAt: r.paidAt, createdAt: r.createdAt,
+    }));
+  });
+
+// POST adminMarkInvoicePaid — marquer payée (virement reçu) → crédite le compte
+export const adminMarkInvoicePaid = adminProcedure
+  .input(z.object({ invoiceId: z.string().min(5).max(30) }))
+  .output(adminMarkInvoicePaidOutput)
+  .mutation(async ({ input, ctx }) => {
+    const { markInvoicePaid } = await import('../services/invoice.service.js');
+    try {
+      const res = await markInvoicePaid(input.invoiceId, (ctx as any).authUser?.email || 'admin');
+      return res;
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg === 'ALREADY_PAID') throw new TRPCError({ code: 'CONFLICT', message: 'Facture déjà marquée payée.' });
+      if (msg === 'INVOICE_NOT_FOUND') throw new TRPCError({ code: 'NOT_FOUND', message: 'Facture introuvable.' });
+      throw e;
+    }
   });
 
 // GET admin.listUsers — lister tous les utilisateurs

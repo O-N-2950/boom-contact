@@ -6,7 +6,7 @@ interface AdminDashboardProps {
   onBack: () => void;
 }
 
-type Tab = 'overview' | 'sessions' | 'revenue' | 'users';
+type Tab = 'overview' | 'sessions' | 'revenue' | 'users' | 'invoices';
 
 const EUR = (cents: number) => `€${(cents / 100).toFixed(2)}`;
 const pct = (a: number, b: number) => b ? Math.round(a / b * 100) : 0;
@@ -27,6 +27,10 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
   // ── Gift credits send via WhatsApp ────────────────────────────
   const grantMut = trpc.auth.grantCredits.useMutation();
+  const invoicesQ = trpc.adminListInvoices.useQuery(undefined, { refetchInterval: autoRefresh ? 30000 : false });
+  const markPaidMut = trpc.adminMarkInvoicePaid.useMutation({
+    onSuccess: () => { invoicesQ.refetch(); statsQ.refetch(); },
+  });
   const [giftCredits, setGiftCredits] = useState(1);
   const [giftEmail, setGiftEmail]     = useState('');
   const [giftResult, setGiftResult]   = useState('');
@@ -74,9 +78,9 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
 
         {/* Tabs */}
         <div className="flex gap-1.5 mb-6">
-          {(['overview', 'sessions', 'revenue', 'users'] as Tab[]).map(t => (
+          {(['overview', 'sessions', 'revenue', 'users', 'invoices'] as Tab[]).map(t => (
             <button key={t} onClick={() => setTab(t)} className="text-white rounded-lg text-xs font-bold cursor-pointer px-3.5 py-[7px]" style={{ background: tab === t ? '#D42D00' : '#111', border: '1px solid ' + (tab === t ? '#D42D00' : '#444') }}>
-              {t === 'overview' ? '📊 Vue d\'ensemble' : t === 'sessions' ? '📋 Sessions' : t === 'revenue' ? '💰 Revenus' : '👥 Utilisateurs'}
+              {t === 'overview' ? '📊 Vue d\'ensemble' : t === 'sessions' ? '📋 Sessions' : t === 'revenue' ? '💰 Revenus' : t === 'users' ? '👥 Utilisateurs' : '🧾 Factures'}
             </button>
           ))}
         </div>
@@ -253,6 +257,44 @@ export function AdminDashboard({ token, onBack }: AdminDashboardProps) {
         )}
 
         {/* ── USERS ── */}
+        {tab === 'invoices' && (
+          <>
+            <SectionTitle>🧾 QR-factures (virement bancaire)</SectionTitle>
+            <div className="text-[#999] text-[11px] mb-3">Quand un virement arrive sur l'e-banking (la référence QRR figure sur le relevé), cliquer « Marquer payée » : les crédits sont attribués et le client reçoit un email de confirmation.</div>
+            {invoicesQ.isLoading && <div className="text-[#999] text-sm">Chargement…</div>}
+            {invoicesQ.data && invoicesQ.data.length === 0 && <div className="text-[#999] text-sm">Aucune facture.</div>}
+            {invoicesQ.data && invoicesQ.data.map(inv => (
+              <div key={inv.id} className="rounded-lg p-3 mb-2 bg-[#111]" style={{ border: '1px solid #333' }}>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div>
+                    <span className="font-bold text-sm">{inv.displayNumber}</span>
+                    <span className="text-[#999] text-xs ml-2">{inv.email}</span>
+                    <div className="text-[#ccc] text-xs mt-1">
+                      {inv.credits} crédit(s) · {(inv.amountCents/100).toFixed(2)} {inv.currency}
+                      {inv.qrReference && <span className="text-[#777]"> · QRR {inv.qrReference}</span>}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {inv.status === 'paid' ? (
+                      <span className="text-[#4ade80] text-xs font-bold">✅ Payée{inv.paidAt ? ' · ' + new Date(inv.paidAt).toLocaleDateString('fr-CH') : ''}</span>
+                    ) : inv.status === 'cancelled' ? (
+                      <span className="text-[#999] text-xs">Annulée</span>
+                    ) : (
+                      <button
+                        onClick={() => { if (window.confirm('Confirmer : virement reçu pour ' + inv.displayNumber + ' (' + (inv.amountCents/100).toFixed(2) + ' ' + inv.currency + ') ? Les crédits seront attribués à ' + inv.email + '.')) markPaidMut.mutate({ invoiceId: inv.id }); }}
+                        disabled={markPaidMut.isPending}
+                        className="rounded-md text-xs font-bold cursor-pointer px-3 py-1.5 text-white"
+                        style={{ background: '#16A34A', border: '1px solid #15803D', opacity: markPaidMut.isPending ? 0.6 : 1 }}>
+                        💰 Marquer payée
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+
         {tab === 'users' && (
           <>
             <SectionTitle>👥 Utilisateurs ({usersQ.data?.length || 0})</SectionTitle>

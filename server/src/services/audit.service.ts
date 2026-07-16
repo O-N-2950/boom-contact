@@ -12,6 +12,8 @@ export type AuditEvent =
   | 'user.logout'
   | 'user.email_verified'
   | 'credit.purchase'
+  | 'invoice.created'
+  | 'invoice.paid'
   | 'credit.gift_claimed'
   | 'pdf.generated'
   | 'police.login'

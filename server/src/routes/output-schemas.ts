@@ -728,3 +728,33 @@ export const adminStatsOutput = z.object({
     totalGiven: z.number(),
   }),
 });
+
+// ── QR-facture suisse ─────────────────────────────────────────
+export const paymentCreateInvoiceOutput = z.object({
+  ok: z.boolean(),
+  invoiceId: z.string(),
+  displayNumber: z.string(),
+  amountCents: z.number(),
+  currency: z.string(),
+});
+
+export const adminInvoicesOutput = z.array(z.object({
+  id: z.string(),
+  invoiceNumber: z.number(),
+  displayNumber: z.string(),
+  email: z.string(),
+  packageId: z.string(),
+  credits: z.number(),
+  amountCents: z.number(),
+  currency: z.string(),
+  qrReference: z.string().nullable(),
+  status: z.string(),
+  paidAt: z.date().nullable(),
+  createdAt: z.date(),
+}));
+
+export const adminMarkInvoicePaidOutput = z.object({
+  ok: z.boolean(),
+  credited: z.number(),
+  email: z.string(),
+});

@@ -779,7 +779,13 @@
     "pkg_pack3_marketing": "🎁 Per WhatsApp teilen — Ihr Kind, Ihr Mitarbeiter, Ihr Freund erhält sofort einen Link.",
     "pkg_pack10_label": "10 Berichte",
     "pkg_pack10_desc": "Flotten & Unternehmen",
-    "pkg_pack10_marketing": "🏢 Verwalten Sie Ihre gesamte Flotte. Mit 1 Klick an Ihre Mitarbeitenden übertragen."
+    "pkg_pack10_marketing": "🏢 Verwalten Sie Ihre gesamte Flotte. Mit 1 Klick an Ihre Mitarbeitenden übertragen.",
+    "invoice_title": "Per Rechnung zahlen (Banküberweisung)",
+    "invoice_desc": "Erhalten Sie eine Schweizer QR-Rechnung per E-Mail und bezahlen Sie sie in Ihrem E-Banking. Ihre Guthaben werden nach Zahlungseingang aktiviert.",
+    "invoice_select": "Paket wählen",
+    "invoice_btn": "Rechnung erhalten",
+    "invoice_sending": "Senden…",
+    "invoice_sent": "Rechnung {{number}} per E-Mail gesendet. Bezahlen Sie per Überweisung — Ihre Guthaben werden nach Zahlungseingang aktiviert."
   },
   "signature": {
     "title": "Unterschrift",

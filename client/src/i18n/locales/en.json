@@ -559,7 +559,13 @@
     "pkg_pack3_marketing": "🎁 Share via WhatsApp — your child, employee, or friend gets an instant link.",
     "pkg_pack10_label": "10 reports",
     "pkg_pack10_desc": "Fleets & businesses",
-    "pkg_pack10_marketing": "🏢 Manage your entire fleet. Transfer to colleagues in 1 click."
+    "pkg_pack10_marketing": "🏢 Manage your entire fleet. Transfer to colleagues in 1 click.",
+    "invoice_title": "Pay by invoice (bank transfer)",
+    "invoice_desc": "Receive a Swiss QR-bill by email and pay it from your e-banking. Your credits are activated upon receipt of payment.",
+    "invoice_select": "Choose package",
+    "invoice_btn": "Get the invoice",
+    "invoice_sending": "Sending…",
+    "invoice_sent": "Invoice {{number}} sent by email. Pay it by bank transfer — your credits will be activated upon receipt of payment."
   },
   "ocrScanner": {
     "no_doc_recognized": "No document recognized. Check the photo quality.",

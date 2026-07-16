@@ -779,7 +779,13 @@
     "pkg_pack3_marketing": "🎁 Condivida via WhatsApp — suo figlio, il suo collaboratore, il suo amico riceve un link istantaneo.",
     "pkg_pack10_label": "10 constatazioni",
     "pkg_pack10_desc": "Flotte e aziende",
-    "pkg_pack10_marketing": "🏢 Gestisca l'intera flotta. Trasferisca ai suoi collaboratori in 1 clic."
+    "pkg_pack10_marketing": "🏢 Gestisca l'intera flotta. Trasferisca ai suoi collaboratori in 1 clic.",
+    "invoice_title": "Pagare con fattura (bonifico bancario)",
+    "invoice_desc": "Ricevi una QR-fattura svizzera via email e pagala dal tuo e-banking. I crediti saranno attivati alla ricezione del pagamento.",
+    "invoice_select": "Scegli il pacchetto",
+    "invoice_btn": "Ricevere la fattura",
+    "invoice_sending": "Invio…",
+    "invoice_sent": "Fattura {{number}} inviata via email. Pagala con bonifico — i crediti saranno attivati alla ricezione del pagamento."
   },
   "signature": {
     "title": "Firma",

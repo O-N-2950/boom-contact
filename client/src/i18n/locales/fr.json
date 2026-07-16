@@ -559,7 +559,13 @@
     "pkg_pack3_marketing": "🎁 Partagez par WhatsApp — votre enfant, votre employé, votre ami reçoit un lien instantané.",
     "pkg_pack10_label": "10 constats",
     "pkg_pack10_desc": "Flottes & entreprises",
-    "pkg_pack10_marketing": "🏢 Gérez toute votre flotte. Transférez à vos collaborateurs en 1 clic."
+    "pkg_pack10_marketing": "🏢 Gérez toute votre flotte. Transférez à vos collaborateurs en 1 clic.",
+    "invoice_title": "Payer par facture (virement bancaire)",
+    "invoice_desc": "Recevez une QR-facture suisse par email et payez-la depuis votre e-banking. Vos crédits sont activés dès réception du paiement.",
+    "invoice_select": "Choisir le package",
+    "invoice_btn": "Recevoir la facture",
+    "invoice_sending": "Envoi…",
+    "invoice_sent": "Facture {{number}} envoyée par email. Payez-la par virement — vos crédits seront activés dès réception du paiement."
   },
   "ocrScanner": {
     "no_doc_recognized": "Aucun document reconnu. Vérifiez la qualité des photos.",

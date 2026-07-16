@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure, TRPCError, checkIdempotency, storeIdempotency } from './trpc.js';
 import { createCheckoutSession, getUserCredits, saveConsent, useCredit, PACKAGES, SUPPORTED_CURRENCIES, COUNTRY_TO_CURRENCY, getPrice, formatPrice } from '../services/stripe.service.js';
-import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, paymentVerifyCreditOutput, userSaveConsentOutput } from './output-schemas.js';
+import { paymentCreateCheckoutOutput, paymentPackagesOutput, paymentCurrenciesOutput, paymentCreditsOutput, paymentUseCreditOutput, paymentVerifyCreditOutput, userSaveConsentOutput, paymentCreateInvoiceOutput } from './output-schemas.js';
 import { logAudit } from '../services/audit.service.js';
 
 export const paymentRouter = router({
@@ -9,6 +9,28 @@ export const paymentRouter = router({
   packages: publicProcedure
     .output(paymentPackagesOutput)
     .query(() => Object.values(PACKAGES)),
+
+  // QR-facture suisse — « payer par facture » (virement, CHF uniquement).
+  // La facture PDF (QR-bill conforme) est générée et envoyée par email ;
+  // les crédits sont attribués quand l'admin marque la facture payée (option A).
+  createInvoice: publicProcedure
+    .input(z.object({
+      packageId: z.enum(['single', 'pack3', 'pack10']),
+      email: z.string().trim().email().max(320),
+      language: z.string().trim().max(10).default('fr'),
+    }))
+    .output(paymentCreateInvoiceOutput)
+    .mutation(async ({ input, ctx }) => {
+      const { createInvoice } = await import('../services/invoice.service.js');
+      const inv = await createInvoice({
+        email: input.email,
+        packageId: input.packageId,
+        language: input.language,
+        userId: (ctx as any).authUser?.sub,
+      });
+      logAudit({ event: 'invoice.created', detail: { invoiceId: inv.id, packageId: input.packageId } });
+      return { ok: true, invoiceId: inv.id, displayNumber: inv.displayNumber, amountCents: inv.amountCents, currency: inv.currency };
+    }),
 
   // Créer une session Stripe Checkout
   createCheckout: publicProcedure

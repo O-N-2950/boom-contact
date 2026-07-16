@@ -169,6 +169,16 @@ async function setupRateLimiting() {
         res.status(429).json({ error: 'Trop de demandes de lien. RÃ©essayez dans 1 heure.' });
       },
     }));
+
+    // QR-facture : generation PDF + email -> anti-abus strict
+    app.use('/trpc/payment.createInvoice', rateLimit({
+      windowMs: 60 * 60 * 1000, max: 5,
+      standardHeaders: true, legacyHeaders: false,
+      handler: (req, res) => {
+        logger.warn('Rate limit hit createInvoice', { ip: req.ip });
+        res.status(429).json({ error: 'Trop de demandes de facture. Reessayez dans 1 heure.' });
+      },
+    }));
     app.use('/trpc/police.login', rateLimit({
       windowMs: 15 * 60 * 1000, max: 10,
       standardHeaders: true, legacyHeaders: false,
