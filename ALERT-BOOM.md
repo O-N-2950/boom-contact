@@ -1,7 +1,7 @@
 # Monitoring — boom.contact
 
 **Dernière vérification réelle** : 2026-06-18T22:21:27Z
-**Dernier check monitoring** : 2026-06-29 (HTTP 000 — connexion réseau échouée au proxy sandbox; même pattern que faux 403 précédents)
+**Dernier check monitoring** : 2026-07-16 (HTTP 403 proxy sandbox — même faux positif connu; TS 10 erreurs inchangées depuis 2026-06-25)
 **Statut global** : OPÉRATIONNEL (présumé) — le site n'a jamais été down depuis la confirmation du 2026-06-18.
 
 ---
